@@ -20,7 +20,10 @@ layout(location = 1) in vec4 a_uv;
 layout(location = 2) in vec4 a_muv;
 layout(location = 3) in vec4 a_tint;
 layout(location = 4) in vec4 a_rim;
+layout(location = 5) in vec4 a_flags;
 uniform mat4 u_proj;
+out vec2 v_world;
+out float v_water;
 out vec3 v_uv;
 out vec2 v_muv;
 out float v_has_mask;
@@ -35,6 +38,8 @@ void main() {
   v_has_mask = a_muv.x < 0.0 ? 0.0 : 1.0;
   v_tint = a_tint.rgb;
   v_rim = a_rim;
+  v_world = a_rect.xy + c * a_rect.zw;
+  v_water = a_flags.x;
 }
 )";
 
@@ -44,16 +49,26 @@ in vec2 v_muv;
 in float v_has_mask;
 in vec3 v_tint;
 in vec4 v_rim;
+in vec2 v_world;
+in float v_water;
+uniform float u_time;
 uniform sampler2DArray u_tiles;
 uniform sampler2DArray u_masks;
 out vec4 o_color;
 void main() {
-  vec4 c = texture(u_tiles, v_uv);
+  vec3 uv = v_uv;
+  float sheen = 0.0;
+  if (v_water > 0.5) {   // víz: enyhe hullámzás és vándorló csillanás
+    uv.xy += vec2(sin(v_world.y * 0.11 + u_time * 1.3), cos(v_world.x * 0.09 + u_time * 1.1)) * 0.0025;
+    float w = sin(v_world.x * 0.045 + v_world.y * 0.06 + u_time * 1.7) * sin(v_world.x * 0.07 - v_world.y * 0.03 - u_time * 1.1);
+    sheen = pow(max(w, 0.0), 12.0) * 0.22;
+  }
+  vec4 c = texture(u_tiles, uv);
   float a = v_has_mask > 0.5 ? texture(u_masks, vec3(v_muv, 0.0)).r : 1.0;
   if (a <= 0.002) discard;
   // festett perem a folt szélén (a régi játék szerint: a maszk 0,5-ös szintje körüli sáv)
   float band = v_rim.a > 0.0 ? clamp(1.0 - abs(a - 0.5) / 0.274, 0.0, 1.0) * v_rim.a : 0.0;
-  vec3 rgb = mix(c.rgb * v_tint, v_rim.rgb, band);
+  vec3 rgb = mix(c.rgb * v_tint, v_rim.rgb, band) + vec3(sheen) * c.a;
   float alpha = a * c.a;
   o_color = vec4(rgb * alpha, alpha);
 }
@@ -75,6 +90,7 @@ bool TerrainView::init(Device& dev, const std::string& assets_dir, std::string* 
   loc_proj_ = gl.GetUniformLocation(prog_.id, "u_proj");
   loc_tiles_ = gl.GetUniformLocation(prog_.id, "u_tiles");
   loc_masks_ = gl.GetUniformLocation(prog_.id, "u_masks");
+  loc_time_ = gl.GetUniformLocation(prog_.id, "u_time");
   gl.GenVertexArrays(1, &vao_);
   gl.GenBuffers(1, &vbo_);
   gl.BindVertexArray(vao_);
@@ -90,6 +106,7 @@ bool TerrainView::init(Device& dev, const std::string& assets_dir, std::string* 
   attr(2, 4, gl::FLOAT, false, offsetof(Quad, m0));
   attr(3, 4, gl::UNSIGNED_BYTE, true, offsetof(Quad, tint));
   attr(4, 4, gl::UNSIGNED_BYTE, true, offsetof(Quad, rim));
+  attr(5, 4, gl::UNSIGNED_BYTE, false, offsetof(Quad, flags));
   gl.BindVertexArray(0);
 
   // tájak: a csempekészletek (azonos méretű lapok) egy tömbben
@@ -224,6 +241,7 @@ void TerrainView::emit(const Kind& k, int tx, int ty, int variant, int mask_inde
   }
   for (int c = 0; c < 3; ++c) q.tint[c] = static_cast<uint8_t>(k.tint[c] * shade[c] / 255);
   q.tint[3] = static_cast<uint8_t>(k.layer);
+  q.flags[0] = k.water ? 1 : 0;
   if (mask_index >= 0 && k.rimmed) {
     const bool dirt = rows_[static_cast<size_t>(k.layer)][static_cast<size_t>(k.row)].first == "dirt";
     q.rim[0] = dirt ? 52 : 96;
@@ -303,6 +321,7 @@ void TerrainView::draw(const Mat4& projection, float vx0, float vy0, float vx1, 
   gl.UniformMatrix4fv(loc_proj_, 1, 0, projection.data());
   gl.Uniform1i(loc_tiles_, 0);
   gl.Uniform1i(loc_masks_, 1);
+  gl.Uniform1f(loc_time_, static_cast<float>(time));
   gl.ActiveTexture(gl::TEXTURE0);
   gl.BindTexture(gl::TEXTURE_2D_ARRAY, tiles_.id);
   gl.ActiveTexture(gl::TEXTURE0 + 1);

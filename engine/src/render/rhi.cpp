@@ -99,6 +99,33 @@ Texture Device::create_array_from(const Image& img, bool single_channel) {
   return t;
 }
 
+void Device::set_linear(const Texture& t, bool linear) {
+  gl_.BindTexture(gl::TEXTURE_2D, t.id);
+  gl_.TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, linear ? gl::LINEAR : gl::NEAREST);
+  gl_.TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, linear ? gl::LINEAR : gl::NEAREST);
+}
+
+Texture Device::create_r8(int w, int h) {
+  Texture t;
+  t.width = w;
+  t.height = h;
+  t.single_channel = true;
+  gl_.GenTextures(1, &t.id);
+  gl_.BindTexture(gl::TEXTURE_2D, t.id);
+  gl_.TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR);
+  gl_.TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR);
+  gl_.TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE);
+  gl_.TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE);
+  std::vector<uint8_t> zero(static_cast<size_t>(w) * static_cast<size_t>(h), 0);
+  gl_.TexImage2D(gl::TEXTURE_2D, 0, static_cast<gl::GLint>(gl::R8), w, h, 0, gl::RED, gl::UNSIGNED_BYTE, zero.data());
+  return t;
+}
+
+void Device::update_r8(const Texture& t, const uint8_t* data) {
+  gl_.BindTexture(gl::TEXTURE_2D, t.id);
+  gl_.TexSubImage2D(gl::TEXTURE_2D, 0, 0, 0, t.width, t.height, gl::RED, gl::UNSIGNED_BYTE, data);
+}
+
 void Device::destroy(Texture& t) {
   if (t.id) gl_.DeleteTextures(1, &t.id);
   t = {};

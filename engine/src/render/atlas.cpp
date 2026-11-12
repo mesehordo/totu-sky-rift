@@ -91,6 +91,7 @@ void Atlas::draw(SpriteBatch& batch, const AtlasSheet& s, int direction, int col
   in.u1 = static_cast<float>(f.x + f.w) / ps;
   in.v1 = static_cast<float>(f.y + f.h) / ps;
   in.layer[0] = static_cast<uint8_t>(layer_of_[f.page]);
+  in.foot = ay;   // a horgony a talpvonal
   for (int k = 0; k < 4; ++k) {
     in.team[k] = team ? team[k] : 0;
     if (tint) in.tint[k] = tint[k];

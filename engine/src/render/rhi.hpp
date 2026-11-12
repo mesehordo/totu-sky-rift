@@ -50,6 +50,9 @@ class Device {
   void finish_array(const Texture& t);
   Texture create_array_from(const Image& img, bool single_channel);   // egyrétegű tömb egy képből
   int max_array_layers() const { return max_layers_; }
+  void set_linear(const Texture& t, bool linear);            // 2D textúra szűrése (render-célpont)
+  Texture create_r8(int w, int h);                           // egycsatornás 2D textúra (pl. köd)
+  void update_r8(const Texture& t, const uint8_t* data);
   void destroy(Texture& t);
   Program create_program(const char* vertex_src, const char* fragment_src, std::string* error);
   void destroy(Program& p);

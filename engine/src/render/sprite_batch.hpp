@@ -21,8 +21,9 @@ struct SpriteInstance {
   uint8_t tint[4] = {255, 255, 255, 255};      // árnyalat és átlátszóság
   uint8_t team[4] = {0, 0, 0, 0};              // csapatszín; a negyedik bájt az erősség (0 = nincs)
   uint8_t layer[4] = {0, 0, 0, 0};             // a tömbtextúra rétege (az első bájt); a többi tartalék
+  float foot = 0;                              // a talpvonal y-ja (az árnyék innen vetül; 0 = a négyzet alja)
 };
-static_assert(sizeof(SpriteInstance) == 44, "a csúcsformátum 44 bájt");
+static_assert(sizeof(SpriteInstance) == 48, "a csúcsformátum 48 bájt");
 
 // A kép előszorzása az alfával (a betöltés után, a feltöltés előtt).
 void premultiply(Image& img);
@@ -32,6 +33,9 @@ class SpriteBatch {
   bool init(Device& dev, std::string* error);
   void shutdown();
   void begin(const Mat4& projection);
+  // Árnyékmenet (M5, D35): a sprite-ok a talpvonaltól a talajra vetülnek a nap irányában (magasság-képpontonként
+  // sun_x oldalra, sun_y lefelé), puha szélű, sötét, a végén halványuló árnyékként (a régi játék árnyéka szerint).
+  void begin_shadows(const Mat4& projection, float sun_x, float sun_y, float alpha);
   // A maszk lehet nullptr (csapatszín nélkül). Textúraváltáskor a köteg kiürül (rajzol).
   void draw(const Texture& base, const Texture* mask, const SpriteInstance& s);   // tömbtextúrák
   void end();
@@ -42,7 +46,10 @@ class SpriteBatch {
   void flush();
 
   Device* dev_ = nullptr;
-  Program prog_;
+  Program prog_, shadow_prog_;
+  bool shadow_ = false;
+  float sun_x_ = 0, sun_y_ = 0, shadow_alpha_ = 0;
+  gl::GLint s_proj_ = -1, s_base_ = -1, s_sun_ = -1;
   gl::GLuint vao_ = 0, vbo_ = 0;
   gl::GLint loc_proj_ = -1, loc_base_ = -1, loc_mask_ = -1, loc_use_mask_ = -1;
   Mat4 proj_{};

@@ -74,7 +74,7 @@ add_library(totu_image STATIC src/render/image.cpp)
 target_include_directories(totu_image PUBLIC src)
 target_link_libraries(totu_image PUBLIC totu_stb PRIVATE totu_options)
 # atlaszkészítő (grafikus kártya nélkül) és eszköze
-add_library(totu_assets STATIC src/render/atlas_build.cpp)
+add_library(totu_assets STATIC src/render/atlas_build.cpp src/render/daylight.cpp)
 target_link_libraries(totu_assets PUBLIC totu_core totu_image PRIVATE totu_options)
 add_executable(totu_atlas src/tools/totu_atlas.cpp)
 target_link_libraries(totu_atlas PRIVATE totu_assets totu_options)
@@ -83,7 +83,7 @@ target_link_libraries(totu_atlas PRIVATE totu_assets totu_options)
 enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
-  tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp)
+  tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
@@ -120,7 +120,7 @@ if(TOTU_CLIENT)
   endif()
   # megjelenítő (ADR-003): saját vékony réteg, OpenGL 3.3 core
   add_library(totu_render STATIC src/render/gl.cpp src/render/rhi.cpp src/render/sprite_batch.cpp src/render/sprite_sheet.cpp
-              src/render/atlas.cpp src/render/terrain_view.cpp)
+              src/render/atlas.cpp src/render/terrain_view.cpp src/render/lighting.cpp)
   target_link_libraries(totu_render PUBLIC totu_core totu_image totu_assets PRIVATE totu_options)
   add_executable(totu src/client/main.cpp src/client/world.cpp)
   target_link_libraries(totu PRIVATE totu_core totu_render totu_options SDL3::SDL3)

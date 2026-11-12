@@ -35,6 +35,7 @@ class TerrainView {
     float m0, n0, m1, n1;       // maszk (m0 < 0: nincs maszk, teljes fedés)
     uint8_t tint[4];            // a negyedik bájt: a táj rétege
     uint8_t rim[4];             // peremszín és -erősség
+    uint8_t flags[4];           // [0]: víz (hullámzás, csillanás)
   };
   struct Kind {                 // egy rajzolási fajta: (táj, sor, árnyalat)
     int layer = 0, row = 0, variants = 1;
@@ -50,7 +51,7 @@ class TerrainView {
   Device* dev_ = nullptr;
   Program prog_;
   gl::GLuint vao_ = 0, vbo_ = 0;
-  gl::GLint loc_proj_ = -1, loc_tiles_ = -1, loc_masks_ = -1;
+  gl::GLint loc_proj_ = -1, loc_tiles_ = -1, loc_masks_ = -1, loc_time_ = -1;
   Texture tiles_, masks_;
   std::vector<std::string> sets_;                   // a tájtömb rétegei
   std::vector<std::vector<std::pair<std::string, int>>> rows_;   // rétegenként: sor neve → változatok száma

@@ -110,6 +110,49 @@ void World::step() {
   }
   selected_.erase(std::remove_if(selected_.begin(), selected_.end(), [&](sim::EntityId e) { return !sim_->world().alive(e); }),
                   selected_.end());
+  if (sim_->tick() % 5 == 0) update_fog();
+}
+
+void World::update_fog() {
+  const int w = map_->width(), h = map_->height();
+  if (fog_.empty()) fog_.assign(static_cast<size_t>(w) * static_cast<size_t>(h), 0);
+  for (auto& f : fog_) {
+    if (f == 255) f = 128;   // a korábban látott rész felderített marad
+  }
+  constexpr int kSight = 8;
+  sim_->world().pool<sim::Health>().each([&](sim::EntityId e, const sim::Health& hh) {
+    if (hh.owner != 1 || hh.hp <= 0) return;
+    const auto* p = sim_->world().get<sim::Position>(e);
+    if (!p) return;
+    const int cx = static_cast<int>(p->x.raw() >> 16), cy = static_cast<int>(p->y.raw() >> 16);
+    for (int y = std::max(0, cy - kSight); y <= std::min(h - 1, cy + kSight); ++y) {
+      for (int x = std::max(0, cx - kSight); x <= std::min(w - 1, cx + kSight); ++x) {
+        if ((x - cx) * (x - cx) + (y - cy) * (y - cy) <= kSight * kSight) fog_[static_cast<size_t>(y * w + x)] = 255;
+      }
+    }
+  });
+  fog_dirty_ = true;
+}
+
+const std::vector<uint8_t>& World::fog(bool* changed) {
+  if (fog_.empty()) update_fog();
+  if (changed) *changed = fog_dirty_;
+  fog_dirty_ = false;
+  return fog_;
+}
+
+void World::lights(std::vector<render::Light>& out, float alpha) const {
+  for (const auto& [e, v] : vis_) {
+    if (e % 6 != 0) continue;
+    const auto* p = sim_->world().get<sim::Position>(e);
+    if (!p) continue;
+    render::Light l;
+    l.x = v.px + (to_px(p->x) - v.px) * alpha;
+    l.y = v.py + (to_px(p->y) - v.py) * alpha - 20.0f;   // a fáklya a fej magasságában
+    l.radius = 90.0f;
+    l.r = 255; l.g = 190; l.b = 110;
+    out.push_back(l);
+  }
 }
 
 void World::select_box(float x0, float y0, float x1, float y1) {
@@ -171,7 +214,7 @@ int World::sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner) {
 }
 
 void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
-                 int sw, int sh, float alpha, double time) {
+                 int sw, int sh, float alpha, double time, bool shadow_pass) {
   const float vx1 = cam.x + static_cast<float>(sw) / cam.zoom, vy1 = cam.y + static_cast<float>(sh) / cam.zoom;
   struct Item {
     float x, y;
@@ -187,8 +230,8 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     items.push_back({x, y, e});
   }
   std::sort(items.begin(), items.end(), [](const Item& a, const Item& b) { return a.y != b.y ? a.y < b.y : a.e < b.e; });
-  // kijelölés jelzése (a sprite alatt)
-  for (const sim::EntityId e : selected_) {
+  // kijelölés jelzése (a sprite alatt; az árnyékmenetben nem)
+  for (const sim::EntityId e : (shadow_pass ? std::vector<sim::EntityId>{} : selected_)) {
     const auto it = vis_.find(e);
     const auto* p = sim_->world().get<sim::Position>(e);
     if (it == vis_.end() || !p) continue;
@@ -213,7 +256,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       const auto& a = s.anims.at(v.moving ? "walk" : "idle");
       const int frame = static_cast<int>(time * a.fps + static_cast<double>(it.e)) % std::max(1, a.frames);
       atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team);
-    } else {   // tartalék: csapatszínű kör
+    } else if (!shadow_pass) {   // tartalék: csapatszínű kör
       render::SpriteInstance in;
       in.x = it.x - 8;
       in.y = it.y - 14;

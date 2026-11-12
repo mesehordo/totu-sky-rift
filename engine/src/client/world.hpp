@@ -12,6 +12,7 @@
 
 #include "map/pathfinder.hpp"
 #include "render/atlas.hpp"
+#include "render/lighting.hpp"
 #include "render/terrain_view.hpp"
 #include "sim/sim.hpp"
 
@@ -43,7 +44,12 @@ class World {
 
   // rajzolás: `alpha` a két tick közötti arány (0..1), `time` másodperc
   void draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
-            int screen_w, int screen_h, float alpha, double time);
+            int screen_w, int screen_h, float alpha, double time, bool shadow_pass = false);
+  // fényforrások: a fáklyavivők (minden hatodik egység) – a napszak fényrétege éjjel mutatja
+  void lights(std::vector<render::Light>& out, float alpha) const;
+  // köd (ideiglenes, a kliensben: az 1. játékos egységei körül 8 csempe látható; a valódi látótér az M6-ban):
+  // csempénként 0 ismeretlen, 128 felderített, 255 látható; `changed` igaz, ha a legutóbbi lekérés óta változott
+  const std::vector<uint8_t>& fog(bool* changed);
   int drawn_units() const { return drawn_; }
 
   static constexpr float kTilePx = render::TerrainView::kTilePx;
@@ -66,6 +72,9 @@ class World {
   std::vector<sim::EntityId> selected_;
   std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai
   bool sheets_ready_ = false;
+  std::vector<uint8_t> fog_;
+  bool fog_dirty_ = true;
+  void update_fog();
   int drawn_ = 0;
 };
 

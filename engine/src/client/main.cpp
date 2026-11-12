@@ -9,6 +9,8 @@
 //   totu --world pálya.json        világnézet: terep, két sereg a szimulációból (--demo N: játékosonként N egység);
 //                                  kamera: nyilak / WASD, görgő; bal gombos keret: kijelölés; jobb gomb: mozgatás
 //                                  alakzatban (1–6: alakzat); --content mappa: a tartalom helye
+//   totu --daytime T               rögzített napszak (0 = hajnal, 0,275 = dél, 0,75 = éjfél); különben 4 perces ciklus
+//   totu --nofog                   köd nélkül
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
 #include <SDL3/SDL.h>
@@ -28,6 +30,8 @@
 #include "core/platform_info.hpp"
 #include "client/world.hpp"
 #include "render/atlas.hpp"
+#include "render/daylight.hpp"
+#include "render/lighting.hpp"
 #include "render/terrain_view.hpp"
 #include "render/rhi.hpp"
 #include "render/sprite_batch.hpp"
@@ -51,6 +55,8 @@ struct Options {
   bool bench = false, hidden = false, check = false;
   std::string screenshot, atlas, world;
   std::string content = TOTU_CONTENT_DIR;
+  double daytime = -1;
+  bool fog = true;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -208,6 +214,8 @@ int main(int argc, char** argv) {
     else if (a == "--atlas") o.atlas = next();
     else if (a == "--world") o.world = next();
     else if (a == "--content") o.content = next();
+    else if (a == "--daytime") o.daytime = std::strtod(next(), nullptr);
+    else if (a == "--nofog") o.fog = false;
     else if (a == "--size") {   // SZxM
       char* end = nullptr;
       const char* v = next();
@@ -263,6 +271,8 @@ int main(int argc, char** argv) {
     render::Atlas world_atlas;
     render::Texture fallback, white;
     client::Camera cam;
+    render::Lighting lighting;
+    std::vector<render::Light> lights;
     bool have_world = false, world_atlas_ok = false;
     sim::Formation formation = sim::Formation::Auto;
     float drag_x = 0, drag_y = 0;
@@ -283,6 +293,7 @@ int main(int argc, char** argv) {
           rc = 1;
         } else {
           terrain.set_map(world.map(), world.terrain());
+          if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           world.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
@@ -375,9 +386,18 @@ int main(int argc, char** argv) {
                                : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         const float vx1 = cam.x + static_cast<float>(w) / cam.zoom, vy1 = cam.y + static_cast<float>(h) / cam.zoom;
         const render::Mat4 proj = render::ortho(cam.x, vx1, vy1, cam.y);
+        // napszak (D35): rögzített, vagy 4 perces ciklus a hajnaltól
+        const double day_t = o.daytime >= 0 ? o.daytime : std::fmod(t / 240.0 + 0.10, 1.0);
+        const render::DayLight day = render::daylight(day_t);
+        lighting.resize(w, h);
+        lighting.begin_scene(0.0f, 0.0f, 0.0f);
         terrain.draw(proj, cam.x, cam.y, vx1, vy1, t);
+        render::Atlas* atl = world_atlas_ok ? &world_atlas : nullptr;
+        batch.begin_shadows(proj, day.shadow_x, day.shadow_y, day.shadow_alpha);   // a napszakkal forgó árnyék
+        world.draw(batch, atl, fallback, cam, w, h, alpha, t, true);
+        batch.end();
         batch.begin(proj);
-        world.draw(batch, world_atlas_ok ? &world_atlas : nullptr, fallback, cam, w, h, alpha, t);
+        world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         if (dragging) {   // kijelölő keret
           float mx = 0, my = 0;
           SDL_GetMouseState(&mx, &my);
@@ -393,6 +413,15 @@ int main(int argc, char** argv) {
           }
         }
         batch.end();
+        // fények (a napszak környezeti színe + fáklyák), köd, összetétel az ablakba
+        lights.clear();
+        world.lights(lights, alpha);
+        lighting.draw_lights(batch, proj, day.ambient, lights, day.lights);
+        bool fog_changed = false;
+        const auto& fogv = world.fog(&fog_changed);
+        if (!o.fog) lighting.set_fog(0, 0, {});
+        else if (fog_changed) lighting.set_fog(world.map().width(), world.map().height(), fogv);
+        lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx);
       } else if (demo.units > 0 || !adem.units.empty()) {
         // a bemutató determinisztikus időt használ, ha képernyőkép vagy mérés készül (azonos kép minden gépen)
         const double t = (o.bench || !o.screenshot.empty())
@@ -457,6 +486,7 @@ int main(int argc, char** argv) {
                   terrain.last_quads(), static_cast<long long>(world.sim().tick()), world.sim().world().entity_count());
     }
     world_atlas.release();
+    lighting.shutdown();
     terrain.shutdown();
     dev.destroy(fallback);
     dev.destroy(white);
