@@ -234,3 +234,7 @@
 ## 2026-11-12 – D25: hősök, tárgyak, táborok, elemek
 
 **Döntés (tulajdonos):** állandók adatba, elemek állapotként; tárgyak képességhordozók; a bolt (semleges kereskedő, faji bolt) pálya- és lobbibeállítás – a kettős jelölést a tulajdonos „beállítás legyen” válasszal pontosította; a táborok újraéledése pályabeállítás. Rögzítve: `DONTESEK.md` D25, `spec/HOSOK_TARGYAK_TABOROK.md`, `spec/README.md`.
+
+## 2026-11-12 – M0: kisnépek és a Vadon specifikációja (az M0 specifikáció utolsó része)
+
+**Kimenet:** `docs/alap/spec/KISFAJOK.md` – a szövetség megkötése és tartalma (3 épület, 5–6 egység, 3 kutatás), a beilleszkedés a gazda népbe (építési hely, építési stílus, ellátás, töltés, morál, falka, Égkő-fény a kisnépre is érvényes; a tó sebessége nem), a 13 kisnép áttekintése, a kisnép-táborok és a Vadon. Átvizsgálás: 11 kisnépnél van a gazda egész seregére ható kutatás (egyenetlenül); a Huk’ucha tava lassítja a saját szövetségeseit; a kisnép-Micéliák se gépi előnylistán, se táborként nem szerepelnek. Javaslat: kimondott szövetségi bónusz (0 A.D.), zsoldosbérlés a kisnép-táborokból (WC3, 0 A.D.), a gazdaszabály általános elve. 3 döntési pont.

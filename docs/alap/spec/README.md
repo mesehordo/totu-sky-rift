@@ -13,7 +13,7 @@ Cél: az új motor ([UJ_MOTOR_TERV.md](../UJ_MOTOR_TERV.md)) minden fajszabályt
 | [KEPESSEGEK.md](KEPESSEGEK.md) | a 23 képességtípus működése, átvizsgálás (egységesség, értelmesség), javaslatok a 0 A.D.-ből és a WC3-ból, javasolt képességmodell | **kész**; döntések: D22 (E pont) |
 | [KUTATAS_ES_SZABALYOK.md](KUTATAS_ES_SZABALYOK.md) | a kutatás menete, a 10 statnév, a 39 szabálymódosító (25 paraméterhangoló, 14 viselkedés), fejlődési ágak; átvizsgálás és javaslat | **kész**; döntések: D24 |
 | [HOSOK_TARGYAK_TABOROK.md](HOSOK_TARGYAK_TABOROK.md) | hősök (toborzás, tapasztalat, szint, képességtanulás, újraélesztés), tárgyak, semleges táborok, a 13 elem; átvizsgálás és javaslat | **kész**; döntések: D25 |
-| `KISFAJOK.md` | a 13 szövetséges nép (`ally_pack`) és a Vadon | tervezett |
+| [KISFAJOK.md](KISFAJOK.md) | a szövetség, a beilleszkedés a gazda népbe, a 13 kisnép, kisnép-táborok és a Vadon; átvizsgálás és javaslat | **kész** (első változat; 3 döntési pont) |
 
 ## Egy szabály leírása
 
