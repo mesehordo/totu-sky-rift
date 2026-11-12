@@ -1,0 +1,28 @@
+{
+ "_leiras": "Alapsablonok – a konkrét egységek, hősök és épületek ezekből örökölnek.",
+ "template_unit": {
+  "Identity": {
+   "kind": "unit"
+  },
+  "Movement": {
+   "flying": false
+  },
+  "Health": {
+   "armor": 0
+  }
+ },
+ "template_hero": {
+  "inherits": "template_unit",
+  "Identity": {
+   "hero": true
+  }
+ },
+ "template_building": {
+  "Identity": {
+   "kind": "building"
+  },
+  "Health": {
+   "armor": 0
+  }
+ }
+}

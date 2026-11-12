@@ -1,0 +1,495 @@
+{
+ "urs_runapengek": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_runapengek.name",
+   "desc": "research.urs_runapengek.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "urs_vasszigony": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_vasszigony.name",
+   "desc": "research.urs_vasszigony.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "urs_medvebunda": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_medvebunda.name",
+   "desc": "research.urs_medvebunda.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 185,
+    "wood": 65
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "urs_telegi_edzes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_telegi_edzes.name",
+   "desc": "research.urs_telegi_edzes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75,
+    "wood": 100,
+    "stone": 50
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 25,
+    "filter": {
+     "tags": [
+      "infantry",
+      "cavalry"
+     ]
+    }
+   }
+  ]
+ },
+ "urs_nepfelkeles": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_nepfelkeles.name",
+   "desc": "research.urs_nepfelkeles.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 50,
+    "stone": 75
+   },
+   "time": 40
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 5,
+    "filter": {
+     "tags": [
+      "urs_telepes"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 40,
+    "filter": {
+     "tags": [
+      "urs_telepes"
+     ]
+    }
+   },
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "urs_telepes"
+     ]
+    }
+   }
+  ]
+ },
+ "urs_runapajzs": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_runapajzs.name",
+   "desc": "research.urs_runapajzs.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 120
+   },
+   "time": 40
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "building"
+     ]
+    }
+   },
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "building"
+     ]
+    }
+   }
+  ]
+ },
+ "urs_kiados_tanya": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_kiados_tanya.name",
+   "desc": "research.urs_kiados_tanya.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 60
+   },
+   "time": 40
+  },
+  "Rules": {
+   "supply_add": {
+    "urs_tanya": 4
+   }
+  }
+ },
+ "urs_medve_osztön": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_medve_osztön.name",
+   "desc": "research.urs_medve_osztön.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Rules": {
+   "low_hp_rage": {
+    "below": 0.4,
+    "mult": 1.2
+   }
+  }
+ },
+ "urs_gyors_helyorseg": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_gyors_helyorseg.name",
+   "desc": "research.urs_gyors_helyorseg.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 80
+   },
+   "time": 35
+  },
+  "Rules": {
+   "garrison_dmg": 7
+  }
+ },
+ "urs_runapengek_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_runapengek_2.name",
+   "desc": "research.urs_runapengek_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "urs_runapengek"
+    }
+   ]
+  }
+ },
+ "urs_runapengek_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_runapengek_3.name",
+   "desc": "research.urs_runapengek_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "urs_runapengek_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "urs_vasszigony_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_vasszigony_2.name",
+   "desc": "research.urs_vasszigony_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "urs_vasszigony"
+    }
+   ]
+  }
+ },
+ "urs_vasszigony_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_vasszigony_3.name",
+   "desc": "research.urs_vasszigony_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "urs_vasszigony_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "urs_medvebunda_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_medvebunda_2.name",
+   "desc": "research.urs_medvebunda_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 295,
+    "wood": 105
+   },
+   "time": 87
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "urs_medvebunda"
+    }
+   ]
+  }
+ },
+ "urs_medvebunda_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_medvebunda_3.name",
+   "desc": "research.urs_medvebunda_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 445,
+    "wood": 155,
+    "meteor": 50
+   },
+   "time": 105
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "urs_medvebunda_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "urs_tuskes_pajzsfal": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ursan",
+   "name": "research.urs_tuskes_pajzsfal.name",
+   "desc": "research.urs_tuskes_pajzsfal.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Rules": {
+   "no_weak": {
+    "urs_pajzshordozo": [
+     "kozelharcos",
+     "ostrom"
+    ]
+   }
+  }
+ }
+}

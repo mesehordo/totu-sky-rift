@@ -1,0 +1,59 @@
+{
+ "_leiras": "Kutatások, képességek, tárgyak, állapotok és fajok sémája (ADR-005). A `Spec`, `Faction` és `Rules` a mai formában van (az M7 alakítja a D22/D24 modellre), ezért ott csak a típus ellenőrzött.",
+ "type": "object",
+ "required": ["Identity"],
+ "additionalProperties": false,
+ "properties": {
+  "Identity": {
+   "type": "object",
+   "required": ["kind"],
+   "properties": {
+    "kind": {"enum": ["research", "ability", "item", "status", "faction"]},
+    "faction": {"type": "string"},
+    "name": {"type": "string"}, "desc": {"type": "string"}, "tagline": {"type": "string"},
+    "status": {"type": "string"}, "icon": {"type": "string"}
+   },
+   "additionalProperties": false
+  },
+  "Cost": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "resources": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0}},
+    "time": {"type": "number", "minimum": 0}
+   }
+  },
+  "Modifiers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": ["path", "op", "value"],
+    "additionalProperties": false,
+    "properties": {
+     "path": {"type": "string"},
+     "op": {"enum": ["add", "mul", "replace"]},
+     "value": {"type": "number"},
+     "filter": {"type": "object"}
+    }
+   }
+  },
+  "Rules": {"type": "object"},
+  "Exclusive": {"type": "string"},
+  "Requirements": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "all": {"type": "array", "items": {"type": "object"}},
+    "any": {"type": "array", "items": {"type": "object"}}
+   }
+  },
+  "Spec": {"type": "object", "required": ["type"], "properties": {"type": {"type": "string"}}},
+  "Item": {"type": "object", "required": ["kind"], "properties": {"kind": {"enum": ["consumable", "equip"]},
+                                                                   "rarity": {"enum": ["common", "rare", "artifact"]}}},
+  "Status": {"type": "object"},
+  "Roster": {"type": "object"},
+  "Paths": {"type": "object"},
+  "Faction": {"type": "object"},
+  "Legacy": {"type": "object"}
+ }
+}

@@ -1,0 +1,139 @@
+{
+ "nii_lotuszkikoto": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "niil_elf",
+   "name": "building.nii_lotuszkikoto.name",
+   "desc": "building.nii_lotuszkikoto.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "nii_papiruszlandzsas",
+    "nii_nadhajos_ijasz"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_arvizszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "niil_elf",
+   "name": "building.nii_arvizszentely.name",
+   "desc": "building.nii_arvizszentely.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "nii_lotuszpajzsos",
+    "nii_arapalypap",
+    "nii_krokodilor"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "nii_lotuszkikoto"
+    },
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_nadpalota": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "niil_elf",
+   "name": "building.nii_nadpalota.name",
+   "desc": "building.nii_nadpalota.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "nii_csatornarend",
+    "nii_lotuszaldas",
+    "nii_aradas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "nii_lotuszkikoto"
+    },
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ }
+}

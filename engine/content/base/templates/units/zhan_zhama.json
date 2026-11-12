@@ -1,0 +1,284 @@
+{
+ "zha_csirkepasztor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "zhan_zhama",
+   "name": "unit.zha_csirkepasztor.name",
+   "desc": "unit.zha_csirkepasztor.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_zhan_zhama",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.32
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 10,
+   "resources": {
+    "wood": 35,
+    "stone": 10
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "type_nostrength": true
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_tojasdobalo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "zhan_zhama",
+   "name": "unit.zha_tojasdobalo.name",
+   "desc": "unit.zha_tojasdobalo.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_zhan_zhama",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 65,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boulder"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_kakaslovas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "zhan_zhama",
+   "name": "unit.zha_kakaslovas.name",
+   "desc": "unit.zha_kakaslovas.desc",
+   "shape": "rider",
+   "tags": [
+    "ally",
+    "ally_zhan_zhama",
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Health": {
+   "max": 230,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 3.4,
+   "radius": 0.52
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 3,
+   "time": 26,
+   "resources": {
+    "wood": 110,
+    "stone": 35
+   }
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "zha_kukorekolas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_tolljos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "zhan_zhama",
+   "name": "unit.zha_tolljos.name",
+   "desc": "unit.zha_tolljos.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_zhan_zhama",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "zha_madarszellem_hivas",
+    "zha_tollgyogyitas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_madarszellem": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "zhan_zhama",
+   "name": "unit.zha_madarszellem.name",
+   "desc": "unit.zha_madarszellem.desc",
+   "shape": "flyer",
+   "tags": [
+    "ally",
+    "ally_zhan_zhama",
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Health": {
+   "max": 90,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.8,
+   "radius": 0.45,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 24,
+   "resources": {
+    "wood": 110,
+    "stone": 35,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 3.5,
+   "cooldown": 1.1,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ }
+}

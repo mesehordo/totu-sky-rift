@@ -1,0 +1,358 @@
+{
+ "gho_koharapo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ghoblin",
+   "name": "unit.gho_koharapo.name",
+   "desc": "unit.gho_koharapo.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_ghoblin",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "building": 8
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_sziklagorgeto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ghoblin",
+   "name": "unit.gho_sziklagorgeto.name",
+   "desc": "unit.gho_sziklagorgeto.desc",
+   "shape": "artillery",
+   "tags": [
+    "ally",
+    "ally_ghoblin",
+    "large",
+    "mech",
+    "siege"
+   ],
+   "class": "ostrom"
+  },
+  "Health": {
+   "max": 280,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 1.8,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 3,
+   "time": 32,
+   "resources": {
+    "wood": 200,
+    "stone": 100
+   }
+  },
+  "Attack": {
+   "damage": 38,
+   "range": 7.5,
+   "cooldown": 3.2,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "boulder",
+   "splash": 0.9,
+   "bonus": {
+    "building": 35
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  },
+  "Legacy": {
+   "deploy": {
+    "time": 2,
+    "pack": 1,
+    "range_add": 1
+   }
+  }
+ },
+ "gho_pajzskoves": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ghoblin",
+   "name": "unit.gho_pajzskoves.name",
+   "desc": "unit.gho_pajzskoves.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_ghoblin",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 190,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "gho_kofal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_meszkopo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ghoblin",
+   "name": "unit.gho_meszkopo.name",
+   "desc": "unit.gho_meszkopo.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_ghoblin",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid",
+   "slow": 0.7
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_koheju_oreg": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ghoblin",
+   "name": "unit.gho_koheju_oreg.name",
+   "desc": "unit.gho_koheju_oreg.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_ghoblin",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "gho_kodobbantas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_meszbomba": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ghoblin",
+   "name": "unit.gho_meszbomba.name",
+   "desc": "unit.gho_meszbomba.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_ghoblin",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 70,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 12,
+   "resources": {
+    "wood": 40,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 4,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "type_bonus": {
+    "epulet": 2.0
+   }
+  },
+  "Abilities": {
+   "list": [
+    "gho_meszrobbanas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ }
+}

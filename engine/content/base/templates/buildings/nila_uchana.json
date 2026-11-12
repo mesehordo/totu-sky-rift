@@ -1,0 +1,139 @@
+{
+ "nil_szornyek_csarnoka": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "nila_uchana",
+   "name": "building.nil_szornyek_csarnoka.name",
+   "desc": "building.nil_szornyek_csarnoka.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "nil_szornykoto",
+    "nil_rakshasa"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_makara_medence": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "nila_uchana",
+   "name": "building.nil_makara_medence.name",
+   "desc": "building.nil_makara_medence.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "nil_makara_idezo",
+    "nil_naga",
+    "nil_makara"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "nil_szornyek_csarnoka"
+    },
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_lotuszudvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "nila_uchana",
+   "name": "building.nil_lotuszudvar.name",
+   "desc": "building.nil_lotuszudvar.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "nil_kotes_ereje",
+    "nil_naga_pikkely",
+    "nil_lotuszszentseg"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "nil_szornyek_csarnoka"
+    },
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ }
+}

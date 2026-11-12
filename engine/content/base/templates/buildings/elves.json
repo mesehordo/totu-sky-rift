@@ -1,0 +1,606 @@
+{
+ "elf_napszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_napszentely.name",
+   "desc": "building.elf_napszentely.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 400,
+    "wood": 100
+   },
+   "time": 70
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1000,
+   "shield": 1000,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 10
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "elf_kofarago"
+   ]
+  },
+  "Placement": {
+   "no_power": true
+  },
+  "Researcher": {
+   "list": [
+    "elf_arany_fohasz",
+    "elf_rezonancia"
+   ]
+  },
+  "Mechanics": {
+   "pray_slots": 4
+  },
+  "Powers": {
+   "list": [
+    "gp_napcsova"
+   ]
+  }
+ },
+ "elf_obeliszk": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_obeliszk.name",
+   "desc": "building.elf_obeliszk.desc",
+   "shape": "obelisk"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 55,
+    "stone": 25
+   },
+   "time": 18
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 200,
+   "shield": 200,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Supply": {
+   "provides": 8
+  },
+  "Mechanics": {
+   "power_radius": 6.5
+  },
+  "Placement": {
+   "no_power": true
+  }
+ },
+ "elf_harcos_csarnok": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_harcos_csarnok.name",
+   "desc": "building.elf_harcos_csarnok.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 125,
+    "stone": 75
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "shield": 500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "elf_tollas_harcos",
+    "elf_jade_ijasz",
+    "elf_raptor_lovas"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "elf_napfolt"
+   ]
+  }
+ },
+ "elf_obszidian_muhely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_obszidian_muhely.name",
+   "desc": "building.elf_obszidian_muhely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 35
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 450,
+   "shield": 450,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "elf_obszidian_penge",
+    "elf_obszidian_penge_2",
+    "elf_obszidian_penge_3",
+    "elf_jade_hegyek",
+    "elf_jade_hegyek_2",
+    "elf_jade_hegyek_3",
+    "elf_napegi_pajzs",
+    "elf_obszidian_vert_2",
+    "elf_obszidian_vert_3",
+    "elf_obszidian_vert"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "elf_csillagdardas"
+   ]
+  }
+ },
+ "elf_raptor_karam": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_raptor_karam.name",
+   "desc": "building.elf_raptor_karam.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 550,
+   "shield": 550,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "elf_pancelos_raptor",
+    "elf_tollas_rex"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_harcos_csarnok"
+    },
+    {
+     "path": "jaguar"
+    }
+   ]
+  }
+ },
+ "elf_csillagvizsgalo": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_csillagvizsgalo.name",
+   "desc": "building.elf_csillagvizsgalo.desc",
+   "shape": "observatory"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "shield": 500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Producer": {
+   "units": [
+    "elf_obszidian_veto",
+    "elf_csillagjos"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "elf_csillagfeny"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_harcos_csarnok"
+    },
+    {
+     "path": "csillag"
+    }
+   ]
+  }
+ },
+ "elf_tollfeszek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_tollfeszek.name",
+   "desc": "building.elf_tollfeszek.desc",
+   "shape": "aerie"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 150,
+    "meteor": 100
+   },
+   "time": 55
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 550,
+   "shield": 550,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "elf_quetzal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_naptemplom"
+    },
+    {
+     "path": "nap"
+    }
+   ]
+  }
+ },
+ "elf_jade_oszlop": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_jade_oszlop.name",
+   "desc": "building.elf_jade_oszlop.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 125,
+    "wood": 25
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "shield": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 9,
+   "detect": 7
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 7,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_harcos_csarnok"
+    }
+   ]
+  }
+ },
+ "elf_napkapu": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_napkapu.name",
+   "desc": "building.elf_napkapu.desc",
+   "shape": "altar"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "elf_hos_szelai",
+    "elf_hos_itzcoatl",
+    "elf_hos_xochi"
+   ]
+  },
+  "Mechanics": {
+   "altar": true
+  }
+ },
+ "elf_naptemplom": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_naptemplom.name",
+   "desc": "building.elf_naptemplom.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "elf_fopap",
+    "elf_napszoro"
+   ]
+  },
+  "Mechanics": {
+   "pray_slots": 4
+  },
+  "Researcher": {
+   "list": [
+    "elf_napszemu_papok",
+    "elf_egi_kegy"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "nap"
+    }
+   ]
+  }
+ },
+ "elf_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_diplomacia.name",
+   "desc": "building.elf_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ },
+ "elf_napfuro": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_napfuro.name",
+   "desc": "building.elf_napfuro.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 40
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Placement": {
+   "on_resource": [
+    "stone",
+    "meteor"
+   ],
+   "no_power": true
+  },
+  "Mechanics": {
+   "mine": {
+    "passive": 0.4,
+    "slots": 3
+   }
+  },
+  "Powers": {
+   "list": [
+    "napaldas"
+   ]
+  }
+ },
+ "elf_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "elves",
+   "name": "building.elf_egko.name",
+   "desc": "building.elf_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ }
+}

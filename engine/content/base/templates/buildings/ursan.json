@@ -1,0 +1,648 @@
+{
+ "urs_nagyterem": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_nagyterem.name",
+   "desc": "building.urs_nagyterem.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 300,
+    "stone": 150
+   },
+   "time": 75
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1800,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 12
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "urs_telepes"
+   ]
+  },
+  "Garrison": {
+   "slots": 6
+  },
+  "Researcher": {
+   "list": [
+    "urs_nepfelkeles",
+    "urs_kiados_tanya",
+    "urs_gyors_helyorseg"
+   ]
+  },
+  "Powers": {
+   "list": [
+    "gp_eskufa_riado"
+   ]
+  }
+ },
+ "urs_hosszuhaz": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_hosszuhaz.name",
+   "desc": "building.urs_hosszuhaz.desc",
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100
+   },
+   "time": 22
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 3
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Supply": {
+   "provides": 0
+  },
+  "Garrison": {
+   "slots": 4
+  }
+ },
+ "urs_fatelep": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_fatelep.name",
+   "desc": "building.urs_fatelep.desc",
+   "shape": "dropoff"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 350,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  }
+ },
+ "urs_harcosok_haza": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_harcosok_haza.name",
+   "desc": "building.urs_harcosok_haza.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 50
+   },
+   "time": 35
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "urs_pajzshordozo",
+    "urs_dardaor",
+    "urs_szigonyvezo"
+   ]
+  },
+  "Garrison": {
+   "slots": 4
+  }
+ },
+ "urs_runakovacs": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_runakovacs.name",
+   "desc": "building.urs_runakovacs.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 150
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 800,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "urs_runapap"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "urs_runapengek",
+    "urs_runapengek_2",
+    "urs_runapengek_3",
+    "urs_vasszigony",
+    "urs_vasszigony_2",
+    "urs_vasszigony_3",
+    "urs_medvebunda",
+    "urs_medvebunda_2",
+    "urs_medvebunda_3",
+    "urs_telegi_edzes",
+    "urs_runapajzs",
+    "urs_tuskes_pajzsfal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_harcosok_haza"
+    }
+   ]
+  }
+ },
+ "urs_vadak_karama": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_vadak_karama.name",
+   "desc": "building.urs_vadak_karama.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 265,
+    "stone": 135
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "urs_kardfogu",
+    "urs_mammut"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_harcosok_haza"
+    },
+    {
+     "path": "tundra"
+    }
+   ]
+  }
+ },
+ "urs_sasszirt": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_sasszirt.name",
+   "desc": "building.urs_sasszirt.desc",
+   "shape": "aerie"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 100,
+    "meteor": 50
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Producer": {
+   "units": [
+    "urs_viharhollo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_vadak_karama"
+    },
+    {
+     "path": "tundra"
+    }
+   ]
+  }
+ },
+ "urs_ortorony": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_ortorony.name",
+   "desc": "building.urs_ortorony.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 75
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 9,
+   "detect": 7
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 7,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Garrison": {
+   "slots": 4
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_harcosok_haza"
+    }
+   ]
+  }
+ },
+ "urs_eskufa": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_eskufa.name",
+   "desc": "building.urs_eskufa.desc",
+   "shape": "altar"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "urs_hos_ragna",
+    "urs_hos_hjalmar",
+    "urs_hos_bjarka"
+   ]
+  },
+  "Mechanics": {
+   "altar": true
+  },
+  "Researcher": {
+   "list": [
+    "urs_medve_osztön"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_harcosok_haza"
+    }
+   ]
+  }
+ },
+ "urs_tanya": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_tanya.name",
+   "desc": "building.urs_tanya.desc",
+   "shape": "farm"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 95,
+    "stone": 20
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Supply": {
+   "provides": 10
+  }
+ },
+ "urs_colopfal": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_colopfal.name",
+   "desc": "building.urs_colopfal.desc",
+   "shape": "wall",
+   "wall": true
+  },
+  "Cost": {
+   "resources": {
+    "wood": 20
+   },
+   "time": 8
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 350,
+   "armor": 4
+  },
+  "Vision": {
+   "sight": 3
+  }
+ },
+ "urs_verfogadalom": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_verfogadalom.name",
+   "desc": "building.urs_verfogadalom.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 220,
+    "stone": 80
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "urs_berserker",
+    "urs_medvealak",
+    "urs_kurtos"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "berserker"
+    }
+   ]
+  }
+ },
+ "urs_runaszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_runaszentely.name",
+   "desc": "building.urs_runaszentely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 240,
+    "meteor": 60
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "urs_runaorias",
+    "urs_ostromszan"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "runa"
+    }
+   ]
+  }
+ },
+ "urs_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_diplomacia.name",
+   "desc": "building.urs_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ },
+ "urs_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ursan",
+   "name": "building.urs_egko.name",
+   "desc": "building.urs_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ }
+}

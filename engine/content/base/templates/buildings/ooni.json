@@ -1,0 +1,612 @@
+{
+ "oon_nian_csarnok": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_nian_csarnok.name",
+   "desc": "building.oon_nian_csarnok.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 360,
+    "stone": 60
+   },
+   "time": 70
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 10
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "oon_lampasvivo",
+    "oon_favago",
+    "oon_tanuki"
+   ]
+  },
+  "Mechanics": {
+   "light_radius": 8,
+   "light_heal": 2
+  },
+  "Powers": {
+   "list": [
+    "gp_isteni_szel"
+   ]
+  }
+ },
+ "oon_papirlampas": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_papirlampas.name",
+   "desc": "building.oon_papirlampas.desc",
+   "shape": "lantern"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 25
+   },
+   "time": 6
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 120,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "lantern": true,
+   "light_radius": 6,
+   "light_heal": 2
+  },
+  "Placement": {
+   "foundation_free": true
+  },
+  "Researcher": {
+   "list": [
+    "oon_messzefeny"
+   ]
+  }
+ },
+ "oon_lakohaz": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_lakohaz.name",
+   "desc": "building.oon_lakohaz.desc",
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75,
+    "stone": 30
+   },
+   "time": 25
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Supply": {
+   "provides": 8
+  }
+ },
+ "oon_edzoudvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_edzoudvar.name",
+   "desc": "building.oon_edzoudvar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 50
+   },
+   "time": 35
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "oon_oni_harcos",
+    "oon_kohajito",
+    "oon_nian_or",
+    "oon_dobos"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "oon_harci_dobok",
+    "oon_verszomj"
+   ]
+  }
+ },
+ "oon_meselenyek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_meselenyek.name",
+   "desc": "building.oon_meselenyek.desc",
+   "shape": "temple"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "oon_kitsune",
+    "oon_hos_akahana",
+    "oon_hos_shiro",
+    "oon_hos_karasu"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "oon_edzoudvar"
+    }
+   ]
+  }
+ },
+ "oon_tengu_feszek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_tengu_feszek.name",
+   "desc": "building.oon_tengu_feszek.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 70
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "oon_tengu"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "oon_tengu_tollak"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "oon_edzoudvar"
+    }
+   ]
+  }
+ },
+ "oon_lampaskert": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_lampaskert.name",
+   "desc": "building.oon_lampaskert.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 800,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "oon_vasbuzogany",
+    "oon_vasbuzogany_2",
+    "oon_vasbuzogany_3",
+    "oon_lakkozott_vert",
+    "oon_lakkozott_vert_2",
+    "oon_lakkozott_vert_3",
+    "oon_lampasolaj",
+    "oon_szelparna",
+    "oon_kettos_kapu",
+    "oon_kotel",
+    "oon_kotel_2",
+    "oon_kotel_3",
+    "oon_lampas_magia"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "oon_kapudongeto",
+    "oon_o_oni"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "oon_edzoudvar"
+    }
+   ]
+  }
+ },
+ "oon_kapuorzo_torony": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_kapuorzo_torony.name",
+   "desc": "building.oon_kapuorzo_torony.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 110,
+    "stone": 60
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 650,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7,
+   "detect": 7
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 7,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  }
+ },
+ "oon_voros_dojo": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_voros_dojo.name",
+   "desc": "building.oon_voros_dojo.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 950,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "oon_berserker_oni"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "voros"
+    }
+   ]
+  }
+ },
+ "oon_kapuszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_kapuszentely.name",
+   "desc": "building.oon_kapuszentely.desc",
+   "shape": "temple"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 1000,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "oon_kokutya",
+    "oon_lampaspap"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "oon_kokutya_huseg"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "kapu"
+    }
+   ]
+  }
+ },
+ "oon_szelcsucs": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_szelcsucs.name",
+   "desc": "building.oon_szelcsucs.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "oon_holloharcos",
+    "oon_viharhivo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "tengu"
+    }
+   ]
+  }
+ },
+ "oon_torii": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_torii.name",
+   "desc": "building.oon_torii.desc",
+   "shape": "gate"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 60
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 600,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "torii": true,
+   "light_radius": 3,
+   "light_heal": 1
+  }
+ },
+ "oon_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_egko.name",
+   "desc": "building.oon_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ },
+ "oon_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ooni",
+   "name": "building.oon_diplomacia.name",
+   "desc": "building.oon_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ }
+}

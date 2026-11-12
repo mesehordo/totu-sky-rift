@@ -1,0 +1,291 @@
+{
+ "gal_fogaskalap": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "galoca",
+   "name": "unit.gal_fogaskalap.name",
+   "desc": "unit.gal_fogaskalap.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_galoca",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 120,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "gal_harapas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_tuskebunkos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "galoca",
+   "name": "unit.gal_tuskebunkos.name",
+   "desc": "unit.gal_tuskebunkos.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_galoca",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 165,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_oriasgaloca": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "galoca",
+   "name": "unit.gal_oriasgaloca.name",
+   "desc": "unit.gal_oriasgaloca.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_galoca",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "gal_kalaptaposas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_sporakopo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "galoca",
+   "name": "unit.gal_sporakopo.name",
+   "desc": "unit.gal_sporakopo.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_galoca",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid",
+   "poison": [
+    3,
+    4
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_gyokergancsolo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "galoca",
+   "name": "unit.gal_gyokergancsolo.name",
+   "desc": "unit.gal_gyokergancsolo.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_galoca",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "gal_gyokergancs"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ }
+}

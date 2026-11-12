@@ -1,0 +1,737 @@
+{
+ "imp_lelekhorgony_mentes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_lelekhorgony_mentes.name",
+   "desc": "research.imp_lelekhorgony_mentes.desc",
+   "icon": "anchor"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 50,
+    "stone": 75
+   },
+   "time": 30
+  }
+ },
+ "imp_legiopengek": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_legiopengek.name",
+   "desc": "research.imp_legiopengek.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "imp_gyorstoltes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_gyorstoltes.name",
+   "desc": "research.imp_gyorstoltes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "imp_edzett_acel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_edzett_acel.name",
+   "desc": "research.imp_edzett_acel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 200
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "mech"
+     ]
+    }
+   }
+  ]
+ },
+ "imp_megerositett_vaz": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_megerositett_vaz.name",
+   "desc": "research.imp_megerositett_vaz.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "meteor": 100
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 30,
+    "filter": {
+     "tags": [
+      "mech"
+     ]
+    }
+   }
+  ]
+ },
+ "imp_hajtomu": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_hajtomu.name",
+   "desc": "research.imp_hajtomu.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 100,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 25,
+    "filter": {
+     "tags": [
+      "imp_arato"
+     ]
+    }
+   }
+  ],
+  "Exclusive": "arato_fejlesztes"
+ },
+ "imp_tartaly": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_tartaly.name",
+   "desc": "research.imp_tartaly.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 100,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Modifiers": [
+   {
+    "path": "Worker.carry_pct",
+    "op": "add",
+    "value": 50,
+    "filter": {
+     "tags": [
+      "imp_arato"
+     ]
+    }
+   }
+  ],
+  "Exclusive": "arato_fejlesztes"
+ },
+ "imp_ferrox_kalapacsa": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_ferrox_kalapacsa.name",
+   "desc": "research.imp_ferrox_kalapacsa.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szobor_ferrox"
+    }
+   ]
+  }
+ },
+ "imp_ontottvas_burok": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_ontottvas_burok.name",
+   "desc": "research.imp_ontottvas_burok.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 175
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 60,
+    "filter": {
+     "tags": [
+      "large"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szobor_ferrox"
+    }
+   ]
+  }
+ },
+ "imp_arcanor_csillagai": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_arcanor_csillagai.name",
+   "desc": "research.imp_arcanor_csillagai.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Energy.max",
+    "op": "add",
+    "value": 25,
+    "filter": {
+     "tags": [
+      "caster"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szobor_arcanor"
+    }
+   ]
+  }
+ },
+ "imp_csillagterkep": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_csillagterkep.name",
+   "desc": "research.imp_csillagterkep.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 125
+   },
+   "time": 45
+  },
+  "Modifiers": [
+   {
+    "path": "Vision.sight",
+    "op": "add",
+    "value": 2
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szobor_arcanor"
+    }
+   ]
+  }
+ },
+ "imp_umbrax_fatyla": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_umbrax_fatyla.name",
+   "desc": "research.imp_umbrax_fatyla.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15,
+    "filter": {
+     "tags": [
+      "spirit"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szobor_umbrax"
+    }
+   ]
+  }
+ },
+ "imp_lelekkapu": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_lelekkapu.name",
+   "desc": "research.imp_lelekkapu.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 200
+   },
+   "time": 60
+  },
+  "Rules": {
+   "raise_from_kills": {
+    "unit": "imp_szellemlegios",
+    "chance": 0.08,
+    "lifetime": 30,
+    "color": [
+     150,
+     200,
+     255
+    ]
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szobor_umbrax"
+    }
+   ]
+  }
+ },
+ "imp_reaktorpajzs": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_reaktorpajzs.name",
+   "desc": "research.imp_reaktorpajzs.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 125,
+    "meteor": 50
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Health.shield",
+    "op": "add",
+    "value": 30,
+    "filter": {
+     "tags": [
+      "mech"
+     ]
+    }
+   }
+  ]
+ },
+ "imp_nagy_alapozas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_nagy_alapozas.name",
+   "desc": "research.imp_nagy_alapozas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 100,
+    "meteor": 40
+   },
+   "time": 40
+  }
+ },
+ "imp_legiopengek_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_legiopengek_2.name",
+   "desc": "research.imp_legiopengek_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_legiopengek"
+    }
+   ]
+  }
+ },
+ "imp_legiopengek_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_legiopengek_3.name",
+   "desc": "research.imp_legiopengek_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_legiopengek_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "imp_gyorstoltes_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_gyorstoltes_2.name",
+   "desc": "research.imp_gyorstoltes_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_gyorstoltes"
+    }
+   ]
+  }
+ },
+ "imp_gyorstoltes_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_gyorstoltes_3.name",
+   "desc": "research.imp_gyorstoltes_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_gyorstoltes_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "imp_edzett_acel_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_edzett_acel_2.name",
+   "desc": "research.imp_edzett_acel_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 320
+   },
+   "time": 87
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "mech"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_edzett_acel"
+    }
+   ]
+  }
+ },
+ "imp_edzett_acel_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_edzett_acel_3.name",
+   "desc": "research.imp_edzett_acel_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 480,
+    "meteor": 50
+   },
+   "time": 105
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "mech"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_edzett_acel_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "imp_ferrox_kalapacsa_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_ferrox_kalapacsa_2.name",
+   "desc": "research.imp_ferrox_kalapacsa_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 240
+   },
+   "time": 62
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_ferrox_kalapacsa"
+    }
+   ]
+  }
+ },
+ "imp_ferrox_kalapacsa_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_ferrox_kalapacsa_3.name",
+   "desc": "research.imp_ferrox_kalapacsa_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 360,
+    "meteor": 50
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_ferrox_kalapacsa_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "imp_goztulnyomas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_goztulnyomas.name",
+   "desc": "research.imp_goztulnyomas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 120
+   },
+   "time": 40
+  }
+ },
+ "imp_szikrafogo": {
+  "Identity": {
+   "kind": "research",
+   "faction": "imperium",
+   "name": "research.imp_szikrafogo.name",
+   "desc": "research.imp_szikrafogo.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 140,
+    "meteor": 40
+   },
+   "time": 40
+  },
+  "Rules": {
+   "no_weak": {
+    "mech": [
+     "varazslo"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,292 @@
+{
+ "mho_hajnalpenge": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mhonyo",
+   "name": "unit.mho_hajnalpenge.name",
+   "desc": "unit.mho_hajnalpenge.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_mhonyo",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 8,
+   "range": 0.3,
+   "cooldown": 0.7,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "mho_szelvagas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_szerkezet_ijasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mhonyo",
+   "name": "unit.mho_szerkezet_ijasz.name",
+   "desc": "unit.mho_szerkezet_ijasz.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_mhonyo",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 6.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_szikraor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mhonyo",
+   "name": "unit.mho_szikraor.name",
+   "desc": "unit.mho_szikraor.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_mhonyo",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 180,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "mho_szikrapajzs"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_kardkovacs": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mhonyo",
+   "name": "unit.mho_kardkovacs.name",
+   "desc": "unit.mho_kardkovacs.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_mhonyo",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 0.3,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "mho_elezes",
+    "mho_javitas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_fogaskerek_golem": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mhonyo",
+   "name": "unit.mho_fogaskerek_golem.name",
+   "desc": "unit.mho_fogaskerek_golem.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_mhonyo",
+    "large",
+    "mech",
+    "melee"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "mho_gozkitores"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ }
+}

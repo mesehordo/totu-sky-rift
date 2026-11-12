@@ -1,0 +1,107 @@
+{
+ "myc_meregspora": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mycel",
+   "name": "research.myc_meregspora.name",
+   "desc": "research.myc_meregspora.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 165,
+    "stone": 35
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "myc_kemenykalap": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mycel",
+   "name": "research.myc_kemenykalap.name",
+   "desc": "research.myc_kemenykalap.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 185,
+    "wood": 65
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "fungal"
+     ]
+    }
+   }
+  ]
+ },
+ "myc_gyors_micelium": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mycel",
+   "name": "research.myc_gyors_micelium.name",
+   "desc": "research.myc_gyors_micelium.desc"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75,
+    "wood": 65,
+    "stone": 35
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15
+   }
+  ]
+ },
+ "myc_dus_spora": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mycel",
+   "name": "research.myc_dus_spora.name",
+   "desc": "research.myc_dus_spora.desc"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75,
+    "wood": 100,
+    "stone": 50
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 20,
+    "filter": {
+     "tags": [
+      "fungal"
+     ]
+    }
+   }
+  ]
+ }
+}

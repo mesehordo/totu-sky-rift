@@ -1,0 +1,139 @@
+{
+ "mho_szelpenge_udvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mhonyo",
+   "name": "building.mho_szelpenge_udvar.name",
+   "desc": "building.mho_szelpenge_udvar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "mho_hajnalpenge",
+    "mho_szerkezet_ijasz"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_parazsszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mhonyo",
+   "name": "building.mho_parazsszentely.name",
+   "desc": "building.mho_parazsszentely.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "mho_szikraor",
+    "mho_kardkovacs",
+    "mho_fogaskerek_golem"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "mho_szelpenge_udvar"
+    },
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_harompenge_kovacsda": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mhonyo",
+   "name": "building.mho_harompenge_kovacsda.name",
+   "desc": "building.mho_harompenge_kovacsda.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "mho_kiegyensulyozott_penge",
+    "mho_szikrapancel",
+    "mho_gepjavitas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "mho_szelpenge_udvar"
+    },
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ }
+}

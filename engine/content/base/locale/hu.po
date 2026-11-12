@@ -1,0 +1,7252 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgctxt "unit.dar_fullanclandzsas.name"
+msgid "Fullánclándzsás"
+msgstr ""
+
+msgctxt "unit.dar_fullanclandzsas.desc"
+msgid "Mérges fullánkú lándzsával döf."
+msgstr ""
+
+msgctxt "unit.dar_gyantapajzsos.name"
+msgid "Gyantapajzsos"
+msgstr ""
+
+msgctxt "unit.dar_gyantapajzsos.desc"
+msgid "Borostyán-gyantapajzzsal véd."
+msgstr ""
+
+msgctxt "unit.dar_rajenekes.name"
+msgid "Rajénekes"
+msgstr ""
+
+msgctxt "unit.dar_rajenekes.desc"
+msgid "Énekével gyorsítja a rajt, és gyógyít."
+msgstr ""
+
+msgctxt "unit.dar_darazsraj.name"
+msgid "Darázsraj"
+msgstr ""
+
+msgctxt "unit.dar_darazsraj.desc"
+msgid "Repülő darázsraj; gyorsan csap le."
+msgstr ""
+
+msgctxt "unit.dar_szarnyas_ijasz.name"
+msgid "Szárnyas íjász"
+msgstr ""
+
+msgctxt "unit.dar_szarnyas_ijasz.desc"
+msgid "A magasból nyilaz."
+msgstr ""
+
+msgctxt "building.dar_agyagkaptar.name"
+msgid "Agyagkaptár"
+msgstr ""
+
+msgctxt "building.dar_agyagkaptar.desc"
+msgid "Fullánclándzsásokat és gyantapajzsosokat képez."
+msgstr ""
+
+msgctxt "building.dar_szarnyudvar.name"
+msgid "Szárnyudvar"
+msgstr ""
+
+msgctxt "building.dar_szarnyudvar.desc"
+msgid "Rajénekeseket, darázsrajt és szárnyas íjászokat képez."
+msgstr ""
+
+msgctxt "building.dar_gyantamuhely.name"
+msgid "Gyantaműhely"
+msgstr ""
+
+msgctxt "building.dar_gyantamuhely.desc"
+msgid "A daresh fejlesztések műhelye."
+msgstr ""
+
+msgctxt "research.dar_gyantapancel.name"
+msgid "Gyantapáncél"
+msgstr ""
+
+msgctxt "research.dar_gyantapancel.desc"
+msgid "+1 páncél a daresh egységeknek."
+msgstr ""
+
+msgctxt "research.dar_meregfullank.name"
+msgid "Méregfullánk"
+msgstr ""
+
+msgctxt "research.dar_meregfullank.desc"
+msgid "+2 sebzés a daresh egységeknek."
+msgstr ""
+
+msgctxt "research.dar_rajzas.name"
+msgid "Rajzás"
+msgstr ""
+
+msgctxt "research.dar_rajzas.desc"
+msgid "+15% sebesség a repülőknek."
+msgstr ""
+
+msgctxt "faction.daresh.name"
+msgid "Daresh"
+msgstr ""
+
+msgctxt "faction.daresh.desc"
+msgid "A darázsnép napmeleg vidékeken emel kaptárakat, amelyeket fonott díszek, festett minták és okkerszínű falak tesznek felismerhetővé. Szárnyas őreik magasból figyelik a környéket, és gyors rajokban csapnak le."
+msgstr ""
+
+msgctxt "faction.daresh.tagline"
+msgid "A darázsnép"
+msgstr ""
+
+msgctxt "unit.gal_fogaskalap.name"
+msgid "Fogaskalap"
+msgstr ""
+
+msgctxt "unit.gal_fogaskalap.desc"
+msgid "Fogas kalapú, mohó gombaharcos."
+msgstr ""
+
+msgctxt "unit.gal_tuskebunkos.name"
+msgid "Tüskebunkós"
+msgstr ""
+
+msgctxt "unit.gal_tuskebunkos.desc"
+msgid "Két tüskés bunkóval csapkod."
+msgstr ""
+
+msgctxt "unit.gal_oriasgaloca.name"
+msgid "Óriásgalóca"
+msgstr ""
+
+msgctxt "unit.gal_oriasgaloca.desc"
+msgid "Hatalmas, fogas gombaóriás."
+msgstr ""
+
+msgctxt "unit.gal_sporakopo.name"
+msgid "Spóraköpő"
+msgstr ""
+
+msgctxt "unit.gal_sporakopo.desc"
+msgid "Mérges spórafelhőt köp."
+msgstr ""
+
+msgctxt "unit.gal_gyokergancsolo.name"
+msgid "Gyökérgáncsoló"
+msgstr ""
+
+msgctxt "unit.gal_gyokergancsolo.desc"
+msgid "Gyökerekkel köti meg az ellenséget."
+msgstr ""
+
+msgctxt "building.gal_harapofeszek.name"
+msgid "Harapófészek"
+msgstr ""
+
+msgctxt "building.gal_harapofeszek.desc"
+msgid "Fogaskalapokat, tüskebunkósokat és óriásgalócákat képez."
+msgstr ""
+
+msgctxt "building.gal_sporakurt.name"
+msgid "Spórakürt"
+msgstr ""
+
+msgctxt "building.gal_sporakurt.desc"
+msgid "Spóraköpőket és gyökérgáncsolókat képez."
+msgstr ""
+
+msgctxt "building.gal_tuskekert.name"
+msgid "Tüskekert"
+msgstr ""
+
+msgctxt "building.gal_tuskekert.desc"
+msgid "A galóca fejlesztések kertje; tüskéi sebzik a közelébe érő ellenséget."
+msgstr ""
+
+msgctxt "research.gal_tuskes_talaj.name"
+msgid "Tüskés talaj"
+msgstr ""
+
+msgctxt "research.gal_tuskes_talaj.desc"
+msgid "+1 páncél a galóca egységeknek."
+msgstr ""
+
+msgctxt "research.gal_merges_spora.name"
+msgid "Mérges spóra"
+msgstr ""
+
+msgctxt "research.gal_merges_spora.desc"
+msgid "+2 sebzés a galóca egységeknek."
+msgstr ""
+
+msgctxt "research.gal_gyors_burjanzas.name"
+msgid "Gyors burjánzás"
+msgstr ""
+
+msgctxt "research.gal_gyors_burjanzas.desc"
+msgid "+1 életerő-visszatöltés másodpercenként."
+msgstr ""
+
+msgctxt "faction.galoca.name"
+msgid "Galóca"
+msgstr ""
+
+msgctxt "faction.galoca.desc"
+msgid "A Galócák tüskés kalapú, fogas gombaharcosok, akik a sűrű növényzetből rontanak a betolakodókra. Telepeik peremén már a földből előbújó tüskék is jelzik, meddig tart a türelmük."
+msgstr ""
+
+msgctxt "faction.galoca.tagline"
+msgid "Tüskés kalapú gombaharcosok"
+msgstr ""
+
+msgctxt "unit.gho_koharapo.name"
+msgid "Kőharapó"
+msgstr ""
+
+msgctxt "unit.gho_koharapo.desc"
+msgid "Csákányos manó; a köveket is megrágja (épületek ellen erős)."
+msgstr ""
+
+msgctxt "unit.gho_sziklagorgeto.name"
+msgid "Sziklagörgető"
+msgstr ""
+
+msgctxt "unit.gho_sziklagorgeto.desc"
+msgid "Óriási sziklát görget a falakra. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv)."
+msgstr ""
+
+msgctxt "unit.gho_pajzskoves.name"
+msgid "Pajzsköves"
+msgstr ""
+
+msgctxt "unit.gho_pajzskoves.desc"
+msgid "Kőlap-pajzzsal és kőbunkóval harcol."
+msgstr ""
+
+msgctxt "unit.gho_meszkopo.name"
+msgid "Mészköpő"
+msgstr ""
+
+msgctxt "unit.gho_meszkopo.desc"
+msgid "Égetett mészgolyót dob; a találat elvakít (lassít)."
+msgstr ""
+
+msgctxt "unit.gho_koheju_oreg.name"
+msgid "Kőhéjú öreg"
+msgstr ""
+
+msgctxt "unit.gho_koheju_oreg.desc"
+msgid "Kővé keményedett bőrű vén manó."
+msgstr ""
+
+msgctxt "unit.gho_meszbomba.name"
+msgid "Mészbombás manó"
+msgstr ""
+
+msgctxt "unit.gho_meszbomba.desc"
+msgid "Égetett mésszel teli kosarat cipel: az ellenség közé lép, és felrobban – az épületeket is rombolja, a mészköd pedig elvakít (lassít)."
+msgstr ""
+
+msgctxt "building.gho_ragoko_banya.name"
+msgid "Rágókő bánya"
+msgstr ""
+
+msgctxt "building.gho_ragoko_banya.desc"
+msgid "Kőharapókat és sziklagörgetőket képez."
+msgstr ""
+
+msgctxt "building.gho_kocipo_malom.name"
+msgid "Kőcipó malom"
+msgstr ""
+
+msgctxt "building.gho_kocipo_malom.desc"
+msgid "Pajzsköveseket, mészköpőket és kőhéjú öregeket képez."
+msgstr ""
+
+msgctxt "building.gho_fogadalomharang.name"
+msgid "Fogadalomharang"
+msgstr ""
+
+msgctxt "building.gho_fogadalomharang.desc"
+msgid "A ghoblin fejlesztések harangja."
+msgstr ""
+
+msgctxt "research.gho_kobor.name"
+msgid "Kőbőr"
+msgstr ""
+
+msgctxt "research.gho_kobor.desc"
+msgid "+1 páncél a ghoblin egységeknek."
+msgstr ""
+
+msgctxt "research.gho_repedesismeret.name"
+msgid "Repedésismeret"
+msgstr ""
+
+msgctxt "research.gho_repedesismeret.desc"
+msgid "+3 sebzés a ghoblin egységeknek."
+msgstr ""
+
+msgctxt "research.gho_meszvakitas.name"
+msgid "Mészvakítás"
+msgstr ""
+
+msgctxt "research.gho_meszvakitas.desc"
+msgid "+1 lőtáv a távolsági egységeknek."
+msgstr ""
+
+msgctxt "faction.ghoblin.name"
+msgid "Ghoblin"
+msgstr ""
+
+msgctxt "faction.ghoblin.desc"
+msgid "A kőnyűvő manók a hegyoldalból fejtik ki falvaik alapjait, és alacsony, meredek tetejű házaikat faragott kővel erősítik meg. Úgy ismerik a kő repedéseit, ahogy más népek a fa erezetét."
+msgstr ""
+
+msgctxt "faction.ghoblin.tagline"
+msgid "Kőnyűvő manók"
+msgstr ""
+
+msgctxt "unit.mho_hajnalpenge.name"
+msgid "Hajnalpenge"
+msgstr ""
+
+msgctxt "unit.mho_hajnalpenge.desc"
+msgid "Villámgyors párbajozó; kétszer csap."
+msgstr ""
+
+msgctxt "unit.mho_szerkezet_ijasz.name"
+msgid "Szerkezet-íjász"
+msgstr ""
+
+msgctxt "unit.mho_szerkezet_ijasz.desc"
+msgid "Felhúzós számszeríj; hosszú lőtáv."
+msgstr ""
+
+msgctxt "unit.mho_szikraor.name"
+msgid "Szikraőr"
+msgstr ""
+
+msgctxt "unit.mho_szikraor.desc"
+msgid "Izzó pengéjű, nehézpajzsos őr."
+msgstr ""
+
+msgctxt "unit.mho_kardkovacs.name"
+msgid "Kardkovács"
+msgstr ""
+
+msgctxt "unit.mho_kardkovacs.desc"
+msgid "Javítja és élezi a társak fegyverét."
+msgstr ""
+
+msgctxt "unit.mho_fogaskerek_golem.name"
+msgid "Fogaskerék-gólem"
+msgstr ""
+
+msgctxt "unit.mho_fogaskerek_golem.desc"
+msgid "Kovácsolt gép-óriás."
+msgstr ""
+
+msgctxt "building.mho_szelpenge_udvar.name"
+msgid "Szélpenge udvar"
+msgstr ""
+
+msgctxt "building.mho_szelpenge_udvar.desc"
+msgid "Hajnalpengéket és szerkezet-íjászokat képez."
+msgstr ""
+
+msgctxt "building.mho_parazsszentely.name"
+msgid "Parázsszentély"
+msgstr ""
+
+msgctxt "building.mho_parazsszentely.desc"
+msgid "Szikraőröket, kardkovácsokat és fogaskerék-gólemeket képez."
+msgstr ""
+
+msgctxt "building.mho_harompenge_kovacsda.name"
+msgid "Hárompenge kovácsda"
+msgstr ""
+
+msgctxt "building.mho_harompenge_kovacsda.desc"
+msgid "A mhonyo fejlesztések kovácsműhelye."
+msgstr ""
+
+msgctxt "research.mho_kiegyensulyozott_penge.name"
+msgid "Kiegyensúlyozott penge"
+msgstr ""
+
+msgctxt "research.mho_kiegyensulyozott_penge.desc"
+msgid "+2 sebzés a közelharcosoknak."
+msgstr ""
+
+msgctxt "research.mho_szikrapancel.name"
+msgid "Szikrapáncél"
+msgstr ""
+
+msgctxt "research.mho_szikrapancel.desc"
+msgid "+1 páncél a mhonyo egységeknek."
+msgstr ""
+
+msgctxt "research.mho_gepjavitas.name"
+msgid "Gépjavítás"
+msgstr ""
+
+msgctxt "research.mho_gepjavitas.desc"
+msgid "+60 életerő a gépeknek."
+msgstr ""
+
+msgctxt "faction.mhonyo.name"
+msgid "Mhonyo"
+msgstr ""
+
+msgctxt "faction.mhonyo.desc"
+msgid "A kardkovács manók műhelyeiben a pengék mellett fogaskerekek, emelők és finom szerkezetek is készülnek. Mestereik egy kard súlypontját éppolyan gondosan állítják be, mint egy gép legapróbb alkatrészét."
+msgstr ""
+
+msgctxt "faction.mhonyo.tagline"
+msgid "Kardkovács manók"
+msgstr ""
+
+msgctxt "unit.mic_sporaszedo.name"
+msgid "Spóraszedő"
+msgstr ""
+
+msgctxt "unit.mic_sporaszedo.desc"
+msgid "Gyűjtögető gombanép: készleteket hord a telepre."
+msgstr ""
+
+msgctxt "unit.mic_pofeteg.name"
+msgid "Pöfeteg"
+msgstr ""
+
+msgctxt "unit.mic_pofeteg.desc"
+msgid "A telep pöfeteg-őre."
+msgstr ""
+
+msgctxt "unit.mic_fonalhalos.name"
+msgid "Fonalhálós"
+msgstr ""
+
+msgctxt "unit.mic_fonalhalos.desc"
+msgid "Élő fonalakkal köti meg és gyógyítja a társakat."
+msgstr ""
+
+msgctxt "unit.mic_tuskegomba_lovesz.name"
+msgid "Tüskegomba-lövész"
+msgstr ""
+
+msgctxt "unit.mic_tuskegomba_lovesz.desc"
+msgid "Mérgező spóratüskéket lő, földi és légi célpontokra."
+msgstr ""
+
+msgctxt "unit.mic_emlekor.name"
+msgid "Emlékőr"
+msgstr ""
+
+msgctxt "unit.mic_emlekor.desc"
+msgid "Az Emlékfa kalapos őre; a régi társak emlékét védi."
+msgstr ""
+
+msgctxt "building.mic_termotest.name"
+msgid "Termőtest"
+msgstr ""
+
+msgctxt "building.mic_termotest.desc"
+msgid "Spóraszedőket, pöfetegeket és fonalhálósokat képez."
+msgstr ""
+
+msgctxt "building.mic_szivgomba.name"
+msgid "Szívgomba"
+msgstr ""
+
+msgctxt "building.mic_szivgomba.desc"
+msgid "Tüskegomba-lövészeket és emlékőröket képez; a telep lüktető szíve."
+msgstr ""
+
+msgctxt "building.mic_emlekfa.name"
+msgid "Emlékfa"
+msgstr ""
+
+msgctxt "building.mic_emlekfa.desc"
+msgid "A micélia fejlesztések fája; gyökerei között a régi társak történetei pihennek."
+msgstr ""
+
+msgctxt "research.mic_osok_emleke.name"
+msgid "Ősök emléke"
+msgstr ""
+
+msgctxt "research.mic_osok_emleke.desc"
+msgid "+30 életerő a micélia egységeknek."
+msgstr ""
+
+msgctxt "research.mic_sporafonal.name"
+msgid "Spórafonal"
+msgstr ""
+
+msgctxt "research.mic_sporafonal.desc"
+msgid "+10% sebesség minden egységnek."
+msgstr ""
+
+msgctxt "research.mic_szivdobbanas.name"
+msgid "Szívdobbanás"
+msgstr ""
+
+msgctxt "research.mic_szivdobbanas.desc"
+msgid "+1 életerő-visszatöltés másodpercenként a micélia egységeknek."
+msgstr ""
+
+msgctxt "faction.micelia.name"
+msgid "Micéliák"
+msgstr ""
+
+msgctxt "faction.micelia.desc"
+msgid "Ezek a gyökérlábú gombalények élő fonalakkal kötik össze telepeiket, amelyek szívében egy óriási gomba lüktet. Míg a spóraszedők készleteket gyűjtenek és a pöfetegek őrzik a telepet, az Emlékfa gyökerei között régi társaik történetei pihennek."
+msgstr ""
+
+msgctxt "faction.micelia.tagline"
+msgid "Gyökérlábú gombanép"
+msgstr ""
+
+msgctxt "unit.nii_papiruszlandzsas.name"
+msgid "Papiruszlándzsás"
+msgstr ""
+
+msgctxt "unit.nii_papiruszlandzsas.desc"
+msgid "Nádpajzsos, hosszú lándzsás harcos."
+msgstr ""
+
+msgctxt "unit.nii_nadhajos_ijasz.name"
+msgid "Nádhajós íjász"
+msgstr ""
+
+msgctxt "unit.nii_nadhajos_ijasz.desc"
+msgid "Gyorsan mozgó, nádcsónakos íjász."
+msgstr ""
+
+msgctxt "unit.nii_lotuszpajzsos.name"
+msgid "Lótuszpajzsos"
+msgstr ""
+
+msgctxt "unit.nii_lotuszpajzsos.desc"
+msgid "Aranylótusz-pajzzsal véd."
+msgstr ""
+
+msgctxt "unit.nii_arapalypap.name"
+msgid "Árapálypap"
+msgstr ""
+
+msgctxt "unit.nii_arapalypap.desc"
+msgid "Gyógyít, és árhullámot zúdít."
+msgstr ""
+
+msgctxt "unit.nii_krokodilor.name"
+msgid "Krokodilőr"
+msgstr ""
+
+msgctxt "unit.nii_krokodilor.desc"
+msgid "Megszelídített óriáskrokodil."
+msgstr ""
+
+msgctxt "building.nii_lotuszkikoto.name"
+msgid "Lótuszkikötő"
+msgstr ""
+
+msgctxt "building.nii_lotuszkikoto.desc"
+msgid "Papiruszlándzsásokat és nádhajós íjászokat képez."
+msgstr ""
+
+msgctxt "building.nii_arvizszentely.name"
+msgid "Árvízszentély"
+msgstr ""
+
+msgctxt "building.nii_arvizszentely.desc"
+msgid "Lótuszpajzsosokat, árapálypapokat és krokodilőröket képez."
+msgstr ""
+
+msgctxt "building.nii_nadpalota.name"
+msgid "Nádpalota"
+msgstr ""
+
+msgctxt "building.nii_nadpalota.desc"
+msgid "A niil-elf fejlesztések palotája."
+msgstr ""
+
+msgctxt "research.nii_csatornarend.name"
+msgid "Csatornarend"
+msgstr ""
+
+msgctxt "research.nii_csatornarend.desc"
+msgid "+10% sebesség minden egységnek."
+msgstr ""
+
+msgctxt "research.nii_lotuszaldas.name"
+msgid "Lótuszáldás"
+msgstr ""
+
+msgctxt "research.nii_lotuszaldas.desc"
+msgid "+40 életerő a niil-elf egységeknek."
+msgstr ""
+
+msgctxt "research.nii_aradas.name"
+msgid "Áradás"
+msgstr ""
+
+msgctxt "research.nii_aradas.desc"
+msgid "+2 sebzés a niil-elf egységeknek."
+msgstr ""
+
+msgctxt "faction.niil_elf.name"
+msgid "Niil-elfek"
+msgstr ""
+
+msgctxt "faction.niil_elf.desc"
+msgid "A vízi elfek oszlopos szentélyei és faragott kőkapui a folyók és csatornák rendjéhez igazodnak. A víz számukra útvonal, településeik tengelye és szertartásaik központja."
+msgstr ""
+
+msgctxt "faction.niil_elf.tagline"
+msgid "A folyók elfjei"
+msgstr ""
+
+msgctxt "unit.nil_szornykoto.name"
+msgid "Szörnykötő"
+msgstr ""
+
+msgctxt "unit.nil_szornykoto.desc"
+msgid "Láncos bottal harcol; rakshasát hív maga mellé."
+msgstr ""
+
+msgctxt "unit.nil_rakshasa.name"
+msgid "Rakshasa"
+msgstr ""
+
+msgctxt "unit.nil_rakshasa.desc"
+msgid "Megkötött, vörös szőrű démoni fenevad."
+msgstr ""
+
+msgctxt "unit.nil_makara_idezo.name"
+msgid "Makara-idéző"
+msgstr ""
+
+msgctxt "unit.nil_makara_idezo.desc"
+msgid "Vízörvényt kavar, és gyógyít."
+msgstr ""
+
+msgctxt "unit.nil_naga.name"
+msgid "Nága szövetséges"
+msgstr ""
+
+msgctxt "unit.nil_naga.desc"
+msgid "Kígyótestű lándzsás; mérgező dárdát vet."
+msgstr ""
+
+msgctxt "unit.nil_makara.name"
+msgid "Makara"
+msgstr ""
+
+msgctxt "unit.nil_makara.desc"
+msgid "Elefántfejű vízi szörny."
+msgstr ""
+
+msgctxt "unit.nil_rakshasa_kotott.name"
+msgid "Megkötött rakshasa"
+msgstr ""
+
+msgctxt "unit.nil_rakshasa_kotott.desc"
+msgid "Rövid ideig a szörnykötő mellett harcol."
+msgstr ""
+
+msgctxt "building.nil_szornyek_csarnoka.name"
+msgid "Szörnyek csarnoka"
+msgstr ""
+
+msgctxt "building.nil_szornyek_csarnoka.desc"
+msgid "Szörnykötőket és rakshasákat képez."
+msgstr ""
+
+msgctxt "building.nil_makara_medence.name"
+msgid "Makara-medence"
+msgstr ""
+
+msgctxt "building.nil_makara_medence.desc"
+msgid "Makara-idézőket, nága szövetségeseket és makarákat képez."
+msgstr ""
+
+msgctxt "building.nil_lotuszudvar.name"
+msgid "Lótuszudvar"
+msgstr ""
+
+msgctxt "building.nil_lotuszudvar.desc"
+msgid "A nila-uchana fejlesztések udvara."
+msgstr ""
+
+msgctxt "research.nil_kotes_ereje.name"
+msgid "Kötés ereje"
+msgstr ""
+
+msgctxt "research.nil_kotes_ereje.desc"
+msgid "+3 sebzés a nagy testű egységeknek."
+msgstr ""
+
+msgctxt "research.nil_naga_pikkely.name"
+msgid "Nága-pikkely"
+msgstr ""
+
+msgctxt "research.nil_naga_pikkely.desc"
+msgid "+1 páncél a nila-uchana egységeknek."
+msgstr ""
+
+msgctxt "research.nil_lotuszszentseg.name"
+msgid "Lótuszszentség"
+msgstr ""
+
+msgctxt "research.nil_lotuszszentseg.desc"
+msgid "+40 életerő a nila-uchana egységeknek."
+msgstr ""
+
+msgctxt "faction.nila_uchana.name"
+msgid "Nila-uchana"
+msgstr ""
+
+msgctxt "faction.nila_uchana.desc"
+msgid "A kék bőrű, látható külső fül nélküli nép lótuszos udvarokat és díszes szentélyeket emel. A nága, a makara és a rakshasa náluk a telepek faragványain és a csatatéren is megjelenik, idézett lényként vagy szövetségesként."
+msgstr ""
+
+msgctxt "faction.nila_uchana.tagline"
+msgid "Lótuszudvarok és szörnyidézők"
+msgstr ""
+
+msgctxt "unit.pin_jegdardas.name"
+msgid "Jégdárdás"
+msgstr ""
+
+msgctxt "unit.pin_jegdardas.desc"
+msgid "Jéghegyű dárdát hajít; lassítja a célpontot."
+msgstr ""
+
+msgctxt "unit.pin_hopajzsos.name"
+msgid "Hópajzsos"
+msgstr ""
+
+msgctxt "unit.pin_hopajzsos.desc"
+msgid "Jégpajzsa mögött falat alkot."
+msgstr ""
+
+msgctxt "unit.pin_rozmarlovas.name"
+msgid "Rozmárlovas"
+msgstr ""
+
+msgctxt "unit.pin_rozmarlovas.desc"
+msgid "Rozmárháton tör át a hómezőn."
+msgstr ""
+
+msgctxt "unit.pin_arapaly_saman.name"
+msgid "Ár-apály sámán"
+msgstr ""
+
+msgctxt "unit.pin_arapaly_saman.desc"
+msgid "Gyógyít, és jeges hullámot zúdít az ellenségre."
+msgstr ""
+
+msgctxt "unit.pin_kajakos.name"
+msgid "Kajakos portyázó"
+msgstr ""
+
+msgctxt "unit.pin_kajakos.desc"
+msgid "Gyors portyázó; vízen át is utat talál a szövetségeseknek."
+msgstr ""
+
+msgctxt "building.pin_jegcsarnok.name"
+msgid "Jégcsarnok"
+msgstr ""
+
+msgctxt "building.pin_jegcsarnok.desc"
+msgid "Jégdárdásokat, hópajzsosokat és rozmárlovasokat képez."
+msgstr ""
+
+msgctxt "building.pin_arapalymuhely.name"
+msgid "Árapályműhely"
+msgstr ""
+
+msgctxt "building.pin_arapalymuhely.desc"
+msgid "Ár-apály sámánokat és kajakos portyázókat képez."
+msgstr ""
+
+msgctxt "building.pin_orlangszentely.name"
+msgid "Őrláng-szentély"
+msgstr ""
+
+msgctxt "building.pin_orlangszentely.desc"
+msgid "A pinguu fejlesztések szentélye."
+msgstr ""
+
+msgctxt "research.pin_osvenyvezetok.name"
+msgid "Ösvényvezetők"
+msgstr ""
+
+msgctxt "research.pin_osvenyvezetok.desc"
+msgid "+10% sebesség minden egységnek."
+msgstr ""
+
+msgctxt "research.pin_jegpancel.name"
+msgid "Jégpáncél"
+msgstr ""
+
+msgctxt "research.pin_jegpancel.desc"
+msgid "+1 páncél a pinguu egységeknek."
+msgstr ""
+
+msgctxt "research.pin_hidegtures.name"
+msgid "Hidegtűrés"
+msgstr ""
+
+msgctxt "research.pin_hidegtures.desc"
+msgid "+30 életerő a pinguu egységeknek."
+msgstr ""
+
+msgctxt "faction.pinguu.name"
+msgid "Pinguu"
+msgstr ""
+
+msgctxt "faction.pinguu.desc"
+msgid "A sarkvidéki pingvinharcosok jégből, csontból és vastag bőrökből építenek menedéket. A hómezőkön kis csapatokban mozognak, és olyan útvonalakon is átvezetik szövetségeseiket, ahol mások eltévednének."
+msgstr ""
+
+msgctxt "faction.pinguu.tagline"
+msgid "Jég, csont és vastag bőrök"
+msgstr ""
+
+msgctxt "unit.shr_runaszovo.name"
+msgid "Rúnaszövő"
+msgstr ""
+
+msgctxt "unit.shr_runaszovo.desc"
+msgid "Rúnákat vés: védő jelet és robbanó rúnát."
+msgstr ""
+
+msgctxt "unit.shr_sziklafuto.name"
+msgid "Sziklafutó"
+msgstr ""
+
+msgctxt "unit.shr_sziklafuto.desc"
+msgid "Kampós lábakkal száguld a köveken át."
+msgstr ""
+
+msgctxt "unit.shr_pajzsbogar.name"
+msgid "Pajzsbogár"
+msgstr ""
+
+msgctxt "unit.shr_pajzsbogar.desc"
+msgid "Tollas, vastag páncélú bogár."
+msgstr ""
+
+msgctxt "unit.shr_tuszunyog.name"
+msgid "Tűszúnyog"
+msgstr ""
+
+msgctxt "unit.shr_tuszunyog.desc"
+msgid "Tűhegyes ormányú repülő portyázó."
+msgstr ""
+
+msgctxt "unit.shr_tuskelovo.name"
+msgid "Tüskelövő"
+msgstr ""
+
+msgctxt "unit.shr_tuskelovo.desc"
+msgid "Tollas tüskéket lő."
+msgstr ""
+
+msgctxt "building.shr_tollvar.name"
+msgid "Tollvár"
+msgstr ""
+
+msgctxt "building.shr_tollvar.desc"
+msgid "Rúnaszövőket, sziklafutókat és pajzsbogarakat képez."
+msgstr ""
+
+msgctxt "building.shr_tuskekelteto.name"
+msgid "Tüskekeltető"
+msgstr ""
+
+msgctxt "building.shr_tuskekelteto.desc"
+msgid "Tűszúnyogokat és tüskelövőket képez."
+msgstr ""
+
+msgctxt "building.shr_runaszellozo.name"
+msgid "Rúnaszellőző"
+msgstr ""
+
+msgctxt "building.shr_runaszellozo.desc"
+msgid "A shrissh-matah fejlesztések rúnatornya."
+msgstr ""
+
+msgctxt "research.shr_runavesest.name"
+msgid "Rúnavésés"
+msgstr ""
+
+msgctxt "research.shr_runavesest.desc"
+msgid "+2 sebzés a shrissh-matah egységeknek."
+msgstr ""
+
+msgctxt "research.shr_tollas_pancel.name"
+msgid "Tollas páncél"
+msgstr ""
+
+msgctxt "research.shr_tollas_pancel.desc"
+msgid "+1 páncél a shrissh-matah egységeknek."
+msgstr ""
+
+msgctxt "research.shr_szikla_kapaszkodas.name"
+msgid "Szikla-kapaszkodás"
+msgstr ""
+
+msgctxt "research.shr_szikla_kapaszkodas.desc"
+msgid "+15% sebesség a shrissh-matah egységeknek."
+msgstr ""
+
+msgctxt "faction.shrissh_matah.name"
+msgid "Shrissh-matah"
+msgstr ""
+
+msgctxt "faction.shrissh_matah.desc"
+msgid "A száraz sziklavidék tollas rovarai tüskékkel és rúnákkal díszített termeszvárakban fészkelnek. A tűszúnyogok a levegőből portyáznak, a molnárka formájú Sziklafutók kampós lábakkal kapaszkodnak a köveken, a Rúnaszövők pedig jeleket vésnek a kaptárak agyagfalába."
+msgstr ""
+
+msgctxt "faction.shrissh_matah.tagline"
+msgid "Tollas rovarok rúnavárai"
+msgstr ""
+
+msgctxt "unit.ten_lampasor.name"
+msgid "Lámpásőr"
+msgstr ""
+
+msgctxt "unit.ten_lampasor.desc"
+msgid "Lámpása fénye gyógyít, és bevilágít a ködbe."
+msgstr ""
+
+msgctxt "unit.ten_szelhimzo.name"
+msgid "Szélhímző"
+msgstr ""
+
+msgctxt "unit.ten_szelhimzo.desc"
+msgid "Levélörvényt kavar."
+msgstr ""
+
+msgctxt "unit.ten_tovisvivo.name"
+msgid "Tövisvívó"
+msgstr ""
+
+msgctxt "unit.ten_tovisvivo.desc"
+msgid "Tövispengével vív, tündérszárnyon szökell."
+msgstr ""
+
+msgctxt "unit.ten_lombijasz.name"
+msgid "Lombíjász"
+msgstr ""
+
+msgctxt "unit.ten_lombijasz.desc"
+msgid "A lombok közül nyilaz."
+msgstr ""
+
+msgctxt "unit.ten_tolgyor.name"
+msgid "Tölgyőr"
+msgstr ""
+
+msgctxt "unit.ten_tolgyor.desc"
+msgid "Élő, mozgó fa-óriás."
+msgstr ""
+
+msgctxt "building.ten_lampasfa.name"
+msgid "Lámpásfa"
+msgstr ""
+
+msgctxt "building.ten_lampasfa.desc"
+msgid "Lámpásőröket és szélhímzőket képez."
+msgstr ""
+
+msgctxt "building.ten_tovisudvar.name"
+msgid "Tövisudvar"
+msgstr ""
+
+msgctxt "building.ten_tovisudvar.desc"
+msgid "Tövisvívókat, lombíjászokat és tölgyőröket képez."
+msgstr ""
+
+msgctxt "building.ten_fenyfeszek.name"
+msgid "Fényfészek"
+msgstr ""
+
+msgctxt "building.ten_fenyfeszek.desc"
+msgid "A tendüür fejlesztések fészke."
+msgstr ""
+
+msgctxt "research.ten_lombsuhanas.name"
+msgid "Lombsuhanás"
+msgstr ""
+
+msgctxt "research.ten_lombsuhanas.desc"
+msgid "+15% sebesség a tendüür egységeknek."
+msgstr ""
+
+msgctxt "research.ten_tetovalt_vedelem.name"
+msgid "Tetovált védelem"
+msgstr ""
+
+msgctxt "research.ten_tetovalt_vedelem.desc"
+msgid "+1 páncél a tendüür egységeknek."
+msgstr ""
+
+msgctxt "research.ten_lampasfeny.name"
+msgid "Lámpásfény"
+msgstr ""
+
+msgctxt "research.ten_lampasfeny.desc"
+msgid "+1 látótáv minden egységnek."
+msgstr ""
+
+msgctxt "faction.tenduur.name"
+msgid "Tendüür"
+msgstr ""
+
+msgctxt "faction.tenduur.desc"
+msgid "A szárnyas erdei tündérek élő fák ágai között laknak, ösvényeiket függő lámpások jelzik. Harcosaik testén tetovált minták futnak, és a lombkoronán át közelítik meg azokat, akik veszélyeztetik a ligeteiket."
+msgstr ""
+
+msgctxt "faction.tenduur.tagline"
+msgid "Szárnyas erdei tündérek"
+msgstr ""
+
+msgctxt "unit.tok_fagyorias.name"
+msgid "Fagyóriás"
+msgstr ""
+
+msgctxt "unit.tok_fagyorias.desc"
+msgid "Jégbalták óriása; csapásai lelassítanak."
+msgstr ""
+
+msgctxt "unit.tok_harangjaro.name"
+msgid "Harangjáró"
+msgstr ""
+
+msgctxt "unit.tok_harangjaro.desc"
+msgid "Harangszóval bátorít, és elűzi a gonoszt."
+msgstr ""
+
+msgctxt "unit.tok_hovihar_buso.name"
+msgid "Hóvihar-busó"
+msgstr ""
+
+msgctxt "unit.tok_hovihar_buso.desc"
+msgid "Hóvihart kavar az ellenségre."
+msgstr ""
+
+msgctxt "unit.tok_zuzmaraturpe.name"
+msgid "Zúzmaratörpe"
+msgstr ""
+
+msgctxt "unit.tok_zuzmaraturpe.desc"
+msgid "Jégbaltás, kerek pajzsos törpe."
+msgstr ""
+
+msgctxt "unit.tok_jegveto_turpe.name"
+msgid "Jégvető törpe"
+msgstr ""
+
+msgctxt "unit.tok_jegveto_turpe.desc"
+msgid "Jégtömböket hajít."
+msgstr ""
+
+msgctxt "building.tok_maszkcsur.name"
+msgid "Maszkcsűr"
+msgstr ""
+
+msgctxt "building.tok_maszkcsur.desc"
+msgid "Fagyóriásokat, harangjárókat és hóvihar-busókat képez."
+msgstr ""
+
+msgctxt "building.tok_harangkapu.name"
+msgid "Harangkapu"
+msgstr ""
+
+msgctxt "building.tok_harangkapu.desc"
+msgid "Zúzmaratörpéket és jégvető törpéket képez."
+msgstr ""
+
+msgctxt "building.tok_zuzmaramuhely.name"
+msgid "Zúzmaraműhely"
+msgstr ""
+
+msgctxt "building.tok_zuzmaramuhely.desc"
+msgid "A tokla fejlesztések műhelye."
+msgstr ""
+
+msgctxt "research.tok_busomaszk.name"
+msgid "Busómaszk"
+msgstr ""
+
+msgctxt "research.tok_busomaszk.desc"
+msgid "+2 sebzés a tokla egységeknek."
+msgstr ""
+
+msgctxt "research.tok_fagyos_fegyver.name"
+msgid "Fagyos fegyver"
+msgstr ""
+
+msgctxt "research.tok_fagyos_fegyver.desc"
+msgid "+1 páncél a tokla egységeknek."
+msgstr ""
+
+msgctxt "research.tok_hagoorseg.name"
+msgid "Hágóőrség"
+msgstr ""
+
+msgctxt "research.tok_hagoorseg.desc"
+msgid "+60 életerő a nagy testű egységeknek."
+msgstr ""
+
+msgctxt "faction.tokla.name"
+msgid "Tokla"
+msgstr ""
+
+msgctxt "faction.tokla.desc"
+msgid "A fagyóriások és fagytörpék közös népét messziről felismerni faragott, busószerű maszkjairól. A törpék műhelyei a hegy gyomrában húzódnak, az óriások pedig a havas hágókat és a telepek kapuit őrzik."
+msgstr ""
+
+msgctxt "faction.tokla.tagline"
+msgid "Fagyóriások és fagytörpék"
+msgstr ""
+
+msgctxt "unit.tuz_homokszablyas.name"
+msgid "Homokszablyás"
+msgstr ""
+
+msgctxt "unit.tuz_homokszablyas.desc"
+msgid "Ívelt szablyával vág."
+msgstr ""
+
+msgctxt "unit.tuz_parazsijasz.name"
+msgid "Parázsíjász"
+msgstr ""
+
+msgctxt "unit.tuz_parazsijasz.desc"
+msgid "Izzó hegyű nyilakat lő."
+msgstr ""
+
+msgctxt "unit.tuz_homokvihartancos.name"
+msgid "Homokvihar-táncos"
+msgstr ""
+
+msgctxt "unit.tuz_homokvihartancos.desc"
+msgid "Pörgő pengés táncos; körben sebez."
+msgstr ""
+
+msgctxt "unit.tuz_hoszovo.name"
+msgid "Hőszövő"
+msgstr ""
+
+msgctxt "unit.tuz_hoszovo.desc"
+msgid "Tűzfalat sző az ellenségre."
+msgstr ""
+
+msgctxt "unit.tuz_delibab_csalo.name"
+msgid "Délibáb-csaló"
+msgstr ""
+
+msgctxt "unit.tuz_delibab_csalo.desc"
+msgid "Délibáb-másokat idéz, hogy megtévessze az ellent."
+msgstr ""
+
+msgctxt "unit.tuz_delibab_mas.name"
+msgid "Délibáb-más"
+msgstr ""
+
+msgctxt "unit.tuz_delibab_mas.desc"
+msgid "Rövid életű délibáb-harcos."
+msgstr ""
+
+msgctxt "building.tuz_dunepavilon.name"
+msgid "Dűnepavilon"
+msgstr ""
+
+msgctxt "building.tuz_dunepavilon.desc"
+msgid "Homokszablyásokat, parázsíjászokat és homokvihar-táncosokat képez."
+msgstr ""
+
+msgctxt "building.tuz_delibabtorony.name"
+msgid "Délibábtorony"
+msgstr ""
+
+msgctxt "building.tuz_delibabtorony.desc"
+msgid "Hőszövőket és délibáb-csalókat képez."
+msgstr ""
+
+msgctxt "building.tuz_parazskemence.name"
+msgid "Parázskemence"
+msgstr ""
+
+msgctxt "building.tuz_parazskemence.desc"
+msgid "A tűz-elf fejlesztések kemencéje."
+msgstr ""
+
+msgctxt "research.tuz_izzo_nyilhegy.name"
+msgid "Izzó nyílhegy"
+msgstr ""
+
+msgctxt "research.tuz_izzo_nyilhegy.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.tuz_homokvihar.name"
+msgid "Homokvihar"
+msgstr ""
+
+msgctxt "research.tuz_homokvihar.desc"
+msgid "+15% sebesség a tűz-elf egységeknek."
+msgstr ""
+
+msgctxt "research.tuz_tuzallo_pancel.name"
+msgid "Tűzálló páncél"
+msgstr ""
+
+msgctxt "research.tuz_tuzallo_pancel.desc"
+msgid "+1 páncél a tűz-elf egységeknek."
+msgstr ""
+
+msgctxt "faction.tuz_elf.name"
+msgid "Tűz-elfek"
+msgstr ""
+
+msgctxt "faction.tuz_elf.desc"
+msgid "A dűnék elfjei vörös tetők alatt, árnyékos udvarok köré építik telepeiket. Ismerik a homokviharok járását, és a tűz mágiáját éppúgy használják a műhelyeikben, mint a harcban."
+msgstr ""
+
+msgctxt "faction.tuz_elf.tagline"
+msgid "A dűnék elfjei"
+msgstr ""
+
+msgctxt "unit.zha_csirkepasztor.name"
+msgid "Csirkepásztor"
+msgstr ""
+
+msgctxt "unit.zha_csirkepasztor.desc"
+msgid "Olcsó, gyors harcos – tyúkjai csipkedik az ellent."
+msgstr ""
+
+msgctxt "unit.zha_tojasdobalo.name"
+msgid "Tojásdobáló"
+msgstr ""
+
+msgctxt "unit.zha_tojasdobalo.desc"
+msgid "Kemény tojásokat hajít."
+msgstr ""
+
+msgctxt "unit.zha_kakaslovas.name"
+msgid "Kakaslovas"
+msgstr ""
+
+msgctxt "unit.zha_kakaslovas.desc"
+msgid "Lándzsás, kakasháton száguldó lovas."
+msgstr ""
+
+msgctxt "unit.zha_tolljos.name"
+msgid "Tolljós"
+msgstr ""
+
+msgctxt "unit.zha_tolljos.desc"
+msgid "Madárszellemeket idéz, és gyógyít."
+msgstr ""
+
+msgctxt "unit.zha_madarszellem.name"
+msgid "Madárszellem"
+msgstr ""
+
+msgctxt "unit.zha_madarszellem.desc"
+msgid "Arany fényből szőtt madárszellem."
+msgstr ""
+
+msgctxt "building.zha_feszekhaz.name"
+msgid "Fészekház"
+msgstr ""
+
+msgctxt "building.zha_feszekhaz.desc"
+msgid "Csirkepásztorokat és tojásdobálókat képez."
+msgstr ""
+
+msgctxt "building.zha_kakasudvar.name"
+msgid "Kakasudvar"
+msgstr ""
+
+msgctxt "building.zha_kakasudvar.desc"
+msgid "Kakaslovasokat, tolljósokat és madárszellemeket képez."
+msgstr ""
+
+msgctxt "building.zha_keltetoszentely.name"
+msgid "Keltetőszentély"
+msgstr ""
+
+msgctxt "building.zha_keltetoszentely.desc"
+msgid "A zhan-zhama fejlesztések szentélye."
+msgstr ""
+
+msgctxt "research.zha_gyors_keltetes.name"
+msgid "Gyors keltetés"
+msgstr ""
+
+msgctxt "research.zha_gyors_keltetes.desc"
+msgid "+10% sebesség minden egységnek."
+msgstr ""
+
+msgctxt "research.zha_kakaskukorekolas.name"
+msgid "Kakaskukorékolás"
+msgstr ""
+
+msgctxt "research.zha_kakaskukorekolas.desc"
+msgid "+2 sebzés a zhan-zhama egységeknek."
+msgstr ""
+
+msgctxt "research.zha_tollszellem.name"
+msgid "Tollszellem"
+msgstr ""
+
+msgctxt "research.zha_tollszellem.desc"
+msgid "+30 életerő a zhan-zhama egységeknek."
+msgstr ""
+
+msgctxt "faction.zhan_zhama.name"
+msgid "Zhan-zhama"
+msgstr ""
+
+msgctxt "faction.zhan_zhama.desc"
+msgid "A sötétbőrű, apró termetű nép mellett egy közönséges tyúk is nagynak látszik, egy kakas pedig már hátasnak is megfelel. Csirkepásztoraik és keltetőik köré épül a telep élete, a Tolljósok pedig madárszellemeket idéznek."
+msgstr ""
+
+msgctxt "faction.zhan_zhama.tagline"
+msgid "Apró nép, nagy kakasok"
+msgstr ""
+
+msgctxt "unit.cro_csapszolga.name"
+msgid "Csápszolga"
+msgstr ""
+
+msgctxt "unit.cro_csapszolga.desc"
+msgid "Munkás. Épületté alakul át, vagy beleolvad egy Fertőzött tárnába (elfogy). Nem gyűjt: a fát a mélység rothasztja el, az aranyat és a meteoritot a tárnák adják."
+msgstr ""
+
+msgctxt "unit.cro_karmos.name"
+msgid "Karmos"
+msgstr ""
+
+msgctxt "unit.cro_karmos.desc"
+msgid "Olcsó, gyors rajegység. Egy lárvából kettő kel ki."
+msgstr ""
+
+msgctxt "unit.cro_tuskekopo.name"
+msgid "Tüskeköpő"
+msgstr ""
+
+msgctxt "unit.cro_tuskekopo.desc"
+msgid "Csonttüskéket köp, földi és légi célpontokra."
+msgstr ""
+
+msgctxt "unit.cro_savkopo.name"
+msgid "Savköpő"
+msgstr ""
+
+msgctxt "unit.cro_savkopo.desc"
+msgid "Élő tüzérség. Messzire köpött savhólyagok, terület-sebzés, bónusz épületek ellen."
+msgstr ""
+
+msgctxt "unit.cro_agyfalo.name"
+msgid "Agyfaló"
+msgstr ""
+
+msgctxt "unit.cro_agyfalo.desc"
+msgid "Pszionikus rém. Őrület ködét bocsátja az ellenségre."
+msgstr ""
+
+msgctxt "unit.cro_szarnyas_rem.name"
+msgid "Szárnyas rém"
+msgstr ""
+
+msgctxt "unit.cro_szarnyas_rem.desc"
+msgid "Hártyás szárnyú repülő ragadozó."
+msgstr ""
+
+msgctxt "unit.cro_csapos_horror.name"
+msgid "Csápos horror"
+msgstr ""
+
+msgctxt "unit.cro_csapos_horror.desc"
+msgid "A mélység óriása. Csápjaival egyszerre több ellenfelet zúz."
+msgstr ""
+
+msgctxt "unit.cro_hos_keth.name"
+msgid "Keth"
+msgstr ""
+
+msgctxt "unit.cro_hos_keth.desc"
+msgid "Egy megszállt kethri város emlékőre; a Kórus parancsnoki csomópontja – de régi önmaga nem tűnt el."
+msgstr ""
+
+msgctxt "unit.cro_pancelbogar.name"
+msgid "Páncélbogár"
+msgstr ""
+
+msgctxt "unit.cro_pancelbogar.desc"
+msgid "Karmosból mutálódott, páncélos rohamállat. Csak mutációval jön létre."
+msgstr ""
+
+msgctxt "unit.cro_guboj.name"
+msgid "Gubó"
+msgstr ""
+
+msgctxt "unit.cro_guboj.desc"
+msgid "Mutálódó egység – sérülékeny, de páncélos burok."
+msgstr ""
+
+msgctxt "unit.cro_szemhordozo.name"
+msgid "Szemhordozó"
+msgstr ""
+
+msgctxt "unit.cro_szemhordozo.desc"
+msgid "Lebegő szemzsák: messzire lát, és a Kórus létszámát hordozza (+8)."
+msgstr ""
+
+msgctxt "unit.cro_hos_vor.name"
+msgid "Vor-Uthul"
+msgstr ""
+
+msgctxt "unit.cro_hos_vor.desc"
+msgid "A Mutáció Mestere: a saját testéből költ lárvákat, kitinpáncélt növeszt."
+msgstr ""
+
+msgctxt "unit.cro_hos_ssarha.name"
+msgid "Ssarha, a Raj Hangja"
+msgstr ""
+
+msgctxt "unit.cro_hos_ssarha.desc"
+msgid "A Kórus hangja: a rajt egy akaratba fogja, és összeölti a sebeket."
+msgstr ""
+
+msgctxt "unit.cro_robbanoatka.name"
+msgid "Robbanó atka"
+msgstr ""
+
+msgctxt "unit.cro_robbanoatka.desc"
+msgid "Olcsó, gyors atka: az ellenség közé rohan és felrobban."
+msgstr ""
+
+msgctxt "unit.cro_vadaszkarmos.name"
+msgid "Vadászkarmos"
+msgstr ""
+
+msgctxt "unit.cro_vadaszkarmos.desc"
+msgid "Fürge karmos-változat: gyorsan üldöz és szaggat."
+msgstr ""
+
+msgctxt "unit.cro_ostromtaraj.name"
+msgid "Ostromtaréj"
+msgstr ""
+
+msgctxt "unit.cro_ostromtaraj.desc"
+msgid "Élő ostromgép: messzire köpi a maró kitintüskéket, épületekre különösen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
+msgstr ""
+
+msgctxt "unit.cro_asoferegg.name"
+msgid "Ásóféreg"
+msgstr ""
+
+msgctxt "unit.cro_asoferegg.desc"
+msgid "A föld alatt közlekedő féreg: beásva rejtőzik, és alulról támad."
+msgstr ""
+
+msgctxt "building.cro_kaptar.name"
+msgid "Kaptár"
+msgstr ""
+
+msgctxt "building.cro_kaptar.desc"
+msgid "Élő főépület. Lárvákat nevel (max. 3), minden egység innen kel ki – párhuzamosan."
+msgstr ""
+
+msgctxt "building.cro_tapgomba.name"
+msgid "Tápgomba"
+msgstr ""
+
+msgctxt "building.cro_tapgomba.desc"
+msgid "Tápláló gombatelep: messzire terjeszti a mélységet, és gyógyítja a rajt."
+msgstr ""
+
+msgctxt "building.cro_emeszto.name"
+msgid "Emésztőkamra"
+msgstr ""
+
+msgctxt "building.cro_emeszto.desc"
+msgid "Emésztőkamra: a mélység lassú bendője. Itt fejleszthető a lárvázás, a rothasztás, a méreg és a gyógyulás; nyersanyag leadására is jó."
+msgstr ""
+
+msgctxt "building.cro_ikrafeszek.name"
+msgid "Ikrafészek"
+msgstr ""
+
+msgctxt "building.cro_ikrafeszek.desc"
+msgid "Lehetővé teszi a Karmosokat."
+msgstr ""
+
+msgctxt "building.cro_tuskeverem.name"
+msgid "Tüskeverem"
+msgstr ""
+
+msgctxt "building.cro_tuskeverem.desc"
+msgid "Lehetővé teszi a Tüskeköpőket és a Savköpőket."
+msgstr ""
+
+msgctxt "building.cro_agyszentely.name"
+msgid "Agyszentély"
+msgstr ""
+
+msgctxt "building.cro_agyszentely.desc"
+msgid "Lehetővé teszi az Agyfalót és a Csápos horrort."
+msgstr ""
+
+msgctxt "building.cro_csontcsucs.name"
+msgid "Csontcsúcs"
+msgstr ""
+
+msgctxt "building.cro_csontcsucs.desc"
+msgid "Lehetővé teszi a Szárnyas rémeket."
+msgstr ""
+
+msgctxt "building.cro_tuskes_gyoker.name"
+msgid "Tüskés gyökér"
+msgstr ""
+
+msgctxt "building.cro_tuskes_gyoker.desc"
+msgid "Védőépület, földi és légi célpontokra."
+msgstr ""
+
+msgctxt "building.kethri_tojaskamra.name"
+msgid "Kethri tojáskamra"
+msgstr ""
+
+msgctxt "building.kethri_tojaskamra.desc"
+msgid "Fertőzetlen kethri tojások – a jövő nemzedéke. Védd meg!"
+msgstr ""
+
+msgctxt "building.cro_korus_kut.name"
+msgid "Kórus-kút"
+msgstr ""
+
+msgctxt "building.cro_korus_kut.desc"
+msgid "Lüktető hangkút: innen szólnak a Kórus hősei – Keth, Vor-Uthul és Ssarha."
+msgstr ""
+
+msgctxt "building.cro_rajkamra.name"
+msgid "Rajkamra"
+msgstr ""
+
+msgctxt "building.cro_rajkamra.desc"
+msgid "Lüktető keltetőkamra: robbanó atkák és vadászkarmosok (a Kaptárban kelnek ki)."
+msgstr ""
+
+msgctxt "building.cro_kitinkamra.name"
+msgid "Kitinkamra"
+msgstr ""
+
+msgctxt "building.cro_kitinkamra.desc"
+msgid "Páncélnövesztő kamra: páncélbogarak, ostromtaréjak, ásóférgek."
+msgstr ""
+
+msgctxt "building.cro_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.cro_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "building.cro_tarna.name"
+msgid "Fertőzött tárna"
+msgstr ""
+
+msgctxt "building.cro_tarna.desc"
+msgid "A bányára (arany vagy meteorit) növesztett tárna. A Csápszolgák beleolvadnak (jobb klikk a tárnára, legfeljebb 5): mindegyik végleg egy munkásnyi hozamot ad, hordás nélkül. Ha a tárna elpusztul vagy a bánya kimerül, a beolvasztott szolgák is elvesznek."
+msgstr ""
+
+msgctxt "building.cro_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.cro_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "building.cro_merges_tuskek.name"
+msgid "Tüskemező telepítése"
+msgstr ""
+
+msgctxt "building.cro_merges_tuskek.desc"
+msgid "A Csápszolga 2 mp alatt rakja le. A tüskéken áthaladó nem Croftian földi egységek 40%-kal lassulnak és 4 sebzés/mp mérgezést kapnak. Ez a saját és a szövetséges kisfaji egységekre is érvényes. Mezőnként 40 életerő. A tűz és méreg teljes, a többi támadás 20% sebzést okoz, és a nem Croftian támadó megmérgeződik. Legfeljebb 16 mező. A Tüskemező kutatással 2×2-es."
+msgstr ""
+
+msgctxt "research.cro_inas_labak.name"
+msgid "Inas lábak"
+msgstr ""
+
+msgctxt "research.cro_inas_labak.desc"
+msgid "+30% sebesség a Karmosoknak."
+msgstr ""
+
+msgctxt "research.cro_savas_tuskek.name"
+msgid "Savas tüskék"
+msgstr ""
+
+msgctxt "research.cro_savas_tuskek.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.cro_kitinpancel.name"
+msgid "Kitinpáncél"
+msgstr ""
+
+msgctxt "research.cro_kitinpancel.desc"
+msgid "+1 páncél minden egységnek."
+msgstr ""
+
+msgctxt "research.cro_eletnedv.name"
+msgid "Életnedv"
+msgstr ""
+
+msgctxt "research.cro_eletnedv.desc"
+msgid "+1 életerő-regeneráció másodpercenként."
+msgstr ""
+
+msgctxt "research.cro_tuskemezo.name"
+msgid "Tüskemező"
+msgstr ""
+
+msgctxt "research.cro_tuskemezo.desc"
+msgid "A Mérgező tüskék 2×2-es mezőre kerülnek (ugyanazért az árért), és legfeljebb 24 mező rakható."
+msgstr ""
+
+msgctxt "research.cro_eles_karmok.name"
+msgid "Éles karmok"
+msgstr ""
+
+msgctxt "research.cro_eles_karmok.desc"
+msgid "+2 sebzés a közelharci egységeknek."
+msgstr ""
+
+msgctxt "research.cro_gyors_larva.name"
+msgid "Gyors lárvázás"
+msgstr ""
+
+msgctxt "research.cro_gyors_larva.desc"
+msgid "A lárvák 25%-kal gyorsabban kelnek, és a Kaptár +1 lárvát tarthat."
+msgstr ""
+
+msgctxt "research.cro_melyebb_rothasztas.name"
+msgid "Mélyebb rothasztás"
+msgstr ""
+
+msgctxt "research.cro_melyebb_rothasztas.desc"
+msgid "A mélységen álló fák 50%-kal gyorsabban rothadnak, és a rothasztás felső határa 6,5-ről 9 fa/mp-re nő."
+msgstr ""
+
+msgctxt "research.cro_benito_mereg.name"
+msgid "Bénító méreg"
+msgstr ""
+
+msgctxt "research.cro_benito_mereg.desc"
+msgid "A Mérgező tüskék kétszer erősebben mérgeznek és lassítanak, a távolsági egységek lövései pedig mérgeznek (4 sebzés/mp, 3 mp)."
+msgstr ""
+
+msgctxt "research.cro_melysegi_gyogyulas.name"
+msgid "Mélységi gyógyulás"
+msgstr ""
+
+msgctxt "research.cro_melysegi_gyogyulas.desc"
+msgid "A saját mélységen álló egységek kétszer gyorsabban gyógyulnak."
+msgstr ""
+
+msgctxt "research.cro_savas_tuskek_2.name"
+msgid "Savas tüskék II."
+msgstr ""
+
+msgctxt "research.cro_savas_tuskek_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.cro_savas_tuskek_3.name"
+msgid "Savas tüskék III."
+msgstr ""
+
+msgctxt "research.cro_savas_tuskek_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.cro_kitinpancel_2.name"
+msgid "Kitinpáncél II."
+msgstr ""
+
+msgctxt "research.cro_kitinpancel_2.desc"
+msgid "+1 páncél minden egységnek. (II. szint)"
+msgstr ""
+
+msgctxt "research.cro_kitinpancel_3.name"
+msgid "Kitinpáncél III."
+msgstr ""
+
+msgctxt "research.cro_kitinpancel_3.desc"
+msgid "+1 páncél minden egységnek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.cro_eles_karmok_2.name"
+msgid "Éles karmok II."
+msgstr ""
+
+msgctxt "research.cro_eles_karmok_2.desc"
+msgid "+2 sebzés a közelharci egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.cro_eles_karmok_3.name"
+msgid "Éles karmok III."
+msgstr ""
+
+msgctxt "research.cro_eles_karmok_3.desc"
+msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "faction.croftian.name"
+msgid "Croftianok"
+msgstr ""
+
+msgctxt "faction.croftian.desc"
+msgid "Az Idegen Kórus: a meteorokkal érkezett spórák megszállták a hangyaszerű kethri népet. A Kaptár lárváiból minden egység párhuzamosan kel ki, a Karmosok gubóban páncélos bogárrá mutálódnak, és a mélységen elesett élő ellenségből új Karmos kelhet ki."
+msgstr ""
+
+msgctxt "faction.croftian.tagline"
+msgid "Mélység • lárvák • mutáció • fertőzés"
+msgstr ""
+
+msgctxt "path.croftian.raj.name"
+msgid "Raj"
+msgstr ""
+
+msgctxt "path.croftian.raj.desc"
+msgid "A lárvák 30%-kal gyorsabban kelnek ki, a rajlények gyorsabbak. Robbanó atkák és vadászkarmosok öntik el az ellenfelet, mielőtt felkészülne."
+msgstr ""
+
+msgctxt "path.croftian.raj.tagline"
+msgid "Olcsó tömeg, korai elárasztás"
+msgstr ""
+
+msgctxt "path.croftian.pancel.name"
+msgid "Páncél"
+msgstr ""
+
+msgctxt "path.croftian.pancel.desc"
+msgid "+2 páncél minden élő egységnek. A Karmosok páncélbogárrá alakulhatnak; ostromtaréjak és alagutat ásó férgek törik fel a védelmet."
+msgstr ""
+
+msgctxt "path.croftian.pancel.tagline"
+msgid "Lassú, szívós menetelés"
+msgstr ""
+
+msgctxt "path.croftian.korus.name"
+msgid "Kórus"
+msgstr ""
+
+msgctxt "path.croftian.korus.desc"
+msgid "A Kórus hangja: a megölt ellenséges egységek 15%-a a te oldaladon kel fel. Agyfalók és csápos horrorok bomlasztják az ellenséges sereget."
+msgstr ""
+
+msgctxt "path.croftian.korus.tagline"
+msgid "Irányítás és átállítás"
+msgstr ""
+
+msgctxt "unit.elf_kofarago.name"
+msgid "Kőfaragó"
+msgstr ""
+
+msgctxt "unit.elf_kofarago.desc"
+msgid "Munkás. Megidézi az épületeket, majd visszatér gyűjteni."
+msgstr ""
+
+msgctxt "unit.elf_tollas_harcos.name"
+msgid "Tollas harcos"
+msgstr ""
+
+msgctxt "unit.elf_tollas_harcos.desc"
+msgid "Obszidiánpengés buzogánnyal harcoló elit gyalogos."
+msgstr ""
+
+msgctxt "unit.elf_jade_ijasz.name"
+msgid "Jáde-íjász"
+msgstr ""
+
+msgctxt "unit.elf_jade_ijasz.desc"
+msgid "Távolsági egység, földi és légi célpontokra is lő."
+msgstr ""
+
+msgctxt "unit.elf_raptor_lovas.name"
+msgid "Raptorlovas"
+msgstr ""
+
+msgctxt "unit.elf_raptor_lovas.desc"
+msgid "Farkatlan, tollas gyíkon lovagló gyors lovas. Bónusz a távolsági egységek ellen."
+msgstr ""
+
+msgctxt "unit.elf_napszoro.name"
+msgid "Napszóró pap"
+msgstr ""
+
+msgctxt "unit.elf_napszoro.desc"
+msgid "Meteoritmágus. Napvihart idéz az ellenségre."
+msgstr ""
+
+msgctxt "unit.elf_quetzal.name"
+msgid "Quetzal"
+msgstr ""
+
+msgctxt "unit.elf_quetzal.desc"
+msgid "Tollas, repülő dínó. Mindenre lecsap."
+msgstr ""
+
+msgctxt "unit.elf_tollas_rex.name"
+msgid "Tollaskoronás rex"
+msgstr ""
+
+msgctxt "unit.elf_tollas_rex.desc"
+msgid "Díszes tollkoronás óriásdínó, hátán íjászokkal. Területi harapás."
+msgstr ""
+
+msgctxt "unit.elf_hos_szelai.name"
+msgid "Szelai"
+msgstr ""
+
+msgctxt "unit.elf_hos_szelai.desc"
+msgid "Rezonanciaépítész, akit a sors parancsnokká tett. Hálózatot épít és bont; Napvihart idéz."
+msgstr ""
+
+msgctxt "unit.elf_csillagdardas.name"
+msgid "Csillagdárdás"
+msgstr ""
+
+msgctxt "unit.elf_csillagdardas.desc"
+msgid "Csillagérc-hegyű dárdákat hajít – messzire hord, légi célpontokra is."
+msgstr ""
+
+msgctxt "unit.elf_obszidian_veto.name"
+msgid "Obszidián-vető"
+msgstr ""
+
+msgctxt "unit.elf_obszidian_veto.desc"
+msgid "Kőfaragók ostromgépe: obszidiántömböket hajít, épületek ellen különösen erős. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
+msgstr ""
+
+msgctxt "unit.elf_jadeor.name"
+msgid "Jádeőr"
+msgstr ""
+
+msgctxt "unit.elf_jadeor.desc"
+msgid "Életre keltett jádeszobor (idézett)."
+msgstr ""
+
+msgctxt "unit.elf_hos_itzcoatl.name"
+msgid "Itzcoatl"
+msgstr ""
+
+msgctxt "unit.elf_hos_itzcoatl.desc"
+msgid "A Kilenc Lépcső tollas hadura. Közelharcos, a sereg élén áll."
+msgstr ""
+
+msgctxt "unit.elf_hos_xochi.name"
+msgid "Xochi"
+msgstr ""
+
+msgctxt "unit.elf_hos_xochi.desc"
+msgid "A rezonancia mestere: jádeőröket ébreszt és gyógyít."
+msgstr ""
+
+msgctxt "unit.elf_fopap.name"
+msgid "Nap főpapja"
+msgstr ""
+
+msgctxt "unit.elf_fopap.desc"
+msgid "A Nap főpapja: folyamatosan gyógyítja a körülötte harcolókat."
+msgstr ""
+
+msgctxt "unit.elf_jaguar.name"
+msgid "Jaguár-orvlövész"
+msgstr ""
+
+msgctxt "unit.elf_jaguar.desc"
+msgid "Jaguárbőrös vadász: az erdőből lő, lesállásban halálos."
+msgstr ""
+
+msgctxt "unit.elf_csillagjos.name"
+msgid "Csillagjós"
+msgstr ""
+
+msgctxt "unit.elf_csillagjos.desc"
+msgid "A csillagvizsgálók mestere: meteorzáport hív le messziről."
+msgstr ""
+
+msgctxt "unit.elf_pancelos_raptor.name"
+msgid "Páncélos raptor"
+msgstr ""
+
+msgctxt "unit.elf_pancelos_raptor.desc"
+msgid "Obszidiánlemezes harci raptor jaguár-harcossal: lassabb, de jóval tartósabb a Raptorlovasnál. Bónusz a távolsági egységek ellen."
+msgstr ""
+
+msgctxt "building.elf_napszentely.name"
+msgid "Napszentély"
+msgstr ""
+
+msgctxt "building.elf_napszentely.desc"
+msgid "Lépcsős piramis, főépület. Leadóhely, Kőfaragókat képez."
+msgstr ""
+
+msgctxt "building.elf_obeliszk.name"
+msgid "Napobeliszk"
+msgstr ""
+
+msgctxt "building.elf_obeliszk.desc"
+msgid "+8 létszám. Energiamezőt sugároz – az elf épületek csak ebben működnek."
+msgstr ""
+
+msgctxt "building.elf_harcos_csarnok.name"
+msgid "Harcosok csarnoka"
+msgstr ""
+
+msgctxt "building.elf_harcos_csarnok.desc"
+msgid "Tollas harcosokat és jáde-íjászokat képez."
+msgstr ""
+
+msgctxt "building.elf_obszidian_muhely.name"
+msgid "Obszidián műhely"
+msgstr ""
+
+msgctxt "building.elf_obszidian_muhely.desc"
+msgid "Fegyver- és pajzsfejlesztések."
+msgstr ""
+
+msgctxt "building.elf_raptor_karam.name"
+msgid "Raptorkarám"
+msgstr ""
+
+msgctxt "building.elf_raptor_karam.desc"
+msgid "Raptorlovasokat és tollaskoronás rexeket nevel."
+msgstr ""
+
+msgctxt "building.elf_csillagvizsgalo.name"
+msgid "Csillagvizsgáló"
+msgstr ""
+
+msgctxt "building.elf_csillagvizsgalo.desc"
+msgid "Napszóró papokat képez, a csillagok tudását kutatja."
+msgstr ""
+
+msgctxt "building.elf_tollfeszek.name"
+msgid "Tollfészek-piramis"
+msgstr ""
+
+msgctxt "building.elf_tollfeszek.desc"
+msgid "Quetzalokat nevel."
+msgstr ""
+
+msgctxt "building.elf_jade_oszlop.name"
+msgid "Jádeoszlop"
+msgstr ""
+
+msgctxt "building.elf_jade_oszlop.desc"
+msgid "Védőtorony, földi és légi célpontokra."
+msgstr ""
+
+msgctxt "building.elf_napkapu.name"
+msgid "Napkapu"
+msgstr ""
+
+msgctxt "building.elf_napkapu.desc"
+msgid "Hősidéző templomkapu: Szelai, Itzcoatl és Xochi."
+msgstr ""
+
+msgctxt "building.elf_naptemplom.name"
+msgid "Naptemplom"
+msgstr ""
+
+msgctxt "building.elf_naptemplom.desc"
+msgid "Aranyozott lépcsős templom: a Nap főpapjai és napszóró papok."
+msgstr ""
+
+msgctxt "building.elf_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.elf_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "building.elf_napfuro.name"
+msgid "Napfúró"
+msgstr ""
+
+msgctxt "building.elf_napfuro.desc"
+msgid "A bányára (arany vagy meteorit) idézett fúrótorony: magától is termel, és legfeljebb 3 Kőfaragó dolgozhat benne, hordás nélkül (jobb klikk a Napfúróra). Ha lerombolják, a bent lévők sérülten kiugranak."
+msgstr ""
+
+msgctxt "building.elf_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.elf_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "research.elf_obszidian_penge.name"
+msgid "Obszidián pengék"
+msgstr ""
+
+msgctxt "research.elf_obszidian_penge.desc"
+msgid "+2 sebzés a közelharci egységeknek."
+msgstr ""
+
+msgctxt "research.elf_jade_hegyek.name"
+msgid "Jádehegyű nyilak"
+msgstr ""
+
+msgctxt "research.elf_jade_hegyek.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.elf_napegi_pajzs.name"
+msgid "Napégi pajzs"
+msgstr ""
+
+msgctxt "research.elf_napegi_pajzs.desc"
+msgid "+30 pajzs minden elf egységnek."
+msgstr ""
+
+msgctxt "research.elf_csillagfeny.name"
+msgid "Csillagfény-látás"
+msgstr ""
+
+msgctxt "research.elf_csillagfeny.desc"
+msgid "+1 lőtáv a távolsági egységeknek, +1 látótáv mindenkinek."
+msgstr ""
+
+msgctxt "research.elf_arany_fohasz.name"
+msgid "Arany fohász"
+msgstr ""
+
+msgctxt "research.elf_arany_fohasz.desc"
+msgid "A fohászkodó Kőfaragók 0,4 Áhítatot adnak másodpercenként (0,3 helyett)."
+msgstr ""
+
+msgctxt "research.elf_napszemu_papok.name"
+msgid "Napszemű papok"
+msgstr ""
+
+msgctxt "research.elf_napszemu_papok.desc"
+msgid "A Napszóró papok energiája 50%-kal gyorsabban töltődik."
+msgstr ""
+
+msgctxt "research.elf_egi_kegy.name"
+msgid "Égi kegy"
+msgstr ""
+
+msgctxt "research.elf_egi_kegy.desc"
+msgid "A Nap megáldja a népet: minden egység +10% életerőt kap."
+msgstr ""
+
+msgctxt "research.elf_obszidian_vert.name"
+msgid "Obszidián vértezet"
+msgstr ""
+
+msgctxt "research.elf_obszidian_vert.desc"
+msgid "+1 páncél minden élő elf egységnek."
+msgstr ""
+
+msgctxt "research.elf_obszidian_penge_2.name"
+msgid "Obszidián pengék II."
+msgstr ""
+
+msgctxt "research.elf_obszidian_penge_2.desc"
+msgid "+2 sebzés a közelharci egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.elf_obszidian_penge_3.name"
+msgid "Obszidián pengék III."
+msgstr ""
+
+msgctxt "research.elf_obszidian_penge_3.desc"
+msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.elf_jade_hegyek_2.name"
+msgid "Jádehegyű nyilak II."
+msgstr ""
+
+msgctxt "research.elf_jade_hegyek_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.elf_jade_hegyek_3.name"
+msgid "Jádehegyű nyilak III."
+msgstr ""
+
+msgctxt "research.elf_jade_hegyek_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.elf_obszidian_vert_2.name"
+msgid "Obszidián vértezet II."
+msgstr ""
+
+msgctxt "research.elf_obszidian_vert_2.desc"
+msgid "+1 páncél minden élő elf egységnek. (II. szint)"
+msgstr ""
+
+msgctxt "research.elf_obszidian_vert_3.name"
+msgid "Obszidián vértezet III."
+msgstr ""
+
+msgctxt "research.elf_obszidian_vert_3.desc"
+msgid "+1 páncél minden élő elf egységnek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.elf_rezonancia.name"
+msgid "Rezonancia"
+msgstr ""
+
+msgctxt "research.elf_rezonancia.desc"
+msgid "A Napobeliszkek energiamezeje 2 csempével nagyobb."
+msgstr ""
+
+msgctxt "research.elf_napfolt.name"
+msgid "Napfolt"
+msgstr ""
+
+msgctxt "research.elf_napfolt.desc"
+msgid "A Tollas harcosok megkapják a Napfolt képességet: 6 mp-ig semmilyen egységtípus ellen nem gyengék."
+msgstr ""
+
+msgctxt "faction.elves.name"
+msgid "Szürke elfek"
+msgstr ""
+
+msgctxt "faction.elves.desc"
+msgid "A Kő és a Csillag Városai: lépcsős templomvárosok, amelyeket a Kilenc Lépcső Tanácsa fog össze. Kevés, hosszan képzett harcos meteoritpajzzsal; az épületeket a rezonanciaobeliszkek mezejébe idézik meg."
+msgstr ""
+
+msgctxt "faction.elves.tagline"
+msgid "Energiamező • pajzs • önmagától épülő templomok"
+msgstr ""
+
+msgctxt "path.elves.nap.name"
+msgid "Nap temploma"
+msgstr ""
+
+msgctxt "path.elves.nap.desc"
+msgid "Minden élő egységed folyamatosan gyógyul (+1 regeneráció). Főpapok gyógyítanak, napszóró papok égetnek, és a quetzalok az égből csapnak le."
+msgstr ""
+
+msgctxt "path.elves.nap.tagline"
+msgid "Papokkal támogatott tömeghadsereg"
+msgstr ""
+
+msgctxt "path.elves.jaguar.name"
+msgid "Jaguár-harcosok"
+msgstr ""
+
+msgctxt "path.elves.jaguar.desc"
+msgid "Az erdőben a gyalogosaid láthatatlanok, a közelharcosok +2 sebzést kapnak. Jaguár-orvlövészek, páncélos raptorok és tollas rexek."
+msgstr ""
+
+msgctxt "path.elves.jaguar.tagline"
+msgid "Vadászat, lesből támadás"
+msgstr ""
+
+msgctxt "path.elves.csillag.name"
+msgid "Csillagvizsgálók"
+msgstr ""
+
+msgctxt "path.elves.csillag.desc"
+msgid "+1 lőtáv minden távolsági egységnek. Obszidián-vetők és csillagjósok meteorokat hívnak messziről."
+msgstr ""
+
+msgctxt "path.elves.csillag.tagline"
+msgid "Távolsági ostrom, lassú őrlés"
+msgstr ""
+
+msgctxt "unit.huk_toaso.name"
+msgid "Tóásó"
+msgstr ""
+
+msgctxt "unit.huk_toaso.desc"
+msgid "Munkás: tavacskát ás (2×2 – erre építhet a nép), gyűjt, és elindítja az építkezést. Az épület magától nő; minél több tavacska veszi körül, annál gyorsabban (legfeljebb +60%)."
+msgstr ""
+
+msgctxt "unit.huk_csuzlis.name"
+msgid "Csúzlis"
+msgstr ""
+
+msgctxt "unit.huk_csuzlis.desc"
+msgid "Gyöngygolyós csúzlival lő; pajzsa nincs."
+msgstr ""
+
+msgctxt "unit.huk_kampokardos.name"
+msgid "Kampókardos"
+msgstr ""
+
+msgctxt "unit.huk_kampokardos.desc"
+msgid "Tompa végű, kampós lapos karddal harcol – a kampóval magához rántja az ellenfelet."
+msgstr ""
+
+msgctxt "unit.huk_toidezo.name"
+msgid "Tóidéző"
+msgstr ""
+
+msgctxt "unit.huk_toidezo.desc"
+msgid "Mágus: lábon járó tavi lényt idéz, és gyógyít."
+msgstr ""
+
+msgctxt "unit.huk_tavi_leny.name"
+msgid "Tavi lény"
+msgstr ""
+
+msgctxt "unit.huk_tavi_leny.desc"
+msgid "Lábon járó, megidézett víztest; rövid ideig harcol."
+msgstr ""
+
+msgctxt "unit.huk_gotelovas.name"
+msgid "Gőtelovas"
+msgstr ""
+
+msgctxt "unit.huk_gotelovas.desc"
+msgid "Óriásgőte hátán száguldó portyázó."
+msgstr ""
+
+msgctxt "unit.huk_szitakoto.name"
+msgid "Szitakötő-felderítő"
+msgstr ""
+
+msgctxt "unit.huk_szitakoto.desc"
+msgid "Gyors, repülő felderítő; gyenge, de messzire lát."
+msgstr ""
+
+msgctxt "unit.huk_teknos_mozsar.name"
+msgid "Teknőshátas mozsár"
+msgstr ""
+
+msgctxt "unit.huk_teknos_mozsar.desc"
+msgid "Óriásteknős hátán gyöngyágyú – épületek ellen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
+msgstr ""
+
+msgctxt "unit.huk_hos_kvarra.name"
+msgid "Kvarra, a Tóanya"
+msgstr ""
+
+msgctxt "unit.huk_hos_kvarra.desc"
+msgid "Az öreg tóanya: tavat fakaszt, és vízből gyúrt lényeket kelt életre."
+msgstr ""
+
+msgctxt "unit.huk_hos_bulgok.name"
+msgid "Bul’gok Kampókirály"
+msgstr ""
+
+msgctxt "unit.huk_hos_bulgok.desc"
+msgid "A kampókardosok királya: rántás, ugrás, tavi tombolás."
+msgstr ""
+
+msgctxt "unit.huk_hos_iriss.name"
+msgid "Iriss Szivárványgyöngy"
+msgstr ""
+
+msgctxt "unit.huk_hos_iriss.desc"
+msgid "Gyöngyhalász-hercegnő: gyógyít, és szivárványfénnyel véd."
+msgstr ""
+
+msgctxt "unit.huk_aradas_papja.name"
+msgid "Áradás papja"
+msgstr ""
+
+msgctxt "unit.huk_aradas_papja.desc"
+msgid "Árhullámot zúdít, és a tavat kiterjeszti."
+msgstr ""
+
+msgctxt "unit.huk_iszapbeka.name"
+msgid "Iszapbéka"
+msgstr ""
+
+msgctxt "unit.huk_iszapbeka.desc"
+msgid "Hatalmas, iszapos varangy: elnyeli a csapásokat."
+msgstr ""
+
+msgctxt "unit.huk_gyongyveto.name"
+msgid "Gyöngyvető"
+msgstr ""
+
+msgctxt "unit.huk_gyongyveto.desc"
+msgid "Mesterlövész: igazgyöngyöt lő, hosszú lőtávval."
+msgstr ""
+
+msgctxt "unit.huk_kagylopajzsos.name"
+msgid "Kagylópajzsos"
+msgstr ""
+
+msgctxt "unit.huk_kagylopajzsos.desc"
+msgid "Óriáskagyló-teknőt hord – a nép egyetlen pajzsos harcosa."
+msgstr ""
+
+msgctxt "unit.huk_gyongyorias.name"
+msgid "Gyöngyóriás"
+msgstr ""
+
+msgctxt "unit.huk_gyongyorias.desc"
+msgid "A mélység gyöngyhéjú óriása."
+msgstr ""
+
+msgctxt "unit.huk_melysegi_hivo.name"
+msgid "Mélységi hívó"
+msgstr ""
+
+msgctxt "unit.huk_melysegi_hivo.desc"
+msgid "Két tavi lényt hív egyszerre a mélyből."
+msgstr ""
+
+msgctxt "unit.huk_ikrarako.name"
+msgid "Ikrarakó"
+msgstr ""
+
+msgctxt "unit.huk_ikrarako.desc"
+msgid "Fürge kis béka-dajka: láthatatlan ikra-csomókat rak le, amelyekből rálépéskor harapós ebihalak kelnek ki."
+msgstr ""
+
+msgctxt "unit.huk_ikra.name"
+msgid "Ikra-csomó"
+msgstr ""
+
+msgctxt "unit.huk_ikra.desc"
+msgid "Láthatatlan ikra: ha ellenség lép rá, ebihalak kelnek ki belőle."
+msgstr ""
+
+msgctxt "unit.huk_ebihal.name"
+msgid "Ebihal"
+msgstr ""
+
+msgctxt "unit.huk_ebihal.desc"
+msgid "Harapós ebihal az ikrából; rövid ideig harcol."
+msgstr ""
+
+msgctxt "unit.huk_nagy_tavi_leny.name"
+msgid "Nagy tavi lény"
+msgstr ""
+
+msgctxt "unit.huk_nagy_tavi_leny.desc"
+msgid "A Tóének erejével megidézett, nagyobb víztest; rövid ideig harcol."
+msgstr ""
+
+msgctxt "unit.huk_gyongyorias_idezett.name"
+msgid "Megidézett gyöngyóriás"
+msgstr ""
+
+msgctxt "unit.huk_gyongyorias_idezett.desc"
+msgid "A Mélység hangjára előjövő gyöngyóriás; 45 mp-ig harcol."
+msgstr ""
+
+msgctxt "building.huk_korallcsarnok.name"
+msgid "Korallcsarnok"
+msgstr ""
+
+msgctxt "building.huk_korallcsarnok.desc"
+msgid "A békanép csarnoka korallból és üvegbuborékokból. Leadóhely, Tóásókat nevel."
+msgstr ""
+
+msgctxt "building.huk_tavacska.name"
+msgid "Tavacska"
+msgstr ""
+
+msgctxt "building.huk_tavacska.desc"
+msgid "Tavirózsás vízfolt (2×2): a Tóásó ott állva 4 mp alatt ássa ki. A Huk’ucha csak tavacskára építhet; a szomszédos tavacskák egybefüggő tóvá olvadnak. A tavon a békanép gyorsabb, mindenki más lassabb."
+msgstr ""
+
+msgctxt "building.huk_gyongybuborek.name"
+msgid "Gyöngybuborék-otthon"
+msgstr ""
+
+msgctxt "building.huk_gyongybuborek.desc"
+msgid "Lakható üvegbuborék a tavon: +8 létszám."
+msgstr ""
+
+msgctxt "building.huk_nadbarakk.name"
+msgid "Nádbarakk"
+msgstr ""
+
+msgctxt "building.huk_nadbarakk.desc"
+msgid "Csúzlisokat, kampókardosokat és szitakötő-felderítőket képez."
+msgstr ""
+
+msgctxt "building.huk_toteremto.name"
+msgid "Tóteremtő szentély"
+msgstr ""
+
+msgctxt "building.huk_toteremto.desc"
+msgid "Tóidézőket és hősöket képez."
+msgstr ""
+
+msgctxt "building.huk_gyongymuhely.name"
+msgid "Gyöngyműhely"
+msgstr ""
+
+msgctxt "building.huk_gyongymuhely.desc"
+msgid "A békanép fejlesztései: gyöngy, kagylóhéj, tavirózsa."
+msgstr ""
+
+msgctxt "building.huk_goteistallo.name"
+msgid "Gőteistálló"
+msgstr ""
+
+msgctxt "building.huk_goteistallo.desc"
+msgid "Gőtelovasokat és teknőshátas mozsarakat nevel."
+msgstr ""
+
+msgctxt "building.huk_korallor.name"
+msgid "Korallőr"
+msgstr ""
+
+msgctxt "building.huk_korallor.desc"
+msgid "Korall-védőtorony gyöngyhajítóval."
+msgstr ""
+
+msgctxt "building.huk_arvizkapu.name"
+msgid "Árvízkapu"
+msgstr ""
+
+msgctxt "building.huk_arvizkapu.desc"
+msgid "Áradás papjait és iszapbékákat nevel."
+msgstr ""
+
+msgctxt "building.huk_gyongykert.name"
+msgid "Gyöngykagyló-kert"
+msgstr ""
+
+msgctxt "building.huk_gyongykert.desc"
+msgid "Gyöngyvetőket és kagylópajzsosokat nevel."
+msgstr ""
+
+msgctxt "building.huk_melyseg_kapuja.name"
+msgid "A mélység kapuja"
+msgstr ""
+
+msgctxt "building.huk_melyseg_kapuja.desc"
+msgid "Gyöngyóriásokat és mélységi hívókat nevel."
+msgstr ""
+
+msgctxt "building.huk_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.huk_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "building.huk_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.huk_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "research.huk_gyongygolyo.name"
+msgid "Gyöngygolyó"
+msgstr ""
+
+msgctxt "research.huk_gyongygolyo.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.huk_kagylohej.name"
+msgid "Kagylóhéj-vért"
+msgstr ""
+
+msgctxt "research.huk_kagylohej.desc"
+msgid "+1 páncél az élő egységeknek."
+msgstr ""
+
+msgctxt "research.huk_tavirozsa.name"
+msgid "Tavirózsa-tea"
+msgstr ""
+
+msgctxt "research.huk_tavirozsa.desc"
+msgid "+1 életerő-visszatöltés másodpercenként."
+msgstr ""
+
+msgctxt "research.huk_ugrolabak.name"
+msgid "Ugrólábak"
+msgstr ""
+
+msgctxt "research.huk_ugrolabak.desc"
+msgid "+10% sebesség minden egységnek, és a Békaugrás 5 csempére nő (2,5 helyett)."
+msgstr ""
+
+msgctxt "research.huk_toanya_korusa.name"
+msgid "Tóanya kórusa"
+msgstr ""
+
+msgctxt "research.huk_toanya_korusa.desc"
+msgid "Az éneklő Tóásók 0,4 Tóéneket adnak másodpercenként (0,3 helyett)."
+msgstr ""
+
+msgctxt "research.huk_iszapos_bor.name"
+msgid "Iszapos bőr"
+msgstr ""
+
+msgctxt "research.huk_iszapos_bor.desc"
+msgid "Minden béka +1 páncélt kap."
+msgstr ""
+
+msgctxt "research.huk_mely_viz.name"
+msgid "Mély víz"
+msgstr ""
+
+msgctxt "research.huk_mely_viz.desc"
+msgid "A megidézett lények 30%-kal tovább maradnak."
+msgstr ""
+
+msgctxt "research.huk_kampohegy.name"
+msgid "Kampóhegy"
+msgstr ""
+
+msgctxt "research.huk_kampohegy.desc"
+msgid "+2 sebzés a közelharci egységeknek."
+msgstr ""
+
+msgctxt "research.huk_gyongygolyo_2.name"
+msgid "Gyöngygolyó II."
+msgstr ""
+
+msgctxt "research.huk_gyongygolyo_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.huk_gyongygolyo_3.name"
+msgid "Gyöngygolyó III."
+msgstr ""
+
+msgctxt "research.huk_gyongygolyo_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.huk_kagylohej_2.name"
+msgid "Kagylóhéj-vért II."
+msgstr ""
+
+msgctxt "research.huk_kagylohej_2.desc"
+msgid "+1 páncél az élő egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.huk_kagylohej_3.name"
+msgid "Kagylóhéj-vért III."
+msgstr ""
+
+msgctxt "research.huk_kagylohej_3.desc"
+msgid "+1 páncél az élő egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.huk_kampohegy_2.name"
+msgid "Kampóhegy II."
+msgstr ""
+
+msgctxt "research.huk_kampohegy_2.desc"
+msgid "+2 sebzés a közelharci egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.huk_kampohegy_3.name"
+msgid "Kampóhegy III."
+msgstr ""
+
+msgctxt "research.huk_kampohegy_3.desc"
+msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.huk_hejba.name"
+msgid "Héjba húzódás"
+msgstr ""
+
+msgctxt "research.huk_hejba.desc"
+msgid "A Kagylópajzsosok megkapják a Héjba húzódás képességet: 8 mp-ig semmi ellen nem gyengék."
+msgstr ""
+
+msgctxt "research.huk_tavak_utja.name"
+msgid "Tavak útja"
+msgstr ""
+
+msgctxt "research.huk_tavak_utja.desc"
+msgid "A saját tavacskán álló békák 20%-kal nagyobbat sebeznek."
+msgstr ""
+
+msgctxt "faction.hukucha.name"
+msgid "Huk’ucha"
+msgstr ""
+
+msgctxt "faction.hukucha.desc"
+msgid "A békanép maga hozza létre tavirózsás tavacskáit, amelyekre vízinövényekből, korallból és lakható üvegbuborékokból épít otthonokat. Harcosaik csúzlival vagy tompa végű, apró kampóban végződő lapos karddal küzdenek, pajzs nélkül. Mágusaik lábon járó tavi lényeket idéznek."
+msgstr ""
+
+msgctxt "faction.hukucha.tagline"
+msgid "A békanép tavai"
+msgstr ""
+
+msgctxt "path.hukucha.arviz.name"
+msgid "Árvíz"
+msgstr ""
+
+msgctxt "path.hukucha.arviz.desc"
+msgid "A tavacskák 3×3-asok lesznek, az egész nép gyorsabb; az Áradás papjai árhullámot zúdítanak, az iszapbékák a frontot tartják. Terjeszkedő, mozgékony játék a vízen."
+msgstr ""
+
+msgctxt "path.hukucha.arviz.tagline"
+msgid "A tó mindent elnyel"
+msgstr ""
+
+msgctxt "path.hukucha.gyongy.name"
+msgid "Gyöngy"
+msgstr ""
+
+msgctxt "path.hukucha.gyongy.desc"
+msgid "Mesterlövész gyöngyvetők és kagylópajzsos fal; a távolsági egységek erősebbek. Védekező, lőállásból építkező játék."
+msgstr ""
+
+msgctxt "path.hukucha.gyongy.tagline"
+msgid "Pontos lövés, kemény héj"
+msgstr ""
+
+msgctxt "path.hukucha.melyseg.name"
+msgid "Mélység"
+msgstr ""
+
+msgctxt "path.hukucha.melyseg.desc"
+msgid "Gyöngyóriások és tömeges idézés; az idézett lények tovább élnek. Kevés, de hatalmas egység."
+msgstr ""
+
+msgctxt "path.hukucha.melyseg.tagline"
+msgid "A tó mélyének óriásai"
+msgstr ""
+
+msgctxt "unit.imp_fabrikator.name"
+msgid "Fabrikátor"
+msgstr ""
+
+msgctxt "unit.imp_fabrikator.desc"
+msgid "Pókszerű munkásgép. Épít (egy épületen egyszerre csak egy Fabrikátor dolgozhat – Túlhajtással gyorsíthat), alapoz, fát hord, és javítja az épületeket és a gépeket. Aranyat és meteoritot az Arató gyűjt."
+msgstr ""
+
+msgctxt "unit.imp_legios.name"
+msgid "Légiós"
+msgstr ""
+
+msgctxt "unit.imp_legios.desc"
+msgid "Kis lépegetőtestbe zárt légiós-szellem, scutummal és gladiusszal."
+msgstr ""
+
+msgctxt "unit.imp_ballistarius.name"
+msgid "Ballistarius"
+msgstr ""
+
+msgctxt "unit.imp_ballistarius.desc"
+msgid "Kis gép vállra szerelt íjpuskával."
+msgstr ""
+
+msgctxt "unit.imp_szellemidezo.name"
+msgid "Szellemidéző"
+msgstr ""
+
+msgctxt "unit.imp_szellemidezo.desc"
+msgid "Lélekmentő gép-pap. A csatatér tetemeiből lélekhorgonyt ment, és szellemlégióst támaszt."
+msgstr ""
+
+msgctxt "unit.imp_centurio.name"
+msgid "Centurio-mecha"
+msgstr ""
+
+msgctxt "unit.imp_centurio.desc"
+msgid "Közepes lépegető mecha forgócsöves gépágyúval."
+msgstr ""
+
+msgctxt "unit.imp_aquila.name"
+msgid "Aquila-drón"
+msgstr ""
+
+msgctxt "unit.imp_aquila.desc"
+msgid "Sas formájú repülő gép."
+msgstr ""
+
+msgctxt "unit.imp_kolosszus.name"
+msgid "Kolosszus"
+msgstr ""
+
+msgctxt "unit.imp_kolosszus.desc"
+msgid "Óriás ostrom-mecha. Ostrom-módban mozdulatlan, de messzebbre és nagyobbat lő."
+msgstr ""
+
+msgctxt "unit.imp_szellemlegios.name"
+msgid "Szellemlégiós"
+msgstr ""
+
+msgctxt "unit.imp_szellemlegios.desc"
+msgid "Egy elesett harcos lelke, a Szellemidéző akaratához kötve."
+msgstr ""
+
+msgctxt "unit.imp_szellemkolosszus.name"
+msgid "Szellemkolosszus"
+msgstr ""
+
+msgctxt "unit.imp_szellemkolosszus.desc"
+msgid "Egy elesett óriás lelke."
+msgstr ""
+
+msgctxt "unit.imp_hos_livia.name"
+msgid "Livia Varr"
+msgstr ""
+
+msgctxt "unit.imp_hos_livia.desc"
+msgid "Egykori orvos, a lélekhorgonyokat mentő légió tisztje."
+msgstr ""
+
+msgctxt "unit.imp_hos_nera.name"
+msgid "Nera"
+msgstr ""
+
+msgctxt "unit.imp_hos_nera.desc"
+msgid "Livia lánya: gyermekként került géptestbe; hetven év tapasztalattal, de a birodalmi jog szerint még mindig kiskorú."
+msgstr ""
+
+msgctxt "unit.imp_onager.name"
+msgid "Onager-mecha"
+msgstr ""
+
+msgctxt "unit.imp_onager.desc"
+msgid "Négylábú hajítógép: messzire hord, épületek és csoportok ellen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
+msgstr ""
+
+msgctxt "unit.imp_hos_cassius.name"
+msgid "Cassius Ferrum legátus"
+msgstr ""
+
+msgctxt "unit.imp_hos_cassius.desc"
+msgid "A Hetedik Légió parancsnoka nehéz géptestben: roham, fegyelem és Ordan haragja."
+msgstr ""
+
+msgctxt "unit.imp_lelekhorgony.name"
+msgid "Lélekhorgony"
+msgstr ""
+
+msgctxt "unit.imp_lelekhorgony.desc"
+msgid "Egy elesett gép lelke. Egy Fabrikátor 40 mp-en belül újraépítheti (javítással) – különben a lélek elillan."
+msgstr ""
+
+msgctxt "unit.imp_praetorianus.name"
+msgid "Praetoriánus"
+msgstr ""
+
+msgctxt "unit.imp_praetorianus.desc"
+msgid "Elit gépharcos aranyozott páncélban: a légió gerince."
+msgstr ""
+
+msgctxt "unit.imp_arato.name"
+msgid "Arató"
+msgstr ""
+
+msgctxt "unit.imp_arato.desc"
+msgid "Lánctalpas gyűjtőgép: aranyat és meteoritot bányászik, egyszerre nagy rakománnyal (30 arany vagy 20 meteorit). Lassú és drága – egy kilőtt Arató egy teljes rakomány."
+msgstr ""
+
+msgctxt "building.imp_forum.name"
+msgid "Fórum"
+msgstr ""
+
+msgctxt "building.imp_forum.desc"
+msgid "Oszlopcsarnokos főtér gőzölgő gépházzal. Leadóhely, Fabrikátorokat gyárt."
+msgstr ""
+
+msgctxt "building.imp_reaktor.name"
+msgid "Lélekreaktor"
+msgstr ""
+
+msgctxt "building.imp_reaktor.desc"
+msgid "+10 létszám – lélekenergiát ad a gépeknek."
+msgstr ""
+
+msgctxt "building.imp_legiogyar.name"
+msgid "Légió-gyár"
+msgstr ""
+
+msgctxt "building.imp_legiogyar.desc"
+msgid "Légiósokat és Ballistariusokat szerel össze."
+msgstr ""
+
+msgctxt "building.imp_ontode.name"
+msgid "Öntöde"
+msgstr ""
+
+msgctxt "building.imp_ontode.desc"
+msgid "Centurio-mechákat és Kolosszusokat önt."
+msgstr ""
+
+msgctxt "building.imp_gepisten_templom.name"
+msgid "Ordan temploma"
+msgstr ""
+
+msgctxt "building.imp_gepisten_templom.desc"
+msgid "Ordan, a Kéz, amely Megtart hálózatának szentélye. Szellemidézőket avat, fejlesztéseket kutat."
+msgstr ""
+
+msgctxt "building.imp_hangar.name"
+msgid "Hangár"
+msgstr ""
+
+msgctxt "building.imp_hangar.desc"
+msgid "Aquila-drónokat gyárt."
+msgstr ""
+
+msgctxt "building.imp_aquila_torony.name"
+msgid "Aquila-torony"
+msgstr ""
+
+msgctxt "building.imp_aquila_torony.desc"
+msgid "Sasos őrtorony íjpuskával."
+msgstr ""
+
+msgctxt "building.imp_panteon.name"
+msgid "Panteon"
+msgstr ""
+
+msgctxt "building.imp_panteon.desc"
+msgid "A megmentett hősök csarnoka: Livia, Nera és Cassius."
+msgstr ""
+
+msgctxt "building.imp_praetorium.name"
+msgid "Praetorium"
+msgstr ""
+
+msgctxt "building.imp_praetorium.desc"
+msgid "A légió parancsnoksága: praetoriánusok és Centurio-mechák."
+msgstr ""
+
+msgctxt "building.imp_lelekkut.name"
+msgid "Lélekkút"
+msgstr ""
+
+msgctxt "building.imp_lelekkut.desc"
+msgid "Lélekfénnyel izzó kút: állandó szellemlégiósok és szellemkolosszusok."
+msgstr ""
+
+msgctxt "building.imp_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.imp_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "building.imp_alapozas.name"
+msgid "Alapozás"
+msgstr ""
+
+msgctxt "building.imp_alapozas.desc"
+msgid "Márvány-lapkő (2×2): a Fabrikátor 3 mp alatt rakja le, a mozgást nem akadályozza. Ami teljes egészében alapozáson áll, teljes életerővel épül fel; ami nem, az fél életerővel, és lassan kopik is (fél életerőig)."
+msgstr ""
+
+msgctxt "building.imp_finomito.name"
+msgid "Finomító"
+msgstr ""
+
+msgctxt "building.imp_finomito.desc"
+msgid "Lerakóhely aranyhoz és meteorithoz – érdemes a bányák mellé építeni. Itt választható az Arató fejlesztése: gyorsabb hajtómű VAGY nagyobb tartály."
+msgstr ""
+
+msgctxt "building.imp_szobor_ferrox.name"
+msgid "Ferrox-szobor"
+msgstr ""
+
+msgctxt "building.imp_szobor_ferrox.desc"
+msgid "Ferrox, az acél ura: kalapácsos, öntöttvas-szakállú alak. A körzetében (6 csempe) a gépek és az épületek +2 páncélt kapnak – amíg a szobor áll."
+msgstr ""
+
+msgctxt "building.imp_szobor_arcanor.name"
+msgid "Arcanor-szobor"
+msgstr ""
+
+msgctxt "building.imp_szobor_arcanor.desc"
+msgid "Arcanor, a mágia ura: csillagköpenyes alak, lebegő gömbbel. A körzetében (6 csempe) a távolsági egységek +1 lőtávot kapnak – amíg a szobor áll."
+msgstr ""
+
+msgctxt "building.imp_szobor_umbrax.name"
+msgid "Umbrax-szobor"
+msgstr ""
+
+msgctxt "building.imp_szobor_umbrax.desc"
+msgid "Umbrax, a túlvilág kapusa: fátylas alak lámpással és kulccsal. A körzetében (6 csempe) az egységek +1 életerőt töltenek vissza másodpercenként – amíg a szobor áll."
+msgstr ""
+
+msgctxt "building.imp_szoborpark.name"
+msgid "Szoborpark"
+msgstr ""
+
+msgctxt "building.imp_szoborpark.desc"
+msgid "Az öreg istenek – Ferrox, Arcanor és Umbrax – szoborparkja. Itt kutathatók az isteni fejlesztések, aranyért; mindegyik csak akkor, ha az adott isten szobra áll."
+msgstr ""
+
+msgctxt "building.imp_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.imp_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "building.imp_nagy_alapozas.name"
+msgid "Nagy alapozás"
+msgstr ""
+
+msgctxt "building.imp_nagy_alapozas.desc"
+msgid "Márvány-lapkő (4×4): csempénként olcsóbb, a Fabrikátor 6 mp alatt rakja le. (A Nagy alapozás kutatás kell hozzá az Öntödében.)"
+msgstr ""
+
+msgctxt "research.imp_lelekhorgony_mentes.name"
+msgid "Lélekhorgony mentése"
+msgstr ""
+
+msgctxt "research.imp_lelekhorgony_mentes.desc"
+msgid "A Légiósok egyenként felvehetnek és áthelyezhetnek egy saját Lélekhorgonyt."
+msgstr ""
+
+msgctxt "research.imp_legiopengek.name"
+msgid "Légiós pengék"
+msgstr ""
+
+msgctxt "research.imp_legiopengek.desc"
+msgid "+2 sebzés a közelharci egységeknek."
+msgstr ""
+
+msgctxt "research.imp_gyorstoltes.name"
+msgid "Gyorstöltés"
+msgstr ""
+
+msgctxt "research.imp_gyorstoltes.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.imp_edzett_acel.name"
+msgid "Edzett acél"
+msgstr ""
+
+msgctxt "research.imp_edzett_acel.desc"
+msgid "+1 páncél minden gépnek."
+msgstr ""
+
+msgctxt "research.imp_megerositett_vaz.name"
+msgid "Megerősített váz"
+msgstr ""
+
+msgctxt "research.imp_megerositett_vaz.desc"
+msgid "+30 életerő minden gépnek."
+msgstr ""
+
+msgctxt "research.imp_hajtomu.name"
+msgid "Gyorsított hajtómű"
+msgstr ""
+
+msgctxt "research.imp_hajtomu.desc"
+msgid "+25% sebesség az Aratóknak. (Kizárja a Bővített tartályt.)"
+msgstr ""
+
+msgctxt "research.imp_tartaly.name"
+msgid "Bővített tartály"
+msgstr ""
+
+msgctxt "research.imp_tartaly.desc"
+msgid "+50% rakomány az Aratóknak. (Kizárja a Gyorsított hajtóművet.)"
+msgstr ""
+
+msgctxt "research.imp_ferrox_kalapacsa.name"
+msgid "Ferrox kalapácsa"
+msgstr ""
+
+msgctxt "research.imp_ferrox_kalapacsa.desc"
+msgid "+2 sebzés a közelharcos egységeknek. (Kell hozzá: Ferrox-szobor.)"
+msgstr ""
+
+msgctxt "research.imp_ontottvas_burok.name"
+msgid "Öntöttvas burok"
+msgstr ""
+
+msgctxt "research.imp_ontottvas_burok.desc"
+msgid "+60 életerő a nagy gépeknek. (Kell hozzá: Ferrox-szobor.)"
+msgstr ""
+
+msgctxt "research.imp_arcanor_csillagai.name"
+msgid "Arcanor csillagai"
+msgstr ""
+
+msgctxt "research.imp_arcanor_csillagai.desc"
+msgid "+25 energia a varázslóknak. (Kell hozzá: Arcanor-szobor.)"
+msgstr ""
+
+msgctxt "research.imp_csillagterkep.name"
+msgid "Csillagtérkép"
+msgstr ""
+
+msgctxt "research.imp_csillagterkep.desc"
+msgid "+2 látótáv minden egységnek. (Kell hozzá: Arcanor-szobor.)"
+msgstr ""
+
+msgctxt "research.imp_umbrax_fatyla.name"
+msgid "Umbrax fátyla"
+msgstr ""
+
+msgctxt "research.imp_umbrax_fatyla.desc"
+msgid "+15% sebesség a szellem-egységeknek. (Kell hozzá: Umbrax-szobor.)"
+msgstr ""
+
+msgctxt "research.imp_lelekkapu.name"
+msgid "Lélekkapu"
+msgstr ""
+
+msgctxt "research.imp_lelekkapu.desc"
+msgid "Az elesett ellenségek 8% eséllyel szellemlégiósként kelnek fel a te oldaladon (30 mp-re). (Kell hozzá: Umbrax-szobor.)"
+msgstr ""
+
+msgctxt "research.imp_reaktorpajzs.name"
+msgid "Reaktorpajzs"
+msgstr ""
+
+msgctxt "research.imp_reaktorpajzs.desc"
+msgid "A gépek 30 pajzsot kapnak; a pajzs csak Lélekreaktor (6 csempe), meteorit vagy Égkő közelében töltődik."
+msgstr ""
+
+msgctxt "research.imp_nagy_alapozas.name"
+msgid "Nagy alapozás"
+msgstr ""
+
+msgctxt "research.imp_nagy_alapozas.desc"
+msgid "A Fabrikátorok 4×4-es márvány-lapkövet is lerakhatnak (30 arany, 6 mp): csempénként olcsóbb. A meglévő lapkövek nem változnak."
+msgstr ""
+
+msgctxt "research.imp_legiopengek_2.name"
+msgid "Légiós pengék II."
+msgstr ""
+
+msgctxt "research.imp_legiopengek_2.desc"
+msgid "+2 sebzés a közelharci egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.imp_legiopengek_3.name"
+msgid "Légiós pengék III."
+msgstr ""
+
+msgctxt "research.imp_legiopengek_3.desc"
+msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.imp_gyorstoltes_2.name"
+msgid "Gyorstöltés II."
+msgstr ""
+
+msgctxt "research.imp_gyorstoltes_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.imp_gyorstoltes_3.name"
+msgid "Gyorstöltés III."
+msgstr ""
+
+msgctxt "research.imp_gyorstoltes_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.imp_edzett_acel_2.name"
+msgid "Edzett acél II."
+msgstr ""
+
+msgctxt "research.imp_edzett_acel_2.desc"
+msgid "+1 páncél minden gépnek. (II. szint)"
+msgstr ""
+
+msgctxt "research.imp_edzett_acel_3.name"
+msgid "Edzett acél III."
+msgstr ""
+
+msgctxt "research.imp_edzett_acel_3.desc"
+msgid "+1 páncél minden gépnek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.imp_ferrox_kalapacsa_2.name"
+msgid "Ferrox kalapácsa II."
+msgstr ""
+
+msgctxt "research.imp_ferrox_kalapacsa_2.desc"
+msgid "+2 sebzés a közelharcos egységeknek. (Kell hozzá: Ferrox-szobor.) (II. szint)"
+msgstr ""
+
+msgctxt "research.imp_ferrox_kalapacsa_3.name"
+msgid "Ferrox kalapácsa III."
+msgstr ""
+
+msgctxt "research.imp_ferrox_kalapacsa_3.desc"
+msgid "+2 sebzés a közelharcos egységeknek. (Kell hozzá: Ferrox-szobor.) (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.imp_goztulnyomas.name"
+msgid "Gőztúlnyomás"
+msgstr ""
+
+msgctxt "research.imp_goztulnyomas.desc"
+msgid "A gépek megkapják a Gőztúlnyomás képességet: 6 mp-re +40% sebesség, utána 3 mp-ig lassabbak."
+msgstr ""
+
+msgctxt "research.imp_szikrafogo.name"
+msgid "Szikrafogó vértek"
+msgstr ""
+
+msgctxt "research.imp_szikrafogo.desc"
+msgid "A gépek nem gyengék a varázslók ellen."
+msgstr ""
+
+msgctxt "faction.imperium.name"
+msgid "Vasbirodalom"
+msgstr ""
+
+msgctxt "faction.imperium.desc"
+msgid "Aureth népe: az Égszakadás éterbetegségében haldokló embereket Ordan, a Kéz, amely Megtart, géptestekbe vezette át. Valódi emberi szellemek acélban – nem születnek új tagjaik, ezért minden nyersanyag számukra életfeltétel. Létszámukat a lélekreaktorok adják; a Fabrikátorok javítják a gépeket, a szellemidézők az elesettekből légiót támasztanak."
+msgstr ""
+
+msgctxt "faction.imperium.tagline"
+msgid "Lélekidézés • gépjavítás • ostrom • lélekreaktorok"
+msgstr ""
+
+msgctxt "path.imperium.legio.name"
+msgid "Légió"
+msgstr ""
+
+msgctxt "path.imperium.legio.desc"
+msgid "Alakzat: a gyalogosok minden közeli bajtársért +6% sebzést kapnak (max. +30%), és +1 páncélt. Praetoriánusok és Centurio-mechák."
+msgstr ""
+
+msgctxt "path.imperium.legio.tagline"
+msgid "Fegyelmezett tömeg alakzatban"
+msgstr ""
+
+msgctxt "path.imperium.gepisten.name"
+msgid "Gépisten"
+msgstr ""
+
+msgctxt "path.imperium.gepisten.desc"
+msgid "Kolosszusok és onager-mechák, +150 életerővel és +4 ostromsebzéssel. Lassú, drága, de megállíthatatlan."
+msgstr ""
+
+msgctxt "path.imperium.gepisten.tagline"
+msgid "Kevés, hatalmas gép"
+msgstr ""
+
+msgctxt "path.imperium.lelek.name"
+msgid "Lélek"
+msgstr ""
+
+msgctxt "path.imperium.lelek.desc"
+msgid "A megölt élő ellenségek 20%-a szellemlégiósként kel fel nálad (40 mp-re). A Lélekkútban állandó szellemlégiósok és szellemkolosszusok képezhetők."
+msgstr ""
+
+msgctxt "path.imperium.lelek.tagline"
+msgid "Kifárasztó, élőhalott játék"
+msgstr ""
+
+msgctxt "unit.myc_sporaszedo.name"
+msgid "Spóraszedő"
+msgstr ""
+
+msgctxt "unit.myc_sporaszedo.desc"
+msgid "Munkás. Bármelyik hálózatba kötött épületbe leadhatja a terhét."
+msgstr ""
+
+msgctxt "unit.myc_pofeteg.name"
+msgid "Pöfeteg"
+msgstr ""
+
+msgctxt "unit.myc_pofeteg.desc"
+msgid "Olcsó, ugráló gombalény. Halálakor mérgező spórafelhő tör ki belőle. Hármasával Óriáspöfeteggé olvad."
+msgstr ""
+
+msgctxt "unit.myc_tuskegomba_lovesz.name"
+msgid "Tüskegomba-lövész"
+msgstr ""
+
+msgctxt "unit.myc_tuskegomba_lovesz.desc"
+msgid "Mérgező spóratüskéket lő, földi és légi célpontokra."
+msgstr ""
+
+msgctxt "unit.myc_kalapos_or.name"
+msgid "Kalapos őr"
+msgstr ""
+
+msgctxt "unit.myc_kalapos_or.desc"
+msgid "Vastag kalapú, páncélos gombaharcos."
+msgstr ""
+
+msgctxt "unit.myc_alomsaman.name"
+msgid "Álomgomba-sámán"
+msgstr ""
+
+msgctxt "unit.myc_alomsaman.desc"
+msgid "Gyökérkötéssel egy területen megbénítja az ellenséget."
+msgstr ""
+
+msgctxt "unit.myc_oriaspofeteg.name"
+msgid "Óriáspöfeteg"
+msgstr ""
+
+msgctxt "unit.myc_oriaspofeteg.desc"
+msgid "Három Pöfetegből összeolvadt óriás. Halálakor hatalmas spórarobbanás."
+msgstr ""
+
+msgctxt "unit.myc_lebego_pofeteg.name"
+msgid "Lebegő pöfeteg"
+msgstr ""
+
+msgctxt "unit.myc_lebego_pofeteg.desc"
+msgid "Gázzal telt, lebegő gombatest; spóraesőt szór."
+msgstr ""
+
+msgctxt "unit.myc_hos_mor.name"
+msgid "Mór"
+msgstr ""
+
+msgctxt "unit.myc_hos_mor.desc"
+msgid "Fiatal emlékkertész, magában hordja egy sérült emlékkert töredékeit. Gyógyít és fertőzést vizsgál."
+msgstr ""
+
+msgctxt "unit.myc_rothaszto.name"
+msgid "Rothasztó"
+msgstr ""
+
+msgctxt "unit.myc_rothaszto.desc"
+msgid "Bomló gombatest: közelharcban rothaszt, halálakor mérgező spórafelhőt ereget."
+msgstr ""
+
+msgctxt "unit.myc_hos_gyokeranya.name"
+msgid "A Gyökéranya"
+msgstr ""
+
+msgctxt "unit.myc_hos_gyokeranya.desc"
+msgid "Az ősi micélium teste: gyökeret ereszt, gúzsba köt, és megrengeti a földet."
+msgstr ""
+
+msgctxt "unit.myc_hos_sporin.name"
+msgid "Sporin, a Bomlasztó"
+msgstr ""
+
+msgctxt "unit.myc_hos_sporin.desc"
+msgid "A bomlás vándora: tüskéi rothasztanak, köpenye spórafelhő."
+msgstr ""
+
+msgctxt "unit.myc_tetemgomba.name"
+msgid "Tetemgomba"
+msgstr ""
+
+msgctxt "unit.myc_tetemgomba.desc"
+msgid "Az elesettekből kelt, gombával átszőtt test: lassú, de nem adja fel."
+msgstr ""
+
+msgctxt "unit.myc_fagomba_orias.name"
+msgid "Fagomba-óriás"
+msgstr ""
+
+msgctxt "unit.myc_fagomba_orias.desc"
+msgid "Járó, ősi fagomba: a liget védelmezője, gyökereivel megköt."
+msgstr ""
+
+msgctxt "unit.myc_alomszovo.name"
+msgid "Álomszövő"
+msgstr ""
+
+msgctxt "unit.myc_alomszovo.desc"
+msgid "Altató spórákat szövő gomba-mágus."
+msgstr ""
+
+msgctxt "building.myc_szivgomba.name"
+msgid "Szívgomba"
+msgstr ""
+
+msgctxt "building.myc_szivgomba.desc"
+msgid "A hálózat szíve: kicsi főépület és védőtorony egyben. +6 létszám (és a hálózat minden összekötött épülete +1), Spóraszedőket nevel, spórákkal lő. Akárhány építhető."
+msgstr ""
+
+msgctxt "building.myc_sporafonal.name"
+msgid "Spórafonal"
+msgstr ""
+
+msgctxt "building.myc_sporafonal.desc"
+msgid "Hálózati csomópont: összeköti az épületeket a Szívgombával."
+msgstr ""
+
+msgctxt "building.myc_termotest.name"
+msgid "Termőtest"
+msgstr ""
+
+msgctxt "building.myc_termotest.desc"
+msgid "Pöfetegeket és Kalapos őröket növeszt."
+msgstr ""
+
+msgctxt "building.myc_tuskegomba_telep.name"
+msgid "Tüskegomba-telep"
+msgstr ""
+
+msgctxt "building.myc_tuskegomba_telep.desc"
+msgid "Tüskegomba-lövészeket növeszt."
+msgstr ""
+
+msgctxt "building.myc_gyokerbarlang.name"
+msgid "Gyökérbarlang"
+msgstr ""
+
+msgctxt "building.myc_gyokerbarlang.desc"
+msgid "Fejlesztések a hálózat mélyén."
+msgstr ""
+
+msgctxt "building.myc_alomkert.name"
+msgid "Álomkert"
+msgstr ""
+
+msgctxt "building.myc_alomkert.desc"
+msgid "Álomgomba-sámánokat nevel."
+msgstr ""
+
+msgctxt "building.myc_lebegobolcso.name"
+msgid "Lebegőbölcső"
+msgstr ""
+
+msgctxt "building.myc_lebegobolcso.desc"
+msgid "Lebegő pöfetegeket nevel."
+msgstr ""
+
+msgctxt "building.myc_emlekfa.name"
+msgid "Emlékfa"
+msgstr ""
+
+msgctxt "building.myc_emlekfa.desc"
+msgid "Az elfeledett nevek fája: Mór, a Gyökéranya és Sporin hívása."
+msgstr ""
+
+msgctxt "building.myc_rothadokert.name"
+msgid "Rothadókert"
+msgstr ""
+
+msgctxt "building.myc_rothadokert.desc"
+msgid "Bomló tetemeken nőtt gombakert: rothasztók és tetemgombák."
+msgstr ""
+
+msgctxt "building.myc_oriasliget.name"
+msgid "Óriásliget"
+msgstr ""
+
+msgctxt "building.myc_oriasliget.desc"
+msgid "Ősi fagombák ligete: fagomba-óriások."
+msgstr ""
+
+msgctxt "research.myc_meregspora.name"
+msgid "Méregspóra"
+msgstr ""
+
+msgctxt "research.myc_meregspora.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.myc_kemenykalap.name"
+msgid "Keménykalap"
+msgstr ""
+
+msgctxt "research.myc_kemenykalap.desc"
+msgid "+1 páncél minden egységnek."
+msgstr ""
+
+msgctxt "research.myc_gyors_micelium.name"
+msgid "Gyors micélium"
+msgstr ""
+
+msgctxt "research.myc_gyors_micelium.desc"
+msgid "+15% sebesség minden egységnek."
+msgstr ""
+
+msgctxt "research.myc_dus_spora.name"
+msgid "Dús spóra"
+msgstr ""
+
+msgctxt "research.myc_dus_spora.desc"
+msgid "+20 életerő minden gombaegységnek."
+msgstr ""
+
+msgctxt "faction.mycel.name"
+msgid "Micéliák"
+msgstr ""
+
+msgctxt "faction.mycel.desc"
+msgid "A Mélykertek népe: önálló gombaszemélyek, akiket a föld alatti fonalhálózat köt össze (a fajnév munkacím). Épületeik csak spórafonalakkal a Szívgombához kötve működnek, de bármelyikbe leadható a nyersanyag; három Pöfeteg Óriáspöfeteggé olvad."
+msgstr ""
+
+msgctxt "faction.mycel.tagline"
+msgid "Spórafonal-hálózat • szívgombák • összeolvadás"
+msgstr ""
+
+msgctxt "path.mycel.rothadas.name"
+msgid "Rothadás"
+msgstr ""
+
+msgctxt "path.mycel.rothadas.desc"
+msgid "A közelharcosaid mérgeznek, és az elesett élőkből 25% eséllyel tetemgomba-zombi kel. Rothasztók vezetik a lassan terjedő pusztulást."
+msgstr ""
+
+msgctxt "path.mycel.rothadas.tagline"
+msgid "Felőrlő, méreggel nyújtott harc"
+msgstr ""
+
+msgctxt "path.mycel.liget.name"
+msgid "Óriásliget"
+msgstr ""
+
+msgctxt "path.mycel.liget.desc"
+msgid "A hálózat minden összekötött épülete +2 létszámot ad, az épületek +250 életerőt kapnak. Járó fagomba-óriások védik a ligetet."
+msgstr ""
+
+msgctxt "path.mycel.liget.tagline"
+msgid "Terjeszkedés és területfoglalás"
+msgstr ""
+
+msgctxt "path.mycel.alom.name"
+msgid "Álom"
+msgstr ""
+
+msgctxt "path.mycel.alom.desc"
+msgid "Az erdőben minden egységed láthatatlan, amíg nem mozog és nem támad. Álomsámánok és Álomszövők altató spórákkal bénítják meg az ellenfelet."
+msgstr ""
+
+msgctxt "path.mycel.alom.tagline"
+msgid "Csel, rejtőzés, rajtaütés"
+msgstr ""
+
+msgctxt "unit.oon_lampasvivo.name"
+msgid "Lámpásvivő"
+msgstr ""
+
+msgctxt "unit.oon_lampasvivo.desc"
+msgid "Kis oni munkás: papírlámpást állít (a nép csak lámpásfényben építhet), épít, és végig ott marad az építkezésen. Nem gyűjt. Több munkás nem gyorsít, de egy közeli Taiko-dobos ritmusa +50%-kal igen."
+msgstr ""
+
+msgctxt "unit.oon_oni_harcos.name"
+msgid "Oni harcos"
+msgstr ""
+
+msgctxt "unit.oon_oni_harcos.desc"
+msgid "Vörös bőrű, szarvas oni, vasbuzogánnyal."
+msgstr ""
+
+msgctxt "unit.oon_kohajito.name"
+msgid "Kőhajító oni"
+msgstr ""
+
+msgctxt "unit.oon_kohajito.desc"
+msgid "Sziklákat hajít az ellenségre."
+msgstr ""
+
+msgctxt "unit.oon_nian_or.name"
+msgid "Nian őrző"
+msgstr ""
+
+msgctxt "unit.oon_nian_or.desc"
+msgid "Négylábú, zöld sörényű őrző. Kapuőrként egy épület mellé állhat: az épület páncélt kap, a nian helyben marad és védi."
+msgstr ""
+
+msgctxt "unit.oon_tengu.name"
+msgid "Tengu követ"
+msgstr ""
+
+msgctxt "unit.oon_tengu.desc"
+msgid "Szárnyas, hollótollú követ: legyezőjével szélvihart kavar."
+msgstr ""
+
+msgctxt "unit.oon_kitsune.name"
+msgid "Kitsune-maszkos"
+msgstr ""
+
+msgctxt "unit.oon_kitsune.desc"
+msgid "Rókamaszkos mágus: illúzió-másokat szőve megtéveszti az ellent, és gyógyít."
+msgstr ""
+
+msgctxt "unit.oon_illuzio_mas.name"
+msgid "Illúzió-más"
+msgstr ""
+
+msgctxt "unit.oon_illuzio_mas.desc"
+msgid "Rövid életű rókaszellem-másolat."
+msgstr ""
+
+msgctxt "unit.oon_kapudongeto.name"
+msgid "Kapudöngető"
+msgstr ""
+
+msgctxt "unit.oon_kapudongeto.desc"
+msgid "Faltörő kos, onik tolják – épületek ellen."
+msgstr ""
+
+msgctxt "unit.oon_o_oni.name"
+msgid "Ō-oni"
+msgstr ""
+
+msgctxt "unit.oon_o_oni.desc"
+msgid "Óriás oni, a hegyek ura."
+msgstr ""
+
+msgctxt "unit.oon_hos_akahana.name"
+msgid "Akahana, a Vörös Buzogány"
+msgstr ""
+
+msgctxt "unit.oon_hos_akahana.desc"
+msgid "Az onik vezére: rohamoz és földet rengeti."
+msgstr ""
+
+msgctxt "unit.oon_hos_shiro.name"
+msgid "Shiro, a Kapuőr"
+msgstr ""
+
+msgctxt "unit.oon_hos_shiro.desc"
+msgid "A fehér nian: védi a kapukat és a társait."
+msgstr ""
+
+msgctxt "unit.oon_hos_karasu.name"
+msgid "Karasu, a tengu bölcs"
+msgstr ""
+
+msgctxt "unit.oon_hos_karasu.desc"
+msgid "Az öreg tengu: szélvihart és villámot hív."
+msgstr ""
+
+msgctxt "unit.oon_berserker_oni.name"
+msgid "Tomboló oni"
+msgstr ""
+
+msgctxt "unit.oon_berserker_oni.desc"
+msgid "Kétbuzogányos, megszállott oni."
+msgstr ""
+
+msgctxt "unit.oon_dobos.name"
+msgid "Taiko-dobos"
+msgstr ""
+
+msgctxt "unit.oon_dobos.desc"
+msgid "Harci dobjával bátorítja az onikat, és ritmusával +50%-kal gyorsítja a közeli építkezést."
+msgstr ""
+
+msgctxt "unit.oon_kokutya.name"
+msgid "Kőkutya-őr"
+msgstr ""
+
+msgctxt "unit.oon_kokutya.desc"
+msgid "Élő kőoroszlán – a kapuk legkeményebb őre."
+msgstr ""
+
+msgctxt "unit.oon_lampaspap.name"
+msgid "Lámpáspap"
+msgstr ""
+
+msgctxt "unit.oon_lampaspap.desc"
+msgid "A lámpások papja: gyógyít, és védőfényt von a társakra."
+msgstr ""
+
+msgctxt "unit.oon_holloharcos.name"
+msgid "Hollótengu-harcos"
+msgstr ""
+
+msgctxt "unit.oon_holloharcos.desc"
+msgid "Kardos tengu, a magasból csap le."
+msgstr ""
+
+msgctxt "unit.oon_viharhivo.name"
+msgid "Viharhívó tengu"
+msgstr ""
+
+msgctxt "unit.oon_viharhivo.desc"
+msgid "Villámot és tájfunt hív."
+msgstr ""
+
+msgctxt "unit.oon_favago.name"
+msgid "Favágó oni"
+msgstr ""
+
+msgctxt "unit.oon_favago.desc"
+msgid "Erős, széles vállú oni baltával: csak fát gyűjt, de egyszerre sokat (12). Harcban gyenge."
+msgstr ""
+
+msgctxt "unit.oon_tanuki.name"
+msgid "Tanuki-bányász"
+msgstr ""
+
+msgctxt "unit.oon_tanuki.desc"
+msgid "Alakváltó tanuki: aranyat és meteoritot bányászik. A bányák közelében, amíg nem harcol, álcázva dolgozik; néha egy-egy tárgyat is talál a mélyben (a leadóhelynél hagyja)."
+msgstr ""
+
+msgctxt "building.oon_nian_csarnok.name"
+msgid "Nian csarnok"
+msgstr ""
+
+msgctxt "building.oon_nian_csarnok.desc"
+msgid "Márványoszlopok, ívelt cseréptető, faragott nian-őrzők. Leadóhely; Lámpásvivőket, Favágó onikat és Tanuki-bányászokat nevel; fénye körül építhet a nép."
+msgstr ""
+
+msgctxt "building.oon_papirlampas.name"
+msgid "Papírlámpás"
+msgstr ""
+
+msgctxt "building.oon_papirlampas.desc"
+msgid "Olcsó lámpás: fénye bevilágít, tágítja az építési területet, és az Ooni egységek gyógyulnak benne."
+msgstr ""
+
+msgctxt "building.oon_lakohaz.name"
+msgid "Oni lakóház"
+msgstr ""
+
+msgctxt "building.oon_lakohaz.desc"
+msgid "Cseréptetős oni ház: +8 létszám."
+msgstr ""
+
+msgctxt "building.oon_edzoudvar.name"
+msgid "Edzőudvar"
+msgstr ""
+
+msgctxt "building.oon_edzoudvar.desc"
+msgid "Oni harcosokat, kőhajítókat, nian őrzőket és taiko-dobosokat képez."
+msgstr ""
+
+msgctxt "building.oon_meselenyek.name"
+msgid "Meselények szentélye"
+msgstr ""
+
+msgctxt "building.oon_meselenyek.desc"
+msgid "Kitsune-maszkosokat és hősöket képez."
+msgstr ""
+
+msgctxt "building.oon_tengu_feszek.name"
+msgid "Tengu-fészek"
+msgstr ""
+
+msgctxt "building.oon_tengu_feszek.desc"
+msgid "Tengu követeket nevel."
+msgstr ""
+
+msgctxt "building.oon_lampaskert.name"
+msgid "Lámpáskert"
+msgstr ""
+
+msgctxt "building.oon_lampaskert.desc"
+msgid "Az Ooni fejlesztései és ostromszíne."
+msgstr ""
+
+msgctxt "building.oon_kapuorzo_torony.name"
+msgid "Kapuőrző torony"
+msgstr ""
+
+msgctxt "building.oon_kapuorzo_torony.desc"
+msgid "Faragott nian-szoborral díszített őrtorony."
+msgstr ""
+
+msgctxt "building.oon_voros_dojo.name"
+msgid "Vörös dódzsó"
+msgstr ""
+
+msgctxt "building.oon_voros_dojo.desc"
+msgid "Tomboló onikat képez; a dódzsó dobjai erősebbek."
+msgstr ""
+
+msgctxt "building.oon_kapuszentely.name"
+msgid "Kapuszentély"
+msgstr ""
+
+msgctxt "building.oon_kapuszentely.desc"
+msgid "Kőkutya-őröket és lámpáspapokat nevel."
+msgstr ""
+
+msgctxt "building.oon_szelcsucs.name"
+msgid "Szélcsúcs"
+msgstr ""
+
+msgctxt "building.oon_szelcsucs.desc"
+msgid "Hollótengu-harcosokat és viharhívókat nevel."
+msgstr ""
+
+msgctxt "building.oon_torii.name"
+msgid "Torii-kapu"
+msgstr ""
+
+msgctxt "building.oon_torii.desc"
+msgid "Kapupár egyik fele. Az elsőt lámpásfényben, a másodikat bárhová teheted, ahol épp látsz; a két kapu között az egységek átkelnek (jobb klikk a kapura, 2 mp, utána 8 mp töltődés). Kis lámpásfényt is ad."
+msgstr ""
+
+msgctxt "building.oon_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.oon_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "building.oon_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.oon_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "research.oon_vasbuzogany.name"
+msgid "Vasbuzogány"
+msgstr ""
+
+msgctxt "research.oon_vasbuzogany.desc"
+msgid "+2 sebzés a közelharcosoknak."
+msgstr ""
+
+msgctxt "research.oon_lakkozott_vert.name"
+msgid "Lakkozott vért"
+msgstr ""
+
+msgctxt "research.oon_lakkozott_vert.desc"
+msgid "+1 páncél az élő egységeknek."
+msgstr ""
+
+msgctxt "research.oon_lampasolaj.name"
+msgid "Lámpásolaj"
+msgstr ""
+
+msgctxt "research.oon_lampasolaj.desc"
+msgid "+1 látótáv minden egységnek."
+msgstr ""
+
+msgctxt "research.oon_szelparna.name"
+msgid "Szélpárna"
+msgstr ""
+
+msgctxt "research.oon_szelparna.desc"
+msgid "+15% sebesség a repülőknek."
+msgstr ""
+
+msgctxt "research.oon_kettos_kapu.name"
+msgid "Kettős kapu"
+msgstr ""
+
+msgctxt "research.oon_kettos_kapu.desc"
+msgid "Két Torii-kapupár is építhető."
+msgstr ""
+
+msgctxt "research.oon_kotel.name"
+msgid "Fonott hajítókötél"
+msgstr ""
+
+msgctxt "research.oon_kotel.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.oon_messzefeny.name"
+msgid "Messzefény"
+msgstr ""
+
+msgctxt "research.oon_messzefeny.desc"
+msgid "+2 csempe lámpásfény minden lámpásnál: több helyen lehet építeni, és több helyen gyógyulnak az egységek."
+msgstr ""
+
+msgctxt "research.oon_harci_dobok.name"
+msgid "Harci dobok"
+msgstr ""
+
+msgctxt "research.oon_harci_dobok.desc"
+msgid "A harci kedv 40%-kal lassabban fogy, a Taiko-dobos kétszer gyorsabban tölti."
+msgstr ""
+
+msgctxt "research.oon_verszomj.name"
+msgid "Oni vérszomj"
+msgstr ""
+
+msgctxt "research.oon_verszomj.desc"
+msgid "Az oni harcosok (Oni harcos, Tomboló oni, Ō-oni) ölésenként 20 életerőt kapnak vissza."
+msgstr ""
+
+msgctxt "research.oon_tengu_tollak.name"
+msgid "Tengu-tollak"
+msgstr ""
+
+msgctxt "research.oon_tengu_tollak.desc"
+msgid "A repülő egységek +1 lőtávot és +10% sebességet kapnak."
+msgstr ""
+
+msgctxt "research.oon_vasbuzogany_2.name"
+msgid "Vasbuzogány II."
+msgstr ""
+
+msgctxt "research.oon_vasbuzogany_2.desc"
+msgid "+2 sebzés a közelharcosoknak. (II. szint)"
+msgstr ""
+
+msgctxt "research.oon_vasbuzogany_3.name"
+msgid "Vasbuzogány III."
+msgstr ""
+
+msgctxt "research.oon_vasbuzogany_3.desc"
+msgid "+2 sebzés a közelharcosoknak. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.oon_lakkozott_vert_2.name"
+msgid "Lakkozott vért II."
+msgstr ""
+
+msgctxt "research.oon_lakkozott_vert_2.desc"
+msgid "+1 páncél az élő egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.oon_lakkozott_vert_3.name"
+msgid "Lakkozott vért III."
+msgstr ""
+
+msgctxt "research.oon_lakkozott_vert_3.desc"
+msgid "+1 páncél az élő egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.oon_kotel_2.name"
+msgid "Fonott hajítókötél II."
+msgstr ""
+
+msgctxt "research.oon_kotel_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.oon_kotel_3.name"
+msgid "Fonott hajítókötél III."
+msgstr ""
+
+msgctxt "research.oon_kotel_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.oon_kokutya_huseg.name"
+msgid "Kőkutya-hűség"
+msgstr ""
+
+msgctxt "research.oon_kokutya_huseg.desc"
+msgid "A Kőkutya-őr mellett álló (2,5 csempén belüli) épület +2 páncélt kap."
+msgstr ""
+
+msgctxt "research.oon_lampas_magia.name"
+msgid "Lámpás-mágia"
+msgstr ""
+
+msgctxt "research.oon_lampas_magia.desc"
+msgid "A lámpásfényben álló varázslók 20%-kal erősebbek."
+msgstr ""
+
+msgctxt "faction.ooni.name"
+msgid "Ooni"
+msgstr ""
+
+msgctxt "faction.ooni.desc"
+msgid "Az onik és nianok közösségében a buzogányos harcosok mellett négylábú őrzők és szárnyas tengu követek is szolgálnak. Csarnokaik márványoszlopai fölé ívelt cseréptetők borulnak, kapuiknál faragott őrzők és papírlámpások állnak."
+msgstr ""
+
+msgctxt "faction.ooni.tagline"
+msgid "Onik, nianok és tengu követek"
+msgstr ""
+
+msgctxt "path.ooni.voros.name"
+msgid "Vörös buzogány"
+msgstr ""
+
+msgctxt "path.ooni.voros.desc"
+msgid "Tomboló onik és harci dobok: a közelharcosok erősebbek és gyorsabbak, a Taiko-dobosok szívósabbak, és ritmusuk +75%-kal gyorsítja az építkezést. Korai, kemény nyomás."
+msgstr ""
+
+msgctxt "path.ooni.voros.tagline"
+msgid "Oni roham"
+msgstr ""
+
+msgctxt "path.ooni.kapu.name"
+msgid "Kapuőrzők"
+msgstr ""
+
+msgctxt "path.ooni.kapu.desc"
+msgid "Kőkutya-őrök és lámpáspapok; az épületek és a nagy testű őrzők erősebbek. Lassú, áttörhetetlen védelem."
+msgstr ""
+
+msgctxt "path.ooni.kapu.tagline"
+msgid "A nian-kapuk erőssége"
+msgstr ""
+
+msgctxt "path.ooni.tengu.name"
+msgid "Tengu szél"
+msgstr ""
+
+msgctxt "path.ooni.tengu.desc"
+msgid "Hollótengu-harcosok és viharhívók; a repülők gyorsabbak. Mozgékony, légi portyázó játék."
+msgstr ""
+
+msgctxt "path.ooni.tengu.tagline"
+msgid "Légierő és vihar"
+msgstr ""
+
+msgctxt "unit.urs_telepes.name"
+msgid "Telepes"
+msgstr ""
+
+msgctxt "unit.urs_telepes.desc"
+msgid "Munkás. Építéskor bemászik a félkész épületbe: bent védett, és csak készen jön ki. Javít, gyűjt."
+msgstr ""
+
+msgctxt "unit.urs_pajzshordozo.name"
+msgid "Pajzshordozó"
+msgstr ""
+
+msgctxt "unit.urs_pajzshordozo.desc"
+msgid "Az ursan sereg gerince. Pajzsfal: a távolsági sebzés nagy részét elnyeli."
+msgstr ""
+
+msgctxt "unit.urs_szigonyvezo.name"
+msgid "Szigonyvető"
+msgstr ""
+
+msgctxt "unit.urs_szigonyvezo.desc"
+msgid "Korai légvédelem: szigonya földi és légi célpontokat is eltalál, a repülő típus és a nagy testű célpontok ellen bónuszsebzést okoz."
+msgstr ""
+
+msgctxt "unit.urs_berserker.name"
+msgid "Medvebőrös berserker"
+msgstr ""
+
+msgctxt "unit.urs_berserker.desc"
+msgid "Gyors, nagy sebzésű közelharcos."
+msgstr ""
+
+msgctxt "unit.urs_runapap.name"
+msgid "Rúnapap"
+msgstr ""
+
+msgctxt "unit.urs_runapap.desc"
+msgid "Gyógyító. Automatikusan foltozza a sebesült harcosokat."
+msgstr ""
+
+msgctxt "unit.urs_kardfogu.name"
+msgid "Kardfogú lovas"
+msgstr ""
+
+msgctxt "unit.urs_kardfogu.desc"
+msgid "Kardfogú tigrisen lovagló gyors harcos. Roham képesség."
+msgstr ""
+
+msgctxt "unit.urs_viharhollo.name"
+msgid "Viharholló"
+msgstr ""
+
+msgctxt "unit.urs_viharhollo.desc"
+msgid "Óriás holló. Felderítő és légvédelem."
+msgstr ""
+
+msgctxt "unit.urs_mammut.name"
+msgid "Harci mammut"
+msgstr ""
+
+msgctxt "unit.urs_mammut.desc"
+msgid "Gyapjas mamut, hátán kőhajítókkal. Terület-sebzés, bónusz épületek ellen."
+msgstr ""
+
+msgctxt "unit.urs_hos_ragna.name"
+msgid "Ragna Kőváll"
+msgstr ""
+
+msgctxt "unit.urs_hos_ragna.desc"
+msgid "Egy határerőd parancsnoka. A pajzsa először a mellette állót védi."
+msgstr ""
+
+msgctxt "unit.urs_dardaor.name"
+msgid "Dárdaőr"
+msgstr ""
+
+msgctxt "unit.urs_dardaor.desc"
+msgid "Hosszú dárdás védő – lovasság és nagy vadak ellen kiváló."
+msgstr ""
+
+msgctxt "unit.urs_ostromszan.name"
+msgid "Ostromszán"
+msgstr ""
+
+msgctxt "unit.urs_ostromszan.desc"
+msgid "Szánra szerelt kőhajító, épületek ellen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
+msgstr ""
+
+msgctxt "unit.urs_kardfogu_tigris.name"
+msgid "Kardfogú tigris"
+msgstr ""
+
+msgctxt "unit.urs_kardfogu_tigris.desc"
+msgid "Bjarka hívására érkező vadállat (idézett)."
+msgstr ""
+
+msgctxt "unit.urs_hos_hjalmar.name"
+msgid "Hjalmar Fagyjós"
+msgstr ""
+
+msgctxt "unit.urs_hos_hjalmar.desc"
+msgid "A jégkorszak emlékét őrző jós: fagy, vihar és lassítás."
+msgstr ""
+
+msgctxt "unit.urs_hos_bjarka.name"
+msgid "Bjarka, a Vadak Ura"
+msgstr ""
+
+msgctxt "unit.urs_hos_bjarka.desc"
+msgid "Vadász és vadidomár: kardfogú tigriseket és mamutokat hív harcba."
+msgstr ""
+
+msgctxt "unit.urs_runako.name"
+msgid "Rúnakő"
+msgstr ""
+
+msgctxt "unit.urs_runako.desc"
+msgid "Rúnapap által állított kő (idézett). Aurája véd és gyógyít."
+msgstr ""
+
+msgctxt "unit.urs_medvealak.name"
+msgid "Medvealakváltó"
+msgstr ""
+
+msgctxt "unit.urs_medvealak.desc"
+msgid "Az ursan teljesen medvévé változik: hatalmas karmok, rettentő üvöltés."
+msgstr ""
+
+msgctxt "unit.urs_kurtos.name"
+msgid "Harci kürtös"
+msgstr ""
+
+msgctxt "unit.urs_kurtos.desc"
+msgid "Kürtszava felszítja a harcosokat: +15% sebzés, +10% sebesség a közelben."
+msgstr ""
+
+msgctxt "unit.urs_runaorias.name"
+msgid "Rúnaóriás"
+msgstr ""
+
+msgctxt "unit.urs_runaorias.desc"
+msgid "Rúnákkal életre keltett kőóriás: lassú, de épületeket zúz."
+msgstr ""
+
+msgctxt "building.urs_nagyterem.name"
+msgid "Nagyterem"
+msgstr ""
+
+msgctxt "building.urs_nagyterem.desc"
+msgid "Faragott hosszúcsarnok, főépület. Leadóhely, Telepeseket képez."
+msgstr ""
+
+msgctxt "building.urs_hosszuhaz.name"
+msgid "Hosszúház"
+msgstr ""
+
+msgctxt "building.urs_hosszuhaz.desc"
+msgid "Erődített hosszúház: 4 fős helyőrség, riadóban a telepesek menedéke."
+msgstr ""
+
+msgctxt "building.urs_fatelep.name"
+msgid "Fatelep"
+msgstr ""
+
+msgctxt "building.urs_fatelep.desc"
+msgid "Leadóhely fának, aranynak és meteoritnak."
+msgstr ""
+
+msgctxt "building.urs_harcosok_haza.name"
+msgid "Harcosok háza"
+msgstr ""
+
+msgctxt "building.urs_harcosok_haza.desc"
+msgid "Pajzshordozókat, dárdaőröket és szigonyvetőket képez. A szigonyvetők korai légvédelmet adnak."
+msgstr ""
+
+msgctxt "building.urs_runakovacs.name"
+msgid "Rúnakovács"
+msgstr ""
+
+msgctxt "building.urs_runakovacs.desc"
+msgid "Rúnapapokat képez, fegyvert és páncélt fejleszt."
+msgstr ""
+
+msgctxt "building.urs_vadak_karama.name"
+msgid "Vadak karáma"
+msgstr ""
+
+msgctxt "building.urs_vadak_karama.desc"
+msgid "Kardfogú lovasokat és harci mamutokat nevel."
+msgstr ""
+
+msgctxt "building.urs_sasszirt.name"
+msgid "Sasszirt"
+msgstr ""
+
+msgctxt "building.urs_sasszirt.desc"
+msgid "Viharhollókat nevel."
+msgstr ""
+
+msgctxt "building.urs_ortorony.name"
+msgid "Őrtorony"
+msgstr ""
+
+msgctxt "building.urs_ortorony.desc"
+msgid "Fa-kő őrtorony íjászokkal."
+msgstr ""
+
+msgctxt "building.urs_eskufa.name"
+msgid "Esküfa"
+msgstr ""
+
+msgctxt "building.urs_eskufa.desc"
+msgid "Ősi kőris, amely alatt a jarlok esküt tesznek: Ragna, Hjalmar és Bjarka."
+msgstr ""
+
+msgctxt "building.urs_tanya.name"
+msgid "Tanya"
+msgstr ""
+
+msgctxt "building.urs_tanya.desc"
+msgid "Árpaföld, ólak és szénapajták: a jarlság népe innen él. +10 létszám."
+msgstr ""
+
+msgctxt "building.urs_colopfal.name"
+msgid "Cölöpfal"
+msgstr ""
+
+msgctxt "building.urs_colopfal.desc"
+msgid "Hegyes karókból álló falszakasz – elzárja az utat. Olcsó, gyorsan épül; a telepesek javítják."
+msgstr ""
+
+msgctxt "building.urs_verfogadalom.name"
+msgid "Vérfogadalom-csarnok"
+msgstr ""
+
+msgctxt "building.urs_verfogadalom.desc"
+msgid "Itt teszik le a berserkerek a vérfogadalmat."
+msgstr ""
+
+msgctxt "building.urs_runaszentely.name"
+msgid "Rúnaszentély"
+msgstr ""
+
+msgctxt "building.urs_runaszentely.desc"
+msgid "Rúnakőkör kovácsműhellyel: rúnaóriások és ostromszánok."
+msgstr ""
+
+msgctxt "building.urs_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.urs_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "building.urs_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.urs_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "research.urs_runapengek.name"
+msgid "Rúnás pengék"
+msgstr ""
+
+msgctxt "research.urs_runapengek.desc"
+msgid "+2 sebzés a közelharci egységeknek."
+msgstr ""
+
+msgctxt "research.urs_vasszigony.name"
+msgid "Vashegyű szigonyok"
+msgstr ""
+
+msgctxt "research.urs_vasszigony.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.urs_medvebunda.name"
+msgid "Medvebunda-páncél"
+msgstr ""
+
+msgctxt "research.urs_medvebunda.desc"
+msgid "+1 páncél minden élő egységnek."
+msgstr ""
+
+msgctxt "research.urs_telegi_edzes.name"
+msgid "Télegi edzés"
+msgstr ""
+
+msgctxt "research.urs_telegi_edzes.desc"
+msgid "+25 életerő a gyalogságnak és a lovasságnak."
+msgstr ""
+
+msgctxt "research.urs_nepfelkeles.name"
+msgid "Népfelkelés"
+msgstr ""
+
+msgctxt "research.urs_nepfelkeles.desc"
+msgid "A telepesek harcosként is megállják a helyüket: +5 sebzés, +40 életerő, +1 páncél; és megnyílik a „Fegyverbe!” riadó."
+msgstr ""
+
+msgctxt "research.urs_runapajzs.name"
+msgid "Rúnapajzs"
+msgstr ""
+
+msgctxt "research.urs_runapajzs.desc"
+msgid "Rúnák az épületeken: minden épület +2 páncélt kap, és lassan magától javul (+1 életerő/mp)."
+msgstr ""
+
+msgctxt "research.urs_kiados_tanya.name"
+msgid "Kiadós tanya"
+msgstr ""
+
+msgctxt "research.urs_kiados_tanya.desc"
+msgid "A Tanyák +4 létszámot adnak (8 helyett 12)."
+msgstr ""
+
+msgctxt "research.urs_medve_osztön.name"
+msgid "Medve-ösztön"
+msgstr ""
+
+msgctxt "research.urs_medve_osztön.desc"
+msgid "Vérszag: a 40% életerő alá sebesült ursan egységek 20%-kal nagyobbat sebeznek."
+msgstr ""
+
+msgctxt "research.urs_gyors_helyorseg.name"
+msgid "Lőréses falak"
+msgstr ""
+
+msgctxt "research.urs_gyors_helyorseg.desc"
+msgid "A helyőrségbe húzódott egységek erősebben lőnek ki (+7 sebzés fejenként a +4 helyett)."
+msgstr ""
+
+msgctxt "research.urs_runapengek_2.name"
+msgid "Rúnás pengék II."
+msgstr ""
+
+msgctxt "research.urs_runapengek_2.desc"
+msgid "+2 sebzés a közelharci egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.urs_runapengek_3.name"
+msgid "Rúnás pengék III."
+msgstr ""
+
+msgctxt "research.urs_runapengek_3.desc"
+msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.urs_vasszigony_2.name"
+msgid "Vashegyű szigonyok II."
+msgstr ""
+
+msgctxt "research.urs_vasszigony_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.urs_vasszigony_3.name"
+msgid "Vashegyű szigonyok III."
+msgstr ""
+
+msgctxt "research.urs_vasszigony_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.urs_medvebunda_2.name"
+msgid "Medvebunda-páncél II."
+msgstr ""
+
+msgctxt "research.urs_medvebunda_2.desc"
+msgid "+1 páncél minden élő egységnek. (II. szint)"
+msgstr ""
+
+msgctxt "research.urs_medvebunda_3.name"
+msgid "Medvebunda-páncél III."
+msgstr ""
+
+msgctxt "research.urs_medvebunda_3.desc"
+msgid "+1 páncél minden élő egységnek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.urs_tuskes_pajzsfal.name"
+msgid "Tüskés pajzsfal"
+msgstr ""
+
+msgctxt "research.urs_tuskes_pajzsfal.desc"
+msgid "A Pajzshordozók nem gyengék a közelharcosok és az ostromgépek ellen."
+msgstr ""
+
+msgctxt "faction.ursan.name"
+msgid "Ursanok"
+msgstr ""
+
+msgctxt "faction.ursan.desc"
+msgid "Az Északi Eskük Birodalma: esküvel összekötött jarlságok, jurtákkal kevert hosszúcsarnokok, árpaföldes tanyák. Sisakot nem hordanak, legfeljebb ágyékkötőt; nagy, lapos deszkapajzzsal harcolnak. A csarnokok és tornyok helyőrséget fogadnak (riadókor a telepesek is behúzódnak), a létszámot a tanyák adják. Pajzsfal és jégkorszaki harci vadak."
+msgstr ""
+
+msgctxt "faction.ursan.tagline"
+msgid "Helyőrség • tanyák • javítás • pajzsfal"
+msgstr ""
+
+msgctxt "path.ursan.berserker.name"
+msgid "Berserker-klán"
+msgstr ""
+
+msgctxt "path.ursan.berserker.desc"
+msgid "Vérfogadalom: a közelharcosok annál erősebbek, minél sebesültebbek (+60% sebzésig). Berserkerek, medvévé változó alakváltók és harci kürtösök."
+msgstr ""
+
+msgctxt "path.ursan.berserker.tagline"
+msgid "Korai, nyers közelharci nyomás"
+msgstr ""
+
+msgctxt "path.ursan.runa.name"
+msgid "Rúnakovácsok"
+msgstr ""
+
+msgctxt "path.ursan.runa.desc"
+msgid "Rúnákkal vésett falak és tornyok: +3 páncél minden épületnek, +6 toronysebzés. Rúnaóriások és ostromszánok törik át a frontot, amikor már minden megvan."
+msgstr ""
+
+msgctxt "path.ursan.runa.tagline"
+msgid "Erőd, technológia, késői erő"
+msgstr ""
+
+msgctxt "path.ursan.tundra.name"
+msgid "Tundra hívása"
+msgstr ""
+
+msgctxt "path.ursan.tundra.desc"
+msgid "Mamutok, kardfogú lovasok és viharhollók. A vadállatok és a lovasság +60 életerőt és gyorsabb regenerációt kapnak. Lassú, nehéz ostrom."
+msgstr ""
+
+msgctxt "path.ursan.tundra.tagline"
+msgid "Nagytestű vadak, kevés, de hatalmas egység"
+msgstr ""
+
+msgctxt "unit.vad_kristalybogar.name"
+msgid "Kristálybogár"
+msgstr ""
+
+msgctxt "unit.vad_kristalybogar.desc"
+msgid "Csillagérctől megnőtt bogár; páncélján kristályok nőnek."
+msgstr ""
+
+msgctxt "unit.vad_hamufarkas.name"
+msgid "Hamufarkas"
+msgstr ""
+
+msgctxt "unit.vad_hamufarkas.desc"
+msgid "A becsapódás hamujában élő falkavad."
+msgstr ""
+
+msgctxt "unit.vad_eterliderc.name"
+msgid "Éterlidérc"
+msgstr ""
+
+msgctxt "unit.vad_eterliderc.desc"
+msgid "Szabadon kóborló étercsomó – egykor talán egy lélek volt."
+msgstr ""
+
+msgctxt "unit.vad_kotroll.name"
+msgid "Kőtroll"
+msgstr ""
+
+msgctxt "unit.vad_kotroll.desc"
+msgid "Hegyi óriás, bőrébe kristályok nőttek."
+msgstr ""
+
+msgctxt "unit.vad_ercgolem.name"
+msgid "Csillagérc-gólem"
+msgstr ""
+
+msgctxt "unit.vad_ercgolem.desc"
+msgid "A Fekete Tükör pereméről indult élő érctömb. A vadon ura."
+msgstr ""
+
+msgctxt "faction.vadon.name"
+msgid "Vadon"
+msgstr ""
+
+msgctxt "faction.vadon.desc"
+msgid "A Fényes Eső óta a vadonban éterrel átitatott lények őrzik a kristálylelőhelyeket és a kincseket."
+msgstr ""
+
+msgctxt "faction.vadon.tagline"
+msgid "Semleges szörnyek"
+msgstr ""
+
+msgctxt "unit.wul_gyujtogeto.name"
+msgid "Gyűjtögető"
+msgstr ""
+
+msgctxt "unit.wul_gyujtogeto.desc"
+msgid "Munkás. Fát csapol: a fához kötődik, és hordás nélkül, lassan, folyamatosan jön a fa (egy fán egy csapoló). Aranyat hord, javít; építéskor mellette állva dolgozik; többen együtt gyorsabban építenek."
+msgstr ""
+
+msgctxt "unit.wul_landzsas.name"
+msgid "Lándzsás harcos"
+msgstr ""
+
+msgctxt "unit.wul_landzsas.desc"
+msgid "Gyors, kovakőhegyű lándzsás, keskeny festett hárítópajzzsal; dárdavetővel (woomera) messzire is hajít. Falkában erős."
+msgstr ""
+
+msgctxt "unit.wul_ijas_vadasz.name"
+msgid "Bumerángvető"
+msgstr ""
+
+msgctxt "unit.wul_ijas_vadasz.desc"
+msgid "Távolsági vadász: a bumeráng visszatérő íven a közeli ellenségeket is eltalálja. Földi és légi célpontokra."
+msgstr ""
+
+msgctxt "unit.wul_holdsaman.name"
+msgid "Holdsámán"
+msgstr ""
+
+msgctxt "unit.wul_holdsaman.desc"
+msgid "Gyógyít, és szellemfarkasokat hív a holdfényből."
+msgstr ""
+
+msgctxt "unit.wul_szellemfarkas.name"
+msgid "Szellemfarkas"
+msgstr ""
+
+msgctxt "unit.wul_szellemfarkas.desc"
+msgid "A holdfényből idézett szellem-dingó. Fél percig él."
+msgstr ""
+
+msgctxt "unit.wul_bolenylovas.name"
+msgid "Bölénylovas"
+msgstr ""
+
+msgctxt "unit.wul_bolenylovas.desc"
+msgid "Bölényen ülő wullof harcos: erős roham. Le is szállhat."
+msgstr ""
+
+msgctxt "unit.wul_mennydorgesmadar.name"
+msgid "Viharkakadu"
+msgstr ""
+
+msgctxt "unit.wul_mennydorgesmadar.desc"
+msgid "Óriás viharkakadu; villámai a célpont környékét is sújtják."
+msgstr ""
+
+msgctxt "unit.wul_totemorias.name"
+msgid "Termeszvár-óriás"
+msgstr ""
+
+msgctxt "unit.wul_totemorias.desc"
+msgid "Életre kelt vörös termeszvár – lassú, de az épületeket porrá zúzza."
+msgstr ""
+
+msgctxt "unit.wul_vandorszeker.name"
+msgid "Vándorbatyu"
+msgstr ""
+
+msgctxt "unit.wul_vandorszeker.desc"
+msgid "Felszedett tábor, rudakra kötve. Jobb gomb: Letelepítés máshol."
+msgstr ""
+
+msgctxt "unit.wul_hos_tava.name"
+msgid "Tava"
+msgstr ""
+
+msgctxt "unit.wul_hos_tava.desc"
+msgid "Folyami térképész és követ a Hét Út Szövetségéből. Utat nyit és felderít."
+msgstr ""
+
+msgctxt "unit.wul_tomahawkos.name"
+msgid "Dárdavető portyázó"
+msgstr ""
+
+msgctxt "unit.wul_tomahawkos.desc"
+msgid "Gyors portyázó dárdavetővel (woomera): a munkások és a távolsági egységek réme."
+msgstr ""
+
+msgctxt "unit.wul_hos_varnu.name"
+msgid "Varnu, a Holdsámán"
+msgstr ""
+
+msgctxt "unit.wul_hos_varnu.desc"
+msgid "Az ősök szellemeivel beszél: gyógyít, ködöt és szellemfalkát hív."
+msgstr ""
+
+msgctxt "unit.wul_hos_kurrin.name"
+msgid "Kurrin Harcfőnök"
+msgstr ""
+
+msgctxt "unit.wul_hos_kurrin.desc"
+msgid "Harci bölényen lovagló harcfőnök: tapos, üvölt, és a Hét Út harcosait hívja."
+msgstr ""
+
+msgctxt "unit.wul_emu.name"
+msgid "Emu"
+msgstr ""
+
+msgctxt "unit.wul_emu.desc"
+msgid "Tenyészemu: +6 létszám. Emukarámonként legfeljebb 5 tartható."
+msgstr ""
+
+msgctxt "unit.wul_boleny.name"
+msgid "Bölény"
+msgstr ""
+
+msgctxt "unit.wul_boleny.desc"
+msgid "Erős, de lassú bölény. Felültethető rá egy wullof gyalogos harcos."
+msgstr ""
+
+msgctxt "unit.wul_groomi.name"
+msgid "Groomi"
+msgstr ""
+
+msgctxt "unit.wul_groomi.desc"
+msgid "Piros szörnymadár: gyors, harapós földi vadász. A Groomi-fészekben sav-, tűz- vagy fagyköpést tanulhat (csak egyet)."
+msgstr ""
+
+msgctxt "unit.wul_csordavezer.name"
+msgid "Csordavezér bika"
+msgstr ""
+
+msgctxt "unit.wul_csordavezer.desc"
+msgid "Hatalmas bölénybika: épületeket tipor, rohamában mindent elsöpör."
+msgstr ""
+
+msgctxt "unit.wul_groomi_fioka.name"
+msgid "Groomi-fióka"
+msgstr ""
+
+msgctxt "unit.wul_groomi_fioka.desc"
+msgid "Kicsi, de fürge és harapós Groomi."
+msgstr ""
+
+msgctxt "unit.wul_groomi_anya.name"
+msgid "Groomi-anya"
+msgstr ""
+
+msgctxt "unit.wul_groomi_anya.desc"
+msgid "Óriás Groomi-tojó: fiókákat keltet, és keményen harap."
+msgstr ""
+
+msgctxt "unit.wul_totemfarago.name"
+msgid "Totemfaragó"
+msgstr ""
+
+msgctxt "unit.wul_totemfarago.desc"
+msgid "Ősök-dalát éneklő faragó: a közeli szövetségesek +2 páncélt kapnak."
+msgstr ""
+
+msgctxt "unit.wul_alomjaro.name"
+msgid "Álomjáró"
+msgstr ""
+
+msgctxt "unit.wul_alomjaro.desc"
+msgid "Az ősök álmait járja: álomködöt borít az ellenségre, és az álmok útján ugrik egyik helyről a másikra."
+msgstr ""
+
+msgctxt "unit.wul_ijas_vadasz_falka.name"
+msgid "Bumerángvető-falka (3)"
+msgstr ""
+
+msgctxt "unit.wul_ijas_vadasz_falka.desc"
+msgid "Három Bumerángvető egyszerre, olcsóbban. (Falkaharc kutatás kell hozzá.)"
+msgstr ""
+
+msgctxt "unit.wul_landzsas_falka.name"
+msgid "Lándzsás harcos-falka (3)"
+msgstr ""
+
+msgctxt "unit.wul_landzsas_falka.desc"
+msgid "Három Lándzsás harcos egyszerre, olcsóbban."
+msgstr ""
+
+msgctxt "building.wul_tanacssator.name"
+msgid "Tanácskunyhó"
+msgstr ""
+
+msgctxt "building.wul_tanacssator.desc"
+msgid "A törzs nagy kéregkunyhója. Leadóhely, Gyűjtögetőket nevel. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_tipi.name"
+msgid "Kéregkunyhó"
+msgstr ""
+
+msgctxt "building.wul_tipi.desc"
+msgid "Eukaliptuszkéreg-kunyhó: Lándzsás harcosokat képez. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_harcosok_tuze.name"
+msgid "Harcosok tüze"
+msgstr ""
+
+msgctxt "building.wul_harcosok_tuze.desc"
+msgid "Dárdavetőket és bumerángvetőket képez. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_bolenykaram.name"
+msgid "Emukarám"
+msgstr ""
+
+msgctxt "building.wul_bolenykaram.desc"
+msgid "Emukat tenyészt (karámonként legfeljebb 5). Csak az emuk növelik a létszámot. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_samansator.name"
+msgid "Sámánkunyhó"
+msgstr ""
+
+msgctxt "building.wul_samansator.desc"
+msgid "Holdsámánokat képez, fejlesztéseket kutat. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_mennydorges_szikla.name"
+msgid "Vörös szikla"
+msgstr ""
+
+msgctxt "building.wul_mennydorges_szikla.desc"
+msgid "A viharkakaduk fészke a pusztai vörös sziklán."
+msgstr ""
+
+msgctxt "building.wul_szellemtotem.name"
+msgid "Eukaliptusz-őrfa"
+msgstr ""
+
+msgctxt "building.wul_szellemtotem.desc"
+msgid "Kilátós őrfa: a fenti vadászok bumerángokkal védik a tábort."
+msgstr ""
+
+msgctxt "building.wul_osok_kore.name"
+msgid "Ősök köre"
+msgstr ""
+
+msgctxt "building.wul_osok_kore.desc"
+msgid "Faragott oszlopok köre: Tava, Varnu és Kurrin hívása. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_bolenyakol.name"
+msgid "Bölénykarám"
+msgstr ""
+
+msgctxt "building.wul_bolenyakol.desc"
+msgid "Bölényeket és Csordavezér bikákat képez. Felszedhető."
+msgstr ""
+
+msgctxt "building.wul_groomi_feszek.name"
+msgid "Groomi-fészek"
+msgstr ""
+
+msgctxt "building.wul_groomi_feszek.desc"
+msgid "Groomikat nevel; itt választható ki a köpésük."
+msgstr ""
+
+msgctxt "building.wul_totemkert.name"
+msgid "Totemkert"
+msgstr ""
+
+msgctxt "building.wul_totemkert.desc"
+msgid "Faragott totemek kertje: Totemfaragókat, Álomjárókat és termeszvár-óriásokat ad."
+msgstr ""
+
+msgctxt "building.wul_diplomacia.name"
+msgid "Diplomácia csarnoka"
+msgstr ""
+
+msgctxt "building.wul_diplomacia.desc"
+msgid "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg."
+msgstr ""
+
+msgctxt "building.wul_egko.name"
+msgid "Égkő"
+msgstr ""
+
+msgctxt "building.wul_egko.desc"
+msgid "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja."
+msgstr ""
+
+msgctxt "research.wul_obszidian_landzsa.name"
+msgid "Kovakő lándzsahegyek"
+msgstr ""
+
+msgctxt "research.wul_obszidian_landzsa.desc"
+msgid "+2 sebzés a közelharci egységeknek."
+msgstr ""
+
+msgctxt "research.wul_holdfeny_ijak.name"
+msgid "Vasfa bumerángok"
+msgstr ""
+
+msgctxt "research.wul_holdfeny_ijak.desc"
+msgid "+2 sebzés a távolsági egységeknek."
+msgstr ""
+
+msgctxt "research.wul_bolenybor.name"
+msgid "Kengurubőr vértek"
+msgstr ""
+
+msgctxt "research.wul_bolenybor.desc"
+msgid "+1 páncél minden élő egységnek."
+msgstr ""
+
+msgctxt "research.wul_falkaszellem.name"
+msgid "A falka szelleme"
+msgstr ""
+
+msgctxt "research.wul_falkaszellem.desc"
+msgid "+10% sebesség minden egységnek."
+msgstr ""
+
+msgctxt "research.wul_savkopes.name"
+msgid "Savköpés"
+msgstr ""
+
+msgctxt "research.wul_savkopes.desc"
+msgid "A Groomik maró, mérgező savat köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető."
+msgstr ""
+
+msgctxt "research.wul_tuzkopes.name"
+msgid "Tűzköpés"
+msgstr ""
+
+msgctxt "research.wul_tuzkopes.desc"
+msgid "A Groomik lángcsóvát köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető."
+msgstr ""
+
+msgctxt "research.wul_fagykopes.name"
+msgid "Fagyköpés"
+msgstr ""
+
+msgctxt "research.wul_fagykopes.desc"
+msgid "A Groomik jeges köpetet köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető."
+msgstr ""
+
+msgctxt "research.wul_zsakmanyszerzes.name"
+msgid "Zsákmányszerzés"
+msgstr ""
+
+msgctxt "research.wul_zsakmanyszerzes.desc"
+msgid "A vadászzsákmány (ölésből) aranyat is hoz: a fa-zsákmány felét."
+msgstr ""
+
+msgctxt "research.wul_falkaharc.name"
+msgid "Falkaharc"
+msgstr ""
+
+msgctxt "research.wul_falkaharc.desc"
+msgid "A Lándzsás harcosok és a Bumerángvetők falkában (hármasával, olcsóbban) is képezhetők: a képző épületen a „Falkában képez” kapcsolóval."
+msgstr ""
+
+msgctxt "research.wul_bolenylovaglas.name"
+msgid "Bölénylovaglás"
+msgstr ""
+
+msgctxt "research.wul_bolenylovaglas.desc"
+msgid "A wullof gyalogos harcosok felülhetnek a bölényre (a Bölény Felültetés gombja): Bölénylovas lesz belőlük."
+msgstr ""
+
+msgctxt "research.wul_obszidian_landzsa_2.name"
+msgid "Kovakő lándzsahegyek II."
+msgstr ""
+
+msgctxt "research.wul_obszidian_landzsa_2.desc"
+msgid "+2 sebzés a közelharci egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.wul_obszidian_landzsa_3.name"
+msgid "Kovakő lándzsahegyek III."
+msgstr ""
+
+msgctxt "research.wul_obszidian_landzsa_3.desc"
+msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.wul_holdfeny_ijak_2.name"
+msgid "Vasfa bumerángok II."
+msgstr ""
+
+msgctxt "research.wul_holdfeny_ijak_2.desc"
+msgid "+2 sebzés a távolsági egységeknek. (II. szint)"
+msgstr ""
+
+msgctxt "research.wul_holdfeny_ijak_3.name"
+msgid "Vasfa bumerángok III."
+msgstr ""
+
+msgctxt "research.wul_holdfeny_ijak_3.desc"
+msgid "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.wul_bolenybor_2.name"
+msgid "Kengurubőr vértek II."
+msgstr ""
+
+msgctxt "research.wul_bolenybor_2.desc"
+msgid "+1 páncél minden élő egységnek. (II. szint)"
+msgstr ""
+
+msgctxt "research.wul_bolenybor_3.name"
+msgid "Kengurubőr vértek III."
+msgstr ""
+
+msgctxt "research.wul_bolenybor_3.desc"
+msgid "+1 páncél minden élő egységnek. (III. szint; a Felemelkedés után)"
+msgstr ""
+
+msgctxt "research.wul_nyomolvasas.name"
+msgid "Ősi nyomolvasás"
+msgstr ""
+
+msgctxt "research.wul_nyomolvasas.desc"
+msgid "A wullof egységek 8 csempén belül felfedik a láthatatlan ellenséget."
+msgstr ""
+
+msgctxt "research.wul_holdtolte.name"
+msgid "Holdtölte"
+msgstr ""
+
+msgctxt "research.wul_holdtolte.desc"
+msgid "Minden 4. percben 1 percig telihold van: a wullof egységek 15%-kal nagyobbat sebeznek."
+msgstr ""
+
+msgctxt "faction.wullof.name"
+msgid "Wullof"
+msgstr ""
+
+msgctxt "faction.wullof.desc"
+msgid "A Hét Út Szövetsége: dingónép folyóvárosokkal, vándorló közösségekkel és útének-dalokkal a vörös pusztán és az eukaliptuszerdőkben. A táboraik felszedhetők és máshol letelepíthetők; a létszámot az emucsordák adják, falkában erősebbek, és minden zsákmány fát hoz a törzsnek."
+msgstr ""
+
+msgctxt "faction.wullof.tagline"
+msgid "Nomád táborok • falkaerő • vadászzsákmány"
+msgstr ""
+
+msgctxt "path.wullof.boleny.name"
+msgid "Bölény-csorda"
+msgstr ""
+
+msgctxt "path.wullof.boleny.desc"
+msgid "Bölényeket nevelsz, és a harcosaid felülnek rájuk. A lovasság és a vadállatok gyorsabbak és erősebbek; a Csordavezér bika épületeket tipor. Középjátékban egyetlen, döntő rohamra épít."
+msgstr ""
+
+msgctxt "path.wullof.boleny.tagline"
+msgid "Kevés, drága, megállíthatatlan roham"
+msgstr ""
+
+msgctxt "path.wullof.groomi.name"
+msgid "Groomi-fészek"
+msgstr ""
+
+msgctxt "path.wullof.groomi.desc"
+msgid "Piros szörnymadarak: a Groomik öléskor gyógyulnak és gyorsabbak, a Groomi-anya fiókákat keltet. A köpésük (sav, tűz vagy fagy) egyszer, végleg választható. Munkásvadászat, térképuralom."
+msgstr ""
+
+msgctxt "path.wullof.groomi.tagline"
+msgid "Gyors portyázás, vadászat a gyengékre"
+msgstr ""
+
+msgctxt "path.wullof.osok.name"
+msgid "Ősök útja"
+msgstr ""
+
+msgctxt "path.wullof.osok.desc"
+msgid "Totemkertet emelsz: a tornyok erősebbek és messzebbre látnak, az épületek szívósabbak. Totemfaragók és Álomjárók támogatják a termeszvár-óriásokat. Védekező, területfoglaló játék."
+msgstr ""
+
+msgctxt "path.wullof.osok.tagline"
+msgid "Totemlánc, lassú és biztos előrenyomulás"
+msgstr ""
+
+msgctxt "ability.pajzsfal.name"
+msgid "Pajzsfal"
+msgstr ""
+
+msgctxt "ability.pajzsfal.desc"
+msgid "Összezárt pajzsok: -60% távolsági sebzés, +2 páncél, de fele sebesség."
+msgstr ""
+
+msgctxt "ability.napvihar.name"
+msgid "Napvihar"
+msgstr ""
+
+msgctxt "ability.napvihar.desc"
+msgid "Izzó meteorpor-zápor: 4 mp alatt 88 sebzés minden ellenségnek a területen."
+msgstr ""
+
+msgctxt "ability.oruletkod.name"
+msgid "Őrület köde"
+msgstr ""
+
+msgctxt "ability.oruletkod.desc"
+msgid "Elmét bomlasztó spórafelhő: 50% lassítás és folyamatos sebzés 6 mp-ig."
+msgstr ""
+
+msgctxt "ability.gyogyitas.name"
+msgid "Rúnás gyógyítás"
+msgstr ""
+
+msgctxt "ability.gyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sérült élő szövetségeseket."
+msgstr ""
+
+msgctxt "ability.vagta.name"
+msgid "Vágta"
+msgstr ""
+
+msgctxt "ability.vagta.desc"
+msgid "A gyíkhátas 4 mp-ig 80%-kal gyorsabb."
+msgstr ""
+
+msgctxt "ability.roham.name"
+msgid "Roham"
+msgstr ""
+
+msgctxt "ability.roham.desc"
+msgid "4 mp-ig +70% sebesség és +30% sebzés."
+msgstr ""
+
+msgctxt "ability.holdgyogyitas.name"
+msgid "Holdfény-gyógyítás"
+msgstr ""
+
+msgctxt "ability.holdgyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sérült élő szövetségeseket."
+msgstr ""
+
+msgctxt "ability.szellemfarkasok.name"
+msgid "Szellemfarkasok"
+msgstr ""
+
+msgctxt "ability.szellemfarkasok.desc"
+msgid "Két szellem-dingót idéz 30 másodpercre."
+msgstr ""
+
+msgctxt "ability.gyokerkotes.name"
+msgid "Gyökérkötés"
+msgstr ""
+
+msgctxt "ability.gyokerkotes.desc"
+msgid "Gyökerek fonják körbe az ellenséget: 4 mp-ig szinte mozdulni sem tud."
+msgstr ""
+
+msgctxt "ability.osszeolvadas.name"
+msgid "Összeolvadás"
+msgstr ""
+
+msgctxt "ability.osszeolvadas.desc"
+msgid "Három közeli Pöfeteg egyetlen Óriáspöfeteggé olvad."
+msgstr ""
+
+msgctxt "ability.lelekidezes.name"
+msgid "Lélekidézés"
+msgstr ""
+
+msgctxt "ability.lelekidezes.desc"
+msgid "Egy közeli tetemből szellemlégióst (nagy tetemből szellemkolosszust) támaszt."
+msgstr ""
+
+msgctxt "ability.ostrommod.name"
+msgid "Ostrom-mód"
+msgstr ""
+
+msgctxt "ability.ostrommod.desc"
+msgid "A Kolosszus letelepszik: nem mozog, de +3 lőtáv és +25% sebzés."
+msgstr ""
+
+msgctxt "ability.h_tava_nyil.name"
+msgid "Nyomkereső nyíl"
+msgstr ""
+
+msgctxt "ability.h_tava_nyil.desc"
+msgid "Tava célzott lövése: nagy sebzés és lassítás egy ellenségen."
+msgstr ""
+
+msgctxt "ability.h_tava_utenek.name"
+msgid "Útének"
+msgstr ""
+
+msgctxt "ability.h_tava_utenek.desc"
+msgid "A közeli szövetségesek gyorsabban mozognak (és jobban védekeznek)."
+msgstr ""
+
+msgctxt "ability.h_tava_farkasok.name"
+msgid "Szellemfarkasok"
+msgstr ""
+
+msgctxt "ability.h_tava_farkasok.desc"
+msgid "Szellem-dingókat idéz."
+msgstr ""
+
+msgctxt "ability.h_tava_madar.name"
+msgid "A Hét Út hívása"
+msgstr ""
+
+msgctxt "ability.h_tava_madar.desc"
+msgid "Végső: két viharkakadu érkezik 45 másodpercre."
+msgstr ""
+
+msgctxt "ability.h_ragna_pajzsfal.name"
+msgid "Pajzsfal"
+msgstr ""
+
+msgctxt "ability.h_ragna_pajzsfal.desc"
+msgid "A pajzs először a mellette állót védi: kevesebb távolsági sebzés, több páncél."
+msgstr ""
+
+msgctxt "ability.h_ragna_esku.name"
+msgid "Az eskü súlya"
+msgstr ""
+
+msgctxt "ability.h_ragna_esku.desc"
+msgid "A közeli szövetségesek páncélja nő."
+msgstr ""
+
+msgctxt "ability.h_ragna_roham.name"
+msgid "Pajzsroham"
+msgstr ""
+
+msgctxt "ability.h_ragna_roham.desc"
+msgid "Ragna nekiront egy ellenségnek: sebzi és rövid időre megbénítja."
+msgstr ""
+
+msgctxt "ability.h_ragna_hosszutel.name"
+msgid "Hosszú tél"
+msgstr ""
+
+msgctxt "ability.h_ragna_hosszutel.desc"
+msgid "Végső képesség: fagyos vihar, amely lassít és sebez."
+msgstr ""
+
+msgctxt "ability.h_szelai_napvihar.name"
+msgid "Napvihar"
+msgstr ""
+
+msgctxt "ability.h_szelai_napvihar.desc"
+msgid "Izzó meteorpor-zápor."
+msgstr ""
+
+msgctxt "ability.h_szelai_rezonancia.name"
+msgid "Rezonancia"
+msgstr ""
+
+msgctxt "ability.h_szelai_rezonancia.desc"
+msgid "A közeli szövetségesek sebzése nő."
+msgstr ""
+
+msgctxt "ability.h_szelai_levalasztas.name"
+msgid "Leválasztás"
+msgstr ""
+
+msgctxt "ability.h_szelai_levalasztas.desc"
+msgid "Rezonanciacsapás, amely egy célpontot kiszakít a hálózatából."
+msgstr ""
+
+msgctxt "ability.h_szelai_csillagorok.name"
+msgid "A Kilenc Lépcső őrei"
+msgstr ""
+
+msgctxt "ability.h_szelai_csillagorok.desc"
+msgid "Végső képesség: négy tollas harcos-szellem."
+msgstr ""
+
+msgctxt "ability.h_mor_gyogyspora.name"
+msgid "Gyógyspóra"
+msgstr ""
+
+msgctxt "ability.h_mor_gyogyspora.desc"
+msgid "Automatikusan gyógyítja a közeli sérült élő szövetségeseket."
+msgstr ""
+
+msgctxt "ability.h_mor_gyokerkotes.name"
+msgid "Gyökérkötés"
+msgstr ""
+
+msgctxt "ability.h_mor_gyokerkotes.desc"
+msgid "Gyökerek fonják körbe az ellenséget."
+msgstr ""
+
+msgctxt "ability.h_mor_emlekkert.name"
+msgid "Emlékkert"
+msgstr ""
+
+msgctxt "ability.h_mor_emlekkert.desc"
+msgid "A közeli szövetségesek gyorsabban regenerálódnak."
+msgstr ""
+
+msgctxt "ability.h_mor_ebredes.name"
+msgid "Az Emlékkert ébredése"
+msgstr ""
+
+msgctxt "ability.h_mor_ebredes.desc"
+msgid "Végső képesség: két Óriáspöfeteg sarjad."
+msgstr ""
+
+msgctxt "ability.h_livia_lelek.name"
+msgid "Lélekmentés"
+msgstr ""
+
+msgctxt "ability.h_livia_lelek.desc"
+msgid "Egy közeli tetemből szellemlégióst támaszt."
+msgstr ""
+
+msgctxt "ability.h_livia_horgony.name"
+msgid "Horgonyjavítás"
+msgstr ""
+
+msgctxt "ability.h_livia_horgony.desc"
+msgid "Automatikusan javítja a közeli sérült gépeket."
+msgstr ""
+
+msgctxt "ability.h_livia_legio.name"
+msgid "A légió fegyelme"
+msgstr ""
+
+msgctxt "ability.h_livia_legio.desc"
+msgid "A közeli szövetségesek sebzése nő."
+msgstr ""
+
+msgctxt "ability.h_livia_lelegzet.name"
+msgid "Második lélegzet"
+msgstr ""
+
+msgctxt "ability.h_livia_lelegzet.desc"
+msgid "Végső képesség: a területen minden szövetséges gyógyul."
+msgstr ""
+
+msgctxt "ability.h_keth_kod.name"
+msgid "Őrület köde"
+msgstr ""
+
+msgctxt "ability.h_keth_kod.desc"
+msgid "Elmét bomlasztó spórafelhő."
+msgstr ""
+
+msgctxt "ability.h_keth_korushang.name"
+msgid "Kórus-hang"
+msgstr ""
+
+msgctxt "ability.h_keth_korushang.desc"
+msgid "A közeli szövetségesek gyorsabbak és regenerálódnak."
+msgstr ""
+
+msgctxt "ability.h_keth_csap.name"
+msgid "Csápcsapás"
+msgstr ""
+
+msgctxt "ability.h_keth_csap.desc"
+msgid "Savas csapás egy célpontra."
+msgstr ""
+
+msgctxt "ability.h_keth_sokasag.name"
+msgid "A sokaság"
+msgstr ""
+
+msgctxt "ability.h_keth_sokasag.desc"
+msgid "Végső képesség: legfeljebb négy Karmos kel ki. Nem jár le az élettartamuk, és nem foglalnak létszámot. Keth egyszerre legfeljebb négy élő egységet idézhet."
+msgstr ""
+
+msgctxt "ability.h_nera_toltes.name"
+msgid "Gyorstöltés"
+msgstr ""
+
+msgctxt "ability.h_nera_toltes.desc"
+msgid "Rövid ideig nagyobb sebzés."
+msgstr ""
+
+msgctxt "ability.h_nera_loves.name"
+msgid "Célzott lövés"
+msgstr ""
+
+msgctxt "ability.h_nera_loves.desc"
+msgid "Messzire hordó, erős lövés."
+msgstr ""
+
+msgctxt "ability.h_nera_batorsag.name"
+msgid "Bátorság"
+msgstr ""
+
+msgctxt "ability.h_nera_batorsag.desc"
+msgid "„Félek – és mégis megyek.” A közeli szövetségesek páncélja nő."
+msgstr ""
+
+msgctxt "ability.h_nera_horgony.name"
+msgid "Szabad horgony"
+msgstr ""
+
+msgctxt "ability.h_nera_horgony.desc"
+msgid "Végső képesség: Nera felszabadult lelke 10 másodpercre félelmetes erővé válik."
+msgstr ""
+
+msgctxt "ability.h_itz_darda.name"
+msgid "Obszidián-dárda"
+msgstr ""
+
+msgctxt "ability.h_itz_darda.desc"
+msgid "Hajított obszidián-dárda: nagy sebzés, lassítás."
+msgstr ""
+
+msgctxt "ability.h_itz_csapas.name"
+msgid "Földrengető csapás"
+msgstr ""
+
+msgctxt "ability.h_itz_csapas.desc"
+msgid "A hadúr a földbe sújt: a körülötte állókat megsebzi és megbénítja."
+msgstr ""
+
+msgctxt "ability.h_itz_jelenlet.name"
+msgid "A hadúr jelenléte"
+msgstr ""
+
+msgctxt "ability.h_itz_jelenlet.desc"
+msgid "A közeli szövetségesek páncélja és sebzése nő."
+msgstr ""
+
+msgctxt "ability.h_itz_kukulkan.name"
+msgid "Quetzlaru alakja"
+msgstr ""
+
+msgctxt "ability.h_itz_kukulkan.desc"
+msgid "Végső képesség: a tollas kígyóisten ereje – kétszeres sebzés, +6 páncél."
+msgstr ""
+
+msgctxt "ability.h_xochi_hullam.name"
+msgid "Rezonanciahullám"
+msgstr ""
+
+msgctxt "ability.h_xochi_hullam.desc"
+msgid "Jádeszínű rezgés tépi szét a területet."
+msgstr ""
+
+msgctxt "ability.h_xochi_harmonia.name"
+msgid "Harmónia"
+msgstr ""
+
+msgctxt "ability.h_xochi_harmonia.desc"
+msgid "A közeli szövetségesek életereje és pajzsa gyorsabban töltődik."
+msgstr ""
+
+msgctxt "ability.h_xochi_jadeor.name"
+msgid "Jádeőr"
+msgstr ""
+
+msgctxt "ability.h_xochi_jadeor.desc"
+msgid "Élő jádeszobrot ébreszt, amely a hívójáért harcol."
+msgstr ""
+
+msgctxt "ability.h_xochi_napkorona.name"
+msgid "Napkorona"
+msgstr ""
+
+msgctxt "ability.h_xochi_napkorona.desc"
+msgid "Végső képesség: a területen minden szövetséges gyógyul."
+msgstr ""
+
+msgctxt "ability.h_hja_szilank.name"
+msgid "Jégszilánk"
+msgstr ""
+
+msgctxt "ability.h_hja_szilank.desc"
+msgid "Fagyos szilánk: sebez és erősen lassít."
+msgstr ""
+
+msgctxt "ability.h_hja_vihar.name"
+msgid "Hóvihar"
+msgstr ""
+
+msgctxt "ability.h_hja_vihar.desc"
+msgid "Jeges vihar csap le a területre."
+msgstr ""
+
+msgctxt "ability.h_hja_bunda.name"
+msgid "Téli bundák"
+msgstr ""
+
+msgctxt "ability.h_hja_bunda.desc"
+msgid "A közeli szövetségesek páncélja és regenerációja nő."
+msgstr ""
+
+msgctxt "ability.h_hja_fagyott_ido.name"
+msgid "Megfagyott idő"
+msgstr ""
+
+msgctxt "ability.h_hja_fagyott_ido.desc"
+msgid "Végső képesség: minden közeli ellenség jégbe dermed."
+msgstr ""
+
+msgctxt "ability.h_bja_medve.name"
+msgid "Kardfogú hívása"
+msgstr ""
+
+msgctxt "ability.h_bja_medve.desc"
+msgid "Kardfogú tigrist hív a hegyekből."
+msgstr ""
+
+msgctxt "ability.h_bja_falka.name"
+msgid "A falka ereje"
+msgstr ""
+
+msgctxt "ability.h_bja_falka.desc"
+msgid "A közeli szövetségesek (és vadak) sebzése nő."
+msgstr ""
+
+msgctxt "ability.h_bja_szigony.name"
+msgid "Vadászszigony"
+msgstr ""
+
+msgctxt "ability.h_bja_szigony.desc"
+msgid "Szigonyt vet egy ellenségbe: sebzi és rövid időre megbénítja."
+msgstr ""
+
+msgctxt "ability.h_bja_mamutcsorda.name"
+msgid "Mamutcsorda"
+msgstr ""
+
+msgctxt "ability.h_bja_mamutcsorda.desc"
+msgid "Végső képesség: két harci mamut csatlakozik 40 másodpercre."
+msgstr ""
+
+msgctxt "ability.h_vor_sugar.name"
+msgid "Savsugár"
+msgstr ""
+
+msgctxt "ability.h_vor_sugar.desc"
+msgid "Maró savsugár."
+msgstr ""
+
+msgctxt "ability.h_vor_pancel.name"
+msgid "Mutáns páncél"
+msgstr ""
+
+msgctxt "ability.h_vor_pancel.desc"
+msgid "Kitinlemezek nőnek a mester testén."
+msgstr ""
+
+msgctxt "ability.h_vor_larvak.name"
+msgid "Lárvahullám"
+msgstr ""
+
+msgctxt "ability.h_vor_larvak.desc"
+msgid "Karmosokat költ ki. Nem jár le az élettartamuk, és nem foglalnak létszámot. Vor egyszerre legfeljebb négy élő egységet idézhet."
+msgstr ""
+
+msgctxt "ability.h_vor_robbanas.name"
+msgid "Kitinrobbanás"
+msgstr ""
+
+msgctxt "ability.h_vor_robbanas.desc"
+msgid "Végső képesség: kitinszilánkok repesznek szét a mester körül."
+msgstr ""
+
+msgctxt "ability.h_ssa_felho.name"
+msgid "Spórafelhő"
+msgstr ""
+
+msgctxt "ability.h_ssa_felho.desc"
+msgid "Fojtó spórafelhő."
+msgstr ""
+
+msgctxt "ability.h_ssa_rajtudat.name"
+msgid "Rajtudat"
+msgstr ""
+
+msgctxt "ability.h_ssa_rajtudat.desc"
+msgid "A raj egy akarattal mozog: gyorsabb és erősebb."
+msgstr ""
+
+msgctxt "ability.h_ssa_oltes.name"
+msgid "Hús-öltés"
+msgstr ""
+
+msgctxt "ability.h_ssa_oltes.desc"
+msgid "Automatikusan összefoltozza a közeli sérült élő szövetségeseket."
+msgstr ""
+
+msgctxt "ability.h_ssa_remszarnyak.name"
+msgid "Rémszárnyak"
+msgstr ""
+
+msgctxt "ability.h_ssa_remszarnyak.desc"
+msgid "Végső képesség: legfeljebb négy Szárnyas rém érkezik. Nem jár le az élettartamuk, és nem foglalnak létszámot. Ss’arha egyszerre legfeljebb négy élő egységet idézhet."
+msgstr ""
+
+msgctxt "ability.h_var_holdfeny.name"
+msgid "Holdfény"
+msgstr ""
+
+msgctxt "ability.h_var_holdfeny.desc"
+msgid "Automatikusan gyógyítja a közeli sérült szövetségeseket."
+msgstr ""
+
+msgctxt "ability.h_var_kod.name"
+msgid "Ősök köde"
+msgstr ""
+
+msgctxt "ability.h_var_kod.desc"
+msgid "Az ősök szellemei ködként fonják körül az ellenséget."
+msgstr ""
+
+msgctxt "ability.h_var_falka.name"
+msgid "Szellemfalka"
+msgstr ""
+
+msgctxt "ability.h_var_falka.desc"
+msgid "Szellem-dingók falkáját hívja."
+msgstr ""
+
+msgctxt "ability.h_var_telihold.name"
+msgid "Telihold"
+msgstr ""
+
+msgctxt "ability.h_var_telihold.desc"
+msgid "Végső képesség: telihold-fény gyógyít a területen."
+msgstr ""
+
+msgctxt "ability.h_kur_taposas.name"
+msgid "Bölénytaposás"
+msgstr ""
+
+msgctxt "ability.h_kur_taposas.desc"
+msgid "A harci bölény a földbe dobbant: sebez és megbénít."
+msgstr ""
+
+msgctxt "ability.h_kur_uvoltes.name"
+msgid "Harci üvöltés"
+msgstr ""
+
+msgctxt "ability.h_kur_uvoltes.desc"
+msgid "A közeli szövetségesek sebzése nő."
+msgstr ""
+
+msgctxt "ability.h_kur_verfalka.name"
+msgid "Vérfalka"
+msgstr ""
+
+msgctxt "ability.h_kur_verfalka.desc"
+msgid "Vadászláz: rövid ideig gyorsabb és erősebb."
+msgstr ""
+
+msgctxt "ability.h_kur_het_ut.name"
+msgid "A Hét Út harcosai"
+msgstr ""
+
+msgctxt "ability.h_kur_het_ut.desc"
+msgid "Végső képesség: öt lándzsás harcos érkezik a Hét Útról."
+msgstr ""
+
+msgctxt "ability.h_gya_halo.name"
+msgid "Gyökérháló"
+msgstr ""
+
+msgctxt "ability.h_gya_halo.desc"
+msgid "Gyökerek fonják gúzsba az ellenséget."
+msgstr ""
+
+msgctxt "ability.h_gya_melygyoker.name"
+msgid "Mélygyökér"
+msgstr ""
+
+msgctxt "ability.h_gya_melygyoker.desc"
+msgid "Gyökeret ereszt: lassú, de szinte elpusztíthatatlan."
+msgstr ""
+
+msgctxt "ability.h_gya_talaj.name"
+msgid "Tápláló talaj"
+msgstr ""
+
+msgctxt "ability.h_gya_talaj.desc"
+msgid "A közeli szövetségesek regenerációja és páncélja nő."
+msgstr ""
+
+msgctxt "ability.h_gya_rengés.name"
+msgid "Gyökérrengés"
+msgstr ""
+
+msgctxt "ability.h_gya_rengés.desc"
+msgid "Végső képesség: a föld alól feltörő gyökerek mindenkit megbénítanak."
+msgstr ""
+
+msgctxt "ability.h_spo_tuske.name"
+msgid "Bomlasztó tüske"
+msgstr ""
+
+msgctxt "ability.h_spo_tuske.desc"
+msgid "Rothasztó spóratüske."
+msgstr ""
+
+msgctxt "ability.h_spo_rothadas.name"
+msgid "Rothadás"
+msgstr ""
+
+msgctxt "ability.h_spo_rothadas.desc"
+msgid "Minden elrothad a területen."
+msgstr ""
+
+msgctxt "ability.h_spo_kopeny.name"
+msgid "Spóraköpeny"
+msgstr ""
+
+msgctxt "ability.h_spo_kopeny.desc"
+msgid "Spórafelhőbe burkolózik: gyorsabb, és a lövések elvétik."
+msgstr ""
+
+msgctxt "ability.h_spo_raj.name"
+msgid "Pöfeteg-raj"
+msgstr ""
+
+msgctxt "ability.h_spo_raj.desc"
+msgid "Végső képesség: hat pöfeteg sarjad – robbanó spórazsákok."
+msgstr ""
+
+msgctxt "ability.h_cas_roham.name"
+msgid "Légió-roham"
+msgstr ""
+
+msgctxt "ability.h_cas_roham.desc"
+msgid "A legátus gépteste előrelendül, és szétszórja az ellenséget."
+msgstr ""
+
+msgctxt "ability.h_cas_fegyelem.name"
+msgid "Vasfegyelem"
+msgstr ""
+
+msgctxt "ability.h_cas_fegyelem.desc"
+msgid "A közeli szövetségesek páncélja nő."
+msgstr ""
+
+msgctxt "ability.h_cas_legio.name"
+msgid "Mechalégió"
+msgstr ""
+
+msgctxt "ability.h_cas_legio.desc"
+msgid "Légiósokat rendel a frontra."
+msgstr ""
+
+msgctxt "ability.h_cas_harag.name"
+msgid "Ordan haragja"
+msgstr ""
+
+msgctxt "ability.h_cas_harag.desc"
+msgid "Végső képesség: Ordan lelke tölti meg a legátus gépét."
+msgstr ""
+
+msgctxt "ability.lelekhorgony_mentes.name"
+msgid "Lélekhorgony mentése"
+msgstr ""
+
+msgctxt "ability.lelekhorgony_mentes.desc"
+msgid "Jelölj ki egy saját Lélekhorgonyt, majd a lerakás helyét. A Légiós odamegy, felveszi és elszállítja. Egyszerre egy horgonyt vihet."
+msgstr ""
+
+msgctxt "ability.atvaltozas.name"
+msgid "Mutáció itt"
+msgstr ""
+
+msgctxt "ability.atvaltozas.desc"
+msgid "A Karmos a kijelölt helyre megy, ott gubóba zárkózik, és Páncélbogárrá alakul."
+msgstr ""
+
+msgctxt "ability.beszallas.name"
+msgid "Helyőrség"
+msgstr ""
+
+msgctxt "ability.beszallas.desc"
+msgid "A kijelölt egységek beszállnak a legközelebbi helyőrség-épületbe; ott védve vannak, és minden beszállt egység erősíti az épület lövéseit."
+msgstr ""
+
+msgctxt "ability.p_halozati_gyujtes.name"
+msgid "Hálózati gyűjtés"
+msgstr ""
+
+msgctxt "ability.p_halozati_gyujtes.desc"
+msgid "A terhét bármelyik hálózatba kötött épületbe leadhatja."
+msgstr ""
+
+msgctxt "ability.p_gepjavitas.name"
+msgid "Gépjavítás és újratestesítés"
+msgstr ""
+
+msgctxt "ability.p_gepjavitas.desc"
+msgid "Jobb klikk sérült gépre: javítás. A lélekhorgonyokat is újraépíti."
+msgstr ""
+
+msgctxt "ability.lelekhorgony.name"
+msgid "Lélekhorgony"
+msgstr ""
+
+msgctxt "ability.lelekhorgony.desc"
+msgid "Ha a gép elpusztul, a lelke horgonyban marad 40 mp-ig – egy Fabrikátor újraépítheti."
+msgstr ""
+
+msgctxt "ability.osztodas2.name"
+msgid "Osztódás (2 ölés)"
+msgstr ""
+
+msgctxt "ability.osztodas2.desc"
+msgid "Minden két legyőzött ellenség után kettéosztódik (mintha megette volna őket)."
+msgstr ""
+
+msgctxt "ability.osztodas3.name"
+msgid "Osztódás (3 ölés)"
+msgstr ""
+
+msgctxt "ability.osztodas3.desc"
+msgid "Minden három legyőzött ellenség után kettéosztódik."
+msgstr ""
+
+msgctxt "ability.osztodas4.name"
+msgid "Osztódás (4 ölés)"
+msgstr ""
+
+msgctxt "ability.osztodas4.desc"
+msgid "Minden négy legyőzött ellenség után kettéosztódik."
+msgstr ""
+
+msgctxt "ability.erdei_rejtozes.name"
+msgid "Erdei rejtőzés"
+msgstr ""
+
+msgctxt "ability.erdei_rejtozes.desc"
+msgid "Fák mellett, álló helyzetben láthatatlan (lesállás), amíg nem támad; a közeli ellenség észreveszi."
+msgstr ""
+
+msgctxt "ability.korus_szem.name"
+msgid "A Kórus szeme"
+msgstr ""
+
+msgctxt "ability.korus_szem.desc"
+msgid "Felfedi a közeli rejtőzködő és beásott ellenségeket."
+msgstr ""
+
+msgctxt "ability.jadetest.name"
+msgid "Jádetest"
+msgstr ""
+
+msgctxt "ability.jadetest.desc"
+msgid "A varázslatok csak fele sebzést okoznak neki."
+msgstr ""
+
+msgctxt "ability.szellemtest.name"
+msgid "Szellemtest"
+msgstr ""
+
+msgctxt "ability.szellemtest.desc"
+msgid "Idézett lény; idővel szertefoszlik."
+msgstr ""
+
+msgctxt "ability.gubo_p.name"
+msgid "Gubó"
+msgstr ""
+
+msgctxt "ability.gubo_p.desc"
+msgid "Mutálódik; ha elpusztul, az átalakulás elvész."
+msgstr ""
+
+msgctxt "ability.taborkocsi.name"
+msgid "Vándortábor"
+msgstr ""
+
+msgctxt "ability.taborkocsi.desc"
+msgid "Felszedett tábor – bárhol letelepíthető."
+msgstr ""
+
+msgctxt "ability.kristalypancel.name"
+msgid "Kristálypáncél"
+msgstr ""
+
+msgctxt "ability.kristalypancel.desc"
+msgid "Kemény kristályokkal benőtt páncél."
+msgstr ""
+
+msgctxt "ability.falkavadasz.name"
+msgid "Falkavadász"
+msgstr ""
+
+msgctxt "ability.falkavadasz.desc"
+msgid "Falkában vadászik."
+msgstr ""
+
+msgctxt "ability.runako_aura.name"
+msgid "Rúnakő"
+msgstr ""
+
+msgctxt "ability.runako_aura.desc"
+msgid "A közeli szövetségesek páncélja és gyógyulása nő."
+msgstr ""
+
+msgctxt "ability.fenylepes.name"
+msgid "Fénylépés"
+msgstr ""
+
+msgctxt "ability.fenylepes.desc"
+msgid "Fénnyé válik, és a kijelölt pontra lép (7 mező)."
+msgstr ""
+
+msgctxt "ability.fenylepes_munkas.name"
+msgid "Fénylépés"
+msgstr ""
+
+msgctxt "ability.fenylepes_munkas.desc"
+msgid "Menekülő teleport (5 mező)."
+msgstr ""
+
+msgctxt "ability.jade_celzas.name"
+msgid "Jáde-célzás"
+msgstr ""
+
+msgctxt "ability.jade_celzas.desc"
+msgid "6 mp-ig +2 lőtáv és +20% sebzés."
+msgstr ""
+
+msgctxt "ability.csillagdarda.name"
+msgid "Csillagdárda"
+msgstr ""
+
+msgctxt "ability.csillagdarda.desc"
+msgid "Célzott, csillagérc-hegyű dárda: 45 sebzés és lassítás."
+msgstr ""
+
+msgctxt "ability.zuhanorepules.name"
+msgid "Zuhanórepülés"
+msgstr ""
+
+msgctxt "ability.zuhanorepules.desc"
+msgid "Lecsap a földre: a közeli ellenségek sebződnek és megtántorodnak."
+msgstr ""
+
+msgctxt "ability.tollkorona_uvoltes.name"
+msgid "Tollkorona-üvöltés"
+msgstr ""
+
+msgctxt "ability.tollkorona_uvoltes.desc"
+msgid "Rémisztő üvöltés: a közeli ellenségek lelassulnak."
+msgstr ""
+
+msgctxt "ability.napfokusz.name"
+msgid "Napfókusz"
+msgstr ""
+
+msgctxt "ability.napfokusz.desc"
+msgid "Telepítés: nem mozog, de +3 lőtáv és +20% sebzés."
+msgstr ""
+
+msgctxt "ability.dardafal.name"
+msgid "Dárdafal"
+msgstr ""
+
+msgctxt "ability.dardafal.desc"
+msgid "Leszúrt dárdák: nem mozog, de +60% sebzés és +2 páncél."
+msgstr ""
+
+msgctxt "ability.horgonyszigony.name"
+msgid "Horgonyszigony"
+msgstr ""
+
+msgctxt "ability.horgonyszigony.desc"
+msgid "Szigony egy ellenségbe: sebez és 1,2 mp-re megbénít."
+msgstr ""
+
+msgctxt "ability.verszomj.name"
+msgid "Vérszomj"
+msgstr ""
+
+msgctxt "ability.verszomj.desc"
+msgid "7 mp-ig +50% sebzés, +20% sebesség, de -2 páncél."
+msgstr ""
+
+msgctxt "ability.runako.name"
+msgid "Rúnakő állítása"
+msgstr ""
+
+msgctxt "ability.runako.desc"
+msgid "A Rúnapap a kijelölt helyhez megy, és rúnakövet állít. A közeli szövetségesek páncélja és gyógyulása nő."
+msgstr ""
+
+msgctxt "ability.zuhano_csapas.name"
+msgid "Zuhanó csapás"
+msgstr ""
+
+msgctxt "ability.zuhano_csapas.desc"
+msgid "A holló lecsap egy célpontra."
+msgstr ""
+
+msgctxt "ability.taposas.name"
+msgid "Taposás"
+msgstr ""
+
+msgctxt "ability.taposas.desc"
+msgid "A mamut a földbe dobbant: sebez és megbénít."
+msgstr ""
+
+msgctxt "ability.telepites.name"
+msgid "Telepítés"
+msgstr ""
+
+msgctxt "ability.telepites.desc"
+msgid "A szán lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés."
+msgstr ""
+
+msgctxt "ability.beasas.name"
+msgid "Beásás"
+msgstr ""
+
+msgctxt "ability.beasas.desc"
+msgid "A föld alá ássa magát: láthatatlan (csak felfedő találja meg), gyorsan gyógyul, de nem támad."
+msgstr ""
+
+msgctxt "ability.tuskezapor.name"
+msgid "Tüskezápor"
+msgstr ""
+
+msgctxt "ability.tuskezapor.desc"
+msgid "Csonttüskék záporoznak a területre. Ára: 20 életerő."
+msgstr ""
+
+msgctxt "ability.savtocsa.name"
+msgid "Savtócsa"
+msgstr ""
+
+msgctxt "ability.savtocsa.desc"
+msgid "Maró savtócsa: sebez és lassít. Ára: 30 életerő."
+msgstr ""
+
+msgctxt "ability.ragadozo_zuhanas.name"
+msgid "Ragadozó zuhanás"
+msgstr ""
+
+msgctxt "ability.ragadozo_zuhanas.desc"
+msgid "Lecsap egy célpontra. Ára: 15 életerő."
+msgstr ""
+
+msgctxt "ability.csapsopres.name"
+msgid "Csápsöprés"
+msgstr ""
+
+msgctxt "ability.csapsopres.desc"
+msgid "Körbecsapó csápok: nagy sebzés és lassítás. Ára: 40 életerő."
+msgstr ""
+
+msgctxt "ability.kitinroham.name"
+msgid "Kitinroham"
+msgstr ""
+
+msgctxt "ability.kitinroham.desc"
+msgid "5 mp-es roham: +60% sebesség, +30% sebzés. Ára: 20 életerő."
+msgstr ""
+
+msgctxt "ability.harci_enek.name"
+msgid "Harci ének"
+msgstr ""
+
+msgctxt "ability.harci_enek.desc"
+msgid "Ének (egyszerre egy): a közeli szövetségesek +8% sebzés."
+msgstr ""
+
+msgctxt "ability.vandor_enek.name"
+msgid "Vándorének"
+msgstr ""
+
+msgctxt "ability.vandor_enek.desc"
+msgid "Ének (egyszerre egy): a közeli szövetségesek +10% sebesség."
+msgstr ""
+
+msgctxt "ability.osok_haragja.name"
+msgid "Ősök haragja"
+msgstr ""
+
+msgctxt "ability.osok_haragja.desc"
+msgid "Ének: a közeli szövetségesek +2 páncél."
+msgstr ""
+
+msgctxt "ability.tomahawk.name"
+msgid "Dárdavetés"
+msgstr ""
+
+msgctxt "ability.tomahawk.desc"
+msgid "Dárdavetővel (woomera) hajított dárda: messzire repül, sebez és lassít."
+msgstr ""
+
+msgctxt "ability.vadaszles.name"
+msgid "Vadászles"
+msgstr ""
+
+msgctxt "ability.vadaszles.desc"
+msgid "Lesállás: nem mozog, de +2 lőtáv és +20% sebzés."
+msgstr ""
+
+msgctxt "ability.villamcsapas.name"
+msgid "Villámcsapás"
+msgstr ""
+
+msgctxt "ability.villamcsapas.desc"
+msgid "A madár villámot sújt maga köré."
+msgstr ""
+
+msgctxt "ability.sporatuske.name"
+msgid "Spóratüske"
+msgstr ""
+
+msgctxt "ability.sporatuske.desc"
+msgid "Mérgező tüske: sebez és lassít. Ára: 2 spóra."
+msgstr ""
+
+msgctxt "ability.kalapfal.name"
+msgid "Kalapfal"
+msgstr ""
+
+msgctxt "ability.kalapfal.desc"
+msgid "A kalap pajzzsá feszül: +4 páncél, -40% távolsági sebzés, de lassú."
+msgstr ""
+
+msgctxt "ability.sporarobbanas.name"
+msgid "Spórarobbanás"
+msgstr ""
+
+msgctxt "ability.sporarobbanas.desc"
+msgid "Mérgező spórafelhő robban ki belőle. Ára: 3 spóra."
+msgstr ""
+
+msgctxt "ability.sporaeso.name"
+msgid "Spóraeső"
+msgstr ""
+
+msgctxt "ability.sporaeso.desc"
+msgid "Spóraeső a területre. Ára: 3 spóra."
+msgstr ""
+
+msgctxt "ability.testudo.name"
+msgid "Testudo"
+msgstr ""
+
+msgctxt "ability.testudo.desc"
+msgid "Teknősalakzat: -55% távolsági sebzés, +1 páncél, de lassú."
+msgstr ""
+
+msgctxt "ability.gyorstoltes_u.name"
+msgid "Gyorstöltés"
+msgstr ""
+
+msgctxt "ability.gyorstoltes_u.desc"
+msgid "6 mp-ig +40% sebzés."
+msgstr ""
+
+msgctxt "ability.geppuska_sorozat.name"
+msgid "Gépágyú-sorozat"
+msgstr ""
+
+msgctxt "ability.geppuska_sorozat.desc"
+msgid "5 mp-ig +70% sebzés, de lassabb."
+msgstr ""
+
+msgctxt "ability.zuhanobomba.name"
+msgid "Zuhanóbomba"
+msgstr ""
+
+msgctxt "ability.zuhanobomba.desc"
+msgid "Bombát old ki maga alá."
+msgstr ""
+
+msgctxt "ability.ostrom_telepites.name"
+msgid "Ostrom-telepítés"
+msgstr ""
+
+msgctxt "ability.ostrom_telepites.desc"
+msgid "Lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés."
+msgstr ""
+
+msgctxt "ability.eterloket.name"
+msgid "Éterlöket"
+msgstr ""
+
+msgctxt "ability.eterloket.desc"
+msgid "Éterlövedék."
+msgstr ""
+
+msgctxt "ability.foldrenges.name"
+msgid "Földrengés"
+msgstr ""
+
+msgctxt "ability.foldrenges.desc"
+msgid "Megrengeti a földet maga körül."
+msgstr ""
+
+msgctxt "ability.bumerang.name"
+msgid "Bumeráng"
+msgstr ""
+
+msgctxt "ability.bumerang.desc"
+msgid "Visszatérő bumeráng: a célpont után még két közeli ellenséget eltalál (csökkenő sebzéssel)."
+msgstr ""
+
+msgctxt "ability.riado_futas.name"
+msgid "Riadófutás"
+msgstr ""
+
+msgctxt "ability.riado_futas.desc"
+msgid "Az emu megriad és elszalad: 4 mp-ig +80% sebesség."
+msgstr ""
+
+msgctxt "ability.felultetes.name"
+msgid "Felültetés"
+msgstr ""
+
+msgctxt "ability.felultetes.desc"
+msgid "A legközelebbi wullof gyalogos harcos felül a bölényre: Bölénylovas lesz belőlük."
+msgstr ""
+
+msgctxt "ability.leszallas.name"
+msgid "Leszállás"
+msgstr ""
+
+msgctxt "ability.leszallas.desc"
+msgid "A lovas leszáll: újra külön bölény és gyalogos harcos."
+msgstr ""
+
+msgctxt "ability.savkopes.name"
+msgid "Savköpés"
+msgstr ""
+
+msgctxt "ability.savkopes.desc"
+msgid "Maró sav: 8 sebzés, majd 6 mp-en át másodpercenként 6 méregsebzés."
+msgstr ""
+
+msgctxt "ability.tuzkopes.name"
+msgid "Tűzköpés"
+msgstr ""
+
+msgctxt "ability.tuzkopes.desc"
+msgid "Lángcsóva: 26 sebzés a célpontra, fele a körülötte állókra."
+msgstr ""
+
+msgctxt "ability.fagykopes.name"
+msgid "Fagyköpés"
+msgstr ""
+
+msgctxt "ability.fagykopes.desc"
+msgid "Jeges köpet: 10 sebzés, és a célpont 2,5 mp-re megfagy (nem mozog, nem támad)."
+msgstr ""
+
+msgctxt "ability.fiokakeltes.name"
+msgid "Fiókakeltetés"
+msgstr ""
+
+msgctxt "ability.fiokakeltes.desc"
+msgid "Két Groomi-fióka kel ki a tojásaiból 45 másodpercre."
+msgstr ""
+
+msgctxt "ability.harci_kurt.name"
+msgid "Harci kürt"
+msgstr ""
+
+msgctxt "ability.harci_kurt.desc"
+msgid "Kürtszó (egyszerre egy): a közeli szövetségesek +15% sebzés és +10% sebesség."
+msgstr ""
+
+msgctxt "ability.medveuvoltes.name"
+msgid "Medveüvöltés"
+msgstr ""
+
+msgctxt "ability.medveuvoltes.desc"
+msgid "Rettentő üvöltés: sebez és megbénítja a közeli ellenséget."
+msgstr ""
+
+msgctxt "ability.robbanas.name"
+msgid "Önrobbantás"
+msgstr ""
+
+msgctxt "ability.robbanas.desc"
+msgid "Felrobban: nagy sebzés a közelben – az atka elpusztul."
+msgstr ""
+
+msgctxt "ability.alomspora.name"
+msgid "Álomspóra"
+msgstr ""
+
+msgctxt "ability.alomspora.desc"
+msgid "Altató spórafelhő: a közeli ellenség 3 mp-re elalszik."
+msgstr ""
+
+msgctxt "ability.napfeny_aldas.name"
+msgid "Napfény-áldás"
+msgstr ""
+
+msgctxt "ability.napfeny_aldas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket."
+msgstr ""
+
+msgctxt "ability.meteorhivas.name"
+msgid "Meteorhívás"
+msgstr ""
+
+msgctxt "ability.meteorhivas.desc"
+msgid "Meteorzápor: 3 mp alatt 105 sebzés a területen."
+msgstr ""
+
+msgctxt "ability.lesallas.name"
+msgid "Les"
+msgstr ""
+
+msgctxt "ability.lesallas.desc"
+msgid "Lesállás: nem mozog, de +50% sebzés és +1 lőtáv."
+msgstr ""
+
+msgctxt "ability.huk_horog.name"
+msgid "Horog"
+msgstr ""
+
+msgctxt "ability.huk_horog.desc"
+msgid "A kampó a célpontba akad: sebez és egy pillanatra megbénít."
+msgstr ""
+
+msgctxt "ability.huk_tavi_leny_hivas.name"
+msgid "Tavi lény"
+msgstr ""
+
+msgctxt "ability.huk_tavi_leny_hivas.desc"
+msgid "Lábon járó víztestet idéz 30 másodpercre."
+msgstr ""
+
+msgctxt "ability.huk_tavgyogyitas.name"
+msgid "Tóvíz-gyógyítás"
+msgstr ""
+
+msgctxt "ability.huk_tavgyogyitas.desc"
+msgid "Gyógyítja a közeli sebesülteket."
+msgstr ""
+
+msgctxt "ability.huk_gotevagta.name"
+msgid "Gőtevágta"
+msgstr ""
+
+msgctxt "ability.huk_gotevagta.desc"
+msgid "Rövid, sebes roham."
+msgstr ""
+
+msgctxt "ability.huk_arhullam.name"
+msgid "Árhullám"
+msgstr ""
+
+msgctxt "ability.huk_arhullam.desc"
+msgid "Árhullám: sebez és lelassít."
+msgstr ""
+
+msgctxt "ability.huk_iszapcsapas.name"
+msgid "Iszapcsapás"
+msgstr ""
+
+msgctxt "ability.huk_iszapcsapas.desc"
+msgid "Iszapot fröccsent: körben sebez és megbénít."
+msgstr ""
+
+msgctxt "ability.huk_kagylofal.name"
+msgid "Kagylófal"
+msgstr ""
+
+msgctxt "ability.huk_kagylofal.desc"
+msgid "Teknőjébe húzódik: erős védelem, lassú mozgás."
+msgstr ""
+
+msgctxt "ability.huk_melysegdobbantas.name"
+msgid "Mélységdobbantás"
+msgstr ""
+
+msgctxt "ability.huk_melysegdobbantas.desc"
+msgid "Földrengető dobbantás."
+msgstr ""
+
+msgctxt "ability.huk_melysegi_hivas.name"
+msgid "Mélységi hívás"
+msgstr ""
+
+msgctxt "ability.huk_melysegi_hivas.desc"
+msgid "Két tavi lényt hív 60 másodpercre."
+msgstr ""
+
+msgctxt "ability.h_kva_arasztas.name"
+msgid "Árasztás"
+msgstr ""
+
+msgctxt "ability.h_kva_arasztas.desc"
+msgid "Vízzel árasztja el a területet: sebez és lassít."
+msgstr ""
+
+msgctxt "ability.h_kva_forras.name"
+msgid "Gyógyforrás"
+msgstr ""
+
+msgctxt "ability.h_kva_forras.desc"
+msgid "A közeli szövetségesek gyorsabban gyógyulnak."
+msgstr ""
+
+msgctxt "ability.h_kva_lenyek.name"
+msgid "Vízlények"
+msgstr ""
+
+msgctxt "ability.h_kva_lenyek.desc"
+msgid "Tavi lényeket kelt életre."
+msgstr ""
+
+msgctxt "ability.h_kva_ozonviz.name"
+msgid "Özönvíz"
+msgstr ""
+
+msgctxt "ability.h_kva_ozonviz.desc"
+msgid "Végső: hatalmas áradás a csatatéren."
+msgstr ""
+
+msgctxt "ability.h_bul_kampo.name"
+msgid "Királyi kampó"
+msgstr ""
+
+msgctxt "ability.h_bul_kampo.desc"
+msgid "Megrántja és megbénítja a célpontot."
+msgstr ""
+
+msgctxt "ability.h_bul_ugras.name"
+msgid "Békaugrás"
+msgstr ""
+
+msgctxt "ability.h_bul_ugras.desc"
+msgid "Nagyot ugrik és lecsap: körben sebez."
+msgstr ""
+
+msgctxt "ability.h_bul_brekeges.name"
+msgid "Harci brekegés"
+msgstr ""
+
+msgctxt "ability.h_bul_brekeges.desc"
+msgid "A közeli szövetségesek erősebben csapnak."
+msgstr ""
+
+msgctxt "ability.h_bul_kiraly.name"
+msgid "A Tó Királya"
+msgstr ""
+
+msgctxt "ability.h_bul_kiraly.desc"
+msgid "Végső: óriássá nő, sebzése és páncélja megnő."
+msgstr ""
+
+msgctxt "ability.h_iri_gyongy.name"
+msgid "Igazgyöngy-lövés"
+msgstr ""
+
+msgctxt "ability.h_iri_gyongy.desc"
+msgid "Ragyogó gyöngy: nagy sebzés egy célpontra."
+msgstr ""
+
+msgctxt "ability.h_iri_szivarvany.name"
+msgid "Szivárványpajzs"
+msgstr ""
+
+msgctxt "ability.h_iri_szivarvany.desc"
+msgid "A közeli szövetségesek páncélt kapnak."
+msgstr ""
+
+msgctxt "ability.h_iri_aldas.name"
+msgid "Tavi áldás"
+msgstr ""
+
+msgctxt "ability.h_iri_aldas.desc"
+msgid "Gyógyítja a közeli sebesülteket."
+msgstr ""
+
+msgctxt "ability.h_iri_gyongykapu.name"
+msgid "Gyöngykapu"
+msgstr ""
+
+msgctxt "ability.h_iri_gyongykapu.desc"
+msgid "Végső: gyöngyfény-robbanás – sebez és megbénít."
+msgstr ""
+
+msgctxt "ability.oon_buzogany_roham.name"
+msgid "Buzogányroham"
+msgstr ""
+
+msgctxt "ability.oon_buzogany_roham.desc"
+msgid "Rövid, kemény roham."
+msgstr ""
+
+msgctxt "ability.oon_kapuorzes.name"
+msgid "Kapuőrzés"
+msgstr ""
+
+msgctxt "ability.oon_kapuorzes.desc"
+msgid "Kapuőrként megáll egy épület mellett: nem mozdul, az épület +3 páncélt kap (legfeljebb +6). Bekapcsolás után az első lovas elleni találata 1,2 mp-re 35%-kal lassítja a célpontot."
+msgstr ""
+
+msgctxt "ability.oon_szelvihar.name"
+msgid "Szélvihar"
+msgstr ""
+
+msgctxt "ability.oon_szelvihar.desc"
+msgid "Legyezővel kavart szélvihar: sebez és lassít."
+msgstr ""
+
+msgctxt "ability.oon_illuzio.name"
+msgid "Rókaillúzió"
+msgstr ""
+
+msgctxt "ability.oon_illuzio.desc"
+msgid "Két rókaszellem-másolatot sző 20 másodpercre."
+msgstr ""
+
+msgctxt "ability.oon_lampasgyogyitas.name"
+msgid "Lámpásfény-gyógyítás"
+msgstr ""
+
+msgctxt "ability.oon_lampasgyogyitas.desc"
+msgid "Gyógyítja a közeli sebesülteket."
+msgstr ""
+
+msgctxt "ability.oon_oriasdobbantas.name"
+msgid "Óriásdobbantás"
+msgstr ""
+
+msgctxt "ability.oon_oriasdobbantas.desc"
+msgid "Földrengető dobbantás."
+msgstr ""
+
+msgctxt "ability.oon_tombolas.name"
+msgid "Tombolás"
+msgstr ""
+
+msgctxt "ability.oon_tombolas.desc"
+msgid "Tombol: erősebben üt, védtelenebb."
+msgstr ""
+
+msgctxt "ability.oon_taiko.name"
+msgid "Taiko-ritmus"
+msgstr ""
+
+msgctxt "ability.oon_taiko.desc"
+msgid "Harci dob: a közeli társak erősebben és gyorsabban harcolnak."
+msgstr ""
+
+msgctxt "ability.oon_vedofeny.name"
+msgid "Védőfény"
+msgstr ""
+
+msgctxt "ability.oon_vedofeny.desc"
+msgid "A lámpás fénye védőburkot von a közeli társakra: 10 mp-ig 50 sebzést nyel el."
+msgstr ""
+
+msgctxt "ability.oon_villamcsapas.name"
+msgid "Villámcsapás"
+msgstr ""
+
+msgctxt "ability.oon_villamcsapas.desc"
+msgid "Villám: nagy sebzés, rövid bénulás."
+msgstr ""
+
+msgctxt "ability.h_aka_roham.name"
+msgid "Vörös roham"
+msgstr ""
+
+msgctxt "ability.h_aka_roham.desc"
+msgid "Nekiront a célpontnak: sebez és megbénít."
+msgstr ""
+
+msgctxt "ability.h_aka_rengetes.name"
+msgid "Földrengetés"
+msgstr ""
+
+msgctxt "ability.h_aka_rengetes.desc"
+msgid "Buzogányával a földbe sújt: körben sebez."
+msgstr ""
+
+msgctxt "ability.h_aka_harag.name"
+msgid "Oni harag"
+msgstr ""
+
+msgctxt "ability.h_aka_harag.desc"
+msgid "A közeli onik erősebben csapnak."
+msgstr ""
+
+msgctxt "ability.h_aka_vorosvihar.name"
+msgid "Vörös vihar"
+msgstr ""
+
+msgctxt "ability.h_aka_vorosvihar.desc"
+msgid "Végső: tomboló vörös vihar – sebzése és sebessége megnő."
+msgstr ""
+
+msgctxt "ability.h_shi_pajzs.name"
+msgid "Nian-pajzs"
+msgstr ""
+
+msgctxt "ability.h_shi_pajzs.desc"
+msgid "A közeli társak páncélt kapnak."
+msgstr ""
+
+msgctxt "ability.h_shi_uvoltes.name"
+msgid "Nian-üvöltés"
+msgstr ""
+
+msgctxt "ability.h_shi_uvoltes.desc"
+msgid "Rettentő üvöltés: körben sebez és megbénít."
+msgstr ""
+
+msgctxt "ability.h_shi_kapu.name"
+msgid "Őrkapu"
+msgstr ""
+
+msgctxt "ability.h_shi_kapu.desc"
+msgid "Gyógyítja a közeli sebesülteket."
+msgstr ""
+
+msgctxt "ability.h_shi_oroktolany.name"
+msgid "Az őrök hívása"
+msgstr ""
+
+msgctxt "ability.h_shi_oroktolany.desc"
+msgid "Végső: két kőkutya-őrt hív."
+msgstr ""
+
+msgctxt "ability.h_kar_villam.name"
+msgid "Tengu-villám"
+msgstr ""
+
+msgctxt "ability.h_kar_villam.desc"
+msgid "Villám egy célpontra."
+msgstr ""
+
+msgctxt "ability.h_kar_szel.name"
+msgid "Szélörvény"
+msgstr ""
+
+msgctxt "ability.h_kar_szel.desc"
+msgid "Szélörvény: sebez és lassít."
+msgstr ""
+
+msgctxt "ability.h_kar_tollak.name"
+msgid "Hollótollak"
+msgstr ""
+
+msgctxt "ability.h_kar_tollak.desc"
+msgid "A közeli repülők gyorsabbak."
+msgstr ""
+
+msgctxt "ability.h_kar_tajfun.name"
+msgid "Tájfun"
+msgstr ""
+
+msgctxt "ability.h_kar_tajfun.desc"
+msgid "Végső: tájfun söpör végig a csatatéren."
+msgstr ""
+
+msgctxt "ability.tulhajtas.name"
+msgid "Túlhajtás"
+msgstr ""
+
+msgctxt "ability.tulhajtas.desc"
+msgid "A Fabrikátor túlhajtja magát: annak az épületnek, amelyen dolgozik, azonnal elkészül a hátralévő építés fele (javításnál a hiányzó életerő fele). Ára a Fabrikátor életerejének 40%-a – bele is pusztulhat."
+msgstr ""
+
+msgctxt "ability.fegyverbe.name"
+msgid "Fegyverbe!"
+msgstr ""
+
+msgctxt "ability.fegyverbe.desc"
+msgid "Riadó: a telepesek 45 mp-re fegyvert ragadnak (erősebbek, gyorsabbak, páncélosabbak), de közben nem dolgoznak; utána visszamennek a munkájukhoz."
+msgstr ""
+
+msgctxt "ability.ikrarakas.name"
+msgid "Ikrarakás"
+msgstr ""
+
+msgctxt "ability.ikrarakas.desc"
+msgid "A kijelölt helyhez megy, és láthatatlan ikra-csomót rak le (egyszerre legfeljebb 12). Ha ellenség lép rá, 3 harapós ebihal kel ki belőle (saját tavacskán 5), és 10 mp-ig harcolnak."
+msgstr ""
+
+msgctxt "ability.bekaugras.name"
+msgid "Békaugrás"
+msgstr ""
+
+msgctxt "ability.bekaugras.desc"
+msgid "A béka nagyot ugrik a kijelölt pontra (vízen és akadályon át is): 2,5 csempe, az Ugrólábak kutatással 5. Landoláskor megsebzi a közeli ellenséget."
+msgstr ""
+
+msgctxt "ability.napkitores.name"
+msgid "Napkitörés"
+msgstr ""
+
+msgctxt "ability.napkitores.desc"
+msgid "A Nap haragja: erősebb Napvihar (másfélszeres sebzés, másfélszeres terület). Ára 50 energia és 40 Áhítat."
+msgstr ""
+
+msgctxt "ability.nap_kegyelme.name"
+msgid "Nap kegyelme"
+msgstr ""
+
+msgctxt "ability.nap_kegyelme.desc"
+msgid "6 csempés körben azonnal 80 életerőt ad minden saját élőlénynek. Ára 30 Áhítat, 45 mp töltődés."
+msgstr ""
+
+msgctxt "ability.napaldas.name"
+msgid "Napáldás"
+msgstr ""
+
+msgctxt "ability.napaldas.desc"
+msgid "A Napfúró 30 mp-re 50%-kal többet termel. Ára 25 Áhítat, 60 mp töltődés."
+msgstr ""
+
+msgctxt "ability.huk_nagy_tavi_leny_hivas.name"
+msgid "Nagy tavi lény"
+msgstr ""
+
+msgctxt "ability.huk_nagy_tavi_leny_hivas.desc"
+msgid "Erősebb tavi lényt idéz 60 mp-re (+50% életerő és sebzés). Ára 50 Tóének."
+msgstr ""
+
+msgctxt "ability.huk_melyseg_hangja.name"
+msgid "Mélység hangja"
+msgstr ""
+
+msgctxt "ability.huk_melyseg_hangja.desc"
+msgid "Egy gyöngyóriást hív elő a mélyből 45 mp-re. Ára 60 Tóének és 50 energia."
+msgstr ""
+
+msgctxt "ability.aradas.name"
+msgid "Áradás"
+msgstr ""
+
+msgctxt "ability.aradas.desc"
+msgid "30 mp-re minden saját tavacska egy csempével kitágul, és a rajtuk álló saját egységek másodpercenként 3 életerőt kapnak. Ára 30 Tóének, 90 mp töltődés."
+msgstr ""
+
+msgctxt "ability.gyongyeres.name"
+msgid "Gyöngyérés"
+msgstr ""
+
+msgctxt "ability.gyongyeres.desc"
+msgid "Az épület 30 mp-re kétszer gyorsabban kutat és képez. Ára 25 Tóének, 60 mp töltődés."
+msgstr ""
+
+msgctxt "ability.gp_isteni_szel_buff.name"
+msgid "Isteni szél"
+msgstr ""
+
+msgctxt "ability.gp_isteni_szel_buff.desc"
+msgid "Az Isteni szél hátszele: +20% sebesség."
+msgstr ""
+
+msgctxt "ability.gp_napcsova.name"
+msgid "Napcsóva"
+msgstr ""
+
+msgctxt "ability.gp_napcsova.desc"
+msgid "Izzó fényoszlop a kijelölt pontra: 8 mp alatt 200 sebzés a körzetben, és 10 mp-re felfedi a környéket. Ára 150 Áhítat, 3 perc töltődés."
+msgstr ""
+
+msgctxt "ability.gp_arhullam.name"
+msgid "Árhullám"
+msgstr ""
+
+msgctxt "ability.gp_arhullam.desc"
+msgid "A Tóanya hulláma elönti a kijelölt pontot: 4 mp alatt 60 sebzés, és felére lassítja az ellenséget. Ára 120 Tóének, 2,5 perc töltődés."
+msgstr ""
+
+msgctxt "ability.gp_eskufa_riado.name"
+msgid "Esküfa-riadó"
+msgstr ""
+
+msgctxt "ability.gp_eskufa_riado.desc"
+msgid "Megkondul az Esküfa: a falu minden telepese 30 mp-re fegyvert ragad (a Fegyverbe! hatása, kutatás nélkül is), utána visszamegy dolgozni. 4 perc töltődés."
+msgstr ""
+
+msgctxt "ability.gp_melysegi_kitores.name"
+msgid "Mélységi kitörés"
+msgstr ""
+
+msgctxt "ability.gp_melysegi_kitores.desc"
+msgid "Tüskék törnek elő a mélyből a kijelölt ponton: 3 mp alatt 120 sebzés és lassítás. Ára a Kaptár 250 életereje, 3 perc töltődés."
+msgstr ""
+
+msgctxt "ability.gp_osok_hivasa.name"
+msgid "Ősök hívása"
+msgstr ""
+
+msgctxt "ability.gp_osok_hivasa.desc"
+msgid "Három szellemfarkas jelenik meg a kijelölt ponton 40 mp-re. 3 perc töltődés."
+msgstr ""
+
+msgctxt "ability.gp_ordan_villama.name"
+msgid "Ordan villáma"
+msgstr ""
+
+msgctxt "ability.gp_ordan_villama.desc"
+msgid "Ordan villáma csap le a kijelölt pontra: azonnal 160 sebzés egységeknek és épületeknek is. Ára 100 meteorit, 2,5 perc töltődés."
+msgstr ""
+
+msgctxt "ability.gp_isteni_szel.name"
+msgid "Isteni szél"
+msgstr ""
+
+msgctxt "ability.gp_isteni_szel.desc"
+msgid "Isteni szél söpör végig a kijelölt ponton: 8 mp-re felére lassítja az ellenséget, a saját egységek pedig 20%-kal gyorsabbak. 2,5 perc töltődés."
+msgstr ""
+
+msgctxt "ability.alomkod.name"
+msgid "Álomköd"
+msgstr ""
+
+msgctxt "ability.alomkod.desc"
+msgid "Álomködöt borít egy területre 5 mp-re: az ellenség benne nagyon lelassul (–65%) és kicsit sebződik."
+msgstr ""
+
+msgctxt "ability.alomseta.name"
+msgid "Álomséta"
+msgstr ""
+
+msgctxt "ability.alomseta.desc"
+msgid "Az álmok útján a kijelölt pontra lép (legfeljebb 7 csempe)."
+msgstr ""
+
+msgctxt "ability.napfolt.name"
+msgid "Napfolt"
+msgstr ""
+
+msgctxt "ability.napfolt.desc"
+msgid "Napfénybe öltözik: 6 mp-ig semmilyen egységtípus ellen nem gyenge."
+msgstr ""
+
+msgctxt "ability.goztulnyomas.name"
+msgid "Gőztúlnyomás"
+msgstr ""
+
+msgctxt "ability.goztulnyomas.desc"
+msgid "6 mp-re +40% sebesség; utána 3 mp-ig lassabb, amíg a kazán lehűl."
+msgstr ""
+
+msgctxt "ability.hejba.name"
+msgid "Héjba húzódás"
+msgstr ""
+
+msgctxt "ability.hejba.desc"
+msgid "Behúzódik a kagylóhéjba: 8 mp-ig semmilyen egységtípus ellen nem gyenge, de lassabb."
+msgstr ""
+
+msgctxt "ability.mic_fonalgyogyitas.name"
+msgid "Fonalgyógyítás"
+msgstr ""
+
+msgctxt "ability.mic_fonalgyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (10 életerő)."
+msgstr ""
+
+msgctxt "ability.mic_fonalhalo.name"
+msgid "Fonalháló"
+msgstr ""
+
+msgctxt "ability.mic_fonalhalo.desc"
+msgid "Területre ható csapás: 4 mp alatt 24 sebzés, és lassít."
+msgstr ""
+
+msgctxt "ability.pin_jegfal.name"
+msgid "Jégfal"
+msgstr ""
+
+msgctxt "ability.pin_jegfal.desc"
+msgid "Be- és kikapcsolható állás: sebesség -50%, páncél +3."
+msgstr ""
+
+msgctxt "ability.pin_csuszas.name"
+msgid "Hasoncsúszás"
+msgstr ""
+
+msgctxt "ability.pin_csuszas.desc"
+msgid "4 mp-re: sebesség +90%, sebzés +15%."
+msgstr ""
+
+msgctxt "ability.pin_jeggyogyitas.name"
+msgid "Jeges gyógyítás"
+msgstr ""
+
+msgctxt "ability.pin_jeggyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő)."
+msgstr ""
+
+msgctxt "ability.pin_jeghullam.name"
+msgid "Jeges hullám"
+msgstr ""
+
+msgctxt "ability.pin_jeghullam.desc"
+msgid "Területre ható csapás: 4 mp alatt 56 sebzés, és lassít."
+msgstr ""
+
+msgctxt "ability.pin_osveny.name"
+msgid "Ösvényvezetés"
+msgstr ""
+
+msgctxt "ability.pin_osveny.desc"
+msgid "Ének: a közeli szövetségesek – sebesség +12%."
+msgstr ""
+
+msgctxt "ability.gho_kofal.name"
+msgid "Kőfal"
+msgstr ""
+
+msgctxt "ability.gho_kofal.desc"
+msgid "Be- és kikapcsolható állás: sebesség -50%, páncél +3."
+msgstr ""
+
+msgctxt "ability.gho_kodobbantas.name"
+msgid "Kődobbantás"
+msgstr ""
+
+msgctxt "ability.gho_kodobbantas.desc"
+msgid "Csapás maga körül: 40 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.gho_meszrobbanas.name"
+msgid "Mészrobbanás"
+msgstr ""
+
+msgctxt "ability.gho_meszrobbanas.desc"
+msgid "Felrobban: a közeli ellenségeket megsebzi és elvakítja (lassítja), az épületeket erősen rombolja – a manó elpusztul."
+msgstr ""
+
+msgctxt "ability.mho_szelvagas.name"
+msgid "Szélvágás"
+msgstr ""
+
+msgctxt "ability.mho_szelvagas.desc"
+msgid "4 mp-re: sebesség +50%, sebzés +40%."
+msgstr ""
+
+msgctxt "ability.mho_szikrapajzs.name"
+msgid "Szikrapajzs"
+msgstr ""
+
+msgctxt "ability.mho_szikrapajzs.desc"
+msgid "Be- és kikapcsolható állás: sebesség -40%, páncél +3."
+msgstr ""
+
+msgctxt "ability.mho_elezes.name"
+msgid "Élezés"
+msgstr ""
+
+msgctxt "ability.mho_elezes.desc"
+msgid "Ének: a közeli szövetségesek – sebzés +10%."
+msgstr ""
+
+msgctxt "ability.mho_javitas.name"
+msgid "Foltozás"
+msgstr ""
+
+msgctxt "ability.mho_javitas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (8 életerő)."
+msgstr ""
+
+msgctxt "ability.mho_gozkitores.name"
+msgid "Gőzkitörés"
+msgstr ""
+
+msgctxt "ability.mho_gozkitores.desc"
+msgid "Csapás maga körül: 38 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.dar_gyantafal.name"
+msgid "Gyantafal"
+msgstr ""
+
+msgctxt "ability.dar_gyantafal.desc"
+msgid "Be- és kikapcsolható állás: sebesség -40%, páncél +3."
+msgstr ""
+
+msgctxt "ability.dar_rajenek.name"
+msgid "Rajének"
+msgstr ""
+
+msgctxt "ability.dar_rajenek.desc"
+msgid "Ének: a közeli szövetségesek – sebesség +12%, sebzés +5%."
+msgstr ""
+
+msgctxt "ability.dar_mezgyogyitas.name"
+msgid "Mézgyógyítás"
+msgstr ""
+
+msgctxt "ability.dar_mezgyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő)."
+msgstr ""
+
+msgctxt "ability.tok_fagydobbantas.name"
+msgid "Fagydobbantás"
+msgstr ""
+
+msgctxt "ability.tok_fagydobbantas.desc"
+msgid "Csapás maga körül: 36 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.tok_harangszo.name"
+msgid "Harangszó"
+msgstr ""
+
+msgctxt "ability.tok_harangszo.desc"
+msgid "Ének: a közeli szövetségesek – sebzés +8%, páncél +1."
+msgstr ""
+
+msgctxt "ability.tok_rontasuzes.name"
+msgid "Rontásűzés"
+msgstr ""
+
+msgctxt "ability.tok_rontasuzes.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (8 életerő)."
+msgstr ""
+
+msgctxt "ability.tok_hovihar.name"
+msgid "Hóvihar"
+msgstr ""
+
+msgctxt "ability.tok_hovihar.desc"
+msgid "Területre ható csapás: 5 mp alatt 70 sebzés, és lassít."
+msgstr ""
+
+msgctxt "ability.gal_harapas.name"
+msgid "Lesből harapás"
+msgstr ""
+
+msgctxt "ability.gal_harapas.desc"
+msgid "4 mp-re: sebesség +60%, sebzés +35%."
+msgstr ""
+
+msgctxt "ability.gal_kalaptaposas.name"
+msgid "Kalaptaposás"
+msgstr ""
+
+msgctxt "ability.gal_kalaptaposas.desc"
+msgid "Csapás maga körül: 40 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.gal_gyokergancs.name"
+msgid "Gyökérgáncs"
+msgstr ""
+
+msgctxt "ability.gal_gyokergancs.desc"
+msgid "Területre ható csapás: 4 mp alatt 24 sebzés, és lassít."
+msgstr ""
+
+msgctxt "ability.nii_lotuszfal.name"
+msgid "Lótuszfal"
+msgstr ""
+
+msgctxt "ability.nii_lotuszfal.desc"
+msgid "Be- és kikapcsolható állás: sebesség -40%, páncél +3."
+msgstr ""
+
+msgctxt "ability.nii_aldas.name"
+msgid "Árapály-áldás"
+msgstr ""
+
+msgctxt "ability.nii_aldas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (10 életerő)."
+msgstr ""
+
+msgctxt "ability.nii_arhullam.name"
+msgid "Árhullám"
+msgstr ""
+
+msgctxt "ability.nii_arhullam.desc"
+msgid "Területre ható csapás: 3 mp alatt 48 sebzés, és lassít."
+msgstr ""
+
+msgctxt "ability.nii_harapas.name"
+msgid "Halálforgás"
+msgstr ""
+
+msgctxt "ability.nii_harapas.desc"
+msgid "Csapás maga körül: 42 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.tuz_homokroham.name"
+msgid "Homokroham"
+msgstr ""
+
+msgctxt "ability.tuz_homokroham.desc"
+msgid "4 mp-re: sebesség +70%, sebzés +25%."
+msgstr ""
+
+msgctxt "ability.tuz_pengetanc.name"
+msgid "Pengetánc"
+msgstr ""
+
+msgctxt "ability.tuz_pengetanc.desc"
+msgid "Csapás maga körül: 30 sebzés."
+msgstr ""
+
+msgctxt "ability.tuz_tuzfal.name"
+msgid "Tűzfal"
+msgstr ""
+
+msgctxt "ability.tuz_tuzfal.desc"
+msgid "Területre ható csapás: 4 mp alatt 96 sebzés."
+msgstr ""
+
+msgctxt "ability.tuz_delibab.name"
+msgid "Délibáb"
+msgstr ""
+
+msgctxt "ability.tuz_delibab.desc"
+msgid "Lényt idéz 20 mp-re."
+msgstr ""
+
+msgctxt "ability.ten_lampasfeny.name"
+msgid "Lámpásfény"
+msgstr ""
+
+msgctxt "ability.ten_lampasfeny.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő)."
+msgstr ""
+
+msgctxt "ability.ten_levelorveny.name"
+msgid "Levélörvény"
+msgstr ""
+
+msgctxt "ability.ten_levelorveny.desc"
+msgid "Területre ható csapás: 4 mp alatt 64 sebzés."
+msgstr ""
+
+msgctxt "ability.ten_szokkenes.name"
+msgid "Szökkenés"
+msgstr ""
+
+msgctxt "ability.ten_szokkenes.desc"
+msgid "4 mp-re: sebesség +80%, sebzés +20%."
+msgstr ""
+
+msgctxt "ability.ten_gyokerdobbantas.name"
+msgid "Gyökérdobbantás"
+msgstr ""
+
+msgctxt "ability.ten_gyokerdobbantas.desc"
+msgid "Csapás maga körül: 38 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.nil_rakshasa_hivas.name"
+msgid "Rakshasa hívása"
+msgstr ""
+
+msgctxt "ability.nil_rakshasa_hivas.desc"
+msgid "Lényt idéz 30 mp-re."
+msgstr ""
+
+msgctxt "ability.nil_tombolas.name"
+msgid "Tombolás"
+msgstr ""
+
+msgctxt "ability.nil_tombolas.desc"
+msgid "Csapás maga körül: 40 sebzés, és megbénít."
+msgstr ""
+
+msgctxt "ability.nil_orveny.name"
+msgid "Vízörvény"
+msgstr ""
+
+msgctxt "ability.nil_orveny.desc"
+msgid "Területre ható csapás: 4 mp alatt 64 sebzés, és lassít."
+msgstr ""
+
+msgctxt "ability.nil_lotuszgyogyitas.name"
+msgid "Lótuszgyógyítás"
+msgstr ""
+
+msgctxt "ability.nil_lotuszgyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (10 életerő)."
+msgstr ""
+
+msgctxt "ability.nil_makara_roham.name"
+msgid "Makara-roham"
+msgstr ""
+
+msgctxt "ability.nil_makara_roham.desc"
+msgid "4 mp-re: sebesség +60%, sebzés +30%."
+msgstr ""
+
+msgctxt "ability.zha_kukorekolas.name"
+msgid "Kukorékolás"
+msgstr ""
+
+msgctxt "ability.zha_kukorekolas.desc"
+msgid "Ének: a közeli szövetségesek – sebzés +10%."
+msgstr ""
+
+msgctxt "ability.zha_madarszellem_hivas.name"
+msgid "Madárszellem hívása"
+msgstr ""
+
+msgctxt "ability.zha_madarszellem_hivas.desc"
+msgid "Lényt idéz 30 mp-re."
+msgstr ""
+
+msgctxt "ability.zha_tollgyogyitas.name"
+msgid "Tollgyógyítás"
+msgstr ""
+
+msgctxt "ability.zha_tollgyogyitas.desc"
+msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő)."
+msgstr ""
+
+msgctxt "ability.shr_vedorunak.name"
+msgid "Védőrúnák"
+msgstr ""
+
+msgctxt "ability.shr_vedorunak.desc"
+msgid "Ének: a közeli szövetségesek – páncél +2."
+msgstr ""
+
+msgctxt "ability.shr_robbanorunak.name"
+msgid "Robbanó rúna"
+msgstr ""
+
+msgctxt "ability.shr_robbanorunak.desc"
+msgid "Különleges képesség."
+msgstr ""
+
+msgctxt "ability.shr_kapaszkodas.name"
+msgid "Kapaszkodás"
+msgstr ""
+
+msgctxt "ability.shr_kapaszkodas.desc"
+msgid "4 mp-re: sebesség +70%, sebzés +15%."
+msgstr ""
+
+msgctxt "item.gyogyfozet.name"
+msgid "Gyógyfőzet"
+msgstr ""
+
+msgctxt "item.gyogyfozet.desc"
+msgid "Azonnal 250 életerőt ad vissza."
+msgstr ""
+
+msgctxt "item.eterfozet.name"
+msgid "Éterfőzet"
+msgstr ""
+
+msgctxt "item.eterfozet.desc"
+msgid "Azonnal 100 energiát ad vissza."
+msgstr ""
+
+msgctxt "item.emlekkonyv.name"
+msgid "Emlékkönyv"
+msgstr ""
+
+msgctxt "item.emlekkonyv.desc"
+msgid "Egy elveszett emlékkert lapjai: +300 tapasztalat."
+msgstr ""
+
+msgctxt "item.erotom.name"
+msgid "Erő tómja"
+msgstr ""
+
+msgctxt "item.erotom.desc"
+msgid "Végleg +2 sebzés."
+msgstr ""
+
+msgctxt "item.eletertom.name"
+msgid "Életerő tómja"
+msgstr ""
+
+msgctxt "item.eletertom.desc"
+msgid "Végleg +60 életerő."
+msgstr ""
+
+msgctxt "item.csizma.name"
+msgid "Vándorcsizma"
+msgstr ""
+
+msgctxt "item.csizma.desc"
+msgid "+15% mozgási sebesség."
+msgstr ""
+
+msgctxt "item.vedogyuru.name"
+msgid "Védőgyűrű"
+msgstr ""
+
+msgctxt "item.vedogyuru.desc"
+msgid "+2 páncél."
+msgstr ""
+
+msgctxt "item.karomkesztyu.name"
+msgid "Karomkesztyű"
+msgstr ""
+
+msgctxt "item.karomkesztyu.desc"
+msgid "+5 sebzés."
+msgstr ""
+
+msgctxt "item.eletamulett.name"
+msgid "Életerő-amulett"
+msgstr ""
+
+msgctxt "item.eletamulett.desc"
+msgid "+150 életerő."
+msgstr ""
+
+msgctxt "item.regengyuru.name"
+msgid "Megújulás gyűrűje"
+msgstr ""
+
+msgctxt "item.regengyuru.desc"
+msgid "+2 életerő-regeneráció."
+msgstr ""
+
+msgctxt "item.eterko.name"
+msgid "Éterkő"
+msgstr ""
+
+msgctxt "item.eterko.desc"
+msgid "+60 energia, +1 energia-regeneráció."
+msgstr ""
+
+msgctxt "item.hosipajzs.name"
+msgid "Hősi pajzs"
+msgstr ""
+
+msgctxt "item.hosipajzs.desc"
+msgid "+4 páncél, +100 életerő."
+msgstr ""
+
+msgctxt "item.ercpenge.name"
+msgid "Csillagérc-penge"
+msgstr ""
+
+msgctxt "item.ercpenge.desc"
+msgid "Az égi kőből kovácsolt penge: +12 sebzés."
+msgstr ""
+
+msgctxt "item.arnykopeny.name"
+msgid "Árnyköpeny"
+msgstr ""
+
+msgctxt "item.arnykopeny.desc"
+msgid "+12% sebesség, +2 páncél, +1 regeneráció."
+msgstr ""
+
+msgctxt "item.orokhajnal.name"
+msgid "Az Örök Hajnal szilánkja"
+msgstr ""
+
+msgctxt "item.orokhajnal.desc"
+msgid "Ordan hálózatának töredéke: +200 életerő, +100 energia, +6 sebzés."
+msgstr ""
+
+msgctxt "status.fire.name"
+msgid "Tűz"
+msgstr ""
+
+msgctxt "status.fire.status"
+msgid "Égés"
+msgstr ""
+
+msgctxt "status.ice.name"
+msgid "Jég"
+msgstr ""
+
+msgctxt "status.ice.status"
+msgid "Fagyás"
+msgstr ""
+
+msgctxt "status.lightning.name"
+msgid "Villám"
+msgstr ""
+
+msgctxt "status.lightning.status"
+msgid "Sokk"
+msgstr ""
+
+msgctxt "status.poison.name"
+msgid "Méreg"
+msgstr ""
+
+msgctxt "status.poison.status"
+msgid "Mérgezés"
+msgstr ""
+
+msgctxt "status.water.name"
+msgid "Víz"
+msgstr ""
+
+msgctxt "status.water.status"
+msgid "Átázott"
+msgstr ""
+
+msgctxt "status.root.name"
+msgid "Gyökér"
+msgstr ""
+
+msgctxt "status.root.status"
+msgid "Gúzsba kötve"
+msgstr ""
+
+msgctxt "status.sleep.name"
+msgid "Álom"
+msgstr ""
+
+msgctxt "status.sleep.status"
+msgid "Alszik"
+msgstr ""
+
+msgctxt "status.fear.name"
+msgid "Rémület"
+msgstr ""
+
+msgctxt "status.fear.status"
+msgid "Megrémült"
+msgstr ""
+
+msgctxt "status.blind.name"
+msgid "Vakítás"
+msgstr ""
+
+msgctxt "status.blind.status"
+msgid "Elvakult"
+msgstr ""
+
+msgctxt "status.wind.name"
+msgid "Szél"
+msgstr ""
+
+msgctxt "status.wind.status"
+msgid "Hátralökés"
+msgstr ""
+
+msgctxt "status.sunder.name"
+msgid "Zúzás"
+msgstr ""
+
+msgctxt "status.sunder.status"
+msgid "Páncéltörés"
+msgstr ""
+
+msgctxt "status.silence.name"
+msgid "Némítás"
+msgstr ""
+
+msgctxt "status.silence.status"
+msgid "Elnémítva"
+msgstr ""
+
+msgctxt "status.mark.name"
+msgid "Jelölés"
+msgstr ""
+
+msgctxt "status.mark.status"
+msgid "Megjelölt"
+msgstr ""
+

@@ -1,0 +1,130 @@
+{
+ "_leiras": "Egységek, hősök és épületek sémája (ADR-005). A JSON Schema egy részhalmaza: type, properties, required, additionalProperties, items, enum, minimum, maximum, $ref (#/$defs/…).",
+ "type": "object",
+ "required": ["Identity"],
+ "additionalProperties": false,
+ "properties": {
+  "Identity": {
+   "type": "object",
+   "required": ["kind"],
+   "additionalProperties": false,
+   "properties": {
+    "kind": {"enum": ["unit", "building"]},
+    "faction": {"type": "string"},
+    "name": {"type": "string"}, "desc": {"type": "string"}, "tagline": {"type": "string"},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "class": {"type": "string"}, "shape": {"type": "string"}, "sprite": {"type": ["string", "object"]},
+    "hidden": {"type": "boolean"}, "summoned": {"type": "boolean"}, "worker": {"type": "boolean"},
+    "hero": {"type": "boolean"}, "no_sprite": {"type": "boolean"}, "wall": {"type": "boolean"}
+   }
+  },
+  "Cost": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "resources": {"$ref": "#/$defs/resources"},
+    "time": {"type": "number", "minimum": 0},
+    "supply": {"type": "number", "minimum": 0},
+    "count": {"type": "integer", "minimum": 1}
+   }
+  },
+  "Health": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "max": {"type": "number", "minimum": 1},
+    "armor": {"type": "number"},
+    "shield": {"type": "number", "minimum": 0},
+    "shield_slot": {"type": "boolean"},
+    "shield_delay": {"type": "number", "minimum": 0},
+    "shield_zone": {"type": "string"},
+    "regen": {"type": "number"}
+   }
+  },
+  "Movement": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "speed": {"type": "number", "minimum": 0},
+    "radius": {"type": "number", "minimum": 0},
+    "flying": {"type": "boolean"}
+   }
+  },
+  "Vision": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "sight": {"type": "number", "minimum": 0},
+    "detect": {"type": "number", "minimum": 0},
+    "always_hidden": {"type": "boolean"},
+    "mine_stealth": {"type": "integer", "minimum": 0}
+   }
+  },
+  "Attack": {
+   "type": "object",
+   "properties": {
+    "damage": {"type": "number", "minimum": 0},
+    "range": {"type": "number", "minimum": 0},
+    "cooldown": {"type": "number", "minimum": 0},
+    "targets": {"type": "array", "items": {"enum": ["ground", "air"]}},
+    "projectile": {"type": "string"},
+    "splash": {"type": "number", "minimum": 0},
+    "type_bonus": {"type": "object"},
+    "type_nostrength": {"type": "boolean"},
+    "death_burst": {"type": "object"}
+   }
+  },
+  "Energy": {"type": "object", "additionalProperties": false, "properties": {"max": {"type": "number", "minimum": 0}}},
+  "Abilities": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "list": {"type": "array", "items": {"type": "string"}},
+    "research": {"type": "object"},
+    "path": {"type": "object"}
+   }
+  },
+  "Hero": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "abilities": {"type": "array", "items": {"type": "string"}},
+    "growth": {"type": "object"},
+    "xp": {"type": "number", "minimum": 0}
+   }
+  },
+  "Worker": {"type": "object"},
+  "Supply": {"type": "object", "additionalProperties": false, "properties": {"provides": {"type": "number", "minimum": 0}}},
+  "Lifetime": {"type": "object"},
+  "Footprint": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["size"],
+   "properties": {"size": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 16}}}
+  },
+  "Producer": {"type": "object"},
+  "Researcher": {"type": "object"},
+  "Powers": {"type": "object"},
+  "Dropoff": {"type": "object"},
+  "Garrison": {"type": "object"},
+  "Aura": {"type": "object"},
+  "Placement": {"type": "object"},
+  "Mechanics": {"type": "object"},
+  "Requirements": {"$ref": "#/$defs/requirements"},
+  "Legacy": {"type": "object"}
+ },
+ "$defs": {
+  "resources": {
+   "type": "object",
+   "additionalProperties": {"type": "number", "minimum": 0}
+  },
+  "requirements": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "all": {"type": "array", "items": {"type": "object"}},
+    "any": {"type": "array", "items": {"type": "object"}}
+   }
+  }
+ }
+}

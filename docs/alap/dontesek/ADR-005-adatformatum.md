@@ -50,3 +50,12 @@ szerkesztő változatlanul visszamenti, (5) determinisztikusan töltődik be (AD
 - A modderek egy formátumot tanulnak; az öröklődés miatt egy új egység néhány sor.
 - A szerkesztő (M11) a sémából építheti az objektumszerkesztő mezőit.
 - A Python-referencia a régi formátumot használja tovább; a konverter a két formátum közti hídat adja.
+
+## Kiegészítés (2026-11-12, M2 3. lépés)
+
+**Fajtánkénti névtér.** A valódi tartalom betöltése megmutatta, hogy a mai adatokban ugyanaz az azonosító két fajtához
+is tartozhat (`imp_nagy_alapozas` épület és kutatás, `ten_lampasfeny` kutatás és képesség) – a Python-játékban ezek
+külön névtérben éltek. Ezért a sablonazonosítók fajtánként külön névtérben vannak: `entity` (egységek, épületek,
+alapsablonok), `research`, `ability`, `item`, `status`, `faction`; a hivatkozás helyéből mindig egyértelmű, melyik
+névtérről van szó (pl. `Researcher.list` → `research`).
+

@@ -1,0 +1,5922 @@
+{
+ "pajzsfal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.pajzsfal.name",
+   "desc": "ability.pajzsfal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "F",
+   "modifiers": {
+    "speed_mult": 0.5,
+    "ranged_taken_mult": 0.4,
+    "armor_add": 2
+   },
+   "icon": "shield"
+  }
+ },
+ "napvihar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.napvihar.name",
+   "desc": "ability.napvihar.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "T",
+   "energy": 75,
+   "range": 8,
+   "radius": 1.8,
+   "duration": 4,
+   "dps": 22,
+   "color": [
+    255,
+    190,
+    60
+   ],
+   "sprite": "napvihar",
+   "icon": "burst"
+  }
+ },
+ "oruletkod": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oruletkod.name",
+   "desc": "ability.oruletkod.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "T",
+   "range": 8,
+   "radius": 2.2,
+   "duration": 6,
+   "dps": 7,
+   "slow": 0.5,
+   "color": [
+    170,
+    90,
+    220
+   ],
+   "sprite": "oruletkod",
+   "hp_cost": 25,
+   "cooldown": 14,
+   "icon": "burst"
+  }
+ },
+ "gyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gyogyitas.name",
+   "desc": "ability.gyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "G",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 10,
+   "icon": "heal"
+  }
+ },
+ "vagta": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.vagta.name",
+   "desc": "ability.vagta.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "V",
+   "cooldown": 20,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.8
+   },
+   "icon": "rage"
+  }
+ },
+ "roham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.roham.name",
+   "desc": "ability.roham.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "V",
+   "cooldown": 20,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.7,
+    "damage_mult": 1.3
+   },
+   "icon": "rage"
+  }
+ },
+ "holdgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.holdgyogyitas.name",
+   "desc": "ability.holdgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "G",
+   "cooldown": 1.0,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal"
+  }
+ },
+ "szellemfarkasok": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.szellemfarkasok.name",
+   "desc": "ability.szellemfarkasok.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "W",
+   "cooldown": 30,
+   "unit": "wul_szellemfarkas",
+   "count": 2,
+   "lifetime": 30,
+   "icon": "summon"
+  }
+ },
+ "gyokerkotes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gyokerkotes.name",
+   "desc": "ability.gyokerkotes.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "T",
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 6,
+   "slow": 0.08,
+   "color": [
+    120,
+    200,
+    120
+   ],
+   "sprite": "gyokerkotes",
+   "spores": 3,
+   "cooldown": 10,
+   "icon": "burst"
+  }
+ },
+ "osszeolvadas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.osszeolvadas.name",
+   "desc": "ability.osszeolvadas.desc"
+  },
+  "Spec": {
+   "type": "merge",
+   "hotkey": "M",
+   "count": 3,
+   "into": "myc_oriaspofeteg",
+   "range": 4,
+   "icon": "merge"
+  }
+ },
+ "lelekidezes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.lelekidezes.name",
+   "desc": "ability.lelekidezes.desc"
+  },
+  "Spec": {
+   "type": "raise",
+   "hotkey": "R",
+   "energy": 60,
+   "range": 6,
+   "small": "imp_szellemlegios",
+   "large": "imp_szellemkolosszus",
+   "icon": "ghost"
+  }
+ },
+ "ostrommod": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ostrommod.name",
+   "desc": "ability.ostrommod.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "O",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "range_add": 3,
+    "damage_mult": 1.25
+   },
+   "icon": "shield"
+  }
+ },
+ "h_tava_nyil": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_tava_nyil.name",
+   "desc": "ability.h_tava_nyil.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "range": 7,
+   "cooldown": 8,
+   "energy": 50,
+   "slow": 0.45,
+   "duration": 2,
+   "projectile": "arrow",
+   "levels": [
+    {
+     "damage": 70
+    },
+    {
+     "damage": 110
+    },
+    {
+     "damage": 150
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_tava_utenek": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_tava_utenek.name",
+   "desc": "ability.h_tava_utenek.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "speed_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.14,
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.2,
+      "armor_add": 1
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_tava_farkasok": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_tava_farkasok.name",
+   "desc": "ability.h_tava_farkasok.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "E",
+   "energy": 75,
+   "cooldown": 20,
+   "unit": "wul_szellemfarkas",
+   "lifetime": 40,
+   "levels": [
+    {
+     "count": 1
+    },
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    }
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_tava_madar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_tava_madar.name",
+   "desc": "ability.h_tava_madar.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "unit": "wul_mennydorgesmadar",
+   "count": 2,
+   "lifetime": 45,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_ragna_pajzsfal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ragna_pajzsfal.name",
+   "desc": "ability.h_ragna_pajzsfal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "Q",
+   "levels": [
+    {
+     "modifiers": {
+      "speed_mult": 0.5,
+      "ranged_taken_mult": 0.5,
+      "armor_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 0.55,
+      "ranged_taken_mult": 0.4,
+      "armor_add": 3
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 0.6,
+      "ranged_taken_mult": 0.3,
+      "armor_add": 4
+     }
+    }
+   ],
+   "icon": "shield"
+  }
+ },
+ "h_ragna_esku": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ragna_esku.name",
+   "desc": "ability.h_ragna_esku.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 3
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_ragna_roham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ragna_roham.name",
+   "desc": "ability.h_ragna_roham.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "E",
+   "range": 4,
+   "cooldown": 10,
+   "energy": 60,
+   "slow": 0.0,
+   "projectile": null,
+   "levels": [
+    {
+     "damage": 50,
+     "duration": 1.5
+    },
+    {
+     "damage": 80,
+     "duration": 2
+    },
+    {
+     "damage": 110,
+     "duration": 2.5
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_ragna_hosszutel": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ragna_hosszutel.name",
+   "desc": "ability.h_ragna_hosszutel.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "range": 8,
+   "radius": 3.5,
+   "duration": 8,
+   "dps": 18,
+   "slow": 0.4,
+   "color": [
+    170,
+    220,
+    255
+   ],
+   "sprite": "hosszutel",
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_szelai_napvihar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_szelai_napvihar.name",
+   "desc": "ability.h_szelai_napvihar.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "Q",
+   "energy": 75,
+   "range": 8,
+   "radius": 1.8,
+   "duration": 4,
+   "color": [
+    255,
+    190,
+    60
+   ],
+   "sprite": "napvihar",
+   "levels": [
+    {
+     "dps": 20
+    },
+    {
+     "dps": 28
+    },
+    {
+     "dps": 36
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_szelai_rezonancia": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_szelai_rezonancia.name",
+   "desc": "ability.h_szelai_rezonancia.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.12
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.16
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_szelai_levalasztas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_szelai_levalasztas.name",
+   "desc": "ability.h_szelai_levalasztas.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "E",
+   "range": 7,
+   "cooldown": 7,
+   "energy": 60,
+   "slow": 0.6,
+   "duration": 1.5,
+   "projectile": "magic",
+   "levels": [
+    {
+     "damage": 90
+    },
+    {
+     "damage": 140
+    },
+    {
+     "damage": 190
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_szelai_csillagorok": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_szelai_csillagorok.name",
+   "desc": "ability.h_szelai_csillagorok.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "unit": "elf_tollas_harcos",
+   "count": 4,
+   "lifetime": 45,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_mor_gyogyspora": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_mor_gyogyspora.name",
+   "desc": "ability.h_mor_gyogyspora.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "Q",
+   "energy": 5,
+   "cooldown": 0.8,
+   "range": 6,
+   "levels": [
+    {
+     "amount": 12
+    },
+    {
+     "amount": 18
+    },
+    {
+     "amount": 24
+    }
+   ],
+   "icon": "heal"
+  }
+ },
+ "h_mor_gyokerkotes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_mor_gyokerkotes.name",
+   "desc": "ability.h_mor_gyokerkotes.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "W",
+   "energy": 75,
+   "range": 8,
+   "slow": 0.08,
+   "color": [
+    120,
+    200,
+    120
+   ],
+   "sprite": "gyokerkotes",
+   "levels": [
+    {
+     "radius": 2.0,
+     "duration": 3,
+     "dps": 5
+    },
+    {
+     "radius": 2.3,
+     "duration": 4,
+     "dps": 7
+    },
+    {
+     "radius": 2.6,
+     "duration": 5,
+     "dps": 9
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_mor_emlekkert": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_mor_emlekkert.name",
+   "desc": "ability.h_mor_emlekkert.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "E",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "regen_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 3
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_mor_ebredes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_mor_ebredes.name",
+   "desc": "ability.h_mor_ebredes.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "unit": "myc_oriaspofeteg",
+   "count": 2,
+   "lifetime": 50,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_livia_lelek": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_livia_lelek.name",
+   "desc": "ability.h_livia_lelek.desc"
+  },
+  "Spec": {
+   "type": "raise",
+   "hotkey": "Q",
+   "range": 6,
+   "small": "imp_szellemlegios",
+   "large": "imp_szellemkolosszus",
+   "levels": [
+    {
+     "energy": 60
+    },
+    {
+     "energy": 45
+    },
+    {
+     "energy": 30
+    }
+   ],
+   "icon": "ghost"
+  }
+ },
+ "h_livia_horgony": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_livia_horgony.name",
+   "desc": "ability.h_livia_horgony.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "W",
+   "energy": 5,
+   "cooldown": 0.8,
+   "range": 6,
+   "heal_tags": [
+    "mech"
+   ],
+   "levels": [
+    {
+     "amount": 14
+    },
+    {
+     "amount": 22
+    },
+    {
+     "amount": 30
+    }
+   ],
+   "icon": "heal"
+  }
+ },
+ "h_livia_legio": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_livia_legio.name",
+   "desc": "ability.h_livia_legio.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "E",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.14
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.2
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_livia_lelegzet": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_livia_lelegzet.name",
+   "desc": "ability.h_livia_lelegzet.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "range": 8,
+   "radius": 4,
+   "duration": 6,
+   "heal": 25,
+   "color": [
+    140,
+    255,
+    200
+   ],
+   "sprite": "lelegzet",
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_keth_kod": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_keth_kod.name",
+   "desc": "ability.h_keth_kod.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "Q",
+   "energy": 75,
+   "range": 8,
+   "radius": 2.2,
+   "duration": 6,
+   "slow": 0.5,
+   "color": [
+    170,
+    90,
+    220
+   ],
+   "sprite": "oruletkod",
+   "levels": [
+    {
+     "dps": 7
+    },
+    {
+     "dps": 10
+    },
+    {
+     "dps": 13
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_keth_korushang": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_keth_korushang.name",
+   "desc": "ability.h_keth_korushang.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "speed_mult": 1.1,
+      "regen_add": 0.5
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.15,
+      "regen_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.2,
+      "regen_add": 1.5
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_keth_csap": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_keth_csap.name",
+   "desc": "ability.h_keth_csap.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "E",
+   "range": 5,
+   "cooldown": 8,
+   "energy": 55,
+   "slow": 0.3,
+   "duration": 2,
+   "projectile": "acid",
+   "levels": [
+    {
+     "damage": 80
+    },
+    {
+     "damage": 120
+    },
+    {
+     "damage": 160
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_keth_sokasag": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_keth_sokasag.name",
+   "desc": "ability.h_keth_sokasag.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "unit": "cro_karmos",
+   "count": 4,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_nera_toltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_nera_toltes.name",
+   "desc": "ability.h_nera_toltes.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "Q",
+   "cooldown": 18,
+   "levels": [
+    {
+     "duration": 5,
+     "modifiers": {
+      "damage_mult": 1.3
+     }
+    },
+    {
+     "duration": 6,
+     "modifiers": {
+      "damage_mult": 1.45
+     }
+    },
+    {
+     "duration": 7,
+     "modifiers": {
+      "damage_mult": 1.6
+     }
+    }
+   ],
+   "icon": "rage"
+  }
+ },
+ "h_nera_loves": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_nera_loves.name",
+   "desc": "ability.h_nera_loves.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "W",
+   "range": 8,
+   "cooldown": 7,
+   "energy": 50,
+   "slow": 0.5,
+   "duration": 1.5,
+   "projectile": "spear",
+   "levels": [
+    {
+     "damage": 70
+    },
+    {
+     "damage": 110
+    },
+    {
+     "damage": 150
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_nera_batorsag": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_nera_batorsag.name",
+   "desc": "ability.h_nera_batorsag.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "E",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2,
+      "speed_mult": 1.05
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2,
+      "speed_mult": 1.1
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_nera_horgony": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_nera_horgony.name",
+   "desc": "ability.h_nera_horgony.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "R",
+   "ultimate": true,
+   "cooldown": 120,
+   "duration": 10,
+   "modifiers": {
+    "damage_mult": 2.0,
+    "armor_add": 5,
+    "speed_mult": 1.3
+   },
+   "levels": [
+    {}
+   ],
+   "icon": "rage"
+  }
+ },
+ "h_itz_darda": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_itz_darda.name",
+   "desc": "ability.h_itz_darda.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "range": 7,
+   "cooldown": 8,
+   "energy": 50,
+   "slow": 0.5,
+   "duration": 2,
+   "projectile": "spear",
+   "levels": [
+    {
+     "damage": 80
+    },
+    {
+     "damage": 125
+    },
+    {
+     "damage": 170
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_itz_csapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_itz_csapas.name",
+   "desc": "ability.h_itz_csapas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "W",
+   "cooldown": 9,
+   "energy": 70,
+   "color": [
+    255,
+    200,
+    90
+   ],
+   "levels": [
+    {
+     "radius": 2.2,
+     "damage": 45,
+     "stun": 1.0
+    },
+    {
+     "radius": 2.5,
+     "damage": 70,
+     "stun": 1.5
+    },
+    {
+     "radius": 2.8,
+     "damage": 95,
+     "stun": 2.0
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_itz_jelenlet": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_itz_jelenlet.name",
+   "desc": "ability.h_itz_jelenlet.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "E",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1,
+      "damage_mult": 1.04
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2,
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 3,
+      "damage_mult": 1.12
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_itz_kukulkan": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_itz_kukulkan.name",
+   "desc": "ability.h_itz_kukulkan.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "R",
+   "ultimate": true,
+   "cooldown": 110,
+   "duration": 15,
+   "modifiers": {
+    "damage_mult": 2.0,
+    "armor_add": 6,
+    "speed_mult": 1.2
+   },
+   "levels": [
+    {}
+   ],
+   "icon": "rage"
+  }
+ },
+ "h_xochi_hullam": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_xochi_hullam.name",
+   "desc": "ability.h_xochi_hullam.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "Q",
+   "energy": 75,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 3,
+   "color": [
+    80,
+    230,
+    220
+   ],
+   "sprite": "napvihar",
+   "levels": [
+    {
+     "dps": 26
+    },
+    {
+     "dps": 36
+    },
+    {
+     "dps": 46
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_xochi_harmonia": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_xochi_harmonia.name",
+   "desc": "ability.h_xochi_harmonia.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "regen_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 3
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_xochi_jadeor": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_xochi_jadeor.name",
+   "desc": "ability.h_xochi_jadeor.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "E",
+   "energy": 80,
+   "cooldown": 25,
+   "unit": "elf_jadeor",
+   "lifetime": 45,
+   "levels": [
+    {
+     "count": 1
+    },
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    }
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_xochi_napkorona": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_xochi_napkorona.name",
+   "desc": "ability.h_xochi_napkorona.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "range": 8,
+   "radius": 4,
+   "duration": 6,
+   "heal": 32,
+   "color": [
+    255,
+    230,
+    140
+   ],
+   "sprite": "lelegzet",
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_hja_szilank": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_hja_szilank.name",
+   "desc": "ability.h_hja_szilank.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "range": 7,
+   "cooldown": 7,
+   "energy": 50,
+   "slow": 0.35,
+   "duration": 3,
+   "projectile": "magic",
+   "levels": [
+    {
+     "damage": 75
+    },
+    {
+     "damage": 115
+    },
+    {
+     "damage": 155
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_hja_vihar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_hja_vihar.name",
+   "desc": "ability.h_hja_vihar.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "W",
+   "energy": 80,
+   "range": 8,
+   "radius": 2.4,
+   "duration": 5,
+   "slow": 0.5,
+   "color": [
+    190,
+    230,
+    255
+   ],
+   "sprite": "hosszutel",
+   "levels": [
+    {
+     "dps": 16
+    },
+    {
+     "dps": 24
+    },
+    {
+     "dps": 32
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_hja_bunda": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_hja_bunda.name",
+   "desc": "ability.h_hja_bunda.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "E",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1,
+      "regen_add": 0.5
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2,
+      "regen_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2,
+      "regen_add": 2
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_hja_fagyott_ido": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_hja_fagyott_ido.name",
+   "desc": "ability.h_hja_fagyott_ido.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "color": [
+    170,
+    220,
+    255
+   ],
+   "radius": 5,
+   "damage": 120,
+   "stun": 3.5,
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_bja_medve": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bja_medve.name",
+   "desc": "ability.h_bja_medve.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "Q",
+   "energy": 75,
+   "cooldown": 22,
+   "unit": "urs_kardfogu_tigris",
+   "lifetime": 45,
+   "levels": [
+    {
+     "count": 1
+    },
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    }
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_bja_falka": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bja_falka.name",
+   "desc": "ability.h_bja_falka.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.14
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.2,
+      "speed_mult": 1.05
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_bja_szigony": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bja_szigony.name",
+   "desc": "ability.h_bja_szigony.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "E",
+   "range": 6,
+   "cooldown": 9,
+   "energy": 55,
+   "slow": 0.0,
+   "projectile": "spear",
+   "levels": [
+    {
+     "damage": 60,
+     "duration": 1.2
+    },
+    {
+     "damage": 95,
+     "duration": 1.7
+    },
+    {
+     "damage": 130,
+     "duration": 2.2
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_bja_mamutcsorda": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bja_mamutcsorda.name",
+   "desc": "ability.h_bja_mamutcsorda.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "unit": "urs_mammut",
+   "count": 2,
+   "lifetime": 40,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_vor_sugar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_vor_sugar.name",
+   "desc": "ability.h_vor_sugar.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "range": 6,
+   "cooldown": 7,
+   "energy": 50,
+   "slow": 0.5,
+   "duration": 2,
+   "projectile": "acid",
+   "levels": [
+    {
+     "damage": 80
+    },
+    {
+     "damage": 120
+    },
+    {
+     "damage": 160
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_vor_pancel": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_vor_pancel.name",
+   "desc": "ability.h_vor_pancel.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "W",
+   "cooldown": 20,
+   "levels": [
+    {
+     "duration": 8,
+     "modifiers": {
+      "armor_add": 4,
+      "ranged_taken_mult": 0.7
+     }
+    },
+    {
+     "duration": 10,
+     "modifiers": {
+      "armor_add": 6,
+      "ranged_taken_mult": 0.6
+     }
+    },
+    {
+     "duration": 12,
+     "modifiers": {
+      "armor_add": 8,
+      "ranged_taken_mult": 0.5
+     }
+    }
+   ],
+   "icon": "rage"
+  }
+ },
+ "h_vor_larvak": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_vor_larvak.name",
+   "desc": "ability.h_vor_larvak.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "E",
+   "energy": 75,
+   "cooldown": 20,
+   "unit": "cro_karmos",
+   "levels": [
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    },
+    {
+     "count": 4
+    }
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_vor_robbanas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_vor_robbanas.name",
+   "desc": "ability.h_vor_robbanas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "color": [
+    150,
+    255,
+    120
+   ],
+   "radius": 4.5,
+   "damage": 220,
+   "stun": 1.0,
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_ssa_felho": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ssa_felho.name",
+   "desc": "ability.h_ssa_felho.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "Q",
+   "energy": 70,
+   "range": 8,
+   "radius": 2.3,
+   "duration": 6,
+   "slow": 0.6,
+   "color": [
+    170,
+    90,
+    220
+   ],
+   "sprite": "oruletkod",
+   "levels": [
+    {
+     "dps": 9
+    },
+    {
+     "dps": 13
+    },
+    {
+     "dps": 17
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_ssa_rajtudat": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ssa_rajtudat.name",
+   "desc": "ability.h_ssa_rajtudat.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 8,
+   "levels": [
+    {
+     "modifiers": {
+      "speed_mult": 1.08,
+      "damage_mult": 1.05
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.12,
+      "damage_mult": 1.1
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.16,
+      "damage_mult": 1.15
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_ssa_oltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ssa_oltes.name",
+   "desc": "ability.h_ssa_oltes.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "E",
+   "energy": 5,
+   "cooldown": 0.8,
+   "range": 6,
+   "levels": [
+    {
+     "amount": 12
+    },
+    {
+     "amount": 18
+    },
+    {
+     "amount": 24
+    }
+   ],
+   "icon": "heal"
+  }
+ },
+ "h_ssa_remszarnyak": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_ssa_remszarnyak.name",
+   "desc": "ability.h_ssa_remszarnyak.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "unit": "cro_szarnyas_rem",
+   "count": 4,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_var_holdfeny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_var_holdfeny.name",
+   "desc": "ability.h_var_holdfeny.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "Q",
+   "energy": 5,
+   "cooldown": 0.8,
+   "range": 6,
+   "levels": [
+    {
+     "amount": 12
+    },
+    {
+     "amount": 18
+    },
+    {
+     "amount": 24
+    }
+   ],
+   "icon": "heal"
+  }
+ },
+ "h_var_kod": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_var_kod.name",
+   "desc": "ability.h_var_kod.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "W",
+   "energy": 70,
+   "range": 8,
+   "radius": 2.4,
+   "duration": 6,
+   "slow": 0.5,
+   "color": [
+    200,
+    220,
+    255
+   ],
+   "sprite": "oruletkod",
+   "levels": [
+    {
+     "dps": 8
+    },
+    {
+     "dps": 12
+    },
+    {
+     "dps": 16
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_var_falka": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_var_falka.name",
+   "desc": "ability.h_var_falka.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "E",
+   "energy": 75,
+   "cooldown": 20,
+   "unit": "wul_szellemfarkas",
+   "lifetime": 40,
+   "levels": [
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    },
+    {
+     "count": 4
+    }
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_var_telihold": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_var_telihold.name",
+   "desc": "ability.h_var_telihold.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "range": 8,
+   "radius": 4.5,
+   "duration": 6,
+   "heal": 30,
+   "color": [
+    220,
+    235,
+    255
+   ],
+   "sprite": "lelegzet",
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_kur_taposas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kur_taposas.name",
+   "desc": "ability.h_kur_taposas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "Q",
+   "cooldown": 9,
+   "energy": 65,
+   "color": [
+    210,
+    170,
+    110
+   ],
+   "levels": [
+    {
+     "radius": 2.2,
+     "damage": 50,
+     "stun": 1.0
+    },
+    {
+     "radius": 2.5,
+     "damage": 75,
+     "stun": 1.5
+    },
+    {
+     "radius": 2.8,
+     "damage": 100,
+     "stun": 2.0
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_kur_uvoltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kur_uvoltes.name",
+   "desc": "ability.h_kur_uvoltes.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.14
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.2
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_kur_verfalka": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kur_verfalka.name",
+   "desc": "ability.h_kur_verfalka.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "E",
+   "cooldown": 18,
+   "levels": [
+    {
+     "duration": 6,
+     "modifiers": {
+      "damage_mult": 1.3,
+      "speed_mult": 1.2
+     }
+    },
+    {
+     "duration": 7,
+     "modifiers": {
+      "damage_mult": 1.45,
+      "speed_mult": 1.25
+     }
+    },
+    {
+     "duration": 8,
+     "modifiers": {
+      "damage_mult": 1.6,
+      "speed_mult": 1.3
+     }
+    }
+   ],
+   "icon": "rage"
+  }
+ },
+ "h_kur_het_ut": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kur_het_ut.name",
+   "desc": "ability.h_kur_het_ut.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "unit": "wul_landzsas",
+   "count": 5,
+   "lifetime": 45,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_gya_halo": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_gya_halo.name",
+   "desc": "ability.h_gya_halo.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "Q",
+   "energy": 70,
+   "range": 8,
+   "radius": 2.5,
+   "duration": 5,
+   "slow": 0.15,
+   "color": [
+    140,
+    200,
+    110
+   ],
+   "sprite": "gyokerkotes",
+   "levels": [
+    {
+     "dps": 6
+    },
+    {
+     "dps": 9
+    },
+    {
+     "dps": 12
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_gya_melygyoker": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_gya_melygyoker.name",
+   "desc": "ability.h_gya_melygyoker.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "W",
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 4,
+      "speed_mult": 0.3,
+      "regen_add": 3
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 6,
+      "speed_mult": 0.3,
+      "regen_add": 5
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 8,
+      "speed_mult": 0.3,
+      "regen_add": 7
+     }
+    }
+   ],
+   "icon": "shield"
+  }
+ },
+ "h_gya_talaj": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_gya_talaj.name",
+   "desc": "ability.h_gya_talaj.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "E",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "regen_add": 1,
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 2,
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 3,
+      "armor_add": 2
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_gya_rengés": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_gya_rengés.name",
+   "desc": "ability.h_gya_rengés.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "color": [
+    150,
+    120,
+    80
+   ],
+   "radius": 5,
+   "damage": 150,
+   "stun": 2.5,
+   "levels": [
+    {}
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_spo_tuske": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_spo_tuske.name",
+   "desc": "ability.h_spo_tuske.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "range": 7,
+   "cooldown": 7,
+   "energy": 50,
+   "slow": 0.5,
+   "duration": 3,
+   "projectile": "acid",
+   "levels": [
+    {
+     "damage": 75
+    },
+    {
+     "damage": 115
+    },
+    {
+     "damage": 155
+    }
+   ],
+   "icon": "bolt"
+  }
+ },
+ "h_spo_rothadas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_spo_rothadas.name",
+   "desc": "ability.h_spo_rothadas.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "W",
+   "energy": 75,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 5,
+   "color": [
+    150,
+    170,
+    70
+   ],
+   "sprite": "oruletkod",
+   "levels": [
+    {
+     "dps": 22
+    },
+    {
+     "dps": 32
+    },
+    {
+     "dps": 42
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_spo_kopeny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_spo_kopeny.name",
+   "desc": "ability.h_spo_kopeny.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "E",
+   "cooldown": 18,
+   "levels": [
+    {
+     "duration": 6,
+     "modifiers": {
+      "speed_mult": 1.3,
+      "ranged_taken_mult": 0.6
+     }
+    },
+    {
+     "duration": 8,
+     "modifiers": {
+      "speed_mult": 1.4,
+      "ranged_taken_mult": 0.5
+     }
+    },
+    {
+     "duration": 10,
+     "modifiers": {
+      "speed_mult": 1.5,
+      "ranged_taken_mult": 0.4
+     }
+    }
+   ],
+   "icon": "rage"
+  }
+ },
+ "h_spo_raj": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_spo_raj.name",
+   "desc": "ability.h_spo_raj.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "R",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 110,
+   "unit": "myc_pofeteg",
+   "count": 6,
+   "lifetime": 45,
+   "levels": [
+    {}
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_cas_roham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_cas_roham.name",
+   "desc": "ability.h_cas_roham.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "Q",
+   "cooldown": 9,
+   "energy": 65,
+   "color": [
+    255,
+    190,
+    120
+   ],
+   "levels": [
+    {
+     "radius": 2.2,
+     "damage": 45,
+     "stun": 1.0
+    },
+    {
+     "radius": 2.5,
+     "damage": 70,
+     "stun": 1.5
+    },
+    {
+     "radius": 2.8,
+     "damage": 95,
+     "stun": 2.0
+    }
+   ],
+   "icon": "burst"
+  }
+ },
+ "h_cas_fegyelem": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_cas_fegyelem.name",
+   "desc": "ability.h_cas_fegyelem.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "hotkey": "W",
+   "radius": 7,
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 3,
+      "damage_mult": 1.05
+     }
+    }
+   ],
+   "icon": "aura"
+  }
+ },
+ "h_cas_legio": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_cas_legio.name",
+   "desc": "ability.h_cas_legio.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "E",
+   "energy": 80,
+   "cooldown": 22,
+   "unit": "imp_legios",
+   "lifetime": 40,
+   "levels": [
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    },
+    {
+     "count": 4
+    }
+   ],
+   "icon": "summon"
+  }
+ },
+ "h_cas_harag": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_cas_harag.name",
+   "desc": "ability.h_cas_harag.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "R",
+   "ultimate": true,
+   "cooldown": 110,
+   "duration": 15,
+   "modifiers": {
+    "damage_mult": 2.0,
+    "armor_add": 8
+   },
+   "levels": [
+    {}
+   ],
+   "icon": "rage"
+  }
+ },
+ "lelekhorgony_mentes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.lelekhorgony_mentes.name",
+   "desc": "ability.lelekhorgony_mentes.desc"
+  },
+  "Spec": {
+   "type": "anchor_rescue",
+   "icon": "anchor"
+  }
+ },
+ "atvaltozas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.atvaltozas.name",
+   "desc": "ability.atvaltozas.desc"
+  },
+  "Spec": {
+   "type": "morph",
+   "target_placement": true,
+   "hotkey": "M",
+   "into": "cro_pancelbogar",
+   "via": "cro_guboj",
+   "time": 18,
+   "cost": {
+    "stone": 75,
+    "meteor": 25,
+    "wood": 50
+   },
+   "icon": "cocoon"
+  }
+ },
+ "beszallas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.beszallas.name",
+   "desc": "ability.beszallas.desc"
+  },
+  "Spec": {
+   "type": "garrison",
+   "hotkey": "G",
+   "icon": "house"
+  }
+ },
+ "p_halozati_gyujtes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.p_halozati_gyujtes.name",
+   "desc": "ability.p_halozati_gyujtes.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "network"
+  }
+ },
+ "p_gepjavitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.p_gepjavitas.name",
+   "desc": "ability.p_gepjavitas.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "repair"
+  }
+ },
+ "lelekhorgony": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.lelekhorgony.name",
+   "desc": "ability.lelekhorgony.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "anchor"
+  }
+ },
+ "osztodas2": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.osztodas2.name",
+   "desc": "ability.osztodas2.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "split",
+   "split_kills": 2
+  }
+ },
+ "osztodas3": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.osztodas3.name",
+   "desc": "ability.osztodas3.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "split",
+   "split_kills": 3
+  }
+ },
+ "osztodas4": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.osztodas4.name",
+   "desc": "ability.osztodas4.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "split",
+   "split_kills": 4
+  }
+ },
+ "erdei_rejtozes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.erdei_rejtozes.name",
+   "desc": "ability.erdei_rejtozes.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "forest"
+  }
+ },
+ "korus_szem": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.korus_szem.name",
+   "desc": "ability.korus_szem.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "eye",
+   "detect": 9
+  }
+ },
+ "jadetest": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.jadetest.name",
+   "desc": "ability.jadetest.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "shield"
+  }
+ },
+ "szellemtest": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.szellemtest.name",
+   "desc": "ability.szellemtest.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "ghost"
+  }
+ },
+ "gubo_p": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gubo_p.name",
+   "desc": "ability.gubo_p.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "cocoon"
+  }
+ },
+ "taborkocsi": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.taborkocsi.name",
+   "desc": "ability.taborkocsi.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "tent"
+  }
+ },
+ "kristalypancel": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.kristalypancel.name",
+   "desc": "ability.kristalypancel.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "shield"
+  }
+ },
+ "falkavadasz": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.falkavadasz.name",
+   "desc": "ability.falkavadasz.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "icon": "pack"
+  }
+ },
+ "runako_aura": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.runako_aura.name",
+   "desc": "ability.runako_aura.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "icon": "rune",
+   "radius": 5,
+   "modifiers": {
+    "armor_add": 2,
+    "regen_add": 1
+   }
+  }
+ },
+ "fenylepes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.fenylepes.name",
+   "desc": "ability.fenylepes.desc"
+  },
+  "Spec": {
+   "type": "blink",
+   "hotkey": "B",
+   "energy": 40,
+   "cooldown": 12,
+   "range": 7,
+   "icon": "blink",
+   "color": [
+    120,
+    230,
+    255
+   ]
+  }
+ },
+ "fenylepes_munkas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.fenylepes_munkas.name",
+   "desc": "ability.fenylepes_munkas.desc"
+  },
+  "Spec": {
+   "type": "blink",
+   "hotkey": "B",
+   "energy": 30,
+   "cooldown": 25,
+   "range": 5,
+   "icon": "blink",
+   "color": [
+    120,
+    230,
+    255
+   ]
+  }
+ },
+ "jade_celzas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.jade_celzas.name",
+   "desc": "ability.jade_celzas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "C",
+   "energy": 30,
+   "cooldown": 15,
+   "duration": 6,
+   "modifiers": {
+    "range_add": 2,
+    "damage_mult": 1.2
+   },
+   "icon": "aim"
+  }
+ },
+ "csillagdarda": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.csillagdarda.name",
+   "desc": "ability.csillagdarda.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "D",
+   "energy": 40,
+   "cooldown": 10,
+   "range": 8,
+   "damage": 45,
+   "slow": 0.6,
+   "duration": 1.5,
+   "projectile": "spear",
+   "icon": "spear"
+  }
+ },
+ "zuhanorepules": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.zuhanorepules.name",
+   "desc": "ability.zuhanorepules.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "Z",
+   "energy": 50,
+   "cooldown": 14,
+   "radius": 1.6,
+   "damage": 40,
+   "stun": 0.7,
+   "color": [
+    120,
+    230,
+    200
+   ],
+   "icon": "dive"
+  }
+ },
+ "tollkorona_uvoltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tollkorona_uvoltes.name",
+   "desc": "ability.tollkorona_uvoltes.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "U",
+   "energy": 60,
+   "cooldown": 16,
+   "radius": 3.0,
+   "damage": 20,
+   "slow": 0.45,
+   "duration": 3,
+   "color": [
+    240,
+    200,
+    90
+   ],
+   "icon": "roar"
+  }
+ },
+ "napfokusz": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.napfokusz.name",
+   "desc": "ability.napfokusz.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "O",
+   "icon": "deploy",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "range_add": 3,
+    "damage_mult": 1.2
+   }
+  }
+ },
+ "dardafal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.dardafal.name",
+   "desc": "ability.dardafal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "D",
+   "icon": "spearwall",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "damage_mult": 1.6,
+    "armor_add": 2
+   }
+  }
+ },
+ "horgonyszigony": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.horgonyszigony.name",
+   "desc": "ability.horgonyszigony.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "G",
+   "cooldown": 14,
+   "range": 7,
+   "damage": 30,
+   "slow": 0.0,
+   "duration": 1.2,
+   "projectile": "spear",
+   "icon": "harpoon"
+  }
+ },
+ "verszomj": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.verszomj.name",
+   "desc": "ability.verszomj.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "V",
+   "cooldown": 20,
+   "duration": 7,
+   "modifiers": {
+    "damage_mult": 1.5,
+    "speed_mult": 1.2,
+    "armor_add": -2
+   },
+   "icon": "rage"
+  }
+ },
+ "runako": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.runako.name",
+   "desc": "ability.runako.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "target_placement": true,
+   "hotkey": "K",
+   "cooldown": 30,
+   "unit": "urs_runako",
+   "count": 1,
+   "lifetime": 45,
+   "icon": "rune"
+  }
+ },
+ "zuhano_csapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.zuhano_csapas.name",
+   "desc": "ability.zuhano_csapas.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Z",
+   "cooldown": 12,
+   "range": 5,
+   "damage": 35,
+   "slow": 0.5,
+   "duration": 1.5,
+   "icon": "dive"
+  }
+ },
+ "taposas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.taposas.name",
+   "desc": "ability.taposas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "T",
+   "cooldown": 18,
+   "radius": 2.2,
+   "damage": 35,
+   "stun": 1.0,
+   "color": [
+    200,
+    170,
+    120
+   ],
+   "icon": "stomp"
+  }
+ },
+ "telepites": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.telepites.name",
+   "desc": "ability.telepites.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "O",
+   "icon": "deploy",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "range_add": 3,
+    "damage_mult": 1.25
+   }
+  }
+ },
+ "beasas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.beasas.name",
+   "desc": "ability.beasas.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "Q",
+   "burrow": true,
+   "icon": "burrow",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "regen_add": 4
+   }
+  }
+ },
+ "tuskezapor": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tuskezapor.name",
+   "desc": "ability.tuskezapor.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "Z",
+   "hp_cost": 20,
+   "cooldown": 12,
+   "range": 7,
+   "radius": 1.6,
+   "duration": 2,
+   "dps": 22,
+   "color": [
+    220,
+    220,
+    180
+   ],
+   "icon": "spines"
+  }
+ },
+ "savtocsa": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.savtocsa.name",
+   "desc": "ability.savtocsa.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "S",
+   "hp_cost": 30,
+   "cooldown": 14,
+   "range": 9,
+   "radius": 2.0,
+   "duration": 6,
+   "dps": 10,
+   "slow": 0.7,
+   "color": [
+    150,
+    255,
+    90
+   ],
+   "sprite": "oruletkod",
+   "icon": "acid"
+  }
+ },
+ "ragadozo_zuhanas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ragadozo_zuhanas.name",
+   "desc": "ability.ragadozo_zuhanas.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Z",
+   "hp_cost": 15,
+   "cooldown": 9,
+   "range": 4,
+   "damage": 45,
+   "slow": 0.5,
+   "duration": 1,
+   "icon": "dive"
+  }
+ },
+ "csapsopres": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.csapsopres.name",
+   "desc": "ability.csapsopres.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "C",
+   "hp_cost": 40,
+   "cooldown": 14,
+   "radius": 2.4,
+   "damage": 55,
+   "slow": 0.5,
+   "duration": 2,
+   "color": [
+    170,
+    90,
+    160
+   ],
+   "icon": "sweep"
+  }
+ },
+ "kitinroham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.kitinroham.name",
+   "desc": "ability.kitinroham.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "R",
+   "hp_cost": 20,
+   "cooldown": 14,
+   "duration": 5,
+   "modifiers": {
+    "speed_mult": 1.6,
+    "damage_mult": 1.3
+   },
+   "icon": "charge"
+  }
+ },
+ "harci_enek": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.harci_enek.name",
+   "desc": "ability.harci_enek.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "hotkey": "E",
+   "radius": 5,
+   "icon": "song",
+   "modifiers": {
+    "damage_mult": 1.08
+   }
+  }
+ },
+ "vandor_enek": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.vandor_enek.name",
+   "desc": "ability.vandor_enek.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "hotkey": "W",
+   "radius": 5,
+   "icon": "song",
+   "modifiers": {
+    "speed_mult": 1.1
+   }
+  }
+ },
+ "osok_haragja": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.osok_haragja.name",
+   "desc": "ability.osok_haragja.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "hotkey": "H",
+   "radius": 6,
+   "icon": "song",
+   "modifiers": {
+    "armor_add": 2
+   }
+  }
+ },
+ "tomahawk": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tomahawk.name",
+   "desc": "ability.tomahawk.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "T",
+   "cooldown": 10,
+   "range": 6,
+   "damage": 30,
+   "slow": 0.6,
+   "duration": 1.5,
+   "projectile": "spear",
+   "icon": "spear"
+  }
+ },
+ "vadaszles": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.vadaszles.name",
+   "desc": "ability.vadaszles.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "L",
+   "icon": "deploy",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "range_add": 2,
+    "damage_mult": 1.2
+   }
+  }
+ },
+ "villamcsapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.villamcsapas.name",
+   "desc": "ability.villamcsapas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "V",
+   "cooldown": 15,
+   "radius": 2.0,
+   "damage": 45,
+   "stun": 0.5,
+   "color": [
+    200,
+    220,
+    255
+   ],
+   "icon": "lightning"
+  }
+ },
+ "sporatuske": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.sporatuske.name",
+   "desc": "ability.sporatuske.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "T",
+   "spores": 2,
+   "cooldown": 9,
+   "range": 7,
+   "damage": 30,
+   "slow": 0.6,
+   "duration": 2,
+   "projectile": "acid",
+   "icon": "spines"
+  }
+ },
+ "kalapfal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.kalapfal.name",
+   "desc": "ability.kalapfal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "K",
+   "icon": "shield",
+   "modifiers": {
+    "speed_mult": 0.5,
+    "armor_add": 4,
+    "ranged_taken_mult": 0.6
+   }
+  }
+ },
+ "sporarobbanas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.sporarobbanas.name",
+   "desc": "ability.sporarobbanas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "spores": 3,
+   "cooldown": 12,
+   "radius": 2.6,
+   "damage": 45,
+   "slow": 0.6,
+   "duration": 2,
+   "color": [
+    180,
+    220,
+    120
+   ],
+   "icon": "burst"
+  }
+ },
+ "sporaeso": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.sporaeso.name",
+   "desc": "ability.sporaeso.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "E",
+   "spores": 3,
+   "cooldown": 12,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 18,
+   "color": [
+    170,
+    200,
+    110
+   ],
+   "sprite": "oruletkod",
+   "icon": "rain"
+  }
+ },
+ "testudo": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.testudo.name",
+   "desc": "ability.testudo.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "T",
+   "icon": "shield",
+   "modifiers": {
+    "speed_mult": 0.6,
+    "ranged_taken_mult": 0.45,
+    "armor_add": 1
+   }
+  }
+ },
+ "gyorstoltes_u": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gyorstoltes_u.name",
+   "desc": "ability.gyorstoltes_u.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "G",
+   "cooldown": 18,
+   "duration": 6,
+   "modifiers": {
+    "damage_mult": 1.4
+   },
+   "icon": "rage"
+  }
+ },
+ "geppuska_sorozat": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.geppuska_sorozat.name",
+   "desc": "ability.geppuska_sorozat.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "S",
+   "cooldown": 20,
+   "duration": 5,
+   "modifiers": {
+    "damage_mult": 1.7,
+    "speed_mult": 0.7
+   },
+   "icon": "rage"
+  }
+ },
+ "zuhanobomba": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.zuhanobomba.name",
+   "desc": "ability.zuhanobomba.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "B",
+   "cooldown": 16,
+   "radius": 1.8,
+   "damage": 50,
+   "color": [
+    255,
+    180,
+    90
+   ],
+   "icon": "bomb"
+  }
+ },
+ "ostrom_telepites": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ostrom_telepites.name",
+   "desc": "ability.ostrom_telepites.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "O",
+   "icon": "deploy",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "range_add": 3,
+    "damage_mult": 1.25
+   }
+  }
+ },
+ "eterloket": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.eterloket.name",
+   "desc": "ability.eterloket.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "energy": 40,
+   "cooldown": 8,
+   "range": 6,
+   "damage": 40,
+   "slow": 0.5,
+   "duration": 1.5,
+   "projectile": "magic",
+   "icon": "bolt"
+  }
+ },
+ "foldrenges": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.foldrenges.name",
+   "desc": "ability.foldrenges.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 14,
+   "radius": 2.2,
+   "damage": 40,
+   "stun": 1.0,
+   "color": [
+    180,
+    160,
+    130
+   ],
+   "icon": "stomp"
+  }
+ },
+ "bumerang": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.bumerang.name",
+   "desc": "ability.bumerang.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "B",
+   "cooldown": 9,
+   "range": 6,
+   "damage": 24,
+   "bounces": 2,
+   "projectile": "boomerang",
+   "icon": "bolt"
+  }
+ },
+ "riado_futas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.riado_futas.name",
+   "desc": "ability.riado_futas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "F",
+   "cooldown": 25,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.8
+   },
+   "icon": "rage"
+  }
+ },
+ "felultetes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.felultetes.name",
+   "desc": "ability.felultetes.desc"
+  },
+  "Spec": {
+   "type": "mount",
+   "hotkey": "U",
+   "range": 3,
+   "into": "wul_bolenylovas",
+   "riders": [
+    "wul_landzsas",
+    "wul_ijas_vadasz"
+   ],
+   "icon": "merge"
+  }
+ },
+ "leszallas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.leszallas.name",
+   "desc": "ability.leszallas.desc"
+  },
+  "Spec": {
+   "type": "dismount",
+   "hotkey": "U",
+   "mount": "wul_boleny",
+   "rider": "wul_landzsas",
+   "icon": "split"
+  }
+ },
+ "savkopes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.savkopes.name",
+   "desc": "ability.savkopes.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "cooldown": 10,
+   "range": 5,
+   "damage": 8,
+   "poison": [
+    6,
+    6
+   ],
+   "projectile": "acid",
+   "icon": "bolt"
+  }
+ },
+ "tuzkopes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tuzkopes.name",
+   "desc": "ability.tuzkopes.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "cooldown": 10,
+   "range": 4.5,
+   "damage": 26,
+   "splash": 1.6,
+   "projectile": "fire",
+   "icon": "burst"
+  }
+ },
+ "fagykopes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.fagykopes.name",
+   "desc": "ability.fagykopes.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "hotkey": "Q",
+   "cooldown": 12,
+   "range": 5,
+   "damage": 10,
+   "slow": 0,
+   "duration": 2.5,
+   "projectile": "frost",
+   "icon": "bolt"
+  }
+ },
+ "fiokakeltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.fiokakeltes.name",
+   "desc": "ability.fiokakeltes.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "W",
+   "cooldown": 35,
+   "unit": "wul_groomi_fioka",
+   "count": 2,
+   "lifetime": 45,
+   "icon": "summon"
+  }
+ },
+ "harci_kurt": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.harci_kurt.name",
+   "desc": "ability.harci_kurt.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "hotkey": "E",
+   "radius": 6,
+   "icon": "song",
+   "modifiers": {
+    "damage_mult": 1.15,
+    "speed_mult": 1.1
+   }
+  }
+ },
+ "medveuvoltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.medveuvoltes.name",
+   "desc": "ability.medveuvoltes.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "cooldown": 16,
+   "radius": 2.6,
+   "damage": 30,
+   "stun": 1.2,
+   "color": [
+    200,
+    140,
+    90
+   ],
+   "icon": "stomp"
+  }
+ },
+ "robbanas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.robbanas.name",
+   "desc": "ability.robbanas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "cooldown": 1,
+   "radius": 2.0,
+   "damage": 70,
+   "self_destruct": true,
+   "color": [
+    150,
+    255,
+    120
+   ],
+   "icon": "bomb"
+  }
+ },
+ "alomspora": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.alomspora.name",
+   "desc": "ability.alomspora.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "cooldown": 20,
+   "radius": 2.8,
+   "damage": 10,
+   "stun": 3.0,
+   "color": [
+    160,
+    140,
+    255
+   ],
+   "icon": "burst"
+  }
+ },
+ "napfeny_aldas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.napfeny_aldas.name",
+   "desc": "ability.napfeny_aldas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "hotkey": "G",
+   "cooldown": 0.6,
+   "range": 6,
+   "amount": 14,
+   "icon": "heal"
+  }
+ },
+ "meteorhivas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.meteorhivas.name",
+   "desc": "ability.meteorhivas.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "T",
+   "range": 9,
+   "radius": 2.0,
+   "duration": 3,
+   "dps": 35,
+   "cooldown": 22,
+   "color": [
+    255,
+    150,
+    60
+   ],
+   "sprite": "napvihar",
+   "icon": "burst"
+  }
+ },
+ "lesallas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.lesallas.name",
+   "desc": "ability.lesallas.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "hotkey": "L",
+   "icon": "deploy",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "damage_mult": 1.5,
+    "range_add": 1
+   }
+  }
+ },
+ "huk_horog": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_horog.name",
+   "desc": "ability.huk_horog.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "energy": 0,
+   "cooldown": 12,
+   "range": 4,
+   "damage": 20,
+   "slow": 0,
+   "duration": 1.0,
+   "projectile": "spear",
+   "icon": "harpoon"
+  }
+ },
+ "huk_tavi_leny_hivas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_tavi_leny_hivas.name",
+   "desc": "ability.huk_tavi_leny_hivas.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "cooldown": 45,
+   "unit": "huk_tavi_leny",
+   "count": 1,
+   "lifetime": 30,
+   "icon": "summon"
+  }
+ },
+ "huk_tavgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_tavgyogyitas.name",
+   "desc": "ability.huk_tavgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal"
+  }
+ },
+ "huk_gotevagta": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_gotevagta.name",
+   "desc": "ability.huk_gotevagta.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 20,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.8,
+    "damage_mult": 1.2
+   },
+   "icon": "charge"
+  }
+ },
+ "huk_arhullam": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_arhullam.name",
+   "desc": "ability.huk_arhullam.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 75,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.2,
+   "duration": 3,
+   "dps": 18,
+   "slow": 0.5,
+   "color": [
+    110,
+    200,
+    230
+   ],
+   "sprite": "lelegzet",
+   "icon": "burst"
+  }
+ },
+ "huk_iszapcsapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_iszapcsapas.name",
+   "desc": "ability.huk_iszapcsapas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 16,
+   "radius": 2.2,
+   "damage": 36,
+   "stun": 0.8,
+   "color": [
+    110,
+    100,
+    60
+   ],
+   "icon": "stomp"
+  }
+ },
+ "huk_kagylofal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_kagylofal.name",
+   "desc": "ability.huk_kagylofal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.5,
+    "armor_add": 3,
+    "ranged_taken_mult": 0.5
+   },
+   "icon": "shield"
+  }
+ },
+ "huk_melysegdobbantas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_melysegdobbantas.name",
+   "desc": "ability.huk_melysegdobbantas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 18,
+   "radius": 2.6,
+   "damage": 48,
+   "stun": 1.2,
+   "color": [
+    90,
+    170,
+    200
+   ],
+   "icon": "stomp"
+  }
+ },
+ "huk_melysegi_hivas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_melysegi_hivas.name",
+   "desc": "ability.huk_melysegi_hivas.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "energy": 90,
+   "cooldown": 30,
+   "unit": "huk_tavi_leny",
+   "count": 2,
+   "lifetime": 60,
+   "icon": "summon"
+  }
+ },
+ "h_kva_arasztas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kva_arasztas.name",
+   "desc": "ability.h_kva_arasztas.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "levels": [
+    {
+     "dps": 18
+    },
+    {
+     "dps": 28
+    },
+    {
+     "dps": 38
+    }
+   ],
+   "icon": "burst",
+   "energy": 70,
+   "cooldown": 10,
+   "range": 8,
+   "radius": 2.2,
+   "duration": 4,
+   "slow": 0.5,
+   "color": [
+    110,
+    200,
+    230
+   ],
+   "sprite": "lelegzet",
+   "hotkey": "Q"
+  }
+ },
+ "h_kva_forras": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kva_forras.name",
+   "desc": "ability.h_kva_forras.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "levels": [
+    {
+     "modifiers": {
+      "regen_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "regen_add": 3
+     }
+    }
+   ],
+   "icon": "aura",
+   "radius": 6,
+   "hotkey": "W"
+  }
+ },
+ "h_kva_lenyek": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kva_lenyek.name",
+   "desc": "ability.h_kva_lenyek.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "levels": [
+    {
+     "count": 1
+    },
+    {
+     "count": 2
+    },
+    {
+     "count": 3
+    }
+   ],
+   "icon": "summon",
+   "energy": 75,
+   "cooldown": 25,
+   "unit": "huk_tavi_leny",
+   "lifetime": 40,
+   "hotkey": "E"
+  }
+ },
+ "h_kva_ozonviz": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kva_ozonviz.name",
+   "desc": "ability.h_kva_ozonviz.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "levels": [
+    {}
+   ],
+   "icon": "burst",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 90,
+   "range": 9,
+   "radius": 4,
+   "duration": 6,
+   "dps": 40,
+   "slow": 0.4,
+   "color": [
+    90,
+    170,
+    230
+   ],
+   "sprite": "lelegzet",
+   "hotkey": "R"
+  }
+ },
+ "h_bul_kampo": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bul_kampo.name",
+   "desc": "ability.h_bul_kampo.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "levels": [
+    {
+     "damage": 60
+    },
+    {
+     "damage": 100
+    },
+    {
+     "damage": 140
+    }
+   ],
+   "icon": "harpoon",
+   "energy": 50,
+   "cooldown": 9,
+   "range": 6,
+   "slow": 0,
+   "duration": 1.5,
+   "projectile": "spear",
+   "hotkey": "Q"
+  }
+ },
+ "h_bul_ugras": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bul_ugras.name",
+   "desc": "ability.h_bul_ugras.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "levels": [
+    {
+     "damage": 50
+    },
+    {
+     "damage": 85
+    },
+    {
+     "damage": 120
+    }
+   ],
+   "icon": "stomp",
+   "energy": 60,
+   "cooldown": 12,
+   "radius": 2.4,
+   "stun": 0.8,
+   "color": [
+    120,
+    200,
+    120
+   ],
+   "hotkey": "W"
+  }
+ },
+ "h_bul_brekeges": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bul_brekeges.name",
+   "desc": "ability.h_bul_brekeges.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "levels": [
+    {
+     "modifiers": {
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.14
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.2
+     }
+    }
+   ],
+   "icon": "aura",
+   "radius": 6,
+   "hotkey": "E"
+  }
+ },
+ "h_bul_kiraly": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_bul_kiraly.name",
+   "desc": "ability.h_bul_kiraly.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "levels": [
+    {}
+   ],
+   "icon": "rage",
+   "ultimate": true,
+   "energy": 100,
+   "cooldown": 90,
+   "duration": 15,
+   "modifiers": {
+    "damage_mult": 1.6,
+    "armor_add": 4
+   },
+   "hotkey": "R"
+  }
+ },
+ "h_iri_gyongy": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_iri_gyongy.name",
+   "desc": "ability.h_iri_gyongy.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "levels": [
+    {
+     "damage": 70
+    },
+    {
+     "damage": 110
+    },
+    {
+     "damage": 150
+    }
+   ],
+   "icon": "bolt",
+   "energy": 45,
+   "cooldown": 8,
+   "range": 8,
+   "projectile": "magic",
+   "hotkey": "Q"
+  }
+ },
+ "h_iri_szivarvany": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_iri_szivarvany.name",
+   "desc": "ability.h_iri_szivarvany.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 3
+     }
+    }
+   ],
+   "icon": "aura",
+   "radius": 6,
+   "hotkey": "W"
+  }
+ },
+ "h_iri_aldas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_iri_aldas.name",
+   "desc": "ability.h_iri_aldas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "levels": [
+    {
+     "amount": 10
+    },
+    {
+     "amount": 16
+    },
+    {
+     "amount": 22
+    }
+   ],
+   "icon": "heal",
+   "cooldown": 0.8,
+   "range": 6,
+   "hotkey": "E"
+  }
+ },
+ "h_iri_gyongykapu": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_iri_gyongykapu.name",
+   "desc": "ability.h_iri_gyongykapu.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "levels": [
+    {}
+   ],
+   "icon": "burst",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 90,
+   "radius": 4,
+   "damage": 120,
+   "stun": 2.0,
+   "color": [
+    240,
+    220,
+    255
+   ],
+   "hotkey": "R"
+  }
+ },
+ "oon_buzogany_roham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_buzogany_roham.name",
+   "desc": "ability.oon_buzogany_roham.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 20,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.5,
+    "damage_mult": 1.3
+   },
+   "icon": "rage"
+  }
+ },
+ "oon_kapuorzes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_kapuorzes.name",
+   "desc": "ability.oon_kapuorzes.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.0,
+    "armor_add": 2
+   },
+   "icon": "shield"
+  }
+ },
+ "oon_szelvihar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_szelvihar.name",
+   "desc": "ability.oon_szelvihar.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 70,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 14,
+   "slow": 0.5,
+   "color": [
+    200,
+    230,
+    255
+   ],
+   "sprite": "lelegzet",
+   "icon": "burst"
+  }
+ },
+ "oon_illuzio": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_illuzio.name",
+   "desc": "ability.oon_illuzio.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "cooldown": 30,
+   "unit": "oon_illuzio_mas",
+   "count": 2,
+   "lifetime": 20,
+   "icon": "summon"
+  }
+ },
+ "oon_lampasgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_lampasgyogyitas.name",
+   "desc": "ability.oon_lampasgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal"
+  }
+ },
+ "oon_oriasdobbantas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_oriasdobbantas.name",
+   "desc": "ability.oon_oriasdobbantas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 18,
+   "radius": 2.6,
+   "damage": 46,
+   "stun": 1.2,
+   "color": [
+    200,
+    80,
+    60
+   ],
+   "icon": "stomp"
+  }
+ },
+ "oon_tombolas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_tombolas.name",
+   "desc": "ability.oon_tombolas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 22,
+   "duration": 6,
+   "modifiers": {
+    "damage_mult": 1.5,
+    "armor_add": -1
+   },
+   "icon": "rage"
+  }
+ },
+ "oon_taiko": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_taiko.name",
+   "desc": "ability.oon_taiko.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 6,
+   "modifiers": {
+    "damage_mult": 1.1,
+    "speed_mult": 1.06
+   },
+   "icon": "song"
+  }
+ },
+ "oon_vedofeny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_vedofeny.name",
+   "desc": "ability.oon_vedofeny.desc"
+  },
+  "Spec": {
+   "type": "ward",
+   "hotkey": "V",
+   "cooldown": 18,
+   "energy": 50,
+   "radius": 5,
+   "amount": 50,
+   "duration": 10,
+   "color": [
+    255,
+    230,
+    150
+   ],
+   "icon": "aura"
+  }
+ },
+ "oon_villamcsapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.oon_villamcsapas.name",
+   "desc": "ability.oon_villamcsapas.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "energy": 50,
+   "cooldown": 9,
+   "range": 8,
+   "damage": 60,
+   "slow": 0,
+   "duration": 0.8,
+   "projectile": "magic",
+   "icon": "lightning"
+  }
+ },
+ "h_aka_roham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_aka_roham.name",
+   "desc": "ability.h_aka_roham.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "levels": [
+    {
+     "damage": 60
+    },
+    {
+     "damage": 100
+    },
+    {
+     "damage": 140
+    }
+   ],
+   "icon": "charge",
+   "energy": 50,
+   "cooldown": 9,
+   "range": 6,
+   "slow": 0,
+   "duration": 1.2,
+   "projectile": "spear",
+   "hotkey": "Q"
+  }
+ },
+ "h_aka_rengetes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_aka_rengetes.name",
+   "desc": "ability.h_aka_rengetes.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "levels": [
+    {
+     "damage": 50
+    },
+    {
+     "damage": 85
+    },
+    {
+     "damage": 120
+    }
+   ],
+   "icon": "stomp",
+   "energy": 60,
+   "cooldown": 12,
+   "radius": 2.6,
+   "stun": 1.0,
+   "color": [
+    200,
+    80,
+    60
+   ],
+   "hotkey": "W"
+  }
+ },
+ "h_aka_harag": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_aka_harag.name",
+   "desc": "ability.h_aka_harag.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "levels": [
+    {
+     "modifiers": {
+      "damage_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.14
+     }
+    },
+    {
+     "modifiers": {
+      "damage_mult": 1.2
+     }
+    }
+   ],
+   "icon": "aura",
+   "radius": 6,
+   "hotkey": "E"
+  }
+ },
+ "h_aka_vorosvihar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_aka_vorosvihar.name",
+   "desc": "ability.h_aka_vorosvihar.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "levels": [
+    {}
+   ],
+   "icon": "rage",
+   "ultimate": true,
+   "energy": 100,
+   "cooldown": 90,
+   "duration": 15,
+   "modifiers": {
+    "damage_mult": 1.6,
+    "speed_mult": 1.3
+   },
+   "hotkey": "R"
+  }
+ },
+ "h_shi_pajzs": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_shi_pajzs.name",
+   "desc": "ability.h_shi_pajzs.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "levels": [
+    {
+     "modifiers": {
+      "armor_add": 1
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 2
+     }
+    },
+    {
+     "modifiers": {
+      "armor_add": 3
+     }
+    }
+   ],
+   "icon": "aura",
+   "radius": 6,
+   "hotkey": "Q"
+  }
+ },
+ "h_shi_uvoltes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_shi_uvoltes.name",
+   "desc": "ability.h_shi_uvoltes.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "levels": [
+    {
+     "damage": 40
+    },
+    {
+     "damage": 70
+    },
+    {
+     "damage": 100
+    }
+   ],
+   "icon": "roar",
+   "energy": 60,
+   "cooldown": 14,
+   "radius": 3,
+   "stun": 1.2,
+   "color": [
+    120,
+    220,
+    140
+   ],
+   "hotkey": "W"
+  }
+ },
+ "h_shi_kapu": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_shi_kapu.name",
+   "desc": "ability.h_shi_kapu.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "levels": [
+    {
+     "amount": 10
+    },
+    {
+     "amount": 16
+    },
+    {
+     "amount": 22
+    }
+   ],
+   "icon": "heal",
+   "cooldown": 0.8,
+   "range": 6,
+   "hotkey": "E"
+  }
+ },
+ "h_shi_oroktolany": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_shi_oroktolany.name",
+   "desc": "ability.h_shi_oroktolany.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "levels": [
+    {}
+   ],
+   "icon": "summon",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 120,
+   "unit": "oon_kokutya",
+   "count": 2,
+   "lifetime": 45,
+   "hotkey": "R"
+  }
+ },
+ "h_kar_villam": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kar_villam.name",
+   "desc": "ability.h_kar_villam.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "levels": [
+    {
+     "damage": 70
+    },
+    {
+     "damage": 110
+    },
+    {
+     "damage": 150
+    }
+   ],
+   "icon": "lightning",
+   "energy": 45,
+   "cooldown": 8,
+   "range": 8,
+   "projectile": "magic",
+   "hotkey": "Q"
+  }
+ },
+ "h_kar_szel": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kar_szel.name",
+   "desc": "ability.h_kar_szel.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "levels": [
+    {
+     "dps": 16
+    },
+    {
+     "dps": 26
+    },
+    {
+     "dps": 36
+    }
+   ],
+   "icon": "burst",
+   "energy": 70,
+   "cooldown": 10,
+   "range": 8,
+   "radius": 2.2,
+   "duration": 4,
+   "slow": 0.5,
+   "color": [
+    200,
+    230,
+    255
+   ],
+   "sprite": "lelegzet",
+   "hotkey": "W"
+  }
+ },
+ "h_kar_tollak": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kar_tollak.name",
+   "desc": "ability.h_kar_tollak.desc"
+  },
+  "Spec": {
+   "type": "aura",
+   "levels": [
+    {
+     "modifiers": {
+      "speed_mult": 1.08
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.14
+     }
+    },
+    {
+     "modifiers": {
+      "speed_mult": 1.2
+     }
+    }
+   ],
+   "icon": "aura",
+   "radius": 7,
+   "hotkey": "E"
+  }
+ },
+ "h_kar_tajfun": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.h_kar_tajfun.name",
+   "desc": "ability.h_kar_tajfun.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "levels": [
+    {}
+   ],
+   "icon": "burst",
+   "ultimate": true,
+   "energy": 150,
+   "cooldown": 90,
+   "range": 9,
+   "radius": 4,
+   "duration": 6,
+   "dps": 40,
+   "slow": 0.4,
+   "color": [
+    200,
+    230,
+    255
+   ],
+   "sprite": "lelegzet",
+   "hotkey": "R"
+  }
+ },
+ "tulhajtas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tulhajtas.name",
+   "desc": "ability.tulhajtas.desc"
+  },
+  "Spec": {
+   "type": "overdrive",
+   "hotkey": "T",
+   "cooldown": 20,
+   "self_hp": 0.4,
+   "share": 0.5,
+   "color": [
+    255,
+    170,
+    80
+   ],
+   "icon": "rage"
+  }
+ },
+ "fegyverbe": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.fegyverbe.name",
+   "desc": "ability.fegyverbe.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "F",
+   "cooldown": 90,
+   "duration": 45,
+   "drop_work": true,
+   "modifiers": {
+    "damage_mult": 1.6,
+    "armor_add": 2,
+    "speed_mult": 1.15
+   },
+   "icon": "rage"
+  }
+ },
+ "ikrarakas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ikrarakas.name",
+   "desc": "ability.ikrarakas.desc"
+  },
+  "Spec": {
+   "type": "lay_mine",
+   "target_placement": true,
+   "hotkey": "R",
+   "cooldown": 3,
+   "energy": 25,
+   "unit": "huk_ikra",
+   "max": 12,
+   "icon": "summon"
+  }
+ },
+ "bekaugras": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.bekaugras.name",
+   "desc": "ability.bekaugras.desc"
+  },
+  "Spec": {
+   "type": "blink",
+   "hotkey": "J",
+   "cooldown": 12,
+   "range": 2.5,
+   "range_research": {
+    "huk_ugrolabak": 5
+   },
+   "land_damage": 10,
+   "land_radius": 1.2,
+   "color": [
+    130,
+    220,
+    150
+   ],
+   "icon": "blink"
+  }
+ },
+ "napkitores": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.napkitores.name",
+   "desc": "ability.napkitores.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "K",
+   "energy": 50,
+   "faith": 40,
+   "cooldown": 20,
+   "range": 8,
+   "radius": 2.7,
+   "duration": 4,
+   "dps": 33.0,
+   "color": [
+    255,
+    150,
+    40
+   ],
+   "sprite": "napvihar",
+   "icon": "burst"
+  }
+ },
+ "nap_kegyelme": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nap_kegyelme.name",
+   "desc": "ability.nap_kegyelme.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "K",
+   "faith": 30,
+   "cooldown": 45,
+   "radius": 6,
+   "damage": 0,
+   "heal": 80,
+   "color": [
+    255,
+    230,
+    140
+   ],
+   "icon": "heal"
+  }
+ },
+ "napaldas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.napaldas.name",
+   "desc": "ability.napaldas.desc"
+  },
+  "Spec": {
+   "type": "bpower",
+   "effect": "mine_boost",
+   "mult": 1.5,
+   "duration": 30,
+   "cooldown": 60,
+   "faith": 25,
+   "hotkey": "N",
+   "icon": "rage"
+  }
+ },
+ "huk_nagy_tavi_leny_hivas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_nagy_tavi_leny_hivas.name",
+   "desc": "ability.huk_nagy_tavi_leny_hivas.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "N",
+   "faith": 50,
+   "cooldown": 45,
+   "unit": "huk_nagy_tavi_leny",
+   "count": 1,
+   "lifetime": 60,
+   "icon": "summon"
+  }
+ },
+ "huk_melyseg_hangja": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.huk_melyseg_hangja.name",
+   "desc": "ability.huk_melyseg_hangja.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "hotkey": "N",
+   "faith": 60,
+   "energy": 50,
+   "cooldown": 60,
+   "unit": "huk_gyongyorias_idezett",
+   "count": 1,
+   "lifetime": 45,
+   "icon": "summon"
+  }
+ },
+ "aradas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.aradas.name",
+   "desc": "ability.aradas.desc"
+  },
+  "Spec": {
+   "type": "bpower",
+   "effect": "flood",
+   "duration": 30,
+   "cooldown": 90,
+   "faith": 30,
+   "heal": 3,
+   "hotkey": "A",
+   "icon": "heal"
+  }
+ },
+ "gyongyeres": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gyongyeres.name",
+   "desc": "ability.gyongyeres.desc"
+  },
+  "Spec": {
+   "type": "bpower",
+   "effect": "hasten",
+   "mult": 2.0,
+   "duration": 30,
+   "cooldown": 60,
+   "faith": 25,
+   "hotkey": "G",
+   "icon": "rage"
+  }
+ },
+ "gp_isteni_szel_buff": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_isteni_szel_buff.name",
+   "desc": "ability.gp_isteni_szel_buff.desc"
+  },
+  "Spec": {
+   "type": "passive",
+   "modifiers": {
+    "speed_mult": 1.2
+   },
+   "icon": "speed"
+  }
+ },
+ "gp_napcsova": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_napcsova.name",
+   "desc": "ability.gp_napcsova.desc"
+  },
+  "Spec": {
+   "target": true,
+   "faith": 150,
+   "cooldown": 180,
+   "effect": "area",
+   "radius": 2.5,
+   "duration": 8,
+   "dps": 25,
+   "reveal": 6,
+   "color": [
+    255,
+    220,
+    120
+   ],
+   "icon": "burst",
+   "type": "gpower"
+  }
+ },
+ "gp_arhullam": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_arhullam.name",
+   "desc": "ability.gp_arhullam.desc"
+  },
+  "Spec": {
+   "target": true,
+   "faith": 120,
+   "cooldown": 150,
+   "effect": "area",
+   "radius": 3,
+   "duration": 4,
+   "dps": 15,
+   "slow": 0.5,
+   "color": [
+    110,
+    200,
+    255
+   ],
+   "icon": "burst",
+   "type": "gpower"
+  }
+ },
+ "gp_eskufa_riado": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_eskufa_riado.name",
+   "desc": "ability.gp_eskufa_riado.desc"
+  },
+  "Spec": {
+   "target": false,
+   "cooldown": 240,
+   "effect": "levy",
+   "buff": "fegyverbe",
+   "duration": 30,
+   "icon": "rage",
+   "type": "gpower"
+  }
+ },
+ "gp_melysegi_kitores": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_melysegi_kitores.name",
+   "desc": "ability.gp_melysegi_kitores.desc"
+  },
+  "Spec": {
+   "target": true,
+   "hq_hp": 250,
+   "cooldown": 180,
+   "effect": "area",
+   "radius": 2.5,
+   "duration": 3,
+   "dps": 40,
+   "slow": 0.6,
+   "color": [
+    150,
+    255,
+    120
+   ],
+   "icon": "burst",
+   "type": "gpower"
+  }
+ },
+ "gp_osok_hivasa": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_osok_hivasa.name",
+   "desc": "ability.gp_osok_hivasa.desc"
+  },
+  "Spec": {
+   "target": true,
+   "cooldown": 180,
+   "effect": "summon",
+   "unit": "wul_szellemfarkas",
+   "count": 3,
+   "lifetime": 40,
+   "icon": "summon",
+   "type": "gpower"
+  }
+ },
+ "gp_ordan_villama": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_ordan_villama.name",
+   "desc": "ability.gp_ordan_villama.desc"
+  },
+  "Spec": {
+   "target": true,
+   "meteor": 100,
+   "cooldown": 150,
+   "effect": "area",
+   "radius": 2,
+   "duration": 1,
+   "dps": 160,
+   "buildings": true,
+   "color": [
+    120,
+    255,
+    190
+   ],
+   "icon": "bolt",
+   "type": "gpower"
+  }
+ },
+ "gp_isteni_szel": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gp_isteni_szel.name",
+   "desc": "ability.gp_isteni_szel.desc"
+  },
+  "Spec": {
+   "target": true,
+   "cooldown": 150,
+   "effect": "wind",
+   "radius": 4,
+   "duration": 8,
+   "slow": 0.5,
+   "buff": "gp_isteni_szel_buff",
+   "color": [
+    200,
+    240,
+    255
+   ],
+   "icon": "burst",
+   "type": "gpower"
+  }
+ },
+ "alomkod": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.alomkod.name",
+   "desc": "ability.alomkod.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "hotkey": "W",
+   "energy": 60,
+   "cooldown": 12,
+   "range": 7,
+   "radius": 2.5,
+   "duration": 5,
+   "dps": 3,
+   "slow": 0.35,
+   "color": [
+    170,
+    150,
+    230
+   ],
+   "sprite": "oruletkod",
+   "icon": "burst"
+  }
+ },
+ "alomseta": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.alomseta.name",
+   "desc": "ability.alomseta.desc"
+  },
+  "Spec": {
+   "type": "blink",
+   "hotkey": "E",
+   "cooldown": 18,
+   "range": 7,
+   "color": [
+    190,
+    170,
+    255
+   ],
+   "icon": "blink"
+  }
+ },
+ "napfolt": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.napfolt.name",
+   "desc": "ability.napfolt.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "F",
+   "cooldown": 40,
+   "duration": 6,
+   "no_weak": true,
+   "icon": "shield"
+  }
+ },
+ "goztulnyomas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.goztulnyomas.name",
+   "desc": "ability.goztulnyomas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "G",
+   "cooldown": 30,
+   "duration": 6,
+   "modifiers": {
+    "speed_mult": 1.4
+   },
+   "after_slow": 3,
+   "icon": "rage"
+  }
+ },
+ "hejba": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.hejba.name",
+   "desc": "ability.hejba.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "H",
+   "cooldown": 35,
+   "duration": 8,
+   "no_weak": true,
+   "modifiers": {
+    "speed_mult": 0.6
+   },
+   "icon": "shield"
+  }
+ },
+ "mic_fonalgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mic_fonalgyogyitas.name",
+   "desc": "ability.mic_fonalgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 10,
+   "icon": "heal",
+   "ally": "micelia"
+  }
+ },
+ "mic_fonalhalo": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mic_fonalhalo.name",
+   "desc": "ability.mic_fonalhalo.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 60,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 6,
+   "color": [
+    120,
+    200,
+    120
+   ],
+   "sprite": "gyokerkotes",
+   "icon": "burst",
+   "slow": 0.1,
+   "ally": "micelia"
+  }
+ },
+ "pin_jegfal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.pin_jegfal.name",
+   "desc": "ability.pin_jegfal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.5,
+    "armor_add": 3
+   },
+   "icon": "shield",
+   "ally": "pinguu"
+  }
+ },
+ "pin_csuszas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.pin_csuszas.name",
+   "desc": "ability.pin_csuszas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 18,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.9,
+    "damage_mult": 1.15
+   },
+   "icon": "rage",
+   "ally": "pinguu"
+  }
+ },
+ "pin_jeggyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.pin_jeggyogyitas.name",
+   "desc": "ability.pin_jeggyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal",
+   "ally": "pinguu"
+  }
+ },
+ "pin_jeghullam": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.pin_jeghullam.name",
+   "desc": "ability.pin_jeghullam.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 70,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 14,
+   "color": [
+    150,
+    210,
+    255
+   ],
+   "sprite": "lelegzet",
+   "icon": "burst",
+   "slow": 0.5,
+   "ally": "pinguu"
+  }
+ },
+ "pin_osveny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.pin_osveny.name",
+   "desc": "ability.pin_osveny.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 5,
+   "icon": "aura",
+   "modifiers": {
+    "speed_mult": 1.12
+   },
+   "ally": "pinguu"
+  }
+ },
+ "gho_kofal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gho_kofal.name",
+   "desc": "ability.gho_kofal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.5,
+    "armor_add": 3
+   },
+   "icon": "shield",
+   "ally": "ghoblin"
+  }
+ },
+ "gho_kodobbantas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gho_kodobbantas.name",
+   "desc": "ability.gho_kodobbantas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 18,
+   "radius": 2.4,
+   "damage": 40,
+   "stun": 1.2,
+   "color": [
+    200,
+    170,
+    120
+   ],
+   "icon": "stomp",
+   "ally": "ghoblin"
+  }
+ },
+ "gho_meszrobbanas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gho_meszrobbanas.name",
+   "desc": "ability.gho_meszrobbanas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "hotkey": "R",
+   "cooldown": 1,
+   "radius": 1.8,
+   "damage": 40,
+   "building_damage": 120,
+   "slow": 0.5,
+   "duration": 4,
+   "self_destruct": true,
+   "color": [
+    235,
+    235,
+    215
+   ],
+   "icon": "bomb",
+   "ally": "ghoblin"
+  }
+ },
+ "mho_szelvagas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mho_szelvagas.name",
+   "desc": "ability.mho_szelvagas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 16,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.5,
+    "damage_mult": 1.4
+   },
+   "icon": "rage",
+   "ally": "mhonyo"
+  }
+ },
+ "mho_szikrapajzs": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mho_szikrapajzs.name",
+   "desc": "ability.mho_szikrapajzs.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.6,
+    "armor_add": 3
+   },
+   "icon": "shield",
+   "ally": "mhonyo"
+  }
+ },
+ "mho_elezes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mho_elezes.name",
+   "desc": "ability.mho_elezes.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 5,
+   "icon": "song",
+   "modifiers": {
+    "damage_mult": 1.1
+   },
+   "ally": "mhonyo"
+  }
+ },
+ "mho_javitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mho_javitas.name",
+   "desc": "ability.mho_javitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 8,
+   "icon": "heal",
+   "ally": "mhonyo"
+  }
+ },
+ "mho_gozkitores": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.mho_gozkitores.name",
+   "desc": "ability.mho_gozkitores.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 16,
+   "radius": 2.3,
+   "damage": 38,
+   "stun": 0.8,
+   "color": [
+    230,
+    230,
+    230
+   ],
+   "icon": "stomp",
+   "ally": "mhonyo"
+  }
+ },
+ "dar_gyantafal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.dar_gyantafal.name",
+   "desc": "ability.dar_gyantafal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.6,
+    "armor_add": 3
+   },
+   "icon": "shield",
+   "ally": "daresh"
+  }
+ },
+ "dar_rajenek": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.dar_rajenek.name",
+   "desc": "ability.dar_rajenek.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 5,
+   "icon": "song",
+   "modifiers": {
+    "speed_mult": 1.12,
+    "damage_mult": 1.05
+   },
+   "ally": "daresh"
+  }
+ },
+ "dar_mezgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.dar_mezgyogyitas.name",
+   "desc": "ability.dar_mezgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal",
+   "ally": "daresh"
+  }
+ },
+ "tok_fagydobbantas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tok_fagydobbantas.name",
+   "desc": "ability.tok_fagydobbantas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 18,
+   "radius": 2.4,
+   "damage": 36,
+   "stun": 1.0,
+   "color": [
+    180,
+    220,
+    255
+   ],
+   "icon": "stomp",
+   "slow": 0.5,
+   "duration": 2,
+   "ally": "tokla"
+  }
+ },
+ "tok_harangszo": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tok_harangszo.name",
+   "desc": "ability.tok_harangszo.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 5,
+   "icon": "song",
+   "modifiers": {
+    "damage_mult": 1.08,
+    "armor_add": 1
+   },
+   "ally": "tokla"
+  }
+ },
+ "tok_rontasuzes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tok_rontasuzes.name",
+   "desc": "ability.tok_rontasuzes.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 8,
+   "icon": "heal",
+   "ally": "tokla"
+  }
+ },
+ "tok_hovihar": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tok_hovihar.name",
+   "desc": "ability.tok_hovihar.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 75,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.2,
+   "duration": 5,
+   "dps": 14,
+   "color": [
+    200,
+    230,
+    255
+   ],
+   "sprite": "lelegzet",
+   "icon": "burst",
+   "slow": 0.4,
+   "ally": "tokla"
+  }
+ },
+ "gal_harapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gal_harapas.name",
+   "desc": "ability.gal_harapas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 18,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.6,
+    "damage_mult": 1.35
+   },
+   "icon": "rage",
+   "ally": "galoca"
+  }
+ },
+ "gal_kalaptaposas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gal_kalaptaposas.name",
+   "desc": "ability.gal_kalaptaposas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 18,
+   "radius": 2.3,
+   "damage": 40,
+   "stun": 1.0,
+   "color": [
+    200,
+    60,
+    50
+   ],
+   "icon": "stomp",
+   "ally": "galoca"
+  }
+ },
+ "gal_gyokergancs": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.gal_gyokergancs.name",
+   "desc": "ability.gal_gyokergancs.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 60,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 6,
+   "color": [
+    120,
+    200,
+    120
+   ],
+   "sprite": "gyokerkotes",
+   "icon": "burst",
+   "slow": 0.1,
+   "ally": "galoca"
+  }
+ },
+ "nii_lotuszfal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nii_lotuszfal.name",
+   "desc": "ability.nii_lotuszfal.desc"
+  },
+  "Spec": {
+   "type": "toggle",
+   "modifiers": {
+    "speed_mult": 0.6,
+    "armor_add": 3
+   },
+   "icon": "shield",
+   "ally": "niil_elf"
+  }
+ },
+ "nii_aldas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nii_aldas.name",
+   "desc": "ability.nii_aldas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 10,
+   "icon": "heal",
+   "ally": "niil_elf"
+  }
+ },
+ "nii_arhullam": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nii_arhullam.name",
+   "desc": "ability.nii_arhullam.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 70,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.2,
+   "duration": 3,
+   "dps": 16,
+   "color": [
+    110,
+    200,
+    230
+   ],
+   "sprite": "lelegzet",
+   "icon": "burst",
+   "slow": 0.5,
+   "ally": "niil_elf"
+  }
+ },
+ "nii_harapas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nii_harapas.name",
+   "desc": "ability.nii_harapas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 16,
+   "radius": 1.6,
+   "damage": 42,
+   "stun": 1.2,
+   "color": [
+    90,
+    140,
+    90
+   ],
+   "icon": "stomp",
+   "ally": "niil_elf"
+  }
+ },
+ "tuz_homokroham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tuz_homokroham.name",
+   "desc": "ability.tuz_homokroham.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 18,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.7,
+    "damage_mult": 1.25
+   },
+   "icon": "rage",
+   "ally": "tuz_elf"
+  }
+ },
+ "tuz_pengetanc": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tuz_pengetanc.name",
+   "desc": "ability.tuz_pengetanc.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 12,
+   "radius": 1.8,
+   "damage": 30,
+   "stun": 0,
+   "color": [
+    240,
+    200,
+    120
+   ],
+   "icon": "sweep",
+   "ally": "tuz_elf"
+  }
+ },
+ "tuz_tuzfal": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tuz_tuzfal.name",
+   "desc": "ability.tuz_tuzfal.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 75,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 1.6,
+   "duration": 4,
+   "dps": 24,
+   "color": [
+    255,
+    140,
+    40
+   ],
+   "sprite": "napvihar",
+   "icon": "burst",
+   "ally": "tuz_elf"
+  }
+ },
+ "tuz_delibab": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.tuz_delibab.name",
+   "desc": "ability.tuz_delibab.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "cooldown": 30,
+   "unit": "tuz_delibab_mas",
+   "count": 2,
+   "lifetime": 20,
+   "icon": "summon",
+   "ally": "tuz_elf"
+  }
+ },
+ "ten_lampasfeny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ten_lampasfeny.name",
+   "desc": "ability.ten_lampasfeny.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal",
+   "ally": "tenduur"
+  }
+ },
+ "ten_levelorveny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ten_levelorveny.name",
+   "desc": "ability.ten_levelorveny.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 70,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 16,
+   "color": [
+    180,
+    230,
+    120
+   ],
+   "sprite": "gyokerkotes",
+   "icon": "burst",
+   "ally": "tenduur"
+  }
+ },
+ "ten_szokkenes": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ten_szokkenes.name",
+   "desc": "ability.ten_szokkenes.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 16,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.8,
+    "damage_mult": 1.2
+   },
+   "icon": "rage",
+   "ally": "tenduur"
+  }
+ },
+ "ten_gyokerdobbantas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.ten_gyokerdobbantas.name",
+   "desc": "ability.ten_gyokerdobbantas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 18,
+   "radius": 2.4,
+   "damage": 38,
+   "stun": 1.2,
+   "color": [
+    120,
+    90,
+    60
+   ],
+   "icon": "stomp",
+   "ally": "tenduur"
+  }
+ },
+ "nil_rakshasa_hivas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nil_rakshasa_hivas.name",
+   "desc": "ability.nil_rakshasa_hivas.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "cooldown": 45,
+   "unit": "nil_rakshasa_kotott",
+   "count": 1,
+   "lifetime": 30,
+   "icon": "summon",
+   "ally": "nila_uchana"
+  }
+ },
+ "nil_tombolas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nil_tombolas.name",
+   "desc": "ability.nil_tombolas.desc"
+  },
+  "Spec": {
+   "type": "nova",
+   "cooldown": 16,
+   "radius": 2.2,
+   "damage": 40,
+   "stun": 0.8,
+   "color": [
+    200,
+    40,
+    40
+   ],
+   "icon": "stomp",
+   "ally": "nila_uchana"
+  }
+ },
+ "nil_orveny": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nil_orveny.name",
+   "desc": "ability.nil_orveny.desc"
+  },
+  "Spec": {
+   "type": "area",
+   "energy": 70,
+   "cooldown": 8,
+   "range": 8,
+   "radius": 2.0,
+   "duration": 4,
+   "dps": 16,
+   "color": [
+    90,
+    200,
+    220
+   ],
+   "sprite": "lelegzet",
+   "icon": "burst",
+   "slow": 0.5,
+   "ally": "nila_uchana"
+  }
+ },
+ "nil_lotuszgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nil_lotuszgyogyitas.name",
+   "desc": "ability.nil_lotuszgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 10,
+   "icon": "heal",
+   "ally": "nila_uchana"
+  }
+ },
+ "nil_makara_roham": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.nil_makara_roham.name",
+   "desc": "ability.nil_makara_roham.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 20,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.6,
+    "damage_mult": 1.3
+   },
+   "icon": "rage",
+   "ally": "nila_uchana"
+  }
+ },
+ "zha_kukorekolas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.zha_kukorekolas.name",
+   "desc": "ability.zha_kukorekolas.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 5,
+   "icon": "song",
+   "modifiers": {
+    "damage_mult": 1.1
+   },
+   "ally": "zhan_zhama"
+  }
+ },
+ "zha_madarszellem_hivas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.zha_madarszellem_hivas.name",
+   "desc": "ability.zha_madarszellem_hivas.desc"
+  },
+  "Spec": {
+   "type": "summon",
+   "cooldown": 35,
+   "unit": "zha_madarszellem",
+   "count": 2,
+   "lifetime": 30,
+   "icon": "summon",
+   "ally": "zhan_zhama"
+  }
+ },
+ "zha_tollgyogyitas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.zha_tollgyogyitas.name",
+   "desc": "ability.zha_tollgyogyitas.desc"
+  },
+  "Spec": {
+   "type": "autoheal",
+   "cooldown": 0.8,
+   "range": 5,
+   "amount": 9,
+   "icon": "heal",
+   "ally": "zhan_zhama"
+  }
+ },
+ "shr_vedorunak": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.shr_vedorunak.name",
+   "desc": "ability.shr_vedorunak.desc"
+  },
+  "Spec": {
+   "type": "chant",
+   "radius": 5,
+   "icon": "rune",
+   "modifiers": {
+    "armor_add": 2
+   },
+   "ally": "shrissh_matah"
+  }
+ },
+ "shr_robbanorunak": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.shr_robbanorunak.name",
+   "desc": "ability.shr_robbanorunak.desc"
+  },
+  "Spec": {
+   "type": "bolt",
+   "energy": 45,
+   "cooldown": 10,
+   "range": 8,
+   "damage": 50,
+   "projectile": "spear",
+   "icon": "rune",
+   "ally": "shrissh_matah"
+  }
+ },
+ "shr_kapaszkodas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.shr_kapaszkodas.name",
+   "desc": "ability.shr_kapaszkodas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "cooldown": 16,
+   "duration": 4,
+   "modifiers": {
+    "speed_mult": 1.7,
+    "damage_mult": 1.15
+   },
+   "icon": "rage",
+   "ally": "shrissh_matah"
+  }
+ }
+}

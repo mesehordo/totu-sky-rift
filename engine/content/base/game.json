@@ -1,0 +1,273 @@
+{
+ "map": {
+  "width": 88,
+  "height": 88
+ },
+ "sim_hz": 30,
+ "start_resources": {
+  "wood": 400,
+  "stone": 250,
+  "meteor": 0
+ },
+ "max_supply": 200,
+ "summon_research": {
+  "summon_duration": {
+   "name": "Idézés tartósítása I.",
+   "desc": "Az új, időkorlátos idézések 25%-kal tovább maradnak meg.",
+   "cost": {
+    "wood": 50,
+    "stone": 50
+   },
+   "time": 30,
+   "icon": "ghost",
+   "rules": {
+    "summon_research_mult": 1.25
+   }
+  },
+  "summon_duration_2": {
+   "name": "Idézés tartósítása II.",
+   "desc": "Az új, időkorlátos idézések 50%-kal tovább maradnak meg az alapértékhez képest.",
+   "cost": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 45,
+   "icon": "rune",
+   "requires_research": [
+    "summon_duration"
+   ],
+   "rules": {
+    "summon_research_mult": 1.5
+   }
+  }
+ },
+ "resources": {
+  "wood": {
+   "name": "Fa",
+   "color": [
+    70,
+    160,
+    70
+   ],
+   "gather_time": 2.2,
+   "carry": 8,
+   "node_amount": 120
+  },
+  "stone": {
+   "name": "Arany",
+   "color": [
+    236,
+    190,
+    60
+   ],
+   "gather_time": 2.6,
+   "carry": 6,
+   "node_amount": 1500
+  },
+  "meteor": {
+   "name": "Meteorit",
+   "color": [
+    176,
+    70,
+    255
+   ],
+   "gather_time": 3.5,
+   "carry": 4,
+   "node_amount": 1500
+  },
+  "faith": {
+   "name": "Áhítat",
+   "color": [
+    255,
+    214,
+    120
+   ],
+   "gather_time": 1,
+   "carry": 0,
+   "node_amount": 0,
+   "special": true
+  }
+ },
+ "shield_regen_delay": 6.0,
+ "shield_regen_rate": 3.0,
+ "energy_regen": 0.8,
+ "creep_speed_mult": 1.3,
+ "creep_regen_mult": 3.0,
+ "player_colors": [
+  [
+   70,
+   140,
+   255
+  ],
+  [
+   230,
+   60,
+   50
+  ],
+  [
+   80,
+   200,
+   90
+  ],
+  [
+   240,
+   200,
+   40
+  ],
+  [
+   170,
+   90,
+   230
+  ],
+  [
+   255,
+   140,
+   40
+  ],
+  [
+   60,
+   210,
+   210
+  ],
+  [
+   235,
+   235,
+   235
+  ]
+ ],
+ "supply_name": "Létszám",
+ "player_color_names": {
+  "hu": [
+   "kék",
+   "piros",
+   "zöld",
+   "sárga",
+   "lila",
+   "narancs",
+   "türkiz",
+   "fehér"
+  ],
+  "en": [
+   "blue",
+   "red",
+   "green",
+   "yellow",
+   "purple",
+   "orange",
+   "teal",
+   "white"
+  ]
+ },
+ "pond_speed": {
+  "own": 1.3,
+  "other": 0.7
+ },
+ "rift": {
+  "radius": 5,
+  "energy_mult": 1.5,
+  "mage_range": 1
+ },
+ "unit_types": {
+  "types": {
+   "kozelharcos": {
+    "icon": "⚔",
+    "name": "Közelharcos",
+    "desc": "kard, buzogány, balta"
+   },
+   "landzsas": {
+    "icon": "🛡",
+    "name": "Lándzsás / pajzsos",
+    "desc": "lándzsa, dárda, pajzsfal"
+   },
+   "lovesz": {
+    "icon": "🏹",
+    "name": "Lövész",
+    "desc": "íj, parittya, dobófegyver"
+   },
+   "lovas": {
+    "icon": "🐎",
+    "name": "Lovas / hátas",
+    "desc": "gyors hátas harcos"
+   },
+   "orias": {
+    "icon": "🗿",
+    "name": "Óriás / szörny",
+    "desc": "nagy testű lény vagy gép"
+   },
+   "varazslo": {
+    "icon": "✨",
+    "name": "Varázsló",
+    "desc": "mágiahasználó, támogató"
+   },
+   "repulo": {
+    "icon": "🪶",
+    "name": "Repülő",
+    "desc": "légi egység"
+   },
+   "ostrom": {
+    "icon": "💥",
+    "name": "Ostromgép",
+    "desc": "távoli, épületromboló"
+   },
+   "munkas": {
+    "icon": "⛏",
+    "name": "Munkás",
+    "desc": "gyűjt, épít"
+   }
+  },
+  "building": "Épületek",
+  "matrix": {
+   "kozelharcos": {
+    "landzsas": 1.25,
+    "varazslo": 1.25
+   },
+   "landzsas": {
+    "lovas": 1.5,
+    "orias": 1.25
+   },
+   "lovesz": {
+    "kozelharcos": 1.25,
+    "repulo": 1.5
+   },
+   "lovas": {
+    "lovesz": 1.5,
+    "varazslo": 1.5,
+    "ostrom": 1.5
+   },
+   "orias": {
+    "kozelharcos": 1.25,
+    "lovas": 1.25,
+    "epulet": 1.5
+   },
+   "varazslo": {
+    "orias": 1.5,
+    "landzsas": 1.25
+   },
+   "repulo": {
+    "ostrom": 1.5,
+    "varazslo": 1.25
+   },
+   "ostrom": {
+    "epulet": 2.0,
+    "landzsas": 1.25
+   },
+   "munkas": {}
+  }
+ },
+ "upkeep": {
+  "tiers": [
+   [
+    80,
+    1.0
+   ],
+   [
+    140,
+    0.7
+   ],
+   [
+    200,
+    0.4
+   ]
+  ]
+ }
+}

@@ -1,0 +1,458 @@
+{
+ "wul_obszidian_landzsa": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_obszidian_landzsa.name",
+   "desc": "research.wul_obszidian_landzsa.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "wul_holdfeny_ijak": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_holdfeny_ijak.name",
+   "desc": "research.wul_holdfeny_ijak.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "meteor": 50
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "wul_bolenybor": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_bolenybor.name",
+   "desc": "research.wul_bolenybor.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "wood": 100
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "wul_falkaszellem": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_falkaszellem.name",
+   "desc": "research.wul_falkaszellem.desc"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 100,
+    "wood": 65,
+    "stone": 35
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10
+   }
+  ]
+ },
+ "wul_savkopes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_savkopes.name",
+   "desc": "research.wul_savkopes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "meteor": 100
+   },
+   "time": 50
+  },
+  "Exclusive": "groomi_kopes"
+ },
+ "wul_tuzkopes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_tuzkopes.name",
+   "desc": "research.wul_tuzkopes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "meteor": 100
+   },
+   "time": 50
+  },
+  "Exclusive": "groomi_kopes"
+ },
+ "wul_fagykopes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_fagykopes.name",
+   "desc": "research.wul_fagykopes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "meteor": 100
+   },
+   "time": 50
+  },
+  "Exclusive": "groomi_kopes"
+ },
+ "wul_zsakmanyszerzes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_zsakmanyszerzes.name",
+   "desc": "research.wul_zsakmanyszerzes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 60
+   },
+   "time": 45
+  },
+  "Rules": {
+   "bounty_gold": 0.5
+  }
+ },
+ "wul_falkaharc": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_falkaharc.name",
+   "desc": "research.wul_falkaharc.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 60
+   },
+   "time": 45
+  }
+ },
+ "wul_bolenylovaglas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_bolenylovaglas.name",
+   "desc": "research.wul_bolenylovaglas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 80
+   },
+   "time": 40
+  }
+ },
+ "wul_obszidian_landzsa_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_obszidian_landzsa_2.name",
+   "desc": "research.wul_obszidian_landzsa_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_obszidian_landzsa"
+    }
+   ]
+  }
+ },
+ "wul_obszidian_landzsa_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_obszidian_landzsa_3.name",
+   "desc": "research.wul_obszidian_landzsa_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_obszidian_landzsa_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "wul_holdfeny_ijak_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_holdfeny_ijak_2.name",
+   "desc": "research.wul_holdfeny_ijak_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "meteor": 80
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_holdfeny_ijak"
+    }
+   ]
+  }
+ },
+ "wul_holdfeny_ijak_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_holdfeny_ijak_3.name",
+   "desc": "research.wul_holdfeny_ijak_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "meteor": 170
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_holdfeny_ijak_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "wul_bolenybor_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_bolenybor_2.name",
+   "desc": "research.wul_bolenybor_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 240,
+    "wood": 160
+   },
+   "time": 87
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_bolenybor"
+    }
+   ]
+  }
+ },
+ "wul_bolenybor_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_bolenybor_3.name",
+   "desc": "research.wul_bolenybor_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 360,
+    "wood": 240,
+    "meteor": 50
+   },
+   "time": 105
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_bolenybor_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "wul_nyomolvasas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_nyomolvasas.name",
+   "desc": "research.wul_nyomolvasas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 80
+   },
+   "time": 35
+  },
+  "Rules": {
+   "detect_all": 8
+  }
+ },
+ "wul_holdtolte": {
+  "Identity": {
+   "kind": "research",
+   "faction": "wullof",
+   "name": "research.wul_holdtolte.name",
+   "desc": "research.wul_holdtolte.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 80,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Rules": {
+   "moon": {
+    "period": 240,
+    "dur": 60,
+    "mult": 1.15
+   }
+  }
+ }
+}

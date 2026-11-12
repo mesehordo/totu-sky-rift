@@ -1,0 +1,102 @@
+{
+ "pin_osvenyvezetok": {
+  "Identity": {
+   "kind": "research",
+   "faction": "pinguu",
+   "name": "research.pin_osvenyvezetok.name",
+   "desc": "research.pin_osvenyvezetok.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_jegpancel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "pinguu",
+   "name": "research.pin_jegpancel.name",
+   "desc": "research.pin_jegpancel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_pinguu"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_hidegtures": {
+  "Identity": {
+   "kind": "research",
+   "faction": "pinguu",
+   "name": "research.pin_hidegtures.name",
+   "desc": "research.pin_hidegtures.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 30,
+    "filter": {
+     "tags": [
+      "ally_pinguu"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ }
+}

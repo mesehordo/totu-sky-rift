@@ -1,0 +1,284 @@
+{
+ "shr_runaszovo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "shrissh_matah",
+   "name": "unit.shr_runaszovo.name",
+   "desc": "unit.shr_runaszovo.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_shrissh_matah",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "shr_vedorunak",
+    "shr_robbanorunak"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_sziklafuto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "shrissh_matah",
+   "name": "unit.shr_sziklafuto.name",
+   "desc": "unit.shr_sziklafuto.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_shrissh_matah",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.3,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "shr_kapaszkodas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_pajzsbogar": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "shrissh_matah",
+   "name": "unit.shr_pajzsbogar.name",
+   "desc": "unit.shr_pajzsbogar.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_shrissh_matah",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 200,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_tuszunyog": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "shrissh_matah",
+   "name": "unit.shr_tuszunyog.name",
+   "desc": "unit.shr_tuszunyog.desc",
+   "shape": "flyer",
+   "tags": [
+    "ally",
+    "ally_shrissh_matah",
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Health": {
+   "max": 120,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.8,
+   "radius": 0.45,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 24,
+   "resources": {
+    "wood": 110,
+    "stone": 35,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.8,
+   "cooldown": 1.1,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_tuskelovo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "shrissh_matah",
+   "name": "unit.shr_tuskelovo.name",
+   "desc": "unit.shr_tuskelovo.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_shrissh_matah",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ }
+}

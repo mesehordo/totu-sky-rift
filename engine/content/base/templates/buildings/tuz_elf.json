@@ -1,0 +1,139 @@
+{
+ "tuz_dunepavilon": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "tuz_elf",
+   "name": "building.tuz_dunepavilon.name",
+   "desc": "building.tuz_dunepavilon.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "tuz_homokszablyas",
+    "tuz_parazsijasz",
+    "tuz_homokvihartancos"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_delibabtorony": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "tuz_elf",
+   "name": "building.tuz_delibabtorony.name",
+   "desc": "building.tuz_delibabtorony.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "tuz_hoszovo",
+    "tuz_delibab_csalo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "tuz_dunepavilon"
+    },
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_parazskemence": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "tuz_elf",
+   "name": "building.tuz_parazskemence.name",
+   "desc": "building.tuz_parazskemence.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "tuz_izzo_nyilhegy",
+    "tuz_homokvihar",
+    "tuz_tuzallo_pancel"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "tuz_dunepavilon"
+    },
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,139 @@
+{
+ "zha_feszekhaz": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "zhan_zhama",
+   "name": "building.zha_feszekhaz.name",
+   "desc": "building.zha_feszekhaz.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "zha_csirkepasztor",
+    "zha_tojasdobalo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_kakasudvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "zhan_zhama",
+   "name": "building.zha_kakasudvar.name",
+   "desc": "building.zha_kakasudvar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "zha_kakaslovas",
+    "zha_tolljos",
+    "zha_madarszellem"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "zha_feszekhaz"
+    },
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_keltetoszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "zhan_zhama",
+   "name": "building.zha_keltetoszentely.name",
+   "desc": "building.zha_keltetoszentely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "zha_gyors_keltetes",
+    "zha_kakaskukorekolas",
+    "zha_tollszellem"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "zha_feszekhaz"
+    },
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ }
+}

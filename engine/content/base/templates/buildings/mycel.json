@@ -1,0 +1,451 @@
+{
+ "myc_szivgomba": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_szivgomba.name",
+   "desc": "building.myc_szivgomba.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 255,
+    "stone": 70
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 9,
+   "detect": 7
+  },
+  "Supply": {
+   "provides": 6
+  },
+  "Mechanics": {
+   "network_core": true,
+   "link_radius": 7,
+   "field_radius": 6
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Attack": {
+   "damage": 4,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Producer": {
+   "units": [
+    "myc_sporaszedo"
+   ]
+  },
+  "Researcher": {
+   "list": []
+  }
+ },
+ "myc_sporafonal": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_sporafonal.name",
+   "desc": "building.myc_sporafonal.desc",
+   "shape": "node"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 25
+   },
+   "time": 8
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 120,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 5
+  },
+  "Mechanics": {
+   "link_radius": 6,
+   "field_radius": 3
+  }
+ },
+ "myc_termotest": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_termotest.name",
+   "desc": "building.myc_termotest.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 165,
+    "stone": 35
+   },
+   "time": 36
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 750,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "link_radius": 4
+  },
+  "Producer": {
+   "units": [
+    "myc_pofeteg",
+    "myc_kalapos_or"
+   ]
+  }
+ },
+ "myc_tuskegomba_telep": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_tuskegomba_telep.name",
+   "desc": "building.myc_tuskegomba_telep.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 140,
+    "stone": 85
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "link_radius": 4
+  },
+  "Producer": {
+   "units": [
+    "myc_tuskegomba_lovesz"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_termotest"
+    }
+   ]
+  }
+ },
+ "myc_gyokerbarlang": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_gyokerbarlang.name",
+   "desc": "building.myc_gyokerbarlang.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 125,
+    "meteor": 50
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "link_radius": 4
+  },
+  "Researcher": {
+   "list": [
+    "myc_meregspora",
+    "myc_kemenykalap",
+    "myc_gyors_micelium",
+    "myc_dus_spora"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_termotest"
+    }
+   ]
+  }
+ },
+ "myc_alomkert": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_alomkert.name",
+   "desc": "building.myc_alomkert.desc",
+   "shape": "observatory"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75,
+    "wood": 65,
+    "stone": 35
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 650,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "link_radius": 4
+  },
+  "Producer": {
+   "units": [
+    "myc_alomsaman"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_gyokerbarlang"
+    },
+    {
+     "path": "alom"
+    }
+   ]
+  }
+ },
+ "myc_lebegobolcso": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_lebegobolcso.name",
+   "desc": "building.myc_lebegobolcso.desc",
+   "shape": "aerie"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "meteor": 75,
+    "wood": 100
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "link_radius": 4
+  },
+  "Producer": {
+   "units": [
+    "myc_lebego_pofeteg"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_termotest"
+    }
+   ]
+  }
+ },
+ "myc_emlekfa": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_emlekfa.name",
+   "desc": "building.myc_emlekfa.desc",
+   "shape": "altar"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 215,
+    "stone": 35
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "myc_hos_mor",
+    "myc_hos_gyokeranya",
+    "myc_hos_sporin"
+   ]
+  },
+  "Mechanics": {
+   "altar": true
+  }
+ },
+ "myc_rothadokert": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_rothadokert.name",
+   "desc": "building.myc_rothadokert.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 60
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "myc_rothaszto",
+    "myc_tetemgomba"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "rothadas"
+    }
+   ]
+  }
+ },
+ "myc_oriasliget": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "mycel",
+   "name": "building.myc_oriasliget.name",
+   "desc": "building.myc_oriasliget.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 100
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "myc_fagomba_orias"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "liget"
+    }
+   ]
+  }
+ }
+}

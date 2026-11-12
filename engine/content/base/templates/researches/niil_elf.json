@@ -1,0 +1,102 @@
+{
+ "nii_csatornarend": {
+  "Identity": {
+   "kind": "research",
+   "faction": "niil_elf",
+   "name": "research.nii_csatornarend.name",
+   "desc": "research.nii_csatornarend.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_lotuszaldas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "niil_elf",
+   "name": "research.nii_lotuszaldas.name",
+   "desc": "research.nii_lotuszaldas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 40,
+    "filter": {
+     "tags": [
+      "ally_niil_elf"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_aradas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "niil_elf",
+   "name": "research.nii_aradas.name",
+   "desc": "research.nii_aradas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ally_niil_elf"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ }
+}

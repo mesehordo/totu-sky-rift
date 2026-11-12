@@ -1,0 +1,107 @@
+{
+ "gho_kobor": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ghoblin",
+   "name": "research.gho_kobor.name",
+   "desc": "research.gho_kobor.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_ghoblin"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_repedesismeret": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ghoblin",
+   "name": "research.gho_repedesismeret.name",
+   "desc": "research.gho_repedesismeret.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 3,
+    "filter": {
+     "tags": [
+      "ally_ghoblin"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_meszvakitas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ghoblin",
+   "name": "research.gho_meszvakitas.name",
+   "desc": "research.gho_meszvakitas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.range",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ }
+}

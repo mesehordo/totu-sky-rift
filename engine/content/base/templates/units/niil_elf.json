@@ -1,0 +1,288 @@
+{
+ "nii_papiruszlandzsas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "niil_elf",
+   "name": "unit.nii_papiruszlandzsas.name",
+   "desc": "unit.nii_papiruszlandzsas.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_niil_elf",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.7,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_nadhajos_ijasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "niil_elf",
+   "name": "unit.nii_nadhajos_ijasz.name",
+   "desc": "unit.nii_nadhajos_ijasz.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_niil_elf",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_lotuszpajzsos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "niil_elf",
+   "name": "unit.nii_lotuszpajzsos.name",
+   "desc": "unit.nii_lotuszpajzsos.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_niil_elf",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 180,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "nii_lotuszfal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_arapalypap": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "niil_elf",
+   "name": "unit.nii_arapalypap.name",
+   "desc": "unit.nii_arapalypap.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_niil_elf",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "nii_aldas",
+    "nii_arhullam"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ },
+ "nii_krokodilor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "niil_elf",
+   "name": "unit.nii_krokodilor.name",
+   "desc": "unit.nii_krokodilor.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_niil_elf",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.1,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "nii_harapas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "niil_elf"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,139 @@
+{
+ "gal_harapofeszek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "galoca",
+   "name": "building.gal_harapofeszek.name",
+   "desc": "building.gal_harapofeszek.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "gal_fogaskalap",
+    "gal_tuskebunkos",
+    "gal_oriasgaloca"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_sporakurt": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "galoca",
+   "name": "building.gal_sporakurt.name",
+   "desc": "building.gal_sporakurt.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "gal_sporakopo",
+    "gal_gyokergancsolo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "gal_harapofeszek"
+    },
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_tuskekert": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "galoca",
+   "name": "building.gal_tuskekert.name",
+   "desc": "building.gal_tuskekert.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "gal_tuskes_talaj",
+    "gal_merges_spora",
+    "gal_gyors_burjanzas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "gal_harapofeszek"
+    },
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,1332 @@
+{
+ "wul_gyujtogeto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_gyujtogeto.name",
+   "desc": "unit.wul_gyujtogeto.desc",
+   "shape": "worker",
+   "worker": true,
+   "tags": [
+    "worker",
+    "organic",
+    "light"
+   ],
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 30,
+    "stone": 20
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 45,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.34
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 0.3,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "erdei_rejtozes"
+   ]
+  },
+  "Worker": {
+   "tap_wood": {
+    "amount": 8,
+    "time": 10,
+    "drain": 0.5
+   }
+  }
+ },
+ "wul_landzsas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_landzsas.name",
+   "desc": "unit.wul_landzsas.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 57,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 16
+  },
+  "Health": {
+   "max": 128,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 0.45,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "harci_enek",
+    "erdei_rejtozes",
+    "tomahawk"
+   ]
+  }
+ },
+ "wul_ijas_vadasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_ijas_vadasz.name",
+   "desc": "unit.wul_ijas_vadasz.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 95,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 18
+  },
+  "Health": {
+   "max": 75,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 5.5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boomerang",
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "bumerang",
+    "vadaszles",
+    "erdei_rejtozes"
+   ]
+  }
+ },
+ "wul_holdsaman": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_holdsaman.name",
+   "desc": "unit.wul_holdsaman.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 85,
+    "meteor": 70,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 70,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "holdgyogyitas",
+    "szellemfarkasok",
+    "vandor_enek"
+   ]
+  }
+ },
+ "wul_szellemfarkas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_szellemfarkas.name",
+   "desc": "unit.wul_szellemfarkas.desc",
+   "shape": "spiritwolf",
+   "tags": [
+    "melee",
+    "spirit"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Lifetime": {
+   "seconds": 30,
+   "no_corpse": true
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.7,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 0.9,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "szellemtest"
+   ]
+  }
+ },
+ "wul_bolenylovas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_bolenylovas.name",
+   "desc": "unit.wul_bolenylovas.desc",
+   "shape": "rider",
+   "tags": [
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 155,
+    "stone": 45
+   },
+   "supply": 3,
+   "time": 26
+  },
+  "Health": {
+   "max": 320,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.52
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 17,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "roham",
+    "leszallas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "boleny"
+    }
+   ]
+  }
+ },
+ "wul_mennydorgesmadar": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_mennydorgesmadar.name",
+   "desc": "unit.wul_mennydorgesmadar.desc",
+   "shape": "flyer",
+   "tags": [
+    "flyer",
+    "large"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 95,
+    "wood": 100,
+    "stone": 55
+   },
+   "supply": 4,
+   "time": 32
+  },
+  "Health": {
+   "max": 170,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.6,
+   "radius": 0.58,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic",
+   "splash": 1.0
+  },
+  "Abilities": {
+   "list": [
+    "villamcsapas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_samansator"
+    }
+   ]
+  }
+ },
+ "wul_totemorias": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_totemorias.name",
+   "desc": "unit.wul_totemorias.desc",
+   "shape": "golem",
+   "tags": [
+    "large",
+    "melee"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 330,
+    "meteor": 90,
+    "stone": 85
+   },
+   "supply": 5,
+   "time": 42
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.8
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 32,
+   "range": 0.5,
+   "cooldown": 2.0,
+   "targets": [
+    "ground"
+   ],
+   "splash": 0.8,
+   "bonus": {
+    "building": 30
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "osok_haragja"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_samansator"
+    },
+    {
+     "path": "osok"
+    }
+   ]
+  }
+ },
+ "wul_vandorszeker": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_vandorszeker.name",
+   "desc": "unit.wul_vandorszeker.desc",
+   "shape": "wagon",
+   "tags": [
+    "large"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Abilities": {
+   "list": [
+    "taborkocsi"
+   ]
+  }
+ },
+ "wul_hos_tava": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_hos_tava.name",
+   "desc": "unit.wul_hos_tava.desc",
+   "tags": [
+    "hero",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 260,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.3,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 13
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 6,
+   "cooldown": 1.1,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boomerang"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Hero": {
+   "abilities": [
+    "h_tava_nyil",
+    "h_tava_utenek",
+    "h_tava_farkasok",
+    "h_tava_madar"
+   ],
+   "growth": {
+    "hp": 30,
+    "damage": 3,
+    "armor": 0.3,
+    "energy": 15
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_osok_kore"
+    }
+   ]
+  }
+ },
+ "wul_tomahawkos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_tomahawkos.name",
+   "desc": "unit.wul_tomahawkos.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic",
+    "light"
+   ],
+   "hidden": true,
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 16
+  },
+  "Health": {
+   "max": 118,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.4,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 0.4,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "worker": 8,
+    "ranged": 4
+   }
+  },
+  "Abilities": {
+   "list": [
+    "tomahawk",
+    "vandor_enek",
+    "erdei_rejtozes"
+   ]
+  }
+ },
+ "wul_hos_varnu": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_hos_varnu.name",
+   "desc": "unit.wul_hos_varnu.desc",
+   "tags": [
+    "hero",
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 330,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 5.5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_var_holdfeny",
+    "h_var_kod",
+    "h_var_falka",
+    "h_var_telihold"
+   ],
+   "growth": {
+    "hp": 32,
+    "damage": 2,
+    "armor": 0.3,
+    "energy": 20
+   }
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_osok_kore"
+    }
+   ]
+  }
+ },
+ "wul_hos_kurrin": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_hos_kurrin.name",
+   "desc": "unit.wul_hos_kurrin.desc",
+   "tags": [
+    "hero",
+    "melee",
+    "organic",
+    "cavalry"
+   ],
+   "hero": true,
+   "shape": "rider",
+   "class": "lovas"
+  },
+  "Health": {
+   "max": 560,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 3.2,
+   "radius": 0.55
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 23,
+   "range": 0.5,
+   "cooldown": 1.15,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_kur_taposas",
+    "h_kur_uvoltes",
+    "h_kur_verfalka",
+    "h_kur_het_ut"
+   ],
+   "growth": {
+    "hp": 62,
+    "damage": 3.5,
+    "armor": 0.5,
+    "energy": 10
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_osok_kore"
+    }
+   ]
+  }
+ },
+ "wul_emu": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_emu.name",
+   "desc": "unit.wul_emu.desc",
+   "shape": "emu",
+   "tags": [
+    "organic",
+    "livestock"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60
+   },
+   "supply": 0,
+   "time": 15
+  },
+  "Supply": {
+   "provides": 6
+  },
+  "Health": {
+   "max": 110,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.2,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "riado_futas"
+   ]
+  },
+  "Legacy": {
+   "per_building": {
+    "building": "wul_bolenykaram",
+    "max": 5
+   }
+  }
+ },
+ "wul_boleny": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_boleny.name",
+   "desc": "unit.wul_boleny.desc",
+   "shape": "bison",
+   "tags": [
+    "organic",
+    "beast",
+    "melee"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 110,
+    "stone": 40
+   },
+   "supply": 1,
+   "time": 20
+  },
+  "Health": {
+   "max": 260,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.55
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.4,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "felultetes"
+   ],
+   "research": {
+    "felultetes": "wul_bolenylovaglas"
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "boleny"
+    }
+   ]
+  }
+ },
+ "wul_groomi": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_groomi.name",
+   "desc": "unit.wul_groomi.desc",
+   "shape": "groomi",
+   "tags": [
+    "organic",
+    "beast",
+    "melee"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 85,
+    "meteor": 25
+   },
+   "supply": 2,
+   "time": 22
+  },
+  "Health": {
+   "max": 160,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.3,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 0.4,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "roham",
+    "savkopes",
+    "tuzkopes",
+    "fagykopes"
+   ],
+   "research": {
+    "savkopes": "wul_savkopes",
+    "tuzkopes": "wul_tuzkopes",
+    "fagykopes": "wul_fagykopes"
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "groomi"
+    }
+   ]
+  }
+ },
+ "wul_csordavezer": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_csordavezer.name",
+   "desc": "unit.wul_csordavezer.desc",
+   "shape": "bison",
+   "tags": [
+    "organic",
+    "beast",
+    "melee",
+    "large"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 220,
+    "stone": 90,
+    "meteor": 40
+   },
+   "supply": 4,
+   "time": 34
+  },
+  "Health": {
+   "max": 650,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.75
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "taposas",
+    "roham"
+   ]
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "building": 25
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "boleny"
+    }
+   ]
+  }
+ },
+ "wul_groomi_fioka": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_groomi_fioka.name",
+   "desc": "unit.wul_groomi_fioka.desc",
+   "shape": "groomi",
+   "tags": [
+    "organic",
+    "beast",
+    "melee",
+    "light"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 40
+   },
+   "supply": 1,
+   "time": 10
+  },
+  "Health": {
+   "max": 70,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.5,
+   "radius": 0.3
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "roham"
+   ]
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 0.35,
+   "cooldown": 0.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "groomi"
+    }
+   ]
+  }
+ },
+ "wul_groomi_anya": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_groomi_anya.name",
+   "desc": "unit.wul_groomi_anya.desc",
+   "shape": "groomi",
+   "tags": [
+    "organic",
+    "beast",
+    "melee",
+    "large"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "meteor": 60
+   },
+   "supply": 4,
+   "time": 32
+  },
+  "Health": {
+   "max": 420,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.65
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "fiokakeltes",
+    "roham"
+   ]
+  },
+  "Attack": {
+   "damage": 20,
+   "range": 0.45,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "groomi"
+    }
+   ]
+  }
+ },
+ "wul_totemfarago": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_totemfarago.name",
+   "desc": "unit.wul_totemfarago.desc",
+   "shape": "warrior",
+   "tags": [
+    "caster",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "meteor": 30
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 110,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "osok_haragja",
+    "erdei_rejtozes"
+   ]
+  },
+  "Attack": {
+   "damage": 7,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "osok"
+    }
+   ]
+  }
+ },
+ "wul_alomjaro": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_alomjaro.name",
+   "desc": "unit.wul_alomjaro.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "meteor": 70
+   },
+   "supply": 2,
+   "time": 24
+  },
+  "Health": {
+   "max": 100,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "alomkod",
+    "alomseta"
+   ]
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "osok"
+    }
+   ]
+  }
+ },
+ "wul_ijas_vadasz_falka": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_ijas_vadasz_falka.name",
+   "desc": "unit.wul_ijas_vadasz_falka.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "sprite": "wul_ijas_vadasz",
+   "hidden": true,
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 247,
+    "stone": 65
+   },
+   "supply": 6,
+   "time": 36
+  },
+  "Health": {
+   "max": 75,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 5.5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boomerang"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_falkaharc"
+    }
+   ]
+  },
+  "Legacy": {
+   "spawn_group": {
+    "unit": "wul_ijas_vadasz",
+    "count": 3
+   }
+  }
+ },
+ "wul_landzsas_falka": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "wullof",
+   "name": "unit.wul_landzsas_falka.name",
+   "desc": "unit.wul_landzsas_falka.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "sprite": "wul_landzsas",
+   "hidden": true,
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 148,
+    "stone": 65
+   },
+   "supply": 6,
+   "time": 32
+  },
+  "Health": {
+   "max": 128,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 0.45,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "research": "wul_falkaharc"
+    }
+   ]
+  },
+  "Legacy": {
+   "spawn_group": {
+    "unit": "wul_landzsas",
+    "count": 3
+   }
+  }
+ }
+}

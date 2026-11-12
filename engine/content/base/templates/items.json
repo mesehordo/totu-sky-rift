@@ -1,0 +1,296 @@
+{
+ "gyogyfozet": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.gyogyfozet.name",
+   "desc": "item.gyogyfozet.desc"
+  },
+  "Item": {
+   "kind": "consumable",
+   "rarity": "common",
+   "heal": 250,
+   "icon": "potion_red"
+  }
+ },
+ "eterfozet": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.eterfozet.name",
+   "desc": "item.eterfozet.desc"
+  },
+  "Item": {
+   "kind": "consumable",
+   "rarity": "common",
+   "energy": 100,
+   "icon": "potion_blue"
+  }
+ },
+ "emlekkonyv": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.emlekkonyv.name",
+   "desc": "item.emlekkonyv.desc"
+  },
+  "Item": {
+   "kind": "consumable",
+   "rarity": "rare",
+   "xp": 300,
+   "icon": "tome"
+  }
+ },
+ "erotom": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.erotom.name",
+   "desc": "item.erotom.desc"
+  },
+  "Item": {
+   "kind": "consumable",
+   "rarity": "rare",
+   "perm": {
+    "damage": 2
+   },
+   "icon": "tome_red"
+  }
+ },
+ "eletertom": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.eletertom.name",
+   "desc": "item.eletertom.desc"
+  },
+  "Item": {
+   "kind": "consumable",
+   "rarity": "rare",
+   "perm": {
+    "hp": 60
+   },
+   "icon": "tome_green"
+  }
+ },
+ "csizma": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.csizma.name",
+   "desc": "item.csizma.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "common",
+   "icon": "boots"
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15
+   }
+  ]
+ },
+ "vedogyuru": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.vedogyuru.name",
+   "desc": "item.vedogyuru.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "common",
+   "icon": "ring"
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 2
+   }
+  ]
+ },
+ "karomkesztyu": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.karomkesztyu.name",
+   "desc": "item.karomkesztyu.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "common",
+   "icon": "claws"
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 5
+   }
+  ]
+ },
+ "eletamulett": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.eletamulett.name",
+   "desc": "item.eletamulett.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "rare",
+   "icon": "amulet"
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 150
+   }
+  ]
+ },
+ "regengyuru": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.regengyuru.name",
+   "desc": "item.regengyuru.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "rare",
+   "icon": "ring_green"
+  },
+  "Modifiers": [
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 2
+   }
+  ]
+ },
+ "eterko": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.eterko.name",
+   "desc": "item.eterko.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "rare",
+   "icon": "gem"
+  },
+  "Modifiers": [
+   {
+    "path": "Energy.max",
+    "op": "add",
+    "value": 60
+   },
+   {
+    "path": "energy_regen",
+    "op": "add",
+    "value": 1.0
+   }
+  ]
+ },
+ "hosipajzs": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.hosipajzs.name",
+   "desc": "item.hosipajzs.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "rare",
+   "icon": "shield"
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 4
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 100
+   }
+  ]
+ },
+ "ercpenge": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.ercpenge.name",
+   "desc": "item.ercpenge.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "artifact",
+   "icon": "sword"
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 12
+   },
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 5
+   }
+  ]
+ },
+ "arnykopeny": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.arnykopeny.name",
+   "desc": "item.arnykopeny.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "artifact",
+   "icon": "cloak"
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 12
+   },
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 2
+   },
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 1
+   }
+  ]
+ },
+ "orokhajnal": {
+  "Identity": {
+   "kind": "item",
+   "name": "item.orokhajnal.name",
+   "desc": "item.orokhajnal.desc"
+  },
+  "Item": {
+   "kind": "equip",
+   "rarity": "artifact",
+   "icon": "shard"
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 200
+   },
+   {
+    "path": "Energy.max",
+    "op": "add",
+    "value": 100
+   },
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 6
+   }
+  ]
+ }
+}

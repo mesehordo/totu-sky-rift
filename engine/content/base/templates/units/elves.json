@@ -1,0 +1,1075 @@
+{
+ "elf_kofarago": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_kofarago.name",
+   "desc": "unit.elf_kofarago.desc",
+   "shape": "worker",
+   "worker": true,
+   "tags": [
+    "worker",
+    "organic",
+    "light"
+   ],
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 30,
+    "stone": 20
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 30,
+   "shield": 20,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.32
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 0.3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "fenylepes_munkas"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  }
+ },
+ "elf_tollas_harcos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_tollas_harcos.name",
+   "desc": "unit.elf_tollas_harcos.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 45,
+    "stone": 40
+   },
+   "supply": 2,
+   "time": 16
+  },
+  "Health": {
+   "max": 122,
+   "shield": 50,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "fenylepes",
+    "napfolt"
+   ],
+   "research": {
+    "napfolt": "elf_napfolt"
+   }
+  },
+  "Energy": {
+   "max": 100
+  }
+ },
+ "elf_jade_ijasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_jade_ijasz.name",
+   "desc": "unit.elf_jade_ijasz.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 30
+   },
+   "supply": 2,
+   "time": 18
+  },
+  "Health": {
+   "max": 70,
+   "shield": 40,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow",
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "jade_celzas"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  }
+ },
+ "elf_raptor_lovas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_raptor_lovas.name",
+   "desc": "unit.elf_raptor_lovas.desc",
+   "shape": "rider",
+   "tags": [
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 60
+   },
+   "supply": 3,
+   "time": 22
+  },
+  "Health": {
+   "max": 130,
+   "shield": 60,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.9,
+   "radius": 0.48
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 0.4,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "ranged": 6
+   }
+  },
+  "Abilities": {
+   "list": [
+    "vagta",
+    "fenylepes"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_obszidian_muhely"
+    }
+   ]
+  }
+ },
+ "elf_napszoro": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_napszoro.name",
+   "desc": "unit.elf_napszoro.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 70,
+    "meteor": 60,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 50,
+   "shield": 60,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "napvihar",
+    "napkitores"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "nap"
+    }
+   ]
+  }
+ },
+ "elf_quetzal": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_quetzal.name",
+   "desc": "unit.elf_quetzal.desc",
+   "shape": "flyer",
+   "tags": [
+    "flyer",
+    "large"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 85,
+    "wood": 85,
+    "stone": 45
+   },
+   "supply": 4,
+   "time": 32
+  },
+  "Health": {
+   "max": 160,
+   "shield": 100,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.6,
+   "radius": 0.55,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 4,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "zuhanorepules"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "nap"
+    }
+   ]
+  }
+ },
+ "elf_tollas_rex": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_tollas_rex.name",
+   "desc": "unit.elf_tollas_rex.desc",
+   "shape": "beast",
+   "tags": [
+    "beast",
+    "melee",
+    "large",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 165,
+    "meteor": 120,
+    "wood": 145
+   },
+   "supply": 6,
+   "time": 42
+  },
+  "Health": {
+   "max": 420,
+   "shield": 200,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.85
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 40,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ],
+   "splash": 1.0
+  },
+  "Abilities": {
+   "list": [
+    "tollkorona_uvoltes"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_csillagvizsgalo"
+    },
+    {
+     "path": "jaguar"
+    }
+   ]
+  }
+ },
+ "elf_hos_szelai": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_hos_szelai.name",
+   "desc": "unit.elf_hos_szelai.desc",
+   "tags": [
+    "hero",
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 180,
+   "shield": 160,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Hero": {
+   "abilities": [
+    "h_szelai_napvihar",
+    "h_szelai_rezonancia",
+    "h_szelai_levalasztas",
+    "h_szelai_csillagorok"
+   ],
+   "growth": {
+    "hp": 25,
+    "shield": 20,
+    "damage": 2,
+    "energy": 25
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_napkapu"
+    }
+   ]
+  }
+ },
+ "elf_csillagdardas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_csillagdardas.name",
+   "desc": "unit.elf_csillagdardas.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75,
+    "meteor": 15,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 85,
+   "shield": 30,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 6,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "spear",
+   "bonus": {
+    "flyer": 8
+   },
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "csillagdarda"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_obszidian_muhely"
+    }
+   ]
+  }
+ },
+ "elf_obszidian_veto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_obszidian_veto.name",
+   "desc": "unit.elf_obszidian_veto.desc",
+   "shape": "artillery",
+   "tags": [
+    "siege",
+    "large",
+    "mech"
+   ],
+   "class": "ostrom"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 200,
+    "stone": 120
+   },
+   "supply": 4,
+   "time": 36
+  },
+  "Health": {
+   "max": 260,
+   "shield": 60,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 1.8,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 34,
+   "range": 8,
+   "cooldown": 3.0,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "boulder",
+   "splash": 1.0,
+   "bonus": {
+    "building": 30
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "napfokusz"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_obszidian_muhely"
+    },
+    {
+     "path": "csillag"
+    }
+   ]
+  },
+  "Legacy": {
+   "deploy": {
+    "time": 2,
+    "pack": 1,
+    "range_add": 1
+   }
+  }
+ },
+ "elf_jadeor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_jadeor.name",
+   "desc": "unit.elf_jadeor.desc",
+   "shape": "golem",
+   "tags": [
+    "melee",
+    "large",
+    "summoned"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 320,
+   "shield": 60,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.2,
+   "radius": 0.48
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 18,
+   "range": 0.4,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Lifetime": {
+   "no_corpse": true
+  },
+  "Abilities": {
+   "list": [
+    "jadetest"
+   ]
+  }
+ },
+ "elf_hos_itzcoatl": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_hos_itzcoatl.name",
+   "desc": "unit.elf_hos_itzcoatl.desc",
+   "tags": [
+    "hero",
+    "melee",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 4,
+   "shield": 60
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 24,
+   "range": 0.45,
+   "cooldown": 1.15,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_itz_darda",
+    "h_itz_csapas",
+    "h_itz_jelenlet",
+    "h_itz_kukulkan"
+   ],
+   "growth": {
+    "hp": 60,
+    "damage": 3.5,
+    "armor": 0.5,
+    "energy": 10
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_napkapu"
+    }
+   ]
+  }
+ },
+ "elf_hos_xochi": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_hos_xochi.name",
+   "desc": "unit.elf_hos_xochi.desc",
+   "tags": [
+    "hero",
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 330,
+   "armor": 1,
+   "shield": 120
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 15,
+   "range": 6,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_xochi_hullam",
+    "h_xochi_harmonia",
+    "h_xochi_jadeor",
+    "h_xochi_napkorona"
+   ],
+   "growth": {
+    "hp": 32,
+    "damage": 2,
+    "armor": 0.3,
+    "energy": 20
+   }
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "elf_napkapu"
+    }
+   ]
+  }
+ },
+ "elf_fopap": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_fopap.name",
+   "desc": "unit.elf_fopap.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 40,
+    "meteor": 60
+   },
+   "supply": 2,
+   "time": 24
+  },
+  "Health": {
+   "max": 120,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "napfeny_aldas",
+    "nap_kegyelme"
+   ]
+  },
+  "Attack": {
+   "damage": 8,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "nap"
+    }
+   ]
+  }
+ },
+ "elf_jaguar": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_jaguar.name",
+   "desc": "unit.elf_jaguar.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 30
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 100,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.1,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "lesallas"
+   ]
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 6,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "jaguar"
+    }
+   ]
+  }
+ },
+ "elf_csillagjos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_csillagjos.name",
+   "desc": "unit.elf_csillagjos.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 30,
+    "meteor": 90
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 110,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "meteorhivas"
+   ]
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 6,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "csillag"
+    }
+   ]
+  }
+ },
+ "elf_pancelos_raptor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "elves",
+   "name": "unit.elf_pancelos_raptor.name",
+   "desc": "unit.elf_pancelos_raptor.desc",
+   "shape": "rider",
+   "tags": [
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "sprite": "elf_raptor_lovas",
+   "class": "lovas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 110,
+    "stone": 55
+   },
+   "supply": 3,
+   "time": 26
+  },
+  "Health": {
+   "max": 210,
+   "shield": 70,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 3.4,
+   "radius": 0.48
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 17,
+   "range": 0.4,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "ranged": 6
+   }
+  },
+  "Abilities": {
+   "list": [
+    "vagta",
+    "fenylepes"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "jaguar"
+    }
+   ]
+  }
+ }
+}

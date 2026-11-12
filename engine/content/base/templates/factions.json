@@ -1,0 +1,3287 @@
+{
+ "faction_daresh": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.daresh.name",
+   "desc": "faction.daresh.desc",
+   "tagline": "faction.daresh.tagline"
+  },
+  "Roster": {
+   "units": [
+    "dar_fullanclandzsas",
+    "dar_gyantapajzsos",
+    "dar_rajenekes",
+    "dar_darazsraj",
+    "dar_szarnyas_ijasz"
+   ],
+   "buildings": [
+    "dar_agyagkaptar",
+    "dar_szarnyudvar",
+    "dar_gyantamuhely"
+   ],
+   "researches": [
+    "dar_gyantapancel",
+    "dar_meregfullank",
+    "dar_rajzas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 104,
+   "style": "tribal",
+   "color": [
+    190,
+    120,
+    40
+   ],
+   "accent": [
+    40,
+    110,
+    110
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "dar_agyagkaptar",
+     "dar_szarnyudvar",
+     "dar_gyantamuhely"
+    ],
+    "units": [
+     "dar_fullanclandzsas",
+     "dar_gyantapajzsos",
+     "dar_rajenekes",
+     "dar_darazsraj",
+     "dar_szarnyas_ijasz"
+    ]
+   },
+   "ai": {
+    "build": [
+     "dar_agyagkaptar",
+     "dar_szarnyudvar",
+     "dar_gyantamuhely"
+    ],
+    "army": {
+     "dar_fullanclandzsas": 3,
+     "dar_gyantapajzsos": 3,
+     "dar_rajenekes": 3,
+     "dar_darazsraj": 3,
+     "dar_szarnyas_ijasz": 3
+    },
+    "research": [
+     "dar_gyantapancel",
+     "dar_meregfullank",
+     "dar_rajzas"
+    ]
+   }
+  }
+ },
+ "faction_galoca": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.galoca.name",
+   "desc": "faction.galoca.desc",
+   "tagline": "faction.galoca.tagline"
+  },
+  "Roster": {
+   "units": [
+    "gal_fogaskalap",
+    "gal_tuskebunkos",
+    "gal_oriasgaloca",
+    "gal_sporakopo",
+    "gal_gyokergancsolo"
+   ],
+   "buildings": [
+    "gal_harapofeszek",
+    "gal_sporakurt",
+    "gal_tuskekert"
+   ],
+   "researches": [
+    "gal_tuskes_talaj",
+    "gal_merges_spora",
+    "gal_gyors_burjanzas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 106,
+   "style": "fungal",
+   "color": [
+    190,
+    40,
+    40
+   ],
+   "accent": [
+    240,
+    220,
+    120
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "gal_harapofeszek",
+     "gal_sporakurt",
+     "gal_tuskekert"
+    ],
+    "units": [
+     "gal_fogaskalap",
+     "gal_tuskebunkos",
+     "gal_oriasgaloca",
+     "gal_sporakopo",
+     "gal_gyokergancsolo"
+    ]
+   },
+   "ai": {
+    "build": [
+     "gal_harapofeszek",
+     "gal_sporakurt",
+     "gal_tuskekert"
+    ],
+    "army": {
+     "gal_fogaskalap": 3,
+     "gal_tuskebunkos": 3,
+     "gal_oriasgaloca": 2,
+     "gal_sporakopo": 3,
+     "gal_gyokergancsolo": 3
+    },
+    "research": [
+     "gal_tuskes_talaj",
+     "gal_merges_spora",
+     "gal_gyors_burjanzas"
+    ]
+   }
+  }
+ },
+ "faction_ghoblin": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.ghoblin.name",
+   "desc": "faction.ghoblin.desc",
+   "tagline": "faction.ghoblin.tagline"
+  },
+  "Roster": {
+   "units": [
+    "gho_koharapo",
+    "gho_sziklagorgeto",
+    "gho_pajzskoves",
+    "gho_meszkopo",
+    "gho_koheju_oreg",
+    "gho_meszbomba"
+   ],
+   "buildings": [
+    "gho_ragoko_banya",
+    "gho_kocipo_malom",
+    "gho_fogadalomharang"
+   ],
+   "researches": [
+    "gho_kobor",
+    "gho_repedesismeret",
+    "gho_meszvakitas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 102,
+   "style": "nordic",
+   "color": [
+    110,
+    120,
+    104
+   ],
+   "accent": [
+    200,
+    60,
+    50
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "gho_ragoko_banya",
+     "gho_kocipo_malom",
+     "gho_fogadalomharang"
+    ],
+    "units": [
+     "gho_koharapo",
+     "gho_sziklagorgeto",
+     "gho_pajzskoves",
+     "gho_meszkopo",
+     "gho_koheju_oreg",
+     "gho_meszbomba"
+    ]
+   },
+   "ai": {
+    "build": [
+     "gho_ragoko_banya",
+     "gho_kocipo_malom",
+     "gho_fogadalomharang"
+    ],
+    "army": {
+     "gho_koharapo": 3,
+     "gho_sziklagorgeto": 2,
+     "gho_pajzskoves": 3,
+     "gho_meszkopo": 3,
+     "gho_koheju_oreg": 2,
+     "gho_meszbomba": 3
+    },
+    "research": [
+     "gho_kobor",
+     "gho_repedesismeret",
+     "gho_meszvakitas"
+    ]
+   }
+  }
+ },
+ "faction_mhonyo": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.mhonyo.name",
+   "desc": "faction.mhonyo.desc",
+   "tagline": "faction.mhonyo.tagline"
+  },
+  "Roster": {
+   "units": [
+    "mho_hajnalpenge",
+    "mho_szerkezet_ijasz",
+    "mho_szikraor",
+    "mho_kardkovacs",
+    "mho_fogaskerek_golem"
+   ],
+   "buildings": [
+    "mho_szelpenge_udvar",
+    "mho_parazsszentely",
+    "mho_harompenge_kovacsda"
+   ],
+   "researches": [
+    "mho_kiegyensulyozott_penge",
+    "mho_szikrapancel",
+    "mho_gepjavitas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 103,
+   "style": "imperial",
+   "color": [
+    40,
+    44,
+    70
+   ],
+   "accent": [
+    220,
+    60,
+    40
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "mho_szelpenge_udvar",
+     "mho_parazsszentely",
+     "mho_harompenge_kovacsda"
+    ],
+    "units": [
+     "mho_hajnalpenge",
+     "mho_szerkezet_ijasz",
+     "mho_szikraor",
+     "mho_kardkovacs",
+     "mho_fogaskerek_golem"
+    ]
+   },
+   "ai": {
+    "build": [
+     "mho_szelpenge_udvar",
+     "mho_parazsszentely",
+     "mho_harompenge_kovacsda"
+    ],
+    "army": {
+     "mho_hajnalpenge": 3,
+     "mho_szerkezet_ijasz": 3,
+     "mho_szikraor": 3,
+     "mho_kardkovacs": 3,
+     "mho_fogaskerek_golem": 2
+    },
+    "research": [
+     "mho_kiegyensulyozott_penge",
+     "mho_szikrapancel",
+     "mho_gepjavitas"
+    ]
+   }
+  }
+ },
+ "faction_micelia": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.micelia.name",
+   "desc": "faction.micelia.desc",
+   "tagline": "faction.micelia.tagline"
+  },
+  "Roster": {
+   "units": [
+    "mic_sporaszedo",
+    "mic_pofeteg",
+    "mic_fonalhalos",
+    "mic_tuskegomba_lovesz",
+    "mic_emlekor"
+   ],
+   "buildings": [
+    "mic_termotest",
+    "mic_szivgomba",
+    "mic_emlekfa"
+   ],
+   "researches": [
+    "mic_osok_emleke",
+    "mic_sporafonal",
+    "mic_szivdobbanas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 100,
+   "style": "fungal",
+   "color": [
+    150,
+    120,
+    80
+   ],
+   "accent": [
+    80,
+    230,
+    205
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "mic_termotest",
+     "mic_szivgomba",
+     "mic_emlekfa"
+    ],
+    "units": [
+     "mic_sporaszedo",
+     "mic_pofeteg",
+     "mic_fonalhalos",
+     "mic_tuskegomba_lovesz",
+     "mic_emlekor"
+    ]
+   },
+   "ai": {
+    "build": [
+     "mic_termotest",
+     "mic_szivgomba",
+     "mic_emlekfa"
+    ],
+    "army": {
+     "mic_pofeteg": 3,
+     "mic_tuskegomba_lovesz": 3,
+     "mic_emlekor": 2,
+     "mic_fonalhalos": 1
+    },
+    "research": [
+     "mic_osok_emleke",
+     "mic_sporafonal",
+     "mic_szivdobbanas"
+    ]
+   }
+  }
+ },
+ "faction_niil_elf": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.niil_elf.name",
+   "desc": "faction.niil_elf.desc",
+   "tagline": "faction.niil_elf.tagline"
+  },
+  "Roster": {
+   "units": [
+    "nii_papiruszlandzsas",
+    "nii_nadhajos_ijasz",
+    "nii_lotuszpajzsos",
+    "nii_arapalypap",
+    "nii_krokodilor"
+   ],
+   "buildings": [
+    "nii_lotuszkikoto",
+    "nii_arvizszentely",
+    "nii_nadpalota"
+   ],
+   "researches": [
+    "nii_csatornarend",
+    "nii_lotuszaldas",
+    "nii_aradas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 107,
+   "style": "aztec",
+   "color": [
+    40,
+    150,
+    140
+   ],
+   "accent": [
+    230,
+    190,
+    70
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "nii_lotuszkikoto",
+     "nii_arvizszentely",
+     "nii_nadpalota"
+    ],
+    "units": [
+     "nii_papiruszlandzsas",
+     "nii_nadhajos_ijasz",
+     "nii_lotuszpajzsos",
+     "nii_arapalypap",
+     "nii_krokodilor"
+    ]
+   },
+   "ai": {
+    "build": [
+     "nii_lotuszkikoto",
+     "nii_arvizszentely",
+     "nii_nadpalota"
+    ],
+    "army": {
+     "nii_papiruszlandzsas": 3,
+     "nii_nadhajos_ijasz": 3,
+     "nii_lotuszpajzsos": 3,
+     "nii_arapalypap": 3,
+     "nii_krokodilor": 2
+    },
+    "research": [
+     "nii_csatornarend",
+     "nii_lotuszaldas",
+     "nii_aradas"
+    ]
+   }
+  }
+ },
+ "faction_nila_uchana": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.nila_uchana.name",
+   "desc": "faction.nila_uchana.desc",
+   "tagline": "faction.nila_uchana.tagline"
+  },
+  "Roster": {
+   "units": [
+    "nil_szornykoto",
+    "nil_rakshasa",
+    "nil_makara_idezo",
+    "nil_naga",
+    "nil_makara",
+    "nil_rakshasa_kotott"
+   ],
+   "buildings": [
+    "nil_szornyek_csarnoka",
+    "nil_makara_medence",
+    "nil_lotuszudvar"
+   ],
+   "researches": [
+    "nil_kotes_ereje",
+    "nil_naga_pikkely",
+    "nil_lotuszszentseg"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 110,
+   "style": "aztec",
+   "color": [
+    60,
+    70,
+    160
+   ],
+   "accent": [
+    240,
+    160,
+    40
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "nil_szornyek_csarnoka",
+     "nil_makara_medence",
+     "nil_lotuszudvar"
+    ],
+    "units": [
+     "nil_szornykoto",
+     "nil_rakshasa",
+     "nil_makara_idezo",
+     "nil_naga",
+     "nil_makara"
+    ]
+   },
+   "ai": {
+    "build": [
+     "nil_szornyek_csarnoka",
+     "nil_makara_medence",
+     "nil_lotuszudvar"
+    ],
+    "army": {
+     "nil_szornykoto": 3,
+     "nil_rakshasa": 2,
+     "nil_makara_idezo": 3,
+     "nil_naga": 3,
+     "nil_makara": 2
+    },
+    "research": [
+     "nil_kotes_ereje",
+     "nil_naga_pikkely",
+     "nil_lotuszszentseg"
+    ]
+   }
+  }
+ },
+ "faction_pinguu": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.pinguu.name",
+   "desc": "faction.pinguu.desc",
+   "tagline": "faction.pinguu.tagline"
+  },
+  "Roster": {
+   "units": [
+    "pin_jegdardas",
+    "pin_hopajzsos",
+    "pin_rozmarlovas",
+    "pin_arapaly_saman",
+    "pin_kajakos"
+   ],
+   "buildings": [
+    "pin_jegcsarnok",
+    "pin_arapalymuhely",
+    "pin_orlangszentely"
+   ],
+   "researches": [
+    "pin_osvenyvezetok",
+    "pin_jegpancel",
+    "pin_hidegtures"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 101,
+   "style": "nordic",
+   "color": [
+    40,
+    44,
+    56
+   ],
+   "accent": [
+    120,
+    200,
+    230
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "pin_jegcsarnok",
+     "pin_arapalymuhely",
+     "pin_orlangszentely"
+    ],
+    "units": [
+     "pin_jegdardas",
+     "pin_hopajzsos",
+     "pin_rozmarlovas",
+     "pin_arapaly_saman",
+     "pin_kajakos"
+    ]
+   },
+   "ai": {
+    "build": [
+     "pin_jegcsarnok",
+     "pin_arapalymuhely",
+     "pin_orlangszentely"
+    ],
+    "army": {
+     "pin_jegdardas": 3,
+     "pin_hopajzsos": 3,
+     "pin_rozmarlovas": 2,
+     "pin_arapaly_saman": 3,
+     "pin_kajakos": 3
+    },
+    "research": [
+     "pin_osvenyvezetok",
+     "pin_jegpancel",
+     "pin_hidegtures"
+    ]
+   }
+  }
+ },
+ "faction_shrissh_matah": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.shrissh_matah.name",
+   "desc": "faction.shrissh_matah.desc",
+   "tagline": "faction.shrissh_matah.tagline"
+  },
+  "Roster": {
+   "units": [
+    "shr_runaszovo",
+    "shr_sziklafuto",
+    "shr_pajzsbogar",
+    "shr_tuszunyog",
+    "shr_tuskelovo"
+   ],
+   "buildings": [
+    "shr_tollvar",
+    "shr_tuskekelteto",
+    "shr_runaszellozo"
+   ],
+   "researches": [
+    "shr_runavesest",
+    "shr_tollas_pancel",
+    "shr_szikla_kapaszkodas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 112,
+   "style": "organic",
+   "color": [
+    170,
+    110,
+    50
+   ],
+   "accent": [
+    120,
+    230,
+    180
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "shr_tollvar",
+     "shr_tuskekelteto",
+     "shr_runaszellozo"
+    ],
+    "units": [
+     "shr_runaszovo",
+     "shr_sziklafuto",
+     "shr_pajzsbogar",
+     "shr_tuszunyog",
+     "shr_tuskelovo"
+    ]
+   },
+   "ai": {
+    "build": [
+     "shr_tollvar",
+     "shr_tuskekelteto",
+     "shr_runaszellozo"
+    ],
+    "army": {
+     "shr_runaszovo": 3,
+     "shr_sziklafuto": 3,
+     "shr_pajzsbogar": 3,
+     "shr_tuszunyog": 3,
+     "shr_tuskelovo": 3
+    },
+    "research": [
+     "shr_runavesest",
+     "shr_tollas_pancel",
+     "shr_szikla_kapaszkodas"
+    ]
+   }
+  }
+ },
+ "faction_tenduur": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.tenduur.name",
+   "desc": "faction.tenduur.desc",
+   "tagline": "faction.tenduur.tagline"
+  },
+  "Roster": {
+   "units": [
+    "ten_lampasor",
+    "ten_szelhimzo",
+    "ten_tovisvivo",
+    "ten_lombijasz",
+    "ten_tolgyor"
+   ],
+   "buildings": [
+    "ten_lampasfa",
+    "ten_tovisudvar",
+    "ten_fenyfeszek"
+   ],
+   "researches": [
+    "ten_lombsuhanas",
+    "ten_tetovalt_vedelem",
+    "ten_lampasfeny"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 109,
+   "style": "tribal",
+   "color": [
+    70,
+    110,
+    50
+   ],
+   "accent": [
+    240,
+    200,
+    90
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "ten_lampasfa",
+     "ten_tovisudvar",
+     "ten_fenyfeszek"
+    ],
+    "units": [
+     "ten_lampasor",
+     "ten_szelhimzo",
+     "ten_tovisvivo",
+     "ten_lombijasz",
+     "ten_tolgyor"
+    ]
+   },
+   "ai": {
+    "build": [
+     "ten_lampasfa",
+     "ten_tovisudvar",
+     "ten_fenyfeszek"
+    ],
+    "army": {
+     "ten_lampasor": 3,
+     "ten_szelhimzo": 3,
+     "ten_tovisvivo": 3,
+     "ten_lombijasz": 3,
+     "ten_tolgyor": 2
+    },
+    "research": [
+     "ten_lombsuhanas",
+     "ten_tetovalt_vedelem",
+     "ten_lampasfeny"
+    ]
+   }
+  }
+ },
+ "faction_tokla": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.tokla.name",
+   "desc": "faction.tokla.desc",
+   "tagline": "faction.tokla.tagline"
+  },
+  "Roster": {
+   "units": [
+    "tok_fagyorias",
+    "tok_harangjaro",
+    "tok_hovihar_buso",
+    "tok_zuzmaraturpe",
+    "tok_jegveto_turpe"
+   ],
+   "buildings": [
+    "tok_maszkcsur",
+    "tok_harangkapu",
+    "tok_zuzmaramuhely"
+   ],
+   "researches": [
+    "tok_busomaszk",
+    "tok_fagyos_fegyver",
+    "tok_hagoorseg"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 105,
+   "style": "nordic",
+   "color": [
+    226,
+    218,
+    200
+   ],
+   "accent": [
+    180,
+    40,
+    40
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "tok_maszkcsur",
+     "tok_harangkapu",
+     "tok_zuzmaramuhely"
+    ],
+    "units": [
+     "tok_fagyorias",
+     "tok_harangjaro",
+     "tok_hovihar_buso",
+     "tok_zuzmaraturpe",
+     "tok_jegveto_turpe"
+    ]
+   },
+   "ai": {
+    "build": [
+     "tok_maszkcsur",
+     "tok_harangkapu",
+     "tok_zuzmaramuhely"
+    ],
+    "army": {
+     "tok_fagyorias": 2,
+     "tok_harangjaro": 3,
+     "tok_hovihar_buso": 3,
+     "tok_zuzmaraturpe": 3,
+     "tok_jegveto_turpe": 3
+    },
+    "research": [
+     "tok_busomaszk",
+     "tok_fagyos_fegyver",
+     "tok_hagoorseg"
+    ]
+   }
+  }
+ },
+ "faction_tuz_elf": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.tuz_elf.name",
+   "desc": "faction.tuz_elf.desc",
+   "tagline": "faction.tuz_elf.tagline"
+  },
+  "Roster": {
+   "units": [
+    "tuz_homokszablyas",
+    "tuz_parazsijasz",
+    "tuz_homokvihartancos",
+    "tuz_hoszovo",
+    "tuz_delibab_csalo",
+    "tuz_delibab_mas"
+   ],
+   "buildings": [
+    "tuz_dunepavilon",
+    "tuz_delibabtorony",
+    "tuz_parazskemence"
+   ],
+   "researches": [
+    "tuz_izzo_nyilhegy",
+    "tuz_homokvihar",
+    "tuz_tuzallo_pancel"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 108,
+   "style": "imperial",
+   "color": [
+    170,
+    60,
+    40
+   ],
+   "accent": [
+    240,
+    170,
+    60
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "tuz_dunepavilon",
+     "tuz_delibabtorony",
+     "tuz_parazskemence"
+    ],
+    "units": [
+     "tuz_homokszablyas",
+     "tuz_parazsijasz",
+     "tuz_homokvihartancos",
+     "tuz_hoszovo",
+     "tuz_delibab_csalo"
+    ]
+   },
+   "ai": {
+    "build": [
+     "tuz_dunepavilon",
+     "tuz_delibabtorony",
+     "tuz_parazskemence"
+    ],
+    "army": {
+     "tuz_homokszablyas": 3,
+     "tuz_parazsijasz": 3,
+     "tuz_homokvihartancos": 3,
+     "tuz_hoszovo": 3,
+     "tuz_delibab_csalo": 3
+    },
+    "research": [
+     "tuz_izzo_nyilhegy",
+     "tuz_homokvihar",
+     "tuz_tuzallo_pancel"
+    ]
+   }
+  }
+ },
+ "faction_zhan_zhama": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.zhan_zhama.name",
+   "desc": "faction.zhan_zhama.desc",
+   "tagline": "faction.zhan_zhama.tagline"
+  },
+  "Roster": {
+   "units": [
+    "zha_csirkepasztor",
+    "zha_tojasdobalo",
+    "zha_kakaslovas",
+    "zha_tolljos",
+    "zha_madarszellem"
+   ],
+   "buildings": [
+    "zha_feszekhaz",
+    "zha_kakasudvar",
+    "zha_keltetoszentely"
+   ],
+   "researches": [
+    "zha_gyors_keltetes",
+    "zha_kakaskukorekolas",
+    "zha_tollszellem"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 111,
+   "style": "tribal",
+   "color": [
+    190,
+    60,
+    40
+   ],
+   "accent": [
+    240,
+    200,
+    80
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "zha_feszekhaz",
+     "zha_kakasudvar",
+     "zha_keltetoszentely"
+    ],
+    "units": [
+     "zha_csirkepasztor",
+     "zha_tojasdobalo",
+     "zha_kakaslovas",
+     "zha_tolljos",
+     "zha_madarszellem"
+    ]
+   },
+   "ai": {
+    "build": [
+     "zha_feszekhaz",
+     "zha_kakasudvar",
+     "zha_keltetoszentely"
+    ],
+    "army": {
+     "zha_csirkepasztor": 3,
+     "zha_tojasdobalo": 3,
+     "zha_kakaslovas": 2,
+     "zha_tolljos": 3,
+     "zha_madarszellem": 3
+    },
+    "research": [
+     "zha_gyors_keltetes",
+     "zha_kakaskukorekolas",
+     "zha_tollszellem"
+    ]
+   }
+  }
+ },
+ "faction_croftian": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.croftian.name",
+   "desc": "faction.croftian.desc",
+   "tagline": "faction.croftian.tagline"
+  },
+  "Roster": {
+   "units": [
+    "cro_csapszolga",
+    "cro_karmos",
+    "cro_tuskekopo",
+    "cro_savkopo",
+    "cro_agyfalo",
+    "cro_szarnyas_rem",
+    "cro_csapos_horror",
+    "cro_hos_keth",
+    "cro_pancelbogar",
+    "cro_guboj",
+    "cro_szemhordozo",
+    "cro_hos_vor",
+    "cro_hos_ssarha",
+    "cro_robbanoatka",
+    "cro_vadaszkarmos",
+    "cro_ostromtaraj",
+    "cro_asoferegg"
+   ],
+   "buildings": [
+    "cro_kaptar",
+    "cro_tapgomba",
+    "cro_emeszto",
+    "cro_ikrafeszek",
+    "cro_tuskeverem",
+    "cro_agyszentely",
+    "cro_csontcsucs",
+    "cro_tuskes_gyoker",
+    "kethri_tojaskamra",
+    "cro_korus_kut",
+    "cro_rajkamra",
+    "cro_kitinkamra",
+    "cro_diplomacia",
+    "cro_tarna",
+    "cro_egko",
+    "cro_merges_tuskek"
+   ],
+   "researches": [
+    "cro_inas_labak",
+    "cro_savas_tuskek",
+    "cro_kitinpancel",
+    "cro_eletnedv",
+    "cro_tuskemezo",
+    "cro_eles_karmok",
+    "cro_gyors_larva",
+    "cro_melyebb_rothasztas",
+    "cro_benito_mereg",
+    "cro_melysegi_gyogyulas",
+    "cro_savas_tuskek_2",
+    "cro_savas_tuskek_3",
+    "cro_kitinpancel_2",
+    "cro_kitinpancel_3",
+    "cro_eles_karmok_2",
+    "cro_eles_karmok_3"
+   ]
+  },
+  "Paths": {
+   "raj": {
+    "name": "path.croftian.raj.name",
+    "desc": "path.croftian.raj.desc",
+    "tagline": "path.croftian.raj.tagline",
+    "building": "cro_rajkamra",
+    "units": [
+     "cro_robbanoatka",
+     "cro_vadaszkarmos"
+    ],
+    "rules": {
+     "train_time_mult": {
+      "mult": 0.7
+     }
+    },
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "swarm",
+       "light"
+      ],
+      "add": 12
+     }
+    ]
+   },
+   "pancel": {
+    "name": "path.croftian.pancel.name",
+    "desc": "path.croftian.pancel.desc",
+    "tagline": "path.croftian.pancel.tagline",
+    "building": "cro_kitinkamra",
+    "units": [
+     "cro_pancelbogar",
+     "cro_ostromtaraj",
+     "cro_asoferegg"
+    ],
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "organic"
+      ],
+      "add": 2
+     }
+    ]
+   },
+   "korus": {
+    "name": "path.croftian.korus.name",
+    "desc": "path.croftian.korus.desc",
+    "tagline": "path.croftian.korus.tagline",
+    "building": "cro_agyszentely",
+    "units": [
+     "cro_agyfalo",
+     "cro_csapos_horror"
+    ],
+    "rules": {
+     "convert_kills": {
+      "chance": 0.15,
+      "hp": 0.35
+     }
+    }
+   }
+  },
+  "Faction": {
+   "order": 3,
+   "mechanic": "creep",
+   "style": "organic",
+   "color": [
+    118,
+    74,
+    140
+   ],
+   "accent": [
+    150,
+    255,
+    120
+   ],
+   "regen": 0.6,
+   "hq": "cro_kaptar",
+   "worker": "cro_csapszolga",
+   "supply_building": "cro_tapgomba",
+   "start_units": {
+    "cro_csapszolga": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.48,
+     "stone": 0.33,
+     "meteor": 0.19
+    },
+    "build_order": [
+     "cro_tapgomba",
+     "cro_ikrafeszek",
+     "cro_tuskeverem",
+     "cro_tapgomba",
+     "cro_kaptar",
+     "cro_korus_kut",
+     "cro_diplomacia",
+     "cro_tuskes_gyoker",
+     "cro_csontcsucs"
+    ],
+    "army": {
+     "cro_karmos": 3,
+     "cro_tuskekopo": 4,
+     "cro_savkopo": 1,
+     "cro_szarnyas_rem": 1
+    },
+    "research_order": [
+     "cro_inas_labak",
+     "cro_savas_tuskek",
+     "cro_kitinpancel",
+     "cro_eletnedv",
+     "cro_eles_karmok",
+     "cro_gyors_larva",
+     "cro_melyebb_rothasztas",
+     "cro_benito_mereg",
+     "cro_melysegi_gyogyulas",
+     "cro_savas_tuskek_2",
+     "cro_savas_tuskek_3",
+     "cro_kitinpancel_2",
+     "cro_kitinpancel_3",
+     "cro_eles_karmok_2",
+     "cro_eles_karmok_3"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "raj",
+     "korus",
+     "pancel"
+    ],
+    "paths": {
+     "raj": {
+      "build": [
+       "cro_rajkamra"
+      ],
+      "army": {
+       "cro_robbanoatka": 3,
+       "cro_vadaszkarmos": 4
+      }
+     },
+     "pancel": {
+      "build": [
+       "cro_kitinkamra"
+      ],
+      "army": {
+       "cro_ostromtaraj": 1,
+       "cro_asoferegg": 2
+      }
+     },
+     "korus": {
+      "build": [
+       "cro_agyszentely"
+      ],
+      "army": {
+       "cro_agyfalo": 1,
+       "cro_csapos_horror": 2
+      }
+     }
+    },
+    "ally_pref": [
+     "daresh",
+     "shrissh_matah",
+     "galoca"
+    ],
+    "mine_building": "cro_tarna",
+    "mine_max": 3,
+    "spikes": true
+   },
+   "infest": {
+    "unit": "cro_karmos",
+    "chance": 0.3,
+    "delay": 6
+   },
+   "start_gather": "wood",
+   "supply_unit": "cro_szemhordozo",
+   "supply_desc": "Szemhordozók (egységek)",
+   "spell_resource": "hp",
+   "spike_immune": true,
+   "summons_permanent": true,
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "creep_rot": {
+    "rate": 0.06,
+    "hq_mult": 2.5,
+    "hq_radius": 9
+   },
+   "rift": {
+    "regen": {
+     "units": [
+      "cro_agyfalo",
+      "cro_csapos_horror"
+     ],
+     "add": 2
+    }
+   }
+  }
+ },
+ "faction_elves": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.elves.name",
+   "desc": "faction.elves.desc",
+   "tagline": "faction.elves.tagline"
+  },
+  "Roster": {
+   "units": [
+    "elf_kofarago",
+    "elf_tollas_harcos",
+    "elf_jade_ijasz",
+    "elf_raptor_lovas",
+    "elf_napszoro",
+    "elf_quetzal",
+    "elf_tollas_rex",
+    "elf_hos_szelai",
+    "elf_csillagdardas",
+    "elf_obszidian_veto",
+    "elf_jadeor",
+    "elf_hos_itzcoatl",
+    "elf_hos_xochi",
+    "elf_fopap",
+    "elf_jaguar",
+    "elf_csillagjos",
+    "elf_pancelos_raptor"
+   ],
+   "buildings": [
+    "elf_napszentely",
+    "elf_obeliszk",
+    "elf_harcos_csarnok",
+    "elf_obszidian_muhely",
+    "elf_raptor_karam",
+    "elf_csillagvizsgalo",
+    "elf_tollfeszek",
+    "elf_jade_oszlop",
+    "elf_napkapu",
+    "elf_naptemplom",
+    "elf_diplomacia",
+    "elf_napfuro",
+    "elf_egko"
+   ],
+   "researches": [
+    "elf_obszidian_penge",
+    "elf_jade_hegyek",
+    "elf_napegi_pajzs",
+    "elf_csillagfeny",
+    "elf_arany_fohasz",
+    "elf_napszemu_papok",
+    "elf_egi_kegy",
+    "elf_obszidian_vert",
+    "elf_obszidian_penge_2",
+    "elf_obszidian_penge_3",
+    "elf_jade_hegyek_2",
+    "elf_jade_hegyek_3",
+    "elf_obszidian_vert_2",
+    "elf_obszidian_vert_3",
+    "elf_rezonancia",
+    "elf_napfolt"
+   ]
+  },
+  "Paths": {
+   "nap": {
+    "name": "path.elves.nap.name",
+    "desc": "path.elves.nap.desc",
+    "tagline": "path.elves.nap.tagline",
+    "building": "elf_naptemplom",
+    "extra_buildings": [
+     "elf_tollfeszek"
+    ],
+    "units": [
+     "elf_fopap",
+     "elf_napszoro",
+     "elf_quetzal"
+    ],
+    "effects": [
+     {
+      "stat": "regen",
+      "tags": [
+       "organic"
+      ],
+      "add": 1
+     }
+    ]
+   },
+   "jaguar": {
+    "name": "path.elves.jaguar.name",
+    "desc": "path.elves.jaguar.desc",
+    "tagline": "path.elves.jaguar.tagline",
+    "building": "elf_raptor_karam",
+    "units": [
+     "elf_jaguar",
+     "elf_pancelos_raptor",
+     "elf_tollas_rex"
+    ],
+    "rules": {
+     "forest_stealth": {
+      "tags": [
+       "infantry"
+      ]
+     }
+    },
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "melee"
+      ],
+      "add": 2
+     }
+    ]
+   },
+   "csillag": {
+    "name": "path.elves.csillag.name",
+    "desc": "path.elves.csillag.desc",
+    "tagline": "path.elves.csillag.tagline",
+    "building": "elf_csillagvizsgalo",
+    "units": [
+     "elf_obszidian_veto",
+     "elf_csillagjos"
+    ],
+    "effects": [
+     {
+      "stat": "range",
+      "tags": [
+       "ranged",
+       "siege"
+      ],
+      "add": 1
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 1,
+   "mechanic": "power",
+   "style": "aztec",
+   "color": [
+    176,
+    168,
+    150
+   ],
+   "accent": [
+    40,
+    190,
+    150
+   ],
+   "hq": "elf_napszentely",
+   "worker": "elf_kofarago",
+   "supply_building": "elf_obeliszk",
+   "start_units": {
+    "elf_kofarago": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.62,
+     "stone": 0.26,
+     "meteor": 0.12
+    },
+    "build_order": [
+     "elf_obeliszk",
+     "elf_harcos_csarnok",
+     "elf_obeliszk",
+     "elf_napkapu",
+     "elf_harcos_csarnok",
+     "elf_obszidian_muhely",
+     "elf_diplomacia",
+     "elf_jade_oszlop",
+     "elf_egko"
+    ],
+    "army": {
+     "elf_tollas_harcos": 3,
+     "elf_jade_ijasz": 3,
+     "elf_csillagdardas": 2,
+     "elf_raptor_lovas": 2
+    },
+    "research_order": [
+     "elf_obszidian_penge",
+     "elf_jade_hegyek",
+     "elf_napegi_pajzs",
+     "elf_csillagfeny",
+     "elf_obszidian_vert",
+     "elf_obszidian_penge_2",
+     "elf_obszidian_penge_3",
+     "elf_jade_hegyek_2",
+     "elf_jade_hegyek_3",
+     "elf_obszidian_vert_2",
+     "elf_obszidian_vert_3",
+     "elf_rezonancia",
+     "elf_napfolt",
+     "elf_arany_fohasz",
+     "elf_egi_kegy",
+     "elf_napszemu_papok"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "nap",
+     "csillag",
+     "jaguar"
+    ],
+    "paths": {
+     "nap": {
+      "build": [
+       "elf_naptemplom",
+       "elf_tollfeszek"
+      ],
+      "army": {
+       "elf_fopap": 1,
+       "elf_napszoro": 1,
+       "elf_quetzal": 1
+      }
+     },
+     "jaguar": {
+      "build": [
+       "elf_raptor_karam"
+      ],
+      "army": {
+       "elf_jaguar": 3,
+       "elf_pancelos_raptor": 2,
+       "elf_tollas_rex": 1
+      }
+     },
+     "csillag": {
+      "build": [
+       "elf_csillagvizsgalo"
+      ],
+      "army": {
+       "elf_obszidian_veto": 2,
+       "elf_csillagjos": 1
+      }
+     }
+    },
+    "ally_pref": [
+     "niil_elf",
+     "tuz_elf",
+     "tenduur"
+    ],
+    "mine_building": "elf_napfuro",
+    "mine_max": 2
+   },
+   "self_build": true,
+   "start_gather": "wood",
+   "supply_desc": "Napobeliszkek",
+   "warp_in": true,
+   "spell_resource": "energy",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "rift": {
+    "energy_mult": 2.0,
+    "spell_mult": 1.25,
+    "shield_regen_mult": 2.0
+   },
+   "faith": {
+    "rate": 0.3,
+    "max": 8,
+    "name": "Áhítat",
+    "verb": "fohászkodik",
+    "desc": "A Napszentélyhez vagy Naptemplomhoz küldött Kőfaragók fohászkodnak (jobb klikk a szentélyre)."
+   }
+  }
+ },
+ "faction_hukucha": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.hukucha.name",
+   "desc": "faction.hukucha.desc",
+   "tagline": "faction.hukucha.tagline"
+  },
+  "Roster": {
+   "units": [
+    "huk_toaso",
+    "huk_csuzlis",
+    "huk_kampokardos",
+    "huk_toidezo",
+    "huk_tavi_leny",
+    "huk_gotelovas",
+    "huk_szitakoto",
+    "huk_teknos_mozsar",
+    "huk_hos_kvarra",
+    "huk_hos_bulgok",
+    "huk_hos_iriss",
+    "huk_aradas_papja",
+    "huk_iszapbeka",
+    "huk_gyongyveto",
+    "huk_kagylopajzsos",
+    "huk_gyongyorias",
+    "huk_melysegi_hivo",
+    "huk_ikrarako",
+    "huk_ikra",
+    "huk_ebihal",
+    "huk_nagy_tavi_leny",
+    "huk_gyongyorias_idezett"
+   ],
+   "buildings": [
+    "huk_korallcsarnok",
+    "huk_tavacska",
+    "huk_gyongybuborek",
+    "huk_nadbarakk",
+    "huk_toteremto",
+    "huk_gyongymuhely",
+    "huk_goteistallo",
+    "huk_korallor",
+    "huk_arvizkapu",
+    "huk_gyongykert",
+    "huk_melyseg_kapuja",
+    "huk_egko",
+    "huk_diplomacia"
+   ],
+   "researches": [
+    "huk_gyongygolyo",
+    "huk_kagylohej",
+    "huk_tavirozsa",
+    "huk_ugrolabak",
+    "huk_toanya_korusa",
+    "huk_iszapos_bor",
+    "huk_mely_viz",
+    "huk_kampohegy",
+    "huk_gyongygolyo_2",
+    "huk_gyongygolyo_3",
+    "huk_kagylohej_2",
+    "huk_kagylohej_3",
+    "huk_kampohegy_2",
+    "huk_kampohegy_3",
+    "huk_hejba",
+    "huk_tavak_utja"
+   ]
+  },
+  "Paths": {
+   "arviz": {
+    "name": "path.hukucha.arviz.name",
+    "desc": "path.hukucha.arviz.desc",
+    "tagline": "path.hukucha.arviz.tagline",
+    "building": "huk_arvizkapu",
+    "units": [
+     "huk_aradas_papja",
+     "huk_iszapbeka"
+    ],
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "all"
+      ],
+      "add": 10
+     }
+    ],
+    "rules": {
+     "pond_size": 3
+    }
+   },
+   "gyongy": {
+    "name": "path.hukucha.gyongy.name",
+    "desc": "path.hukucha.gyongy.desc",
+    "tagline": "path.hukucha.gyongy.tagline",
+    "building": "huk_gyongykert",
+    "units": [
+     "huk_gyongyveto",
+     "huk_kagylopajzsos"
+    ],
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "ranged"
+      ],
+      "add": 3
+     },
+     {
+      "stat": "range",
+      "tags": [
+       "ranged"
+      ],
+      "add": 1
+     }
+    ]
+   },
+   "melyseg": {
+    "name": "path.hukucha.melyseg.name",
+    "desc": "path.hukucha.melyseg.desc",
+    "tagline": "path.hukucha.melyseg.tagline",
+    "building": "huk_melyseg_kapuja",
+    "units": [
+     "huk_gyongyorias",
+     "huk_melysegi_hivo"
+    ],
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "large"
+      ],
+      "add": 80
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 7,
+   "mechanic": "pond",
+   "style": "tribal",
+   "color": [
+    70,
+    150,
+    80
+   ],
+   "accent": [
+    120,
+    230,
+    210
+   ],
+   "hq": "huk_korallcsarnok",
+   "worker": "huk_toaso",
+   "supply_building": "huk_gyongybuborek",
+   "start_units": {
+    "huk_toaso": 5
+   },
+   "start_gather": "wood",
+   "supply_desc": "Gyöngybuborék-otthonokkal",
+   "pond": {
+    "size": 2,
+    "cost": {
+     "wood": 15
+    }
+   },
+   "ascension": {
+    "buildings": 3
+   },
+   "ai": {
+    "workers": 18,
+    "gather_ratio": {
+     "wood": 0.6,
+     "stone": 0.27,
+     "meteor": 0.13
+    },
+    "pond": true,
+    "build_order": [
+     "huk_gyongybuborek",
+     "huk_nadbarakk",
+     "huk_gyongybuborek",
+     "huk_toteremto",
+     "huk_nadbarakk",
+     "huk_gyongymuhely",
+     "huk_diplomacia",
+     "huk_korallor",
+     "huk_goteistallo",
+     "huk_gyongybuborek"
+    ],
+    "army": {
+     "huk_csuzlis": 4,
+     "huk_kampokardos": 3,
+     "huk_toidezo": 1,
+     "huk_gotelovas": 2,
+     "huk_teknos_mozsar": 1,
+     "huk_ikrarako": 1
+    },
+    "research_order": [
+     "huk_gyongygolyo",
+     "huk_kagylohej",
+     "huk_ugrolabak",
+     "huk_tavirozsa",
+     "huk_toanya_korusa",
+     "huk_iszapos_bor",
+     "huk_mely_viz",
+     "huk_kampohegy",
+     "huk_gyongygolyo_2",
+     "huk_gyongygolyo_3",
+     "huk_kagylohej_2",
+     "huk_kagylohej_3",
+     "huk_kampohegy_2",
+     "huk_kampohegy_3",
+     "huk_hejba",
+     "huk_tavak_utja"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "arviz",
+     "gyongy",
+     "melyseg"
+    ],
+    "paths": {
+     "arviz": {
+      "build": [
+       "huk_arvizkapu"
+      ],
+      "army": {
+       "huk_aradas_papja": 1,
+       "huk_iszapbeka": 2
+      }
+     },
+     "gyongy": {
+      "build": [
+       "huk_gyongykert"
+      ],
+      "army": {
+       "huk_gyongyveto": 3,
+       "huk_kagylopajzsos": 3
+      }
+     },
+     "melyseg": {
+      "build": [
+       "huk_melyseg_kapuja"
+      ],
+      "army": {
+       "huk_gyongyorias": 1,
+       "huk_melysegi_hivo": 1
+      }
+     }
+    },
+    "heroes": [
+     "huk_hos_kvarra",
+     "huk_hos_bulgok",
+     "huk_hos_iriss"
+    ],
+    "ally_pref": [
+     "niil_elf",
+     "nila_uchana",
+     "pinguu"
+    ]
+   },
+   "builder": "leave",
+   "pond_build_bonus": 0.6,
+   "pond_affinity": true,
+   "faith": {
+    "rate": 0.3,
+    "max": 8,
+    "name": "Tóének",
+    "verb": "énekel",
+    "desc": "A Tóteremtő szentélyhez küldött Tóásók a Tóanyának énekelnek (jobb klikk a szentélyre)."
+   },
+   "resource_names": {
+    "faith": "Tóének"
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   }
+  }
+ },
+ "faction_imperium": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.imperium.name",
+   "desc": "faction.imperium.desc",
+   "tagline": "faction.imperium.tagline"
+  },
+  "Roster": {
+   "units": [
+    "imp_fabrikator",
+    "imp_legios",
+    "imp_ballistarius",
+    "imp_szellemidezo",
+    "imp_centurio",
+    "imp_aquila",
+    "imp_kolosszus",
+    "imp_szellemlegios",
+    "imp_szellemkolosszus",
+    "imp_hos_livia",
+    "imp_hos_nera",
+    "imp_onager",
+    "imp_hos_cassius",
+    "imp_lelekhorgony",
+    "imp_praetorianus",
+    "imp_arato"
+   ],
+   "buildings": [
+    "imp_forum",
+    "imp_reaktor",
+    "imp_legiogyar",
+    "imp_ontode",
+    "imp_gepisten_templom",
+    "imp_hangar",
+    "imp_aquila_torony",
+    "imp_panteon",
+    "imp_praetorium",
+    "imp_lelekkut",
+    "imp_diplomacia",
+    "imp_alapozas",
+    "imp_finomito",
+    "imp_szobor_ferrox",
+    "imp_szobor_arcanor",
+    "imp_szobor_umbrax",
+    "imp_szoborpark",
+    "imp_egko",
+    "imp_nagy_alapozas"
+   ],
+   "researches": [
+    "imp_lelekhorgony_mentes",
+    "imp_legiopengek",
+    "imp_gyorstoltes",
+    "imp_edzett_acel",
+    "imp_megerositett_vaz",
+    "imp_hajtomu",
+    "imp_tartaly",
+    "imp_ferrox_kalapacsa",
+    "imp_ontottvas_burok",
+    "imp_arcanor_csillagai",
+    "imp_csillagterkep",
+    "imp_umbrax_fatyla",
+    "imp_lelekkapu",
+    "imp_reaktorpajzs",
+    "imp_nagy_alapozas",
+    "imp_legiopengek_2",
+    "imp_legiopengek_3",
+    "imp_gyorstoltes_2",
+    "imp_gyorstoltes_3",
+    "imp_edzett_acel_2",
+    "imp_edzett_acel_3",
+    "imp_ferrox_kalapacsa_2",
+    "imp_ferrox_kalapacsa_3",
+    "imp_goztulnyomas",
+    "imp_szikrafogo"
+   ]
+  },
+  "Paths": {
+   "legio": {
+    "name": "path.imperium.legio.name",
+    "desc": "path.imperium.legio.desc",
+    "tagline": "path.imperium.legio.tagline",
+    "building": "imp_praetorium",
+    "units": [
+     "imp_praetorianus",
+     "imp_centurio"
+    ],
+    "rules": {
+     "pack_bonus": {
+      "radius": 4,
+      "per": 0.06,
+      "max": 0.3,
+      "tags": [
+       "infantry"
+      ]
+     }
+    },
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "infantry"
+      ],
+      "add": 1
+     }
+    ]
+   },
+   "gepisten": {
+    "name": "path.imperium.gepisten.name",
+    "desc": "path.imperium.gepisten.desc",
+    "tagline": "path.imperium.gepisten.tagline",
+    "building": "imp_ontode",
+    "units": [
+     "imp_onager",
+     "imp_kolosszus"
+    ],
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "imp_onager",
+       "imp_kolosszus"
+      ],
+      "add": 150
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "siege",
+       "imp_kolosszus"
+      ],
+      "add": 4
+     }
+    ]
+   },
+   "lelek": {
+    "name": "path.imperium.lelek.name",
+    "desc": "path.imperium.lelek.desc",
+    "tagline": "path.imperium.lelek.tagline",
+    "building": "imp_lelekkut",
+    "units": [
+     "imp_szellemlegios",
+     "imp_szellemkolosszus"
+    ],
+    "rules": {
+     "raise_from_kills": {
+      "unit": "imp_szellemlegios",
+      "chance": 0.2,
+      "lifetime": 40,
+      "color": [
+       120,
+       255,
+       190
+      ]
+     }
+    }
+   }
+  },
+  "Faction": {
+   "order": 6,
+   "mechanic": "standard",
+   "style": "imperial",
+   "color": [
+    176,
+    136,
+    78
+   ],
+   "accent": [
+    120,
+    255,
+    190
+   ],
+   "repair": true,
+   "hq": "imp_forum",
+   "worker": "imp_fabrikator",
+   "supply_building": "imp_reaktor",
+   "start_units": {
+    "imp_fabrikator": 4,
+    "imp_arato": 1
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.36,
+     "stone": 0.5,
+     "meteor": 0.14
+    },
+    "build_order": [
+     "imp_reaktor",
+     "imp_legiogyar",
+     "imp_finomito",
+     "imp_reaktor",
+     "imp_panteon",
+     "imp_legiogyar",
+     "imp_diplomacia",
+     "imp_szoborpark",
+     "imp_szobor_ferrox",
+     "imp_szobor_umbrax",
+     "imp_gepisten_templom",
+     "imp_aquila_torony",
+     "imp_hangar",
+     "imp_egko"
+    ],
+    "army": {
+     "imp_legios": 4,
+     "imp_ballistarius": 3,
+     "imp_szellemidezo": 1,
+     "imp_aquila": 1
+    },
+    "research_order": [
+     "imp_tartaly",
+     "imp_legiopengek",
+     "imp_gyorstoltes",
+     "imp_edzett_acel",
+     "imp_megerositett_vaz",
+     "imp_legiopengek_2",
+     "imp_legiopengek_3",
+     "imp_gyorstoltes_2",
+     "imp_gyorstoltes_3",
+     "imp_edzett_acel_2",
+     "imp_edzett_acel_3",
+     "imp_ferrox_kalapacsa_2",
+     "imp_ferrox_kalapacsa_3",
+     "imp_goztulnyomas",
+     "imp_szikrafogo",
+     "imp_ferrox_kalapacsa",
+     "imp_ontottvas_burok",
+     "imp_reaktorpajzs"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "legio",
+     "gepisten",
+     "lelek"
+    ],
+    "paths": {
+     "legio": {
+      "build": [
+       "imp_praetorium"
+      ],
+      "army": {
+       "imp_praetorianus": 3,
+       "imp_centurio": 1
+      }
+     },
+     "gepisten": {
+      "build": [
+       "imp_ontode"
+      ],
+      "army": {
+       "imp_onager": 1,
+       "imp_kolosszus": 1
+      }
+     },
+     "lelek": {
+      "build": [
+       "imp_lelekkut"
+      ],
+      "army": {
+       "imp_szellemlegios": 4,
+       "imp_szellemkolosszus": 1
+      }
+     }
+    },
+    "ally_pref": [
+     "mhonyo",
+     "ghoblin",
+     "tuz_elf"
+    ],
+    "foundation": true,
+    "gatherer_share": {
+     "imp_arato": 3
+    }
+   },
+   "regen": 0.25,
+   "start_gather": "wood",
+   "supply_desc": "Lélekreaktorok",
+   "spell_resource": "energy",
+   "soul_anchor": "imp_lelekhorgony",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "foundation": {
+    "size": 2,
+    "cost": {
+     "stone": 10
+    },
+    "unfounded_hp": 0.5,
+    "decay": {
+     "pct_per_s": 0.002,
+     "min": 0.5
+    }
+   },
+   "builder": "stay_single",
+   "gatherers": {
+    "stone": "imp_arato",
+    "meteor": "imp_arato"
+   },
+   "rift": {
+    "regen": {
+     "tags": [
+      "mech"
+     ],
+     "add": 1
+    }
+   },
+   "shield_zone": "reactor"
+  }
+ },
+ "faction_mycel": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.mycel.name",
+   "desc": "faction.mycel.desc",
+   "tagline": "faction.mycel.tagline"
+  },
+  "Roster": {
+   "units": [
+    "myc_sporaszedo",
+    "myc_pofeteg",
+    "myc_tuskegomba_lovesz",
+    "myc_kalapos_or",
+    "myc_alomsaman",
+    "myc_oriaspofeteg",
+    "myc_lebego_pofeteg",
+    "myc_hos_mor",
+    "myc_rothaszto",
+    "myc_hos_gyokeranya",
+    "myc_hos_sporin",
+    "myc_tetemgomba",
+    "myc_fagomba_orias",
+    "myc_alomszovo"
+   ],
+   "buildings": [
+    "myc_szivgomba",
+    "myc_sporafonal",
+    "myc_termotest",
+    "myc_tuskegomba_telep",
+    "myc_gyokerbarlang",
+    "myc_alomkert",
+    "myc_lebegobolcso",
+    "myc_emlekfa",
+    "myc_rothadokert",
+    "myc_oriasliget"
+   ],
+   "researches": [
+    "myc_meregspora",
+    "myc_kemenykalap",
+    "myc_gyors_micelium",
+    "myc_dus_spora"
+   ]
+  },
+  "Paths": {
+   "rothadas": {
+    "name": "path.mycel.rothadas.name",
+    "desc": "path.mycel.rothadas.desc",
+    "tagline": "path.mycel.rothadas.tagline",
+    "building": "myc_rothadokert",
+    "units": [
+     "myc_rothaszto",
+     "myc_tetemgomba"
+    ],
+    "rules": {
+     "poison_attacks": {
+      "tags": [
+       "melee"
+      ],
+      "dps": 3,
+      "dur": 4
+     },
+     "raise_from_kills": {
+      "unit": "myc_tetemgomba",
+      "chance": 0.12,
+      "lifetime": 30,
+      "color": [
+       170,
+       200,
+       120
+      ]
+     }
+    }
+   },
+   "liget": {
+    "name": "path.mycel.liget.name",
+    "desc": "path.mycel.liget.desc",
+    "tagline": "path.mycel.liget.tagline",
+    "building": "myc_oriasliget",
+    "units": [
+     "myc_fagomba_orias"
+    ],
+    "rules": {
+     "network_supply_add": 2
+    },
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "building"
+      ],
+      "add": 250
+     }
+    ]
+   },
+   "alom": {
+    "name": "path.mycel.alom.name",
+    "desc": "path.mycel.alom.desc",
+    "tagline": "path.mycel.alom.tagline",
+    "building": "myc_alomkert",
+    "units": [
+     "myc_alomsaman",
+     "myc_alomszovo"
+    ],
+    "rules": {
+     "forest_stealth": {
+      "tags": [
+       "fungal"
+      ]
+     }
+    }
+   }
+  },
+  "Faction": {
+   "order": 5,
+   "mechanic": "network",
+   "style": "fungal",
+   "color": [
+    214,
+    196,
+    162
+   ],
+   "accent": [
+    80,
+    225,
+    205
+   ],
+   "regen": 0.3,
+   "hq": "myc_szivgomba",
+   "worker": "myc_sporaszedo",
+   "supply_building": "myc_szivgomba",
+   "start_units": {
+    "myc_sporaszedo": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.54,
+     "stone": 0.22,
+     "meteor": 0.24
+    },
+    "build_order": [
+     "myc_sporafonal",
+     "myc_termotest",
+     "myc_szivgomba",
+     "myc_emlekfa",
+     "myc_sporafonal",
+     "myc_termotest",
+     "myc_tuskegomba_telep",
+     "myc_gyokerbarlang",
+     "myc_szivgomba",
+     "myc_lebegobolcso"
+    ],
+    "army": {
+     "myc_pofeteg": 4,
+     "myc_tuskegomba_lovesz": 3,
+     "myc_kalapos_or": 2,
+     "myc_lebego_pofeteg": 1
+    },
+    "research_order": [
+     "myc_meregspora",
+     "myc_kemenykalap",
+     "myc_gyors_micelium",
+     "myc_dus_spora"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "rothadas",
+     "liget",
+     "alom"
+    ],
+    "paths": {
+     "rothadas": {
+      "build": [
+       "myc_rothadokert"
+      ],
+      "army": {
+       "myc_rothaszto": 3,
+       "myc_tetemgomba": 3
+      }
+     },
+     "liget": {
+      "build": [
+       "myc_oriasliget"
+      ],
+      "army": {
+       "myc_fagomba_orias": 2
+      }
+     },
+     "alom": {
+      "build": [
+       "myc_alomkert"
+      ],
+      "army": {
+       "myc_alomsaman": 1,
+       "myc_alomszovo": 2
+      }
+     }
+    }
+   },
+   "start_gather": "wood",
+   "network_supply": 1,
+   "supply_desc": "A hálózat: minden összekötött épület +1",
+   "spell_resource": "spores",
+   "ascension": {
+    "buildings": 3
+   },
+   "hidden": true
+  }
+ },
+ "faction_ooni": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.ooni.name",
+   "desc": "faction.ooni.desc",
+   "tagline": "faction.ooni.tagline"
+  },
+  "Roster": {
+   "units": [
+    "oon_lampasvivo",
+    "oon_oni_harcos",
+    "oon_kohajito",
+    "oon_nian_or",
+    "oon_tengu",
+    "oon_kitsune",
+    "oon_illuzio_mas",
+    "oon_kapudongeto",
+    "oon_o_oni",
+    "oon_hos_akahana",
+    "oon_hos_shiro",
+    "oon_hos_karasu",
+    "oon_berserker_oni",
+    "oon_dobos",
+    "oon_kokutya",
+    "oon_lampaspap",
+    "oon_holloharcos",
+    "oon_viharhivo",
+    "oon_favago",
+    "oon_tanuki"
+   ],
+   "buildings": [
+    "oon_nian_csarnok",
+    "oon_papirlampas",
+    "oon_lakohaz",
+    "oon_edzoudvar",
+    "oon_meselenyek",
+    "oon_tengu_feszek",
+    "oon_lampaskert",
+    "oon_kapuorzo_torony",
+    "oon_voros_dojo",
+    "oon_kapuszentely",
+    "oon_szelcsucs",
+    "oon_torii",
+    "oon_egko",
+    "oon_diplomacia"
+   ],
+   "researches": [
+    "oon_vasbuzogany",
+    "oon_lakkozott_vert",
+    "oon_lampasolaj",
+    "oon_szelparna",
+    "oon_kettos_kapu",
+    "oon_kotel",
+    "oon_messzefeny",
+    "oon_harci_dobok",
+    "oon_verszomj",
+    "oon_tengu_tollak",
+    "oon_vasbuzogany_2",
+    "oon_vasbuzogany_3",
+    "oon_lakkozott_vert_2",
+    "oon_lakkozott_vert_3",
+    "oon_kotel_2",
+    "oon_kotel_3",
+    "oon_kokutya_huseg",
+    "oon_lampas_magia"
+   ]
+  },
+  "Paths": {
+   "voros": {
+    "name": "path.ooni.voros.name",
+    "desc": "path.ooni.voros.desc",
+    "tagline": "path.ooni.voros.tagline",
+    "building": "oon_voros_dojo",
+    "units": [
+     "oon_berserker_oni"
+    ],
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "melee"
+      ],
+      "add": 3
+     },
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "infantry"
+      ],
+      "add": 10
+     },
+     {
+      "stat": "hp",
+      "tags": [
+       "oon_dobos"
+      ],
+      "add": 60
+     }
+    ],
+    "rules": {
+     "build_boost_mult": 1.75
+    }
+   },
+   "kapu": {
+    "name": "path.ooni.kapu.name",
+    "desc": "path.ooni.kapu.desc",
+    "tagline": "path.ooni.kapu.tagline",
+    "building": "oon_kapuszentely",
+    "units": [
+     "oon_kokutya",
+     "oon_lampaspap"
+    ],
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "building"
+      ],
+      "add": 2
+     },
+     {
+      "stat": "hp",
+      "tags": [
+       "beast"
+      ],
+      "add": 80
+     }
+    ]
+   },
+   "tengu": {
+    "name": "path.ooni.tengu.name",
+    "desc": "path.ooni.tengu.desc",
+    "tagline": "path.ooni.tengu.tagline",
+    "building": "oon_szelcsucs",
+    "units": [
+     "oon_holloharcos",
+     "oon_viharhivo"
+    ],
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "flyer"
+      ],
+      "add": 15
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "flyer"
+      ],
+      "add": 2
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 8,
+   "mechanic": "lantern",
+   "style": "imperial",
+   "color": [
+    170,
+    40,
+    40
+   ],
+   "accent": [
+    80,
+    200,
+    140
+   ],
+   "hq": "oon_nian_csarnok",
+   "worker": "oon_lampasvivo",
+   "supply_building": "oon_lakohaz",
+   "start_units": {
+    "oon_lampasvivo": 2,
+    "oon_favago": 2,
+    "oon_tanuki": 1
+   },
+   "start_gather": "wood",
+   "supply_desc": "Oni lakóházakkal",
+   "ascension": {
+    "buildings": 3
+   },
+   "ai": {
+    "workers": 18,
+    "gather_ratio": {
+     "wood": 0.64,
+     "stone": 0.23,
+     "meteor": 0.13
+    },
+    "lantern": "oon_papirlampas",
+    "build_order": [
+     "oon_lakohaz",
+     "oon_papirlampas",
+     "oon_edzoudvar",
+     "oon_papirlampas",
+     "oon_lakohaz",
+     "oon_meselenyek",
+     "oon_diplomacia",
+     "oon_edzoudvar",
+     "oon_lampaskert",
+     "oon_papirlampas",
+     "oon_tengu_feszek",
+     "oon_kapuorzo_torony",
+     "oon_lakohaz"
+    ],
+    "army": {
+     "oon_oni_harcos": 4,
+     "oon_kohajito": 3,
+     "oon_nian_or": 1,
+     "oon_kitsune": 1,
+     "oon_tengu": 1,
+     "oon_kapudongeto": 1
+    },
+    "research_order": [
+     "oon_vasbuzogany",
+     "oon_lakkozott_vert",
+     "oon_lampasolaj",
+     "oon_szelparna",
+     "oon_kotel",
+     "oon_messzefeny",
+     "oon_harci_dobok",
+     "oon_verszomj",
+     "oon_tengu_tollak",
+     "oon_vasbuzogany_2",
+     "oon_vasbuzogany_3",
+     "oon_lakkozott_vert_2",
+     "oon_lakkozott_vert_3",
+     "oon_kotel_2",
+     "oon_kotel_3",
+     "oon_kokutya_huseg",
+     "oon_lampas_magia"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "voros",
+     "kapu",
+     "tengu"
+    ],
+    "paths": {
+     "voros": {
+      "build": [
+       "oon_voros_dojo"
+      ],
+      "army": {
+       "oon_berserker_oni": 3,
+       "oon_dobos": 1
+      }
+     },
+     "kapu": {
+      "build": [
+       "oon_kapuszentely"
+      ],
+      "army": {
+       "oon_kokutya": 1,
+       "oon_lampaspap": 1
+      }
+     },
+     "tengu": {
+      "build": [
+       "oon_szelcsucs"
+      ],
+      "army": {
+       "oon_holloharcos": 3,
+       "oon_viharhivo": 1
+      }
+     }
+    },
+    "heroes": [
+     "oon_hos_akahana",
+     "oon_hos_shiro",
+     "oon_hos_karasu"
+    ],
+    "builders": 3,
+    "ally_pref": [
+     "tokla",
+     "mhonyo",
+     "nila_uchana"
+    ]
+   },
+   "builder": "stay_single",
+   "build_boost": {
+    "unit": "oon_dobos",
+    "radius": 4,
+    "mult": 1.5
+   },
+   "gatherers": {
+    "wood": "oon_favago",
+    "stone": "oon_tanuki",
+    "meteor": "oon_tanuki"
+   },
+   "morale": {
+    "max": 100,
+    "hurt": 60,
+    "ally_death": 10,
+    "hero_death": 25,
+    "hero_death_breaks": true,
+    "regen": 2,
+    "drum": {
+     "unit": "oon_dobos",
+     "radius": 4,
+     "regen": 8
+    },
+    "light_min": 30,
+    "break_until": 50,
+    "broken": {
+     "damage_mult": 0.7,
+     "speed_mult": 1.2
+    }
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   }
+  }
+ },
+ "faction_ursan": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.ursan.name",
+   "desc": "faction.ursan.desc",
+   "tagline": "faction.ursan.tagline"
+  },
+  "Roster": {
+   "units": [
+    "urs_telepes",
+    "urs_pajzshordozo",
+    "urs_szigonyvezo",
+    "urs_berserker",
+    "urs_runapap",
+    "urs_kardfogu",
+    "urs_viharhollo",
+    "urs_mammut",
+    "urs_hos_ragna",
+    "urs_dardaor",
+    "urs_ostromszan",
+    "urs_kardfogu_tigris",
+    "urs_hos_hjalmar",
+    "urs_hos_bjarka",
+    "urs_runako",
+    "urs_medvealak",
+    "urs_kurtos",
+    "urs_runaorias"
+   ],
+   "buildings": [
+    "urs_nagyterem",
+    "urs_hosszuhaz",
+    "urs_fatelep",
+    "urs_harcosok_haza",
+    "urs_runakovacs",
+    "urs_vadak_karama",
+    "urs_sasszirt",
+    "urs_ortorony",
+    "urs_eskufa",
+    "urs_tanya",
+    "urs_colopfal",
+    "urs_verfogadalom",
+    "urs_runaszentely",
+    "urs_diplomacia",
+    "urs_egko"
+   ],
+   "researches": [
+    "urs_runapengek",
+    "urs_vasszigony",
+    "urs_medvebunda",
+    "urs_telegi_edzes",
+    "urs_nepfelkeles",
+    "urs_runapajzs",
+    "urs_kiados_tanya",
+    "urs_medve_osztön",
+    "urs_gyors_helyorseg",
+    "urs_runapengek_2",
+    "urs_runapengek_3",
+    "urs_vasszigony_2",
+    "urs_vasszigony_3",
+    "urs_medvebunda_2",
+    "urs_medvebunda_3",
+    "urs_tuskes_pajzsfal"
+   ]
+  },
+  "Paths": {
+   "berserker": {
+    "name": "path.ursan.berserker.name",
+    "desc": "path.ursan.berserker.desc",
+    "tagline": "path.ursan.berserker.tagline",
+    "building": "urs_verfogadalom",
+    "units": [
+     "urs_berserker",
+     "urs_medvealak",
+     "urs_kurtos"
+    ],
+    "rules": {
+     "rage": {
+      "tags": [
+       "melee"
+      ],
+      "max": 0.6
+     }
+    }
+   },
+   "runa": {
+    "name": "path.ursan.runa.name",
+    "desc": "path.ursan.runa.desc",
+    "tagline": "path.ursan.runa.tagline",
+    "building": "urs_runaszentely",
+    "units": [
+     "urs_runaorias",
+     "urs_ostromszan"
+    ],
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "building"
+      ],
+      "add": 3
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "tower"
+      ],
+      "add": 6
+     }
+    ]
+   },
+   "tundra": {
+    "name": "path.ursan.tundra.name",
+    "desc": "path.ursan.tundra.desc",
+    "tagline": "path.ursan.tundra.tagline",
+    "building": "urs_vadak_karama",
+    "extra_buildings": [
+     "urs_sasszirt"
+    ],
+    "units": [
+     "urs_kardfogu",
+     "urs_mammut",
+     "urs_viharhollo"
+    ],
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "beast",
+       "cavalry"
+      ],
+      "add": 60
+     },
+     {
+      "stat": "regen",
+      "tags": [
+       "beast",
+       "cavalry"
+      ],
+      "add": 1
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 2,
+   "mechanic": "standard",
+   "builder": "enter",
+   "style": "nordic",
+   "color": [
+    150,
+    108,
+    72
+   ],
+   "accent": [
+    200,
+    220,
+    240
+   ],
+   "hq": "urs_nagyterem",
+   "worker": "urs_telepes",
+   "supply_building": "urs_tanya",
+   "start_units": {
+    "urs_telepes": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.55,
+     "stone": 0.32,
+     "meteor": 0.13
+    },
+    "build_order": [
+     "urs_hosszuhaz",
+     "urs_harcosok_haza",
+     "urs_tanya",
+     "urs_hosszuhaz",
+     "urs_eskufa",
+     "urs_harcosok_haza",
+     "urs_diplomacia",
+     "urs_runakovacs",
+     "urs_ortorony",
+     "urs_tanya"
+    ],
+    "army": {
+     "urs_pajzshordozo": 4,
+     "urs_szigonyvezo": 3,
+     "urs_runapap": 1,
+     "urs_dardaor": 2
+    },
+    "research_order": [
+     "urs_runapengek",
+     "urs_medvebunda",
+     "urs_vasszigony",
+     "urs_telegi_edzes",
+     "urs_runapajzs",
+     "urs_kiados_tanya",
+     "urs_medve_osztön",
+     "urs_gyors_helyorseg",
+     "urs_runapengek_2",
+     "urs_runapengek_3",
+     "urs_vasszigony_2",
+     "urs_vasszigony_3",
+     "urs_medvebunda_2",
+     "urs_medvebunda_3",
+     "urs_tuskes_pajzsfal"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "berserker",
+     "tundra",
+     "runa"
+    ],
+    "paths": {
+     "berserker": {
+      "build": [
+       "urs_verfogadalom"
+      ],
+      "army": {
+       "urs_berserker": 4,
+       "urs_medvealak": 1,
+       "urs_kurtos": 1
+      }
+     },
+     "runa": {
+      "build": [
+       "urs_runaszentely",
+       "urs_ortorony"
+      ],
+      "army": {
+       "urs_runaorias": 2,
+       "urs_ostromszan": 1
+      }
+     },
+     "tundra": {
+      "build": [
+       "urs_vadak_karama",
+       "urs_sasszirt"
+      ],
+      "army": {
+       "urs_kardfogu": 2,
+       "urs_mammut": 1,
+       "urs_viharhollo": 1
+      }
+     }
+    },
+    "ally_pref": [
+     "pinguu",
+     "tokla",
+     "ghoblin"
+    ]
+   },
+   "start_gather": "wood",
+   "supply_desc": "Tanyák",
+   "spell_resource": "cooldown",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   }
+  }
+ },
+ "faction_vadon": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.vadon.name",
+   "desc": "faction.vadon.desc",
+   "tagline": "faction.vadon.tagline"
+  },
+  "Roster": {
+   "units": [
+    "vad_kristalybogar",
+    "vad_hamufarkas",
+    "vad_eterliderc",
+    "vad_kotroll",
+    "vad_ercgolem"
+   ],
+   "buildings": [],
+   "researches": []
+  },
+  "Faction": {
+   "order": 99,
+   "neutral": true,
+   "mechanic": "standard",
+   "style": "nordic",
+   "color": [
+    150,
+    140,
+    120
+   ],
+   "accent": [
+    120,
+    220,
+    255
+   ],
+   "regen": 1.0,
+   "hq": "vad_kristalybogar",
+   "worker": "vad_kristalybogar",
+   "supply_building": "vad_kristalybogar",
+   "start_units": {},
+   "camps": {
+    "1": {
+     "units": {
+      "vad_kristalybogar": 3
+     },
+     "loot": [
+      "common"
+     ]
+    },
+    "2": {
+     "units": {
+      "vad_hamufarkas": 2,
+      "vad_kristalybogar": 2
+     },
+     "loot": [
+      "common"
+     ]
+    },
+    "3": {
+     "units": {
+      "vad_eterliderc": 2,
+      "vad_hamufarkas": 2
+     },
+     "loot": [
+      "common",
+      "rare"
+     ]
+    },
+    "4": {
+     "units": {
+      "vad_kotroll": 1,
+      "vad_eterliderc": 2
+     },
+     "loot": [
+      "rare"
+     ]
+    },
+    "5": {
+     "units": {
+      "vad_ercgolem": 1,
+      "vad_kotroll": 1,
+      "vad_eterliderc": 2
+     },
+     "loot": [
+      "artifact"
+     ]
+    }
+   },
+   "start_gather": "wood"
+  }
+ },
+ "faction_wullof": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.wullof.name",
+   "desc": "faction.wullof.desc",
+   "tagline": "faction.wullof.tagline"
+  },
+  "Roster": {
+   "units": [
+    "wul_gyujtogeto",
+    "wul_landzsas",
+    "wul_ijas_vadasz",
+    "wul_holdsaman",
+    "wul_szellemfarkas",
+    "wul_bolenylovas",
+    "wul_mennydorgesmadar",
+    "wul_totemorias",
+    "wul_vandorszeker",
+    "wul_hos_tava",
+    "wul_tomahawkos",
+    "wul_hos_varnu",
+    "wul_hos_kurrin",
+    "wul_emu",
+    "wul_boleny",
+    "wul_groomi",
+    "wul_csordavezer",
+    "wul_groomi_fioka",
+    "wul_groomi_anya",
+    "wul_totemfarago",
+    "wul_alomjaro",
+    "wul_ijas_vadasz_falka",
+    "wul_landzsas_falka"
+   ],
+   "buildings": [
+    "wul_tanacssator",
+    "wul_tipi",
+    "wul_harcosok_tuze",
+    "wul_bolenykaram",
+    "wul_samansator",
+    "wul_mennydorges_szikla",
+    "wul_szellemtotem",
+    "wul_osok_kore",
+    "wul_bolenyakol",
+    "wul_groomi_feszek",
+    "wul_totemkert",
+    "wul_diplomacia",
+    "wul_egko"
+   ],
+   "researches": [
+    "wul_obszidian_landzsa",
+    "wul_holdfeny_ijak",
+    "wul_bolenybor",
+    "wul_falkaszellem",
+    "wul_savkopes",
+    "wul_tuzkopes",
+    "wul_fagykopes",
+    "wul_zsakmanyszerzes",
+    "wul_falkaharc",
+    "wul_bolenylovaglas",
+    "wul_obszidian_landzsa_2",
+    "wul_obszidian_landzsa_3",
+    "wul_holdfeny_ijak_2",
+    "wul_holdfeny_ijak_3",
+    "wul_bolenybor_2",
+    "wul_bolenybor_3",
+    "wul_nyomolvasas",
+    "wul_holdtolte"
+   ]
+  },
+  "Paths": {
+   "boleny": {
+    "name": "path.wullof.boleny.name",
+    "desc": "path.wullof.boleny.desc",
+    "tagline": "path.wullof.boleny.tagline",
+    "building": "wul_bolenyakol",
+    "units": [
+     "wul_boleny",
+     "wul_bolenylovas",
+     "wul_csordavezer"
+    ],
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "cavalry",
+       "beast"
+      ],
+      "add": 15
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "cavalry"
+      ],
+      "add": 3
+     }
+    ]
+   },
+   "groomi": {
+    "name": "path.wullof.groomi.name",
+    "desc": "path.wullof.groomi.desc",
+    "tagline": "path.wullof.groomi.tagline",
+    "building": "wul_groomi_feszek",
+    "units": [
+     "wul_groomi",
+     "wul_groomi_fioka",
+     "wul_groomi_anya"
+    ],
+    "rules": {
+     "heal_on_kill": {
+      "tags": [
+       "beast"
+      ],
+      "amount": 35
+     }
+    },
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "beast"
+      ],
+      "add": 10
+     }
+    ]
+   },
+   "osok": {
+    "name": "path.wullof.osok.name",
+    "desc": "path.wullof.osok.desc",
+    "tagline": "path.wullof.osok.tagline",
+    "building": "wul_totemkert",
+    "units": [
+     "wul_totemfarago",
+     "wul_alomjaro",
+     "wul_totemorias"
+    ],
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "tower"
+      ],
+      "add": 6
+     },
+     {
+      "stat": "armor",
+      "tags": [
+       "building"
+      ],
+      "add": 2
+     },
+     {
+      "stat": "sight",
+      "tags": [
+       "tower"
+      ],
+      "add": 3
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 4,
+   "mechanic": "standard",
+   "style": "tribal",
+   "color": [
+    196,
+    150,
+    92
+   ],
+   "accent": [
+    215,
+    60,
+    40
+   ],
+   "repair": true,
+   "pack_bonus": {
+    "radius": 4,
+    "per": 0.1,
+    "max": 0.4,
+    "speed_per": 0.02
+   },
+   "bounty": 0.2,
+   "wagon": "wul_vandorszeker",
+   "unpack_time": 8,
+   "hq": "wul_tanacssator",
+   "worker": "wul_gyujtogeto",
+   "supply_building": "wul_bolenykaram",
+   "start_units": {
+    "wul_gyujtogeto": 5,
+    "wul_emu": 2
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.58,
+     "stone": 0.2,
+     "meteor": 0.22
+    },
+    "build_order": [
+     "wul_bolenykaram",
+     "wul_tipi",
+     "wul_harcosok_tuze",
+     "wul_tipi",
+     "wul_osok_kore",
+     "wul_samansator",
+     "wul_diplomacia",
+     "wul_szellemtotem",
+     "wul_mennydorges_szikla"
+    ],
+    "army": {
+     "wul_landzsas": 6,
+     "wul_ijas_vadasz": 3,
+     "wul_holdsaman": 1,
+     "wul_mennydorgesmadar": 1
+    },
+    "research_order": [
+     "wul_falkaharc",
+     "wul_obszidian_landzsa",
+     "wul_holdfeny_ijak",
+     "wul_bolenybor",
+     "wul_falkaszellem",
+     "wul_bolenylovaglas",
+     "wul_obszidian_landzsa_2",
+     "wul_obszidian_landzsa_3",
+     "wul_holdfeny_ijak_2",
+     "wul_holdfeny_ijak_3",
+     "wul_bolenybor_2",
+     "wul_bolenybor_3",
+     "wul_nyomolvasas",
+     "wul_holdtolte"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "groomi",
+     "boleny",
+     "osok"
+    ],
+    "paths": {
+     "boleny": {
+      "build": [
+       "wul_bolenyakol"
+      ],
+      "army": {
+       "wul_boleny": 3,
+       "wul_csordavezer": 1
+      }
+     },
+     "groomi": {
+      "build": [
+       "wul_groomi_feszek"
+      ],
+      "army": {
+       "wul_groomi": 4,
+       "wul_groomi_anya": 1
+      },
+      "research": [
+       "wul_tuzkopes"
+      ]
+     },
+     "osok": {
+      "build": [
+       "wul_totemkert",
+       "wul_szellemtotem"
+      ],
+      "army": {
+       "wul_totemfarago": 1,
+       "wul_alomjaro": 1,
+       "wul_totemorias": 2
+      }
+     }
+    },
+    "ally_pref": [
+     "zhan_zhama",
+     "daresh",
+     "tenduur"
+    ]
+   },
+   "start_gather": "wood",
+   "supply_desc": "Emuk (Emukarámban tenyészthetők, karámonként legfeljebb 5)",
+   "bounty_res": "wood",
+   "spell_resource": "song",
+   "forest_stealth": true,
+   "supply_unit": "wul_emu",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "builder": "stay"
+  }
+ }
+}

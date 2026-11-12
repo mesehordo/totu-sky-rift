@@ -1,0 +1,438 @@
+{
+ "huk_gyongygolyo": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_gyongygolyo.name",
+   "desc": "research.huk_gyongygolyo.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "huk_kagylohej": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_kagylohej.name",
+   "desc": "research.huk_kagylohej.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 120
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "huk_tavirozsa": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_tavirozsa.name",
+   "desc": "research.huk_tavirozsa.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 80,
+    "meteor": 40
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 1
+   }
+  ]
+ },
+ "huk_ugrolabak": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_ugrolabak.name",
+   "desc": "research.huk_ugrolabak.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10
+   }
+  ]
+ },
+ "huk_toanya_korusa": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_toanya_korusa.name",
+   "desc": "research.huk_toanya_korusa.desc"
+  },
+  "Cost": {
+   "resources": {
+    "faith": 120
+   },
+   "time": 40
+  },
+  "Rules": {
+   "faith_rate": 0.4
+  }
+ },
+ "huk_iszapos_bor": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_iszapos_bor.name",
+   "desc": "research.huk_iszapos_bor.desc"
+  },
+  "Cost": {
+   "resources": {
+    "faith": 150,
+    "stone": 80
+   },
+   "time": 45
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "huk_mely_viz": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_mely_viz.name",
+   "desc": "research.huk_mely_viz.desc"
+  },
+  "Cost": {
+   "resources": {
+    "faith": 100
+   },
+   "time": 40
+  },
+  "Rules": {
+   "summon_life_mult": 1.3
+  }
+ },
+ "huk_kampohegy": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_kampohegy.name",
+   "desc": "research.huk_kampohegy.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 35
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "huk_gyongygolyo_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_gyongygolyo_2.name",
+   "desc": "research.huk_gyongygolyo_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "huk_gyongygolyo"
+    }
+   ]
+  }
+ },
+ "huk_gyongygolyo_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_gyongygolyo_3.name",
+   "desc": "research.huk_gyongygolyo_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "huk_gyongygolyo_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "huk_kagylohej_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_kagylohej_2.name",
+   "desc": "research.huk_kagylohej_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 190
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "huk_kagylohej"
+    }
+   ]
+  }
+ },
+ "huk_kagylohej_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_kagylohej_3.name",
+   "desc": "research.huk_kagylohej_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 290,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "huk_kagylohej_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "huk_kampohegy_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_kampohegy_2.name",
+   "desc": "research.huk_kampohegy_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 43
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "huk_kampohegy"
+    }
+   ]
+  }
+ },
+ "huk_kampohegy_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_kampohegy_3.name",
+   "desc": "research.huk_kampohegy_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 52
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "huk_kampohegy_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "huk_hejba": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_hejba.name",
+   "desc": "research.huk_hejba.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 100
+   },
+   "time": 35
+  }
+ },
+ "huk_tavak_utja": {
+  "Identity": {
+   "kind": "research",
+   "faction": "hukucha",
+   "name": "research.huk_tavak_utja.name",
+   "desc": "research.huk_tavak_utja.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Rules": {
+   "pond_dmg": 1.2
+  }
+ }
+}

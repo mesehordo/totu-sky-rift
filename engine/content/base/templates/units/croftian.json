@@ -1,0 +1,1044 @@
+{
+ "cro_csapszolga": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_csapszolga.name",
+   "desc": "unit.cro_csapszolga.desc",
+   "shape": "worker",
+   "worker": true,
+   "tags": [
+    "worker",
+    "organic",
+    "light"
+   ],
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 30
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 40,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.34
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 0.3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "beasas"
+   ]
+  },
+  "Worker": {
+   "gathers": []
+  }
+ },
+ "cro_karmos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_karmos.name",
+   "desc": "unit.cro_karmos.desc",
+   "shape": "bug",
+   "tags": [
+    "melee",
+    "organic",
+    "light",
+    "swarm"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 30,
+    "stone": 20
+   },
+   "count": 2,
+   "supply": 1,
+   "time": 16
+  },
+  "Health": {
+   "max": 60,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.6,
+   "radius": 0.3
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 8,
+   "range": 0.3,
+   "cooldown": 0.7,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "atvaltozas",
+    "beasas"
+   ],
+   "path": {
+    "atvaltozas": "pancel"
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_ikrafeszek"
+    }
+   ]
+  }
+ },
+ "cro_tuskekopo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_tuskekopo.name",
+   "desc": "unit.cro_tuskekopo.desc",
+   "shape": "spitter",
+   "tags": [
+    "ranged",
+    "organic"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 55,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 19
+  },
+  "Health": {
+   "max": 95,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid",
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "tuskezapor",
+    "beasas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_tuskeverem"
+    }
+   ]
+  }
+ },
+ "cro_savkopo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_savkopo.name",
+   "desc": "unit.cro_savkopo.desc",
+   "shape": "artillery",
+   "tags": [
+    "ranged",
+    "organic",
+    "large"
+   ],
+   "class": "ostrom"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "meteor": 50,
+    "stone": 50
+   },
+   "supply": 3,
+   "time": 30
+  },
+  "Health": {
+   "max": 150,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.55
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 25,
+   "range": 7,
+   "cooldown": 3.0,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "acid",
+   "splash": 1.3,
+   "bonus": {
+    "building": 15
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "savtocsa"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_tuskeverem"
+    }
+   ]
+  }
+ },
+ "cro_agyfalo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_agyfalo.name",
+   "desc": "unit.cro_agyfalo.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "meteor": 75,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 28
+  },
+  "Health": {
+   "max": 70,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "oruletkod"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_agyszentely"
+    },
+    {
+     "path": "korus"
+    }
+   ]
+  }
+ },
+ "cro_szarnyas_rem": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_szarnyas_rem.name",
+   "desc": "unit.cro_szarnyas_rem.desc",
+   "shape": "flyer",
+   "tags": [
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 140,
+    "meteor": 50,
+    "stone": 35
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 120,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 4.0,
+   "radius": 0.45,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Abilities": {
+   "list": [
+    "ragadozo_zuhanas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_csontcsucs"
+    }
+   ]
+  }
+ },
+ "cro_csapos_horror": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_csapos_horror.name",
+   "desc": "unit.cro_csapos_horror.desc",
+   "shape": "horror",
+   "tags": [
+    "melee",
+    "organic",
+    "large"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 190,
+    "meteor": 100,
+    "wood": 160
+   },
+   "supply": 6,
+   "time": 45
+  },
+  "Health": {
+   "max": 520,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.85
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 30,
+   "range": 0.6,
+   "cooldown": 1.5,
+   "targets": [
+    "ground"
+   ],
+   "splash": 1.0
+  },
+  "Abilities": {
+   "list": [
+    "csapsopres"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_agyszentely"
+    },
+    {
+     "path": "korus"
+    }
+   ]
+  }
+ },
+ "cro_hos_keth": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_hos_keth.name",
+   "desc": "unit.cro_hos_keth.desc",
+   "tags": [
+    "hero",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 320,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 15,
+   "range": 5,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Hero": {
+   "abilities": [
+    "h_keth_kod",
+    "h_keth_korushang",
+    "h_keth_csap",
+    "h_keth_sokasag"
+   ],
+   "growth": {
+    "hp": 40,
+    "damage": 3,
+    "armor": 0.4,
+    "energy": 20
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_korus_kut"
+    }
+   ]
+  }
+ },
+ "cro_pancelbogar": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_pancelbogar.name",
+   "desc": "unit.cro_pancelbogar.desc",
+   "shape": "beast",
+   "tags": [
+    "melee",
+    "organic",
+    "large",
+    "armored"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 75,
+    "meteor": 25,
+    "wood": 50
+   },
+   "supply": 2,
+   "time": 18
+  },
+  "Health": {
+   "max": 340,
+   "armor": 4
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 18,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "building": 10
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "kitinroham",
+    "beasas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "pancel"
+    }
+   ]
+  }
+ },
+ "cro_guboj": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_guboj.name",
+   "desc": "unit.cro_guboj.desc",
+   "shape": "cocoon",
+   "tags": [
+    "organic",
+    "cocoon"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 200,
+   "armor": 6
+  },
+  "Movement": {
+   "speed": 0,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 4
+  },
+  "Lifetime": {
+   "no_corpse": true
+  },
+  "Abilities": {
+   "list": [
+    "gubo_p"
+   ]
+  }
+ },
+ "cro_szemhordozo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_szemhordozo.name",
+   "desc": "unit.cro_szemhordozo.desc",
+   "shape": "floater",
+   "tags": [
+    "flyer",
+    "organic"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "stone": 40
+   },
+   "supply": 0,
+   "time": 20
+  },
+  "Health": {
+   "max": 160,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 1.8,
+   "radius": 0.5,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 12
+  },
+  "Supply": {
+   "provides": 8
+  },
+  "Abilities": {
+   "list": [
+    "korus_szem"
+   ]
+  }
+ },
+ "cro_hos_vor": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_hos_vor.name",
+   "desc": "unit.cro_hos_vor.desc",
+   "tags": [
+    "hero",
+    "melee",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 480,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.5
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 21,
+   "range": 0.45,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_vor_sugar",
+    "h_vor_pancel",
+    "h_vor_larvak",
+    "h_vor_robbanas"
+   ],
+   "growth": {
+    "hp": 55,
+    "damage": 3,
+    "armor": 0.5,
+    "energy": 12
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_korus_kut"
+    }
+   ]
+  }
+ },
+ "cro_hos_ssarha": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_hos_ssarha.name",
+   "desc": "unit.cro_hos_ssarha.desc",
+   "tags": [
+    "hero",
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 340,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 5.5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_ssa_felho",
+    "h_ssa_rajtudat",
+    "h_ssa_oltes",
+    "h_ssa_remszarnyak"
+   ],
+   "growth": {
+    "hp": 34,
+    "damage": 2,
+    "armor": 0.3,
+    "energy": 20
+   }
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_korus_kut"
+    }
+   ]
+  }
+ },
+ "cro_robbanoatka": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_robbanoatka.name",
+   "desc": "unit.cro_robbanoatka.desc",
+   "shape": "bug",
+   "tags": [
+    "organic",
+    "melee",
+    "light",
+    "swarm"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 30,
+    "stone": 15
+   },
+   "supply": 1,
+   "time": 8
+  },
+  "Health": {
+   "max": 40,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.6,
+   "radius": 0.3
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "robbanas"
+   ]
+  },
+  "Attack": {
+   "damage": 4,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "death_burst": {
+    "radius": 1.6,
+    "damage": 35
+   },
+   "type_bonus": {
+    "epulet": 1.25
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_rajkamra"
+    },
+    {
+     "path": "raj"
+    }
+   ]
+  }
+ },
+ "cro_vadaszkarmos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_vadaszkarmos.name",
+   "desc": "unit.cro_vadaszkarmos.desc",
+   "shape": "bug",
+   "tags": [
+    "organic",
+    "melee",
+    "light",
+    "swarm"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 45,
+    "stone": 25
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 100,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.8,
+   "radius": 0.35
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "beasas"
+   ]
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.35,
+   "cooldown": 0.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_rajkamra"
+    },
+    {
+     "path": "raj"
+    }
+   ]
+  }
+ },
+ "cro_ostromtaraj": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_ostromtaraj.name",
+   "desc": "unit.cro_ostromtaraj.desc",
+   "shape": "artillery",
+   "tags": [
+    "organic",
+    "ranged",
+    "large",
+    "siege"
+   ],
+   "class": "ostrom"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "supply": 4,
+   "time": 32
+  },
+  "Health": {
+   "max": 360,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.7
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "beasas"
+   ]
+  },
+  "Attack": {
+   "damage": 30,
+   "range": 8,
+   "cooldown": 3.2,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "acid",
+   "splash": 1.2,
+   "bonus": {
+    "building": 30
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_kitinkamra"
+    },
+    {
+     "path": "pancel"
+    }
+   ]
+  },
+  "Legacy": {
+   "deploy": {
+    "time": 2,
+    "pack": 1,
+    "range_add": 1
+   }
+  }
+ },
+ "cro_asoferegg": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "croftian",
+   "name": "unit.cro_asoferegg.name",
+   "desc": "unit.cro_asoferegg.desc",
+   "shape": "spitter",
+   "tags": [
+    "organic",
+    "melee",
+    "armored"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 70
+   },
+   "supply": 2,
+   "time": 22
+  },
+  "Health": {
+   "max": 260,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.5
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "beasas"
+   ]
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.4,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_kitinkamra"
+    },
+    {
+     "path": "pancel"
+    }
+   ]
+  }
+ }
+}

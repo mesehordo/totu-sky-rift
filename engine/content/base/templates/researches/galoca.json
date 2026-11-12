@@ -1,0 +1,107 @@
+{
+ "gal_tuskes_talaj": {
+  "Identity": {
+   "kind": "research",
+   "faction": "galoca",
+   "name": "research.gal_tuskes_talaj.name",
+   "desc": "research.gal_tuskes_talaj.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_galoca"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_merges_spora": {
+  "Identity": {
+   "kind": "research",
+   "faction": "galoca",
+   "name": "research.gal_merges_spora.name",
+   "desc": "research.gal_merges_spora.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ally_galoca"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ },
+ "gal_gyors_burjanzas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "galoca",
+   "name": "research.gal_gyors_burjanzas.name",
+   "desc": "research.gal_gyors_burjanzas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_galoca"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "galoca"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,838 @@
+{
+ "imp_forum": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_forum.name",
+   "desc": "building.imp_forum.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 350,
+    "wood": 150
+   },
+   "time": 75
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1700,
+   "armor": 3
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 12
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "imp_fabrikator",
+    "imp_arato"
+   ]
+  },
+  "Researcher": {
+   "list": []
+  },
+  "Powers": {
+   "list": [
+    "gp_ordan_villama"
+   ]
+  }
+ },
+ "imp_reaktor": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_reaktor.name",
+   "desc": "building.imp_reaktor.desc",
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 80,
+    "wood": 30
+   },
+   "time": 22
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 450,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Supply": {
+   "provides": 10
+  },
+  "Mechanics": {
+   "shield_reactor": true
+  }
+ },
+ "imp_legiogyar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_legiogyar.name",
+   "desc": "building.imp_legiogyar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 32
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 950,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "imp_legios",
+    "imp_ballistarius"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "imp_lelekhorgony_mentes"
+   ]
+  }
+ },
+ "imp_ontode": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_ontode.name",
+   "desc": "building.imp_ontode.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 175
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 1000,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "imp_onager",
+    "imp_kolosszus"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "imp_nagy_alapozas",
+    "imp_goztulnyomas",
+    "imp_szikrafogo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_legiogyar"
+    },
+    {
+     "path": "gepisten"
+    }
+   ]
+  }
+ },
+ "imp_gepisten_templom": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_gepisten_templom.name",
+   "desc": "building.imp_gepisten_templom.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "meteor": 75
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "imp_szellemidezo"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "imp_legiopengek",
+    "imp_legiopengek_2",
+    "imp_legiopengek_3",
+    "imp_gyorstoltes",
+    "imp_gyorstoltes_2",
+    "imp_gyorstoltes_3",
+    "imp_edzett_acel",
+    "imp_edzett_acel_2",
+    "imp_edzett_acel_3",
+    "imp_megerositett_vaz",
+    "imp_reaktorpajzs"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_legiogyar"
+    }
+   ]
+  }
+ },
+ "imp_hangar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_hangar.name",
+   "desc": "building.imp_hangar.desc",
+   "shape": "aerie"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "wood": 75,
+    "meteor": 50
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "imp_aquila"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_legiogyar"
+    }
+   ]
+  }
+ },
+ "imp_aquila_torony": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_aquila_torony.name",
+   "desc": "building.imp_aquila_torony.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 125,
+    "wood": 25
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 550,
+   "armor": 3
+  },
+  "Vision": {
+   "sight": 9,
+   "detect": 7
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 7,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "spear"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_legiogyar"
+    }
+   ]
+  }
+ },
+ "imp_panteon": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_panteon.name",
+   "desc": "building.imp_panteon.desc",
+   "shape": "altar"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 180,
+    "wood": 100
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "imp_hos_livia",
+    "imp_hos_nera",
+    "imp_hos_cassius"
+   ]
+  },
+  "Mechanics": {
+   "altar": true
+  }
+ },
+ "imp_praetorium": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_praetorium.name",
+   "desc": "building.imp_praetorium.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 220,
+    "meteor": 60
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "imp_praetorianus",
+    "imp_centurio"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "legio"
+    }
+   ]
+  }
+ },
+ "imp_lelekkut": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_lelekkut.name",
+   "desc": "building.imp_lelekkut.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 180,
+    "meteor": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "imp_szellemlegios",
+    "imp_szellemkolosszus"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "lelek"
+    }
+   ]
+  }
+ },
+ "imp_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_diplomacia.name",
+   "desc": "building.imp_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ },
+ "imp_alapozas": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_alapozas.name",
+   "desc": "building.imp_alapozas.desc",
+   "shape": "foundation",
+   "no_sprite": true
+  },
+  "Cost": {
+   "resources": {
+    "stone": 10
+   },
+   "time": 3
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 1,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 0
+  },
+  "Placement": {
+   "foundation_free": true
+  },
+  "Legacy": {
+   "foundation_tile": true
+  }
+ },
+ "imp_finomito": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_finomito.name",
+   "desc": "building.imp_finomito.desc",
+   "shape": "workshop"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 40
+   },
+   "time": 25
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 600,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Dropoff": {
+   "resources": [
+    "stone",
+    "meteor"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "imp_hajtomu",
+    "imp_tartaly"
+   ]
+  }
+ },
+ "imp_szobor_ferrox": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_szobor_ferrox.name",
+   "desc": "building.imp_szobor_ferrox.desc",
+   "shape": "statue"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "stone": 80
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 400,
+   "armor": 3
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Aura": {
+   "radius": 6,
+   "tags": [
+    "mech"
+   ],
+   "modifiers": {
+    "armor_add": 2
+   },
+   "building_armor": 2
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szoborpark"
+    }
+   ]
+  }
+ },
+ "imp_szobor_arcanor": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_szobor_arcanor.name",
+   "desc": "building.imp_szobor_arcanor.desc",
+   "shape": "statue"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "stone": 80
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 400,
+   "armor": 3
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Aura": {
+   "radius": 6,
+   "tags": [
+    "ranged"
+   ],
+   "modifiers": {
+    "range_add": 1
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szoborpark"
+    }
+   ]
+  }
+ },
+ "imp_szobor_umbrax": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_szobor_umbrax.name",
+   "desc": "building.imp_szobor_umbrax.desc",
+   "shape": "statue"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "stone": 80
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 400,
+   "armor": 3
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Aura": {
+   "radius": 6,
+   "modifiers": {
+    "regen_add": 1.0
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_szoborpark"
+    }
+   ]
+  }
+ },
+ "imp_szoborpark": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_szoborpark.name",
+   "desc": "building.imp_szoborpark.desc",
+   "shape": "temple"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "imp_ferrox_kalapacsa",
+    "imp_ferrox_kalapacsa_2",
+    "imp_ferrox_kalapacsa_3",
+    "imp_ontottvas_burok",
+    "imp_arcanor_csillagai",
+    "imp_csillagterkep",
+    "imp_umbrax_fatyla",
+    "imp_lelekkapu"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "imp_legiogyar"
+    }
+   ]
+  }
+ },
+ "imp_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_egko.name",
+   "desc": "building.imp_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ },
+ "imp_nagy_alapozas": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "imperium",
+   "name": "building.imp_nagy_alapozas.name",
+   "desc": "building.imp_nagy_alapozas.desc",
+   "shape": "foundation",
+   "no_sprite": true
+  },
+  "Cost": {
+   "resources": {
+    "stone": 30
+   },
+   "time": 6
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 0
+  },
+  "Placement": {
+   "foundation_free": true
+  },
+  "Requirements": {
+   "all": [
+    {
+     "research": "imp_nagy_alapozas"
+    }
+   ]
+  },
+  "Legacy": {
+   "foundation_tile": true
+  }
+ }
+}

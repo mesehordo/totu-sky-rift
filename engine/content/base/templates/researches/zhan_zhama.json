@@ -1,0 +1,102 @@
+{
+ "zha_gyors_keltetes": {
+  "Identity": {
+   "kind": "research",
+   "faction": "zhan_zhama",
+   "name": "research.zha_gyors_keltetes.name",
+   "desc": "research.zha_gyors_keltetes.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_kakaskukorekolas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "zhan_zhama",
+   "name": "research.zha_kakaskukorekolas.name",
+   "desc": "research.zha_kakaskukorekolas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ally_zhan_zhama"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ },
+ "zha_tollszellem": {
+  "Identity": {
+   "kind": "research",
+   "faction": "zhan_zhama",
+   "name": "research.zha_tollszellem.name",
+   "desc": "research.zha_tollszellem.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 30,
+    "filter": {
+     "tags": [
+      "ally_zhan_zhama"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "zhan_zhama"
+    }
+   ]
+  }
+ }
+}

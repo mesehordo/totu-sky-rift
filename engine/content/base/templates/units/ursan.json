@@ -1,0 +1,1061 @@
+{
+ "urs_telepes": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_telepes.name",
+   "desc": "unit.urs_telepes.desc",
+   "shape": "worker",
+   "worker": true,
+   "tags": [
+    "worker",
+    "organic",
+    "light"
+   ],
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 30,
+    "stone": 20
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 55,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 0.3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "beszallas",
+    "fegyverbe"
+   ],
+   "research": {
+    "fegyverbe": "urs_nepfelkeles"
+   }
+  }
+ },
+ "urs_pajzshordozo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_pajzshordozo.name",
+   "desc": "unit.urs_pajzshordozo.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic",
+    "armored"
+   ],
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 55,
+    "stone": 15
+   },
+   "supply": 2,
+   "time": 16
+  },
+  "Health": {
+   "max": 157,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "pajzsfal",
+    "beszallas"
+   ]
+  }
+ },
+ "urs_szigonyvezo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_szigonyvezo.name",
+   "desc": "unit.urs_szigonyvezo.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75,
+    "stone": 15
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 90,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 5.5,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "spear",
+   "bonus": {
+    "large": 6
+   },
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "beszallas",
+    "horgonyszigony"
+   ]
+  }
+ },
+ "urs_berserker": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_berserker.name",
+   "desc": "unit.urs_berserker.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75,
+    "meteor": 25,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 150,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "beszallas",
+    "verszomj"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_runakovacs"
+    },
+    {
+     "path": "berserker"
+    }
+   ]
+  }
+ },
+ "urs_runapap": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_runapap.name",
+   "desc": "unit.urs_runapap.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 55,
+    "meteor": 50,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Abilities": {
+   "list": [
+    "gyogyitas",
+    "beszallas",
+    "runako"
+   ]
+  }
+ },
+ "urs_kardfogu": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_kardfogu.name",
+   "desc": "unit.urs_kardfogu.desc",
+   "shape": "rider",
+   "tags": [
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 130,
+    "stone": 45
+   },
+   "supply": 3,
+   "time": 26
+  },
+  "Health": {
+   "max": 210,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 3.7,
+   "radius": 0.5
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.4,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "roham"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "tundra"
+    }
+   ]
+  }
+ },
+ "urs_viharhollo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_viharhollo.name",
+   "desc": "unit.urs_viharhollo.desc",
+   "shape": "flyer",
+   "tags": [
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 115,
+    "meteor": 50,
+    "stone": 35
+   },
+   "supply": 2,
+   "time": 24
+  },
+  "Health": {
+   "max": 110,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.8,
+   "radius": 0.45,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 11
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 3.5,
+   "cooldown": 1.0,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow",
+   "bonus": {
+    "flyer": 6
+   }
+  },
+  "Abilities": {
+   "list": [
+    "zuhano_csapas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "tundra"
+    }
+   ]
+  }
+ },
+ "urs_mammut": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_mammut.name",
+   "desc": "unit.urs_mammut.desc",
+   "shape": "beast",
+   "tags": [
+    "beast",
+    "large",
+    "organic",
+    "ranged"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 345,
+    "stone": 155,
+    "meteor": 75
+   },
+   "supply": 6,
+   "time": 48
+  },
+  "Health": {
+   "max": 650,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.9
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 30,
+   "range": 4.5,
+   "cooldown": 2.6,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "boulder",
+   "splash": 1.2,
+   "bonus": {
+    "building": 25
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "taposas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_runakovacs"
+    },
+    {
+     "path": "tundra"
+    }
+   ]
+  }
+ },
+ "urs_hos_ragna": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_hos_ragna.name",
+   "desc": "unit.urs_hos_ragna.desc",
+   "tags": [
+    "hero",
+    "infantry",
+    "melee",
+    "organic",
+    "armored"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 460,
+   "armor": 4,
+   "shield": 40,
+   "shield_delay": 10
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.46
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 20,
+   "range": 0.4,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Hero": {
+   "abilities": [
+    "h_ragna_pajzsfal",
+    "h_ragna_esku",
+    "h_ragna_roham",
+    "h_ragna_hosszutel"
+   ],
+   "growth": {
+    "hp": 55,
+    "damage": 3,
+    "armor": 0.5,
+    "energy": 12
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_eskufa"
+    }
+   ]
+  }
+ },
+ "urs_dardaor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_dardaor.name",
+   "desc": "unit.urs_dardaor.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic",
+    "armored"
+   ],
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 15
+   },
+   "supply": 2,
+   "time": 18
+  },
+  "Health": {
+   "max": 145,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 1.0,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "cavalry": 14,
+    "large": 10
+   }
+  },
+  "Abilities": {
+   "list": [
+    "beszallas",
+    "dardafal"
+   ]
+  }
+ },
+ "urs_ostromszan": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_ostromszan.name",
+   "desc": "unit.urs_ostromszan.desc",
+   "shape": "artillery",
+   "tags": [
+    "siege",
+    "large",
+    "mech"
+   ],
+   "class": "ostrom"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 215,
+    "stone": 110
+   },
+   "supply": 3,
+   "time": 32
+  },
+  "Health": {
+   "max": 300,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 1.8,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 40,
+   "range": 8,
+   "cooldown": 3.2,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "boulder",
+   "splash": 0.9,
+   "bonus": {
+    "building": 40
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "telepites"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_runakovacs"
+    },
+    {
+     "path": "runa"
+    }
+   ]
+  },
+  "Legacy": {
+   "deploy": {
+    "time": 2,
+    "pack": 1,
+    "range_add": 1
+   }
+  }
+ },
+ "urs_kardfogu_tigris": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_kardfogu_tigris.name",
+   "desc": "unit.urs_kardfogu_tigris.desc",
+   "shape": "beast",
+   "tags": [
+    "beast",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 260,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.4,
+   "radius": 0.5
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.4,
+   "cooldown": 0.9,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "szellemtest"
+   ]
+  }
+ },
+ "urs_hos_hjalmar": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_hos_hjalmar.name",
+   "desc": "unit.urs_hos_hjalmar.desc",
+   "tags": [
+    "hero",
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 340,
+   "armor": 1,
+   "shield": 40,
+   "shield_delay": 10
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 15,
+   "range": 6,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_hja_szilank",
+    "h_hja_vihar",
+    "h_hja_bunda",
+    "h_hja_fagyott_ido"
+   ],
+   "growth": {
+    "hp": 34,
+    "damage": 2,
+    "armor": 0.3,
+    "energy": 20
+   }
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_eskufa"
+    }
+   ]
+  }
+ },
+ "urs_hos_bjarka": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_hos_bjarka.name",
+   "desc": "unit.urs_hos_bjarka.desc",
+   "tags": [
+    "hero",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 430,
+   "armor": 2,
+   "shield": 40,
+   "shield_delay": 10
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 19,
+   "range": 4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "spear"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_bja_medve",
+    "h_bja_falka",
+    "h_bja_szigony",
+    "h_bja_mamutcsorda"
+   ],
+   "growth": {
+    "hp": 48,
+    "damage": 3,
+    "armor": 0.4,
+    "energy": 14
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "urs_eskufa"
+    }
+   ]
+  }
+ },
+ "urs_runako": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_runako.name",
+   "desc": "unit.urs_runako.desc",
+   "shape": "golem",
+   "tags": [
+    "structure",
+    "summoned"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 220,
+   "armor": 4
+  },
+  "Movement": {
+   "speed": 0,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 5
+  },
+  "Abilities": {
+   "list": [
+    "runako_aura"
+   ]
+  },
+  "Lifetime": {
+   "no_corpse": true
+  }
+ },
+ "urs_medvealak": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_medvealak.name",
+   "desc": "unit.urs_medvealak.desc",
+   "shape": "warrior",
+   "tags": [
+    "organic",
+    "melee",
+    "large"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 60,
+    "meteor": 40
+   },
+   "supply": 4,
+   "time": 30
+  },
+  "Health": {
+   "max": 520,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.7
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "medveuvoltes",
+    "verszomj"
+   ]
+  },
+  "Attack": {
+   "damage": 24,
+   "range": 0.5,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "berserker"
+    }
+   ]
+  }
+ },
+ "urs_kurtos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_kurtos.name",
+   "desc": "unit.urs_kurtos.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 40
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 160,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "harci_kurt",
+    "beszallas"
+   ]
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "berserker"
+    }
+   ]
+  }
+ },
+ "urs_runaorias": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "ursan",
+   "name": "unit.urs_runaorias.name",
+   "desc": "unit.urs_runaorias.desc",
+   "shape": "golem",
+   "tags": [
+    "melee",
+    "large",
+    "mech"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 220,
+    "meteor": 80
+   },
+   "supply": 5,
+   "time": 38
+  },
+  "Health": {
+   "max": 760,
+   "armor": 5,
+   "shield": 60,
+   "shield_delay": 10
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.75
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "taposas"
+   ]
+  },
+  "Attack": {
+   "damage": 30,
+   "range": 0.5,
+   "cooldown": 1.6,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "building": 20
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "runa"
+    }
+   ]
+  }
+ }
+}

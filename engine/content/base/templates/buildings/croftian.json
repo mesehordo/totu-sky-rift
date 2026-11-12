@@ -1,0 +1,699 @@
+{
+ "cro_kaptar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_kaptar.name",
+   "desc": "building.cro_kaptar.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 205,
+    "wood": 195
+   },
+   "time": 70
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 10
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Mechanics": {
+   "creep_radius": 10
+  },
+  "Producer": {
+   "larva": 4,
+   "larva_time": 5.5,
+   "parallel": true,
+   "units": [
+    "cro_csapszolga",
+    "cro_szemhordozo",
+    "cro_karmos",
+    "cro_tuskekopo",
+    "cro_savkopo",
+    "cro_szarnyas_rem",
+    "cro_agyfalo",
+    "cro_csapos_horror",
+    "cro_robbanoatka",
+    "cro_vadaszkarmos",
+    "cro_ostromtaraj",
+    "cro_asoferegg"
+   ]
+  },
+  "Placement": {
+   "no_creep": true
+  },
+  "Researcher": {
+   "list": []
+  },
+  "Powers": {
+   "list": [
+    "gp_melysegi_kitores"
+   ]
+  }
+ },
+ "cro_tapgomba": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_tapgomba.name",
+   "desc": "building.cro_tapgomba.desc",
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 20
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Supply": {
+   "provides": 0
+  },
+  "Mechanics": {
+   "creep_radius": 8
+  },
+  "Aura": {
+   "regen": 2
+  }
+ },
+ "cro_emeszto": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_emeszto.name",
+   "desc": "building.cro_emeszto.desc",
+   "shape": "dropoff"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 50,
+    "stone": 25
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 350,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Mechanics": {
+   "creep_radius": 4
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "cro_eles_karmok_2",
+    "cro_eles_karmok_3",
+    "cro_eles_karmok",
+    "cro_gyors_larva",
+    "cro_melyebb_rothasztas",
+    "cro_benito_mereg",
+    "cro_melysegi_gyogyulas"
+   ]
+  }
+ },
+ "cro_ikrafeszek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_ikrafeszek.name",
+   "desc": "building.cro_ikrafeszek.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 140,
+    "stone": 40
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "creep_radius": 3
+  },
+  "Researcher": {
+   "list": [
+    "cro_inas_labak"
+   ]
+  }
+ },
+ "cro_tuskeverem": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_tuskeverem.name",
+   "desc": "building.cro_tuskeverem.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 165,
+    "stone": 85
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "creep_radius": 3
+  },
+  "Researcher": {
+   "list": [
+    "cro_savas_tuskek",
+    "cro_savas_tuskek_2",
+    "cro_savas_tuskek_3",
+    "cro_tuskemezo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_ikrafeszek"
+    }
+   ]
+  }
+ },
+ "cro_agyszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_agyszentely.name",
+   "desc": "building.cro_agyszentely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 135,
+    "meteor": 75,
+    "wood": 65
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 750,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "creep_radius": 3
+  },
+  "Researcher": {
+   "list": [
+    "cro_kitinpancel",
+    "cro_kitinpancel_2",
+    "cro_kitinpancel_3",
+    "cro_eletnedv"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_ikrafeszek"
+    },
+    {
+     "path": "korus"
+    }
+   ]
+  }
+ },
+ "cro_csontcsucs": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_csontcsucs.name",
+   "desc": "building.cro_csontcsucs.desc",
+   "shape": "aerie"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "meteor": 100,
+    "wood": 100
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 550,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "creep_radius": 3
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_tuskeverem"
+    }
+   ]
+  }
+ },
+ "cro_tuskes_gyoker": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_tuskes_gyoker.name",
+   "desc": "building.cro_tuskes_gyoker.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 25
+   },
+   "time": 25
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 400,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8,
+   "detect": 7
+  },
+  "Mechanics": {
+   "creep_radius": 2
+  },
+  "Attack": {
+   "damage": 15,
+   "range": 6,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "cro_ikrafeszek"
+    }
+   ]
+  }
+ },
+ "kethri_tojaskamra": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.kethri_tojaskamra.name",
+   "desc": "building.kethri_tojaskamra.desc",
+   "hidden": true,
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {},
+   "time": 1
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 4
+  },
+  "Placement": {
+   "no_creep": true
+  }
+ },
+ "cro_korus_kut": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_korus_kut.name",
+   "desc": "building.cro_korus_kut.desc",
+   "shape": "altar"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "wood": 100
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "cro_hos_keth",
+    "cro_hos_vor",
+    "cro_hos_ssarha"
+   ]
+  },
+  "Mechanics": {
+   "altar": true
+  }
+ },
+ "cro_rajkamra": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_rajkamra.name",
+   "desc": "building.cro_rajkamra.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 80
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": []
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "raj"
+    }
+   ]
+  }
+ },
+ "cro_kitinkamra": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_kitinkamra.name",
+   "desc": "building.cro_kitinkamra.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 140
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": []
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "pancel"
+    }
+   ]
+  }
+ },
+ "cro_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_diplomacia.name",
+   "desc": "building.cro_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ },
+ "cro_tarna": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_tarna.name",
+   "desc": "building.cro_tarna.desc",
+   "shape": "hive"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75
+   },
+   "time": 25
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 500,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Placement": {
+   "on_resource": [
+    "stone",
+    "meteor"
+   ],
+   "no_creep": true
+  },
+  "Mechanics": {
+   "mine": {
+    "passive": 0,
+    "slots": 5,
+    "consume": true
+   },
+   "creep_radius": 3
+  }
+ },
+ "cro_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_egko.name",
+   "desc": "building.cro_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ },
+ "cro_merges_tuskek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "croftian",
+   "name": "building.cro_merges_tuskek.name",
+   "desc": "building.cro_merges_tuskek.desc",
+   "shape": "spikes",
+   "no_sprite": true
+  },
+  "Cost": {
+   "resources": {
+    "wood": 20,
+    "stone": 10
+   },
+   "time": 2
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 40,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 0
+  },
+  "Placement": {
+   "foundation_free": true
+  },
+  "Legacy": {
+   "spike_tile": true
+  }
+ }
+}

@@ -1,0 +1,1208 @@
+{
+ "huk_toaso": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_toaso.name",
+   "desc": "unit.huk_toaso.desc",
+   "shape": "worker",
+   "tags": [
+    "worker",
+    "organic"
+   ],
+   "worker": true,
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 50
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 45,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 4,
+   "range": 0.3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "bekaugras"
+   ]
+  }
+ },
+ "huk_csuzlis": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_csuzlis.name",
+   "desc": "unit.huk_csuzlis.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 16
+  },
+  "Health": {
+   "max": 65,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 5.5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boulder"
+  },
+  "Abilities": {
+   "list": [
+    "bekaugras"
+   ]
+  }
+ },
+ "huk_kampokardos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_kampokardos.name",
+   "desc": "unit.huk_kampokardos.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 18
+  },
+  "Health": {
+   "max": 138,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 0.3,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "huk_horog",
+    "bekaugras"
+   ]
+  }
+ },
+ "huk_toidezo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_toidezo.name",
+   "desc": "unit.huk_toidezo.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "huk_tavi_leny_hivas",
+    "huk_tavgyogyitas",
+    "bekaugras",
+    "huk_nagy_tavi_leny_hivas"
+   ]
+  },
+  "Energy": {
+   "max": 150
+  }
+ },
+ "huk_tavi_leny": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_tavi_leny.name",
+   "desc": "unit.huk_tavi_leny.desc",
+   "shape": "golem",
+   "tags": [
+    "summoned",
+    "melee",
+    "large"
+   ],
+   "summoned": true,
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 220,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.5
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 0.3,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  }
+ },
+ "huk_gotelovas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_gotelovas.name",
+   "desc": "unit.huk_gotelovas.desc",
+   "shape": "rider",
+   "tags": [
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 140,
+    "stone": 45
+   },
+   "supply": 3,
+   "time": 24
+  },
+  "Health": {
+   "max": 280,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 3.1,
+   "radius": 0.52
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 15,
+   "range": 0.4,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "huk_gotevagta"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_gyongymuhely"
+    }
+   ]
+  }
+ },
+ "huk_szitakoto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_szitakoto.name",
+   "desc": "unit.huk_szitakoto.desc",
+   "shape": "flyer",
+   "tags": [
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 70,
+    "stone": 20
+   },
+   "supply": 1,
+   "time": 16
+  },
+  "Health": {
+   "max": 70,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 4.2,
+   "radius": 0.4,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 12
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 2.5,
+   "cooldown": 1.0,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  }
+ },
+ "huk_teknos_mozsar": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_teknos_mozsar.name",
+   "desc": "unit.huk_teknos_mozsar.desc",
+   "shape": "artillery",
+   "tags": [
+    "siege",
+    "large",
+    "organic"
+   ],
+   "class": "ostrom"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "stone": 110
+   },
+   "supply": 3,
+   "time": 32
+  },
+  "Health": {
+   "max": 330,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.6,
+   "radius": 0.62
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 38,
+   "range": 7.5,
+   "cooldown": 3.2,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "boulder",
+   "splash": 0.9,
+   "bonus": {
+    "building": 35
+   },
+   "type_bonus": {
+    "epulet": 1.5
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_gyongymuhely"
+    }
+   ]
+  },
+  "Legacy": {
+   "deploy": {
+    "time": 2,
+    "pack": 1,
+    "range_add": 1
+   }
+  }
+ },
+ "huk_hos_kvarra": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_hos_kvarra.name",
+   "desc": "unit.huk_hos_kvarra.desc",
+   "shape": "caster",
+   "tags": [
+    "hero",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Health": {
+   "max": 230,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Attack": {
+   "damage": 14,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Hero": {
+   "abilities": [
+    "h_kva_arasztas",
+    "h_kva_forras",
+    "h_kva_lenyek",
+    "h_kva_ozonviz"
+   ],
+   "growth": {
+    "hp": 26,
+    "damage": 2,
+    "armor": 0.2,
+    "energy": 20
+   }
+  },
+  "Abilities": {
+   "list": [
+    "bekaugras"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_toteremto"
+    }
+   ]
+  }
+ },
+ "huk_hos_bulgok": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_hos_bulgok.name",
+   "desc": "unit.huk_hos_bulgok.desc",
+   "shape": "warrior",
+   "tags": [
+    "hero",
+    "melee",
+    "organic"
+   ],
+   "hero": true,
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Health": {
+   "max": 420,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.46
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 24,
+   "range": 0.3,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Energy": {
+   "max": 120
+  },
+  "Hero": {
+   "abilities": [
+    "h_bul_kampo",
+    "h_bul_ugras",
+    "h_bul_brekeges",
+    "h_bul_kiraly"
+   ],
+   "growth": {
+    "hp": 40,
+    "damage": 3,
+    "armor": 0.3,
+    "energy": 10
+   }
+  },
+  "Abilities": {
+   "list": [
+    "bekaugras"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_toteremto"
+    }
+   ]
+  }
+ },
+ "huk_hos_iriss": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_hos_iriss.name",
+   "desc": "unit.huk_hos_iriss.desc",
+   "shape": "archer",
+   "tags": [
+    "hero",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Health": {
+   "max": 280,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 6,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Energy": {
+   "max": 180
+  },
+  "Hero": {
+   "abilities": [
+    "h_iri_gyongy",
+    "h_iri_szivarvany",
+    "h_iri_aldas",
+    "h_iri_gyongykapu"
+   ],
+   "growth": {
+    "hp": 30,
+    "damage": 3,
+    "armor": 0.2,
+    "energy": 15
+   }
+  },
+  "Abilities": {
+   "list": [
+    "bekaugras"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_toteremto"
+    }
+   ]
+  }
+ },
+ "huk_aradas_papja": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_aradas_papja.name",
+   "desc": "unit.huk_aradas_papja.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 30,
+    "meteor": 60
+   },
+   "supply": 2,
+   "time": 28
+  },
+  "Health": {
+   "max": 90,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 7,
+   "range": 4.5,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "huk_arhullam",
+    "bekaugras"
+   ]
+  },
+  "Energy": {
+   "max": 180
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "arviz"
+    }
+   ]
+  }
+ },
+ "huk_iszapbeka": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_iszapbeka.name",
+   "desc": "unit.huk_iszapbeka.desc",
+   "shape": "golem",
+   "tags": [
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 70
+   },
+   "supply": 4,
+   "time": 30
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 22,
+   "range": 0.5,
+   "cooldown": 1.6,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "huk_iszapcsapas",
+    "bekaugras"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "arviz"
+    }
+   ]
+  }
+ },
+ "huk_gyongyveto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_gyongyveto.name",
+   "desc": "unit.huk_gyongyveto.desc",
+   "shape": "archer",
+   "tags": [
+    "infantry",
+    "ranged",
+    "organic"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 50
+   },
+   "supply": 2,
+   "time": 24
+  },
+  "Health": {
+   "max": 90,
+   "armor": 0,
+   "shield": 40,
+   "shield_zone": "pond"
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Attack": {
+   "damage": 20,
+   "range": 7.5,
+   "cooldown": 2.0,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boulder"
+  },
+  "Abilities": {
+   "list": [
+    "bekaugras"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "gyongy"
+    }
+   ]
+  }
+ },
+ "huk_kagylopajzsos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_kagylopajzsos.name",
+   "desc": "unit.huk_kagylopajzsos.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic",
+    "armored"
+   ],
+   "class": "landzsas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 50
+   },
+   "supply": 2,
+   "time": 22
+  },
+  "Health": {
+   "max": 240,
+   "armor": 4,
+   "shield": 40,
+   "shield_zone": "pond"
+  },
+  "Movement": {
+   "speed": 2.2,
+   "radius": 0.44
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "huk_kagylofal",
+    "bekaugras",
+    "hejba"
+   ],
+   "research": {
+    "hejba": "huk_hejba"
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "gyongy"
+    }
+   ]
+  }
+ },
+ "huk_gyongyorias": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_gyongyorias.name",
+   "desc": "unit.huk_gyongyorias.desc",
+   "shape": "golem",
+   "tags": [
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 220,
+    "stone": 120,
+    "meteor": 60
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Health": {
+   "max": 760,
+   "armor": 4
+  },
+  "Movement": {
+   "speed": 1.8,
+   "radius": 0.7
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 34,
+   "range": 0.6,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "huk_melysegdobbantas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "melyseg"
+    }
+   ]
+  }
+ },
+ "huk_melysegi_hivo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_melysegi_hivo.name",
+   "desc": "unit.huk_melysegi_hivo.desc",
+   "shape": "caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 40,
+    "meteor": 70
+   },
+   "supply": 2,
+   "time": 28
+  },
+  "Health": {
+   "max": 95,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "huk_melysegi_hivas",
+    "bekaugras",
+    "huk_melyseg_hangja"
+   ]
+  },
+  "Energy": {
+   "max": 200
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "melyseg"
+    }
+   ]
+  }
+ },
+ "huk_ikrarako": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_ikrarako.name",
+   "desc": "unit.huk_ikrarako.desc",
+   "shape": "caster",
+   "tags": [
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "stone": 20
+   },
+   "supply": 1,
+   "time": 18
+  },
+  "Health": {
+   "max": 60,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.2,
+   "radius": 0.32
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Abilities": {
+   "list": [
+    "ikrarakas",
+    "bekaugras"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  }
+ },
+ "huk_ikra": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_ikra.name",
+   "desc": "unit.huk_ikra.desc",
+   "shape": "cocoon",
+   "tags": [
+    "organic",
+    "mine"
+   ],
+   "summoned": true,
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 0
+  },
+  "Health": {
+   "max": 30,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 0.0,
+   "radius": 0.25
+  },
+  "Vision": {
+   "sight": 3,
+   "always_hidden": true
+  },
+  "Lifetime": {
+   "no_corpse": true
+  },
+  "Legacy": {
+   "mine_trigger": {
+    "radius": 1.0,
+    "spawn": "huk_ebihal",
+    "count": 3,
+    "pond_count": 5,
+    "lifetime": 10
+   }
+  }
+ },
+ "huk_ebihal": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_ebihal.name",
+   "desc": "unit.huk_ebihal.desc",
+   "shape": "bug",
+   "tags": [
+    "organic",
+    "melee",
+    "light"
+   ],
+   "summoned": true,
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 0
+  },
+  "Health": {
+   "max": 35,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.4,
+   "radius": 0.22
+  },
+  "Vision": {
+   "sight": 5
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 0.3,
+   "cooldown": 0.8,
+   "targets": [
+    "ground"
+   ]
+  }
+ },
+ "huk_nagy_tavi_leny": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_nagy_tavi_leny.name",
+   "desc": "unit.huk_nagy_tavi_leny.desc",
+   "shape": "golem",
+   "tags": [
+    "summoned",
+    "melee",
+    "large"
+   ],
+   "summoned": true,
+   "sprite": "huk_tavi_leny",
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 330,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.57
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 21,
+   "range": 0.3,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  }
+ },
+ "huk_gyongyorias_idezett": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "hukucha",
+   "name": "unit.huk_gyongyorias_idezett.name",
+   "desc": "unit.huk_gyongyorias_idezett.desc",
+   "shape": "golem",
+   "tags": [
+    "large",
+    "melee",
+    "organic",
+    "summoned"
+   ],
+   "summoned": true,
+   "sprite": "huk_gyongyorias",
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {},
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 760,
+   "armor": 4
+  },
+  "Movement": {
+   "speed": 1.8,
+   "radius": 0.7
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 34,
+   "range": 0.6,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  }
+ }
+}

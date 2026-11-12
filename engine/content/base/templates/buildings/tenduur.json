@@ -1,0 +1,139 @@
+{
+ "ten_lampasfa": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "tenduur",
+   "name": "building.ten_lampasfa.name",
+   "desc": "building.ten_lampasfa.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "ten_lampasor",
+    "ten_szelhimzo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_tovisudvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "tenduur",
+   "name": "building.ten_tovisudvar.name",
+   "desc": "building.ten_tovisudvar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "ten_tovisvivo",
+    "ten_lombijasz",
+    "ten_tolgyor"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "ten_lampasfa"
+    },
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_fenyfeszek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "tenduur",
+   "name": "building.ten_fenyfeszek.name",
+   "desc": "building.ten_fenyfeszek.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "ten_lombsuhanas",
+    "ten_tetovalt_vedelem",
+    "ten_lampasfeny"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "ten_lampasfa"
+    },
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ }
+}

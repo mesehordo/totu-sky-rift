@@ -1,0 +1,107 @@
+{
+ "nil_kotes_ereje": {
+  "Identity": {
+   "kind": "research",
+   "faction": "nila_uchana",
+   "name": "research.nil_kotes_ereje.name",
+   "desc": "research.nil_kotes_ereje.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 3,
+    "filter": {
+     "tags": [
+      "large"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_naga_pikkely": {
+  "Identity": {
+   "kind": "research",
+   "faction": "nila_uchana",
+   "name": "research.nil_naga_pikkely.name",
+   "desc": "research.nil_naga_pikkely.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_nila_uchana"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_lotuszszentseg": {
+  "Identity": {
+   "kind": "research",
+   "faction": "nila_uchana",
+   "name": "research.nil_lotuszszentseg.name",
+   "desc": "research.nil_lotuszszentseg.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 40,
+    "filter": {
+     "tags": [
+      "ally_nila_uchana"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ }
+}

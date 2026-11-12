@@ -1,0 +1,506 @@
+{
+ "oon_vasbuzogany": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_vasbuzogany.name",
+   "desc": "research.oon_vasbuzogany.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "oon_lakkozott_vert": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_lakkozott_vert.name",
+   "desc": "research.oon_lakkozott_vert.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 120
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "oon_lampasolaj": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_lampasolaj.name",
+   "desc": "research.oon_lampasolaj.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 80
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Vision.sight",
+    "op": "add",
+    "value": 1
+   }
+  ]
+ },
+ "oon_szelparna": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_szelparna.name",
+   "desc": "research.oon_szelparna.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 80,
+    "meteor": 40
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15,
+    "filter": {
+     "tags": [
+      "flyer"
+     ]
+    }
+   }
+  ]
+ },
+ "oon_kettos_kapu": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_kettos_kapu.name",
+   "desc": "research.oon_kettos_kapu.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 120,
+    "meteor": 60
+   },
+   "time": 50
+  },
+  "Rules": {
+   "torii_pairs": 2
+  }
+ },
+ "oon_kotel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_kotel.name",
+   "desc": "research.oon_kotel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 35
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "oon_messzefeny": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_messzefeny.name",
+   "desc": "research.oon_messzefeny.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 80
+   },
+   "time": 40
+  },
+  "Rules": {
+   "light_add": 2
+  }
+ },
+ "oon_harci_dobok": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_harci_dobok.name",
+   "desc": "research.oon_harci_dobok.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Rules": {
+   "morale_hurt_mult": 0.6,
+   "drum_mult": 2.0
+  }
+ },
+ "oon_verszomj": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_verszomj.name",
+   "desc": "research.oon_verszomj.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Rules": {
+   "kill_heal": {
+    "ids": [
+     "oon_oni_harcos",
+     "oon_berserker_oni",
+     "oon_o_oni",
+     "oon_kohajito"
+    ],
+    "hp": 20
+   }
+  }
+ },
+ "oon_tengu_tollak": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_tengu_tollak.name",
+   "desc": "research.oon_tengu_tollak.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 80,
+    "meteor": 40
+   },
+   "time": 40
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.range",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "flyer"
+     ]
+    }
+   },
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10,
+    "filter": {
+     "tags": [
+      "flyer"
+     ]
+    }
+   }
+  ]
+ },
+ "oon_vasbuzogany_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_vasbuzogany_2.name",
+   "desc": "research.oon_vasbuzogany_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "oon_vasbuzogany"
+    }
+   ]
+  }
+ },
+ "oon_vasbuzogany_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_vasbuzogany_3.name",
+   "desc": "research.oon_vasbuzogany_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "oon_vasbuzogany_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "oon_lakkozott_vert_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_lakkozott_vert_2.name",
+   "desc": "research.oon_lakkozott_vert_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 190
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "oon_lakkozott_vert"
+    }
+   ]
+  }
+ },
+ "oon_lakkozott_vert_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_lakkozott_vert_3.name",
+   "desc": "research.oon_lakkozott_vert_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 290,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "oon_lakkozott_vert_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "oon_kotel_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_kotel_2.name",
+   "desc": "research.oon_kotel_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 43
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "oon_kotel"
+    }
+   ]
+  }
+ },
+ "oon_kotel_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_kotel_3.name",
+   "desc": "research.oon_kotel_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 52
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "oon_kotel_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "oon_kokutya_huseg": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_kokutya_huseg.name",
+   "desc": "research.oon_kokutya_huseg.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 100
+   },
+   "time": 35
+  },
+  "Rules": {
+   "kokutya_guard": 2
+  }
+ },
+ "oon_lampas_magia": {
+  "Identity": {
+   "kind": "research",
+   "faction": "ooni",
+   "name": "research.oon_lampas_magia.name",
+   "desc": "research.oon_lampas_magia.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 80,
+    "meteor": 60
+   },
+   "time": 40
+  },
+  "Rules": {
+   "lantern_magic": 1.2
+  }
+ }
+}

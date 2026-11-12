@@ -1,0 +1,102 @@
+{
+ "mic_osok_emleke": {
+  "Identity": {
+   "kind": "research",
+   "faction": "micelia",
+   "name": "research.mic_osok_emleke.name",
+   "desc": "research.mic_osok_emleke.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 30,
+    "filter": {
+     "tags": [
+      "ally_micelia"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_sporafonal": {
+  "Identity": {
+   "kind": "research",
+   "faction": "micelia",
+   "name": "research.mic_sporafonal.name",
+   "desc": "research.mic_sporafonal.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 10
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_szivdobbanas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "micelia",
+   "name": "research.mic_szivdobbanas.name",
+   "desc": "research.mic_szivdobbanas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_micelia"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ }
+}

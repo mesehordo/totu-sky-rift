@@ -1,0 +1,571 @@
+{
+ "huk_korallcsarnok": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_korallcsarnok.name",
+   "desc": "building.huk_korallcsarnok.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 360,
+    "stone": 40
+   },
+   "time": 70
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1400,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 10
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "huk_toaso"
+   ]
+  },
+  "Powers": {
+   "list": [
+    "gp_arhullam"
+   ]
+  }
+ },
+ "huk_tavacska": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_tavacska.name",
+   "desc": "building.huk_tavacska.desc",
+   "shape": "pond",
+   "no_sprite": true
+  },
+  "Cost": {
+   "resources": {
+    "wood": 15
+   },
+   "time": 0
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 1,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Legacy": {
+   "pond_tile": true
+  }
+ },
+ "huk_gyongybuborek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_gyongybuborek.name",
+   "desc": "building.huk_gyongybuborek.desc",
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "stone": 10
+   },
+   "time": 25
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 450,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Supply": {
+   "provides": 8
+  }
+ },
+ "huk_nadbarakk": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_nadbarakk.name",
+   "desc": "building.huk_nadbarakk.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 40
+   },
+   "time": 35
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "huk_csuzlis",
+    "huk_kampokardos",
+    "huk_szitakoto",
+    "huk_ikrarako"
+   ]
+  }
+ },
+ "huk_toteremto": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_toteremto.name",
+   "desc": "building.huk_toteremto.desc",
+   "shape": "temple"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "huk_toidezo",
+    "huk_hos_kvarra",
+    "huk_hos_bulgok",
+    "huk_hos_iriss"
+   ]
+  },
+  "Mechanics": {
+   "pray_slots": 4
+  },
+  "Researcher": {
+   "list": [
+    "huk_toanya_korusa",
+    "huk_iszapos_bor",
+    "huk_mely_viz"
+   ]
+  },
+  "Powers": {
+   "list": [
+    "aradas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_nadbarakk"
+    }
+   ]
+  }
+ },
+ "huk_gyongymuhely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_gyongymuhely.name",
+   "desc": "building.huk_gyongymuhely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 800,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "huk_gyongygolyo",
+    "huk_gyongygolyo_2",
+    "huk_gyongygolyo_3",
+    "huk_kagylohej",
+    "huk_kagylohej_2",
+    "huk_kagylohej_3",
+    "huk_tavirozsa",
+    "huk_ugrolabak",
+    "huk_kampohegy",
+    "huk_kampohegy_2",
+    "huk_kampohegy_3",
+    "huk_tavak_utja"
+   ]
+  },
+  "Powers": {
+   "list": [
+    "gyongyeres"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_nadbarakk"
+    }
+   ]
+  }
+ },
+ "huk_goteistallo": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_goteistallo.name",
+   "desc": "building.huk_goteistallo.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 90
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "huk_gotelovas",
+    "huk_teknos_mozsar"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "huk_gyongymuhely"
+    }
+   ]
+  }
+ },
+ "huk_korallor": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_korallor.name",
+   "desc": "building.huk_korallor.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 60
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 600,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7,
+   "detect": 7
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 7,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boulder"
+  }
+ },
+ "huk_arvizkapu": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_arvizkapu.name",
+   "desc": "building.huk_arvizkapu.desc",
+   "shape": "temple"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "huk_aradas_papja",
+    "huk_iszapbeka"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "arviz"
+    }
+   ]
+  }
+ },
+ "huk_gyongykert": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_gyongykert.name",
+   "desc": "building.huk_gyongykert.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "huk_gyongyveto",
+    "huk_kagylopajzsos"
+   ]
+  },
+  "Powers": {
+   "list": [
+    "gyongyeres"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "huk_hejba"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "gyongy"
+    }
+   ]
+  }
+ },
+ "huk_melyseg_kapuja": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_melyseg_kapuja.name",
+   "desc": "building.huk_melyseg_kapuja.desc",
+   "shape": "temple"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 200,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 950,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "huk_gyongyorias",
+    "huk_melysegi_hivo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "melyseg"
+    }
+   ]
+  }
+ },
+ "huk_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_egko.name",
+   "desc": "building.huk_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ },
+ "huk_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "hukucha",
+   "name": "building.huk_diplomacia.name",
+   "desc": "building.huk_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ }
+}

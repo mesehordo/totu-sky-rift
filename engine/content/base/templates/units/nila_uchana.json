@@ -1,0 +1,347 @@
+{
+ "nil_szornykoto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "nila_uchana",
+   "name": "unit.nil_szornykoto.name",
+   "desc": "unit.nil_szornykoto.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_nila_uchana",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 165,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "nil_rakshasa_hivas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_rakshasa": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "nila_uchana",
+   "name": "unit.nil_rakshasa.name",
+   "desc": "unit.nil_rakshasa.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_nila_uchana",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "nil_tombolas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_makara_idezo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "nila_uchana",
+   "name": "unit.nil_makara_idezo.name",
+   "desc": "unit.nil_makara_idezo.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_nila_uchana",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "nil_orveny",
+    "nil_lotuszgyogyitas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_naga": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "nila_uchana",
+   "name": "unit.nil_naga.name",
+   "desc": "unit.nil_naga.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_nila_uchana",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 140,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "spear",
+   "poison": [
+    3,
+    4
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_makara": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "nila_uchana",
+   "name": "unit.nil_makara.name",
+   "desc": "unit.nil_makara.desc",
+   "shape": "rider",
+   "tags": [
+    "ally",
+    "ally_nila_uchana",
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Health": {
+   "max": 360,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.52
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 3,
+   "time": 26,
+   "resources": {
+    "wood": 150,
+    "stone": 50
+   }
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "nil_makara_roham"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ },
+ "nil_rakshasa_kotott": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "nila_uchana",
+   "name": "unit.nil_rakshasa_kotott.name",
+   "desc": "unit.nil_rakshasa_kotott.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_nila_uchana",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "summoned": true,
+   "class": "orias"
+  },
+  "Health": {
+   "max": 260,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {}
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "nila_uchana"
+    }
+   ]
+  }
+ }
+}

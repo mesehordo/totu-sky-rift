@@ -1,0 +1,288 @@
+{
+ "dar_fullanclandzsas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "daresh",
+   "name": "unit.dar_fullanclandzsas.name",
+   "desc": "unit.dar_fullanclandzsas.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_daresh",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.6,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "poison": [
+    3,
+    4
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_gyantapajzsos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "daresh",
+   "name": "unit.dar_gyantapajzsos.name",
+   "desc": "unit.dar_gyantapajzsos.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_daresh",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 185,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "dar_gyantafal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_rajenekes": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "daresh",
+   "name": "unit.dar_rajenekes.name",
+   "desc": "unit.dar_rajenekes.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_daresh",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "dar_rajenek",
+    "dar_mezgyogyitas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_darazsraj": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "daresh",
+   "name": "unit.dar_darazsraj.name",
+   "desc": "unit.dar_darazsraj.desc",
+   "shape": "flyer",
+   "tags": [
+    "ally",
+    "ally_daresh",
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Health": {
+   "max": 120,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.8,
+   "radius": 0.45,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 24,
+   "resources": {
+    "wood": 110,
+    "stone": 35,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 8,
+   "range": 1.5,
+   "cooldown": 0.7,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_szarnyas_ijasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "daresh",
+   "name": "unit.dar_szarnyas_ijasz.name",
+   "desc": "unit.dar_szarnyas_ijasz.desc",
+   "shape": "flyer",
+   "tags": [
+    "ally",
+    "ally_daresh",
+    "flyer"
+   ],
+   "class": "repulo"
+  },
+  "Health": {
+   "max": 120,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 3.8,
+   "radius": 0.45,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 24,
+   "resources": {
+    "wood": 110,
+    "stone": 35,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5,
+   "cooldown": 1.1,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ }
+}

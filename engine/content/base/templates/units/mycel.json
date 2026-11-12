@@ -1,0 +1,847 @@
+{
+ "myc_sporaszedo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_sporaszedo.name",
+   "desc": "unit.myc_sporaszedo.desc",
+   "shape": "worker",
+   "worker": true,
+   "tags": [
+    "worker",
+    "organic",
+    "light",
+    "fungal"
+   ],
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 35,
+    "stone": 15
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 40,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.33
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 0.3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "p_halozati_gyujtes"
+   ]
+  }
+ },
+ "myc_pofeteg": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_pofeteg.name",
+   "desc": "unit.myc_pofeteg.desc",
+   "shape": "puffball",
+   "tags": [
+    "melee",
+    "organic",
+    "light",
+    "fungal"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 40,
+    "stone": 15
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 45,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.33
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 7,
+   "range": 0.3,
+   "cooldown": 0.9,
+   "targets": [
+    "ground"
+   ],
+   "death_burst": {
+    "damage": 12,
+    "radius": 1.4
+   }
+  },
+  "Abilities": {
+   "list": [
+    "osszeolvadas",
+    "osztodas3"
+   ]
+  }
+ },
+ "myc_tuskegomba_lovesz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_tuskegomba_lovesz.name",
+   "desc": "unit.myc_tuskegomba_lovesz.desc",
+   "shape": "mushroom_archer",
+   "tags": [
+    "ranged",
+    "organic",
+    "fungal"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 85,
+    "stone": 30
+   },
+   "supply": 2,
+   "time": 19
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid",
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "sporatuske",
+    "osztodas4"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_tuskegomba_telep"
+    }
+   ]
+  }
+ },
+ "myc_kalapos_or": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_kalapos_or.name",
+   "desc": "unit.myc_kalapos_or.desc",
+   "shape": "mushroom_guard",
+   "tags": [
+    "melee",
+    "organic",
+    "armored",
+    "fungal"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 110,
+    "stone": 60
+   },
+   "supply": 2,
+   "time": 22
+  },
+  "Health": {
+   "max": 170,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.1,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.35,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "kalapfal",
+    "osztodas4"
+   ]
+  }
+ },
+ "myc_alomsaman": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_alomsaman.name",
+   "desc": "unit.myc_alomsaman.desc",
+   "shape": "mushroom_caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic",
+    "fungal"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 70,
+    "meteor": 70,
+    "stone": 20
+   },
+   "supply": 2,
+   "time": 26
+  },
+  "Health": {
+   "max": 60,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "gyokerkotes"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_alomkert"
+    },
+    {
+     "path": "alom"
+    }
+   ]
+  }
+ },
+ "myc_oriaspofeteg": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_oriaspofeteg.name",
+   "desc": "unit.myc_oriaspofeteg.desc",
+   "shape": "puffball",
+   "tags": [
+    "melee",
+    "organic",
+    "large",
+    "fungal"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 125,
+    "stone": 45
+   },
+   "supply": 3,
+   "time": 1
+  },
+  "Health": {
+   "max": 360,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.2,
+   "radius": 0.72
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.4,
+   "cooldown": 1.5,
+   "targets": [
+    "ground"
+   ],
+   "splash": 1.0,
+   "death_burst": {
+    "damage": 35,
+    "radius": 2.2
+   }
+  },
+  "Abilities": {
+   "list": [
+    "sporarobbanas"
+   ]
+  }
+ },
+ "myc_lebego_pofeteg": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_lebego_pofeteg.name",
+   "desc": "unit.myc_lebego_pofeteg.desc",
+   "shape": "floater",
+   "tags": [
+    "flyer",
+    "fungal"
+   ],
+   "class": "repulo"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 60,
+    "wood": 70,
+    "stone": 40
+   },
+   "supply": 3,
+   "time": 28
+  },
+  "Health": {
+   "max": 150,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.2,
+   "radius": 0.55,
+   "flying": true
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid",
+   "splash": 0.8
+  },
+  "Abilities": {
+   "list": [
+    "sporaeso"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_lebegobolcso"
+    }
+   ]
+  }
+ },
+ "myc_hos_mor": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_hos_mor.name",
+   "desc": "unit.myc_hos_mor.desc",
+   "tags": [
+    "hero",
+    "caster",
+    "ranged",
+    "organic",
+    "fungal"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 240,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.4
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 4.5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 40
+  },
+  "Hero": {
+   "abilities": [
+    "h_mor_gyogyspora",
+    "h_mor_gyokerkotes",
+    "h_mor_emlekkert",
+    "h_mor_ebredes"
+   ],
+   "growth": {
+    "hp": 35,
+    "damage": 2,
+    "armor": 0.3,
+    "energy": 25
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_emlekfa"
+    }
+   ]
+  }
+ },
+ "myc_rothaszto": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_rothaszto.name",
+   "desc": "unit.myc_rothaszto.desc",
+   "shape": "warrior",
+   "tags": [
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 75,
+    "stone": 25
+   },
+   "supply": 2,
+   "time": 20
+  },
+  "Health": {
+   "max": 150,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ],
+   "bonus": {
+    "armored": 6
+   },
+   "death_burst": {
+    "radius": 1.8,
+    "damage": 40
+   }
+  },
+  "Abilities": {
+   "list": [
+    "osztodas4"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "rothadas"
+    }
+   ]
+  }
+ },
+ "myc_hos_gyokeranya": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_hos_gyokeranya.name",
+   "desc": "unit.myc_hos_gyokeranya.desc",
+   "tags": [
+    "hero",
+    "melee",
+    "organic",
+    "large"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 600,
+   "armor": 4
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.55
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 20,
+   "range": 0.5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_gya_halo",
+    "h_gya_melygyoker",
+    "h_gya_talaj",
+    "h_gya_rengés"
+   ],
+   "growth": {
+    "hp": 70,
+    "damage": 3,
+    "armor": 0.6,
+    "energy": 12
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_emlekfa"
+    }
+   ]
+  }
+ },
+ "myc_hos_sporin": {
+  "inherits": "template_hero",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_hos_sporin.name",
+   "desc": "unit.myc_hos_sporin.desc",
+   "tags": [
+    "hero",
+    "ranged",
+    "organic"
+   ],
+   "hero": true,
+   "shape": "warrior",
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 360,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Attack": {
+   "damage": 18,
+   "range": 5,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Abilities": {
+   "list": []
+  },
+  "Cost": {
+   "resources": {
+    "wood": 210,
+    "meteor": 40,
+    "stone": 70
+   },
+   "supply": 5,
+   "time": 45
+  },
+  "Hero": {
+   "abilities": [
+    "h_spo_tuske",
+    "h_spo_rothadas",
+    "h_spo_kopeny",
+    "h_spo_raj"
+   ],
+   "growth": {
+    "hp": 38,
+    "damage": 3,
+    "armor": 0.3,
+    "energy": 16
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "myc_emlekfa"
+    }
+   ]
+  }
+ },
+ "myc_tetemgomba": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_tetemgomba.name",
+   "desc": "unit.myc_tetemgomba.desc",
+   "shape": "warrior",
+   "tags": [
+    "organic",
+    "melee",
+    "fungal"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 50,
+    "stone": 20
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 100,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "osztodas4"
+   ]
+  },
+  "Attack": {
+   "damage": 8,
+   "range": 0.35,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "rothadas"
+    }
+   ]
+  }
+ },
+ "myc_fagomba_orias": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_fagomba_orias.name",
+   "desc": "unit.myc_fagomba_orias.desc",
+   "shape": "golem",
+   "tags": [
+    "organic",
+    "melee",
+    "large",
+    "fungal"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 200,
+    "stone": 100,
+    "meteor": 40
+   },
+   "supply": 5,
+   "time": 36
+  },
+  "Health": {
+   "max": 700,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.0,
+   "radius": 0.75
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "gyokerkotes"
+   ]
+  },
+  "Attack": {
+   "damage": 24,
+   "range": 0.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "liget"
+    }
+   ]
+  }
+ },
+ "myc_alomszovo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "mycel",
+   "name": "unit.myc_alomszovo.name",
+   "desc": "unit.myc_alomszovo.desc",
+   "shape": "mushroom_caster",
+   "tags": [
+    "caster",
+    "ranged",
+    "organic",
+    "fungal"
+   ],
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "meteor": 70
+   },
+   "supply": 2,
+   "time": 24
+  },
+  "Health": {
+   "max": 110,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "alomspora"
+   ]
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "alom"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,297 @@
+{
+ "pin_jegdardas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "pinguu",
+   "name": "unit.pin_jegdardas.name",
+   "desc": "unit.pin_jegdardas.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_pinguu",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "spear",
+   "slow": 0.8,
+   "type_bonus": {
+    "lovas": 1.25
+   }
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_hopajzsos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "pinguu",
+   "name": "unit.pin_hopajzsos.name",
+   "desc": "unit.pin_hopajzsos.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_pinguu",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 185,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.3,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "pin_jegfal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_rozmarlovas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "pinguu",
+   "name": "unit.pin_rozmarlovas.name",
+   "desc": "unit.pin_rozmarlovas.desc",
+   "shape": "rider",
+   "tags": [
+    "ally",
+    "ally_pinguu",
+    "cavalry",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Health": {
+   "max": 340,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.52
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 3,
+   "time": 26,
+   "resources": {
+    "wood": 150,
+    "stone": 50
+   }
+  },
+  "Attack": {
+   "damage": 16,
+   "range": 0.4,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "pin_csuszas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_arapaly_saman": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "pinguu",
+   "name": "unit.pin_arapaly_saman.name",
+   "desc": "unit.pin_arapaly_saman.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_pinguu",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "pin_jeggyogyitas",
+    "pin_jeghullam"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_kajakos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "pinguu",
+   "name": "unit.pin_kajakos.name",
+   "desc": "unit.pin_kajakos.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_pinguu",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.2,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 3.5,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ],
+   "projectile": "spear"
+  },
+  "Abilities": {
+   "list": [
+    "pin_osveny"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ }
+}

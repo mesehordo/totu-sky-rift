@@ -1,0 +1,107 @@
+{
+ "shr_runavesest": {
+  "Identity": {
+   "kind": "research",
+   "faction": "shrissh_matah",
+   "name": "research.shr_runavesest.name",
+   "desc": "research.shr_runavesest.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ally_shrissh_matah"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_tollas_pancel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "shrissh_matah",
+   "name": "research.shr_tollas_pancel.name",
+   "desc": "research.shr_tollas_pancel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_shrissh_matah"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_szikla_kapaszkodas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "shrissh_matah",
+   "name": "research.shr_szikla_kapaszkodas.name",
+   "desc": "research.shr_szikla_kapaszkodas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15,
+    "filter": {
+     "tags": [
+      "ally_shrissh_matah"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ }
+}

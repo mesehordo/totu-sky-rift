@@ -1,0 +1,107 @@
+{
+ "dar_gyantapancel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "daresh",
+   "name": "research.dar_gyantapancel.name",
+   "desc": "research.dar_gyantapancel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_daresh"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_meregfullank": {
+  "Identity": {
+   "kind": "research",
+   "faction": "daresh",
+   "name": "research.dar_meregfullank.name",
+   "desc": "research.dar_meregfullank.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ally_daresh"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_rajzas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "daresh",
+   "name": "research.dar_rajzas.name",
+   "desc": "research.dar_rajzas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15,
+    "filter": {
+     "tags": [
+      "flyer"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ }
+}

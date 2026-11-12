@@ -1,0 +1,140 @@
+{
+ "gho_ragoko_banya": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ghoblin",
+   "name": "building.gho_ragoko_banya.name",
+   "desc": "building.gho_ragoko_banya.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "gho_koharapo",
+    "gho_sziklagorgeto"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_kocipo_malom": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ghoblin",
+   "name": "building.gho_kocipo_malom.name",
+   "desc": "building.gho_kocipo_malom.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "gho_pajzskoves",
+    "gho_meszkopo",
+    "gho_koheju_oreg",
+    "gho_meszbomba"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "gho_ragoko_banya"
+    },
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ },
+ "gho_fogadalomharang": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "ghoblin",
+   "name": "building.gho_fogadalomharang.name",
+   "desc": "building.gho_fogadalomharang.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "gho_kobor",
+    "gho_repedesismeret",
+    "gho_meszvakitas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "gho_ragoko_banya"
+    },
+    {
+     "ally": "ghoblin"
+    }
+   ]
+  }
+ }
+}

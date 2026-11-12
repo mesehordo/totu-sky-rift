@@ -1,0 +1,600 @@
+{
+ "elf_obszidian_penge": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_obszidian_penge.name",
+   "desc": "research.elf_obszidian_penge.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "elf_jade_hegyek": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_jade_hegyek.name",
+   "desc": "research.elf_jade_hegyek.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "elf_napegi_pajzs": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_napegi_pajzs.name",
+   "desc": "research.elf_napegi_pajzs.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "meteor": 100
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.shield",
+    "op": "add",
+    "value": 30
+   }
+  ]
+ },
+ "elf_csillagfeny": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_csillagfeny.name",
+   "desc": "research.elf_csillagfeny.desc"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 100,
+    "wood": 65,
+    "stone": 35
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.range",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   },
+   {
+    "path": "Vision.sight",
+    "op": "add",
+    "value": 1
+   }
+  ]
+ },
+ "elf_arany_fohasz": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_arany_fohasz.name",
+   "desc": "research.elf_arany_fohasz.desc"
+  },
+  "Cost": {
+   "resources": {
+    "faith": 120
+   },
+   "time": 40
+  },
+  "Rules": {
+   "faith_rate": 0.4
+  }
+ },
+ "elf_napszemu_papok": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_napszemu_papok.name",
+   "desc": "research.elf_napszemu_papok.desc"
+  },
+  "Cost": {
+   "resources": {
+    "faith": 100,
+    "stone": 100
+   },
+   "time": 45
+  },
+  "Rules": {
+   "energy_regen_ids": {
+    "elf_napszoro": 1.5
+   }
+  }
+ },
+ "elf_egi_kegy": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_egi_kegy.name",
+   "desc": "research.elf_egi_kegy.desc"
+  },
+  "Cost": {
+   "resources": {
+    "faith": 200
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 8,
+    "filter": {
+     "tags": [
+      "elf_csillagdardas"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 11,
+    "filter": {
+     "tags": [
+      "elf_csillagjos"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 12,
+    "filter": {
+     "tags": [
+      "elf_fopap"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 52,
+    "filter": {
+     "tags": [
+      "elf_hos_itzcoatl"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 18,
+    "filter": {
+     "tags": [
+      "elf_hos_szelai"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 33,
+    "filter": {
+     "tags": [
+      "elf_hos_xochi"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 7,
+    "filter": {
+     "tags": [
+      "elf_jade_ijasz"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 10,
+    "filter": {
+     "tags": [
+      "elf_jaguar"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 3,
+    "filter": {
+     "tags": [
+      "elf_kofarago"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 5,
+    "filter": {
+     "tags": [
+      "elf_napszoro"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 26,
+    "filter": {
+     "tags": [
+      "elf_obszidian_veto"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 21,
+    "filter": {
+     "tags": [
+      "elf_pancelos_raptor"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 16,
+    "filter": {
+     "tags": [
+      "elf_quetzal"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 13,
+    "filter": {
+     "tags": [
+      "elf_raptor_lovas"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 12,
+    "filter": {
+     "tags": [
+      "elf_tollas_harcos"
+     ]
+    }
+   },
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 42,
+    "filter": {
+     "tags": [
+      "elf_tollas_rex"
+     ]
+    }
+   }
+  ]
+ },
+ "elf_obszidian_vert": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_obszidian_vert.name",
+   "desc": "research.elf_obszidian_vert.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 65,
+    "stone": 150
+   },
+   "time": 40
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "elf_obszidian_penge_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_obszidian_penge_2.name",
+   "desc": "research.elf_obszidian_penge_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "elf_obszidian_penge"
+    }
+   ]
+  }
+ },
+ "elf_obszidian_penge_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_obszidian_penge_3.name",
+   "desc": "research.elf_obszidian_penge_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "elf_obszidian_penge_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "elf_jade_hegyek_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_jade_hegyek_2.name",
+   "desc": "research.elf_jade_hegyek_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 160
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "elf_jade_hegyek"
+    }
+   ]
+  }
+ },
+ "elf_jade_hegyek_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_jade_hegyek_3.name",
+   "desc": "research.elf_jade_hegyek_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 240,
+    "stone": 240,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "elf_jade_hegyek_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "elf_obszidian_vert_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_obszidian_vert_2.name",
+   "desc": "research.elf_obszidian_vert_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 105,
+    "stone": 240
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "elf_obszidian_vert"
+    }
+   ]
+  }
+ },
+ "elf_obszidian_vert_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_obszidian_vert_3.name",
+   "desc": "research.elf_obszidian_vert_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 155,
+    "stone": 360,
+    "meteor": 50
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "elf_obszidian_vert_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "elf_rezonancia": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_rezonancia.name",
+   "desc": "research.elf_rezonancia.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 100,
+    "meteor": 50
+   },
+   "time": 40
+  },
+  "Rules": {
+   "power_add": 2
+  }
+ },
+ "elf_napfolt": {
+  "Identity": {
+   "kind": "research",
+   "faction": "elves",
+   "name": "research.elf_napfolt.name",
+   "desc": "research.elf_napfolt.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 100
+   },
+   "time": 40
+  }
+ }
+}

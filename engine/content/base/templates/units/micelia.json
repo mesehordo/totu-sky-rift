@@ -1,0 +1,314 @@
+{
+ "mic_sporaszedo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "micelia",
+   "name": "unit.mic_sporaszedo.name",
+   "desc": "unit.mic_sporaszedo.desc",
+   "shape": "worker",
+   "worker": true,
+   "tags": [
+    "ally",
+    "ally_micelia",
+    "fungal",
+    "light",
+    "organic",
+    "worker"
+   ],
+   "sprite": "myc_sporaszedo",
+   "class": "munkas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 35,
+    "stone": 15
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 40,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.33
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 0.3,
+   "cooldown": 1.4,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "p_halozati_gyujtes"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_pofeteg": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "micelia",
+   "name": "unit.mic_pofeteg.name",
+   "desc": "unit.mic_pofeteg.desc",
+   "shape": "puffball",
+   "tags": [
+    "ally",
+    "ally_micelia",
+    "fungal",
+    "light",
+    "melee",
+    "organic"
+   ],
+   "sprite": "myc_pofeteg",
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 40,
+    "stone": 15
+   },
+   "supply": 1,
+   "time": 12
+  },
+  "Health": {
+   "max": 45,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.9,
+   "radius": 0.33
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 7,
+   "range": 0.3,
+   "cooldown": 0.9,
+   "targets": [
+    "ground"
+   ],
+   "death_burst": {
+    "damage": 12,
+    "radius": 1.4
+   }
+  },
+  "Abilities": {
+   "list": [
+    "osszeolvadas",
+    "osztodas3"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_fonalhalos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "micelia",
+   "name": "unit.mic_fonalhalos.name",
+   "desc": "unit.mic_fonalhalos.desc",
+   "shape": "mushroom_caster",
+   "tags": [
+    "ally",
+    "ally_micelia",
+    "caster",
+    "fungal",
+    "organic",
+    "ranged"
+   ],
+   "sprite": "myc_alomszovo",
+   "class": "varazslo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 90,
+    "meteor": 70
+   },
+   "supply": 2,
+   "time": 24
+  },
+  "Health": {
+   "max": 110,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.42
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Abilities": {
+   "list": [
+    "mic_fonalgyogyitas",
+    "mic_fonalhalo"
+   ]
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 5,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid"
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_tuskegomba_lovesz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "micelia",
+   "name": "unit.mic_tuskegomba_lovesz.name",
+   "desc": "unit.mic_tuskegomba_lovesz.desc",
+   "shape": "mushroom_archer",
+   "tags": [
+    "ally",
+    "ally_micelia",
+    "fungal",
+    "organic",
+    "ranged"
+   ],
+   "sprite": "myc_tuskegomba_lovesz",
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 85,
+    "stone": 30
+   },
+   "supply": 2,
+   "time": 19
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 5,
+   "cooldown": 1.3,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "acid",
+   "type_bonus": {
+    "repulo": 1.5
+   }
+  },
+  "Abilities": {
+   "list": [
+    "osztodas4"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_emlekor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "micelia",
+   "name": "unit.mic_emlekor.name",
+   "desc": "unit.mic_emlekor.desc",
+   "shape": "mushroom_guard",
+   "tags": [
+    "ally",
+    "ally_micelia",
+    "armored",
+    "fungal",
+    "melee",
+    "organic"
+   ],
+   "sprite": "myc_kalapos_or",
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 110,
+    "stone": 60
+   },
+   "supply": 2,
+   "time": 22
+  },
+  "Health": {
+   "max": 170,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.1,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.35,
+   "cooldown": 1.3,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "kalapfal",
+    "osztodas4"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ }
+}

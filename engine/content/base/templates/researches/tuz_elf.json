@@ -1,0 +1,107 @@
+{
+ "tuz_izzo_nyilhegy": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tuz_elf",
+   "name": "research.tuz_izzo_nyilhegy.name",
+   "desc": "research.tuz_izzo_nyilhegy.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_homokvihar": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tuz_elf",
+   "name": "research.tuz_homokvihar.name",
+   "desc": "research.tuz_homokvihar.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15,
+    "filter": {
+     "tags": [
+      "ally_tuz_elf"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_tuzallo_pancel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tuz_elf",
+   "name": "research.tuz_tuzallo_pancel.name",
+   "desc": "research.tuz_tuzallo_pancel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_tuz_elf"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ }
+}

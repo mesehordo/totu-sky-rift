@@ -1,0 +1,616 @@
+{
+ "wul_tanacssator": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_tanacssator.name",
+   "desc": "building.wul_tanacssator.desc",
+   "shape": "hq"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 365,
+    "stone": 35
+   },
+   "time": 70
+  },
+  "Footprint": {
+   "size": [
+    4,
+    4
+   ]
+  },
+  "Health": {
+   "max": 1400,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 10
+  },
+  "Supply": {
+   "provides": 0
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Dropoff": {
+   "resources": [
+    "wood",
+    "stone",
+    "meteor"
+   ]
+  },
+  "Producer": {
+   "units": [
+    "wul_gyujtogeto"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "wul_zsakmanyszerzes"
+   ]
+  },
+  "Powers": {
+   "list": [
+    "gp_osok_hivasa"
+   ]
+  }
+ },
+ "wul_tipi": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_tipi.name",
+   "desc": "building.wul_tipi.desc",
+   "shape": "house"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 85
+   },
+   "time": 20
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 350,
+   "armor": 0
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Supply": {
+   "provides": 0
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Producer": {
+   "units": [
+    "wul_landzsas",
+    "wul_landzsas_falka"
+   ]
+  }
+ },
+ "wul_harcosok_tuze": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_harcosok_tuze.name",
+   "desc": "building.wul_harcosok_tuze.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 20
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 800,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Producer": {
+   "units": [
+    "wul_ijas_vadasz",
+    "wul_ijas_vadasz_falka"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "wul_falkaharc"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_tipi"
+    }
+   ]
+  }
+ },
+ "wul_bolenykaram": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_bolenykaram.name",
+   "desc": "building.wul_bolenykaram.desc",
+   "shape": "pen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150
+   },
+   "time": 30
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Producer": {
+   "units": [
+    "wul_emu"
+   ]
+  },
+  "Supply": {
+   "provides": 0
+  }
+ },
+ "wul_samansator": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_samansator.name",
+   "desc": "building.wul_samansator.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "meteor": 50
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 700,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Producer": {
+   "units": [
+    "wul_holdsaman"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "wul_obszidian_landzsa",
+    "wul_obszidian_landzsa_2",
+    "wul_obszidian_landzsa_3",
+    "wul_holdfeny_ijak",
+    "wul_holdfeny_ijak_2",
+    "wul_holdfeny_ijak_3",
+    "wul_bolenybor",
+    "wul_bolenybor_2",
+    "wul_bolenybor_3",
+    "wul_falkaszellem",
+    "wul_nyomolvasas",
+    "wul_holdtolte"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_harcosok_tuze"
+    }
+   ]
+  }
+ },
+ "wul_mennydorges_szikla": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_mennydorges_szikla.name",
+   "desc": "building.wul_mennydorges_szikla.desc",
+   "shape": "aerie"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150,
+    "wood": 100,
+    "meteor": 75
+   },
+   "time": 50
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Producer": {
+   "units": [
+    "wul_mennydorgesmadar"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_samansator"
+    }
+   ]
+  }
+ },
+ "wul_szellemtotem": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_szellemtotem.name",
+   "desc": "building.wul_szellemtotem.desc",
+   "shape": "tower"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 50
+   },
+   "time": 28
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 450,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 9,
+   "detect": 7
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 7,
+   "cooldown": 1.2,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boomerang"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_harcosok_tuze"
+    }
+   ]
+  }
+ },
+ "wul_osok_kore": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_osok_kore.name",
+   "desc": "building.wul_osok_kore.desc",
+   "shape": "altar"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 100
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 2
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "wul_hos_tava",
+    "wul_hos_varnu",
+    "wul_hos_kurrin"
+   ]
+  },
+  "Mechanics": {
+   "altar": true
+  },
+  "Placement": {
+   "packable": true
+  }
+ },
+ "wul_bolenyakol": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_bolenyakol.name",
+   "desc": "building.wul_bolenyakol.desc",
+   "shape": "bisonpen"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 220,
+    "stone": 90
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Producer": {
+   "units": [
+    "wul_boleny",
+    "wul_csordavezer"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "wul_bolenylovaglas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_harcosok_tuze"
+    },
+    {
+     "path": "boleny"
+    }
+   ]
+  }
+ },
+ "wul_groomi_feszek": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_groomi_feszek.name",
+   "desc": "building.wul_groomi_feszek.desc",
+   "shape": "groominest"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 200,
+    "meteor": 60
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 800,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Producer": {
+   "units": [
+    "wul_groomi",
+    "wul_groomi_anya"
+   ]
+  },
+  "Researcher": {
+   "list": [
+    "wul_savkopes",
+    "wul_tuzkopes",
+    "wul_fagykopes"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "wul_harcosok_tuze"
+    },
+    {
+     "path": "groomi"
+    }
+   ]
+  }
+ },
+ "wul_totemkert": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_totemkert.name",
+   "desc": "building.wul_totemkert.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 220,
+    "meteor": 60
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "wul_totemfarago",
+    "wul_alomjaro",
+    "wul_totemorias"
+   ]
+  },
+  "Placement": {
+   "packable": true
+  },
+  "Requirements": {
+   "all": [
+    {
+     "path": "osok"
+    }
+   ]
+  }
+ },
+ "wul_diplomacia": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_diplomacia.name",
+   "desc": "building.wul_diplomacia.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 180,
+    "stone": 120
+   },
+   "time": 45
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 900,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Mechanics": {
+   "diplomacy": true
+  }
+ },
+ "wul_egko": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "wullof",
+   "name": "building.wul_egko.name",
+   "desc": "building.wul_egko.desc",
+   "shape": "egko"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 75
+   },
+   "time": 15
+  },
+  "Footprint": {
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Health": {
+   "max": 300,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Mechanics": {
+   "rift_source": true
+  },
+  "Placement": {
+   "no_power": true,
+   "no_creep": true,
+   "no_pond": true,
+   "no_light": true,
+   "foundation_free": true
+  }
+ }
+}

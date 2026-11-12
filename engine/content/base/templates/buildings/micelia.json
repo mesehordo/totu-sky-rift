@@ -1,0 +1,142 @@
+{
+ "mic_termotest": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "micelia",
+   "name": "building.mic_termotest.name",
+   "desc": "building.mic_termotest.desc",
+   "shape": "barracks",
+   "sprite": "myc_termotest"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "mic_sporaszedo",
+    "mic_pofeteg",
+    "mic_fonalhalos"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_szivgomba": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "micelia",
+   "name": "building.mic_szivgomba.name",
+   "desc": "building.mic_szivgomba.desc",
+   "shape": "barracks",
+   "sprite": "myc_szivgomba"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    2,
+    2
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Producer": {
+   "units": [
+    "mic_tuskegomba_lovesz",
+    "mic_emlekor"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "mic_termotest"
+    },
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ },
+ "mic_emlekfa": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "micelia",
+   "name": "building.mic_emlekfa.name",
+   "desc": "building.mic_emlekfa.desc",
+   "shape": "tech",
+   "sprite": "myc_emlekfa"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "mic_osok_emleke",
+    "mic_sporafonal",
+    "mic_szivdobbanas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "mic_termotest"
+    },
+    {
+     "ally": "micelia"
+    }
+   ]
+  }
+ }
+}

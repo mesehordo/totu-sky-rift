@@ -1,0 +1,346 @@
+{
+ "tuz_homokszablyas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tuz_elf",
+   "name": "unit.tuz_homokszablyas.name",
+   "desc": "unit.tuz_homokszablyas.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_tuz_elf",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 10,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "tuz_homokroham"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_parazsijasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tuz_elf",
+   "name": "unit.tuz_parazsijasz.name",
+   "desc": "unit.tuz_parazsijasz.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_tuz_elf",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 13,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_homokvihartancos": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tuz_elf",
+   "name": "unit.tuz_homokvihartancos.name",
+   "desc": "unit.tuz_homokvihartancos.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_tuz_elf",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.0,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "tuz_pengetanc"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_hoszovo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tuz_elf",
+   "name": "unit.tuz_hoszovo.name",
+   "desc": "unit.tuz_hoszovo.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_tuz_elf",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "tuz_tuzfal"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_delibab_csalo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tuz_elf",
+   "name": "unit.tuz_delibab_csalo.name",
+   "desc": "unit.tuz_delibab_csalo.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_tuz_elf",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "tuz_delibab"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ },
+ "tuz_delibab_mas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tuz_elf",
+   "name": "unit.tuz_delibab_mas.name",
+   "desc": "unit.tuz_delibab_mas.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_tuz_elf",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "summoned": true,
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 40,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 2.7,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {}
+  },
+  "Attack": {
+   "damage": 5,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tuz_elf"
+    }
+   ]
+  }
+ }
+}

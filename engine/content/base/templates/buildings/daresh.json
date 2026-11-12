@@ -1,0 +1,139 @@
+{
+ "dar_agyagkaptar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "daresh",
+   "name": "building.dar_agyagkaptar.name",
+   "desc": "building.dar_agyagkaptar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "dar_fullanclandzsas",
+    "dar_gyantapajzsos"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_szarnyudvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "daresh",
+   "name": "building.dar_szarnyudvar.name",
+   "desc": "building.dar_szarnyudvar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "dar_rajenekes",
+    "dar_darazsraj",
+    "dar_szarnyas_ijasz"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "dar_agyagkaptar"
+    },
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ },
+ "dar_gyantamuhely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "daresh",
+   "name": "building.dar_gyantamuhely.name",
+   "desc": "building.dar_gyantamuhely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "dar_gyantapancel",
+    "dar_meregfullank",
+    "dar_rajzas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "dar_agyagkaptar"
+    },
+    {
+     "ally": "daresh"
+    }
+   ]
+  }
+ }
+}

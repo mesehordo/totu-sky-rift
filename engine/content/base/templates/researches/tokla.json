@@ -1,0 +1,107 @@
+{
+ "tok_busomaszk": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tokla",
+   "name": "research.tok_busomaszk.name",
+   "desc": "research.tok_busomaszk.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ally_tokla"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ },
+ "tok_fagyos_fegyver": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tokla",
+   "name": "research.tok_fagyos_fegyver.name",
+   "desc": "research.tok_fagyos_fegyver.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_tokla"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ },
+ "tok_hagoorseg": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tokla",
+   "name": "research.tok_hagoorseg.name",
+   "desc": "research.tok_hagoorseg.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 60,
+    "filter": {
+     "tags": [
+      "large"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ }
+}

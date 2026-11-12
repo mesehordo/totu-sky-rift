@@ -1,0 +1,102 @@
+{
+ "ten_lombsuhanas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tenduur",
+   "name": "research.ten_lombsuhanas.name",
+   "desc": "research.ten_lombsuhanas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 15,
+    "filter": {
+     "tags": [
+      "ally_tenduur"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_tetovalt_vedelem": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tenduur",
+   "name": "research.ten_tetovalt_vedelem.name",
+   "desc": "research.ten_tetovalt_vedelem.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_tenduur"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_lampasfeny": {
+  "Identity": {
+   "kind": "research",
+   "faction": "tenduur",
+   "name": "research.ten_lampasfeny.name",
+   "desc": "research.ten_lampasfeny.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Vision.sight",
+    "op": "add",
+    "value": 1
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ }
+}

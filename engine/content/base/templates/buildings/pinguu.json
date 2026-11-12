@@ -1,0 +1,139 @@
+{
+ "pin_jegcsarnok": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "pinguu",
+   "name": "building.pin_jegcsarnok.name",
+   "desc": "building.pin_jegcsarnok.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "pin_jegdardas",
+    "pin_hopajzsos",
+    "pin_rozmarlovas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_arapalymuhely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "pinguu",
+   "name": "building.pin_arapalymuhely.name",
+   "desc": "building.pin_arapalymuhely.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "pin_arapaly_saman",
+    "pin_kajakos"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "pin_jegcsarnok"
+    },
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ },
+ "pin_orlangszentely": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "pinguu",
+   "name": "building.pin_orlangszentely.name",
+   "desc": "building.pin_orlangszentely.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "pin_osvenyvezetok",
+    "pin_jegpancel",
+    "pin_hidegtures"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "pin_jegcsarnok"
+    },
+    {
+     "ally": "pinguu"
+    }
+   ]
+  }
+ }
+}

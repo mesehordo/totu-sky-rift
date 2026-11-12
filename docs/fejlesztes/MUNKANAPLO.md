@@ -269,3 +269,10 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Tesztek:** 16 (ebből 6 új), mind zöld; CI mind a 6 feladat zöld.
 **Még hátra az M2-ből:** JSON-séma ellenőrzés, a mai adatok konvertere (ADR-005/9), állapothash a világra, snapshot, replay, fejléc nélküli futtató, és a kapu: egy replay mind az öt rendszeren ugyanazt a hash-sorozatot adja.
 
+## 2026-11-12 – M2, 3. lépés: konverter, séma, a valódi tartalom betöltése
+
+**Konverter** (`tools/konverter_motor.py`, `--check` móddal): a mai adatokból 74 fájl az `engine/content/base/` alá – alapsablonok, 22 faj, egységek, épületek, kutatások (a statnövelők D24-módosítókká), képességek, tárgyak (bónusz → módosító), 13 állapot, fajok (névsor, ágak, faji paraméterek), `game.json`, fordítások (`hu.po`, `en.po`, 1812 kulcs), jelentés (`KONVERZIO.md`). 4499 kulcs komponensbe, 7 kulcs (14 előfordulás) `Legacy`-be; a képességek (`Spec`), a faji paraméterek és a kutatási szabályok mai formában – a D22/D24 modellre az M7 alakítja őket.
+**Séma:** `engine/content/schema/entity.schema.json`, `other.schema.json`; C++ ellenőrző (`content/schema`: type, properties, required, additionalProperties, items, enum, minimum/maximum fixpontos összevetéssel, `$ref`).
+**Betöltő** (`content/loader`): VFS → sablontárak → séma. A valódi tartalom betöltése két azonosító-ütközést talált (épület és kutatás, kutatás és képesség azonos néven) – megoldás: fajtánkénti névtér (ADR-005 kiegészítés).
+**Eredmény:** 220 egység, 152 épület, 168 kutatás, 269 képesség, 15 tárgy, 13 állapot, 22 faj – mind érvényes; 18 teszt zöld.
+

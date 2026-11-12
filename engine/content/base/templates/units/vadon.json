@@ -1,0 +1,262 @@
+{
+ "vad_kristalybogar": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "vadon",
+   "name": "unit.vad_kristalybogar.name",
+   "desc": "unit.vad_kristalybogar.desc",
+   "shape": "bug",
+   "tags": [
+    "creep",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 40,
+    "stone": 20
+   },
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 170,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.6,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 6
+  },
+  "Hero": {
+   "xp": 45
+  },
+  "Attack": {
+   "damage": 11,
+   "range": 0.3,
+   "cooldown": 1.1,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "kristalypancel"
+   ]
+  }
+ },
+ "vad_hamufarkas": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "vadon",
+   "name": "unit.vad_hamufarkas.name",
+   "desc": "unit.vad_hamufarkas.desc",
+   "shape": "rider",
+   "tags": [
+    "creep",
+    "melee",
+    "organic"
+   ],
+   "class": "lovas"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 45,
+    "stone": 25
+   },
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 230,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.6,
+   "radius": 0.5
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Hero": {
+   "xp": 55
+  },
+  "Attack": {
+   "damage": 15,
+   "range": 0.4,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "falkavadasz"
+   ]
+  }
+ },
+ "vad_eterliderc": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "vadon",
+   "name": "unit.vad_eterliderc.name",
+   "desc": "unit.vad_eterliderc.desc",
+   "shape": "caster",
+   "tags": [
+    "creep",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 50
+   },
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 190,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.8,
+   "radius": 0.45
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Hero": {
+   "xp": 60
+  },
+  "Attack": {
+   "damage": 17,
+   "range": 4,
+   "cooldown": 1.4,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "eterloket"
+   ]
+  },
+  "Energy": {
+   "max": 100
+  }
+ },
+ "vad_kotroll": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "vadon",
+   "name": "unit.vad_kotroll.name",
+   "desc": "unit.vad_kotroll.desc",
+   "shape": "golem",
+   "tags": [
+    "creep",
+    "melee",
+    "large",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 150
+   },
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 650,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 2.2,
+   "radius": 0.75
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Hero": {
+   "xp": 140
+  },
+  "Attack": {
+   "damage": 32,
+   "range": 0.5,
+   "cooldown": 1.6,
+   "targets": [
+    "ground"
+   ],
+   "splash": 0.8
+  },
+  "Abilities": {
+   "list": [
+    "foldrenges"
+   ]
+  }
+ },
+ "vad_ercgolem": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "vadon",
+   "name": "unit.vad_ercgolem.name",
+   "desc": "unit.vad_ercgolem.desc",
+   "shape": "golem",
+   "tags": [
+    "creep",
+    "melee",
+    "large"
+   ],
+   "class": "orias"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 300
+   },
+   "supply": 0,
+   "time": 1
+  },
+  "Health": {
+   "max": 1600,
+   "armor": 5
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.95
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Hero": {
+   "xp": 400
+  },
+  "Attack": {
+   "damage": 55,
+   "range": 0.6,
+   "cooldown": 2.0,
+   "targets": [
+    "ground"
+   ],
+   "splash": 1.2
+  },
+  "Abilities": {
+   "list": [
+    "foldrenges",
+    "kristalypancel"
+   ]
+  }
+ }
+}

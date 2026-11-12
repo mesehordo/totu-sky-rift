@@ -1,0 +1,107 @@
+{
+ "mho_kiegyensulyozott_penge": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mhonyo",
+   "name": "research.mho_kiegyensulyozott_penge.name",
+   "desc": "research.mho_kiegyensulyozott_penge.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_szikrapancel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mhonyo",
+   "name": "research.mho_szikrapancel.name",
+   "desc": "research.mho_szikrapancel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "ally_mhonyo"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ },
+ "mho_gepjavitas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "mhonyo",
+   "name": "research.mho_gepjavitas.name",
+   "desc": "research.mho_gepjavitas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 120,
+    "meteor": 40
+   },
+   "time": 55
+  },
+  "Modifiers": [
+   {
+    "path": "Health.max",
+    "op": "add",
+    "value": 60,
+    "filter": {
+     "tags": [
+      "mech"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "ally": "mhonyo"
+    }
+   ]
+  }
+ }
+}

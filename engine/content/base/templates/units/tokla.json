@@ -1,0 +1,296 @@
+{
+ "tok_fagyorias": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tokla",
+   "name": "unit.tok_fagyorias.name",
+   "desc": "unit.tok_fagyorias.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_tokla",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 520,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.9,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ],
+   "slow": 0.7
+  },
+  "Abilities": {
+   "list": [
+    "tok_fagydobbantas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ },
+ "tok_harangjaro": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tokla",
+   "name": "unit.tok_harangjaro.name",
+   "desc": "unit.tok_harangjaro.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_tokla",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "tok_harangszo",
+    "tok_rontasuzes"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ },
+ "tok_hovihar_buso": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tokla",
+   "name": "unit.tok_hovihar_buso.name",
+   "desc": "unit.tok_hovihar_buso.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_tokla",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "tok_hovihar"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ },
+ "tok_zuzmaraturpe": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tokla",
+   "name": "unit.tok_zuzmaraturpe.name",
+   "desc": "unit.tok_zuzmaraturpe.desc",
+   "shape": "shieldbearer",
+   "tags": [
+    "ally",
+    "ally_tokla",
+    "armored",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "landzsas"
+  },
+  "Health": {
+   "max": 165,
+   "armor": 2
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.36
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 18,
+   "resources": {
+    "wood": 65,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 0.3,
+   "cooldown": 1.2,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ },
+ "tok_jegveto_turpe": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tokla",
+   "name": "unit.tok_jegveto_turpe.name",
+   "desc": "unit.tok_jegveto_turpe.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_tokla",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 5.5,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "boulder",
+   "slow": 0.8
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tokla"
+    }
+   ]
+  }
+ }
+}

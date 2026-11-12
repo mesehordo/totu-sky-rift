@@ -1,0 +1,297 @@
+{
+ "ten_lampasor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tenduur",
+   "name": "unit.ten_lampasor.name",
+   "desc": "unit.ten_lampasor.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_tenduur",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 11
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "ten_lampasfeny"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_szelhimzo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tenduur",
+   "name": "unit.ten_szelhimzo.name",
+   "desc": "unit.ten_szelhimzo.desc",
+   "shape": "caster",
+   "tags": [
+    "ally",
+    "ally_tenduur",
+    "caster",
+    "organic",
+    "ranged"
+   ],
+   "class": "varazslo"
+  },
+  "Health": {
+   "max": 80,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.4,
+   "radius": 0.37
+  },
+  "Vision": {
+   "sight": 9
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 26,
+   "resources": {
+    "wood": 70,
+    "stone": 25,
+    "meteor": 50
+   }
+  },
+  "Energy": {
+   "max": 150
+  },
+  "Attack": {
+   "damage": 6,
+   "range": 4,
+   "cooldown": 1.6,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "magic"
+  },
+  "Abilities": {
+   "list": [
+    "ten_levelorveny"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_tovisvivo": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tenduur",
+   "name": "unit.ten_tovisvivo.name",
+   "desc": "unit.ten_tovisvivo.desc",
+   "shape": "warrior",
+   "tags": [
+    "ally",
+    "ally_tenduur",
+    "infantry",
+    "melee",
+    "organic"
+   ],
+   "class": "kozelharcos"
+  },
+  "Health": {
+   "max": 110,
+   "armor": 1
+  },
+  "Movement": {
+   "speed": 3.1,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Cost": {
+   "supply": 1,
+   "time": 14,
+   "resources": {
+    "wood": 50,
+    "stone": 15
+   }
+  },
+  "Attack": {
+   "damage": 9,
+   "range": 0.3,
+   "cooldown": 1.0,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "ten_szokkenes"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_lombijasz": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tenduur",
+   "name": "unit.ten_lombijasz.name",
+   "desc": "unit.ten_lombijasz.desc",
+   "shape": "archer",
+   "tags": [
+    "ally",
+    "ally_tenduur",
+    "infantry",
+    "organic",
+    "ranged"
+   ],
+   "class": "lovesz"
+  },
+  "Health": {
+   "max": 85,
+   "armor": 0
+  },
+  "Movement": {
+   "speed": 2.5,
+   "radius": 0.38
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 2,
+   "time": 20,
+   "resources": {
+    "wood": 70,
+    "stone": 25
+   }
+  },
+  "Attack": {
+   "damage": 12,
+   "range": 6,
+   "cooldown": 1.5,
+   "targets": [
+    "ground",
+    "air"
+   ],
+   "projectile": "arrow"
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ },
+ "ten_tolgyor": {
+  "inherits": "template_unit",
+  "Identity": {
+   "kind": "unit",
+   "faction": "tenduur",
+   "name": "unit.ten_tolgyor.name",
+   "desc": "unit.ten_tolgyor.desc",
+   "shape": "golem",
+   "tags": [
+    "ally",
+    "ally_tenduur",
+    "large",
+    "melee",
+    "organic"
+   ],
+   "class": "orias"
+  },
+  "Health": {
+   "max": 600,
+   "armor": 3
+  },
+  "Movement": {
+   "speed": 1.7,
+   "radius": 0.6
+  },
+  "Vision": {
+   "sight": 8
+  },
+  "Cost": {
+   "supply": 4,
+   "time": 36,
+   "resources": {
+    "wood": 180,
+    "stone": 90,
+    "meteor": 40
+   }
+  },
+  "Attack": {
+   "damage": 26,
+   "range": 0.5,
+   "cooldown": 1.8,
+   "targets": [
+    "ground"
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "ten_gyokerdobbantas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "tenduur"
+    }
+   ]
+  }
+ }
+}

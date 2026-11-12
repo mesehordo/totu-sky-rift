@@ -1,0 +1,451 @@
+{
+ "cro_inas_labak": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_inas_labak.name",
+   "desc": "research.cro_inas_labak.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 165,
+    "stone": 35
+   },
+   "time": 50
+  },
+  "Modifiers": [
+   {
+    "path": "Movement.speed_pct",
+    "op": "add",
+    "value": 30,
+    "filter": {
+     "tags": [
+      "swarm"
+     ]
+    }
+   }
+  ]
+ },
+ "cro_savas_tuskek": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_savas_tuskek.name",
+   "desc": "research.cro_savas_tuskek.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 165,
+    "stone": 35
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ]
+ },
+ "cro_kitinpancel": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_kitinpancel.name",
+   "desc": "research.cro_kitinpancel.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 200,
+    "wood": 100
+   },
+   "time": 70
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ]
+ },
+ "cro_eletnedv": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_eletnedv.name",
+   "desc": "research.cro_eletnedv.desc"
+  },
+  "Cost": {
+   "resources": {
+    "meteor": 100,
+    "wood": 65,
+    "stone": 35
+   },
+   "time": 60
+  },
+  "Modifiers": [
+   {
+    "path": "Health.regen",
+    "op": "add",
+    "value": 1
+   }
+  ]
+ },
+ "cro_tuskemezo": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_tuskemezo.name",
+   "desc": "research.cro_tuskemezo.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 75
+   },
+   "time": 35
+  },
+  "Rules": {
+   "spike_size": 2,
+   "spike_max": 24
+  }
+ },
+ "cro_eles_karmok": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_eles_karmok.name",
+   "desc": "research.cro_eles_karmok.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 80
+   },
+   "time": 35
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ]
+ },
+ "cro_gyors_larva": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_gyors_larva.name",
+   "desc": "research.cro_gyors_larva.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 120,
+    "stone": 100
+   },
+   "time": 40
+  },
+  "Rules": {
+   "larva_mult": 1.25,
+   "larva_add": 1
+  }
+ },
+ "cro_melyebb_rothasztas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_melyebb_rothasztas.name",
+   "desc": "research.cro_melyebb_rothasztas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 120
+   },
+   "time": 40
+  },
+  "Rules": {
+   "rot_mult": 1.5,
+   "rot_cap": 9.0
+  }
+ },
+ "cro_benito_mereg": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_benito_mereg.name",
+   "desc": "research.cro_benito_mereg.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 100,
+    "stone": 100,
+    "meteor": 40
+   },
+   "time": 45
+  },
+  "Rules": {
+   "spike_mult": 2.0,
+   "poison_attacks": {
+    "tags": [
+     "ranged"
+    ],
+    "dps": 4,
+    "dur": 3
+   }
+  }
+ },
+ "cro_melysegi_gyogyulas": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_melysegi_gyogyulas.name",
+   "desc": "research.cro_melysegi_gyogyulas.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 80,
+    "stone": 80,
+    "meteor": 60
+   },
+   "time": 40
+  },
+  "Rules": {
+   "creep_regen_mult": 2.0
+  }
+ },
+ "cro_savas_tuskek_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_savas_tuskek_2.name",
+   "desc": "research.cro_savas_tuskek_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 265,
+    "stone": 55
+   },
+   "time": 75
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "cro_savas_tuskek"
+    }
+   ]
+  }
+ },
+ "cro_savas_tuskek_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_savas_tuskek_3.name",
+   "desc": "research.cro_savas_tuskek_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 395,
+    "stone": 85,
+    "meteor": 50
+   },
+   "time": 90
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "ranged"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "cro_savas_tuskek_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "cro_kitinpancel_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_kitinpancel_2.name",
+   "desc": "research.cro_kitinpancel_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 320,
+    "wood": 160
+   },
+   "time": 87
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "cro_kitinpancel"
+    }
+   ]
+  }
+ },
+ "cro_kitinpancel_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_kitinpancel_3.name",
+   "desc": "research.cro_kitinpancel_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "stone": 480,
+    "wood": 240,
+    "meteor": 50
+   },
+   "time": 105
+  },
+  "Modifiers": [
+   {
+    "path": "Health.armor",
+    "op": "add",
+    "value": 1,
+    "filter": {
+     "tags": [
+      "organic"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "cro_kitinpancel_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ },
+ "cro_eles_karmok_2": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_eles_karmok_2.name",
+   "desc": "research.cro_eles_karmok_2.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 190,
+    "stone": 130
+   },
+   "time": 43
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "cro_eles_karmok"
+    }
+   ]
+  }
+ },
+ "cro_eles_karmok_3": {
+  "Identity": {
+   "kind": "research",
+   "faction": "croftian",
+   "name": "research.cro_eles_karmok_3.name",
+   "desc": "research.cro_eles_karmok_3.desc"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 290,
+    "stone": 190,
+    "meteor": 50
+   },
+   "time": 52
+  },
+  "Modifiers": [
+   {
+    "path": "Attack.damage",
+    "op": "add",
+    "value": 2,
+    "filter": {
+     "tags": [
+      "melee"
+     ]
+    }
+   }
+  ],
+  "Requirements": {
+   "all": [
+    {
+     "research": "cro_eles_karmok_2"
+    },
+    {
+     "ascended": true
+    }
+   ]
+  }
+ }
+}

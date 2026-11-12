@@ -1,0 +1,288 @@
+{
+ "status_fire": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.fire.name",
+   "status": "status.fire.status"
+  },
+  "Status": {
+   "dur": 3.0,
+   "ratio": 0.25,
+   "min_dps": 2.0,
+   "max_dps": 25.0
+  }
+ },
+ "status_ice": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.ice.name",
+   "status": "status.ice.status"
+  },
+  "Status": {
+   "dur": 2.0,
+   "slow": 0.6
+  }
+ },
+ "status_lightning": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.lightning.name",
+   "status": "status.lightning.status"
+  },
+  "Status": {
+   "dur": 0.4,
+   "cooldown": 3.0
+  }
+ },
+ "status_poison": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.poison.name",
+   "status": "status.poison.status"
+  },
+  "Status": {
+   "dur": 4.0,
+   "ratio": 0.15,
+   "min_dps": 1.5,
+   "max_dps": 15.0
+  }
+ },
+ "status_water": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.water.name",
+   "status": "status.water.status"
+  },
+  "Status": {
+   "dur": 5.0,
+   "shock_mult": 2.0
+  }
+ },
+ "status_root": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.root.name",
+   "status": "status.root.status"
+  },
+  "Status": {
+   "dur": 2.5
+  }
+ },
+ "status_sleep": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.sleep.name",
+   "status": "status.sleep.status"
+  },
+  "Status": {
+   "dur": 6.0
+  }
+ },
+ "status_fear": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.fear.name",
+   "status": "status.fear.status"
+  },
+  "Status": {
+   "dur": 1.6,
+   "flee": 3.0
+  }
+ },
+ "status_blind": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.blind.name",
+   "status": "status.blind.status"
+  },
+  "Status": {
+   "dur": 4.0,
+   "miss": 0.5
+  }
+ },
+ "status_wind": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.wind.name",
+   "status": "status.wind.status"
+  },
+  "Status": {
+   "push": 0.45
+  }
+ },
+ "status_sunder": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.sunder.name",
+   "status": "status.sunder.status"
+  },
+  "Status": {
+   "dur": 6.0,
+   "armor": 2
+  }
+ },
+ "status_silence": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.silence.name",
+   "status": "status.silence.status"
+  },
+  "Status": {
+   "dur": 3.0
+  }
+ },
+ "status_mark": {
+  "Identity": {
+   "kind": "status",
+   "name": "status.mark.name",
+   "status": "status.mark.status"
+  },
+  "Status": {
+   "dur": 8.0,
+   "dmg_mult": 1.2
+  }
+ },
+ "_hozzarendeles": {
+  "abilities": {
+   "alomspora": "sleep",
+   "fagykopes": "ice",
+   "gal_gyokergancs": "root",
+   "gho_meszrobbanas": "blind",
+   "gp_arhullam": "water",
+   "gp_isteni_szel": "wind",
+   "gp_napcsova": "fire",
+   "gp_ordan_villama": "lightning",
+   "gyokerkotes": "root",
+   "h_gya_halo": "root",
+   "h_gya_rengés": "root",
+   "h_hja_fagyott_ido": "ice",
+   "h_hja_szilank": "ice",
+   "h_hja_vihar": "ice",
+   "h_kar_szel": "wind",
+   "h_kar_tajfun": "wind",
+   "h_kar_villam": "lightning",
+   "h_keth_csap": "poison",
+   "h_kva_arasztas": "water",
+   "h_kva_ozonviz": "water",
+   "h_mor_gyokerkotes": "root",
+   "h_ragna_hosszutel": "ice",
+   "h_shi_uvoltes": "fear",
+   "h_spo_tuske": "poison",
+   "h_ssa_felho": "poison",
+   "h_szelai_napvihar": "fire",
+   "h_vor_sugar": "poison",
+   "huk_arhullam": "water",
+   "medveuvoltes": "fear",
+   "meteorhivas": "fire",
+   "mic_fonalhalo": "root",
+   "napkitores": "fire",
+   "napvihar": "fire",
+   "nii_arhullam": "water",
+   "nil_orveny": "water",
+   "oon_szelvihar": "wind",
+   "oon_villamcsapas": "lightning",
+   "pin_jeghullam": "ice",
+   "savkopes": "poison",
+   "savtocsa": "poison",
+   "sporaeso": "poison",
+   "sporarobbanas": "poison",
+   "sporatuske": "poison",
+   "ten_gyokerdobbantas": "root",
+   "ten_levelorveny": "wind",
+   "tok_fagydobbantas": "ice",
+   "tok_hovihar": "ice",
+   "tollkorona_uvoltes": "fear",
+   "tuz_tuzfal": "fire",
+   "tuzkopes": "fire",
+   "villamcsapas": "lightning",
+   "h_vor_robbanas": "sunder",
+   "h_aka_rengetes": "sunder",
+   "mho_gozkitores": "sunder",
+   "h_szelai_levalasztas": "silence",
+   "shr_robbanorunak": "silence",
+   "h_var_kod": "silence",
+   "h_tava_nyil": "mark",
+   "h_nera_loves": "mark",
+   "h_bja_szigony": "mark",
+   "csillagdarda": "mark"
+  },
+  "units": {
+   "cro_hos_keth": "poison",
+   "cro_hos_ssarha": "poison",
+   "cro_ostromtaraj": "poison",
+   "cro_savkopo": "poison",
+   "cro_szarnyas_rem": "poison",
+   "cro_tuskekopo": "poison",
+   "dar_fullanclandzsas": "poison",
+   "elf_napszoro": "fire",
+   "gal_sporakopo": "poison",
+   "huk_aradas_papja": "water",
+   "mho_szikraor": "fire",
+   "mic_tuskegomba_lovesz": "poison",
+   "myc_hos_sporin": "poison",
+   "myc_lebego_pofeteg": "poison",
+   "myc_oriaspofeteg": "poison",
+   "myc_pofeteg": "poison",
+   "myc_rothaszto": "poison",
+   "myc_tuskegomba_lovesz": "poison",
+   "nii_arapalypap": "water",
+   "nil_makara_idezo": "water",
+   "nil_naga": "poison",
+   "oon_hos_karasu": "lightning",
+   "oon_viharhivo": "lightning",
+   "pin_arapaly_saman": "ice",
+   "tok_fagyorias": "ice",
+   "tok_hovihar_buso": "ice",
+   "tok_jegveto_turpe": "ice",
+   "tok_zuzmaraturpe": "ice",
+   "tuz_hoszovo": "fire",
+   "tuz_parazsijasz": "fire",
+   "urs_hos_hjalmar": "ice",
+   "wul_mennydorgesmadar": "lightning",
+   "urs_ostromszan": "sunder",
+   "imp_onager": "sunder",
+   "oon_kohajito": "sunder",
+   "gho_sziklagorgeto": "sunder",
+   "huk_teknos_mozsar": "sunder",
+   "urs_runaorias": "sunder",
+   "wul_totemorias": "sunder",
+   "oon_hos_akahana": "sunder",
+   "elf_jaguar": "mark",
+   "cro_vadaszkarmos": "mark"
+  },
+  "kezi": {
+   "abilities": {
+    "h_vor_robbanas": "sunder",
+    "h_aka_rengetes": "sunder",
+    "mho_gozkitores": "sunder",
+    "h_szelai_levalasztas": "silence",
+    "shr_robbanorunak": "silence",
+    "h_var_kod": "silence",
+    "h_tava_nyil": "mark",
+    "h_nera_loves": "mark",
+    "h_bja_szigony": "mark",
+    "csillagdarda": "mark"
+   },
+   "units": {
+    "mho_hajnalpenge": null,
+    "cro_csapszolga": null,
+    "elf_hos_szelai": null,
+    "wul_groomi": null,
+    "myc_alomszovo": null,
+    "mic_fonalhalos": null,
+    "gho_meszkopo": null,
+    "pin_hopajzsos": null,
+    "urs_ostromszan": "sunder",
+    "imp_onager": "sunder",
+    "oon_kohajito": "sunder",
+    "gho_sziklagorgeto": "sunder",
+    "huk_teknos_mozsar": "sunder",
+    "urs_runaorias": "sunder",
+    "wul_totemorias": "sunder",
+    "oon_hos_akahana": "sunder",
+    "elf_jaguar": "mark",
+    "cro_vadaszkarmos": "mark"
+   }
+  }
+ }
+}

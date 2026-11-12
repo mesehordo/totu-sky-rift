@@ -1,0 +1,139 @@
+{
+ "shr_tollvar": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "shrissh_matah",
+   "name": "building.shr_tollvar.name",
+   "desc": "building.shr_tollvar.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "shr_runaszovo",
+    "shr_sziklafuto",
+    "shr_pajzsbogar"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_tuskekelteto": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "shrissh_matah",
+   "name": "building.shr_tuskekelteto.name",
+   "desc": "building.shr_tuskekelteto.desc",
+   "shape": "barracks"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 160,
+    "stone": 80
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Producer": {
+   "units": [
+    "shr_tuszunyog",
+    "shr_tuskelovo"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "shr_tollvar"
+    },
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ },
+ "shr_runaszellozo": {
+  "inherits": "template_building",
+  "Identity": {
+   "kind": "building",
+   "faction": "shrissh_matah",
+   "name": "building.shr_runaszellozo.name",
+   "desc": "building.shr_runaszellozo.desc",
+   "shape": "tech"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 150,
+    "stone": 120
+   },
+   "time": 38
+  },
+  "Footprint": {
+   "size": [
+    3,
+    3
+   ]
+  },
+  "Health": {
+   "max": 850,
+   "armor": 1
+  },
+  "Vision": {
+   "sight": 7
+  },
+  "Researcher": {
+   "list": [
+    "shr_runavesest",
+    "shr_tollas_pancel",
+    "shr_szikla_kapaszkodas"
+   ]
+  },
+  "Requirements": {
+   "all": [
+    {
+     "building": "shr_tollvar"
+    },
+    {
+     "ally": "shrissh_matah"
+    }
+   ]
+  }
+ }
+}
