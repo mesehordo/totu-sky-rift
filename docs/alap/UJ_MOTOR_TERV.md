@@ -182,8 +182,9 @@ hadjárattérkép), saját játékbeli névvel; K4 = a 0 A.D. összes rendszere 
 3. **A két játékmód neve (M12 előtt).**
 4. **A korábbi D2 (raylib-cs):** a C++-irányban a megjelenítőt az M1 ADR-je dönti el, méréssel.
 
-**Szakmai ADR-ek (én készítem, jóváhagyásra):** ADR-002 motornyelv és szkript (ez a terv); ADR-003 RHI;
-ADR-004 számábrázolás; ADR-005 adat- és sablonformátum; ADR-006 hálózat.
+**Szakmai ADR-ek (jóváhagyásra):** [ADR-002](dontesek/ADR-002-uj-motor.md) motornyelv és szkript (elfogadva);
+[ADR-003](dontesek/ADR-003-megjelenito.md) megjelenítő; [ADR-004](dontesek/ADR-004-szamabrazolas.md) számábrázolás;
+[ADR-005](dontesek/ADR-005-adatformatum.md) adat- és sablonformátum (javaslatok, 2026-11-12); ADR-006 hálózat (az M10 előtt).
 
 ## 7. Kockázatok
 

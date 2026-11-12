@@ -244,3 +244,11 @@
 **Döntések (tulajdonos):** egy szövetségi bónusz kisnépenként, a többi kutatás csak saját; a tó a gazda népét nézi; zsoldosbérlés beállítással.
 **Változás (Python-referencia, hibajavítás):** `pond_speed` a gazda népének `pond_affinity` kulcsát nézi. Ellenőrzés: HUD-teszt, golden 3/3 (változatlan).
 **Állapot:** a viselkedési specifikáció mind az öt része kész (`docs/alap/spec/`: fajmechanikák, képességek, kutatások és szabályok, hősök/tárgyak/táborok/elemek, kisnépek), a döntések D21–D26.
+
+## 2026-11-12 – M0: három műszaki ADR (javaslat)
+
+**ADR-003 Megjelenítő:** saját vékony RHI, első háttér OpenGL 3.3 core, második SDL3 GPU (Vulkan/Metal/D3D12); a sokol_gfx GL-minimuma a forrásaink szerint 4.1/4.3-ra emelkedhetett, az SDL3 GPU-nak nincs OpenGL-háttere – ezért kettős háttér.
+**ADR-004 Számábrázolás:** fixpontos Q16.16 (int32, int64 köztes), csempe-egységű koordináták, egész tickidő, saját PCG32, Lua csak egész/Fixed. Mérés (`tools/ab/fixpont/bench.cpp`, `meresek/fixpont_bench.jsonl`, 2400 egység, 2000 tick): double 0,013 ms/tick; fixpontos bitenkénti gyökkel 0,111; hardveres gyök + egész korrekcióval 0,057 ms/tick (4,4×, a keret 0,17%-a), bitre azonos a pontos gyökkel.
+**ADR-005 Adatformátum:** JSON, `inherits` öröklődés, komponensek, a D22/D24/D25 modellek, előfeltétel-kifejezés, JSON Schema, modfoltok (`null`, `+`, `-`), determinisztikus számbetöltés, gettext PO, konverter a mai adatokból.
+Mindhárom tulajdonosi jóváhagyásra vár.
+
