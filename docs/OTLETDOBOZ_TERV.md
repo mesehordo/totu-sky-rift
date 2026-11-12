@@ -46,7 +46,7 @@
 |---|---|---|---|---|
 | Ö1 | WC3-szerű fenntartás | **minden faj, választható szabály** + fajonkénti csavar | Hadtáp | közepes |
 | Ö2 | DoW pontfoglalás, játékmód | **új játékmód** + minden faj saját „jelzőtornya” | Égi uralom, Hasadékkövek | nagy |
-| Ö3 | Építő rakja az alapozást, fejlesztéssel nagyobb | **Vasbirodalom** | Nagy alapozás | kicsi |
+| Ö3 | Építő rakja az alapozást, fejlesztéssel nagyobb | **Aurethi Birodalom** | Nagy alapozás | kicsi |
 | Ö4 | Bányaépület, max. 3 beküldött egységgel gyorsabb | **Szürke elfek** | Napfúró | közepes |
 | Ö5 | Ráépített bánya, a munkás beleolvad | **Croftianok** | Fertőzött tárna | közepes |
 | Ö6 | Teleport-épületpár | **Ooni** | Torii-kapupár | közepes |
@@ -55,11 +55,11 @@
 | Ö9 | Aknatelepítő egység | **Huk’ucha** | Ikrarakó | közepes |
 | Ö10 | Fa „megszállása” egységgel (nem hordja) | **Wullof** | Kéregcsapolás | közepes |
 | Ö11 | Fa „megszállása” területtel | **Croftianok** (a mélység elrothasztja a fát) | Rothasztás | közepes |
-| Ö12 | Külön gyűjtő és külön építő egység | **Vasbirodalom** | Arató-gép | közepes |
+| Ö12 | Külön gyűjtő és külön építő egység | **Aurethi Birodalom** | Arató-gép | közepes |
 | Ö13 | Külön fakitermelő és külön bányász | **Ooni** | Favágó oni, Tanuki-bányász | közepes |
-| Ö14 | Szobrok, isten-szobrok, szoborpark | **Vasbirodalom** | Szoborpark: Ferrox, Arcanor, Umbrax | közepes |
+| Ö14 | Szobrok, isten-szobrok, szoborpark | **Aurethi Birodalom** | Szoborpark: Ferrox, Arcanor, Umbrax | közepes |
 | Ö15 | Dawn of War egységmechanikák | szétosztva: Ooni, Huk’ucha, Wullof, tüzérség | lásd a kártyán | változó |
-| Ö16 | Építő-viselkedés szétválasztása | Wullof, Huk’ucha, Ooni, Vasbirodalom | lásd a kártyán | kicsi–közepes ✅ kész |
+| Ö16 | Építő-viselkedés szétválasztása | Wullof, Huk’ucha, Ooni, Aurethi Birodalom | lásd a kártyán | kicsi–közepes ✅ kész |
 | Ö17 | Godsworn: tétlen munkás „imádkozik”, és külön erőforrást termel | **Szürke elfek** | Áhítat | közepes |
 | Ö18 | Godsworn: építés munkás kijelölése nélkül, a legközelebbi szabad munkás megy | **minden faj** (kényelmi funkció) | Építés a főépületből | kicsi |
 | Ö19 | Godsworn / Age of Mythology: isteni csapások külön mérőből | a különleges mérővel rendelkező fajok | Égi kegy-képességek | közepes–nagy |
@@ -91,7 +91,7 @@
 
 - **Wullof:** a vadászzsákmány (ölésből jövő nyersanyag) nem adózik. A nagy sereg így harcból tartja el magát.
 - **Croftianok:** nem aranyban fizet, hanem a mélység terjedése lassul.
-- **Vasbirodalom:** a lélekreaktorok meteoritot fogyasztanak, ha a létszám a felső sávban van (lásd Ö12/Ö14 mellett).
+- **Aurethi Birodalom:** a lélekreaktorok meteoritot fogyasztanak, ha a létszám a felső sávban van (lásd Ö12/Ö14 mellett).
 - **Többiek:** a sima szabály.
 
 **Kockázat:** a gépi ellenfélnek meg kell tanulnia a sávhatárt (ne lépje át ok nélkül). A balanszot újra kell mérni.
@@ -122,7 +122,7 @@
 | Ursanok | Jelzőtűz |
 | Croftianok | Lüktető dudor |
 | Wullof | Totemcölöp |
-| Vasbirodalom | Jelzőoszlop |
+| Aurethi Birodalom | Jelzőoszlop |
 | Huk’ucha | Gyöngybója |
 | Ooni | Kőlámpás |
 
@@ -144,14 +144,14 @@
   - Ursan Jelzőtűz: 2 fős helyőrség és nagy látótáv;
   - Croftian Lüktető dudor: mélység;
   - Wullof Totemcölöp: felszedhető;
-  - Vasbirodalom Jelzőoszlop: Reaktorpajzs-töltés;
+  - Aurethi Birodalom Jelzőoszlop: Reaktorpajzs-töltés;
   - Huk’ucha Gyöngybója: tavacska;
   - Ooni Kőlámpás: lámpásfény.
 - **Uralom-győzelem** a beállítóképernyőn („Győzelem: Uralom is”): a kövek 2/3-a 5 percig. Percenkénti figyelmeztetés jön.
 - **Gépi ellenfél:** foglal, és őrállást épít.
 - Modul: `rts/points.py`.
 
-### Ö3 – Nagy alapozás (Vasbirodalom) 🟢
+### Ö3 – Nagy alapozás (Aurethi Birodalom) 🟢
 
 **Most** a játékos a Fabrikátor parancskártyájáról azonnal lerakja a 2×2-es márvány-lapkövet, 10 aranyért.
 
@@ -168,7 +168,7 @@
 **Döntések és beépítés (2026-11-05):**
 - **A Fabrikátor rakja le:** a 2×2-es lapkő (10 arany) lerakása 3 mp. Az ár a parancskor fizetendő; ha a hely közben megtelik, visszajár. Shifttel több lapkő is sorba tehető.
 - **Nagy alapozás:** kutatás az Öntödében (100 arany, 40 meteorit). Utána 4×4-es lapkő is rakható, 30 aranyért, 6 mp alatt.
-- **Kopás:** az alapozás nélkül épült Vasbirodalom-épület fél életerővel készül el, és másodpercenként 0,2%-ot kopik, fél életerőig. Fabrikátorral javítható.
+- **Kopás:** az alapozás nélkül épült Aurethi Birodalom-épület fél életerővel készül el, és másodpercenként 0,2%-ot kopik, fél életerőig. Fabrikátorral javítható.
 - **Gépi ellenfél:** a Fabrikátor előbb lerakja a lapköveket, utána épít. A Nagy alapozás után a nagy épületek alá 4×4-est tesz.
 
 ### Ö4 – Napfúró (Szürke elfek: bányaépület, max. 3 beküldött egység) 🟢
@@ -272,7 +272,7 @@
 
 **Kérdés neked:** ha a Croftian nem gyűjt fát, a kezdő munkások számát csökkentsük (5 → 4)?
 
-### Ö12 – Arató-gép (Vasbirodalom: külön gyűjtő és külön építő) 🟢✏️
+### Ö12 – Arató-gép (Aurethi Birodalom: külön gyűjtő és külön építő) 🟢✏️
 
 **Átvett mechanika:** szállításra épülő gazdaság nagy rakománnyal, sérülékeny gyűjtővel (Dune 2000 Harvester), plus külön építő.
 
@@ -304,8 +304,8 @@
 - **Favágó oni:** csak fát gyűjt. Erős, sokat bír (12 fa / út), gyengén harcol.
 - **Tanuki-bányász:** csak aranyat és meteoritot gyűjt. A tanuki (japán mesealak, kis alakváltó) a koncept-lap meselény-világához illik. A bányába „bebújik” (a tárnában nem látszik), mint a mostani aranybányánál.
 - **Ellentétel:** három munkásfajta, vagyis több gyártási döntés. Cserébe mindegyik a saját feladatában jobb.
-- **Eltérés a Vasbirodalomtól:**
-  - Vasbirodalom: egy nagy, drága gyűjtőgép mindenre;
+- **Eltérés az Aurethi Birodalomtól:**
+  - Aurethi Birodalom: egy nagy, drága gyűjtőgép mindenre;
   - Ooni: kis, specializált gyűjtők nyersanyagonként.
 
 **Döntés (2026-11-05):**
@@ -314,9 +314,9 @@
 - A **Taiko-dobos alapegység** lett (Edzőudvar). A Vörös buzogány irány erősebb dobokat ad: +60 életerő, és +75% építés-gyorsítás +50% helyett.
 - **Kezdés:** 2 Lámpásvivő, 2 Favágó oni, 1 Tanuki.
 
-**Megfigyelés:** a próbameccseken a Vasbirodalom gazdasága gyengébb lett (kevesebb fa), ezért újra kell mérni a balanszot.
+**Megfigyelés:** a próbameccseken az Aurethi Birodalom gazdasága gyengébb lett (kevesebb fa), ezért újra kell mérni a balanszot.
 
-### Ö14 – Szoborpark (Vasbirodalom) 🟢✏️
+### Ö14 – Szoborpark (Aurethi Birodalom) 🟢✏️
 
 **Isten-nevek** (latinosak, de nem római istenek):
 
@@ -329,7 +329,7 @@ Ordan, a meglévő gépisten mellett ők az „öreg istenek”, akiket a Biroda
 **Hogyan működne**
 
 - **Szoborpark (3×3):** a Fórum után építhető, három talapzattal.
-- **Szoborállítás = Felemelkedés.** A Vasbirodalom nem a „3 épület után ablak” szabállyal választ irányt. Az első felállított szobor dönti el az irányt, véglegesen:
+- **Szoborállítás = Felemelkedés.** Az Aurethi Birodalom nem a „3 épület után ablak” szabállyal választ irányt. Az első felállított szobor dönti el az irányt, véglegesen:
   - Ferrox → Légió;
   - Arcanor → Gépisten (Ordan hálózatának mágiája);
   - Umbrax → Lélek.
@@ -388,7 +388,7 @@ Ordan, a meglévő gépisten mellett ők az „öreg istenek”, akiket a Biroda
 
 **Most:**
 
-- Ursan, Wullof, Vasbirodalom: helyben dolgozik, több munkás gyorsít.
+- Ursan, Wullof, Aurethi Birodalom: helyben dolgozik, több munkás gyorsít.
 - Croftian: beleolvad.
 - Elfek, Huk’ucha, Ooni: elindítja és elmegy.
 
@@ -400,13 +400,13 @@ Ordan, a meglévő gépisten mellett ők az „öreg istenek”, akiket a Biroda
 | Ursanok | Telepes | ott marad | **több telepes** (marad) |
 | Croftianok | Csápszolga | **beleolvad** (marad) | – |
 | Wullof | Gyűjtögető | **beköltözik az épületbe**, védett, készen kijön (WC3 Orc) | a fő épületek **szekérből** települnek (már van) |
-| Vasbirodalom | Fabrikátor | ott marad, **egy épületen csak egy** dolgozhat | **Túlhajtás** képesség: gyorsabb, de a Fabrikátor sérül (DoW Chaos) |
+| Aurethi Birodalom | Fabrikátor | ott marad, **egy épületen csak egy** dolgozhat | **Túlhajtás** képesség: gyorsabb, de a Fabrikátor sérül (DoW Chaos) |
 | Huk’ucha | Tóásó | elindítja és elmegy | **a tó mérete gyorsít**: minél több tavacska-csempe van az épület körül, annál gyorsabb |
 | Ooni | Lámpásvivő | ott marad | **Taiko-dobos** a közelben gyorsít (a ritmus), több munkás nem |
 
 **Döntés (2026-11-05):** mind a négy változás a javasolt formában. **Beépítve:**
 - a Wullof Gyűjtögető beköltözik, és leromboláskor fél életerővel kiugrik;
-- a Vasbirodalomnál egy épületen egy Fabrikátor dolgozik, és van **Túlhajtás** (hátralévő idő fele, 40% életerő, 20 mp töltődés; a gépi ellenfél nyugalomban használja);
+- az Aurethi Birodalomnál egy épületen egy Fabrikátor dolgozik, és van **Túlhajtás** (hátralévő idő fele, 40% életerő, 20 mp töltődés; a gépi ellenfél nyugalomban használja);
 - a Huk’ucha-épület a körülötte lévő tavacskával legfeljebb +60%-kal gyorsabban nő;
 - az Ooni Lámpásvivő ott marad, és a közeli Taiko-dobos +50%-kal gyorsít.
 
@@ -521,7 +521,7 @@ Mind a 7 főfaj kap egy csapást. A csapás gombja a főépületen van; a célzo
 | Ursanok | Esküfa-riadó | – | 4 perc | Minden telepes 30 mp-re fegyvert ragad (a Fegyverbe! hatása, kutatás nélkül is) |
 | Croftianok | Mélységi kitörés | a Kaptár 250 életereje | 3 perc | 120 sebzés és lassítás |
 | Wullof | Ősök hívása | – | 3 perc | 3 szellemfarkas 40 mp-re |
-| Vasbirodalom | Ordan villáma | 100 meteorit | 2,5 perc | 160 sebzés azonnal, épületeknek is |
+| Aurethi Birodalom | Ordan villáma | 100 meteorit | 2,5 perc | 160 sebzés azonnal, épületeknek is |
 | Ooni | Isteni szél | – | 2,5 perc | Az ellenség felére lassul, a saját egységek 20%-kal gyorsabbak (8 mp) |
 
 A gépi ellenfél a csapást a legsűrűbb látható ellenséges csoportra (legalább 5 egység) veti. A riadót akkor használja, ha a bázisát megtámadják.
@@ -585,12 +585,12 @@ A gépi ellenfél a csapást a legsűrűbb látható ellenséges csoportra (lega
 | Faj | Rokonság | Plusz bónusz |
 |---|---|---|
 | Szürke elfek | erős | energia kétszeres, +25% varázssebzés, a pajzs kétszer gyorsabban töltődik |
-| Vasbirodalom | erős | a gépek +1 életerőt javulnak/mp, és a Reaktorpajzs itt töltődik |
+| Aurethi Birodalom | erős | a gépek +1 életerőt javulnak/mp, és a Reaktorpajzs itt töltődik |
 | Croftianok | közepes | az Agyfaló és a Csápos horror +2 életerőt gyógyul/mp |
 | Huk’ucha, Ooni, Ursan, Wullof | gyenge | csak az általános bónusz |
 
 **Pajzsok (Ö21):**
-- **Vasbirodalom – Reaktorpajzs:** kutatás Ordan templomában. A gépek 30 pajzsot kapnak, ami csak Lélekreaktor (6 csempe), meteorit vagy Égkő mellett töltődik.
+- **Aurethi Birodalom – Reaktorpajzs:** kutatás Ordan templomában. A gépek 30 pajzsot kapnak, ami csak Lélekreaktor (6 csempe), meteorit vagy Égkő mellett töltődik.
 - **Huk’ucha – Gyöngyház-pajzs:** a Gyöngyvető és a Kagylópajzsos 40 pajzsot kap, ami csak saját tavacskán töltődik.
 - **Ooni – Védőfény:** a Lámpáspap képessége (az eddigi +2 páncél-ének helyett). 10 mp-ig 50 sebzést elnyelő burkot ad a társaknak; a gépi ellenfél harcban használja.
 - **Ursan – Rúnapajzs:** a rúnaóriás 60, a hősök 40 pajzsot kapnak, ami csak 10 mp harc nélkül töltődik.
@@ -714,7 +714,7 @@ Rövidítések: **most** = ami ma a játékban van; **javaslat** = a fenti kárt
 | 19 | Egyedi mérő | dal (képességek) | – |
 | 20 | Erősség / gyengeség | mozgékony, harcból is gazdálkodik / gyenge védekezés | – |
 
-### Vasbirodalom
+### Aurethi Birodalom
 
 | # | Kérdés | Most | Javaslat |
 |---|---|---|---|
@@ -785,7 +785,7 @@ Rövidítések: **most** = ami ma a játékban van; **javaslat** = a fenti kárt
 | **Ursanok** | munkás | ott marad | több munkás | bárhová | hordás (klasszikus) | épület (tanya) | helyőrség, Népfelkelés |
 | **Croftianok** | munkás | **beleolvad** | – | mélység | **hordás nélkül**: rothasztás + tárna | **egység** (szemhordozó) | lárva, mutáció, fertőzés |
 | **Wullof** | munkás / szekér | **beköltözik** | szekér | bárhová | kéregcsapolás + zsákmány | **egység** (emu) | vándortábor, falka |
-| **Vasbirodalom** | csak építő | ott marad, egyedül | **Túlhajtás** (életerő) | alapozás | **Arató-gép**, nagy tétel | épület (lélekreaktor) | szobrok, lélekhorgony |
+| **Aurethi Birodalom** | csak építő | ott marad, egyedül | **Túlhajtás** (életerő) | alapozás | **Arató-gép**, nagy tétel | épület (lélekreaktor) | szobrok, lélekhorgony |
 | **Huk’ucha** | munkás | elindít, elmegy | **tó mérete** | saját tó | hordás | épület (buborék) | tó-sebesség, ikra-akna, ugrás |
 | **Ooni** | csak építő | ott marad | **dobos** | lámpásfény | **külön fa- és aranygyűjtő** | épület (lakóház) | kapupár, harci kedv |
 

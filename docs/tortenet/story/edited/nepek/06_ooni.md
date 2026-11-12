@@ -6,7 +6,7 @@
 
 Az Ooni városokban több nép él együtt: szarvas, agyaras **onik**, négylábú, sörényes **nianok**, hollótollú, szárnyas **tenguk**, alakváltó **tanukik** és más hegyi lények. A nagytestű lakók számára széles lépcsők és nyitott udvarok készülnek, a kisebbek számára keskeny függőhidak és magas peremjárdák. Márvány- és kőoszlopos csarnokaik fölé felkunkorodó cseréptetőt építenek. Hágóikat gerendakapuk, faragott maszkok, fogadalmi kötelek és papírlámpások jelzik.
 
-A kapuvárosok a keleti hegyekben, a keleti világvarrat fölött állnak. Önállóak, és közösen tartják járható állapotban az ősi hegyi átjárókat. Az **Ooni és a Vasbirodalom régi szövetségesek**: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
+A kapuvárosok a keleti hegyekben, a keleti világvarrat fölött állnak. Önállóak, és közösen tartják járható állapotban az ősi hegyi átjárókat. Az **Ooni és az Aurethi Birodalom régi szövetségesek**: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
 
 ## Honnan jöttek
 

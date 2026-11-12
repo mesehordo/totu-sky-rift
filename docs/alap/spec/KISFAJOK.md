@@ -35,8 +35,8 @@ A kisnép elemei a **gazda játékoshoz** tartoznak, ezért a gazda szabályai r
 |---|---|---|---|---|
 | Daresh | darázsnép | 2 lándzsás, varázsló, 2 repülő | kapcsoló, ének, gyógyítás | Croftian, Wullof |
 | Galóca | gombanép | közelharcos, lándzsás, óriás, lövész, varázsló | buff, nova, terület | Croftian |
-| Ghoblin | ostromnép | 2 közelharcos, ostrom, lándzsás, lövész, óriás | kapcsoló, 2 nova | Ursanok, Vasbirodalom |
-| Mhonyo | gépész nép | közelharcos, lövész, lándzsás, varázsló, óriás | buff, kapcsoló, ének, javítás, nova | Vasbirodalom, Ooni |
+| Ghoblin | ostromnép | 2 közelharcos, ostrom, lándzsás, lövész, óriás | kapcsoló, 2 nova | Ursanok, Aurethi Birodalom |
+| Mhonyo | gépész nép | közelharcos, lövész, lándzsás, varázsló, óriás | buff, kapcsoló, ének, javítás, nova | Aurethi Birodalom, Ooni |
 | Micéliák (kisnép) | gombafonal | munkás, 2 közelharcos, varázsló, lövész | passzív (4), összeolvadás, gyógyítás, terület, kapcsoló | – (csak játékos) |
 | Niil-elfek | folyami elfek | 2 lándzsás, lövész, varázsló, óriás | kapcsoló, gyógyítás, terület, nova | elfek, Huk’ucha |
 | Nila-uchana | – | lándzsás, 2 óriás, varázsló, lövész, lovas | idézés, nova, terület, gyógyítás, buff | Huk’ucha, Ooni |
@@ -44,7 +44,7 @@ A kisnép elemei a **gazda játékoshoz** tartoznak, ezért a gazda szabályai r
 | Shrissh-matah | – | varázsló, közelharcos, lándzsás, repülő, lövész | ének, villám, buff | Croftian |
 | Tendüür | lámpásnép | 2 varázsló, közelharcos, lövész, óriás | gyógyítás, terület, buff, nova | elfek, Wullof |
 | Tokla | – | óriás, 2 varázsló, lándzsás, lövész | nova, ének, gyógyítás, terület | Ursanok, Ooni |
-| Tűz-elfek | – | 3 közelharcos, lövész, 2 varázsló | buff, nova, terület, idézés | elfek, Vasbirodalom |
+| Tűz-elfek | – | 3 közelharcos, lövész, 2 varázsló | buff, nova, terület, idézés | elfek, Aurethi Birodalom |
 | Zhan-zhama | tollas nép | közelharcos, lövész, lovas, varázsló, repülő | ének, idézés, gyógyítás | Wullof |
 
 (A „jelleg” a fájlok `tagline` mezőjéből; a pontos egység- és képességadatok a [leltárban](../TARTALOM_LELTAR.md).)

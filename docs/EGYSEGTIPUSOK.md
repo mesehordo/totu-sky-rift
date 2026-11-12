@@ -112,7 +112,7 @@ A szorzó a támadó sebzésére vonatkozik (a páncél előtt). A karakterlapon
 | Totemfaragó | ✨ Varázsló | 🗿 Óriás / szörny ×1,5 · 🛡 Lándzsás / pajzsos ×1,25 | – |  |
 | Álomjáró | ✨ Varázsló | 🗿 Óriás / szörny ×1,5 · 🛡 Lándzsás / pajzsos ×1,25 | – |  |
 
-## Vasbirodalom
+## Aurethi Birodalom
 
 | Egység | Típus | Erős ez ellen | Javasolt kivétel | Megjegyzés |
 |---|---|---|---|---|

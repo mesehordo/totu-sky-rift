@@ -22,7 +22,7 @@ Célrendszerek: Windows, Linux, macOS (Intel és Apple Silicon), FreeBSD, OpenBS
 
 ## A játék
 
-* **Hét főnép:** Szürke elfek, Ursanok, Croftianok, Wullof, Vasbirodalom, Huk’ucha, Ooni – mindegyik saját
+* **Hét főnép:** Szürke elfek, Ursanok, Croftianok, Wullof, Aurethi Birodalom, Huk’ucha, Ooni – mindegyik saját
   mechanikával. A **Micéliák** szövetséges kisnépként és modként érhetők el.
 * **Szövetséges kisnépek:** a Diplomácia csarnokában egy választható közülük, és annak három épülete nyílik meg.
 * **Nyersanyagok:** Fa, Arany, Meteorit, Áhítat (az elfeknél; a Huk’uchánál Tóének); létszám legfeljebb 200.

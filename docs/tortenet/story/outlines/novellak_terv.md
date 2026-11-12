@@ -20,8 +20,8 @@
 | Ursanok | A mamut, akinek magyarázat jár | Ylva, kislány, megírja az Esküfának, miért kell elaltatni az öreg mamutot. | 66. év | gyászos, gyengéd |
 | Wullof | Áradás két szertartással | Folyóvárosi ősanya-papnő és pusztai Holdsámán vitája az áradás éjszakáján. | 52. év | komikus |
 | Wullof | A Groomi köpése | Djarra fiatal vadász nevel egy Groomit; a család veszekszik, melyik köpést tanulja. | 69. év | családi, komikus-keserű |
-| Vasbirodalom | Az üres serlegek | Marcus Tullo, egykori borász, pincér egy fogadáson; az Ooni vendég igazi bort iszik. | 51. év | melankolikus |
-| Vasbirodalom | Ébresztés | A Sabin család egy Lélekreaktor-avatáson várja a nagyanyát; nem ők kerülnek sorra. | 64. év | csendes, keserédes |
+| Aurethi Birodalom | Az üres serlegek | Marcus Tullo, egykori borász, pincér egy fogadáson; az Ooni vendég igazi bort iszik. | 51. év | melankolikus |
+| Aurethi Birodalom | Ébresztés | A Sabin család egy Lélekreaktor-avatáson várja a nagyanyát; nem ők kerülnek sorra. | 64. év | csendes, keserédes |
 | Kethrik | A semleges illat | Vessa, dinasztikus családból, emlékőri vizsgát tesz kölcsönillattal. | 28. év | feszült, csendes |
 | Kethrik | Letét | Ooni kaputartó könyvtáros átveszi egy kethri kereskedő utolsó jelkövét; a kereskedő városa elnémult. | 49. év | gyászos |
 | Ooni | Kötélkötés | Nian és oni család vitája, ki köti az első csomót. | 57. év | komikus |
@@ -68,7 +68,7 @@
 | Szürke elfek | A harmadik éjszaka | Archívumi inas a második nap harmadik éjszakáján a figyelmeztető leveleket másolja, és egyet titokban egy Wullof városnak címez. | 0. év | feszült, nyitott zárás |
 | Ursanok | Riadó dagasztás közben | Egy pékasszony az Esküfa-riadó alatt sem hagyja abba a kenyeret. | 45. év | komikus, párbeszédes |
 | Wullof | Holt út | Útbíró-inas egy holt út énekét követi egy sziklaperemig, ahol a varratfényben egy pillanatra út látszik. | 69. év | rejtélyes |
-| Vasbirodalom | Levelek Veternába | Egy géptestű férfi évente levelet ír az elveszett fővárosba. | 12–72. év | levélforma |
+| Aurethi Birodalom | Levelek Veternába | Egy géptestű férfi évente levelet ír az elveszett fővárosba. | 12–72. év | levélforma |
 | Kethrik | A hetedik nap | Fiatal tanácsos a gőzkamrában: ki töri meg a csendet. | 15. év | belső, csendes |
 | Ooni | Elvesztett ritmus | Taiko-dobos, aki a hosszú éjszakán elveszíti a ritmust. | 30. év | belső, gyengéd |
 | Huk’ucha | Hamis Tóének | Tóásó, aki hamisan énekel, és a tava mégis megmarad. | 40. év | komikus |

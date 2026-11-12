@@ -3119,7 +3119,7 @@ msgid "A gépek nem gyengék a varázslók ellen."
 msgstr ""
 
 msgctxt "faction.imperium.name"
-msgid "Vasbirodalom"
+msgid "Aurethi Birodalom"
 msgstr ""
 
 msgctxt "faction.imperium.desc"

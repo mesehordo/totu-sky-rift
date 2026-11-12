@@ -2,7 +2,7 @@
 
 *© Mesehordo – TOTU: Sky Rift. A fájlt a `python tools/gen_tortenet_fajok.py` állítja elő a játék adataiból (a számok mindig a mostani állapotot mutatják). Történetíráshoz: mit tud, hogyan harcol és mire épül minden nép.*
 
-Tartalom: Szürke elfek • Ursanok • Croftianok • Wullof • Vasbirodalom • Huk’ucha • Ooni
+Tartalom: Szürke elfek • Ursanok • Croftianok • Wullof • Aurethi Birodalom • Huk’ucha • Ooni
 
 ## Közös szabályok (minden népre)
 
@@ -40,9 +40,9 @@ Tartalom: Szürke elfek • Ursanok • Croftianok • Wullof • Vasbirodalom �
 - Croftianok: a szolga a Fertőzött tárnába olvadhat.
 - Wullof: a csapolt fa hordás nélkül ad fát.
 - Wullof: a tábor felszedhető és továbbvándorolhat.
-- Vasbirodalom: alapozáson az épület teljes életerővel áll.
-- Vasbirodalom: alapozás nélkül az épület lassan kopik.
-- Vasbirodalom: a szobrok bónuszt adnak, amíg állnak.
+- Aurethi Birodalom: alapozáson az épület teljes életerővel áll.
+- Aurethi Birodalom: alapozás nélkül az épület lassan kopik.
+- Aurethi Birodalom: a szobrok bónuszt adnak, amíg állnak.
 - Huk’ucha: a saját tavacskán a békák gyorsabbak.
 - Huk’ucha: az Ikrarakó csomóiból ebihalak kelnek ki.
 - Huk’ucha: a Tóteremtő szentélynél énekelnek a Tóásók.
@@ -631,7 +631,7 @@ Harci bölényen lovagló harcfőnök: tapos, üvölt, és a Hét Út harcosait 
 | Tűzköpés | Groomi-fészek | A Groomik lángcsóvát köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető. |
 | Fagyköpés | Groomi-fészek | A Groomik jeges köpetet köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető. |
 
-## Vasbirodalom
+## Aurethi Birodalom
 
 *Lélekidézés • gépjavítás • ostrom • lélekreaktorok*
 

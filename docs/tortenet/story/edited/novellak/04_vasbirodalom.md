@@ -1,4 +1,4 @@
-# Vasbirodalom – novellák
+# Aurethi Birodalom – novellák
 
 *© 2026 Mesehordo – TOTU: Sky Rift*
 

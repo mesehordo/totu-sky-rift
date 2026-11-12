@@ -14,7 +14,7 @@ A „kód” oszlop a mostani Python-játék hivatkozásait mutatja (`modul` sor
 | `croftian` | Croftianok | főfaj | `creep` | 17 | 16 | 16 | 3 | 12 |
 | `wullof` | Wullof | főfaj | `standard` | 23 | 13 | 18 | 3 | 24 |
 | `mycel` | Micéliák | rejtett főfaj | `network` | 14 | 10 | 4 | 3 | 10 |
-| `imperium` | Vasbirodalom | főfaj | `standard` | 16 | 19 | 25 | 3 | 14 |
+| `imperium` | Aurethi Birodalom | főfaj | `standard` | 16 | 19 | 25 | 3 | 14 |
 | `hukucha` | Huk’ucha | főfaj | `pond` | 22 | 13 | 16 | 3 | 17 |
 | `ooni` | Ooni | főfaj | `lantern` | 20 | 14 | 18 | 3 | 11 |
 | `vadon` | Vadon | semleges | `standard` | 5 | 0 | 0 | 0 | 4 |

@@ -12,8 +12,8 @@ valósul meg a játékban.
 | Kánon | A játékban |
 |---|---|
 | Csillagérc (meteorit) | a „Meteorit” nyersanyag; mágia, lélekhorgonyok, elit egységek |
-| Aurethi Örök Birodalom, Ordan – a Kéz, amely Megtart | Vasbirodalom; „Ordan temploma” épület; a lélekidézés a horgonymentés |
-| Szerves ellátmány az aurethieknél | a 3. gazdasági változatban nincs étel: a Vasbirodalom létszámát lélekreaktorok adják |
+| Aurethi Örök Birodalom, Ordan – a Kéz, amely Megtart | Aurethi Birodalom; „Ordan temploma” épület; a lélekidézés a horgonymentés |
+| Szerves ellátmány az aurethieknél | a 3. gazdasági változatban nincs étel: az Aurethi Birodalom létszámát lélekreaktorok adják |
 | Idegen Kórus, kethri nép | Croftianok (a Kórus); a megszállt testek kethrik – a tojáskamrák, Keth és a leválás |
 | A Mélykertek gombanépe | „Micéliák” munkacímen – a kánon szándékosan nem ad végleges fajnevet |
 | Kilenc Lépcső / Északi Eskük / Hét Út | az elf, ursan és wullof fajleírásokban |
@@ -25,16 +25,16 @@ A hadjáratok sorban nyílnak meg (a `requires` mező szerint); a haladás profi
 
 | Hadjárat | Faj, hős | Küldetések |
 |---|---|---|
-| Előjáték – A második lélegzet | Vasbirodalom, Livia | A második lélegzet |
+| Előjáték – A második lélegzet | Aurethi Birodalom, Livia | A második lélegzet |
 | I. A föld alatt énekelnek | Wullof, Tava (+Mór) | Hétfolyó vására; Keserű kutak; A föld megnyílik; Két út között; Akik bennünk maradtak |
 | Átvezető – A vegyes konvoj | Ursan, Ragna + Tava | A vegyes konvoj |
 | II. A pajzs mögött | Ursan, Ragna | Üres magtárak; A felolvadt bánya; Tojások a hamu alatt; A jarl adóssága; Nyitott kapuk |
 | III. A kilencedik lépcső | Szürke elfek, Szelai | A tiszta érc; Idegen tornyok; A lezárt archívum; Repedés a hálózaton; A ledöntött lépcső |
 | IV. Akikre emlékezünk | Gombanép, Mór | Száraz kertek; Az emlék ára; Az első betegek; Egy név a Kórusban; Az égő kert |
-| Átvezető – A finomító | Vasbirodalom, Livia + Ragna | A finomító |
-| V. Az isten, aki nem enged el | Vasbirodalom, Livia + Nera | A lefoglalt szállítmány; Az üres serlegek városa; Az Örök Hajnal; A szabad horgony; Feltöltés megtagadva |
+| Átvezető – A finomító | Aurethi Birodalom, Livia + Ragna | A finomító |
+| V. Az isten, aki nem enged el | Aurethi Birodalom, Livia + Nera | A lefoglalt szállítmány; Az üres serlegek városa; Az Örök Hajnal; A szabad horgony; Feltöltés megtagadva |
 | VI. A sokaság neve | Croftian/kethri, Keth | A sebek egyesítése; Ismerős kövek; A visszatérő név; Leválás; A belső kapu |
-| Közös befejezés – A névtelen hajnal | Wullof / Vasbirodalom / Ursan + mind a hat hős | A híd; Az üres trón; A névtelen hajnal |
+| Közös befejezés – A névtelen hajnal | Wullof / Aurethi Birodalom / Ursan + mind a hat hős | A híd; Az üres trón; A névtelen hajnal |
 
 ## Döntések és következményeik
 

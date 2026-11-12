@@ -171,7 +171,7 @@
       },
       {
        "t": "p",
-       "x": "A kethri városokban pedig valaki olyasmit kezdett válaszolni a jelzőillatukra, ami nem volt kethri. A Vasbirodalom később Croftasról, a betegség ősi istenéről nevezte el őket **croftianoknak**; minden más nép a maga nevén hívja őket."
+       "x": "A kethri városokban pedig valaki olyasmit kezdett válaszolni a jelzőillatukra, ami nem volt kethri. Az Aurethi Birodalom később Croftasról, a betegség ősi istenéről nevezte el őket **croftianoknak**; minden más nép a maga nevén hívja őket."
       }
      ]
     },
@@ -257,7 +257,7 @@
          "`nepek/03_wullof.md`"
         ],
         [
-         "Vasbirodalom",
+         "Aurethi Birodalom",
          "Aureth géptestű emberei; Ordan, az öreg istenek, lélekhorgonyok",
          "`nepek/04_vasbirodalom.md`"
         ],
@@ -345,7 +345,7 @@
       },
       {
        "t": "p",
-       "x": "A főszereplők: **Tava** (Wullof), **Ragna Kőváll** (ursan), **Szelai** (szürke elf), **Mór** (Micéliák), **Sairen** (Ooni), **Relluk** (Huk’ucha), **Livia Varr** és **Nera** (Vasbirodalom), **Keth** (kethri). Karakterlapjaik a `characters/szereplok.md` fájlban vannak."
+       "x": "A főszereplők: **Tava** (Wullof), **Ragna Kőváll** (ursan), **Szelai** (szürke elf), **Mór** (Micéliák), **Sairen** (Ooni), **Relluk** (Huk’ucha), **Livia Varr** és **Nera** (Aurethi Birodalom), **Keth** (kethri). Karakterlapjaik a `characters/szereplok.md` fájlban vannak."
       },
       {
        "t": "h2",
@@ -707,7 +707,7 @@
       },
       {
        "t": "p",
-       "x": "Tava küldöttsége a hegyek alatt keres utat a Fekete Tükör felé. A Vasbirodalom és az Ooni közös őrsége fertőzött kereskedőket talál az egyik átkelőnél (az Ooni kapunaplók nyelvén Lámpástalanokat), ezért Sairen lezárja a régi kapukat, és a kapuvárosokban kijárási tilalmat rendelnek el. Aureth a katonai útvonal mielőbbi megnyitását kéri. Sairen a védelmi egyezségre hivatkozva előbb biztonságos átkelőt jelöl ki a civileknek és az őrségnek. A többi város mégis élelmet küldene a túloldalra. A játékos menekülőket kísér, őrtornyokat köt össze, és biztonságos útvonalat épít a mozgó hegyoldalban."
+       "x": "Tava küldöttsége a hegyek alatt keres utat a Fekete Tükör felé. Az Aurethi Birodalom és az Ooni közös őrsége fertőzött kereskedőket talál az egyik átkelőnél (az Ooni kapunaplók nyelvén Lámpástalanokat), ezért Sairen lezárja a régi kapukat, és a kapuvárosokban kijárási tilalmat rendelnek el. Aureth a katonai útvonal mielőbbi megnyitását kéri. Sairen a védelmi egyezségre hivatkozva előbb biztonságos átkelőt jelöl ki a civileknek és az őrségnek. A többi város mégis élelmet küldene a túloldalra. A játékos menekülőket kísér, őrtornyokat köt össze, és biztonságos útvonalat épít a mozgó hegyoldalban."
       },
       {
        "t": "p",
@@ -763,27 +763,27 @@
       },
       {
        "t": "p",
-       "x": "A Huk’ucha és a Vasbirodalom hadjárata között a szövetség megközelít egy elhagyott aurethi finomítót, megtisztítja a bekötőutat, és ideiglenes tápvezetéket húz ki hozzá. A finomító a következő hadjárat kulcsa lesz."
+       "x": "A Huk’ucha és az Aurethi Birodalom hadjárata között a szövetség megközelít egy elhagyott aurethi finomítót, megtisztítja a bekötőutat, és ideiglenes tápvezetéket húz ki hozzá. A finomító a következő hadjárat kulcsa lesz."
       }
      ]
     },
     {
      "id": "fo_09",
-     "title": "VI. hadjárat: Az isten, aki nem enged el – Vasbirodalom",
+     "title": "VI. hadjárat: Az isten, aki nem enged el – Aurethi Birodalom",
      "sub": "",
      "blocks": [
       {
        "t": "img",
        "id": "vilag_fo_09",
-       "cap": "VI. hadjárat: Az isten, aki nem enged el – Vasbirodalom"
+       "cap": "VI. hadjárat: Az isten, aki nem enged el – Aurethi Birodalom"
       },
       {
        "t": "h2",
-       "x": "VI. hadjárat: Az isten, aki nem enged el – Vasbirodalom"
+       "x": "VI. hadjárat: Az isten, aki nem enged el – Aurethi Birodalom"
       },
       {
        "t": "p",
-       "x": "Livia fegyveres vitába kerül Ragna csapataival egy csillagércszállítmány miatt, amelyet Ragna foglalt le. Sairen a Vasbirodalom Ooni szövetségeseként közvetít köztük. Kiderül, hogy ugyanaz az érc az ursan menekültek fűtését és egy aurethi város lélekhorgonyainak feltöltését is szolgálhatná. Egyik fél szükséglete sem kitalált ürügy."
+       "x": "Livia fegyveres vitába kerül Ragna csapataival egy csillagércszállítmány miatt, amelyet Ragna foglalt le. Sairen az Aurethi Birodalom Ooni szövetségeseként közvetít köztük. Kiderül, hogy ugyanaz az érc az ursan menekültek fűtését és egy aurethi város lélekhorgonyainak feltöltését is szolgálhatná. Egyik fél szükséglete sem kitalált ürügy."
       },
       {
        "t": "p",
@@ -995,7 +995,7 @@
       },
       {
        "t": "p",
-       "x": "Az Ooni és a Vasbirodalom közös őrsége visszatér a határkapukhoz. Sairen a kapuvárosok közti egyezségbe foglalja, hogy a kijelölt menekülőutakat a helyi őrség háborúban is nyitva tartja. Relluk gátmesterei segítenek az alsó folyóágak telepeinek saját vízzárat építeni."
+       "x": "Az Ooni és az Aurethi Birodalom közös őrsége visszatér a határkapukhoz. Sairen a kapuvárosok közti egyezségbe foglalja, hogy a kijelölt menekülőutakat a helyi őrség háborúban is nyitva tartja. Relluk gátmesterei segítenek az alsó folyóágak telepeinek saját vízzárat építeni."
       },
       {
        "t": "p",
@@ -2022,13 +2022,13 @@
     },
     {
      "id": "nep_04_vasbirodalom",
-     "title": "Vasbirodalom",
+     "title": "Aurethi Birodalom",
      "sub": "az aurethi géptestű emberek",
      "blocks": [
       {
        "t": "img",
        "id": "nep_04_vasbirodalom",
-       "cap": "Vasbirodalom – az aurethi géptestű emberek"
+       "cap": "Aurethi Birodalom – az aurethi géptestű emberek"
       },
       {
        "t": "h2",
@@ -2108,7 +2108,7 @@
       },
       {
        "t": "p",
-       "x": "A Vasbirodalom keleti határát az **Oonival** közösen őrzi. A két nép régi szövetséges: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat."
+       "x": "Az Aurethi Birodalom keleti határát az **Oonival** közösen őrzi. A két nép régi szövetséges: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat."
       },
       {
        "t": "h2",
@@ -2340,7 +2340,7 @@
       },
       {
        "t": "p",
-       "x": "A **croftian** a Vasbirodalom elnevezése az Idegen Kórushoz kötött fertőzött testekre és tenyésztett lényekre. **Croftasról**, a betegség, a rothadás és a balszerencse ősi aurethi istenéről kapta a nevét: az aurethiek úgy hiszik, hogy a hangyaszerű népet Croftas fertőzte meg és torzította el, vagy hogy ezek a lények egyenesen tőle származnak. A többi nép a maga nevén hívja őket (lásd lent). A Kórus nem nevezi meg önmagát. Nem ír, nem mesél, nem énekel, és nincsenek mondái; mindent, amit tudunk róla, a többi nép beszámolóiból tudjuk. Páncéljuk kitinlemezekből, mozgó ízületeik puha szövetből állnak. Fészkeik nedves, élő falai spórakamrákat és tenyészüregeket növesztenek. A fertőzött kethrik egy részének személyisége a Kórusban is megmarad."
+       "x": "A **croftian** az Aurethi Birodalom elnevezése az Idegen Kórushoz kötött fertőzött testekre és tenyésztett lényekre. **Croftasról**, a betegség, a rothadás és a balszerencse ősi aurethi istenéről kapta a nevét: az aurethiek úgy hiszik, hogy a hangyaszerű népet Croftas fertőzte meg és torzította el, vagy hogy ezek a lények egyenesen tőle származnak. A többi nép a maga nevén hívja őket (lásd lent). A Kórus nem nevezi meg önmagát. Nem ír, nem mesél, nem énekel, és nincsenek mondái; mindent, amit tudunk róla, a többi nép beszámolóiból tudjuk. Páncéljuk kitinlemezekből, mozgó ízületeik puha szövetből állnak. Fészkeik nedves, élő falai spórakamrákat és tenyészüregeket növesztenek. A fertőzött kethrik egy részének személyisége a Kórusban is megmarad."
       },
       {
        "t": "h2",
@@ -2479,7 +2479,7 @@
          "Mit lát bennük"
         ],
         [
-         "Vasbirodalom",
+         "Aurethi Birodalom",
          "**croftianok**, Croftas népe",
          "Croftas büntetését vagy fattyait. A papok szerint a betegség istene a Fényes Esővel tért vissza, és Ordan Örök Hajnala az egyetlen menedék előle."
         ],
@@ -2782,7 +2782,7 @@
       },
       {
        "t": "p",
-       "x": "A kapuvárosok a keleti hegyekben, a keleti világvarrat fölött állnak. Önállóak, és közösen tartják járható állapotban az ősi hegyi átjárókat. Az **Ooni és a Vasbirodalom régi szövetségesek**: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat."
+       "x": "A kapuvárosok a keleti hegyekben, a keleti világvarrat fölött állnak. Önállóak, és közösen tartják járható állapotban az ősi hegyi átjárókat. Az **Ooni és az Aurethi Birodalom régi szövetségesek**: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat."
       },
       {
        "t": "h2",
@@ -7417,7 +7417,7 @@
     {
      "id": "nov_04_1",
      "title": "Az üres serlegek",
-     "sub": "Vasbirodalom",
+     "sub": "Aurethi Birodalom",
      "blocks": [
       {
        "t": "img",
@@ -7568,7 +7568,7 @@
     {
      "id": "nov_04_2",
      "title": "Ébresztés",
-     "sub": "Vasbirodalom",
+     "sub": "Aurethi Birodalom",
      "blocks": [
       {
        "t": "img",
@@ -7751,7 +7751,7 @@
     {
      "id": "nov_04_3",
      "title": "Levelek Veternába",
-     "sub": "Vasbirodalom",
+     "sub": "Aurethi Birodalom",
      "blocks": [
       {
        "t": "img",
@@ -8601,7 +8601,7 @@
       },
       {
        "t": "p",
-       "x": "Ehelyett elment a határőrséghez, ahol a Vasbirodalom és az Ooni közös őrsége állomásozott, és ahol egy aurethi tiszt szolgált, egy Junia nevű asszony, akit Pon a piacról ismert, mert Junia mindig megállt a tanukik polcánál, és nézegette a tárgyakat."
+       "x": "Ehelyett elment a határőrséghez, ahol az Aurethi Birodalom és az Ooni közös őrsége állomásozott, és ahol egy aurethi tiszt szolgált, egy Junia nevű asszony, akit Pon a piacról ismert, mert Junia mindig megállt a tanukik polcánál, és nézegette a tárgyakat."
       },
       {
        "t": "p",
@@ -12527,7 +12527,7 @@
       },
       {
        "t": "p",
-       "x": "A Fabrikátor egy aurethi munkásgép volt, pókszerű, nyolclábú, bronzból és vasból, és egy Livius nevű ember lakott benne, aki harmincnyolc éve volt Fabrikátor, és aki most életében először nagyon megbánta, hogy egyedül indult el. A Vasbirodalom határán egy új meteoritbányát nyitottak, és Liviust küldték előre, hogy megvizsgálja a bekötőutat. A térkép szerint az út egy erdőn át vezetett. A térkép nem mondta, hogy az erdőben Galócák laknak."
+       "x": "A Fabrikátor egy aurethi munkásgép volt, pókszerű, nyolclábú, bronzból és vasból, és egy Livius nevű ember lakott benne, aki harmincnyolc éve volt Fabrikátor, és aki most életében először nagyon megbánta, hogy egyedül indult el. Az Aurethi Birodalom határán egy új meteoritbányát nyitottak, és Liviust küldték előre, hogy megvizsgálja a bekötőutat. A térkép szerint az út egy erdőn át vezetett. A térkép nem mondta, hogy az erdőben Galócák laknak."
       },
       {
        "t": "p",
@@ -12679,7 +12679,7 @@
       },
       {
        "t": "p",
-       "x": "A jelentést a Vasbirodalom határőrsége a többi jelentés közé tette, és senki nem olvasta el, csak egy fiatal tiszt, aki a következő évben egy Galóca-telep mellett vezette át a szekereit, és aki emlékezett rá."
+       "x": "A jelentést az Aurethi Birodalom határőrsége a többi jelentés közé tette, és senki nem olvasta el, csak egy fiatal tiszt, aki a következő évben egy Galóca-telep mellett vezette át a szekereit, és aki emlékezett rá."
       },
       {
        "t": "hr"

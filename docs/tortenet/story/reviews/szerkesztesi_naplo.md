@@ -41,7 +41,7 @@ Gépi kereséssel és átolvasással.
 | Huk’ucha | „Mert a vendég vagy” – nyelvtanilag sután hangzik. „damil” – a világhoz nem illő, modern anyag. | „Mert vendég vagy.” · „ínszál”. |
 | Huk’ucha zárás | „Nem a Tóéneket énekelte, hanem…” | Átfogalmazva. |
 | Pinguu | „sokáig sodródott” a mondában kétszer szereplő idővel ütközött. | „évekig”. |
-| Vasbirodalom | „A pék sokáig olvasta” – egy név és egy sor; a „sokáig” túlzás. | „kétszer is elolvasta”. |
+| Aurethi Birodalom | „A pék sokáig olvasta” – egy név és egy sor; a „sokáig” túlzás. | „kétszer is elolvasta”. |
 | Tokla | „Sokáig nézte” helyett mozdulat. | „a hüvelykujjával végigsimította”. |
 
 ### Tudatosan meghagyott elemek
@@ -71,7 +71,7 @@ Gépi kereséssel és átolvasással.
 
 A kreátor kérésére a régebbi szövegekben (népek fejezetei, elbeszélések, hadjáratleírások, idővonal) a Kórusra és a fertőzött lényekre mindenhol az adott nép saját neve került: Úttalanok (Wullof), Esküvesztettek (ursan), Egyhangúak (szürke elf), Rothasztók (Tendüür), Idegen Fonal (Micéliák), Lámpástalanok (Ooni), Zavaros Víz (Huk’ucha), Néma raj (Daresh), elnémult testvérek (szabad kethrik). 23 csere, csak az edited/ mappában.
 
-**Szabály:** a semleges krónikás hang a *Kórus* szót használja. A *croftian* csak aurethi nézőpontban (a Vasbirodalom fejezete és hadjárata) és a játék frakciónevére utalva (nyersanyag-táblázat) maradt meg. Egy nép első említésekor a szöveg egyszer jelzi, kit nevez így.
+**Szabály:** a semleges krónikás hang a *Kórus* szót használja. A *croftian* csak aurethi nézőpontban (az Aurethi Birodalom fejezete és hadjárata) és a játék frakciónevére utalva (nyersanyag-táblázat) maradt meg. Egy nép első említésekor a szöveg egyszer jelzi, kit nevez így.
 
 ## Novellák, első kötet (2026-11-06)
 
@@ -79,9 +79,9 @@ A kreátor kérésére a régebbi szövegekben (népek fejezetei, elbeszélések
 
 | Hely | Probléma | Javítás |
 |---|---|---|
-| Vasbirodalom – Ébresztés | A kettős koppantás a mentőcsapatok jele, de csak a VI. hadjáratban (70–72) születik meg; a novella a 64. évben játszódik. | A gesztus a régi kórházi ápolók mozdulata lett; a zárójelenet is átírva. |
-| Vasbirodalom – Ébresztés | Évszámhiba: a 4. évben átvezetett nagyanya „47 éve” aludt; a felébresztett asszony „52 évet” aludt, holott az utolsó átvezetés a 9. évben volt. | 60 év mindkettőnél. |
-| Vasbirodalom – Ébresztés | „Mária” valódi, a világba nem illő név; a zárásban egy élő, alvó lány szerepelt (új születés nincs). | „Marcia”; a zárás a nagyanya listáira épül. |
+| Aurethi Birodalom – Ébresztés | A kettős koppantás a mentőcsapatok jele, de csak a VI. hadjáratban (70–72) születik meg; a novella a 64. évben játszódik. | A gesztus a régi kórházi ápolók mozdulata lett; a zárójelenet is átírva. |
+| Aurethi Birodalom – Ébresztés | Évszámhiba: a 4. évben átvezetett nagyanya „47 éve” aludt; a felébresztett asszony „52 évet” aludt, holott az utolsó átvezetés a 9. évben volt. | 60 év mindkettőnél. |
+| Aurethi Birodalom – Ébresztés | „Mária” valódi, a világba nem illő név; a zárásban egy élő, alvó lány szerepelt (új születés nincs). | „Marcia”; a zárás a nagyanya listáira épül. |
 | Mhonyo – A gólem szokása | „hetven éve gép” a 62. évben. | „hatvan éve”. |
 | Ghoblin – Aki nem akart felrobbanni | A Ghoblinok az ursan nevet (Esküvesztettek) használták. | Saját nevük: Repedés. |
 | Niil-elfek | Sebek, Iset, Nebet: valódi egyiptomi isten- és istennőnevek. | Merru-ka, Ineti, Nefri. |
@@ -112,7 +112,7 @@ A kreátor kérésére a régebbi szövegekben (népek fejezetei, elbeszélések
 |---|---|---|
 | Szürke elfek – A harmadik éjszaka | Elírás („elfül olvasni”); „sokáig” sablon. | Javítva. |
 | Wullof – Holt út | A zárómondat fenyegető előrevetítés volt, és az évszám is ütközött (69. év + „tíz nappal később” ≠ a 70. évi áttörés). | Törölve; a novella az útbírói formulán zárul. |
-| Vasbirodalom – Levelek Veternába | A 70. évi levél a 51. évi fogadást jelen időben említette. | „Eszembe jutott egy régi fogadás, húsz évvel ezelőtt…” |
+| Aurethi Birodalom – Levelek Veternába | A 70. évi levél a 51. évi fogadást jelen időben említette. | „Eszembe jutott egy régi fogadás, húsz évvel ezelőtt…” |
 | Kethrik – A hetedik nap | Vessa érkezése „három év múlva” ütközött a 28. évi vizsgájával. | „Tizenhárom év múlva”. |
 | Pinguu – Ittu helye | A zárásban felcserélődtek a helyek. | Javítva. |
 | Mhonyo – A harmadik penge | Ressa nem lehetett Tikka inastársa (21 év korkülönbség). | „aki fiatalon Tikka mesterénél is tanult”; „huszonnyolc éve”. |

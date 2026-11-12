@@ -4,7 +4,7 @@ Kelt: 2026-11-12 · referencia: a Python-játék (`G` = `rts/game.py`, `E` = `rt
 Formátum és jelölések: [README.md](README.md). Az értékek a mai `data/` szerint; a modok felülírhatják őket.
 
 Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk’ucha) · 4. Energiamező (Szürke elfek) ·
-5. Hálózat (Micéliák) · 6. Lámpásfény és Harci kedv (Ooni) · 7. Standard népek: Ursanok, Wullof, Vasbirodalom.
+5. Hálózat (Micéliák) · 6. Lámpásfény és Harci kedv (Ooni) · 7. Standard népek: Ursanok, Wullof, Aurethi Birodalom.
 
 ---
 
@@ -33,7 +33,7 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 
 - **Adat:** `game.rift`: `radius` 5, `energy_mult` 1,5, `mage_range` 1; faj `rift`: elfek `energy_mult` 2,0,
   `spell_mult` 1,25, `shield_regen_mult` 2,0; croftian `regen: {units: [cro_agyfalo, cro_csapos_horror], add: 2}`;
-  Vasbirodalom `regen: {tags: [mech], add: 1}`; épület `rift_source`, `shield_reactor`.
+  Aurethi Birodalom `regen: {tags: [mech], add: 1}`; épület `rift_source`, `shield_reactor`.
 - **Szabály:**
   1. 15 tickenként (a hős-aurák frissítésekor) minden egység `rift = false`, `near_reactor = false`.
   2. Forrás: minden élő meteorit-lelőhely, minden kész `rift_source` épület (bárkié) és minden Hasadékkő-pont.
@@ -85,7 +85,7 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 ### MECH-BUILD – Építési stílusok
 
 - **Adat:** faj `builder`: `stay` | `stay_single` | `enter` | `consume` | `leave`; ha nincs megadva: `creep` → `consume`,
-  `standard` → `stay`, más → `leave`. Mai értékek: Ursanok `enter`, Wullof `stay`, Vasbirodalom és Ooni
+  `standard` → `stay`, más → `leave`. Mai értékek: Ursanok `enter`, Wullof `stay`, Aurethi Birodalom és Ooni
   `stay_single`, Huk’ucha `leave`, Croftian (mechanika) `consume`, Szürke elfek és Micéliák (alap) `leave`.
 - **Szabály – haladás (`build_rate`, tickenként):**
   - `stay`: 0 építő → 0; n építő → `1 + 0,5 × (min(n, 4) − 1)` (4 építőig gyorsul);
@@ -97,7 +97,7 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
     (Taiko-dobos) `radius` csempén belül áll → `× rules.build_boost_mult` vagy `mult` (1,5).
   - Az épülő épület életereje a haladással nő: `+ max_hp × 0,9 × lépés / build_time` (pajzs ugyanígy).
 - **Kód:** G 1460–1491, E 1690–1705.
-- **Próba:** P1 – Wullof-épület 1, 2, 4, 6 építővel: idő `T`, `T/1,5`, `T/2,5`, `T/2,5`. P2 – Vasbirodalom 3 építővel: `T`.
+- **Próba:** P1 – Wullof-épület 1, 2, 4, 6 építővel: idő `T`, `T/1,5`, `T/2,5`, `T/2,5`. P2 – Aurethi Birodalom 3 építővel: `T`.
 - **Új motorban:** C++ (építés), a stílus és a szorzók adatból.
 
 ### MECH-SUPPLY – Létszám
@@ -382,7 +382,7 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
   az épület `build_time − 8` s-tól indul, munkás nélkül épül.
 - **Építés:** `stay` (több építő gyorsít). **Javítás:** `repair: true`. **Varázserő:** `song`.
 
-### 7.3 Vasbirodalom
+### 7.3 Aurethi Birodalom
 
 - **MECH-IMP-1 Alapozás** (`foundation`: `size` 2, `cost` `{stone: 10}`, `unfounded_hp` 0,5, `decay` 0,2%/s, `min` 0,5):
   a Fabrikátor 2 × 2-es (Nagy alapozás 4 × 4) lapkövet rak (3 s, illetve 6 s; félkész hely mint MECH-POND-1);

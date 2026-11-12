@@ -80,7 +80,7 @@ Bodza egyikkel sem csinált semmit. Ez volt, Fogas szerint, a helyes dolog.
 
 A Fabrikátor nem tudta, hol van, és a tüskék a fejéig értek.
 
-A Fabrikátor egy aurethi munkásgép volt, pókszerű, nyolclábú, bronzból és vasból, és egy Livius nevű ember lakott benne, aki harmincnyolc éve volt Fabrikátor, és aki most életében először nagyon megbánta, hogy egyedül indult el. A Vasbirodalom határán egy új meteoritbányát nyitottak, és Liviust küldték előre, hogy megvizsgálja a bekötőutat. A térkép szerint az út egy erdőn át vezetett. A térkép nem mondta, hogy az erdőben Galócák laknak.
+A Fabrikátor egy aurethi munkásgép volt, pókszerű, nyolclábú, bronzból és vasból, és egy Livius nevű ember lakott benne, aki harmincnyolc éve volt Fabrikátor, és aki most életében először nagyon megbánta, hogy egyedül indult el. Az Aurethi Birodalom határán egy új meteoritbányát nyitottak, és Liviust küldték előre, hogy megvizsgálja a bekötőutat. A térkép szerint az út egy erdőn át vezetett. A térkép nem mondta, hogy az erdőben Galócák laknak.
 
 Livius egy darabig az erdőben ment, aztán egy tüskés palánkhoz ért, amelyen egy rés volt. A rés mögött egy tisztás volt, tele furcsa, tüskés gombákkal. Livius átment a résen, mert a tisztáson át rövidebb volt az út.
 
@@ -156,7 +156,7 @@ Livius nem értette.
 
 Livius kiment. A bányához vezető utat egy nap múlva megtalálta, kerülővel, az erdő szélén. A jelentésében a térképre egy jelet tett a Galóca-telep helyére, és mellé azt írta: *Ne menj be. Ha bementél, várj.*
 
-A jelentést a Vasbirodalom határőrsége a többi jelentés közé tette, és senki nem olvasta el, csak egy fiatal tiszt, aki a következő évben egy Galóca-telep mellett vezette át a szekereit, és aki emlékezett rá.
+A jelentést az Aurethi Birodalom határőrsége a többi jelentés közé tette, és senki nem olvasta el, csak egy fiatal tiszt, aki a következő évben egy Galóca-telep mellett vezette át a szekereit, és aki emlékezett rá.
 
 ---
 

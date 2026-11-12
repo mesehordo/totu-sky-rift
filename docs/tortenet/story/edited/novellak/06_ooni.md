@@ -114,7 +114,7 @@ A könyvtáros hallgatott.
 
 Pon hazament a gyűrűvel. A szokás szerint a polcra kellett volna tennie. Ezt is tudta.
 
-Ehelyett elment a határőrséghez, ahol a Vasbirodalom és az Ooni közös őrsége állomásozott, és ahol egy aurethi tiszt szolgált, egy Junia nevű asszony, akit Pon a piacról ismert, mert Junia mindig megállt a tanukik polcánál, és nézegette a tárgyakat.
+Ehelyett elment a határőrséghez, ahol az Aurethi Birodalom és az Ooni közös őrsége állomásozott, és ahol egy aurethi tiszt szolgált, egy Junia nevű asszony, akit Pon a piacról ismert, mert Junia mindig megállt a tanukik polcánál, és nézegette a tárgyakat.
 
 Junia sokáig nézte a gyűrűt.
 

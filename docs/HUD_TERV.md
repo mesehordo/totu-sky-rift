@@ -80,7 +80,7 @@ A `<faj>` a főfajok kulcsa: `elves`, `ursan`, `croftian`, `wullof`, `imperium`,
 - **Zászló:** festett bőr, koncentrikus pöttykörök, középen a farkas-címer, alul tollak és fogak lógnak.
 - **Színek:** okker (196, 150, 92), csont (236, 226, 206), vörös (215, 60, 40).
 
-### 3.5 Vasbirodalom – márvány, réz és gőz
+### 3.5 Aurethi Birodalom – márvány, réz és gőz
 
 - **Anyag:** fehér-szürke márványlapok rézkerettel, szegecsekkel és apró csövekkel. Itt-ott izzó zöld reaktor-üveg.
 - **Díszítés:** babérkoszorú a felső sáv közepén, fogaskerekek a sarkokban, sasos fémplakettek a szekciók között.

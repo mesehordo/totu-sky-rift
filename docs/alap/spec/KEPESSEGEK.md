@@ -85,7 +85,7 @@ Micéliák spórából varáz­solnak. A tényleges képességköltségek ezt ne
 | Croftianok | `hp` | **9 energiás**, 6 életerős |
 | Wullof | `song` | **10 energiás**, 15 csak újratöltés |
 | Micéliák | `spores` | **8 energiás**, 4 spórás |
-| Szürke elfek, Vasbirodalom | `energy` | rendben (15, illetve 6 energiás) |
+| Szürke elfek, Aurethi Birodalom | `energy` | rendben (15, illetve 6 energiás) |
 
 A `spell_resource` a kódban csak kijelzés és a spóra-ölés feltétele; a képesség költségét a képesség saját kulcsai
 adják. **Következmény:** a fajok közti különbség, ami a tervben karakteres (vér, ének, spóra), a játékban elmosódik.
@@ -222,4 +222,4 @@ A meglévő `abilities.json` eszközzel konvertálható az új formára; a mai v
 | 1 | Faji varázserő-forrás; a hősök és a `caster` varázslók energiát használnak | **nincs változás**: az Ursanok, Croftianok, Wullof és Micéliák 35 energiás képessége mind hősé vagy varázslóé. Ellenőrzés: `tools/tartalom_leltar.py` → leltár 17. pont (ma: nincs sértés). A Huk’ucha és az Ooni `spell_resource` kulcsa hiányzik – a gyakorlatban energia; a konverzió `energy`-re állítja. |
 | 2 | Egységes alapértékek; varázssebzés mindenhol a szorzóval | A konverter minden képességbe beírja a mai tényleges értéket (pl. az idézés 1 s-os alap-újratöltését kifejezetten), így csak az új tartalomra hat az új alapérték. Változás: a területi mezők épületsebzése és a Békaugrás landolási sebzése Égkő-fényben és lámpásfényben nő. |
 | 3 | Ellenséges aura, eloszlatás és immunitás, varázslási idő és csatornázás, automatikus használat | Motorképesség (M7); a konkrét képességek kiosztása balanszmunka. Javasolt kezdés: a végső képességek (`ultimate`, 24 db) kapjanak varázslási időt; a gépek és gólemek (21 `mech` egység) közül a nagyok varázslatimmunitást; a gyógyító és a buffoló képességek automatikus használatot. |
-| 4 | Élőt gyógyítás, gépet javítás | A 20 `autoheal` közül csak a `h_livia_horgony` (Horgonyjavítás) gépjavító. **Elfogadva:** `h_livia_lelegzet` (Második lélegzet, Vasbirodalom-hős, területi) gyógyít **és** javít (így a Vasbirodalom nem gyengül); `mho_javitas` (Foltozás, Mhonyo) gépjavító. |
+| 4 | Élőt gyógyítás, gépet javítás | A 20 `autoheal` közül csak a `h_livia_horgony` (Horgonyjavítás) gépjavító. **Elfogadva:** `h_livia_lelegzet` (Második lélegzet, Aurethi Birodalom-hős, területi) gyógyít **és** javít (így az Aurethi Birodalom nem gyengül); `mho_javitas` (Foltozás, Mhonyo) gépjavító. |

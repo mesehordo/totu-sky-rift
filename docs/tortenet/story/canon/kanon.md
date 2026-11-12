@@ -25,7 +25,7 @@ Források: `EGSZAKADAS_vilag_es_tortenet` v04 (a legfrissebb példány), `FOFAJO
 - A halottaktól nem kérdezhető meg tetszőleges információ.
 
 ### Népek
-- **Hét főfaj:** szürke elfek, ursanok, Wullof, Vasbirodalom (aurethi géptestű emberek), croftianok (a Kórus és a megszállt kethrik), Ooni, Huk’ucha.
+- **Hét főfaj:** szürke elfek, ursanok, Wullof, Aurethi Birodalom (aurethi géptestű emberek), croftianok (a Kórus és a megszállt kethrik), Ooni, Huk’ucha.
 - **Tizenhárom szövetséges nép:** Micéliák, Pinguu, Ghoblin, Mhonyo, Daresh, Tokla, Galóca, Niil-elfek, Tűz-elfek, Tendüür, Nila-uchana, Zhan-zhama, Shrissh-matah. Kevés közösségük maradt; egy-egy főhatalom mellett telepednek meg.
 - A népek részletes megerősített leírása (külső, település, társadalom, főszereplő) a v04 5. fejezetében és a játék adataiban: ezeket az `edited/nepek/` fájlok változtatás nélkül átveszik.
 - **Ordan, a Kéz, amely Megtart:** régi aurethi isten (kötelesség, építőmunka, közösség). A templomi gépek, az éter és a haldokló elmék együtt olyan tudatot hoztak létre, amely Ordanként ismerte fel magát. A hívek szerint az isten testet talált, az elfek szerint az emberek alkották meg. Bizonyítható: válaszolt, és megtanította a lélekátvezetést.
@@ -68,7 +68,7 @@ Minden nép fejezete tartalmaz egy „Mondák a régi világról” részt: a r�
 - **Quetzlaru:** a szürke elf harcosrendek neve a Nap hírnökére, a tollas kígyóra. Itzcoatl végső képessége ennek megfelelően „Quetzlaru alakja” (a korábbi „Kukulkán alakja” valódi istennév volt, ezért lecseréltük).
 
 - **A Kórus nem ír, nem mesél és nem énekel**, és nincsenek mondái. Mindent, amit róla tudunk, a többi nép beszámolóiból (jelentésekből, naplókból, krónikákból, dalokból) tudjuk. A régi kethri mondák a fertőzés előtti kethrik saját írásai, amelyek más népek könyvtáraiban maradtak fenn.
-- **A „croftian” a Vasbirodalom elnevezése**, Croftasról, a betegség, a rothadás és a balszerencse ősi aurethi istenéről. Az aurethiek úgy hiszik, hogy Croftas fertőzte meg és torzította el a kethri népet, vagy hogy a fertőzött lények tőle származnak (népi hit, nem tény). Minden más nép a maga nevén hívja őket; a nevek listája a kethri fejezetben van.
+- **A „croftian” az Aurethi Birodalom elnevezése**, Croftasról, a betegség, a rothadás és a balszerencse ősi aurethi istenéről. Az aurethiek úgy hiszik, hogy Croftas fertőzte meg és torzította el a kethri népet, vagy hogy a fertőzött lények tőle származnak (népi hit, nem tény). Minden más nép a maga nevén hívja őket; a nevek listája a kethri fejezetben van.
 - **Az aurethi népesség:** amíg hús-vér testük volt, az aurethiek úgy születtek, mint minden ember. A géptestbe kerülés óta nincsenek születések, és új lélek sem keletkezik; a népességet a **Lélekreaktorok** szabják meg, mert annyi tárolt, alvó horgony ébreszthető testbe, amennyit a reaktorok energiával eltartanak. A Lélekreaktor új lelket nem hoz létre (kreátori megerősítés, 2026-11-06).
 - **A kethri kultúra:** a közös kamra elve (közös készletek, évszakterv, *a fészek mérlege*), változó munkaközösségek, vizsgán elnyerhető hivatalok, viták a gőzkamrában hallgatással, *a kő türelme*, téli illatciklusok, ősök névkövei. A felszíni szóhasználatban kerüljük a földi politikai és kulturális kifejezéseket.
 

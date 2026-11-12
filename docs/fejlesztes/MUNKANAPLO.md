@@ -285,3 +285,9 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 
 **Változás:** a konverter a Micélia főnépet a `micelia` mod rétegébe teszi (`engine/content/mods/micelia/`: `mod.json` függőséggel, egységek, épületek, kutatások, faj); az alapban 21 faj marad (a kisnép-Micéliával). Új teszt: az alap egyedül (206 egység, 142 épület, 164 kutatás, 21 faj) és a mod réteggel (220 / 152 / 168 / 22) is érvényes; 19 teszt zöld. A Micélia- és novella-küldetések kikerülnek, a küldetések az M11-ben nulláról készülnek.
 
+## 2026-11-12 – A tulajdonos friss dokumentációjának összevetése; Aurethi Birodalom
+
+**Összevetés:** a friss dokumentáció hat felső szintű fájlja (2026-10-31) négy ponton régebbi volt a játéknál (cím, Csápszolga ára, Quetzlaru, Lélekreaktor) – a tulajdonos döntése szerint a játék marad, a dokumentáció frissítve (az eredetik ott megőrizve). Új anyag: világépítés (2026-11-07–12), hangterv, grafikai cél és stílus.
+**Átvezetve:** CF-001 – a megjelenített név mindenhol „Aurethi Birodalom” (275 csere 48 fájlban, 55 névelő „az”-ra javítva; az azonosítók és fájlnevek változatlanok; a munkanapló mint történeti feljegyzés érintetlen). CF-007 nem ütközés (`stone` = Arany).
+**Terv:** `docs/alap/VILAGEPITES_INTEGRACIO.md` – rendezett pontok, a játékra váró kreátori döntések (kitsu-mata most, oroszlános gárda, címer, wer-ursanok, Ghoblin-név, Tendüür, Ooni), nyitott kérdések (nyersanyag), és hogy a világépítési anyag mely mérföldkőben kerül a motorba. Az `engine/content` mostantól az egyetlen tartalomforrás (`engine/content/README.md`).
+

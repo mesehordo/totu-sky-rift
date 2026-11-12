@@ -42,7 +42,7 @@
 
 - A népnevek írása: *ursan, kethri, croftian, aurethi, szürke elf* kisbetűvel (jelzőként és népnévként is). *Wullof, Ooni, Huk’ucha, Micéliák* és a szövetséges népek nevei (*Pinguu, Ghoblin, Mhonyo, Daresh, Tokla, Galóca, Niil-elfek, Tűz-elfek, Tendüür, Nila-uchana, Zhan-zhama, Shrissh-matah*) nagybetűvel, ahogy a játék is írja.
 - A Micéliák egyes számban: *egy micélia*, jelzőként *micélia* (pl. *micélia kertész*).
-- A *Kórus* mindig nagybetűs. A *croftian* a Vasbirodalom elnevezése (Croftas istenükről); a többi nép a saját nevén hívja őket (Egyhangúak, Úttalanok, Lámpástalanok stb.), és egy-egy nép szövegében ezt a nevet használjuk.
+- A *Kórus* mindig nagybetűs. A *croftian* az Aurethi Birodalom elnevezése (Croftas istenükről); a többi nép a saját nevén hívja őket (Egyhangúak, Úttalanok, Lámpástalanok stb.), és egy-egy nép szövegében ezt a nevet használjuk.
 - A semleges krónikás hang a *Kórus* szót használja; a *croftian* csak aurethi nézőpontban és a játék frakciónevére utalva szerepel.
 - A Kórus soha nem mesél, nem ír, nem énekel, és nem magyaráz. Nem lehet nézőpontkarakter elbeszélésben, és nem idézhető tőle monda vagy tanítás; csak mások leírásában jelenik meg.
 - A népek mondáinál ne ismételjük folyton, hogy „a monda szerint”: a fejezet elején álló jelölés elég.

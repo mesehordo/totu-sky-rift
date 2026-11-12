@@ -89,7 +89,7 @@ Az embereket nem valamilyen eredendő faji gyengeség pusztította el: az ő sű
 
 Közben kisebb csodák történtek. Egy elf kőműves hangjára megrepedt a gránit. Egy ursan halott neve felizzott a sírkövön. Egy Wullof útének újra hallhatóvá tette egy elpusztult falucska hangjait. A Micéliák emlékszöveteiben olyan képek jelentek meg, amelyeket egyetlen élő tagjuk sem látott. A Niil-elfek folyóján a száraz évszak közepén jött az ár, és az ároszlopokra először került fel a jel, amely azt jelenti: *nem tudjuk*.
 
-A kethri városokban pedig valaki olyasmit kezdett válaszolni a jelzőillatukra, ami nem volt kethri. A Vasbirodalom később Croftasról, a betegség ősi istenéről nevezte el őket **croftianoknak**; minden más nép a maga nevén hívja őket.
+A kethri városokban pedig valaki olyasmit kezdett válaszolni a jelzőillatukra, ami nem volt kethri. Az Aurethi Birodalom később Croftasról, a betegség ősi istenéről nevezte el őket **croftianoknak**; minden más nép a maga nevén hívja őket.
 
 ## 4. A mágia szabályai
 
@@ -114,7 +114,7 @@ A főfajok önálló hadsereget és településhálózatot tudnak fenntartani. A
 | Szürke elfek | A Kő és a Csillag Városai; Nap-hit, rezonanciahálózat, mérhető ima | `nepek/01_szurke_elfek.md` |
 | Ursanok | Az Északi Eskük Birodalma; Esküfa, pajzsfal, a falu maga a hadsereg | `nepek/02_ursanok.md` |
 | Wullof | A Hét Út Szövetsége; úténekek, Hold és folyóősök, vándortáborok | `nepek/03_wullof.md` |
-| Vasbirodalom | Aureth géptestű emberei; Ordan, az öreg istenek, lélekhorgonyok | `nepek/04_vasbirodalom.md` |
+| Aurethi Birodalom | Aureth géptestű emberei; Ordan, az öreg istenek, lélekhorgonyok | `nepek/04_vasbirodalom.md` |
 | Kethrik és a Kórus | A megszállt fészkek; fészekrend, emlékőrök, névkövek; a Kórusról csak mások beszámolói szólnak | `nepek/05_croftian_kethri.md` |
 | Ooni | A Kapuvárosok Egyezsége; fogadalmi kötelek, lámpások, meselények | `nepek/06_ooni.md` |
 | Huk’ucha | A Tavirózsa-medencék őrzői; Tóanya, Tóének, vendégtavak | `nepek/07_hukucha.md` |
@@ -132,7 +132,7 @@ A főfajok önálló hadsereget és településhálózatot tudnak fenntartani. A
 | Nila-uchana | Lótuszudvarok és szörnyidézők; az évenkénti kötés | `nepek/19_nila_uchana.md` |
 | Zhan-zhama | Apró nép, nagy kakasok; a tojás és a hajnal | `nepek/20_zhan_zhama.md` |
 
-A főszereplők: **Tava** (Wullof), **Ragna Kőváll** (ursan), **Szelai** (szürke elf), **Mór** (Micéliák), **Sairen** (Ooni), **Relluk** (Huk’ucha), **Livia Varr** és **Nera** (Vasbirodalom), **Keth** (kethri). Karakterlapjaik a `characters/szereplok.md` fájlban vannak.
+A főszereplők: **Tava** (Wullof), **Ragna Kőváll** (ursan), **Szelai** (szürke elf), **Mór** (Micéliák), **Sairen** (Ooni), **Relluk** (Huk’ucha), **Livia Varr** és **Nera** (Aurethi Birodalom), **Keth** (kethri). Karakterlapjaik a `characters/szereplok.md` fájlban vannak.
 
 ## 6. A világ fontos helyei
 
@@ -260,7 +260,7 @@ Mór az első szabad kethrik egyikének megmutatja a megmaradt emléktöredékek
 
 ### IV. hadjárat: Akiket átengedünk – Ooni
 
-Tava küldöttsége a hegyek alatt keres utat a Fekete Tükör felé. A Vasbirodalom és az Ooni közös őrsége fertőzött kereskedőket talál az egyik átkelőnél (az Ooni kapunaplók nyelvén Lámpástalanokat), ezért Sairen lezárja a régi kapukat, és a kapuvárosokban kijárási tilalmat rendelnek el. Aureth a katonai útvonal mielőbbi megnyitását kéri. Sairen a védelmi egyezségre hivatkozva előbb biztonságos átkelőt jelöl ki a civileknek és az őrségnek. A többi város mégis élelmet küldene a túloldalra. A játékos menekülőket kísér, őrtornyokat köt össze, és biztonságos útvonalat épít a mozgó hegyoldalban.
+Tava küldöttsége a hegyek alatt keres utat a Fekete Tükör felé. Az Aurethi Birodalom és az Ooni közös őrsége fertőzött kereskedőket talál az egyik átkelőnél (az Ooni kapunaplók nyelvén Lámpástalanokat), ezért Sairen lezárja a régi kapukat, és a kapuvárosokban kijárási tilalmat rendelnek el. Aureth a katonai útvonal mielőbbi megnyitását kéri. Sairen a védelmi egyezségre hivatkozva előbb biztonságos átkelőt jelöl ki a civileknek és az őrségnek. A többi város mégis élelmet küldene a túloldalra. A játékos menekülőket kísér, őrtornyokat köt össze, és biztonságos útvonalat épít a mozgó hegyoldalban.
 
 A kaputartók feljegyzései különböző bolygók egykori kőzeteit írják le ugyanabban a hegyben. Szelai mérései igazolják, hogy az aurethi próbaterhelés a világvarraton át jutott el a fertőzött bányákig. Sairen az Ooni és az aurethi őrség, valamint Tava küldöttei előtt teríti ki a varrattérképet. A katonai parancsnokok hozzájárulásával közös szerelőjáratot jelöl ki, és őrséget ad a csapat mellé. Az egyik kaput külön átjáróvá alakítják a civileknek, hogy a hadsereg későbbi visszavonulása se zárhassa rájuk az utat.
 
@@ -276,11 +276,11 @@ Relluk a záróküldetés után az üres kőmedence fenekén régi kagylósort t
 
 ### Átvezető: A közös finomító
 
-A Huk’ucha és a Vasbirodalom hadjárata között a szövetség megközelít egy elhagyott aurethi finomítót, megtisztítja a bekötőutat, és ideiglenes tápvezetéket húz ki hozzá. A finomító a következő hadjárat kulcsa lesz.
+A Huk’ucha és az Aurethi Birodalom hadjárata között a szövetség megközelít egy elhagyott aurethi finomítót, megtisztítja a bekötőutat, és ideiglenes tápvezetéket húz ki hozzá. A finomító a következő hadjárat kulcsa lesz.
 
-### VI. hadjárat: Az isten, aki nem enged el – Vasbirodalom
+### VI. hadjárat: Az isten, aki nem enged el – Aurethi Birodalom
 
-Livia fegyveres vitába kerül Ragna csapataival egy csillagércszállítmány miatt, amelyet Ragna foglalt le. Sairen a Vasbirodalom Ooni szövetségeseként közvetít köztük. Kiderül, hogy ugyanaz az érc az ursan menekültek fűtését és egy aurethi város lélekhorgonyainak feltöltését is szolgálhatná. Egyik fél szükséglete sem kitalált ürügy.
+Livia fegyveres vitába kerül Ragna csapataival egy csillagércszállítmány miatt, amelyet Ragna foglalt le. Sairen az Aurethi Birodalom Ooni szövetségeseként közvetít köztük. Kiderül, hogy ugyanaz az érc az ursan menekültek fűtését és egy aurethi város lélekhorgonyainak feltöltését is szolgálhatná. Egyik fél szükséglete sem kitalált ürügy.
 
 Az előkészített finomítót Livia csapata indítja újra, a szövetséges szerelők által megtisztított bekötőúttal és az ideiglenes tápvezetékkel. A játékos itt látja először a géptestek mögötti emberi civileket: lemerülő családokat, testükből ideiglenesen kivett horgonyokat, műhelyeket, ahol hétköznapi emberek várnak javításra.
 
@@ -368,7 +368,7 @@ Tava új útvonalat térképez fel Aureth és a Mélykertek között. A határk�
 
 Mór az elveszített emlékkert helyén új kertet nevel. Nem próbálja előállítani azokat, akik végleg eltűntek. A bejáratnál Keth neve áll, alatta egy rövid feljegyzés arról, kit mentett meg és kiknek ártott. Egyik részt sem törlik ki.
 
-Az Ooni és a Vasbirodalom közös őrsége visszatér a határkapukhoz. Sairen a kapuvárosok közti egyezségbe foglalja, hogy a kijelölt menekülőutakat a helyi őrség háborúban is nyitva tartja. Relluk gátmesterei segítenek az alsó folyóágak telepeinek saját vízzárat építeni.
+Az Ooni és az Aurethi Birodalom közös őrsége visszatér a határkapukhoz. Sairen a kapuvárosok közti egyezségbe foglalja, hogy a kijelölt menekülőutakat a helyi őrség háborúban is nyitva tartja. Relluk gátmesterei segítenek az alsó folyóágak telepeinek saját vízzárat építeni.
 
 A szövetséges népek visszatérnek a maguk életéhez, és a háború nem írja felül a régi vitáikat. A Daresh és a Shrissh-matah határháborúja a Kórus veresége után a következő tavasszal folytatódik az Első Párkányért. A Tokla őrei a holdszilánkos üreg mellett maradnak. A Micéliák és a Galócák közös határán a tüskék egy ideig alacsonyabbak.
 
@@ -382,7 +382,7 @@ Mór azt feleli, hogy ezt ő sem látta. Aztán felmennek a felszínre, és egy�
 
 **Tervezett terjedelem: 46 küldetés.** Egy előjáték, hét ötküldetéses főfaji hadjárat, öt szövetséges küldetés a Mélykertekben, két átvezető és három közös záróküldetés. Az Ooni és a Huk’ucha tíz új pályája bővíti az eredeti 36-os tervet.
 
-A két átvezető feladat: az ursan és az elf hadjárat között a vegyes menekültkonvoj; a Huk’ucha és a Vasbirodalom között a közös finomító megközelítése és ideiglenes tápellátása. Ezek vezetik be fokozatosan a több néppel együtt végzett műveleteket.
+A két átvezető feladat: az ursan és az elf hadjárat között a vegyes menekültkonvoj; a Huk’ucha és az Aurethi Birodalom között a közös finomító megközelítése és ideiglenes tápellátása. Ezek vezetik be fokozatosan a több néppel együtt végzett műveleteket.
 
 | Hadjárat | Öt fő küldetés javasolt címe |
 |---|---|
@@ -820,7 +820,7 @@ Marrga elgondolkodott ezen.
 
 ---
 
-# Vasbirodalom – az aurethi géptestű emberek
+# Aurethi Birodalom – az aurethi géptestű emberek
 
 *© 2026 Mesehordo – TOTU: Sky Rift*
 
@@ -860,7 +860,7 @@ Az Örök Birodalom legfontosabb ünnepe a **Második Lélegzet**. Az első megm
 
 Az átvezetés először önkéntes volt, aztán kötelező. Ordan engedélyezi az állampolgárságot igazoló horgonyok feltöltését, és a törvények meg a technikai függés összenőttek: egy politikai ítélet valóban lezárhatja valaki testét. Nem minden aurethi támogatja ezt. Sokakat éppen az tart engedelmességben, hogy a családjukat is ugyanaz a hálózat táplálja. A birodalmi jog az átvezetéskori életkort örökre rögzíti: aki gyermekként került géptestbe, az hetven év múlva is kiskorú.
 
-A Vasbirodalom keleti határát az **Oonival** közösen őrzi. A két nép régi szövetséges: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
+Az Aurethi Birodalom keleti határát az **Oonival** közösen őrzi. A két nép régi szövetséges: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
 
 ## Hadviselés
 
@@ -975,7 +975,7 @@ Hazafelé Tertia a kikötőn át ment. A temploma sötét volt, a hordók a szen
 
 A **kethri** a világ őshonos, hangyaszerű értelmes népe. Fészkeik városok, nem akarat nélküli bolyok. Dolgozó, harcos és szaporodó testalakjaik vannak, de a biológiai szerep nem azonos a társadalmi ranggal. Szagmintákkal, rezgéssel és faragott jelrendszerrel beszélnek. Egyes városaikat tanácsok, másokat öröklődő dinasztiák vezetik. Városaik a birodalom keleti peremén és a kontinens mélyebb kőzetrétegeiben húzódnak.
 
-A **croftian** a Vasbirodalom elnevezése az Idegen Kórushoz kötött fertőzött testekre és tenyésztett lényekre. **Croftasról**, a betegség, a rothadás és a balszerencse ősi aurethi istenéről kapta a nevét: az aurethiek úgy hiszik, hogy a hangyaszerű népet Croftas fertőzte meg és torzította el, vagy hogy ezek a lények egyenesen tőle származnak. A többi nép a maga nevén hívja őket (lásd lent). A Kórus nem nevezi meg önmagát. Nem ír, nem mesél, nem énekel, és nincsenek mondái; mindent, amit tudunk róla, a többi nép beszámolóiból tudjuk. Páncéljuk kitinlemezekből, mozgó ízületeik puha szövetből állnak. Fészkeik nedves, élő falai spórakamrákat és tenyészüregeket növesztenek. A fertőzött kethrik egy részének személyisége a Kórusban is megmarad.
+A **croftian** az Aurethi Birodalom elnevezése az Idegen Kórushoz kötött fertőzött testekre és tenyésztett lényekre. **Croftasról**, a betegség, a rothadás és a balszerencse ősi aurethi istenéről kapta a nevét: az aurethiek úgy hiszik, hogy a hangyaszerű népet Croftas fertőzte meg és torzította el, vagy hogy ezek a lények egyenesen tőle származnak. A többi nép a maga nevén hívja őket (lásd lent). A Kórus nem nevezi meg önmagát. Nem ír, nem mesél, nem énekel, és nincsenek mondái; mindent, amit tudunk róla, a többi nép beszámolóiból tudjuk. Páncéljuk kitinlemezekből, mozgó ízületeik puha szövetből állnak. Fészkeik nedves, élő falai spórakamrákat és tenyészüregeket növesztenek. A fertőzött kethrik egy részének személyisége a Kórusban is megmarad.
 
 ## Honnan jöttek
 
@@ -1039,7 +1039,7 @@ A Kórusról nincs saját forrás. Amit tudunk, azt jelentésekből, naplókból
 
 | Nép | Elnevezés | Mit lát bennük |
 |---|---|---|
-| Vasbirodalom | **croftianok**, Croftas népe | Croftas büntetését vagy fattyait. A papok szerint a betegség istene a Fényes Esővel tért vissza, és Ordan Örök Hajnala az egyetlen menedék előle. |
+| Aurethi Birodalom | **croftianok**, Croftas népe | Croftas büntetését vagy fattyait. A papok szerint a betegség istene a Fényes Esővel tért vissza, és Ordan Örök Hajnala az egyetlen menedék előle. |
 | Szürke elfek | *Egyhangúak* | Egy hálózatot, amelyben minden csomópont ugyanazon a hangon rezeg. Az elf tudósok Croftas nevét babonának tartják. |
 | Ursanok | *Esküvesztettek* | Akikkel nem lehet esküt kötni, mert nincs, aki megtartsa. |
 | Wullof | *Úttalanok* | Akik nem úton jönnek, hanem alulról, és akiknek nincs úténeke. |
@@ -1155,7 +1155,7 @@ A jelkő ott maradt az emlékőr fülkéjében, a jó év kövei között. Az al
 
 Az Ooni városokban több nép él együtt: szarvas, agyaras **onik**, négylábú, sörényes **nianok**, hollótollú, szárnyas **tenguk**, alakváltó **tanukik** és más hegyi lények. A nagytestű lakók számára széles lépcsők és nyitott udvarok készülnek, a kisebbek számára keskeny függőhidak és magas peremjárdák. Márvány- és kőoszlopos csarnokaik fölé felkunkorodó cseréptetőt építenek. Hágóikat gerendakapuk, faragott maszkok, fogadalmi kötelek és papírlámpások jelzik.
 
-A kapuvárosok a keleti hegyekben, a keleti világvarrat fölött állnak. Önállóak, és közösen tartják járható állapotban az ősi hegyi átjárókat. Az **Ooni és a Vasbirodalom régi szövetségesek**: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
+A kapuvárosok a keleti hegyekben, a keleti világvarrat fölött állnak. Önállóak, és közösen tartják járható állapotban az ősi hegyi átjárókat. Az **Ooni és az Aurethi Birodalom régi szövetségesek**: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
 
 ## Honnan jöttek
 

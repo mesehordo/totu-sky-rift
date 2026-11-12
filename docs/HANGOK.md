@@ -71,7 +71,7 @@ Népenként: `select_1..4`, `move_1..3`, `attack_order_1..3`, `death_1..2`, `tra
 - **Hangkarakter:** élénk, csaholó, vidám dingóhang, útra, falkára utaló szavak.
 - **Hősök egyedi hangja** (`units/<id>/select_*`, `move_*`, `attack_order_*`): Tava (`wul_hos_tava`), Varnu, a Holdsámán (`wul_hos_varnu`), Kurrin Harcfőnök (`wul_hos_kurrin`)
 
-### Vasbirodalom – `factions/imperium/`
+### Aurethi Birodalom – `factions/imperium/`
 
 - **Hangkarakter:** fémes, visszhangos emberi hang a gépből, latinos katonai fegyelem; gőzszelep és zúgás.
 - **Hősök egyedi hangja** (`units/<id>/select_*`, `move_*`, `attack_order_*`): Livia Varr (`imp_hos_livia`), Nera (`imp_hos_nera`), Cassius Ferrum legátus (`imp_hos_cassius`)

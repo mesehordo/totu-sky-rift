@@ -23,8 +23,8 @@ Tartalom: **A.** kutatás · **B.** statnövelő hatások (`effects`) · **C.** 
   4. A már élő egységek és épületek `max_hp`, `hp`, `max_shield`, `shield`, `max_energy` értéke a növekménnyel
      azonnal nő (a sérülés abszolút értéke megmarad); az ezután készülők eleve a növelt értékkel jönnek.
   5. Visszavonáskor az ár visszajár; ha az épület elpusztul, a folyamatban lévő kutatás elvész (az ár nem jár vissza).
-- **Kizáró csoportok ma:** Vasbirodalom `arato_fejlesztes` (2 kutatás), Wullof `groomi_kopes` (3 kutatás).
-- **Hatás nélküli kutatások** (10 db: elfek 1, Huk’ucha 1, Vasbirodalom 3, Wullof 5): csak más elemek
+- **Kizáró csoportok ma:** Aurethi Birodalom `arato_fejlesztes` (2 kutatás), Wullof `groomi_kopes` (3 kutatás).
+- **Hatás nélküli kutatások** (10 db: elfek 1, Huk’ucha 1, Aurethi Birodalom 3, Wullof 5): csak más elemek
   előfeltételei (`requires_research`, `ability_research`).
 - **Közös kutatások:** `game.summon_research` – Idézés tartósítása I–II. (minden faj idéző épületénél).
 - **Próba:** P1 – +3 páncél kutatás a meglévő és az utána képzett egységen is érvényes. P2 – 100/200 életerős
@@ -86,9 +86,9 @@ Tartalom: **A.** kutatás · **B.** statnövelő hatások (`effects`) · **C.** 
 |---|---|---|---|
 | `rage` | Ursanok | sebzés × `1 + max × hiányzó életerő-arány` (címkével) | E 131 |
 | `low_hp_rage` | Ursanok | `below` életerő-arány alatt sebzés × `mult` | G 1106 |
-| `no_weak` | Ursanok, Vasbirodalom | a megadott egységtípus ellen nincs gyengesége | G 962 |
-| `pack_bonus` | Vasbirodalom (Légió) | falkaszellem (MECH-WUL-1) a címkézetteknek | G 764 |
-| `raise_from_kills` | Vasbirodalom (2), Micéliák | ölésből esély idézett egységre | G 1205 |
+| `no_weak` | Ursanok, Aurethi Birodalom | a megadott egységtípus ellen nincs gyengesége | G 962 |
+| `pack_bonus` | Aurethi Birodalom (Légió) | falkaszellem (MECH-WUL-1) a címkézetteknek | G 764 |
+| `raise_from_kills` | Aurethi Birodalom (2), Micéliák | ölésből esély idézett egységre | G 1205 |
 | `convert_kills` | Croftian | ölésből esély az áldozat átállítására | G 1211 |
 | `poison_attacks` | Croftian, Micéliák | nem varázs-támadás mérgez (élő célpontot) | G 1074 |
 | `heal_on_kill` | Wullof | öléskor gyógyul (címkével) | G 1201 |
@@ -121,7 +121,7 @@ Tartalom: **A.** kutatás · **B.** statnövelő hatások (`effects`) · **C.** 
    `larva_add` a `larva`-hoz). Modder csak meglévő kulcsot használhat.
 3. **A felülírás sorrendfüggő.** Két ugyanazt a kulcsot adó forrásnál (pl. `summon_research_mult` I. és II.)
    a később kész nyer; ez ma szándékosan így működik (a II. 1,5-öt ad, nem 1,25 × 1,5-öt), de rejtett.
-   A `raise_from_kills` két Vasbirodalom-forrásnál a nagyobb esély marad – ez egyedi szabály.
+   A `raise_from_kills` két Aurethi Birodalom-forrásnál a nagyobb esély marad – ez egyedi szabály.
 4. **Csak összeadó statnövelés.** Százalékos növelésre (`speed_pct`, `carry_pct`) külön statnév kell; szorzó
    (`× 1,1`) nincs.
 5. **A viselkedés-szabályok valójában passzív képességek** (C-2): ölésre, találatra, életerő-küszöbre vagy

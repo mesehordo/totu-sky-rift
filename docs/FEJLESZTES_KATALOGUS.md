@@ -10,7 +10,7 @@ Ebből választhatsz. Minden fajnak van már alap sebzés- és páncélfejleszt�
 |---|---|---|---|
 | 1 | Sebzés | +2 sebzés egy egységcsoportnak (közelharc, távolsági, varázsló, ostrom) | ✅ mindenkinél |
 | 2 | Páncél | +1 páncél egy csoportnak (élő, gép, épület) | ✅ mindenkinél |
-| 3 | Életerő | +X életerő bizonyos egységeknek (nagyok, lovasok, munkások) | Vasbirodalom: Öntöttvas burok ✅ |
+| 3 | Életerő | +X életerő bizonyos egységeknek (nagyok, lovasok, munkások) | Aurethi Birodalom: Öntöttvas burok ✅ |
 | 4 | Visszatöltődő pajzs | Pajzs, amely sebzés nélkül magától visszatöltődik | Elfek: Napégi pajzs ✅ |
 | 5 | Sebesség | +10–30% egy csoportnak, vagy csak harcon kívül | Wullof: A falka szelleme ✅ |
 | 6 | Lőtáv / látótáv | +1 lőtáv a lövészeknek, +2 látótáv mindenkinek | Elfek: Csillagfény-látás ✅ |
@@ -18,17 +18,17 @@ Ebből választhatsz. Minden fajnak van már alap sebzés- és páncélfejleszt�
 | 8 | **Ideiglenes gyengeség-pajzs** | Aktiválható képesség: X mp-ig nincs gyengesége, utána töltődik | Huk’ucha Kagylópajzsos: „Héjba húzódás” – 8 mp-ig nem gyenge a lövészek ellen |
 | 9 | Új képesség megnyitása | Egy egység új aktív képességet kap | Ursanok: Fegyverbe! ✅ |
 | 10 | Erősebb képesség | Egy meglévő képesség nagyobb, tovább tart vagy hamarabb töltődik | Huk’ucha: Ugrólábak ✅ (Békaugrás 5 csempe) |
-| 11 | Gazdaság | Gyorsabb gyűjtés, nagyobb rakomány, olcsóbb munkás, több létszám | Vasbirodalom: Bővített tartály ✅, Ursan: Kiadós tanya ✅ |
+| 11 | Gazdaság | Gyorsabb gyűjtés, nagyobb rakomány, olcsóbb munkás, több létszám | Aurethi Birodalom: Bővített tartály ✅, Ursan: Kiadós tanya ✅ |
 | 12 | Gyártás | Gyorsabb képzés egy épületben, olcsóbb egység | Croftian: Gyors lárvázás ✅ |
 | 13 | Épület | Épületpáncél, épület-javulás, erősebb tornyok, tornyok légvédelme | Ursan: Rúnapajzs ✅ |
 | 14 | Gyógyulás | Életerő-visszatöltés: mindenkinek, saját területen, ölésből | Croftian: Mélységi gyógyulás ✅, Ooni: Oni vérszomj ✅ |
 | 15 | Állapothatás | Méreg, lassítás, bénítás a támadásokra | Croftian: Bénító méreg ✅ |
 | 16 | Feltétel-bónusz | Bónusz bizonyos helyzetben: erdőben, tavon, éjjel, sebesülten, csoportban | Ursan: Medve-ösztön ✅ (sebesülten erősebb) |
-| 17 | Aura | Egy egység vagy épület a közelében állókat erősíti | Vasbirodalom szobrai ✅ |
+| 17 | Aura | Egy egység vagy épület a közelében állókat erősíti | Aurethi Birodalom szobrai ✅ |
 | 18 | Felderítés | Láthatatlan egységek felfedése, messzebbre lát egy épület | – |
 | 19 | Idézés | Az idézett lények tovább élnek, erősebbek, többet idéz | Huk’ucha: Mély víz ✅ |
 | 20 | Faj-mechanika | A faj saját rendszerét erősíti (Áhítat, lámpásfény, harci kedv, rothasztás, tavacska) | Ooni: Messzefény ✅, Harci dobok ✅ |
-| 21 | Kizáró választás | Két fejlesztés közül csak az egyik választható | Vasbirodalom: Hajtómű vagy Tartály ✅ |
+| 21 | Kizáró választás | Két fejlesztés közül csak az egyik választható | Aurethi Birodalom: Hajtómű vagy Tartály ✅ |
 | 22 | Ellen-fejlesztés | Bónusz egy bizonyos ellenféltípus ellen (repülők, ostromgépek, hősök ellen) | – |
 | 23 | Halál-hatás | Halálkor robbanás, mérgező felhő, szellem marad vissza | – |
 | 24 | Átalakulás | Egy egység magasabb szintre fejlődik (pl. veterán), vagy új alakot kap | – |
@@ -56,7 +56,7 @@ Ebből választhatsz. Minden fajnak van már alap sebzés- és páncélfejleszt�
 - **Szárazföldi vándorlás** (5): a vándorszekér +40% sebesség.
 - **Holdtölte** (16): éjjel (minden 4. percben 1 percre) +15% sebzés.
 
-### Vasbirodalom
+### Aurethi Birodalom
 - **Szikrafogó vértek** (7): a mechák nem gyengék a varázslók ellen.
 - **Gőztúlnyomás** (8): aktiválható, 6 mp-re +40% sebesség a mecháknak, utána 3 mp-re lassulnak.
 - **Ballisztikus számítás** (22): a Ballistarius +4 sebzés repülők ellen.
@@ -85,8 +85,8 @@ Ebből választhatsz. Minden fajnak van már alap sebzés- és páncélfejleszt�
 | Wullof | Ősi nyomolvasás | Sámánsátor | A láthatatlan ellenség 8 csempén belül felfedődik |
 | Wullof | Holdtölte | Sámánsátor | 4 percenként 1 percig +15% sebzés (értesítés jelzi) |
 | Wullof | Bölénylovaglás | Bölényakol | A gyalogos felülhet a bölényre (a Bölénylovas nem képezhető) |
-| Vasbirodalom | Gőztúlnyomás | Öntöde | Gépek: 6 mp-re +40% sebesség, utána 3 mp-ig lassabbak |
-| Vasbirodalom | Szikrafogó vértek | Öntöde | A gépek nem gyengék a varázslók ellen |
+| Aurethi Birodalom | Gőztúlnyomás | Öntöde | Gépek: 6 mp-re +40% sebesség, utána 3 mp-ig lassabbak |
+| Aurethi Birodalom | Szikrafogó vértek | Öntöde | A gépek nem gyengék a varázslók ellen |
 | Huk’ucha | Héjba húzódás | Gyöngykagyló-kert | Kagylópajzsos: 8 mp-ig semmi ellen nem gyenge, de lassabb |
 | Huk’ucha | Tavak útja | Gyöngyműhely | A saját tavacskán +20% sebzés |
 | Ooni | Kőkutya-hűség | Kapuszentély | A Kőkutya-őr melletti épület +2 páncél |

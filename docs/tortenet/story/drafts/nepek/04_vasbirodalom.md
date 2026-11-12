@@ -1,4 +1,4 @@
-# Vasbirodalom – az aurethi géptestű emberek
+# Aurethi Birodalom – az aurethi géptestű emberek
 
 *© 2026 Mesehordo – TOTU: Sky Rift*
 
@@ -38,7 +38,7 @@ Az Örök Birodalom legfontosabb ünnepe a **Második Lélegzet**. Az első megm
 
 Az átvezetés először önkéntes volt, aztán kötelező. Ordan engedélyezi az állampolgárságot igazoló horgonyok feltöltését, és a törvények meg a technikai függés összenőttek: egy politikai ítélet valóban lezárhatja valaki testét. Nem minden aurethi támogatja ezt. Sokakat éppen az tart engedelmességben, hogy a családjukat is ugyanaz a hálózat táplálja. A birodalmi jog az átvezetéskori életkort örökre rögzíti: aki gyermekként került géptestbe, az hetven év múlva is kiskorú.
 
-A Vasbirodalom keleti határát az **Oonival** közösen őrzi. A két nép régi szövetséges: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
+Az Aurethi Birodalom keleti határát az **Oonival** közösen őrzi. A két nép régi szövetséges: az Ooni őrségek biztosítják a hegyi utakat, az aurethi műhelyek szerelvényekkel, szerszámokkal és mérnökökkel segítik a kapuvárosokat.
 
 ## Hadviselés
 

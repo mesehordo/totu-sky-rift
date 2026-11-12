@@ -30,7 +30,7 @@ Minden elbeszélésnél: központi szereplő · cél · miért fontos · akadál
 - **Mag:** Ninnu, útbíró-inas, és mestere, az öreg Marrga két falu vitáját bírálja el egy forrásról. A két falu úténeke máshová teszi a forrást. Ninnu ügyes trükköt vár; Marrga három napig vár, és mindkét falut a saját partjáról énekelteti ugyanabban az órában. A forrás évszakonként vándorol a varrat mentén: mindkét ének igaz. Ítélet: évszak szerinti megosztás, mindkét állapot a térképre.
 - **Sablonveszély:** bölcs öreg mester tanítása. **Alternatívák:** (1) Ninnu oldja meg Marrga helyett; (2) az egyik falu hazudik; (3) a megoldás unalmas, lassú munka, nincs benne zsenialitás. **Választás:** 3., némi humorral (emuk, kalap). Előképe Tava kettős térképeinek.
 
-### Vasbirodalom – *Umbrax kapusa*
+### Aurethi Birodalom – *Umbrax kapusa*
 - **Mag:** Tertia Ovan, Umbrax papnője Aureth alsóvárosában. A temploma évtizedek óta raktár. Egy pék, Gaius Pell felesége végleg meghal: a horgony összetört, mire a Fabrikátor odaért. Gaius a régi szertartást kéri. Ordan nyilvántartója „technikai veszteségnek” akarja bejegyezni. Tertia elfelejtette a szavakat. Tét: van-e még helye a halálnak az Örök Birodalomban. Változás: a nyilvántartó a bejegyzés alá kézzel odaírja a nevet.
 - **Sablonveszély:** lázadó pap, aki szembeszáll az istennel. **Alternatívák:** (1) Ordan megszólal, és megtiltja; (2) a szertartás elmarad; (3) a szertartás ügyetlen, félig elfelejtett, kenyérrel rögtönzött, és senki nem szól bele. **Választás:** 3. – Ordan hallgat; a csend többet mond.
 
@@ -99,8 +99,8 @@ A v04 cselekményláncát lépésenként végignéztem (kiváltó ok → esemén
 3. **Ursan → átvezető → elf:** a fuvarlevél és Tava térképei Szelaihoz jutnak; a v04 nem mondja meg, hogyan. **Javítás:** a menekültkonvoj (átvezető küldetés) viszi el a térképet a déli állomásokra.
 4. **Elf → Micéliák:** rendben; Szelai feljegyzései és Mór kapcsolata a Keth-szálon fut.
 5. **Micéliák → Ooni:** rendben; a kaput az első szabad kethri emléke azonosítja.
-6. **Ooni → Huk’ucha → átvezető → Vasbirodalom:** rendben.
-7. **Vasbirodalom → Croftian:** a croftian hadjárat visszatekintés, időben párhuzamos. Rendben, de a szövegben jelezni kell az időrendet.
+6. **Ooni → Huk’ucha → átvezető → Aurethi Birodalom:** rendben.
+7. **Aurethi Birodalom → Croftian:** a croftian hadjárat visszatekintés, időben párhuzamos. Rendben, de a szövegben jelezni kell az időrendet.
 8. **Finálé:** a Maurus-lefegyverzés a v04-ben névtelen tisztekhez kötött. **Javítás (D3):** Cassius Ferrum.
 9. **Utóhang:** rendben. Egy hiány: a szövetséges népek sorsa nem szerepel. **Javítás:** egy rövid bekezdés róluk.
 

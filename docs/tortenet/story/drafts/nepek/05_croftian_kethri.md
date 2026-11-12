@@ -6,7 +6,7 @@
 
 A **kethri** a világ őshonos, hangyaszerű értelmes népe. Fészkeik városok, nem akarat nélküli bolyok. Dolgozó, harcos és szaporodó testalakjaik vannak, de a biológiai szerep nem azonos a társadalmi ranggal. Szagmintákkal, rezgéssel és faragott jelrendszerrel beszélnek. Egyes városaikat tanácsok, másokat öröklődő dinasztiák vezetik. Városaik a birodalom keleti peremén és a kontinens mélyebb kőzetrétegeiben húzódnak.
 
-A **croftian** a Vasbirodalom elnevezése az Idegen Kórushoz kötött fertőzött testekre és tenyésztett lényekre. **Croftasról**, a betegség, a rothadás és a balszerencse ősi aurethi istenéről kapta a nevét: az aurethiek úgy hiszik, hogy a hangyaszerű népet Croftas fertőzte meg és torzította el, vagy hogy ezek a lények egyenesen tőle származnak. A többi nép a maga nevén hívja őket (lásd lent). A Kórus nem nevezi meg önmagát. Nem ír, nem mesél, nem énekel, és nincsenek mondái; mindent, amit tudunk róla, a többi nép beszámolóiból tudjuk. Páncéljuk kitinlemezekből, mozgó ízületeik puha szövetből állnak. Fészkeik nedves, élő falai spórakamrákat és tenyészüregeket növesztenek. A fertőzött kethrik egy részének személyisége a Kórusban is megmarad.
+A **croftian** az Aurethi Birodalom elnevezése az Idegen Kórushoz kötött fertőzött testekre és tenyésztett lényekre. **Croftasról**, a betegség, a rothadás és a balszerencse ősi aurethi istenéről kapta a nevét: az aurethiek úgy hiszik, hogy a hangyaszerű népet Croftas fertőzte meg és torzította el, vagy hogy ezek a lények egyenesen tőle származnak. A többi nép a maga nevén hívja őket (lásd lent). A Kórus nem nevezi meg önmagát. Nem ír, nem mesél, nem énekel, és nincsenek mondái; mindent, amit tudunk róla, a többi nép beszámolóiból tudjuk. Páncéljuk kitinlemezekből, mozgó ízületeik puha szövetből állnak. Fészkeik nedves, élő falai spórakamrákat és tenyészüregeket növesztenek. A fertőzött kethrik egy részének személyisége a Kórusban is megmarad.
 
 ## Honnan jöttek
 
@@ -70,7 +70,7 @@ A Kórusról nincs saját forrás. Amit tudunk, azt jelentésekből, naplókból
 
 | Nép | Elnevezés | Mit lát bennük |
 |---|---|---|
-| Vasbirodalom | **croftianok**, Croftas népe | Croftas büntetését vagy fattyait. A papok szerint a betegség istene a Fényes Esővel tért vissza, és Ordan Örök Hajnala az egyetlen menedék előle. |
+| Aurethi Birodalom | **croftianok**, Croftas népe | Croftas büntetését vagy fattyait. A papok szerint a betegség istene a Fényes Esővel tért vissza, és Ordan Örök Hajnala az egyetlen menedék előle. |
 | Szürke elfek | *Egyhangúak* | Egy hálózatot, amelyben minden csomópont ugyanazon a hangon rezeg. Az elf tudósok Croftas nevét babonának tartják. |
 | Ursanok | *Esküvesztettek* | Akikkel nem lehet esküt kötni, mert nincs, aki megtartsa. |
 | Wullof | *Úttalanok* | Akik nem úton jönnek, hanem alulról, és akiknek nincs úténeke. |

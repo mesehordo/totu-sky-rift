@@ -759,7 +759,7 @@ Alá még egy sort írt, a Wullof útbírók régi formulájával, amelyet arra 
 
 ---
 
-# Vasbirodalom – novellák
+# Aurethi Birodalom – novellák
 
 *© 2026 Mesehordo – TOTU: Sky Rift*
 
@@ -1339,7 +1339,7 @@ A könyvtáros hallgatott.
 
 Pon hazament a gyűrűvel. A szokás szerint a polcra kellett volna tennie. Ezt is tudta.
 
-Ehelyett elment a határőrséghez, ahol a Vasbirodalom és az Ooni közös őrsége állomásozott, és ahol egy aurethi tiszt szolgált, egy Junia nevű asszony, akit Pon a piacról ismert, mert Junia mindig megállt a tanukik polcánál, és nézegette a tárgyakat.
+Ehelyett elment a határőrséghez, ahol az Aurethi Birodalom és az Ooni közös őrsége állomásozott, és ahol egy aurethi tiszt szolgált, egy Junia nevű asszony, akit Pon a piacról ismert, mert Junia mindig megállt a tanukik polcánál, és nézegette a tárgyakat.
 
 Junia sokáig nézte a gyűrűt.
 
@@ -3242,7 +3242,7 @@ Bodza egyikkel sem csinált semmit. Ez volt, Fogas szerint, a helyes dolog.
 
 A Fabrikátor nem tudta, hol van, és a tüskék a fejéig értek.
 
-A Fabrikátor egy aurethi munkásgép volt, pókszerű, nyolclábú, bronzból és vasból, és egy Livius nevű ember lakott benne, aki harmincnyolc éve volt Fabrikátor, és aki most életében először nagyon megbánta, hogy egyedül indult el. A Vasbirodalom határán egy új meteoritbányát nyitottak, és Liviust küldték előre, hogy megvizsgálja a bekötőutat. A térkép szerint az út egy erdőn át vezetett. A térkép nem mondta, hogy az erdőben Galócák laknak.
+A Fabrikátor egy aurethi munkásgép volt, pókszerű, nyolclábú, bronzból és vasból, és egy Livius nevű ember lakott benne, aki harmincnyolc éve volt Fabrikátor, és aki most életében először nagyon megbánta, hogy egyedül indult el. Az Aurethi Birodalom határán egy új meteoritbányát nyitottak, és Liviust küldték előre, hogy megvizsgálja a bekötőutat. A térkép szerint az út egy erdőn át vezetett. A térkép nem mondta, hogy az erdőben Galócák laknak.
 
 Livius egy darabig az erdőben ment, aztán egy tüskés palánkhoz ért, amelyen egy rés volt. A rés mögött egy tisztás volt, tele furcsa, tüskés gombákkal. Livius átment a résen, mert a tisztáson át rövidebb volt az út.
 

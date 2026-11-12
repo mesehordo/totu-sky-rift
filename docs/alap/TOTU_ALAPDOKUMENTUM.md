@@ -18,7 +18,7 @@ Ha a kód eltér ettől a dokumentumtól, a kód mutatja a valóságot, ez pedig
 ## 2. Mi a TOTU – rögzített tények
 
 - **Műfaj:** klasszikus, 2D sprite-os, 3/4 nézetű fantasy RTS; bázisépítés, hősök, tárgyak, kampány.
-- **Fajok:** 7 játszható főfaj (Szürke elfek, Ursanok, Croftianok, Wullof, Vasbirodalom, Huk’ucha, Ooni) és 13 szövetséges kisfaj (Micéliák, Pinguu, Ghoblin, Mhonyo, Daresh, Tokla, Galóca, Niil-elf, Tűz-elf, Tendüür, Nila-uchana, Zhan-zhama, Shrissh-matah). A kisfajok nem önálló felek: a főfaj egyet választhat közülük, és annak épületei nyílnak meg (D11).
+- **Fajok:** 7 játszható főfaj (Szürke elfek, Ursanok, Croftianok, Wullof, Aurethi Birodalom, Huk’ucha, Ooni) és 13 szövetséges kisfaj (Micéliák, Pinguu, Ghoblin, Mhonyo, Daresh, Tokla, Galóca, Niil-elf, Tűz-elf, Tendüür, Nila-uchana, Zhan-zhama, Shrissh-matah). A kisfajok nem önálló felek: a főfaj egyet választhat közülük, és annak épületei nyílnak meg (D11).
 - **Nyersanyagok:** Fa, Arany (kódban `stone`), Meteorit, Áhítat, valamint létszám (populáció, max. 200/játékos).
 - **Játékosszám:** 1–8; jelenleg egyjátékos, gép elleni és LAN.
 - **Tartalom:** 46 kampányküldetés 12 kampányban, 20 csatapálya (2–8 játékos), magyar és angol nyelv.

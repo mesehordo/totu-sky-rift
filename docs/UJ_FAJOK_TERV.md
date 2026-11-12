@@ -6,7 +6,7 @@
 megkapja (Kapuőrzők + Papírlámpások). A terv többi része jóváhagyva.
 
 **Állapot (2026-11-05):** beépítve és gépi meccsekkel kipróbálva:
-- a Vasbirodalom alapozása;
+- az Aurethi Birodalom alapozása;
 - a Huk’ucha (tavacskák, 9 egység + 3 hős, 8 épület, 3 irány);
 - az Ooni (papírlámpások, kapuőrzők, 9 egység + 3 hős, 9 épület, 3 irány);
 - a Diplomácia csarnoka mind a 7 főfajnál;
@@ -30,13 +30,13 @@ Az egyéni csatában a gépnek megadható a szövetséges nép. A determinizmus 
 | Ursanok | megvan | hagyományos építés |
 | Croftianok | megvan | kúszó réteg (élő talaj) |
 | Wullofok | megvan | vándortábor, emuk adják a létszámot |
-| Vasbirodalom | megvan, **bővül** | **alapozás** (Dune 2000-szerű) |
+| Aurethi Birodalom | megvan, **bővül** | **alapozás** (Dune 2000-szerű) |
 | **Huk’ucha** | **új** | **tavacskák**: csak elárasztott területre építhet |
 | **Ooni** | **új** | *javaslat lent (2.3)* |
 
 > **Nyitott kérdés – Micéliák:** a listádban a szövetséges népek közé kerültek. Ma teljes, játszható főfaj: van saját kampánya („Gombanép”), 14 egysége és 10 épülete. Lásd a kérdéseket a végén.
 
-### 1.1 Vasbirodalom – alapozás
+### 1.1 Aurethi Birodalom – alapozás
 
 - A Fabrikátor új parancsa: **Alapozás**. Egy 2×2-es márvány-lapkő, *ára 10 arany, 3 mp alatt kész*. Egymás mellé rakva összefüggő padló lesz belőle.
 - Ha egy épület **teljes egészében alapozáson áll**, teljes életerővel készül el.
@@ -165,7 +165,7 @@ A táblázatban az egység épület szerinti csoportokban szerepel (melyik épü
 
 ## 5. Sorrend a jóváhagyás után
 
-1. Vasbirodalom-alapozás.
+1. Aurethi Birodalom-alapozás.
 2. Diplomácia csarnoka és a szövetséges-rendszer: választás, épület-feloldás, gépi döntés, beállítás.
 3. A 13 nép adatai és sprite-jai.
 4. Huk’ucha: tavacska-mechanika, egységek, épületek, hősök, irányok, gépi ellenfél.

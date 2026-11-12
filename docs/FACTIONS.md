@@ -17,7 +17,7 @@
 | Croftianok | Mélység • lárvák • mutáció • fertőzés | Szemhordozók (egységek) | Kórus-kút |
 | Wullof | Nomád táborok • falkaerő • vadászzsákmány | Emuk (Emukarámban tenyészthetők, karámonként legfeljebb 5) | Ősök köre |
 | Micéliák | Spórafonal-hálózat • szívgombák • összeolvadás | A hálózat: minden összekötött épület +1 | Emlékfa |
-| Vasbirodalom | Lélekidézés • gépjavítás • ostrom • lélekreaktorok | Lélekreaktorok | Panteon |
+| Aurethi Birodalom | Lélekidézés • gépjavítás • ostrom • lélekreaktorok | Lélekreaktorok | Panteon |
 
 ## Szürke elfek
 
@@ -381,7 +381,7 @@
 | Rothadókert | 180 fa, 60 kő | Bomló tetemeken nőtt gombakert: rothasztók és tetemgombák. |
 | Óriásliget | 240 fa, 100 kő | Ősi fagombák ligete: fagomba-óriások. |
 
-## Vasbirodalom
+## Aurethi Birodalom
 
 **A halhatatlan légió.** Az elesett gépek lelke 40 mp-ig lélekhorgonyban marad: egy Fabrikátor az eredeti ár 35%-áért újraépítheti. **Lélekidézés, gépjavítás, ostrom.** Az elesettek tetemeiből szellemlégiósok kelnek; a gépeket a Fabrikátorok javítják; a Kolosszus ostrom-módba telepíthető. Az idézett szellemek nem foglalnak létszámot.
 
@@ -463,7 +463,7 @@ croftian mélység + lárvák) sem hasonlít.
 |---|---|
 | **Wullof** | nomád tábor (az épületek felszedhetők és máshol letelepíthetők), falkabónusz, vadászzsákmány, szellemidézés |
 | **Micéliák** | spórafonal-hálózat: az épületek csak a Szívgombához kötve működnek, a nyersanyag bármelyik hálózati épületbe leadható; egységek összeolvasztása |
-| **Vasbirodalom** | gépszellemek: nem esznek, nem gyógyulnak, javítani kell őket; a szellemidéző a holtakból szellemlégiót támaszt; kis és nagy mechák, ostrom-mód |
+| **Aurethi Birodalom** | gépszellemek: nem esznek, nem gyógyulnak, javítani kell őket; a szellemidéző a holtakból szellemlégiót támaszt; kis és nagy mechák, ostrom-mód |
 
 ---
 
@@ -524,7 +524,7 @@ A **Mélykertek** népe: önálló gombaszemélyek, akiket a föld alatti fonalh
 
 ---
 
-## Vasbirodalom – Ferrum Aeternum
+## Aurethi Birodalom – Ferrum Aeternum
 Aureth népe: az Égszakadás éterbetegségében haldokló embereket **Ordan, a Kéz, amely Megtart** vezette át géptestekbe. Valódi emberi szellemek acélban; nem születnek új tagjaik.
 Dízelpunk mechák, légiós sasok, bronz és vas, zöldes lélekfény.
 
