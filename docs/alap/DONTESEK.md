@@ -266,3 +266,11 @@ Alap: [spec/KISFAJOK.md](spec/KISFAJOK.md) E–F.
    (Ghoblin, Daresh) minden egység.
 4. **Előléptetés:** a nem hős harci egységek két fokozatot léphetnek (Veterán, Elit).
 A számok balanszmunka (M7). Részletek: [spec/ELFOGLALAS_ES_ELOLEPTETES.md](spec/ELFOGLALAS_ES_ELOLEPTETES.md).
+
+### D32 – Terep és csoportmozgás · ELDÖNTVE (2026-11-12)
+
+1. **Terep:** sík pálya, **sokféle**, adatból bővíthető terepfajtával; StarCraft 1-szerű „kamu” magaslatokkal
+   (szint csempetulajdonságként, szirt járhatatlan, rámpa átjáró; a megjelenítő festett peremmel mutatja).
+2. **Csoportmozgás:** alapból WC3-szerű (a csoport együtt, a leglassabb tag sebességével, közelharcosok elöl,
+   kikapcsolható), emellett választható AoE-alakzatok (sor, doboz, szétszórt, szárnyas).
+Megvalósítás: [ADR-006](dontesek/ADR-006-terkep-es-mozgas.md) (javaslat), M4.

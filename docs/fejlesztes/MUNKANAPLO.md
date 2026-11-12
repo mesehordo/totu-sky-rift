@@ -326,3 +326,8 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Tesztek:** 31 (9 új: homokozó, require, rendezett bejárás és címmentes szövegek, math és hatványozás, utasításkeret – a szkript saját pcall-jával sem kerülheti meg – és memóriakorlát, csak olvasható adat, Game API és események, mentés–betöltés–folytatás bájtra azonos mentéssel, szkriptes visszajátszás és az eltérő szkript megtalálása).
 **Leírás:** `docs/alap/spec/SZKRIPT_API.md`. `LICENSE.md` – a Lua a külső összetevők között.
 **M3 kapu:** a CI mind a 6 feladatában (Windows MSVC, Linux GCC, macOS arm64 és Intel, FreeBSD, OpenBSD) a `golden_replay_m3` **egyezik**, és a `golden_replay` (M2) is; a CodeQL-elemzés hibátlan, nyitott figyelmeztetés nélkül.
+
+## 2026-11-12 – M4 indul: D32 és az ADR-006 javaslata
+
+**Döntés (tulajdonos, D32):** sík pálya sokféle terepfajtával és StarCraft 1-szerű „kamu” magaslatokkal; csoportmozgás alapból WC3-szerűen, választható AoE-alakzatokkal.
+**Kimenet:** `docs/alap/dontesek/ADR-006-terkep-es-mozgas.md` – fél csempés navrács, terepfajták és mozgásosztályok adatban, méretosztályonkénti szabadtér-térkép, hierarchikus útkeresés O(1) elérhetőséggel és azonnali legközelebbi ponttal, A* + JPS-finomítás, flow field mért igény esetén, Pottinger-féle helyi réteg, formáció, híd/kapu/rámpa, `map.json`, hét tesztpálya, kapu (8 × 200 egység, p99 ≤ 40 ms), öt lépés.
