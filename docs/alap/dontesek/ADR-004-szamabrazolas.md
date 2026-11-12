@@ -1,6 +1,6 @@
 # ADR-004: Számábrázolás a szimulációban
 
-**Státusz:** JAVASLAT – tulajdonosi jóváhagyásra vár (2026-11-12)
+**Státusz:** ELFOGADOTT – a tulajdonos jóváhagyta 2026-11-12
 **Érintett:** M2 (determinisztikus mag), M3 (Lua), M10 (hálózat), replay és mentés.
 
 ## Probléma

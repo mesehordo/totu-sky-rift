@@ -252,3 +252,6 @@
 **ADR-005 Adatformátum:** JSON, `inherits` öröklődés, komponensek, a D22/D24/D25 modellek, előfeltétel-kifejezés, JSON Schema, modfoltok (`null`, `+`, `-`), determinisztikus számbetöltés, gettext PO, konverter a mai adatokból.
 Mindhárom tulajdonosi jóváhagyásra vár.
 
+## 2026-11-12 – D27: ADR-003/004/005 elfogadva; az M0 lezárva
+
+**Döntés (tulajdonos):** mindhárom műszaki ADR elfogadva. Az M0 (leltár, viselkedési specifikáció, döntések D21–D27, ADR-002–005) kész; következik az M2 determinisztikus mag.

@@ -1,6 +1,6 @@
 # ADR-005: Adat- és sablonformátum
 
-**Státusz:** JAVASLAT – tulajdonosi jóváhagyásra vár (2026-11-12)
+**Státusz:** ELFOGADOTT – a tulajdonos jóváhagyta 2026-11-12
 **Érintett:** M2 (sablonbetöltő, VFS), M3 (Lua), M7 (tartalom), M11 (szerkesztő), M13 (modok, mod.io).
 Alap: D9, D22 (képességmodell), D24 (módosítók), D25 (hősök, tárgyak, elemek), D23 (mod.io).
 

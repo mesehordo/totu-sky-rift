@@ -10,7 +10,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | # | Döntés |
 |---|---|
 | D1 | FELÜLÍRVA (2026-11-12) a D18-cal: a motor **C++20**, nulláról – [ADR-002](dontesek/ADR-002-uj-motor.md); a korábbi C#-döntés (ADR-001) az OpenBSD/FreeBSD-követelmény miatt elesett |
-| D2 | ÚJRANYITVA (2026-11-12): a C++-irányban a megjelenítő-réteget az M1 ADR-je (ADR-003) méréssel dönti el; javaslat: saját RHI, OpenGL 3.3 alap + Vulkan. Korábban: **raylib-cs** (raylib, zlib), **OpenGL 3.3 alap**; 4.x csak opcionális magas grafikai profilban, játékszabályt nem érinthet. Rajzolási próba 2026-11-12: 1600 egység mind látható p99 10,5 ms, 2400 egység p99 15,8 ms (RX 550) – **megerősítve** |
+| D2 | ELDÖNTVE (2026-11-12, [ADR-003](dontesek/ADR-003-megjelenito.md)): saját vékony RHI, első háttér OpenGL 3.3 core, második SDL3 GPU (Vulkan/Metal/D3D12). Korábban: **raylib-cs** (raylib, zlib), **OpenGL 3.3 alap**; 4.x csak opcionális magas grafikai profilban, játékszabályt nem érinthet. Rajzolási próba 2026-11-12: 1600 egység mind látható p99 10,5 ms, 2400 egység p99 15,8 ms (RX 550) – **megerősítve** |
 | D3 | MÓDOSÍTVA (2026-11-12): minden rendszer, amin a 0 A.D. fut – Windows, Linux, macOS (Intel, Apple Silicon), FreeBSD, OpenBSD |
 | D4 | ÚJRANYITVA (2026-11-12): az M10 előtt döntendő; javaslat: lockstep relészerverrel ([UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) 6. pont). Korábban: szerverautoritatív LAN |
 | D5 | ELDÖNTVE (2026-11-11): az internetes mód közvetlenül a szerverautoritatív LAN után |
@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D27 | ELDÖNTVE (2026-11-12): ADR-003 (megjelenítő), ADR-004 (fixpontos szimuláció), ADR-005 (JSON-sablonok öröklődéssel és komponensekkel) elfogadva – az M0 lezárva |
 | D26 | ELDÖNTVE (2026-11-12): kisnépek – egy kimondott szövetségi bónusz a gazda seregére, a többi kutatás csak saját; a tó a gazda népét nézi; zsoldosbérlés a kisnép-táborokból beállítással |
 | D25 | ELDÖNTVE (2026-11-12): hősök, tárgyak, táborok – állandók adatba, elemek állapotként; tárgyak képességhordozók; bolt (semleges kereskedő, faji bolt) beállítás szerint; táborok újraéledése pályabeállítás |
 | D24 | ELDÖNTVE (2026-11-12): kutatások – egységes módosítórendszer (0 A.D.), többszintű kutatások (WC3), a viselkedés-szabályok passzív képességek |
@@ -234,3 +235,9 @@ Alap: [spec/KISFAJOK.md](spec/KISFAJOK.md) E–F.
    Python-referenciában is (`pond_speed`, D16 szerint megengedett); a golden felvételek változatlanok.
 3. **Zsoldosbérlés** a pályán álló kisnép-táborokból (WC3, 0 A.D.), szövetség nélkül is, korlátozott számban; a
    pálya vagy a lobbi kapcsolja be. Új motor (M7/M12).
+
+### D27 – Műszaki ADR-ek · ELDÖNTVE (2026-11-12)
+
+[ADR-003](dontesek/ADR-003-megjelenito.md) megjelenítő (saját RHI: OpenGL 3.3 + SDL3 GPU),
+[ADR-004](dontesek/ADR-004-szamabrazolas.md) számábrázolás (fixpontos Q16.16, mérve),
+[ADR-005](dontesek/ADR-005-adatformatum.md) adat- és sablonformátum – elfogadva. Ezzel az M0 lezárult; következik az M2.

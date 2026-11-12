@@ -1,6 +1,6 @@
 # ADR-003: A megjelenítő-réteg
 
-**Státusz:** JAVASLAT – tulajdonosi jóváhagyásra vár (2026-11-12)
+**Státusz:** ELFOGADOTT – a tulajdonos jóváhagyta 2026-11-12
 **Érintett:** M5 (megjelenítő), K4 (öt rendszer), K6 (grafika, árnyék, shader, effekt). Felülírja a D2-t (raylib-cs).
 
 ## Probléma
