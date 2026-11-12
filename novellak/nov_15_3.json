@@ -1,0 +1,436 @@
+{
+ "id": "nov_15_3",
+ "code": "NOV-15_3",
+ "title": "Galóca mondák gyűjteménye",
+ "faction": "mycel",
+ "novella": true,
+ "people": "Galóca",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/15_*.md – „Galóca mondák gyűjteménye”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Csipkebogyó, micélia emlékkertész, jegyzetei a 63. évből.",
+  "Gyűjteményt akar a Galóca népi mondáiból."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 188,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "g1": [
+    20,
+    30
+   ],
+   "g2": [
+    36,
+    38
+   ],
+   "g3": [
+    44,
+    22
+   ],
+   "g4": [
+    30,
+    12
+   ],
+   "g5": [
+    54,
+    10
+   ],
+   "_": [
+    60,
+    54
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "g1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "g1",
+     "g2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "g2",
+     "g3"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "g3",
+     "g4"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "g4",
+     "g5"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      56,
+      20
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      21
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      28,
+      25
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      12
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      21
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      26
+     ],
+     3.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      43
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      17
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      54,
+      39
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      23
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      36
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      47,
+      41
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      12,
+      7
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      44,
+      47
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      8
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      46
+     ],
+     3.3
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "tabor",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "myc_sporaszedo",
+    "at": "tabor",
+    "n": 1,
+    "name": "Csipkebogyó",
+    "tag": "csipke"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "g1",
+   "type": "reach",
+   "at": "g1",
+   "radius": 3,
+   "text": "Gyűjtsd össze a(z) 1. mondát",
+   "marker": "Galóca",
+   "tag": "csipke"
+  },
+  {
+   "id": "g2",
+   "type": "reach",
+   "at": "g2",
+   "radius": 3,
+   "text": "Gyűjtsd össze a(z) 2. mondát",
+   "marker": "Galóca",
+   "tag": "csipke"
+  },
+  {
+   "id": "g3",
+   "type": "reach",
+   "at": "g3",
+   "radius": 3,
+   "text": "Gyűjtsd össze a(z) 3. mondát",
+   "marker": "Galóca",
+   "tag": "csipke"
+  },
+  {
+   "id": "g4",
+   "type": "reach",
+   "at": "g4",
+   "radius": 3,
+   "text": "Gyűjtsd össze a(z) 4. mondát",
+   "marker": "Galóca",
+   "tag": "csipke"
+  },
+  {
+   "id": "g5",
+   "type": "reach",
+   "at": "g5",
+   "radius": 3,
+   "text": "Gyűjtsd össze a(z) 5. mondát",
+   "marker": "Galóca",
+   "tag": "csipke"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Csipkebogyó",
+        "text": "Megkérdezem, honnan jöttek. Biztos tudják.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "g1",
+   "say": [
+    {
+     "who": "Galóca",
+     "text": "A földből.",
+     "portrait": "gal_fogaskalap"
+    }
+   ]
+  },
+  {
+   "on_objective": "g2",
+   "say": [
+    {
+     "who": "Galóca",
+     "text": "Föld.",
+     "portrait": "gal_fogaskalap"
+    }
+   ]
+  },
+  {
+   "on_objective": "g3",
+   "say": [
+    {
+     "who": "Galóca",
+     "text": "Volt egy erdő. Mindenki harapott. Mi jobban.",
+     "portrait": "gal_fogaskalap"
+    }
+   ]
+  },
+  {
+   "on_objective": "g4",
+   "say": [
+    {
+     "who": "Galóca",
+     "text": "*harap*",
+     "portrait": "gal_fogaskalap"
+    }
+   ]
+  },
+  {
+   "on_objective": "g5",
+   "say": [
+    {
+     "who": "Galóca",
+     "text": "Most keletkezett.",
+     "portrait": "gal_fogaskalap"
+    }
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "g5",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "g5",
+      "say": [
+       {
+        "who": "Csipkebogyó",
+        "text": "Öt monda, ebből kettő nem monda, egy hazugság. És három harapásnyom.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A gyűjteményt a tanácsnak beadta. A gombafejet megtartotta.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

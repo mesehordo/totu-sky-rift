@@ -1,0 +1,258 @@
+{
+ "id": "nov_09_1",
+ "code": "NOV-09_1",
+ "title": "Hasoncsúszás",
+ "faction": "ursan",
+ "novella": true,
+ "people": "Pinguu",
+ "theme": "winter",
+ "source": "docs/tortenet/story/…/novellak/09_*.md – „Hasoncsúszás”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 60. év, Kőszirt partja Fjordvár közelében. A Pinguu hasoncsúszó-versenyt az ursanok minden tavasszal megnézik, mert nem hiszik el.",
+  "Neeka idén nyerni akar."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 617,
+  "points": {
+   "rajt": [
+    6,
+    46
+   ],
+   "j1": [
+    20,
+    36
+   ],
+   "j2": [
+    34,
+    40
+   ],
+   "j3": [
+    44,
+    26
+   ],
+   "cel": [
+    56,
+    14
+   ],
+   "nezok": [
+    40,
+    50
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      64,
+      28
+     ],
+     14
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "rajt",
+     "j1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "j1",
+     "j2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "j2",
+     "j3"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "j3",
+     "cel"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      50,
+      36
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      55,
+      47
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      29
+     ],
+     2.8
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "rajt",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "pin_kajakos",
+    "at": "rajt",
+    "n": 1,
+    "name": "Neeka",
+    "tag": "neeka"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "j1",
+   "type": "reach",
+   "at": "j1",
+   "radius": 3,
+   "text": "Csússz az első jelzőig",
+   "marker": "Jelző",
+   "tag": "neeka"
+  },
+  {
+   "id": "j2",
+   "type": "reach",
+   "at": "j2",
+   "radius": 3,
+   "text": "A második jelzőig",
+   "marker": "Jelző",
+   "after": "j1",
+   "tag": "neeka"
+  },
+  {
+   "id": "j3",
+   "type": "reach",
+   "at": "j3",
+   "radius": 3,
+   "text": "A harmadikig",
+   "marker": "Jelző",
+   "after": "j2",
+   "tag": "neeka"
+  },
+  {
+   "id": "cel",
+   "type": "reach",
+   "at": "cel",
+   "radius": 3,
+   "text": "A célig, az ursan nézők szeme láttára",
+   "marker": "Cél",
+   "after": "j3",
+   "tag": "neeka"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "rajt",
+      "say": [
+       {
+        "who": "Olvir (ursan)",
+        "text": "Ezt most komolyan? A hasukon?",
+        "portrait": "urs_pajzshordozo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 100,
+   "unless_done": "cel",
+   "fail": "Lejárt a futam ideje."
+  },
+  {
+   "id": "zaras",
+   "on_objective": "cel",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "cel",
+      "say": [
+       {
+        "who": "Olvir (ursan)",
+        "text": "Ne mondd senkinek, hogy szurkoltam.",
+        "portrait": "urs_pajzshordozo"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Neeka visszacsúszott a nézőkhöz. Olvir megkérte, ne mondja el senkinek.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

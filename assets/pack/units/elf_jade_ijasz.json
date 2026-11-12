@@ -1,0 +1,56 @@
+{
+ "id": "elf_jade_ijasz",
+ "type": "unit",
+ "image": "elf_jade_ijasz.png",
+ "frame_size": [
+  58,
+  45
+ ],
+ "anchor": [
+  29,
+  43
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 6,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 6,
+   "frames": 6,
+   "fps": 8,
+   "loop": true
+  },
+  "attack": {
+   "start": 12,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  },
+  "death": {
+   "start": 18,
+   "frames": 6,
+   "fps": 7,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "pack": "grey_elves.star_spear",
+ "pack_kind": "kézzel rajzolt (DK) + tükrözés",
+ "sheet_size": [
+  1392,
+  360
+ ]
+}

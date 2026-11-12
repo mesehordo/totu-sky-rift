@@ -1,0 +1,395 @@
+{
+ "id": "w2_keseru_kutak",
+ "title": "2. Keserű kutak",
+ "faction": "wullof",
+ "briefing": [
+  "A keserű víz nyomában Tava a kiszáradó kutakhoz indul. A mélyből kaparászás hallatszik.",
+  "Járd be a két legrosszabb kutat, és nézd meg, mi ül alattuk.",
+  "Vigyázz: a sötétben páncélos, ismeretlen lények mozognak."
+ ],
+ "player": {
+  "resources": {
+   "wood": 495,
+   "stone": 255
+  },
+  "units": {
+   "wul_hos_tava": 1,
+   "wul_landzsas": 4,
+   "wul_ijas_vadasz": 2
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Ismeretlen mélybéliek",
+   "hold": 99999,
+   "aggression": 0.6
+  }
+ ],
+ "objectives": [
+  {
+   "id": "kut1",
+   "type": "reach",
+   "text": "Vizsgáld meg az északi kutat (Tava)",
+   "units": [
+    "wul_hos_tava"
+   ],
+   "at": "kut1",
+   "radius": 3,
+   "marker": "Északi kút"
+  },
+  {
+   "id": "kut2",
+   "type": "reach",
+   "text": "Vizsgáld meg a keleti kutat (Tava)",
+   "after": "kut1",
+   "units": [
+    "wul_hos_tava"
+   ],
+   "at": "kut2",
+   "radius": 3,
+   "marker": "Keleti kút"
+  },
+  {
+   "id": "vedd",
+   "type": "kill",
+   "text": "Pusztíts el 12 mélybéli lényt",
+   "after": "kut2",
+   "amount": 12
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kut1",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "Az úténekek szerint ez a vidék mindig édes vizű volt.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     },
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "Két kút, két kérdés. Előbb az északi, aztán a keleti.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Tava",
+     "text": "Az úténekek szerint ez a vidék mindig édes vizű volt. Valami megváltozott alatta.",
+     "portrait": "wul_hos_tava"
+    }
+   ]
+  },
+  {
+   "on_objective": "kut1",
+   "message": "A kút alján fényes kőpor és páncéldarabok. Kethri páncél?",
+   "color": [
+    210,
+    150,
+    255
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": [
+     0.55,
+     0.3
+    ],
+    "units": {
+     "cro_karmos": 6
+    }
+   }
+  },
+  {
+   "on_objective": "kut2",
+   "message": "A mélyből lények törnek elő!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "melyseg",
+    "units": {
+     "cro_karmos": 8,
+     "cro_tuskekopo": 2
+    },
+    "to": "domb"
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "vedd",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kut2",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "Ahol csillagérc halad a föld alatt, ott ők is. Ezt fel kell rajzolni.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "wul_hos_tava",
+   "text": "Tava elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A lények az érc nyomát követik. Ahol csillagérc halad a föld alatt, ott ők is.",
+ "next": "w3_a_fold_megnyilik",
+ "hero_level": 2,
+ "enemy_hero_level": 2,
+ "code": "WUL-02",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (I. hadjárat: Keserű kutak)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 7223,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "kut1": [
+    22,
+    10
+   ],
+   "kut2": [
+    54,
+    30
+   ],
+   "melyseg": [
+    40,
+    18
+   ],
+   "domb": [
+    34,
+    38
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     "melyseg",
+     5
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      44
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "domb"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "domb",
+     "kut2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     [
+      18,
+      28
+     ]
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      18,
+      28
+     ],
+     "kut1"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      6,
+      15
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      43
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      32,
+      6
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      25,
+      48
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      19
+     ],
+     2.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      36,
+      8
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      28
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      13
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      16
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      11,
+      26
+     ],
+     2.8
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "melyseg"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

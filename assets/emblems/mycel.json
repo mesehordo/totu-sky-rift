@@ -1,0 +1,11 @@
+{
+ "id": "mycel",
+ "type": "emblem",
+ "image": "mycel.png",
+ "size": [
+  256,
+  256
+ ],
+ "faction": "Micéliák",
+ "generator": "TOTU grafika"
+}

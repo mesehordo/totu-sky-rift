@@ -1,0 +1,1901 @@
+{
+  "id": "imperium",
+  "order": 6,
+  "name": "Vasbirodalom",
+  "tagline": "Lélekidézés • gépjavítás • ostrom • lélekreaktorok",
+  "desc": "Aureth népe: az Égszakadás éterbetegségében haldokló embereket Ordan, a Kéz, amely Megtart, géptestekbe vezette át. Valódi emberi szellemek acélban – nem születnek új tagjaik, ezért minden nyersanyag számukra életfeltétel. Létszámukat a lélekreaktorok adják; a Fabrikátorok javítják a gépeket, a szellemidézők az elesettekből légiót támasztanak.",
+  "mechanic": "standard",
+  "style": "imperial",
+  "color": [
+    176,
+    136,
+    78
+  ],
+  "accent": [
+    120,
+    255,
+    190
+  ],
+  "repair": true,
+  "hq": "imp_forum",
+  "worker": "imp_fabrikator",
+  "supply_building": "imp_reaktor",
+  "start_units": {
+    "imp_fabrikator": 4,
+    "imp_arato": 1
+  },
+  "units": {
+    "imp_fabrikator": {
+      "name": "Fabrikátor",
+      "desc": "Pókszerű munkásgép. Épít (egy épületen egyszerre csak egy Fabrikátor dolgozhat – Túlhajtással gyorsíthat), alapoz, fát hord, és javítja az épületeket és a gépeket. Aranyat és meteoritot az Arató gyűjt.",
+      "cost": {
+        "wood": 30,
+        "stone": 20
+      },
+      "supply": 1,
+      "time": 12,
+      "hp": 60,
+      "armor": 1,
+      "speed": 2.6,
+      "sight": 7,
+      "radius": 0.36,
+      "shape": "spider",
+      "worker": true,
+      "attack": {
+        "damage": 5,
+        "range": 0.3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "worker",
+        "mech",
+        "light"
+      ],
+      "abilities": [
+        "p_gepjavitas",
+        "tulhajtas"
+      ],
+      "gathers": [
+        "wood"
+      ],
+      "shield_slot": true,
+      "utype": "munkas"
+    },
+    "imp_legios": {
+      "name": "Légiós",
+      "desc": "Kis lépegetőtestbe zárt légiós-szellem, scutummal és gladiusszal.",
+      "cost": {
+        "wood": 35,
+        "stone": 30
+      },
+      "supply": 2,
+      "time": 17,
+      "hp": 182,
+      "armor": 2,
+      "speed": 2.4,
+      "sight": 7,
+      "radius": 0.4,
+      "shape": "legionary",
+      "attack": {
+        "damage": 10,
+        "range": 0.3,
+        "cooldown": 1.1,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "infantry",
+        "melee",
+        "mech"
+      ],
+      "abilities": [
+        "testudo",
+        "lelekhorgony",
+        "goztulnyomas",
+        "lelekhorgony_mentes"
+      ],
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas",
+        "lelekhorgony_mentes": "imp_lelekhorgony_mentes"
+      },
+      "utype": "kozelharcos",
+      "type_bonus": {
+        "lovas": 1.25
+      }
+    },
+    "imp_ballistarius": {
+      "name": "Ballistarius",
+      "desc": "Kis gép vállra szerelt íjpuskával.",
+      "cost": {
+        "wood": 65,
+        "stone": 15
+      },
+      "supply": 2,
+      "time": 19,
+      "hp": 100,
+      "armor": 1,
+      "speed": 2.4,
+      "sight": 8,
+      "radius": 0.4,
+      "shape": "legionary_ranged",
+      "attack": {
+        "damage": 14,
+        "range": 6,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "spear"
+      },
+      "tags": [
+        "infantry",
+        "ranged",
+        "mech"
+      ],
+      "abilities": [
+        "gyorstoltes_u",
+        "lelekhorgony",
+        "goztulnyomas"
+      ],
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "lovesz"
+    },
+    "imp_szellemidezo": {
+      "name": "Szellemidéző",
+      "desc": "Lélekmentő gép-pap. A csatatér tetemeiből lélekhorgonyt ment, és szellemlégióst támaszt.",
+      "cost": {
+        "stone": 50,
+        "meteor": 75,
+        "wood": 30
+      },
+      "supply": 2,
+      "time": 26,
+      "hp": 70,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.38,
+      "shape": "necromancer",
+      "energy": 200,
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "lelekidezes",
+        "goztulnyomas"
+      ],
+      "requires": [
+        "imp_gepisten_templom"
+      ],
+      "tags": [
+        "caster",
+        "ranged",
+        "mech"
+      ],
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "varazslo",
+      "type_bonus": {
+        "repulo": 1.5
+      }
+    },
+    "imp_centurio": {
+      "name": "Centurio-mecha",
+      "desc": "Közepes lépegető mecha forgócsöves gépágyúval.",
+      "cost": {
+        "stone": 120,
+        "meteor": 25,
+        "wood": 60
+      },
+      "supply": 4,
+      "time": 30,
+      "hp": 320,
+      "armor": 3,
+      "speed": 2.2,
+      "sight": 8,
+      "radius": 0.62,
+      "shape": "mech",
+      "attack": {
+        "damage": 6,
+        "range": 4.5,
+        "cooldown": 0.45,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "tags": [
+        "mech",
+        "ranged"
+      ],
+      "abilities": [
+        "geppuska_sorozat",
+        "lelekhorgony",
+        "goztulnyomas"
+      ],
+      "path": "legio",
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "lovesz"
+    },
+    "imp_aquila": {
+      "name": "Aquila-drón",
+      "desc": "Sas formájú repülő gép.",
+      "cost": {
+        "meteor": 75,
+        "wood": 65,
+        "stone": 35
+      },
+      "supply": 3,
+      "time": 28,
+      "hp": 140,
+      "armor": 1,
+      "speed": 3.9,
+      "sight": 10,
+      "radius": 0.5,
+      "shape": "flyer",
+      "flying": true,
+      "attack": {
+        "damage": 11,
+        "range": 4,
+        "cooldown": 1.0,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "requires": [
+        "imp_ontode"
+      ],
+      "tags": [
+        "flyer",
+        "mech"
+      ],
+      "abilities": [
+        "zuhanobomba",
+        "lelekhorgony",
+        "goztulnyomas"
+      ],
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "repulo"
+    },
+    "imp_kolosszus": {
+      "name": "Kolosszus",
+      "desc": "Óriás ostrom-mecha. Ostrom-módban mozdulatlan, de messzebbre és nagyobbat lő.",
+      "cost": {
+        "stone": 270,
+        "meteor": 100,
+        "wood": 130
+      },
+      "supply": 7,
+      "time": 50,
+      "hp": 750,
+      "armor": 4,
+      "speed": 1.7,
+      "sight": 10,
+      "radius": 0.95,
+      "shape": "colossus",
+      "attack": {
+        "damage": 38,
+        "range": 6,
+        "cooldown": 2.8,
+        "targets": [
+          "ground"
+        ],
+        "projectile": "boulder",
+        "splash": 1.4,
+        "bonus": {
+          "building": 20
+        }
+      },
+      "abilities": [
+        "ostrommod",
+        "lelekhorgony",
+        "goztulnyomas"
+      ],
+      "requires": [
+        "imp_gepisten_templom"
+      ],
+      "tags": [
+        "mech",
+        "large",
+        "ranged"
+      ],
+      "path": "gepisten",
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "orias",
+      "type_bonus": {
+        "epulet": 1.5
+      }
+    },
+    "imp_szellemlegios": {
+      "name": "Szellemlégiós",
+      "desc": "Egy elesett harcos lelke, a Szellemidéző akaratához kötve.",
+      "cost": {
+        "stone": 60,
+        "meteor": 30
+      },
+      "supply": 2,
+      "time": 18,
+      "no_corpse": true,
+      "hp": 110,
+      "armor": 0,
+      "speed": 2.8,
+      "sight": 7,
+      "radius": 0.38,
+      "shape": "ghost",
+      "attack": {
+        "damage": 11,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "melee",
+        "spirit"
+      ],
+      "abilities": [
+        "szellemtest"
+      ],
+      "path": "lelek",
+      "utype": "kozelharcos"
+    },
+    "imp_szellemkolosszus": {
+      "name": "Szellemkolosszus",
+      "desc": "Egy elesett óriás lelke.",
+      "cost": {
+        "stone": 160,
+        "meteor": 120
+      },
+      "supply": 5,
+      "time": 36,
+      "no_corpse": true,
+      "hp": 400,
+      "armor": 1,
+      "speed": 2.3,
+      "sight": 8,
+      "radius": 0.8,
+      "shape": "ghost",
+      "attack": {
+        "damage": 28,
+        "range": 0.5,
+        "cooldown": 1.5,
+        "targets": [
+          "ground"
+        ],
+        "splash": 1.0
+      },
+      "tags": [
+        "melee",
+        "spirit",
+        "large"
+      ],
+      "abilities": [
+        "szellemtest"
+      ],
+      "path": "lelek",
+      "utype": "orias"
+    },
+    "imp_hos_livia": {
+      "name": "Livia Varr",
+      "desc": "Egykori orvos, a lélekhorgonyokat mentő légió tisztje.",
+      "hp": 300,
+      "armor": 2,
+      "speed": 2.6,
+      "sight": 10,
+      "radius": 0.4,
+      "energy": 150,
+      "attack": {
+        "damage": 12,
+        "range": 4.5,
+        "cooldown": 1.2,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "caster",
+        "ranged",
+        "mech"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 40,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_livia_lelek",
+        "h_livia_horgony",
+        "h_livia_legio",
+        "h_livia_lelegzet"
+      ],
+      "growth": {
+        "hp": 35,
+        "damage": 2,
+        "armor": 0.3,
+        "energy": 25
+      },
+      "requires": [
+        "imp_panteon"
+      ],
+      "shield_slot": true,
+      "utype": "varazslo",
+      "type_bonus": {
+        "repulo": 1.5
+      }
+    },
+    "imp_hos_nera": {
+      "name": "Nera",
+      "desc": "Livia lánya: gyermekként került géptestbe; hetven év tapasztalattal, de a birodalmi jog szerint még mindig kiskorú.",
+      "hp": 220,
+      "armor": 2,
+      "speed": 2.6,
+      "sight": 10,
+      "radius": 0.4,
+      "energy": 120,
+      "attack": {
+        "damage": 14,
+        "range": 6,
+        "cooldown": 1.3,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "spear"
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "ranged",
+        "mech"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 45,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_nera_toltes",
+        "h_nera_loves",
+        "h_nera_batorsag",
+        "h_nera_horgony"
+      ],
+      "growth": {
+        "hp": 30,
+        "damage": 4,
+        "armor": 0.3,
+        "energy": 12
+      },
+      "requires": [
+        "imp_panteon"
+      ],
+      "shield_slot": true,
+      "utype": "lovesz"
+    },
+    "imp_onager": {
+      "name": "Onager-mecha",
+      "desc": "Négylábú hajítógép: messzire hord, épületek és csoportok ellen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze.",
+      "cost": {
+        "stone": 180,
+        "meteor": 40,
+        "wood": 70
+      },
+      "supply": 4,
+      "time": 34,
+      "hp": 320,
+      "armor": 2,
+      "speed": 1.9,
+      "sight": 9,
+      "radius": 0.62,
+      "shape": "mech",
+      "attack": {
+        "damage": 36,
+        "range": 8.5,
+        "cooldown": 3.0,
+        "targets": [
+          "ground"
+        ],
+        "projectile": "boulder",
+        "splash": 1.2,
+        "bonus": {
+          "building": 30
+        }
+      },
+      "requires": [
+        "imp_ontode"
+      ],
+      "tags": [
+        "siege",
+        "large",
+        "mech"
+      ],
+      "abilities": [
+        "ostrom_telepites",
+        "lelekhorgony",
+        "goztulnyomas"
+      ],
+      "path": "gepisten",
+      "shield_slot": true,
+      "deploy": {
+        "time": 2,
+        "pack": 1,
+        "range_add": 1
+      },
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "ostrom",
+      "type_bonus": {
+        "epulet": 1.5
+      }
+    },
+    "imp_hos_cassius": {
+      "name": "Cassius Ferrum legátus",
+      "desc": "A Hetedik Légió parancsnoka nehéz géptestben: roham, fegyelem és Ordan haragja.",
+      "hp": 600,
+      "armor": 5,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.55,
+      "attack": {
+        "damage": 24,
+        "range": 0.5,
+        "cooldown": 1.25,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "melee",
+        "mech",
+        "armored",
+        "large"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 45,
+      "hero": true,
+      "shape": "mech",
+      "hero_abilities": [
+        "h_cas_roham",
+        "h_cas_fegyelem",
+        "h_cas_legio",
+        "h_cas_harag"
+      ],
+      "growth": {
+        "hp": 65,
+        "damage": 3.5,
+        "armor": 0.6,
+        "energy": 10
+      },
+      "energy": 150,
+      "requires": [
+        "imp_panteon"
+      ],
+      "shield_slot": true,
+      "utype": "kozelharcos",
+      "type_bonus": {
+        "repulo": 1.5
+      }
+    },
+    "imp_lelekhorgony": {
+      "name": "Lélekhorgony",
+      "desc": "Egy elesett gép lelke. Egy Fabrikátor 40 mp-en belül újraépítheti (javítással) – különben a lélek elillan.",
+      "cost": {},
+      "supply": 0,
+      "time": 1,
+      "hp": 400,
+      "armor": 0,
+      "speed": 0,
+      "sight": 4,
+      "radius": 0.35,
+      "shape": "ghost",
+      "abilities": [
+        "lelekhorgony"
+      ],
+      "no_corpse": true,
+      "tags": [
+        "mech",
+        "anchor"
+      ],
+      "lifetime": 40,
+      "shield_slot": true,
+      "utype": "kozelharcos"
+    },
+    "imp_praetorianus": {
+      "name": "Praetoriánus",
+      "desc": "Elit gépharcos aranyozott páncélban: a légió gerince.",
+      "cost": {
+        "stone": 80,
+        "meteor": 40
+      },
+      "supply": 3,
+      "time": 26,
+      "hp": 260,
+      "armor": 4,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.45,
+      "shape": "legionary",
+      "tags": [
+        "infantry",
+        "melee",
+        "mech",
+        "armored"
+      ],
+      "abilities": [
+        "testudo",
+        "lelekhorgony",
+        "goztulnyomas"
+      ],
+      "attack": {
+        "damage": 16,
+        "range": 0.4,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "path": "legio",
+      "shield_slot": true,
+      "ability_research": {
+        "goztulnyomas": "imp_goztulnyomas"
+      },
+      "utype": "kozelharcos",
+      "type_bonus": {
+        "repulo": 1.5
+      }
+    },
+    "imp_arato": {
+      "name": "Arató",
+      "desc": "Lánctalpas gyűjtőgép: aranyat és meteoritot bányászik, egyszerre nagy rakománnyal (30 arany vagy 20 meteorit). Lassú és drága – egy kilőtt Arató egy teljes rakomány.",
+      "cost": {
+        "wood": 100,
+        "stone": 50
+      },
+      "supply": 2,
+      "time": 30,
+      "hp": 300,
+      "armor": 3,
+      "speed": 2.1,
+      "sight": 7,
+      "radius": 0.55,
+      "shape": "worker",
+      "tags": [
+        "worker",
+        "mech",
+        "large"
+      ],
+      "worker": true,
+      "builds": false,
+      "gathers": [
+        "stone",
+        "meteor"
+      ],
+      "carry": {
+        "stone": 30,
+        "meteor": 20
+      },
+      "shield_slot": true,
+      "utype": "munkas"
+    }
+  },
+  "buildings": {
+    "imp_forum": {
+      "name": "Fórum",
+      "desc": "Oszlopcsarnokos főtér gőzölgő gépházzal. Leadóhely, Fabrikátorokat gyárt.",
+      "cost": {
+        "stone": 350,
+        "wood": 150
+      },
+      "time": 75,
+      "size": [
+        4,
+        4
+      ],
+      "hp": 1700,
+      "armor": 3,
+      "sight": 10,
+      "supply": 12,
+      "dropoff": [
+        "wood",
+        "stone",
+        "meteor"
+      ],
+      "produces": [
+        "imp_fabrikator",
+        "imp_arato"
+      ],
+      "shape": "hq",
+      "researches": [],
+      "powers": [
+        "gp_ordan_villama"
+      ]
+    },
+    "imp_reaktor": {
+      "name": "Lélekreaktor",
+      "desc": "+10 létszám – lélekenergiát ad a gépeknek.",
+      "cost": {
+        "stone": 80,
+        "wood": 30
+      },
+      "time": 22,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 450,
+      "armor": 2,
+      "sight": 6,
+      "supply": 10,
+      "shape": "house",
+      "shield_reactor": true
+    },
+    "imp_legiogyar": {
+      "name": "Légió-gyár",
+      "desc": "Légiósokat és Ballistariusokat szerel össze.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 32,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 950,
+      "armor": 2,
+      "sight": 7,
+      "produces": [
+        "imp_legios",
+        "imp_ballistarius"
+      ],
+      "researches": [
+        "imp_lelekhorgony_mentes"
+      ],
+      "shape": "barracks"
+    },
+    "imp_ontode": {
+      "name": "Öntöde",
+      "desc": "Centurio-mechákat és Kolosszusokat önt.",
+      "cost": {
+        "wood": 150,
+        "stone": 175
+      },
+      "time": 50,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 1000,
+      "armor": 2,
+      "sight": 7,
+      "produces": [
+        "imp_onager",
+        "imp_kolosszus"
+      ],
+      "requires": [
+        "imp_legiogyar"
+      ],
+      "shape": "pen",
+      "path": "gepisten",
+      "researches": [
+        "imp_nagy_alapozas",
+        "imp_goztulnyomas",
+        "imp_szikrafogo"
+      ]
+    },
+    "imp_gepisten_templom": {
+      "name": "Ordan temploma",
+      "desc": "Ordan, a Kéz, amely Megtart hálózatának szentélye. Szellemidézőket avat, fejlesztéseket kutat.",
+      "cost": {
+        "stone": 150,
+        "meteor": 75
+      },
+      "time": 50,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 2,
+      "sight": 8,
+      "produces": [
+        "imp_szellemidezo"
+      ],
+      "researches": [
+        "imp_legiopengek",
+        "imp_legiopengek_2",
+        "imp_legiopengek_3",
+        "imp_gyorstoltes",
+        "imp_gyorstoltes_2",
+        "imp_gyorstoltes_3",
+        "imp_edzett_acel",
+        "imp_edzett_acel_2",
+        "imp_edzett_acel_3",
+        "imp_megerositett_vaz",
+        "imp_reaktorpajzs"
+      ],
+      "requires": [
+        "imp_legiogyar"
+      ],
+      "shape": "tech"
+    },
+    "imp_hangar": {
+      "name": "Hangár",
+      "desc": "Aquila-drónokat gyárt.",
+      "cost": {
+        "stone": 150,
+        "wood": 75,
+        "meteor": 50
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 2,
+      "sight": 8,
+      "produces": [
+        "imp_aquila"
+      ],
+      "requires": [
+        "imp_legiogyar"
+      ],
+      "shape": "aerie"
+    },
+    "imp_aquila_torony": {
+      "name": "Aquila-torony",
+      "desc": "Sasos őrtorony íjpuskával.",
+      "cost": {
+        "stone": 125,
+        "wood": 25
+      },
+      "time": 30,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 550,
+      "armor": 3,
+      "sight": 9,
+      "attack": {
+        "damage": 14,
+        "range": 7,
+        "cooldown": 1.2,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "spear"
+      },
+      "requires": [
+        "imp_legiogyar"
+      ],
+      "shape": "tower",
+      "detect": 7
+    },
+    "imp_panteon": {
+      "name": "Panteon",
+      "desc": "A megmentett hősök csarnoka: Livia, Nera és Cassius.",
+      "cost": {
+        "stone": 180,
+        "wood": 100
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 2,
+      "sight": 8,
+      "produces": [
+        "imp_hos_livia",
+        "imp_hos_nera",
+        "imp_hos_cassius"
+      ],
+      "shape": "altar",
+      "altar": true
+    },
+    "imp_praetorium": {
+      "name": "Praetorium",
+      "desc": "A légió parancsnoksága: praetoriánusok és Centurio-mechák.",
+      "cost": {
+        "stone": 220,
+        "meteor": 60
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "produces": [
+        "imp_praetorianus",
+        "imp_centurio"
+      ],
+      "shape": "barracks",
+      "path": "legio"
+    },
+    "imp_lelekkut": {
+      "name": "Lélekkút",
+      "desc": "Lélekfénnyel izzó kút: állandó szellemlégiósok és szellemkolosszusok.",
+      "cost": {
+        "stone": 180,
+        "meteor": 120
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "produces": [
+        "imp_szellemlegios",
+        "imp_szellemkolosszus"
+      ],
+      "shape": "tech",
+      "path": "lelek"
+    },
+    "imp_diplomacia": {
+      "name": "Diplomácia csarnoka",
+      "desc": "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg.",
+      "cost": {
+        "wood": 180,
+        "stone": 120
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 1,
+      "sight": 8,
+      "shape": "tech",
+      "diplomacy": true
+    },
+    "imp_alapozas": {
+      "name": "Alapozás",
+      "desc": "Márvány-lapkő (2×2): a Fabrikátor 3 mp alatt rakja le, a mozgást nem akadályozza. Ami teljes egészében alapozáson áll, teljes életerővel épül fel; ami nem, az fél életerővel, és lassan kopik is (fél életerőig).",
+      "cost": {
+        "stone": 10
+      },
+      "time": 3,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 1,
+      "armor": 0,
+      "sight": 0,
+      "shape": "foundation",
+      "foundation_tile": true,
+      "no_sprite": true,
+      "foundation_free": true
+    },
+    "imp_finomito": {
+      "name": "Finomító",
+      "desc": "Lerakóhely aranyhoz és meteorithoz – érdemes a bányák mellé építeni. Itt választható az Arató fejlesztése: gyorsabb hajtómű VAGY nagyobb tartály.",
+      "cost": {
+        "wood": 100,
+        "stone": 40
+      },
+      "time": 25,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 600,
+      "armor": 1,
+      "sight": 7,
+      "shape": "workshop",
+      "dropoff": [
+        "stone",
+        "meteor"
+      ],
+      "researches": [
+        "imp_hajtomu",
+        "imp_tartaly"
+      ]
+    },
+    "imp_szobor_ferrox": {
+      "name": "Ferrox-szobor",
+      "desc": "Ferrox, az acél ura: kalapácsos, öntöttvas-szakállú alak. A körzetében (6 csempe) a gépek és az épületek +2 páncélt kapnak – amíg a szobor áll.",
+      "cost": {
+        "wood": 60,
+        "stone": 80
+      },
+      "time": 20,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 400,
+      "armor": 3,
+      "sight": 7,
+      "shape": "statue",
+      "aura": {
+        "radius": 6,
+        "tags": [
+          "mech"
+        ],
+        "modifiers": {
+          "armor_add": 2
+        },
+        "building_armor": 2
+      },
+      "requires": [
+        "imp_szoborpark"
+      ]
+    },
+    "imp_szobor_arcanor": {
+      "name": "Arcanor-szobor",
+      "desc": "Arcanor, a mágia ura: csillagköpenyes alak, lebegő gömbbel. A körzetében (6 csempe) a távolsági egységek +1 lőtávot kapnak – amíg a szobor áll.",
+      "cost": {
+        "wood": 60,
+        "stone": 80
+      },
+      "time": 20,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 400,
+      "armor": 3,
+      "sight": 7,
+      "shape": "statue",
+      "aura": {
+        "radius": 6,
+        "tags": [
+          "ranged"
+        ],
+        "modifiers": {
+          "range_add": 1
+        }
+      },
+      "requires": [
+        "imp_szoborpark"
+      ]
+    },
+    "imp_szobor_umbrax": {
+      "name": "Umbrax-szobor",
+      "desc": "Umbrax, a túlvilág kapusa: fátylas alak lámpással és kulccsal. A körzetében (6 csempe) az egységek +1 életerőt töltenek vissza másodpercenként – amíg a szobor áll.",
+      "cost": {
+        "wood": 60,
+        "stone": 80
+      },
+      "time": 20,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 400,
+      "armor": 3,
+      "sight": 7,
+      "shape": "statue",
+      "aura": {
+        "radius": 6,
+        "modifiers": {
+          "regen_add": 1.0
+        }
+      },
+      "requires": [
+        "imp_szoborpark"
+      ]
+    },
+    "imp_szoborpark": {
+      "name": "Szoborpark",
+      "desc": "Az öreg istenek – Ferrox, Arcanor és Umbrax – szoborparkja. Itt kutathatók az isteni fejlesztések, aranyért; mindegyik csak akkor, ha az adott isten szobra áll.",
+      "cost": {
+        "wood": 150,
+        "stone": 100
+      },
+      "time": 40,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 1,
+      "sight": 7,
+      "shape": "temple",
+      "researches": [
+        "imp_ferrox_kalapacsa",
+        "imp_ferrox_kalapacsa_2",
+        "imp_ferrox_kalapacsa_3",
+        "imp_ontottvas_burok",
+        "imp_arcanor_csillagai",
+        "imp_csillagterkep",
+        "imp_umbrax_fatyla",
+        "imp_lelekkapu"
+      ],
+      "requires": [
+        "imp_legiogyar"
+      ]
+    },
+    "imp_egko": {
+      "name": "Égkő",
+      "desc": "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja.",
+      "cost": {
+        "meteor": 75
+      },
+      "time": 15,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 300,
+      "armor": 1,
+      "sight": 7,
+      "shape": "egko",
+      "rift_source": true,
+      "no_power": true,
+      "no_creep": true,
+      "no_pond": true,
+      "no_light": true,
+      "foundation_free": true
+    },
+    "imp_nagy_alapozas": {
+      "name": "Nagy alapozás",
+      "desc": "Márvány-lapkő (4×4): csempénként olcsóbb, a Fabrikátor 6 mp alatt rakja le. (A Nagy alapozás kutatás kell hozzá az Öntödében.)",
+      "cost": {
+        "stone": 30
+      },
+      "time": 6,
+      "size": [
+        4,
+        4
+      ],
+      "hp": 1,
+      "armor": 0,
+      "sight": 0,
+      "shape": "foundation",
+      "foundation_tile": true,
+      "no_sprite": true,
+      "requires_research": [
+        "imp_nagy_alapozas"
+      ],
+      "foundation_free": true
+    }
+  },
+  "researches": {
+    "imp_lelekhorgony_mentes": {
+      "name": "Lélekhorgony mentése",
+      "desc": "A Légiósok egyenként felvehetnek és áthelyezhetnek egy saját Lélekhorgonyt.",
+      "cost": {
+        "wood": 50,
+        "stone": 75
+      },
+      "time": 30,
+      "icon": "anchor",
+      "effects": []
+    },
+    "imp_legiopengek": {
+      "name": "Légiós pengék",
+      "desc": "+2 sebzés a közelharci egységeknek.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "imp_gyorstoltes": {
+      "name": "Gyorstöltés",
+      "desc": "+2 sebzés a távolsági egységeknek.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "imp_edzett_acel": {
+      "name": "Edzett acél",
+      "desc": "+1 páncél minden gépnek.",
+      "cost": {
+        "stone": 200
+      },
+      "time": 70,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "mech"
+          ],
+          "add": 1
+        }
+      ]
+    },
+    "imp_megerositett_vaz": {
+      "name": "Megerősített váz",
+      "desc": "+30 életerő minden gépnek.",
+      "cost": {
+        "stone": 150,
+        "meteor": 100
+      },
+      "time": 70,
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "mech"
+          ],
+          "add": 30
+        }
+      ]
+    },
+    "imp_hajtomu": {
+      "name": "Gyorsított hajtómű",
+      "desc": "+25% sebesség az Aratóknak. (Kizárja a Bővített tartályt.)",
+      "cost": {
+        "stone": 100,
+        "meteor": 40
+      },
+      "time": 45,
+      "exclusive": "arato_fejlesztes",
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "imp_arato"
+          ],
+          "add": 25
+        }
+      ]
+    },
+    "imp_tartaly": {
+      "name": "Bővített tartály",
+      "desc": "+50% rakomány az Aratóknak. (Kizárja a Gyorsított hajtóművet.)",
+      "cost": {
+        "stone": 100,
+        "meteor": 40
+      },
+      "time": 45,
+      "exclusive": "arato_fejlesztes",
+      "effects": [
+        {
+          "stat": "carry_pct",
+          "tags": [
+            "imp_arato"
+          ],
+          "add": 50
+        }
+      ]
+    },
+    "imp_ferrox_kalapacsa": {
+      "name": "Ferrox kalapácsa",
+      "desc": "+2 sebzés a közelharcos egységeknek. (Kell hozzá: Ferrox-szobor.)",
+      "cost": {
+        "stone": 150
+      },
+      "time": 50,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires": [
+        "imp_szobor_ferrox"
+      ]
+    },
+    "imp_ontottvas_burok": {
+      "name": "Öntöttvas burok",
+      "desc": "+60 életerő a nagy gépeknek. (Kell hozzá: Ferrox-szobor.)",
+      "cost": {
+        "stone": 175
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "large"
+          ],
+          "add": 60
+        }
+      ],
+      "requires": [
+        "imp_szobor_ferrox"
+      ]
+    },
+    "imp_arcanor_csillagai": {
+      "name": "Arcanor csillagai",
+      "desc": "+25 energia a varázslóknak. (Kell hozzá: Arcanor-szobor.)",
+      "cost": {
+        "stone": 150
+      },
+      "time": 50,
+      "effects": [
+        {
+          "stat": "energy",
+          "tags": [
+            "caster"
+          ],
+          "add": 25
+        }
+      ],
+      "requires": [
+        "imp_szobor_arcanor"
+      ]
+    },
+    "imp_csillagterkep": {
+      "name": "Csillagtérkép",
+      "desc": "+2 látótáv minden egységnek. (Kell hozzá: Arcanor-szobor.)",
+      "cost": {
+        "stone": 125
+      },
+      "time": 45,
+      "effects": [
+        {
+          "stat": "sight",
+          "tags": [
+            "all"
+          ],
+          "add": 2
+        }
+      ],
+      "requires": [
+        "imp_szobor_arcanor"
+      ]
+    },
+    "imp_umbrax_fatyla": {
+      "name": "Umbrax fátyla",
+      "desc": "+15% sebesség a szellem-egységeknek. (Kell hozzá: Umbrax-szobor.)",
+      "cost": {
+        "stone": 150
+      },
+      "time": 50,
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "spirit"
+          ],
+          "add": 15
+        }
+      ],
+      "requires": [
+        "imp_szobor_umbrax"
+      ]
+    },
+    "imp_lelekkapu": {
+      "name": "Lélekkapu",
+      "desc": "Az elesett ellenségek 8% eséllyel szellemlégiósként kelnek fel a te oldaladon (30 mp-re). (Kell hozzá: Umbrax-szobor.)",
+      "cost": {
+        "stone": 200
+      },
+      "time": 60,
+      "effects": [],
+      "requires": [
+        "imp_szobor_umbrax"
+      ],
+      "rules": {
+        "raise_from_kills": {
+          "unit": "imp_szellemlegios",
+          "chance": 0.08,
+          "lifetime": 30,
+          "color": [
+            150,
+            200,
+            255
+          ]
+        }
+      }
+    },
+    "imp_reaktorpajzs": {
+      "name": "Reaktorpajzs",
+      "desc": "A gépek 30 pajzsot kapnak; a pajzs csak Lélekreaktor (6 csempe), meteorit vagy Égkő közelében töltődik.",
+      "cost": {
+        "stone": 125,
+        "meteor": 50
+      },
+      "time": 50,
+      "effects": [
+        {
+          "stat": "shield",
+          "tags": [
+            "mech"
+          ],
+          "add": 30
+        }
+      ]
+    },
+    "imp_nagy_alapozas": {
+      "name": "Nagy alapozás",
+      "desc": "A Fabrikátorok 4×4-es márvány-lapkövet is lerakhatnak (30 arany, 6 mp): csempénként olcsóbb. A meglévő lapkövek nem változnak.",
+      "cost": {
+        "stone": 100,
+        "meteor": 40
+      },
+      "time": 40,
+      "effects": []
+    },
+    "imp_legiopengek_2": {
+      "name": "Légiós pengék II.",
+      "desc": "+2 sebzés a közelharci egységeknek. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "stone": 160
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "imp_legiopengek"
+      ]
+    },
+    "imp_legiopengek_3": {
+      "name": "Légiós pengék III.",
+      "desc": "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "stone": 240,
+        "meteor": 50
+      },
+      "time": 90,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "imp_legiopengek_2"
+      ],
+      "requires_ascended": true
+    },
+    "imp_gyorstoltes_2": {
+      "name": "Gyorstöltés II.",
+      "desc": "+2 sebzés a távolsági egységeknek. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "stone": 160
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "imp_gyorstoltes"
+      ]
+    },
+    "imp_gyorstoltes_3": {
+      "name": "Gyorstöltés III.",
+      "desc": "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "stone": 240,
+        "meteor": 50
+      },
+      "time": 90,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "imp_gyorstoltes_2"
+      ],
+      "requires_ascended": true
+    },
+    "imp_edzett_acel_2": {
+      "name": "Edzett acél II.",
+      "desc": "+1 páncél minden gépnek. (II. szint)",
+      "cost": {
+        "stone": 320
+      },
+      "time": 87,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "mech"
+          ],
+          "add": 1
+        }
+      ],
+      "requires_research": [
+        "imp_edzett_acel"
+      ]
+    },
+    "imp_edzett_acel_3": {
+      "name": "Edzett acél III.",
+      "desc": "+1 páncél minden gépnek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "stone": 480,
+        "meteor": 50
+      },
+      "time": 105,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "mech"
+          ],
+          "add": 1
+        }
+      ],
+      "requires_research": [
+        "imp_edzett_acel_2"
+      ],
+      "requires_ascended": true
+    },
+    "imp_ferrox_kalapacsa_2": {
+      "name": "Ferrox kalapácsa II.",
+      "desc": "+2 sebzés a közelharcos egységeknek. (Kell hozzá: Ferrox-szobor.) (II. szint)",
+      "cost": {
+        "stone": 240
+      },
+      "time": 62,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "imp_ferrox_kalapacsa"
+      ]
+    },
+    "imp_ferrox_kalapacsa_3": {
+      "name": "Ferrox kalapácsa III.",
+      "desc": "+2 sebzés a közelharcos egységeknek. (Kell hozzá: Ferrox-szobor.) (III. szint; a Felemelkedés után)",
+      "cost": {
+        "stone": 360,
+        "meteor": 50
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "imp_ferrox_kalapacsa_2"
+      ],
+      "requires_ascended": true
+    },
+    "imp_goztulnyomas": {
+      "name": "Gőztúlnyomás",
+      "desc": "A gépek megkapják a Gőztúlnyomás képességet: 6 mp-re +40% sebesség, utána 3 mp-ig lassabbak.",
+      "cost": {
+        "wood": 80,
+        "stone": 120
+      },
+      "time": 40,
+      "effects": []
+    },
+    "imp_szikrafogo": {
+      "name": "Szikrafogó vértek",
+      "desc": "A gépek nem gyengék a varázslók ellen.",
+      "cost": {
+        "stone": 140,
+        "meteor": 40
+      },
+      "time": 40,
+      "effects": [],
+      "rules": {
+        "no_weak": {
+          "mech": [
+            "varazslo"
+          ]
+        }
+      }
+    }
+  },
+  "ai": {
+    "workers": 20,
+    "gather_ratio": {
+      "wood": 0.36,
+      "stone": 0.5,
+      "meteor": 0.14
+    },
+    "build_order": [
+      "imp_reaktor",
+      "imp_legiogyar",
+      "imp_finomito",
+      "imp_reaktor",
+      "imp_panteon",
+      "imp_legiogyar",
+      "imp_diplomacia",
+      "imp_szoborpark",
+      "imp_szobor_ferrox",
+      "imp_szobor_umbrax",
+      "imp_gepisten_templom",
+      "imp_aquila_torony",
+      "imp_hangar",
+      "imp_egko"
+    ],
+    "army": {
+      "imp_legios": 4,
+      "imp_ballistarius": 3,
+      "imp_szellemidezo": 1,
+      "imp_aquila": 1
+    },
+    "research_order": [
+      "imp_tartaly",
+      "imp_legiopengek",
+      "imp_gyorstoltes",
+      "imp_edzett_acel",
+      "imp_megerositett_vaz",
+      "imp_legiopengek_2",
+      "imp_legiopengek_3",
+      "imp_gyorstoltes_2",
+      "imp_gyorstoltes_3",
+      "imp_edzett_acel_2",
+      "imp_edzett_acel_3",
+      "imp_ferrox_kalapacsa_2",
+      "imp_ferrox_kalapacsa_3",
+      "imp_goztulnyomas",
+      "imp_szikrafogo",
+      "imp_ferrox_kalapacsa",
+      "imp_ontottvas_burok",
+      "imp_reaktorpajzs"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+      "legio",
+      "gepisten",
+      "lelek"
+    ],
+    "paths": {
+      "legio": {
+        "build": [
+          "imp_praetorium"
+        ],
+        "army": {
+          "imp_praetorianus": 3,
+          "imp_centurio": 1
+        }
+      },
+      "gepisten": {
+        "build": [
+          "imp_ontode"
+        ],
+        "army": {
+          "imp_onager": 1,
+          "imp_kolosszus": 1
+        }
+      },
+      "lelek": {
+        "build": [
+          "imp_lelekkut"
+        ],
+        "army": {
+          "imp_szellemlegios": 4,
+          "imp_szellemkolosszus": 1
+        }
+      }
+    },
+    "ally_pref": [
+      "mhonyo",
+      "ghoblin",
+      "tuz_elf"
+    ],
+    "foundation": true,
+    "gatherer_share": {
+      "imp_arato": 3
+    }
+  },
+  "regen": 0.25,
+  "start_gather": "wood",
+  "supply_desc": "Lélekreaktorok",
+  "spell_resource": "energy",
+  "soul_anchor": "imp_lelekhorgony",
+  "paths": {
+    "legio": {
+      "name": "Légió",
+      "tagline": "Fegyelmezett tömeg alakzatban",
+      "desc": "Alakzat: a gyalogosok minden közeli bajtársért +6% sebzést kapnak (max. +30%), és +1 páncélt. Praetoriánusok és Centurio-mechák.",
+      "building": "imp_praetorium",
+      "units": [
+        "imp_praetorianus",
+        "imp_centurio"
+      ],
+      "rules": {
+        "pack_bonus": {
+          "radius": 4,
+          "per": 0.06,
+          "max": 0.3,
+          "tags": [
+            "infantry"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "infantry"
+          ],
+          "add": 1
+        }
+      ]
+    },
+    "gepisten": {
+      "name": "Gépisten",
+      "tagline": "Kevés, hatalmas gép",
+      "desc": "Kolosszusok és onager-mechák, +150 életerővel és +4 ostromsebzéssel. Lassú, drága, de megállíthatatlan.",
+      "building": "imp_ontode",
+      "units": [
+        "imp_onager",
+        "imp_kolosszus"
+      ],
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "imp_onager",
+            "imp_kolosszus"
+          ],
+          "add": 150
+        },
+        {
+          "stat": "damage",
+          "tags": [
+            "siege",
+            "imp_kolosszus"
+          ],
+          "add": 4
+        }
+      ]
+    },
+    "lelek": {
+      "name": "Lélek",
+      "tagline": "Kifárasztó, élőhalott játék",
+      "desc": "A megölt élő ellenségek 20%-a szellemlégiósként kel fel nálad (40 mp-re). A Lélekkútban állandó szellemlégiósok és szellemkolosszusok képezhetők.",
+      "building": "imp_lelekkut",
+      "units": [
+        "imp_szellemlegios",
+        "imp_szellemkolosszus"
+      ],
+      "rules": {
+        "raise_from_kills": {
+          "unit": "imp_szellemlegios",
+          "chance": 0.2,
+          "lifetime": 40,
+          "color": [
+            120,
+            255,
+            190
+          ]
+        }
+      }
+    }
+  },
+  "ascension": {
+    "buildings": 3
+  },
+  "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+  },
+  "foundation": {
+    "size": 2,
+    "cost": {
+      "stone": 10
+    },
+    "unfounded_hp": 0.5,
+    "decay": {
+      "pct_per_s": 0.002,
+      "min": 0.5
+    }
+  },
+  "builder": "stay_single",
+  "gatherers": {
+    "stone": "imp_arato",
+    "meteor": "imp_arato"
+  },
+  "rift": {
+    "regen": {
+      "tags": [
+        "mech"
+      ],
+      "add": 1
+    }
+  },
+  "shield_zone": "reactor"
+}

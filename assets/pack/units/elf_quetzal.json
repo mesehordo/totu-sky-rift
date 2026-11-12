@@ -1,0 +1,56 @@
+{
+ "id": "elf_quetzal",
+ "type": "unit",
+ "image": "elf_quetzal.png",
+ "frame_size": [
+  96,
+  80
+ ],
+ "anchor": [
+  48,
+  52
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 1,
+   "frames": 4,
+   "fps": 9,
+   "loop": true
+  },
+  "attack": {
+   "start": 5,
+   "frames": 4,
+   "fps": 11,
+   "loop": false
+  },
+  "death": {
+   "start": 9,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  }
+ },
+ "flying": true,
+ "pack": "grey_elves.featherwing",
+ "pack_kind": "statikus kép (DK) + tükrözés + generált mozgás",
+ "sheet_size": [
+  1440,
+  640
+ ]
+}

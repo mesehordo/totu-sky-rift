@@ -1,0 +1,4577 @@
+{
+  "pajzsfal": {
+    "name": "Pajzsfal",
+    "type": "toggle",
+    "hotkey": "F",
+    "desc": "Összezárt pajzsok: -60% távolsági sebzés, +2 páncél, de fele sebesség.",
+    "modifiers": {
+      "speed_mult": 0.5,
+      "ranged_taken_mult": 0.4,
+      "armor_add": 2
+    },
+    "icon": "shield"
+  },
+  "napvihar": {
+    "name": "Napvihar",
+    "type": "area",
+    "hotkey": "T",
+    "energy": 75,
+    "range": 8,
+    "radius": 1.8,
+    "duration": 4,
+    "dps": 22,
+    "color": [
+      255,
+      190,
+      60
+    ],
+    "sprite": "napvihar",
+    "desc": "Izzó meteorpor-zápor: 4 mp alatt 88 sebzés minden ellenségnek a területen.",
+    "icon": "burst"
+  },
+  "oruletkod": {
+    "name": "Őrület köde",
+    "type": "area",
+    "hotkey": "T",
+    "range": 8,
+    "radius": 2.2,
+    "duration": 6,
+    "dps": 7,
+    "slow": 0.5,
+    "color": [
+      170,
+      90,
+      220
+    ],
+    "sprite": "oruletkod",
+    "desc": "Elmét bomlasztó spórafelhő: 50% lassítás és folyamatos sebzés 6 mp-ig.",
+    "hp_cost": 25,
+    "cooldown": 14,
+    "icon": "burst"
+  },
+  "gyogyitas": {
+    "name": "Rúnás gyógyítás",
+    "type": "autoheal",
+    "hotkey": "G",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 10,
+    "desc": "Automatikusan gyógyítja a közeli sérült élő szövetségeseket.",
+    "icon": "heal"
+  },
+  "vagta": {
+    "name": "Vágta",
+    "type": "self_buff",
+    "hotkey": "V",
+    "cooldown": 20,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.8
+    },
+    "desc": "A gyíkhátas 4 mp-ig 80%-kal gyorsabb.",
+    "icon": "rage"
+  },
+  "roham": {
+    "name": "Roham",
+    "type": "self_buff",
+    "hotkey": "V",
+    "cooldown": 20,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.7,
+      "damage_mult": 1.3
+    },
+    "desc": "4 mp-ig +70% sebesség és +30% sebzés.",
+    "icon": "rage"
+  },
+  "holdgyogyitas": {
+    "name": "Holdfény-gyógyítás",
+    "type": "autoheal",
+    "hotkey": "G",
+    "cooldown": 1.0,
+    "range": 5,
+    "amount": 9,
+    "desc": "Automatikusan gyógyítja a közeli sérült élő szövetségeseket.",
+    "icon": "heal"
+  },
+  "szellemfarkasok": {
+    "name": "Szellemfarkasok",
+    "type": "summon",
+    "hotkey": "W",
+    "cooldown": 30,
+    "unit": "wul_szellemfarkas",
+    "count": 2,
+    "lifetime": 30,
+    "desc": "Két szellem-dingót idéz 30 másodpercre.",
+    "icon": "summon"
+  },
+  "gyokerkotes": {
+    "name": "Gyökérkötés",
+    "type": "area",
+    "hotkey": "T",
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 6,
+    "slow": 0.08,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "sprite": "gyokerkotes",
+    "desc": "Gyökerek fonják körbe az ellenséget: 4 mp-ig szinte mozdulni sem tud.",
+    "spores": 3,
+    "cooldown": 10,
+    "icon": "burst"
+  },
+  "osszeolvadas": {
+    "name": "Összeolvadás",
+    "type": "merge",
+    "hotkey": "M",
+    "count": 3,
+    "into": "myc_oriaspofeteg",
+    "range": 4,
+    "desc": "Három közeli Pöfeteg egyetlen Óriáspöfeteggé olvad.",
+    "icon": "merge"
+  },
+  "lelekidezes": {
+    "name": "Lélekidézés",
+    "type": "raise",
+    "hotkey": "R",
+    "energy": 60,
+    "range": 6,
+    "small": "imp_szellemlegios",
+    "large": "imp_szellemkolosszus",
+    "desc": "Egy közeli tetemből szellemlégióst (nagy tetemből szellemkolosszust) támaszt.",
+    "icon": "ghost"
+  },
+  "ostrommod": {
+    "name": "Ostrom-mód",
+    "type": "toggle",
+    "hotkey": "O",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "range_add": 3,
+      "damage_mult": 1.25
+    },
+    "desc": "A Kolosszus letelepszik: nem mozog, de +3 lőtáv és +25% sebzés.",
+    "icon": "shield"
+  },
+  "h_tava_nyil": {
+    "name": "Nyomkereső nyíl",
+    "type": "bolt",
+    "hotkey": "Q",
+    "range": 7,
+    "cooldown": 8,
+    "energy": 50,
+    "slow": 0.45,
+    "duration": 2,
+    "projectile": "arrow",
+    "levels": [
+      {
+        "damage": 70
+      },
+      {
+        "damage": 110
+      },
+      {
+        "damage": 150
+      }
+    ],
+    "desc": "Tava célzott lövése: nagy sebzés és lassítás egy ellenségen.",
+    "icon": "bolt"
+  },
+  "h_tava_utenek": {
+    "name": "Útének",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "speed_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.14,
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.2,
+          "armor_add": 1
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek gyorsabban mozognak (és jobban védekeznek).",
+    "icon": "aura"
+  },
+  "h_tava_farkasok": {
+    "name": "Szellemfarkasok",
+    "type": "summon",
+    "hotkey": "E",
+    "energy": 75,
+    "cooldown": 20,
+    "unit": "wul_szellemfarkas",
+    "lifetime": 40,
+    "levels": [
+      {
+        "count": 1
+      },
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      }
+    ],
+    "desc": "Szellem-dingókat idéz.",
+    "icon": "summon"
+  },
+  "h_tava_madar": {
+    "name": "A Hét Út hívása",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "unit": "wul_mennydorgesmadar",
+    "count": 2,
+    "lifetime": 45,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső: két viharkakadu érkezik 45 másodpercre.",
+    "icon": "summon"
+  },
+  "h_ragna_pajzsfal": {
+    "name": "Pajzsfal",
+    "type": "toggle",
+    "hotkey": "Q",
+    "levels": [
+      {
+        "modifiers": {
+          "speed_mult": 0.5,
+          "ranged_taken_mult": 0.5,
+          "armor_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 0.55,
+          "ranged_taken_mult": 0.4,
+          "armor_add": 3
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 0.6,
+          "ranged_taken_mult": 0.3,
+          "armor_add": 4
+        }
+      }
+    ],
+    "desc": "A pajzs először a mellette állót védi: kevesebb távolsági sebzés, több páncél.",
+    "icon": "shield"
+  },
+  "h_ragna_esku": {
+    "name": "Az eskü súlya",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 3
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek páncélja nő.",
+    "icon": "aura"
+  },
+  "h_ragna_roham": {
+    "name": "Pajzsroham",
+    "type": "bolt",
+    "hotkey": "E",
+    "range": 4,
+    "cooldown": 10,
+    "energy": 60,
+    "slow": 0.0,
+    "projectile": null,
+    "levels": [
+      {
+        "damage": 50,
+        "duration": 1.5
+      },
+      {
+        "damage": 80,
+        "duration": 2
+      },
+      {
+        "damage": 110,
+        "duration": 2.5
+      }
+    ],
+    "desc": "Ragna nekiront egy ellenségnek: sebzi és rövid időre megbénítja.",
+    "icon": "bolt"
+  },
+  "h_ragna_hosszutel": {
+    "name": "Hosszú tél",
+    "type": "area",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "range": 8,
+    "radius": 3.5,
+    "duration": 8,
+    "dps": 18,
+    "slow": 0.4,
+    "color": [
+      170,
+      220,
+      255
+    ],
+    "sprite": "hosszutel",
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: fagyos vihar, amely lassít és sebez.",
+    "icon": "burst"
+  },
+  "h_szelai_napvihar": {
+    "name": "Napvihar",
+    "type": "area",
+    "hotkey": "Q",
+    "energy": 75,
+    "range": 8,
+    "radius": 1.8,
+    "duration": 4,
+    "color": [
+      255,
+      190,
+      60
+    ],
+    "sprite": "napvihar",
+    "levels": [
+      {
+        "dps": 20
+      },
+      {
+        "dps": 28
+      },
+      {
+        "dps": 36
+      }
+    ],
+    "desc": "Izzó meteorpor-zápor.",
+    "icon": "burst"
+  },
+  "h_szelai_rezonancia": {
+    "name": "Rezonancia",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.12
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.16
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek sebzése nő.",
+    "icon": "aura"
+  },
+  "h_szelai_levalasztas": {
+    "name": "Leválasztás",
+    "type": "bolt",
+    "hotkey": "E",
+    "range": 7,
+    "cooldown": 7,
+    "energy": 60,
+    "slow": 0.6,
+    "duration": 1.5,
+    "projectile": "magic",
+    "levels": [
+      {
+        "damage": 90
+      },
+      {
+        "damage": 140
+      },
+      {
+        "damage": 190
+      }
+    ],
+    "desc": "Rezonanciacsapás, amely egy célpontot kiszakít a hálózatából.",
+    "icon": "bolt"
+  },
+  "h_szelai_csillagorok": {
+    "name": "A Kilenc Lépcső őrei",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "unit": "elf_tollas_harcos",
+    "count": 4,
+    "lifetime": 45,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: négy tollas harcos-szellem.",
+    "icon": "summon"
+  },
+  "h_mor_gyogyspora": {
+    "name": "Gyógyspóra",
+    "type": "autoheal",
+    "hotkey": "Q",
+    "energy": 5,
+    "cooldown": 0.8,
+    "range": 6,
+    "levels": [
+      {
+        "amount": 12
+      },
+      {
+        "amount": 18
+      },
+      {
+        "amount": 24
+      }
+    ],
+    "desc": "Automatikusan gyógyítja a közeli sérült élő szövetségeseket.",
+    "icon": "heal"
+  },
+  "h_mor_gyokerkotes": {
+    "name": "Gyökérkötés",
+    "type": "area",
+    "hotkey": "W",
+    "energy": 75,
+    "range": 8,
+    "slow": 0.08,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "sprite": "gyokerkotes",
+    "levels": [
+      {
+        "radius": 2.0,
+        "duration": 3,
+        "dps": 5
+      },
+      {
+        "radius": 2.3,
+        "duration": 4,
+        "dps": 7
+      },
+      {
+        "radius": 2.6,
+        "duration": 5,
+        "dps": 9
+      }
+    ],
+    "desc": "Gyökerek fonják körbe az ellenséget.",
+    "icon": "burst"
+  },
+  "h_mor_emlekkert": {
+    "name": "Emlékkert",
+    "type": "aura",
+    "hotkey": "E",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "regen_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 3
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek gyorsabban regenerálódnak.",
+    "icon": "aura"
+  },
+  "h_mor_ebredes": {
+    "name": "Az Emlékkert ébredése",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "unit": "myc_oriaspofeteg",
+    "count": 2,
+    "lifetime": 50,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: két Óriáspöfeteg sarjad.",
+    "icon": "summon"
+  },
+  "h_livia_lelek": {
+    "name": "Lélekmentés",
+    "type": "raise",
+    "hotkey": "Q",
+    "range": 6,
+    "small": "imp_szellemlegios",
+    "large": "imp_szellemkolosszus",
+    "levels": [
+      {
+        "energy": 60
+      },
+      {
+        "energy": 45
+      },
+      {
+        "energy": 30
+      }
+    ],
+    "desc": "Egy közeli tetemből szellemlégióst támaszt.",
+    "icon": "ghost"
+  },
+  "h_livia_horgony": {
+    "name": "Horgonyjavítás",
+    "type": "autoheal",
+    "hotkey": "W",
+    "energy": 5,
+    "cooldown": 0.8,
+    "range": 6,
+    "heal_tags": [
+      "mech"
+    ],
+    "levels": [
+      {
+        "amount": 14
+      },
+      {
+        "amount": 22
+      },
+      {
+        "amount": 30
+      }
+    ],
+    "desc": "Automatikusan javítja a közeli sérült gépeket.",
+    "icon": "heal"
+  },
+  "h_livia_legio": {
+    "name": "A légió fegyelme",
+    "type": "aura",
+    "hotkey": "E",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.14
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.2
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek sebzése nő.",
+    "icon": "aura"
+  },
+  "h_livia_lelegzet": {
+    "name": "Második lélegzet",
+    "type": "area",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "range": 8,
+    "radius": 4,
+    "duration": 6,
+    "heal": 25,
+    "color": [
+      140,
+      255,
+      200
+    ],
+    "sprite": "lelegzet",
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: a területen minden szövetséges gyógyul.",
+    "icon": "burst"
+  },
+  "h_keth_kod": {
+    "name": "Őrület köde",
+    "type": "area",
+    "hotkey": "Q",
+    "energy": 75,
+    "range": 8,
+    "radius": 2.2,
+    "duration": 6,
+    "slow": 0.5,
+    "color": [
+      170,
+      90,
+      220
+    ],
+    "sprite": "oruletkod",
+    "levels": [
+      {
+        "dps": 7
+      },
+      {
+        "dps": 10
+      },
+      {
+        "dps": 13
+      }
+    ],
+    "desc": "Elmét bomlasztó spórafelhő.",
+    "icon": "burst"
+  },
+  "h_keth_korushang": {
+    "name": "Kórus-hang",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "speed_mult": 1.1,
+          "regen_add": 0.5
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.15,
+          "regen_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.2,
+          "regen_add": 1.5
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek gyorsabbak és regenerálódnak.",
+    "icon": "aura"
+  },
+  "h_keth_csap": {
+    "name": "Csápcsapás",
+    "type": "bolt",
+    "hotkey": "E",
+    "range": 5,
+    "cooldown": 8,
+    "energy": 55,
+    "slow": 0.3,
+    "duration": 2,
+    "projectile": "acid",
+    "levels": [
+      {
+        "damage": 80
+      },
+      {
+        "damage": 120
+      },
+      {
+        "damage": 160
+      }
+    ],
+    "desc": "Savas csapás egy célpontra.",
+    "icon": "bolt"
+  },
+  "h_keth_sokasag": {
+    "name": "A sokaság",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "unit": "cro_karmos",
+    "count": 4,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: legfeljebb négy Karmos kel ki. Nem jár le az élettartamuk, és nem foglalnak létszámot. Keth egyszerre legfeljebb négy élő egységet idézhet.",
+    "icon": "summon"
+  },
+  "h_nera_toltes": {
+    "name": "Gyorstöltés",
+    "type": "self_buff",
+    "hotkey": "Q",
+    "cooldown": 18,
+    "levels": [
+      {
+        "duration": 5,
+        "modifiers": {
+          "damage_mult": 1.3
+        }
+      },
+      {
+        "duration": 6,
+        "modifiers": {
+          "damage_mult": 1.45
+        }
+      },
+      {
+        "duration": 7,
+        "modifiers": {
+          "damage_mult": 1.6
+        }
+      }
+    ],
+    "desc": "Rövid ideig nagyobb sebzés.",
+    "icon": "rage"
+  },
+  "h_nera_loves": {
+    "name": "Célzott lövés",
+    "type": "bolt",
+    "hotkey": "W",
+    "range": 8,
+    "cooldown": 7,
+    "energy": 50,
+    "slow": 0.5,
+    "duration": 1.5,
+    "projectile": "spear",
+    "levels": [
+      {
+        "damage": 70
+      },
+      {
+        "damage": 110
+      },
+      {
+        "damage": 150
+      }
+    ],
+    "desc": "Messzire hordó, erős lövés.",
+    "icon": "bolt"
+  },
+  "h_nera_batorsag": {
+    "name": "Bátorság",
+    "type": "aura",
+    "hotkey": "E",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2,
+          "speed_mult": 1.05
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2,
+          "speed_mult": 1.1
+        }
+      }
+    ],
+    "desc": "„Félek – és mégis megyek.” A közeli szövetségesek páncélja nő.",
+    "icon": "aura"
+  },
+  "h_nera_horgony": {
+    "name": "Szabad horgony",
+    "type": "self_buff",
+    "hotkey": "R",
+    "ultimate": true,
+    "cooldown": 120,
+    "duration": 10,
+    "modifiers": {
+      "damage_mult": 2.0,
+      "armor_add": 5,
+      "speed_mult": 1.3
+    },
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: Nera felszabadult lelke 10 másodpercre félelmetes erővé válik.",
+    "icon": "rage"
+  },
+  "h_itz_darda": {
+    "name": "Obszidián-dárda",
+    "type": "bolt",
+    "hotkey": "Q",
+    "range": 7,
+    "cooldown": 8,
+    "energy": 50,
+    "slow": 0.5,
+    "duration": 2,
+    "projectile": "spear",
+    "levels": [
+      {
+        "damage": 80
+      },
+      {
+        "damage": 125
+      },
+      {
+        "damage": 170
+      }
+    ],
+    "desc": "Hajított obszidián-dárda: nagy sebzés, lassítás.",
+    "icon": "bolt"
+  },
+  "h_itz_csapas": {
+    "name": "Földrengető csapás",
+    "type": "nova",
+    "hotkey": "W",
+    "cooldown": 9,
+    "energy": 70,
+    "color": [
+      255,
+      200,
+      90
+    ],
+    "levels": [
+      {
+        "radius": 2.2,
+        "damage": 45,
+        "stun": 1.0
+      },
+      {
+        "radius": 2.5,
+        "damage": 70,
+        "stun": 1.5
+      },
+      {
+        "radius": 2.8,
+        "damage": 95,
+        "stun": 2.0
+      }
+    ],
+    "desc": "A hadúr a földbe sújt: a körülötte állókat megsebzi és megbénítja.",
+    "icon": "burst"
+  },
+  "h_itz_jelenlet": {
+    "name": "A hadúr jelenléte",
+    "type": "aura",
+    "hotkey": "E",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1,
+          "damage_mult": 1.04
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2,
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 3,
+          "damage_mult": 1.12
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek páncélja és sebzése nő.",
+    "icon": "aura"
+  },
+  "h_itz_kukulkan": {
+    "name": "Quetzlaru alakja",
+    "type": "self_buff",
+    "hotkey": "R",
+    "ultimate": true,
+    "cooldown": 110,
+    "duration": 15,
+    "modifiers": {
+      "damage_mult": 2.0,
+      "armor_add": 6,
+      "speed_mult": 1.2
+    },
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: a tollas kígyóisten ereje – kétszeres sebzés, +6 páncél.",
+    "icon": "rage"
+  },
+  "h_xochi_hullam": {
+    "name": "Rezonanciahullám",
+    "type": "area",
+    "hotkey": "Q",
+    "energy": 75,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 3,
+    "color": [
+      80,
+      230,
+      220
+    ],
+    "sprite": "napvihar",
+    "levels": [
+      {
+        "dps": 26
+      },
+      {
+        "dps": 36
+      },
+      {
+        "dps": 46
+      }
+    ],
+    "desc": "Jádeszínű rezgés tépi szét a területet.",
+    "icon": "burst"
+  },
+  "h_xochi_harmonia": {
+    "name": "Harmónia",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "regen_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 3
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek életereje és pajzsa gyorsabban töltődik.",
+    "icon": "aura"
+  },
+  "h_xochi_jadeor": {
+    "name": "Jádeőr",
+    "type": "summon",
+    "hotkey": "E",
+    "energy": 80,
+    "cooldown": 25,
+    "unit": "elf_jadeor",
+    "lifetime": 45,
+    "levels": [
+      {
+        "count": 1
+      },
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      }
+    ],
+    "desc": "Élő jádeszobrot ébreszt, amely a hívójáért harcol.",
+    "icon": "summon"
+  },
+  "h_xochi_napkorona": {
+    "name": "Napkorona",
+    "type": "area",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "range": 8,
+    "radius": 4,
+    "duration": 6,
+    "heal": 32,
+    "color": [
+      255,
+      230,
+      140
+    ],
+    "sprite": "lelegzet",
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: a területen minden szövetséges gyógyul.",
+    "icon": "burst"
+  },
+  "h_hja_szilank": {
+    "name": "Jégszilánk",
+    "type": "bolt",
+    "hotkey": "Q",
+    "range": 7,
+    "cooldown": 7,
+    "energy": 50,
+    "slow": 0.35,
+    "duration": 3,
+    "projectile": "magic",
+    "levels": [
+      {
+        "damage": 75
+      },
+      {
+        "damage": 115
+      },
+      {
+        "damage": 155
+      }
+    ],
+    "desc": "Fagyos szilánk: sebez és erősen lassít.",
+    "icon": "bolt"
+  },
+  "h_hja_vihar": {
+    "name": "Hóvihar",
+    "type": "area",
+    "hotkey": "W",
+    "energy": 80,
+    "range": 8,
+    "radius": 2.4,
+    "duration": 5,
+    "slow": 0.5,
+    "color": [
+      190,
+      230,
+      255
+    ],
+    "sprite": "hosszutel",
+    "levels": [
+      {
+        "dps": 16
+      },
+      {
+        "dps": 24
+      },
+      {
+        "dps": 32
+      }
+    ],
+    "desc": "Jeges vihar csap le a területre.",
+    "icon": "burst"
+  },
+  "h_hja_bunda": {
+    "name": "Téli bundák",
+    "type": "aura",
+    "hotkey": "E",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1,
+          "regen_add": 0.5
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2,
+          "regen_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2,
+          "regen_add": 2
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek páncélja és regenerációja nő.",
+    "icon": "aura"
+  },
+  "h_hja_fagyott_ido": {
+    "name": "Megfagyott idő",
+    "type": "nova",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "color": [
+      170,
+      220,
+      255
+    ],
+    "radius": 5,
+    "damage": 120,
+    "stun": 3.5,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: minden közeli ellenség jégbe dermed.",
+    "icon": "burst"
+  },
+  "h_bja_medve": {
+    "name": "Kardfogú hívása",
+    "type": "summon",
+    "hotkey": "Q",
+    "energy": 75,
+    "cooldown": 22,
+    "unit": "urs_kardfogu_tigris",
+    "lifetime": 45,
+    "levels": [
+      {
+        "count": 1
+      },
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      }
+    ],
+    "desc": "Kardfogú tigrist hív a hegyekből.",
+    "icon": "summon"
+  },
+  "h_bja_falka": {
+    "name": "A falka ereje",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.14
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.2,
+          "speed_mult": 1.05
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek (és vadak) sebzése nő.",
+    "icon": "aura"
+  },
+  "h_bja_szigony": {
+    "name": "Vadászszigony",
+    "type": "bolt",
+    "hotkey": "E",
+    "range": 6,
+    "cooldown": 9,
+    "energy": 55,
+    "slow": 0.0,
+    "projectile": "spear",
+    "levels": [
+      {
+        "damage": 60,
+        "duration": 1.2
+      },
+      {
+        "damage": 95,
+        "duration": 1.7
+      },
+      {
+        "damage": 130,
+        "duration": 2.2
+      }
+    ],
+    "desc": "Szigonyt vet egy ellenségbe: sebzi és rövid időre megbénítja.",
+    "icon": "bolt"
+  },
+  "h_bja_mamutcsorda": {
+    "name": "Mamutcsorda",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "unit": "urs_mammut",
+    "count": 2,
+    "lifetime": 40,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: két harci mamut csatlakozik 40 másodpercre.",
+    "icon": "summon"
+  },
+  "h_vor_sugar": {
+    "name": "Savsugár",
+    "type": "bolt",
+    "hotkey": "Q",
+    "range": 6,
+    "cooldown": 7,
+    "energy": 50,
+    "slow": 0.5,
+    "duration": 2,
+    "projectile": "acid",
+    "levels": [
+      {
+        "damage": 80
+      },
+      {
+        "damage": 120
+      },
+      {
+        "damage": 160
+      }
+    ],
+    "desc": "Maró savsugár.",
+    "icon": "bolt"
+  },
+  "h_vor_pancel": {
+    "name": "Mutáns páncél",
+    "type": "self_buff",
+    "hotkey": "W",
+    "cooldown": 20,
+    "levels": [
+      {
+        "duration": 8,
+        "modifiers": {
+          "armor_add": 4,
+          "ranged_taken_mult": 0.7
+        }
+      },
+      {
+        "duration": 10,
+        "modifiers": {
+          "armor_add": 6,
+          "ranged_taken_mult": 0.6
+        }
+      },
+      {
+        "duration": 12,
+        "modifiers": {
+          "armor_add": 8,
+          "ranged_taken_mult": 0.5
+        }
+      }
+    ],
+    "desc": "Kitinlemezek nőnek a mester testén.",
+    "icon": "rage"
+  },
+  "h_vor_larvak": {
+    "name": "Lárvahullám",
+    "type": "summon",
+    "hotkey": "E",
+    "energy": 75,
+    "cooldown": 20,
+    "unit": "cro_karmos",
+    "levels": [
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      },
+      {
+        "count": 4
+      }
+    ],
+    "desc": "Karmosokat költ ki. Nem jár le az élettartamuk, és nem foglalnak létszámot. Vor egyszerre legfeljebb négy élő egységet idézhet.",
+    "icon": "summon"
+  },
+  "h_vor_robbanas": {
+    "name": "Kitinrobbanás",
+    "type": "nova",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "color": [
+      150,
+      255,
+      120
+    ],
+    "radius": 4.5,
+    "damage": 220,
+    "stun": 1.0,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: kitinszilánkok repesznek szét a mester körül.",
+    "icon": "burst"
+  },
+  "h_ssa_felho": {
+    "name": "Spórafelhő",
+    "type": "area",
+    "hotkey": "Q",
+    "energy": 70,
+    "range": 8,
+    "radius": 2.3,
+    "duration": 6,
+    "slow": 0.6,
+    "color": [
+      170,
+      90,
+      220
+    ],
+    "sprite": "oruletkod",
+    "levels": [
+      {
+        "dps": 9
+      },
+      {
+        "dps": 13
+      },
+      {
+        "dps": 17
+      }
+    ],
+    "desc": "Fojtó spórafelhő.",
+    "icon": "burst"
+  },
+  "h_ssa_rajtudat": {
+    "name": "Rajtudat",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 8,
+    "levels": [
+      {
+        "modifiers": {
+          "speed_mult": 1.08,
+          "damage_mult": 1.05
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.12,
+          "damage_mult": 1.1
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.16,
+          "damage_mult": 1.15
+        }
+      }
+    ],
+    "desc": "A raj egy akarattal mozog: gyorsabb és erősebb.",
+    "icon": "aura"
+  },
+  "h_ssa_oltes": {
+    "name": "Hús-öltés",
+    "type": "autoheal",
+    "hotkey": "E",
+    "energy": 5,
+    "cooldown": 0.8,
+    "range": 6,
+    "levels": [
+      {
+        "amount": 12
+      },
+      {
+        "amount": 18
+      },
+      {
+        "amount": 24
+      }
+    ],
+    "desc": "Automatikusan összefoltozza a közeli sérült élő szövetségeseket.",
+    "icon": "heal"
+  },
+  "h_ssa_remszarnyak": {
+    "name": "Rémszárnyak",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "unit": "cro_szarnyas_rem",
+    "count": 4,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: legfeljebb négy Szárnyas rém érkezik. Nem jár le az élettartamuk, és nem foglalnak létszámot. Ss’arha egyszerre legfeljebb négy élő egységet idézhet.",
+    "icon": "summon"
+  },
+  "h_var_holdfeny": {
+    "name": "Holdfény",
+    "type": "autoheal",
+    "hotkey": "Q",
+    "energy": 5,
+    "cooldown": 0.8,
+    "range": 6,
+    "levels": [
+      {
+        "amount": 12
+      },
+      {
+        "amount": 18
+      },
+      {
+        "amount": 24
+      }
+    ],
+    "desc": "Automatikusan gyógyítja a közeli sérült szövetségeseket.",
+    "icon": "heal"
+  },
+  "h_var_kod": {
+    "name": "Ősök köde",
+    "type": "area",
+    "hotkey": "W",
+    "energy": 70,
+    "range": 8,
+    "radius": 2.4,
+    "duration": 6,
+    "slow": 0.5,
+    "color": [
+      200,
+      220,
+      255
+    ],
+    "sprite": "oruletkod",
+    "levels": [
+      {
+        "dps": 8
+      },
+      {
+        "dps": 12
+      },
+      {
+        "dps": 16
+      }
+    ],
+    "desc": "Az ősök szellemei ködként fonják körül az ellenséget.",
+    "icon": "burst"
+  },
+  "h_var_falka": {
+    "name": "Szellemfalka",
+    "type": "summon",
+    "hotkey": "E",
+    "energy": 75,
+    "cooldown": 20,
+    "unit": "wul_szellemfarkas",
+    "lifetime": 40,
+    "levels": [
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      },
+      {
+        "count": 4
+      }
+    ],
+    "desc": "Szellem-dingók falkáját hívja.",
+    "icon": "summon"
+  },
+  "h_var_telihold": {
+    "name": "Telihold",
+    "type": "area",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "range": 8,
+    "radius": 4.5,
+    "duration": 6,
+    "heal": 30,
+    "color": [
+      220,
+      235,
+      255
+    ],
+    "sprite": "lelegzet",
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: telihold-fény gyógyít a területen.",
+    "icon": "burst"
+  },
+  "h_kur_taposas": {
+    "name": "Bölénytaposás",
+    "type": "nova",
+    "hotkey": "Q",
+    "cooldown": 9,
+    "energy": 65,
+    "color": [
+      210,
+      170,
+      110
+    ],
+    "levels": [
+      {
+        "radius": 2.2,
+        "damage": 50,
+        "stun": 1.0
+      },
+      {
+        "radius": 2.5,
+        "damage": 75,
+        "stun": 1.5
+      },
+      {
+        "radius": 2.8,
+        "damage": 100,
+        "stun": 2.0
+      }
+    ],
+    "desc": "A harci bölény a földbe dobbant: sebez és megbénít.",
+    "icon": "burst"
+  },
+  "h_kur_uvoltes": {
+    "name": "Harci üvöltés",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.14
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.2
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek sebzése nő.",
+    "icon": "aura"
+  },
+  "h_kur_verfalka": {
+    "name": "Vérfalka",
+    "type": "self_buff",
+    "hotkey": "E",
+    "cooldown": 18,
+    "levels": [
+      {
+        "duration": 6,
+        "modifiers": {
+          "damage_mult": 1.3,
+          "speed_mult": 1.2
+        }
+      },
+      {
+        "duration": 7,
+        "modifiers": {
+          "damage_mult": 1.45,
+          "speed_mult": 1.25
+        }
+      },
+      {
+        "duration": 8,
+        "modifiers": {
+          "damage_mult": 1.6,
+          "speed_mult": 1.3
+        }
+      }
+    ],
+    "desc": "Vadászláz: rövid ideig gyorsabb és erősebb.",
+    "icon": "rage"
+  },
+  "h_kur_het_ut": {
+    "name": "A Hét Út harcosai",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "unit": "wul_landzsas",
+    "count": 5,
+    "lifetime": 45,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: öt lándzsás harcos érkezik a Hét Útról.",
+    "icon": "summon"
+  },
+  "h_gya_halo": {
+    "name": "Gyökérháló",
+    "type": "area",
+    "hotkey": "Q",
+    "energy": 70,
+    "range": 8,
+    "radius": 2.5,
+    "duration": 5,
+    "slow": 0.15,
+    "color": [
+      140,
+      200,
+      110
+    ],
+    "sprite": "gyokerkotes",
+    "levels": [
+      {
+        "dps": 6
+      },
+      {
+        "dps": 9
+      },
+      {
+        "dps": 12
+      }
+    ],
+    "desc": "Gyökerek fonják gúzsba az ellenséget.",
+    "icon": "burst"
+  },
+  "h_gya_melygyoker": {
+    "name": "Mélygyökér",
+    "type": "toggle",
+    "hotkey": "W",
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 4,
+          "speed_mult": 0.3,
+          "regen_add": 3
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 6,
+          "speed_mult": 0.3,
+          "regen_add": 5
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 8,
+          "speed_mult": 0.3,
+          "regen_add": 7
+        }
+      }
+    ],
+    "desc": "Gyökeret ereszt: lassú, de szinte elpusztíthatatlan.",
+    "icon": "shield"
+  },
+  "h_gya_talaj": {
+    "name": "Tápláló talaj",
+    "type": "aura",
+    "hotkey": "E",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "regen_add": 1,
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 2,
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 3,
+          "armor_add": 2
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek regenerációja és páncélja nő.",
+    "icon": "aura"
+  },
+  "h_gya_rengés": {
+    "name": "Gyökérrengés",
+    "type": "nova",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "color": [
+      150,
+      120,
+      80
+    ],
+    "radius": 5,
+    "damage": 150,
+    "stun": 2.5,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: a föld alól feltörő gyökerek mindenkit megbénítanak.",
+    "icon": "burst"
+  },
+  "h_spo_tuske": {
+    "name": "Bomlasztó tüske",
+    "type": "bolt",
+    "hotkey": "Q",
+    "range": 7,
+    "cooldown": 7,
+    "energy": 50,
+    "slow": 0.5,
+    "duration": 3,
+    "projectile": "acid",
+    "levels": [
+      {
+        "damage": 75
+      },
+      {
+        "damage": 115
+      },
+      {
+        "damage": 155
+      }
+    ],
+    "desc": "Rothasztó spóratüske.",
+    "icon": "bolt"
+  },
+  "h_spo_rothadas": {
+    "name": "Rothadás",
+    "type": "area",
+    "hotkey": "W",
+    "energy": 75,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 5,
+    "color": [
+      150,
+      170,
+      70
+    ],
+    "sprite": "oruletkod",
+    "levels": [
+      {
+        "dps": 22
+      },
+      {
+        "dps": 32
+      },
+      {
+        "dps": 42
+      }
+    ],
+    "desc": "Minden elrothad a területen.",
+    "icon": "burst"
+  },
+  "h_spo_kopeny": {
+    "name": "Spóraköpeny",
+    "type": "self_buff",
+    "hotkey": "E",
+    "cooldown": 18,
+    "levels": [
+      {
+        "duration": 6,
+        "modifiers": {
+          "speed_mult": 1.3,
+          "ranged_taken_mult": 0.6
+        }
+      },
+      {
+        "duration": 8,
+        "modifiers": {
+          "speed_mult": 1.4,
+          "ranged_taken_mult": 0.5
+        }
+      },
+      {
+        "duration": 10,
+        "modifiers": {
+          "speed_mult": 1.5,
+          "ranged_taken_mult": 0.4
+        }
+      }
+    ],
+    "desc": "Spórafelhőbe burkolózik: gyorsabb, és a lövések elvétik.",
+    "icon": "rage"
+  },
+  "h_spo_raj": {
+    "name": "Pöfeteg-raj",
+    "type": "summon",
+    "hotkey": "R",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 110,
+    "unit": "myc_pofeteg",
+    "count": 6,
+    "lifetime": 45,
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: hat pöfeteg sarjad – robbanó spórazsákok.",
+    "icon": "summon"
+  },
+  "h_cas_roham": {
+    "name": "Légió-roham",
+    "type": "nova",
+    "hotkey": "Q",
+    "cooldown": 9,
+    "energy": 65,
+    "color": [
+      255,
+      190,
+      120
+    ],
+    "levels": [
+      {
+        "radius": 2.2,
+        "damage": 45,
+        "stun": 1.0
+      },
+      {
+        "radius": 2.5,
+        "damage": 70,
+        "stun": 1.5
+      },
+      {
+        "radius": 2.8,
+        "damage": 95,
+        "stun": 2.0
+      }
+    ],
+    "desc": "A legátus gépteste előrelendül, és szétszórja az ellenséget.",
+    "icon": "burst"
+  },
+  "h_cas_fegyelem": {
+    "name": "Vasfegyelem",
+    "type": "aura",
+    "hotkey": "W",
+    "radius": 7,
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 3,
+          "damage_mult": 1.05
+        }
+      }
+    ],
+    "desc": "A közeli szövetségesek páncélja nő.",
+    "icon": "aura"
+  },
+  "h_cas_legio": {
+    "name": "Mechalégió",
+    "type": "summon",
+    "hotkey": "E",
+    "energy": 80,
+    "cooldown": 22,
+    "unit": "imp_legios",
+    "lifetime": 40,
+    "levels": [
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      },
+      {
+        "count": 4
+      }
+    ],
+    "desc": "Légiósokat rendel a frontra.",
+    "icon": "summon"
+  },
+  "h_cas_harag": {
+    "name": "Ordan haragja",
+    "type": "self_buff",
+    "hotkey": "R",
+    "ultimate": true,
+    "cooldown": 110,
+    "duration": 15,
+    "modifiers": {
+      "damage_mult": 2.0,
+      "armor_add": 8
+    },
+    "levels": [
+      {}
+    ],
+    "desc": "Végső képesség: Ordan lelke tölti meg a legátus gépét.",
+    "icon": "rage"
+  },
+  "lelekhorgony_mentes": {
+    "name": "Lélekhorgony mentése",
+    "type": "anchor_rescue",
+    "icon": "anchor",
+    "desc": "Jelölj ki egy saját Lélekhorgonyt, majd a lerakás helyét. A Légiós odamegy, felveszi és elszállítja. Egyszerre egy horgonyt vihet."
+  },
+  "atvaltozas": {
+    "name": "Mutáció itt",
+    "type": "morph",
+    "target_placement": true,
+    "hotkey": "M",
+    "into": "cro_pancelbogar",
+    "via": "cro_guboj",
+    "time": 18,
+    "cost": {
+      "stone": 75,
+      "meteor": 25,
+      "wood": 50
+    },
+    "desc": "A Karmos a kijelölt helyre megy, ott gubóba zárkózik, és Páncélbogárrá alakul.",
+    "icon": "cocoon"
+  },
+  "beszallas": {
+    "name": "Helyőrség",
+    "type": "garrison",
+    "hotkey": "G",
+    "desc": "A kijelölt egységek beszállnak a legközelebbi helyőrség-épületbe; ott védve vannak, és minden beszállt egység erősíti az épület lövéseit.",
+    "icon": "house"
+  },
+  "p_halozati_gyujtes": {
+    "name": "Hálózati gyűjtés",
+    "type": "passive",
+    "icon": "network",
+    "desc": "A terhét bármelyik hálózatba kötött épületbe leadhatja."
+  },
+  "p_gepjavitas": {
+    "name": "Gépjavítás és újratestesítés",
+    "type": "passive",
+    "icon": "repair",
+    "desc": "Jobb klikk sérült gépre: javítás. A lélekhorgonyokat is újraépíti."
+  },
+  "lelekhorgony": {
+    "name": "Lélekhorgony",
+    "type": "passive",
+    "icon": "anchor",
+    "desc": "Ha a gép elpusztul, a lelke horgonyban marad 40 mp-ig – egy Fabrikátor újraépítheti."
+  },
+  "osztodas2": {
+    "name": "Osztódás (2 ölés)",
+    "type": "passive",
+    "icon": "split",
+    "split_kills": 2,
+    "desc": "Minden két legyőzött ellenség után kettéosztódik (mintha megette volna őket)."
+  },
+  "osztodas3": {
+    "name": "Osztódás (3 ölés)",
+    "type": "passive",
+    "icon": "split",
+    "split_kills": 3,
+    "desc": "Minden három legyőzött ellenség után kettéosztódik."
+  },
+  "osztodas4": {
+    "name": "Osztódás (4 ölés)",
+    "type": "passive",
+    "icon": "split",
+    "split_kills": 4,
+    "desc": "Minden négy legyőzött ellenség után kettéosztódik."
+  },
+  "erdei_rejtozes": {
+    "name": "Erdei rejtőzés",
+    "type": "passive",
+    "icon": "forest",
+    "desc": "Fák mellett, álló helyzetben láthatatlan (lesállás), amíg nem támad; a közeli ellenség észreveszi."
+  },
+  "korus_szem": {
+    "name": "A Kórus szeme",
+    "type": "passive",
+    "icon": "eye",
+    "detect": 9,
+    "desc": "Felfedi a közeli rejtőzködő és beásott ellenségeket."
+  },
+  "jadetest": {
+    "name": "Jádetest",
+    "type": "passive",
+    "icon": "shield",
+    "desc": "A varázslatok csak fele sebzést okoznak neki."
+  },
+  "szellemtest": {
+    "name": "Szellemtest",
+    "type": "passive",
+    "icon": "ghost",
+    "desc": "Idézett lény; idővel szertefoszlik."
+  },
+  "gubo_p": {
+    "name": "Gubó",
+    "type": "passive",
+    "icon": "cocoon",
+    "desc": "Mutálódik; ha elpusztul, az átalakulás elvész."
+  },
+  "taborkocsi": {
+    "name": "Vándortábor",
+    "type": "passive",
+    "icon": "tent",
+    "desc": "Felszedett tábor – bárhol letelepíthető."
+  },
+  "kristalypancel": {
+    "name": "Kristálypáncél",
+    "type": "passive",
+    "icon": "shield",
+    "desc": "Kemény kristályokkal benőtt páncél."
+  },
+  "falkavadasz": {
+    "name": "Falkavadász",
+    "type": "passive",
+    "icon": "pack",
+    "desc": "Falkában vadászik."
+  },
+  "runako_aura": {
+    "name": "Rúnakő",
+    "type": "aura",
+    "icon": "rune",
+    "radius": 5,
+    "modifiers": {
+      "armor_add": 2,
+      "regen_add": 1
+    },
+    "desc": "A közeli szövetségesek páncélja és gyógyulása nő."
+  },
+  "fenylepes": {
+    "name": "Fénylépés",
+    "type": "blink",
+    "hotkey": "B",
+    "energy": 40,
+    "cooldown": 12,
+    "range": 7,
+    "icon": "blink",
+    "color": [
+      120,
+      230,
+      255
+    ],
+    "desc": "Fénnyé válik, és a kijelölt pontra lép (7 mező)."
+  },
+  "fenylepes_munkas": {
+    "name": "Fénylépés",
+    "type": "blink",
+    "hotkey": "B",
+    "energy": 30,
+    "cooldown": 25,
+    "range": 5,
+    "icon": "blink",
+    "color": [
+      120,
+      230,
+      255
+    ],
+    "desc": "Menekülő teleport (5 mező)."
+  },
+  "jade_celzas": {
+    "name": "Jáde-célzás",
+    "type": "self_buff",
+    "hotkey": "C",
+    "energy": 30,
+    "cooldown": 15,
+    "duration": 6,
+    "modifiers": {
+      "range_add": 2,
+      "damage_mult": 1.2
+    },
+    "icon": "aim",
+    "desc": "6 mp-ig +2 lőtáv és +20% sebzés."
+  },
+  "csillagdarda": {
+    "name": "Csillagdárda",
+    "type": "bolt",
+    "hotkey": "D",
+    "energy": 40,
+    "cooldown": 10,
+    "range": 8,
+    "damage": 45,
+    "slow": 0.6,
+    "duration": 1.5,
+    "projectile": "spear",
+    "icon": "spear",
+    "desc": "Célzott, csillagérc-hegyű dárda: 45 sebzés és lassítás."
+  },
+  "zuhanorepules": {
+    "name": "Zuhanórepülés",
+    "type": "nova",
+    "hotkey": "Z",
+    "energy": 50,
+    "cooldown": 14,
+    "radius": 1.6,
+    "damage": 40,
+    "stun": 0.7,
+    "color": [
+      120,
+      230,
+      200
+    ],
+    "icon": "dive",
+    "desc": "Lecsap a földre: a közeli ellenségek sebződnek és megtántorodnak."
+  },
+  "tollkorona_uvoltes": {
+    "name": "Tollkorona-üvöltés",
+    "type": "nova",
+    "hotkey": "U",
+    "energy": 60,
+    "cooldown": 16,
+    "radius": 3.0,
+    "damage": 20,
+    "slow": 0.45,
+    "duration": 3,
+    "color": [
+      240,
+      200,
+      90
+    ],
+    "icon": "roar",
+    "desc": "Rémisztő üvöltés: a közeli ellenségek lelassulnak."
+  },
+  "napfokusz": {
+    "name": "Napfókusz",
+    "type": "toggle",
+    "hotkey": "O",
+    "icon": "deploy",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "range_add": 3,
+      "damage_mult": 1.2
+    },
+    "desc": "Telepítés: nem mozog, de +3 lőtáv és +20% sebzés."
+  },
+  "dardafal": {
+    "name": "Dárdafal",
+    "type": "toggle",
+    "hotkey": "D",
+    "icon": "spearwall",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "damage_mult": 1.6,
+      "armor_add": 2
+    },
+    "desc": "Leszúrt dárdák: nem mozog, de +60% sebzés és +2 páncél."
+  },
+  "horgonyszigony": {
+    "name": "Horgonyszigony",
+    "type": "bolt",
+    "hotkey": "G",
+    "cooldown": 14,
+    "range": 7,
+    "damage": 30,
+    "slow": 0.0,
+    "duration": 1.2,
+    "projectile": "spear",
+    "icon": "harpoon",
+    "desc": "Szigony egy ellenségbe: sebez és 1,2 mp-re megbénít."
+  },
+  "verszomj": {
+    "name": "Vérszomj",
+    "type": "self_buff",
+    "hotkey": "V",
+    "cooldown": 20,
+    "duration": 7,
+    "modifiers": {
+      "damage_mult": 1.5,
+      "speed_mult": 1.2,
+      "armor_add": -2
+    },
+    "icon": "rage",
+    "desc": "7 mp-ig +50% sebzés, +20% sebesség, de -2 páncél."
+  },
+  "runako": {
+    "name": "Rúnakő állítása",
+    "type": "summon",
+    "target_placement": true,
+    "hotkey": "K",
+    "cooldown": 30,
+    "unit": "urs_runako",
+    "count": 1,
+    "lifetime": 45,
+    "icon": "rune",
+    "desc": "A Rúnapap a kijelölt helyhez megy, és rúnakövet állít. A közeli szövetségesek páncélja és gyógyulása nő."
+  },
+  "zuhano_csapas": {
+    "name": "Zuhanó csapás",
+    "type": "bolt",
+    "hotkey": "Z",
+    "cooldown": 12,
+    "range": 5,
+    "damage": 35,
+    "slow": 0.5,
+    "duration": 1.5,
+    "icon": "dive",
+    "desc": "A holló lecsap egy célpontra."
+  },
+  "taposas": {
+    "name": "Taposás",
+    "type": "nova",
+    "hotkey": "T",
+    "cooldown": 18,
+    "radius": 2.2,
+    "damage": 35,
+    "stun": 1.0,
+    "color": [
+      200,
+      170,
+      120
+    ],
+    "icon": "stomp",
+    "desc": "A mamut a földbe dobbant: sebez és megbénít."
+  },
+  "telepites": {
+    "name": "Telepítés",
+    "type": "toggle",
+    "hotkey": "O",
+    "icon": "deploy",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "range_add": 3,
+      "damage_mult": 1.25
+    },
+    "desc": "A szán lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés."
+  },
+  "beasas": {
+    "name": "Beásás",
+    "type": "toggle",
+    "hotkey": "Q",
+    "burrow": true,
+    "icon": "burrow",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "regen_add": 4
+    },
+    "desc": "A föld alá ássa magát: láthatatlan (csak felfedő találja meg), gyorsan gyógyul, de nem támad."
+  },
+  "tuskezapor": {
+    "name": "Tüskezápor",
+    "type": "area",
+    "hotkey": "Z",
+    "hp_cost": 20,
+    "cooldown": 12,
+    "range": 7,
+    "radius": 1.6,
+    "duration": 2,
+    "dps": 22,
+    "color": [
+      220,
+      220,
+      180
+    ],
+    "icon": "spines",
+    "desc": "Csonttüskék záporoznak a területre. Ára: 20 életerő."
+  },
+  "savtocsa": {
+    "name": "Savtócsa",
+    "type": "area",
+    "hotkey": "S",
+    "hp_cost": 30,
+    "cooldown": 14,
+    "range": 9,
+    "radius": 2.0,
+    "duration": 6,
+    "dps": 10,
+    "slow": 0.7,
+    "color": [
+      150,
+      255,
+      90
+    ],
+    "sprite": "oruletkod",
+    "icon": "acid",
+    "desc": "Maró savtócsa: sebez és lassít. Ára: 30 életerő."
+  },
+  "ragadozo_zuhanas": {
+    "name": "Ragadozó zuhanás",
+    "type": "bolt",
+    "hotkey": "Z",
+    "hp_cost": 15,
+    "cooldown": 9,
+    "range": 4,
+    "damage": 45,
+    "slow": 0.5,
+    "duration": 1,
+    "icon": "dive",
+    "desc": "Lecsap egy célpontra. Ára: 15 életerő."
+  },
+  "csapsopres": {
+    "name": "Csápsöprés",
+    "type": "nova",
+    "hotkey": "C",
+    "hp_cost": 40,
+    "cooldown": 14,
+    "radius": 2.4,
+    "damage": 55,
+    "slow": 0.5,
+    "duration": 2,
+    "color": [
+      170,
+      90,
+      160
+    ],
+    "icon": "sweep",
+    "desc": "Körbecsapó csápok: nagy sebzés és lassítás. Ára: 40 életerő."
+  },
+  "kitinroham": {
+    "name": "Kitinroham",
+    "type": "self_buff",
+    "hotkey": "R",
+    "hp_cost": 20,
+    "cooldown": 14,
+    "duration": 5,
+    "modifiers": {
+      "speed_mult": 1.6,
+      "damage_mult": 1.3
+    },
+    "icon": "charge",
+    "desc": "5 mp-es roham: +60% sebesség, +30% sebzés. Ára: 20 életerő."
+  },
+  "harci_enek": {
+    "name": "Harci ének",
+    "type": "chant",
+    "hotkey": "E",
+    "radius": 5,
+    "icon": "song",
+    "modifiers": {
+      "damage_mult": 1.08
+    },
+    "desc": "Ének (egyszerre egy): a közeli szövetségesek +8% sebzés."
+  },
+  "vandor_enek": {
+    "name": "Vándorének",
+    "type": "chant",
+    "hotkey": "W",
+    "radius": 5,
+    "icon": "song",
+    "modifiers": {
+      "speed_mult": 1.1
+    },
+    "desc": "Ének (egyszerre egy): a közeli szövetségesek +10% sebesség."
+  },
+  "osok_haragja": {
+    "name": "Ősök haragja",
+    "type": "chant",
+    "hotkey": "H",
+    "radius": 6,
+    "icon": "song",
+    "modifiers": {
+      "armor_add": 2
+    },
+    "desc": "Ének: a közeli szövetségesek +2 páncél."
+  },
+  "tomahawk": {
+    "name": "Dárdavetés",
+    "type": "bolt",
+    "hotkey": "T",
+    "cooldown": 10,
+    "range": 6,
+    "damage": 30,
+    "slow": 0.6,
+    "duration": 1.5,
+    "projectile": "spear",
+    "icon": "spear",
+    "desc": "Dárdavetővel (woomera) hajított dárda: messzire repül, sebez és lassít."
+  },
+  "vadaszles": {
+    "name": "Vadászles",
+    "type": "toggle",
+    "hotkey": "L",
+    "icon": "deploy",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "range_add": 2,
+      "damage_mult": 1.2
+    },
+    "desc": "Lesállás: nem mozog, de +2 lőtáv és +20% sebzés."
+  },
+  "villamcsapas": {
+    "name": "Villámcsapás",
+    "type": "nova",
+    "hotkey": "V",
+    "cooldown": 15,
+    "radius": 2.0,
+    "damage": 45,
+    "stun": 0.5,
+    "color": [
+      200,
+      220,
+      255
+    ],
+    "icon": "lightning",
+    "desc": "A madár villámot sújt maga köré."
+  },
+  "sporatuske": {
+    "name": "Spóratüske",
+    "type": "bolt",
+    "hotkey": "T",
+    "spores": 2,
+    "cooldown": 9,
+    "range": 7,
+    "damage": 30,
+    "slow": 0.6,
+    "duration": 2,
+    "projectile": "acid",
+    "icon": "spines",
+    "desc": "Mérgező tüske: sebez és lassít. Ára: 2 spóra."
+  },
+  "kalapfal": {
+    "name": "Kalapfal",
+    "type": "toggle",
+    "hotkey": "K",
+    "icon": "shield",
+    "modifiers": {
+      "speed_mult": 0.5,
+      "armor_add": 4,
+      "ranged_taken_mult": 0.6
+    },
+    "desc": "A kalap pajzzsá feszül: +4 páncél, -40% távolsági sebzés, de lassú."
+  },
+  "sporarobbanas": {
+    "name": "Spórarobbanás",
+    "type": "nova",
+    "hotkey": "R",
+    "spores": 3,
+    "cooldown": 12,
+    "radius": 2.6,
+    "damage": 45,
+    "slow": 0.6,
+    "duration": 2,
+    "color": [
+      180,
+      220,
+      120
+    ],
+    "icon": "burst",
+    "desc": "Mérgező spórafelhő robban ki belőle. Ára: 3 spóra."
+  },
+  "sporaeso": {
+    "name": "Spóraeső",
+    "type": "area",
+    "hotkey": "E",
+    "spores": 3,
+    "cooldown": 12,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 18,
+    "color": [
+      170,
+      200,
+      110
+    ],
+    "sprite": "oruletkod",
+    "icon": "rain",
+    "desc": "Spóraeső a területre. Ára: 3 spóra."
+  },
+  "testudo": {
+    "name": "Testudo",
+    "type": "toggle",
+    "hotkey": "T",
+    "icon": "shield",
+    "modifiers": {
+      "speed_mult": 0.6,
+      "ranged_taken_mult": 0.45,
+      "armor_add": 1
+    },
+    "desc": "Teknősalakzat: -55% távolsági sebzés, +1 páncél, de lassú."
+  },
+  "gyorstoltes_u": {
+    "name": "Gyorstöltés",
+    "type": "self_buff",
+    "hotkey": "G",
+    "cooldown": 18,
+    "duration": 6,
+    "modifiers": {
+      "damage_mult": 1.4
+    },
+    "icon": "rage",
+    "desc": "6 mp-ig +40% sebzés."
+  },
+  "geppuska_sorozat": {
+    "name": "Gépágyú-sorozat",
+    "type": "self_buff",
+    "hotkey": "S",
+    "cooldown": 20,
+    "duration": 5,
+    "modifiers": {
+      "damage_mult": 1.7,
+      "speed_mult": 0.7
+    },
+    "icon": "rage",
+    "desc": "5 mp-ig +70% sebzés, de lassabb."
+  },
+  "zuhanobomba": {
+    "name": "Zuhanóbomba",
+    "type": "nova",
+    "hotkey": "B",
+    "cooldown": 16,
+    "radius": 1.8,
+    "damage": 50,
+    "color": [
+      255,
+      180,
+      90
+    ],
+    "icon": "bomb",
+    "desc": "Bombát old ki maga alá."
+  },
+  "ostrom_telepites": {
+    "name": "Ostrom-telepítés",
+    "type": "toggle",
+    "hotkey": "O",
+    "icon": "deploy",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "range_add": 3,
+      "damage_mult": 1.25
+    },
+    "desc": "Lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés."
+  },
+  "eterloket": {
+    "name": "Éterlöket",
+    "type": "bolt",
+    "energy": 40,
+    "cooldown": 8,
+    "range": 6,
+    "damage": 40,
+    "slow": 0.5,
+    "duration": 1.5,
+    "projectile": "magic",
+    "icon": "bolt",
+    "desc": "Éterlövedék."
+  },
+  "foldrenges": {
+    "name": "Földrengés",
+    "type": "nova",
+    "cooldown": 14,
+    "radius": 2.2,
+    "damage": 40,
+    "stun": 1.0,
+    "color": [
+      180,
+      160,
+      130
+    ],
+    "icon": "stomp",
+    "desc": "Megrengeti a földet maga körül."
+  },
+  "bumerang": {
+    "name": "Bumeráng",
+    "type": "bolt",
+    "hotkey": "B",
+    "cooldown": 9,
+    "range": 6,
+    "damage": 24,
+    "bounces": 2,
+    "projectile": "boomerang",
+    "icon": "bolt",
+    "desc": "Visszatérő bumeráng: a célpont után még két közeli ellenséget eltalál (csökkenő sebzéssel)."
+  },
+  "riado_futas": {
+    "name": "Riadófutás",
+    "type": "self_buff",
+    "hotkey": "F",
+    "cooldown": 25,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.8
+    },
+    "icon": "rage",
+    "desc": "Az emu megriad és elszalad: 4 mp-ig +80% sebesség."
+  },
+  "felultetes": {
+    "name": "Felültetés",
+    "type": "mount",
+    "hotkey": "U",
+    "range": 3,
+    "into": "wul_bolenylovas",
+    "riders": [
+      "wul_landzsas",
+      "wul_ijas_vadasz"
+    ],
+    "icon": "merge",
+    "desc": "A legközelebbi wullof gyalogos harcos felül a bölényre: Bölénylovas lesz belőlük."
+  },
+  "leszallas": {
+    "name": "Leszállás",
+    "type": "dismount",
+    "hotkey": "U",
+    "mount": "wul_boleny",
+    "rider": "wul_landzsas",
+    "icon": "split",
+    "desc": "A lovas leszáll: újra külön bölény és gyalogos harcos."
+  },
+  "savkopes": {
+    "name": "Savköpés",
+    "type": "bolt",
+    "hotkey": "Q",
+    "cooldown": 10,
+    "range": 5,
+    "damage": 8,
+    "poison": [
+      6,
+      6
+    ],
+    "projectile": "acid",
+    "icon": "bolt",
+    "desc": "Maró sav: 8 sebzés, majd 6 mp-en át másodpercenként 6 méregsebzés."
+  },
+  "tuzkopes": {
+    "name": "Tűzköpés",
+    "type": "bolt",
+    "hotkey": "Q",
+    "cooldown": 10,
+    "range": 4.5,
+    "damage": 26,
+    "splash": 1.6,
+    "projectile": "fire",
+    "icon": "burst",
+    "desc": "Lángcsóva: 26 sebzés a célpontra, fele a körülötte állókra."
+  },
+  "fagykopes": {
+    "name": "Fagyköpés",
+    "type": "bolt",
+    "hotkey": "Q",
+    "cooldown": 12,
+    "range": 5,
+    "damage": 10,
+    "slow": 0,
+    "duration": 2.5,
+    "projectile": "frost",
+    "icon": "bolt",
+    "desc": "Jeges köpet: 10 sebzés, és a célpont 2,5 mp-re megfagy (nem mozog, nem támad)."
+  },
+  "fiokakeltes": {
+    "name": "Fiókakeltetés",
+    "type": "summon",
+    "hotkey": "W",
+    "cooldown": 35,
+    "unit": "wul_groomi_fioka",
+    "count": 2,
+    "lifetime": 45,
+    "icon": "summon",
+    "desc": "Két Groomi-fióka kel ki a tojásaiból 45 másodpercre."
+  },
+  "harci_kurt": {
+    "name": "Harci kürt",
+    "type": "chant",
+    "hotkey": "E",
+    "radius": 6,
+    "icon": "song",
+    "modifiers": {
+      "damage_mult": 1.15,
+      "speed_mult": 1.1
+    },
+    "desc": "Kürtszó (egyszerre egy): a közeli szövetségesek +15% sebzés és +10% sebesség."
+  },
+  "medveuvoltes": {
+    "name": "Medveüvöltés",
+    "type": "nova",
+    "hotkey": "R",
+    "cooldown": 16,
+    "radius": 2.6,
+    "damage": 30,
+    "stun": 1.2,
+    "color": [
+      200,
+      140,
+      90
+    ],
+    "icon": "stomp",
+    "desc": "Rettentő üvöltés: sebez és megbénítja a közeli ellenséget."
+  },
+  "robbanas": {
+    "name": "Önrobbantás",
+    "type": "nova",
+    "hotkey": "R",
+    "cooldown": 1,
+    "radius": 2.0,
+    "damage": 70,
+    "self_destruct": true,
+    "color": [
+      150,
+      255,
+      120
+    ],
+    "icon": "bomb",
+    "desc": "Felrobban: nagy sebzés a közelben – az atka elpusztul."
+  },
+  "alomspora": {
+    "name": "Álomspóra",
+    "type": "nova",
+    "hotkey": "R",
+    "cooldown": 20,
+    "radius": 2.8,
+    "damage": 10,
+    "stun": 3.0,
+    "color": [
+      160,
+      140,
+      255
+    ],
+    "icon": "burst",
+    "desc": "Altató spórafelhő: a közeli ellenség 3 mp-re elalszik."
+  },
+  "napfeny_aldas": {
+    "name": "Napfény-áldás",
+    "type": "autoheal",
+    "hotkey": "G",
+    "cooldown": 0.6,
+    "range": 6,
+    "amount": 14,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket."
+  },
+  "meteorhivas": {
+    "name": "Meteorhívás",
+    "type": "area",
+    "hotkey": "T",
+    "range": 9,
+    "radius": 2.0,
+    "duration": 3,
+    "dps": 35,
+    "cooldown": 22,
+    "color": [
+      255,
+      150,
+      60
+    ],
+    "sprite": "napvihar",
+    "icon": "burst",
+    "desc": "Meteorzápor: 3 mp alatt 105 sebzés a területen."
+  },
+  "lesallas": {
+    "name": "Les",
+    "type": "toggle",
+    "hotkey": "L",
+    "icon": "deploy",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "damage_mult": 1.5,
+      "range_add": 1
+    },
+    "desc": "Lesállás: nem mozog, de +50% sebzés és +1 lőtáv."
+  },
+  "huk_horog": {
+    "name": "Horog",
+    "type": "bolt",
+    "energy": 0,
+    "cooldown": 12,
+    "range": 4,
+    "damage": 20,
+    "slow": 0,
+    "duration": 1.0,
+    "projectile": "spear",
+    "icon": "harpoon",
+    "desc": "A kampó a célpontba akad: sebez és egy pillanatra megbénít."
+  },
+  "huk_tavi_leny_hivas": {
+    "name": "Tavi lény",
+    "type": "summon",
+    "cooldown": 45,
+    "unit": "huk_tavi_leny",
+    "count": 1,
+    "lifetime": 30,
+    "icon": "summon",
+    "desc": "Lábon járó víztestet idéz 30 másodpercre."
+  },
+  "huk_tavgyogyitas": {
+    "name": "Tóvíz-gyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 9,
+    "icon": "heal",
+    "desc": "Gyógyítja a közeli sebesülteket."
+  },
+  "huk_gotevagta": {
+    "name": "Gőtevágta",
+    "type": "self_buff",
+    "cooldown": 20,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.8,
+      "damage_mult": 1.2
+    },
+    "icon": "charge",
+    "desc": "Rövid, sebes roham."
+  },
+  "huk_arhullam": {
+    "name": "Árhullám",
+    "type": "area",
+    "energy": 75,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.2,
+    "duration": 3,
+    "dps": 18,
+    "slow": 0.5,
+    "color": [
+      110,
+      200,
+      230
+    ],
+    "sprite": "lelegzet",
+    "icon": "burst",
+    "desc": "Árhullám: sebez és lelassít."
+  },
+  "huk_iszapcsapas": {
+    "name": "Iszapcsapás",
+    "type": "nova",
+    "cooldown": 16,
+    "radius": 2.2,
+    "damage": 36,
+    "stun": 0.8,
+    "color": [
+      110,
+      100,
+      60
+    ],
+    "icon": "stomp",
+    "desc": "Iszapot fröccsent: körben sebez és megbénít."
+  },
+  "huk_kagylofal": {
+    "name": "Kagylófal",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.5,
+      "armor_add": 3,
+      "ranged_taken_mult": 0.5
+    },
+    "icon": "shield",
+    "desc": "Teknőjébe húzódik: erős védelem, lassú mozgás."
+  },
+  "huk_melysegdobbantas": {
+    "name": "Mélységdobbantás",
+    "type": "nova",
+    "cooldown": 18,
+    "radius": 2.6,
+    "damage": 48,
+    "stun": 1.2,
+    "color": [
+      90,
+      170,
+      200
+    ],
+    "icon": "stomp",
+    "desc": "Földrengető dobbantás."
+  },
+  "huk_melysegi_hivas": {
+    "name": "Mélységi hívás",
+    "type": "summon",
+    "energy": 90,
+    "cooldown": 30,
+    "unit": "huk_tavi_leny",
+    "count": 2,
+    "lifetime": 60,
+    "icon": "summon",
+    "desc": "Két tavi lényt hív 60 másodpercre."
+  },
+  "h_kva_arasztas": {
+    "name": "Árasztás",
+    "type": "area",
+    "desc": "Vízzel árasztja el a területet: sebez és lassít.",
+    "levels": [
+      {
+        "dps": 18
+      },
+      {
+        "dps": 28
+      },
+      {
+        "dps": 38
+      }
+    ],
+    "icon": "burst",
+    "energy": 70,
+    "cooldown": 10,
+    "range": 8,
+    "radius": 2.2,
+    "duration": 4,
+    "slow": 0.5,
+    "color": [
+      110,
+      200,
+      230
+    ],
+    "sprite": "lelegzet",
+    "hotkey": "Q"
+  },
+  "h_kva_forras": {
+    "name": "Gyógyforrás",
+    "type": "aura",
+    "desc": "A közeli szövetségesek gyorsabban gyógyulnak.",
+    "levels": [
+      {
+        "modifiers": {
+          "regen_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "regen_add": 3
+        }
+      }
+    ],
+    "icon": "aura",
+    "radius": 6,
+    "hotkey": "W"
+  },
+  "h_kva_lenyek": {
+    "name": "Vízlények",
+    "type": "summon",
+    "desc": "Tavi lényeket kelt életre.",
+    "levels": [
+      {
+        "count": 1
+      },
+      {
+        "count": 2
+      },
+      {
+        "count": 3
+      }
+    ],
+    "icon": "summon",
+    "energy": 75,
+    "cooldown": 25,
+    "unit": "huk_tavi_leny",
+    "lifetime": 40,
+    "hotkey": "E"
+  },
+  "h_kva_ozonviz": {
+    "name": "Özönvíz",
+    "type": "area",
+    "desc": "Végső: hatalmas áradás a csatatéren.",
+    "levels": [
+      {}
+    ],
+    "icon": "burst",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 90,
+    "range": 9,
+    "radius": 4,
+    "duration": 6,
+    "dps": 40,
+    "slow": 0.4,
+    "color": [
+      90,
+      170,
+      230
+    ],
+    "sprite": "lelegzet",
+    "hotkey": "R"
+  },
+  "h_bul_kampo": {
+    "name": "Királyi kampó",
+    "type": "bolt",
+    "desc": "Megrántja és megbénítja a célpontot.",
+    "levels": [
+      {
+        "damage": 60
+      },
+      {
+        "damage": 100
+      },
+      {
+        "damage": 140
+      }
+    ],
+    "icon": "harpoon",
+    "energy": 50,
+    "cooldown": 9,
+    "range": 6,
+    "slow": 0,
+    "duration": 1.5,
+    "projectile": "spear",
+    "hotkey": "Q"
+  },
+  "h_bul_ugras": {
+    "name": "Békaugrás",
+    "type": "nova",
+    "desc": "Nagyot ugrik és lecsap: körben sebez.",
+    "levels": [
+      {
+        "damage": 50
+      },
+      {
+        "damage": 85
+      },
+      {
+        "damage": 120
+      }
+    ],
+    "icon": "stomp",
+    "energy": 60,
+    "cooldown": 12,
+    "radius": 2.4,
+    "stun": 0.8,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "hotkey": "W"
+  },
+  "h_bul_brekeges": {
+    "name": "Harci brekegés",
+    "type": "aura",
+    "desc": "A közeli szövetségesek erősebben csapnak.",
+    "levels": [
+      {
+        "modifiers": {
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.14
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.2
+        }
+      }
+    ],
+    "icon": "aura",
+    "radius": 6,
+    "hotkey": "E"
+  },
+  "h_bul_kiraly": {
+    "name": "A Tó Királya",
+    "type": "self_buff",
+    "desc": "Végső: óriássá nő, sebzése és páncélja megnő.",
+    "levels": [
+      {}
+    ],
+    "icon": "rage",
+    "ultimate": true,
+    "energy": 100,
+    "cooldown": 90,
+    "duration": 15,
+    "modifiers": {
+      "damage_mult": 1.6,
+      "armor_add": 4
+    },
+    "hotkey": "R"
+  },
+  "h_iri_gyongy": {
+    "name": "Igazgyöngy-lövés",
+    "type": "bolt",
+    "desc": "Ragyogó gyöngy: nagy sebzés egy célpontra.",
+    "levels": [
+      {
+        "damage": 70
+      },
+      {
+        "damage": 110
+      },
+      {
+        "damage": 150
+      }
+    ],
+    "icon": "bolt",
+    "energy": 45,
+    "cooldown": 8,
+    "range": 8,
+    "projectile": "magic",
+    "hotkey": "Q"
+  },
+  "h_iri_szivarvany": {
+    "name": "Szivárványpajzs",
+    "type": "aura",
+    "desc": "A közeli szövetségesek páncélt kapnak.",
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 3
+        }
+      }
+    ],
+    "icon": "aura",
+    "radius": 6,
+    "hotkey": "W"
+  },
+  "h_iri_aldas": {
+    "name": "Tavi áldás",
+    "type": "autoheal",
+    "desc": "Gyógyítja a közeli sebesülteket.",
+    "levels": [
+      {
+        "amount": 10
+      },
+      {
+        "amount": 16
+      },
+      {
+        "amount": 22
+      }
+    ],
+    "icon": "heal",
+    "cooldown": 0.8,
+    "range": 6,
+    "hotkey": "E"
+  },
+  "h_iri_gyongykapu": {
+    "name": "Gyöngykapu",
+    "type": "nova",
+    "desc": "Végső: gyöngyfény-robbanás – sebez és megbénít.",
+    "levels": [
+      {}
+    ],
+    "icon": "burst",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 90,
+    "radius": 4,
+    "damage": 120,
+    "stun": 2.0,
+    "color": [
+      240,
+      220,
+      255
+    ],
+    "hotkey": "R"
+  },
+  "oon_buzogany_roham": {
+    "name": "Buzogányroham",
+    "type": "self_buff",
+    "cooldown": 20,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.5,
+      "damage_mult": 1.3
+    },
+    "icon": "rage",
+    "desc": "Rövid, kemény roham."
+  },
+  "oon_kapuorzes": {
+    "name": "Kapuőrzés",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.0,
+      "armor_add": 2
+    },
+    "icon": "shield",
+    "desc": "Kapuőrként megáll egy épület mellett: nem mozdul, az épület +3 páncélt kap (legfeljebb +6). Bekapcsolás után az első lovas elleni találata 1,2 mp-re 35%-kal lassítja a célpontot."
+  },
+  "oon_szelvihar": {
+    "name": "Szélvihar",
+    "type": "area",
+    "energy": 70,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 14,
+    "slow": 0.5,
+    "color": [
+      200,
+      230,
+      255
+    ],
+    "sprite": "lelegzet",
+    "icon": "burst",
+    "desc": "Legyezővel kavart szélvihar: sebez és lassít."
+  },
+  "oon_illuzio": {
+    "name": "Rókaillúzió",
+    "type": "summon",
+    "cooldown": 30,
+    "unit": "oon_illuzio_mas",
+    "count": 2,
+    "lifetime": 20,
+    "icon": "summon",
+    "desc": "Két rókaszellem-másolatot sző 20 másodpercre."
+  },
+  "oon_lampasgyogyitas": {
+    "name": "Lámpásfény-gyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 9,
+    "icon": "heal",
+    "desc": "Gyógyítja a közeli sebesülteket."
+  },
+  "oon_oriasdobbantas": {
+    "name": "Óriásdobbantás",
+    "type": "nova",
+    "cooldown": 18,
+    "radius": 2.6,
+    "damage": 46,
+    "stun": 1.2,
+    "color": [
+      200,
+      80,
+      60
+    ],
+    "icon": "stomp",
+    "desc": "Földrengető dobbantás."
+  },
+  "oon_tombolas": {
+    "name": "Tombolás",
+    "type": "self_buff",
+    "cooldown": 22,
+    "duration": 6,
+    "modifiers": {
+      "damage_mult": 1.5,
+      "armor_add": -1
+    },
+    "icon": "rage",
+    "desc": "Tombol: erősebben üt, védtelenebb."
+  },
+  "oon_taiko": {
+    "name": "Taiko-ritmus",
+    "type": "chant",
+    "radius": 6,
+    "modifiers": {
+      "damage_mult": 1.1,
+      "speed_mult": 1.06
+    },
+    "icon": "song",
+    "desc": "Harci dob: a közeli társak erősebben és gyorsabban harcolnak."
+  },
+  "oon_vedofeny": {
+    "name": "Védőfény",
+    "type": "ward",
+    "hotkey": "V",
+    "cooldown": 18,
+    "energy": 50,
+    "radius": 5,
+    "amount": 50,
+    "duration": 10,
+    "color": [
+      255,
+      230,
+      150
+    ],
+    "icon": "aura",
+    "desc": "A lámpás fénye védőburkot von a közeli társakra: 10 mp-ig 50 sebzést nyel el."
+  },
+  "oon_villamcsapas": {
+    "name": "Villámcsapás",
+    "type": "bolt",
+    "energy": 50,
+    "cooldown": 9,
+    "range": 8,
+    "damage": 60,
+    "slow": 0,
+    "duration": 0.8,
+    "projectile": "magic",
+    "icon": "lightning",
+    "desc": "Villám: nagy sebzés, rövid bénulás."
+  },
+  "h_aka_roham": {
+    "name": "Vörös roham",
+    "type": "bolt",
+    "desc": "Nekiront a célpontnak: sebez és megbénít.",
+    "levels": [
+      {
+        "damage": 60
+      },
+      {
+        "damage": 100
+      },
+      {
+        "damage": 140
+      }
+    ],
+    "icon": "charge",
+    "energy": 50,
+    "cooldown": 9,
+    "range": 6,
+    "slow": 0,
+    "duration": 1.2,
+    "projectile": "spear",
+    "hotkey": "Q"
+  },
+  "h_aka_rengetes": {
+    "name": "Földrengetés",
+    "type": "nova",
+    "desc": "Buzogányával a földbe sújt: körben sebez.",
+    "levels": [
+      {
+        "damage": 50
+      },
+      {
+        "damage": 85
+      },
+      {
+        "damage": 120
+      }
+    ],
+    "icon": "stomp",
+    "energy": 60,
+    "cooldown": 12,
+    "radius": 2.6,
+    "stun": 1.0,
+    "color": [
+      200,
+      80,
+      60
+    ],
+    "hotkey": "W"
+  },
+  "h_aka_harag": {
+    "name": "Oni harag",
+    "type": "aura",
+    "desc": "A közeli onik erősebben csapnak.",
+    "levels": [
+      {
+        "modifiers": {
+          "damage_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.14
+        }
+      },
+      {
+        "modifiers": {
+          "damage_mult": 1.2
+        }
+      }
+    ],
+    "icon": "aura",
+    "radius": 6,
+    "hotkey": "E"
+  },
+  "h_aka_vorosvihar": {
+    "name": "Vörös vihar",
+    "type": "self_buff",
+    "desc": "Végső: tomboló vörös vihar – sebzése és sebessége megnő.",
+    "levels": [
+      {}
+    ],
+    "icon": "rage",
+    "ultimate": true,
+    "energy": 100,
+    "cooldown": 90,
+    "duration": 15,
+    "modifiers": {
+      "damage_mult": 1.6,
+      "speed_mult": 1.3
+    },
+    "hotkey": "R"
+  },
+  "h_shi_pajzs": {
+    "name": "Nian-pajzs",
+    "type": "aura",
+    "desc": "A közeli társak páncélt kapnak.",
+    "levels": [
+      {
+        "modifiers": {
+          "armor_add": 1
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 2
+        }
+      },
+      {
+        "modifiers": {
+          "armor_add": 3
+        }
+      }
+    ],
+    "icon": "aura",
+    "radius": 6,
+    "hotkey": "Q"
+  },
+  "h_shi_uvoltes": {
+    "name": "Nian-üvöltés",
+    "type": "nova",
+    "desc": "Rettentő üvöltés: körben sebez és megbénít.",
+    "levels": [
+      {
+        "damage": 40
+      },
+      {
+        "damage": 70
+      },
+      {
+        "damage": 100
+      }
+    ],
+    "icon": "roar",
+    "energy": 60,
+    "cooldown": 14,
+    "radius": 3,
+    "stun": 1.2,
+    "color": [
+      120,
+      220,
+      140
+    ],
+    "hotkey": "W"
+  },
+  "h_shi_kapu": {
+    "name": "Őrkapu",
+    "type": "autoheal",
+    "desc": "Gyógyítja a közeli sebesülteket.",
+    "levels": [
+      {
+        "amount": 10
+      },
+      {
+        "amount": 16
+      },
+      {
+        "amount": 22
+      }
+    ],
+    "icon": "heal",
+    "cooldown": 0.8,
+    "range": 6,
+    "hotkey": "E"
+  },
+  "h_shi_oroktolany": {
+    "name": "Az őrök hívása",
+    "type": "summon",
+    "desc": "Végső: két kőkutya-őrt hív.",
+    "levels": [
+      {}
+    ],
+    "icon": "summon",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 120,
+    "unit": "oon_kokutya",
+    "count": 2,
+    "lifetime": 45,
+    "hotkey": "R"
+  },
+  "h_kar_villam": {
+    "name": "Tengu-villám",
+    "type": "bolt",
+    "desc": "Villám egy célpontra.",
+    "levels": [
+      {
+        "damage": 70
+      },
+      {
+        "damage": 110
+      },
+      {
+        "damage": 150
+      }
+    ],
+    "icon": "lightning",
+    "energy": 45,
+    "cooldown": 8,
+    "range": 8,
+    "projectile": "magic",
+    "hotkey": "Q"
+  },
+  "h_kar_szel": {
+    "name": "Szélörvény",
+    "type": "area",
+    "desc": "Szélörvény: sebez és lassít.",
+    "levels": [
+      {
+        "dps": 16
+      },
+      {
+        "dps": 26
+      },
+      {
+        "dps": 36
+      }
+    ],
+    "icon": "burst",
+    "energy": 70,
+    "cooldown": 10,
+    "range": 8,
+    "radius": 2.2,
+    "duration": 4,
+    "slow": 0.5,
+    "color": [
+      200,
+      230,
+      255
+    ],
+    "sprite": "lelegzet",
+    "hotkey": "W"
+  },
+  "h_kar_tollak": {
+    "name": "Hollótollak",
+    "type": "aura",
+    "desc": "A közeli repülők gyorsabbak.",
+    "levels": [
+      {
+        "modifiers": {
+          "speed_mult": 1.08
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.14
+        }
+      },
+      {
+        "modifiers": {
+          "speed_mult": 1.2
+        }
+      }
+    ],
+    "icon": "aura",
+    "radius": 7,
+    "hotkey": "E"
+  },
+  "h_kar_tajfun": {
+    "name": "Tájfun",
+    "type": "area",
+    "desc": "Végső: tájfun söpör végig a csatatéren.",
+    "levels": [
+      {}
+    ],
+    "icon": "burst",
+    "ultimate": true,
+    "energy": 150,
+    "cooldown": 90,
+    "range": 9,
+    "radius": 4,
+    "duration": 6,
+    "dps": 40,
+    "slow": 0.4,
+    "color": [
+      200,
+      230,
+      255
+    ],
+    "sprite": "lelegzet",
+    "hotkey": "R"
+  },
+  "tulhajtas": {
+    "name": "Túlhajtás",
+    "type": "overdrive",
+    "hotkey": "T",
+    "cooldown": 20,
+    "self_hp": 0.4,
+    "share": 0.5,
+    "color": [
+      255,
+      170,
+      80
+    ],
+    "icon": "rage",
+    "desc": "A Fabrikátor túlhajtja magát: annak az épületnek, amelyen dolgozik, azonnal elkészül a hátralévő építés fele (javításnál a hiányzó életerő fele). Ára a Fabrikátor életerejének 40%-a – bele is pusztulhat."
+  },
+  "fegyverbe": {
+    "name": "Fegyverbe!",
+    "type": "self_buff",
+    "hotkey": "F",
+    "cooldown": 90,
+    "duration": 45,
+    "drop_work": true,
+    "modifiers": {
+      "damage_mult": 1.6,
+      "armor_add": 2,
+      "speed_mult": 1.15
+    },
+    "icon": "rage",
+    "desc": "Riadó: a telepesek 45 mp-re fegyvert ragadnak (erősebbek, gyorsabbak, páncélosabbak), de közben nem dolgoznak; utána visszamennek a munkájukhoz."
+  },
+  "ikrarakas": {
+    "name": "Ikrarakás",
+    "type": "lay_mine",
+    "target_placement": true,
+    "hotkey": "R",
+    "cooldown": 3,
+    "energy": 25,
+    "unit": "huk_ikra",
+    "max": 12,
+    "icon": "summon",
+    "desc": "A kijelölt helyhez megy, és láthatatlan ikra-csomót rak le (egyszerre legfeljebb 12). Ha ellenség lép rá, 3 harapós ebihal kel ki belőle (saját tavacskán 5), és 10 mp-ig harcolnak."
+  },
+  "bekaugras": {
+    "name": "Békaugrás",
+    "type": "blink",
+    "hotkey": "J",
+    "cooldown": 12,
+    "range": 2.5,
+    "range_research": {
+      "huk_ugrolabak": 5
+    },
+    "land_damage": 10,
+    "land_radius": 1.2,
+    "color": [
+      130,
+      220,
+      150
+    ],
+    "icon": "blink",
+    "desc": "A béka nagyot ugrik a kijelölt pontra (vízen és akadályon át is): 2,5 csempe, az Ugrólábak kutatással 5. Landoláskor megsebzi a közeli ellenséget."
+  },
+  "napkitores": {
+    "name": "Napkitörés",
+    "type": "area",
+    "hotkey": "K",
+    "energy": 50,
+    "faith": 40,
+    "cooldown": 20,
+    "range": 8,
+    "radius": 2.7,
+    "duration": 4,
+    "dps": 33.0,
+    "color": [
+      255,
+      150,
+      40
+    ],
+    "sprite": "napvihar",
+    "icon": "burst",
+    "desc": "A Nap haragja: erősebb Napvihar (másfélszeres sebzés, másfélszeres terület). Ára 50 energia és 40 Áhítat."
+  },
+  "nap_kegyelme": {
+    "name": "Nap kegyelme",
+    "type": "nova",
+    "hotkey": "K",
+    "faith": 30,
+    "cooldown": 45,
+    "radius": 6,
+    "damage": 0,
+    "heal": 80,
+    "color": [
+      255,
+      230,
+      140
+    ],
+    "icon": "heal",
+    "desc": "6 csempés körben azonnal 80 életerőt ad minden saját élőlénynek. Ára 30 Áhítat, 45 mp töltődés."
+  },
+  "napaldas": {
+    "name": "Napáldás",
+    "type": "bpower",
+    "effect": "mine_boost",
+    "mult": 1.5,
+    "duration": 30,
+    "cooldown": 60,
+    "faith": 25,
+    "hotkey": "N",
+    "icon": "rage",
+    "desc": "A Napfúró 30 mp-re 50%-kal többet termel. Ára 25 Áhítat, 60 mp töltődés."
+  },
+  "huk_nagy_tavi_leny_hivas": {
+    "name": "Nagy tavi lény",
+    "type": "summon",
+    "hotkey": "N",
+    "faith": 50,
+    "cooldown": 45,
+    "unit": "huk_nagy_tavi_leny",
+    "count": 1,
+    "lifetime": 60,
+    "icon": "summon",
+    "desc": "Erősebb tavi lényt idéz 60 mp-re (+50% életerő és sebzés). Ára 50 Tóének."
+  },
+  "huk_melyseg_hangja": {
+    "name": "Mélység hangja",
+    "type": "summon",
+    "hotkey": "N",
+    "faith": 60,
+    "energy": 50,
+    "cooldown": 60,
+    "unit": "huk_gyongyorias_idezett",
+    "count": 1,
+    "lifetime": 45,
+    "icon": "summon",
+    "desc": "Egy gyöngyóriást hív elő a mélyből 45 mp-re. Ára 60 Tóének és 50 energia."
+  },
+  "aradas": {
+    "name": "Áradás",
+    "type": "bpower",
+    "effect": "flood",
+    "duration": 30,
+    "cooldown": 90,
+    "faith": 30,
+    "heal": 3,
+    "hotkey": "A",
+    "icon": "heal",
+    "desc": "30 mp-re minden saját tavacska egy csempével kitágul, és a rajtuk álló saját egységek másodpercenként 3 életerőt kapnak. Ára 30 Tóének, 90 mp töltődés."
+  },
+  "gyongyeres": {
+    "name": "Gyöngyérés",
+    "type": "bpower",
+    "effect": "hasten",
+    "mult": 2.0,
+    "duration": 30,
+    "cooldown": 60,
+    "faith": 25,
+    "hotkey": "G",
+    "icon": "rage",
+    "desc": "Az épület 30 mp-re kétszer gyorsabban kutat és képez. Ára 25 Tóének, 60 mp töltődés."
+  },
+  "gp_isteni_szel_buff": {
+    "name": "Isteni szél",
+    "type": "passive",
+    "modifiers": {
+      "speed_mult": 1.2
+    },
+    "icon": "speed",
+    "desc": "Az Isteni szél hátszele: +20% sebesség."
+  },
+  "gp_napcsova": {
+    "name": "Napcsóva",
+    "target": true,
+    "faith": 150,
+    "cooldown": 180,
+    "effect": "area",
+    "radius": 2.5,
+    "duration": 8,
+    "dps": 25,
+    "reveal": 6,
+    "color": [
+      255,
+      220,
+      120
+    ],
+    "icon": "burst",
+    "desc": "Izzó fényoszlop a kijelölt pontra: 8 mp alatt 200 sebzés a körzetben, és 10 mp-re felfedi a környéket. Ára 150 Áhítat, 3 perc töltődés.",
+    "type": "gpower"
+  },
+  "gp_arhullam": {
+    "name": "Árhullám",
+    "target": true,
+    "faith": 120,
+    "cooldown": 150,
+    "effect": "area",
+    "radius": 3,
+    "duration": 4,
+    "dps": 15,
+    "slow": 0.5,
+    "color": [
+      110,
+      200,
+      255
+    ],
+    "icon": "burst",
+    "desc": "A Tóanya hulláma elönti a kijelölt pontot: 4 mp alatt 60 sebzés, és felére lassítja az ellenséget. Ára 120 Tóének, 2,5 perc töltődés.",
+    "type": "gpower"
+  },
+  "gp_eskufa_riado": {
+    "name": "Esküfa-riadó",
+    "target": false,
+    "cooldown": 240,
+    "effect": "levy",
+    "buff": "fegyverbe",
+    "duration": 30,
+    "icon": "rage",
+    "desc": "Megkondul az Esküfa: a falu minden telepese 30 mp-re fegyvert ragad (a Fegyverbe! hatása, kutatás nélkül is), utána visszamegy dolgozni. 4 perc töltődés.",
+    "type": "gpower"
+  },
+  "gp_melysegi_kitores": {
+    "name": "Mélységi kitörés",
+    "target": true,
+    "hq_hp": 250,
+    "cooldown": 180,
+    "effect": "area",
+    "radius": 2.5,
+    "duration": 3,
+    "dps": 40,
+    "slow": 0.6,
+    "color": [
+      150,
+      255,
+      120
+    ],
+    "icon": "burst",
+    "desc": "Tüskék törnek elő a mélyből a kijelölt ponton: 3 mp alatt 120 sebzés és lassítás. Ára a Kaptár 250 életereje, 3 perc töltődés.",
+    "type": "gpower"
+  },
+  "gp_osok_hivasa": {
+    "name": "Ősök hívása",
+    "target": true,
+    "cooldown": 180,
+    "effect": "summon",
+    "unit": "wul_szellemfarkas",
+    "count": 3,
+    "lifetime": 40,
+    "icon": "summon",
+    "desc": "Három szellemfarkas jelenik meg a kijelölt ponton 40 mp-re. 3 perc töltődés.",
+    "type": "gpower"
+  },
+  "gp_ordan_villama": {
+    "name": "Ordan villáma",
+    "target": true,
+    "meteor": 100,
+    "cooldown": 150,
+    "effect": "area",
+    "radius": 2,
+    "duration": 1,
+    "dps": 160,
+    "buildings": true,
+    "color": [
+      120,
+      255,
+      190
+    ],
+    "icon": "bolt",
+    "desc": "Ordan villáma csap le a kijelölt pontra: azonnal 160 sebzés egységeknek és épületeknek is. Ára 100 meteorit, 2,5 perc töltődés.",
+    "type": "gpower"
+  },
+  "gp_isteni_szel": {
+    "name": "Isteni szél",
+    "target": true,
+    "cooldown": 150,
+    "effect": "wind",
+    "radius": 4,
+    "duration": 8,
+    "slow": 0.5,
+    "buff": "gp_isteni_szel_buff",
+    "color": [
+      200,
+      240,
+      255
+    ],
+    "icon": "burst",
+    "desc": "Isteni szél söpör végig a kijelölt ponton: 8 mp-re felére lassítja az ellenséget, a saját egységek pedig 20%-kal gyorsabbak. 2,5 perc töltődés.",
+    "type": "gpower"
+  },
+  "alomkod": {
+    "name": "Álomköd",
+    "type": "area",
+    "hotkey": "W",
+    "energy": 60,
+    "cooldown": 12,
+    "range": 7,
+    "radius": 2.5,
+    "duration": 5,
+    "dps": 3,
+    "slow": 0.35,
+    "color": [
+      170,
+      150,
+      230
+    ],
+    "sprite": "oruletkod",
+    "icon": "burst",
+    "desc": "Álomködöt borít egy területre 5 mp-re: az ellenség benne nagyon lelassul (–65%) és kicsit sebződik."
+  },
+  "alomseta": {
+    "name": "Álomséta",
+    "type": "blink",
+    "hotkey": "E",
+    "cooldown": 18,
+    "range": 7,
+    "color": [
+      190,
+      170,
+      255
+    ],
+    "icon": "blink",
+    "desc": "Az álmok útján a kijelölt pontra lép (legfeljebb 7 csempe)."
+  },
+  "napfolt": {
+    "name": "Napfolt",
+    "type": "self_buff",
+    "hotkey": "F",
+    "cooldown": 40,
+    "duration": 6,
+    "no_weak": true,
+    "icon": "shield",
+    "desc": "Napfénybe öltözik: 6 mp-ig semmilyen egységtípus ellen nem gyenge."
+  },
+  "goztulnyomas": {
+    "name": "Gőztúlnyomás",
+    "type": "self_buff",
+    "hotkey": "G",
+    "cooldown": 30,
+    "duration": 6,
+    "modifiers": {
+      "speed_mult": 1.4
+    },
+    "after_slow": 3,
+    "icon": "rage",
+    "desc": "6 mp-re +40% sebesség; utána 3 mp-ig lassabb, amíg a kazán lehűl."
+  },
+  "hejba": {
+    "name": "Héjba húzódás",
+    "type": "self_buff",
+    "hotkey": "H",
+    "cooldown": 35,
+    "duration": 8,
+    "no_weak": true,
+    "modifiers": {
+      "speed_mult": 0.6
+    },
+    "icon": "shield",
+    "desc": "Behúzódik a kagylóhéjba: 8 mp-ig semmilyen egységtípus ellen nem gyenge, de lassabb."
+  },
+  "mic_fonalgyogyitas": {
+    "name": "Fonalgyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 10,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (10 életerő).",
+    "ally": "micelia"
+  },
+  "mic_fonalhalo": {
+    "name": "Fonalháló",
+    "type": "area",
+    "energy": 60,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 6,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "sprite": "gyokerkotes",
+    "icon": "burst",
+    "slow": 0.1,
+    "desc": "Területre ható csapás: 4 mp alatt 24 sebzés, és lassít.",
+    "ally": "micelia"
+  },
+  "pin_jegfal": {
+    "name": "Jégfal",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.5,
+      "armor_add": 3
+    },
+    "icon": "shield",
+    "desc": "Be- és kikapcsolható állás: sebesség -50%, páncél +3.",
+    "ally": "pinguu"
+  },
+  "pin_csuszas": {
+    "name": "Hasoncsúszás",
+    "type": "self_buff",
+    "cooldown": 18,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.9,
+      "damage_mult": 1.15
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +90%, sebzés +15%.",
+    "ally": "pinguu"
+  },
+  "pin_jeggyogyitas": {
+    "name": "Jeges gyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 9,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő).",
+    "ally": "pinguu"
+  },
+  "pin_jeghullam": {
+    "name": "Jeges hullám",
+    "type": "area",
+    "energy": 70,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 14,
+    "color": [
+      150,
+      210,
+      255
+    ],
+    "sprite": "lelegzet",
+    "icon": "burst",
+    "slow": 0.5,
+    "desc": "Területre ható csapás: 4 mp alatt 56 sebzés, és lassít.",
+    "ally": "pinguu"
+  },
+  "pin_osveny": {
+    "name": "Ösvényvezetés",
+    "type": "chant",
+    "radius": 5,
+    "icon": "aura",
+    "modifiers": {
+      "speed_mult": 1.12
+    },
+    "desc": "Ének: a közeli szövetségesek – sebesség +12%.",
+    "ally": "pinguu"
+  },
+  "gho_kofal": {
+    "name": "Kőfal",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.5,
+      "armor_add": 3
+    },
+    "icon": "shield",
+    "desc": "Be- és kikapcsolható állás: sebesség -50%, páncél +3.",
+    "ally": "ghoblin"
+  },
+  "gho_kodobbantas": {
+    "name": "Kődobbantás",
+    "type": "nova",
+    "cooldown": 18,
+    "radius": 2.4,
+    "damage": 40,
+    "stun": 1.2,
+    "color": [
+      200,
+      170,
+      120
+    ],
+    "icon": "stomp",
+    "desc": "Csapás maga körül: 40 sebzés, és megbénít.",
+    "ally": "ghoblin"
+  },
+  "gho_meszrobbanas": {
+    "name": "Mészrobbanás",
+    "type": "nova",
+    "hotkey": "R",
+    "cooldown": 1,
+    "radius": 1.8,
+    "damage": 40,
+    "building_damage": 120,
+    "slow": 0.5,
+    "duration": 4,
+    "self_destruct": true,
+    "color": [
+      235,
+      235,
+      215
+    ],
+    "icon": "bomb",
+    "desc": "Felrobban: a közeli ellenségeket megsebzi és elvakítja (lassítja), az épületeket erősen rombolja – a manó elpusztul.",
+    "ally": "ghoblin"
+  },
+  "mho_szelvagas": {
+    "name": "Szélvágás",
+    "type": "self_buff",
+    "cooldown": 16,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.5,
+      "damage_mult": 1.4
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +50%, sebzés +40%.",
+    "ally": "mhonyo"
+  },
+  "mho_szikrapajzs": {
+    "name": "Szikrapajzs",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.6,
+      "armor_add": 3
+    },
+    "icon": "shield",
+    "desc": "Be- és kikapcsolható állás: sebesség -40%, páncél +3.",
+    "ally": "mhonyo"
+  },
+  "mho_elezes": {
+    "name": "Élezés",
+    "type": "chant",
+    "radius": 5,
+    "icon": "song",
+    "modifiers": {
+      "damage_mult": 1.1
+    },
+    "desc": "Ének: a közeli szövetségesek – sebzés +10%.",
+    "ally": "mhonyo"
+  },
+  "mho_javitas": {
+    "name": "Foltozás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 8,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (8 életerő).",
+    "ally": "mhonyo"
+  },
+  "mho_gozkitores": {
+    "name": "Gőzkitörés",
+    "type": "nova",
+    "cooldown": 16,
+    "radius": 2.3,
+    "damage": 38,
+    "stun": 0.8,
+    "color": [
+      230,
+      230,
+      230
+    ],
+    "icon": "stomp",
+    "desc": "Csapás maga körül: 38 sebzés, és megbénít.",
+    "ally": "mhonyo"
+  },
+  "dar_gyantafal": {
+    "name": "Gyantafal",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.6,
+      "armor_add": 3
+    },
+    "icon": "shield",
+    "desc": "Be- és kikapcsolható állás: sebesség -40%, páncél +3.",
+    "ally": "daresh"
+  },
+  "dar_rajenek": {
+    "name": "Rajének",
+    "type": "chant",
+    "radius": 5,
+    "icon": "song",
+    "modifiers": {
+      "speed_mult": 1.12,
+      "damage_mult": 1.05
+    },
+    "desc": "Ének: a közeli szövetségesek – sebesség +12%, sebzés +5%.",
+    "ally": "daresh"
+  },
+  "dar_mezgyogyitas": {
+    "name": "Mézgyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 9,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő).",
+    "ally": "daresh"
+  },
+  "tok_fagydobbantas": {
+    "name": "Fagydobbantás",
+    "type": "nova",
+    "cooldown": 18,
+    "radius": 2.4,
+    "damage": 36,
+    "stun": 1.0,
+    "color": [
+      180,
+      220,
+      255
+    ],
+    "icon": "stomp",
+    "slow": 0.5,
+    "duration": 2,
+    "desc": "Csapás maga körül: 36 sebzés, és megbénít.",
+    "ally": "tokla"
+  },
+  "tok_harangszo": {
+    "name": "Harangszó",
+    "type": "chant",
+    "radius": 5,
+    "icon": "song",
+    "modifiers": {
+      "damage_mult": 1.08,
+      "armor_add": 1
+    },
+    "desc": "Ének: a közeli szövetségesek – sebzés +8%, páncél +1.",
+    "ally": "tokla"
+  },
+  "tok_rontasuzes": {
+    "name": "Rontásűzés",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 8,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (8 életerő).",
+    "ally": "tokla"
+  },
+  "tok_hovihar": {
+    "name": "Hóvihar",
+    "type": "area",
+    "energy": 75,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.2,
+    "duration": 5,
+    "dps": 14,
+    "color": [
+      200,
+      230,
+      255
+    ],
+    "sprite": "lelegzet",
+    "icon": "burst",
+    "slow": 0.4,
+    "desc": "Területre ható csapás: 5 mp alatt 70 sebzés, és lassít.",
+    "ally": "tokla"
+  },
+  "gal_harapas": {
+    "name": "Lesből harapás",
+    "type": "self_buff",
+    "cooldown": 18,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.6,
+      "damage_mult": 1.35
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +60%, sebzés +35%.",
+    "ally": "galoca"
+  },
+  "gal_kalaptaposas": {
+    "name": "Kalaptaposás",
+    "type": "nova",
+    "cooldown": 18,
+    "radius": 2.3,
+    "damage": 40,
+    "stun": 1.0,
+    "color": [
+      200,
+      60,
+      50
+    ],
+    "icon": "stomp",
+    "desc": "Csapás maga körül: 40 sebzés, és megbénít.",
+    "ally": "galoca"
+  },
+  "gal_gyokergancs": {
+    "name": "Gyökérgáncs",
+    "type": "area",
+    "energy": 60,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 6,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "sprite": "gyokerkotes",
+    "icon": "burst",
+    "slow": 0.1,
+    "desc": "Területre ható csapás: 4 mp alatt 24 sebzés, és lassít.",
+    "ally": "galoca"
+  },
+  "nii_lotuszfal": {
+    "name": "Lótuszfal",
+    "type": "toggle",
+    "modifiers": {
+      "speed_mult": 0.6,
+      "armor_add": 3
+    },
+    "icon": "shield",
+    "desc": "Be- és kikapcsolható állás: sebesség -40%, páncél +3.",
+    "ally": "niil_elf"
+  },
+  "nii_aldas": {
+    "name": "Árapály-áldás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 10,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (10 életerő).",
+    "ally": "niil_elf"
+  },
+  "nii_arhullam": {
+    "name": "Árhullám",
+    "type": "area",
+    "energy": 70,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.2,
+    "duration": 3,
+    "dps": 16,
+    "color": [
+      110,
+      200,
+      230
+    ],
+    "sprite": "lelegzet",
+    "icon": "burst",
+    "slow": 0.5,
+    "desc": "Területre ható csapás: 3 mp alatt 48 sebzés, és lassít.",
+    "ally": "niil_elf"
+  },
+  "nii_harapas": {
+    "name": "Halálforgás",
+    "type": "nova",
+    "cooldown": 16,
+    "radius": 1.6,
+    "damage": 42,
+    "stun": 1.2,
+    "color": [
+      90,
+      140,
+      90
+    ],
+    "icon": "stomp",
+    "desc": "Csapás maga körül: 42 sebzés, és megbénít.",
+    "ally": "niil_elf"
+  },
+  "tuz_homokroham": {
+    "name": "Homokroham",
+    "type": "self_buff",
+    "cooldown": 18,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.7,
+      "damage_mult": 1.25
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +70%, sebzés +25%.",
+    "ally": "tuz_elf"
+  },
+  "tuz_pengetanc": {
+    "name": "Pengetánc",
+    "type": "nova",
+    "cooldown": 12,
+    "radius": 1.8,
+    "damage": 30,
+    "stun": 0,
+    "color": [
+      240,
+      200,
+      120
+    ],
+    "icon": "sweep",
+    "desc": "Csapás maga körül: 30 sebzés.",
+    "ally": "tuz_elf"
+  },
+  "tuz_tuzfal": {
+    "name": "Tűzfal",
+    "type": "area",
+    "energy": 75,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 1.6,
+    "duration": 4,
+    "dps": 24,
+    "color": [
+      255,
+      140,
+      40
+    ],
+    "sprite": "napvihar",
+    "icon": "burst",
+    "desc": "Területre ható csapás: 4 mp alatt 96 sebzés.",
+    "ally": "tuz_elf"
+  },
+  "tuz_delibab": {
+    "name": "Délibáb",
+    "type": "summon",
+    "cooldown": 30,
+    "unit": "tuz_delibab_mas",
+    "count": 2,
+    "lifetime": 20,
+    "icon": "summon",
+    "desc": "Lényt idéz 20 mp-re.",
+    "ally": "tuz_elf"
+  },
+  "ten_lampasfeny": {
+    "name": "Lámpásfény",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 9,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő).",
+    "ally": "tenduur"
+  },
+  "ten_levelorveny": {
+    "name": "Levélörvény",
+    "type": "area",
+    "energy": 70,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 16,
+    "color": [
+      180,
+      230,
+      120
+    ],
+    "sprite": "gyokerkotes",
+    "icon": "burst",
+    "desc": "Területre ható csapás: 4 mp alatt 64 sebzés.",
+    "ally": "tenduur"
+  },
+  "ten_szokkenes": {
+    "name": "Szökkenés",
+    "type": "self_buff",
+    "cooldown": 16,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.8,
+      "damage_mult": 1.2
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +80%, sebzés +20%.",
+    "ally": "tenduur"
+  },
+  "ten_gyokerdobbantas": {
+    "name": "Gyökérdobbantás",
+    "type": "nova",
+    "cooldown": 18,
+    "radius": 2.4,
+    "damage": 38,
+    "stun": 1.2,
+    "color": [
+      120,
+      90,
+      60
+    ],
+    "icon": "stomp",
+    "desc": "Csapás maga körül: 38 sebzés, és megbénít.",
+    "ally": "tenduur"
+  },
+  "nil_rakshasa_hivas": {
+    "name": "Rakshasa hívása",
+    "type": "summon",
+    "cooldown": 45,
+    "unit": "nil_rakshasa_kotott",
+    "count": 1,
+    "lifetime": 30,
+    "icon": "summon",
+    "desc": "Lényt idéz 30 mp-re.",
+    "ally": "nila_uchana"
+  },
+  "nil_tombolas": {
+    "name": "Tombolás",
+    "type": "nova",
+    "cooldown": 16,
+    "radius": 2.2,
+    "damage": 40,
+    "stun": 0.8,
+    "color": [
+      200,
+      40,
+      40
+    ],
+    "icon": "stomp",
+    "desc": "Csapás maga körül: 40 sebzés, és megbénít.",
+    "ally": "nila_uchana"
+  },
+  "nil_orveny": {
+    "name": "Vízörvény",
+    "type": "area",
+    "energy": 70,
+    "cooldown": 8,
+    "range": 8,
+    "radius": 2.0,
+    "duration": 4,
+    "dps": 16,
+    "color": [
+      90,
+      200,
+      220
+    ],
+    "sprite": "lelegzet",
+    "icon": "burst",
+    "slow": 0.5,
+    "desc": "Területre ható csapás: 4 mp alatt 64 sebzés, és lassít.",
+    "ally": "nila_uchana"
+  },
+  "nil_lotuszgyogyitas": {
+    "name": "Lótuszgyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 10,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (10 életerő).",
+    "ally": "nila_uchana"
+  },
+  "nil_makara_roham": {
+    "name": "Makara-roham",
+    "type": "self_buff",
+    "cooldown": 20,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.6,
+      "damage_mult": 1.3
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +60%, sebzés +30%.",
+    "ally": "nila_uchana"
+  },
+  "zha_kukorekolas": {
+    "name": "Kukorékolás",
+    "type": "chant",
+    "radius": 5,
+    "icon": "song",
+    "modifiers": {
+      "damage_mult": 1.1
+    },
+    "desc": "Ének: a közeli szövetségesek – sebzés +10%.",
+    "ally": "zhan_zhama"
+  },
+  "zha_madarszellem_hivas": {
+    "name": "Madárszellem hívása",
+    "type": "summon",
+    "cooldown": 35,
+    "unit": "zha_madarszellem",
+    "count": 2,
+    "lifetime": 30,
+    "icon": "summon",
+    "desc": "Lényt idéz 30 mp-re.",
+    "ally": "zhan_zhama"
+  },
+  "zha_tollgyogyitas": {
+    "name": "Tollgyógyítás",
+    "type": "autoheal",
+    "cooldown": 0.8,
+    "range": 5,
+    "amount": 9,
+    "icon": "heal",
+    "desc": "Automatikusan gyógyítja a közeli sebesült szövetségeseket (9 életerő).",
+    "ally": "zhan_zhama"
+  },
+  "shr_vedorunak": {
+    "name": "Védőrúnák",
+    "type": "chant",
+    "radius": 5,
+    "icon": "rune",
+    "modifiers": {
+      "armor_add": 2
+    },
+    "desc": "Ének: a közeli szövetségesek – páncél +2.",
+    "ally": "shrissh_matah"
+  },
+  "shr_robbanorunak": {
+    "name": "Robbanó rúna",
+    "type": "bolt",
+    "energy": 45,
+    "cooldown": 10,
+    "range": 8,
+    "damage": 50,
+    "projectile": "spear",
+    "icon": "rune",
+    "desc": "Különleges képesség.",
+    "ally": "shrissh_matah"
+  },
+  "shr_kapaszkodas": {
+    "name": "Kapaszkodás",
+    "type": "self_buff",
+    "cooldown": 16,
+    "duration": 4,
+    "modifiers": {
+      "speed_mult": 1.7,
+      "damage_mult": 1.15
+    },
+    "icon": "rage",
+    "desc": "4 mp-re: sebesség +70%, sebzés +15%.",
+    "ally": "shrissh_matah"
+  }
+}

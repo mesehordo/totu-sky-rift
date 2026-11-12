@@ -1,0 +1,44 @@
+{
+ "id": "myc_gyokerbarlang",
+ "type": "building",
+ "image": "myc_gyokerbarlang.png",
+ "team_mask": "myc_gyokerbarlang_team.png",
+ "style": "fungal",
+ "frame_size": [
+  240,
+  232
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  20
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1920,
+  232
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2,
+ "team_colour_mode": "shade"
+}

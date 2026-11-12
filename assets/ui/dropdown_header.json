@@ -1,0 +1,14 @@
+{
+  "id": "dropdown_header",
+  "type": "nine_slice",
+  "insets": [
+    8,
+    8,
+    8,
+    8
+  ],
+  "size": [
+    96,
+    30
+  ]
+}

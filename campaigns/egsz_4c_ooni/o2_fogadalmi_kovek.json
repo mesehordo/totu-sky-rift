@@ -1,0 +1,510 @@
+{
+ "id": "o2_fogadalmi_kovek",
+ "code": "OON-02",
+ "title": "2. Fogadalmi kövek",
+ "faction": "ooni",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. és 11. fejezet",
+ "canon": {
+  "rogzitett": "A kaputartók feljegyzései különböző bolygók kőzeteit írják le ugyanabban a hegyben.",
+  "adaptacio": "A három fogadalmi kő leolvasása és az omlás a mozgó hegyoldalban.",
+  "uj_javaslat": "A rekedt tanuki-bányászok mellékcélja."
+ },
+ "briefing": [
+  "A kaputartók feljegyzései szerint a hegyben különböző bolygók egykori kőzetei érnek össze. A fogadalmi kövek a régi határokat jelölik.",
+  "Sairen kis csapattal indul a mozgó hegyoldalba: olvasd le mindhárom kő jelét, mielőtt a hegy újra megmozdul.",
+  "Karasu, a tengu bölcs a magasból figyel."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4202,
+  "points": {
+   "indulas": [
+    8,
+    48
+   ],
+   "ko1": [
+    18,
+    36
+   ],
+   "ko2": [
+    40,
+    40
+   ],
+   "ko3": [
+    46,
+    14
+   ],
+   "kapuvaros": [
+    58,
+    6
+   ],
+   "omlas_a": [
+    28,
+    30
+   ],
+   "omlas_b": [
+    36,
+    30
+   ],
+   "jarat_a": [
+    30,
+    44
+   ],
+   "jarat_b": [
+    44,
+    26
+   ],
+   "banyasz": [
+    24,
+    16
+   ],
+   "feszek": [
+    52,
+    30
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      30,
+      18
+     ],
+     9
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      12,
+      22
+     ],
+     6
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      56,
+      40
+     ],
+     6
+    ]
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      0,
+      28
+     ],
+     [
+      22,
+      28
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "indulas",
+     "ko1",
+     [
+      24,
+      32
+     ],
+     "omlas_a",
+     "omlas_b",
+     "ko2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ko2",
+     [
+      46,
+      32
+     ],
+     "jarat_b",
+     "ko3",
+     "kapuvaros"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ko1",
+     [
+      16,
+      30
+     ],
+     [
+      18,
+      24
+     ],
+     "banyasz",
+     [
+      36,
+      8
+     ],
+     "ko3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 2
+   },
+   {
+    "area": [
+     [
+      10,
+      40
+     ],
+     4
+    ],
+    "density": 0.6
+   },
+   {
+    "area": [
+     [
+      50,
+      50
+     ],
+     5
+    ],
+    "density": 0.7
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "indulas",
+   "feszek",
+   "banyasz"
+  ],
+  "decor": [
+   {
+    "id": "oon_torii",
+    "at": "kapuvaros"
+   }
+  ]
+ },
+ "player": {
+  "base": false,
+  "units": [
+   {
+    "id": "oon_oni_harcos",
+    "name": "Sairen, kapuőr",
+    "tag": "sairen",
+    "at": "indulas"
+   },
+   {
+    "id": "oon_hos_karasu",
+    "at": "indulas"
+   },
+   {
+    "id": "oon_oni_harcos",
+    "n": 4,
+    "at": "indulas"
+   },
+   {
+    "id": "oon_kohajito",
+    "n": 3,
+    "at": "indulas"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "o2_ko1",
+   "type": "reach",
+   "at": "ko1",
+   "radius": 3,
+   "text": "Olvasd le az első fogadalmi kő jelét",
+   "marker": "Első kő"
+  },
+  {
+   "id": "o2_ko2",
+   "type": "reach",
+   "at": "ko2",
+   "radius": 3,
+   "after": "o2_ko1",
+   "text": "Olvasd le a második kő jelét",
+   "marker": "Második kő"
+  },
+  {
+   "id": "o2_ko3",
+   "type": "reach",
+   "at": "ko3",
+   "radius": 3,
+   "after": "o2_ko2",
+   "text": "Olvasd le a harmadik kő jelét",
+   "marker": "Harmadik kő"
+  },
+  {
+   "id": "o2_banyasz",
+   "type": "escort",
+   "optional": true,
+   "activate_near": {
+    "at": "banyasz",
+    "r": 7
+   },
+   "tag": "banyasz",
+   "min": 1,
+   "at": "kapuvaros",
+   "radius": 5,
+   "text": "Vidd a rekedt tanuki-bányászokat a kapuvárosba",
+   "marker": "Kapuváros"
+  },
+  {
+   "id": "o2_haza",
+   "type": "reach",
+   "after": "o2_ko3",
+   "units": [
+    "oon_oni_harcos"
+   ],
+   "tag": "sairen",
+   "at": "kapuvaros",
+   "radius": 5,
+   "text": "Vidd vissza Sairent a feljegyzésekkel a kapuvárosba",
+   "marker": "Kapuváros"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "ko1",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "A kaputartók szerint ez a hegy háromféle kőből van. Három kő, három jel.",
+        "portrait": "oon_oni_harcos"
+       }
+      ]
+     },
+     {
+      "camera": "kapuvaros",
+      "say": [
+       {
+        "who": "Karasu, a tengu bölcs",
+        "text": "Fentről nézve a hegy olyan, mint egy rosszul varrt köpeny. Siessetek.",
+        "portrait": "oon_hos_karasu",
+        "to": "Sairen"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "ko1_jel",
+   "on_objective": "o2_ko1",
+   "say": [
+    {
+     "who": "Sairen",
+     "text": "Vörös kő, fekete erezettel. Ilyen nincs a mi hegyeinkben.",
+     "portrait": "oon_oni_harcos"
+    },
+    {
+     "who": "Karasu, a tengu bölcs",
+     "text": "Az én népem tollai között van ilyen színű por. Régről.",
+     "portrait": "oon_hos_karasu"
+    }
+   ]
+  },
+  {
+   "id": "omlas",
+   "on_objective": "o2_ko2",
+   "say": [
+    {
+     "who": "Sairen",
+     "text": "Ez itt kék, rétegesen hasad. Mintha egy másik világ alja lenne.",
+     "portrait": "oon_oni_harcos"
+    },
+    {
+     "who": "Karasu, a tengu bölcs",
+     "text": "A hegy mozdul! Az út mögöttetek bezárul!",
+     "portrait": "oon_hos_karasu",
+     "urgent": true
+    }
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "rock",
+      "line": [
+       "omlas_a",
+       "omlas_b"
+      ],
+      "w": 3
+     }
+    ],
+    "clear": [
+     {
+      "t": "dirt",
+      "line": [
+       "ko2",
+       "jarat_a"
+      ],
+      "w": 2
+     }
+    ]
+   },
+   "spawn": {
+    "owner": 1,
+    "near": "jarat_b",
+    "to": "ko2",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 4,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "ko3_jel",
+   "on_objective": "o2_ko3",
+   "say": [
+    {
+     "who": "Sairen",
+     "text": "Fehér, üveges kő. Mind a három külön világ volt egyszer. A varrat itt fut.",
+     "portrait": "oon_oni_harcos"
+    }
+   ]
+  },
+  {
+   "id": "banyasz_csatl",
+   "on_enter": {
+    "at": "banyasz",
+    "r": 5
+   },
+   "join": "banyasz",
+   "say": [
+    {
+     "who": "Tanuki-bányász",
+     "text": "Három napja nem találjuk a lejáratot. A hegy átrendezte a tárnát.",
+     "portrait": "oon_tanuki",
+     "to": "Sairen"
+    }
+   ]
+  },
+  {
+   "id": "w_feszek",
+   "every": 55,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "feszek",
+    "to": "ko2",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 40,
+   "until": "o2_ko3"
+  },
+  {
+   "id": "w_hazaut",
+   "every": 50,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "feszek",
+    "to": "jarat_b",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 4,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     },
+     {
+      "id": "cro_tuskekopo",
+      "n": 1,
+      "name": "Lámpástalan"
+     }
+    ]
+   },
+   "delay": 10,
+   "until": "o2_haza",
+   "if_done": "o2_ko3"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "o2_haza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kapuvaros",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "Három jel, három régi világ. Szelai mérései ugyanide mutatnak.",
+        "portrait": "oon_oni_harcos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "sairen",
+   "text": "Sairen elesett – a feljegyzések elvesztek."
+  }
+ ],
+ "victory": "A három kő jele bekerült a kapunaplóba: ugyanabban a hegyben három egykori bolygó kőzete ér össze.",
+ "next": "o3_harom_kapu",
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "creeps": false,
+ "allies": [
+  {
+   "faction": "ooni",
+   "name": "Bányászok",
+   "units": [
+    {
+     "id": "oon_tanuki",
+     "n": 3,
+     "at": "banyasz",
+     "tag": "banyasz"
+    }
+   ]
+  }
+ ]
+}

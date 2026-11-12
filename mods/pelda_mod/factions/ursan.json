@@ -1,0 +1,20 @@
+{
+  "units": {
+    "urs_mammut": {"cost": {"food": 250, "wood": 120, "stone": 50, "meteor": 50}},
+    "urs_barlangi_medve": {
+      "name": "Barlangi medve", "desc": "Szelídített óriásmedve – a mod által hozzáadott egység.",
+      "cost": {"food": 150, "wood": 25}, "supply": 3, "time": 28,
+      "hp": 300, "armor": 2, "speed": 3.0, "sight": 7, "radius": 0.6,
+      "shape": "beast",
+      "attack": {"damage": 20, "range": 0.4, "cooldown": 1.2, "targets": ["ground"]},
+      "tags": ["beast", "melee", "organic"]
+    }
+  },
+  "buildings": {
+    "urs_vadak_karama": {"produces": ["urs_kardfogu", "urs_mammut", "urs_barlangi_medve"]}
+  },
+  "ai": {
+    "army": {"urs_pajzshordozo": 4, "urs_szigonyvezo": 3, "urs_berserker": 2, "urs_runapap": 1,
+             "urs_kardfogu": 1, "urs_barlangi_medve": 2, "urs_viharhollo": 1, "urs_mammut": 1}
+  }
+}

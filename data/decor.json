@@ -1,0 +1,354 @@
+{
+ "_leiras": "Saját díszletek (tereptárgyak). size: lábnyom csempében; variants: a képlap kockái; themes: melyik tájra illik.",
+ "decor": {
+  "dsz_szikla_forest": {
+   "name": "Nagy szikla (forest)",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 4,
+   "themes": [
+    "forest"
+   ]
+  },
+  "dsz_szikla_winter": {
+   "name": "Nagy szikla (winter)",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 4,
+   "themes": [
+    "winter"
+   ]
+  },
+  "dsz_szikla_wasteland": {
+   "name": "Nagy szikla (wasteland)",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 4,
+   "themes": [
+    "wasteland"
+   ]
+  },
+  "dsz_szikla_swamp": {
+   "name": "Nagy szikla (swamp)",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 4,
+   "themes": [
+    "swamp"
+   ]
+  },
+  "dsz_sziklafal_forest": {
+   "name": "Sziklafal (forest)",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 3,
+   "themes": [
+    "forest"
+   ]
+  },
+  "dsz_sziklafal_winter": {
+   "name": "Sziklafal (winter)",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 3,
+   "themes": [
+    "winter"
+   ]
+  },
+  "dsz_sziklafal_wasteland": {
+   "name": "Sziklafal (wasteland)",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 3,
+   "themes": [
+    "wasteland"
+   ]
+  },
+  "dsz_sziklafal_swamp": {
+   "name": "Sziklafal (swamp)",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 3,
+   "themes": [
+    "swamp"
+   ]
+  },
+  "dsz_sziklaorom_forest": {
+   "name": "Sziklaorom (forest)",
+   "size": [
+    4,
+    3
+   ],
+   "variants": 2,
+   "themes": [
+    "forest"
+   ]
+  },
+  "dsz_sziklaorom_winter": {
+   "name": "Sziklaorom (winter)",
+   "size": [
+    4,
+    3
+   ],
+   "variants": 2,
+   "themes": [
+    "winter"
+   ]
+  },
+  "dsz_sziklaorom_wasteland": {
+   "name": "Sziklaorom (wasteland)",
+   "size": [
+    4,
+    3
+   ],
+   "variants": 2,
+   "themes": [
+    "wasteland"
+   ]
+  },
+  "dsz_sziklaorom_swamp": {
+   "name": "Sziklaorom (swamp)",
+   "size": [
+    4,
+    3
+   ],
+   "variants": 2,
+   "themes": [
+    "swamp"
+   ]
+  },
+  "dsz_orhaz_rom": {
+   "name": "Elhagyott őrház",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 2,
+   "themes": [
+    "forest",
+    "winter"
+   ]
+  },
+  "dsz_kut": {
+   "name": "Kőkút",
+   "size": [
+    1,
+    1
+   ],
+   "variants": 2,
+   "themes": [
+    "forest",
+    "wasteland"
+   ]
+  },
+  "dsz_szekerroncs": {
+   "name": "Szekérroncs",
+   "size": [
+    2,
+    1
+   ],
+   "variants": 2,
+   "themes": [
+    "forest",
+    "wasteland",
+    "winter"
+   ]
+  },
+  "dsz_kokor": {
+   "name": "Ősi kőkör",
+   "size": [
+    3,
+    3
+   ],
+   "variants": 1,
+   "themes": [
+    "forest",
+    "wasteland"
+   ]
+  },
+  "dsz_malom_rom": {
+   "name": "Malomrom",
+   "size": [
+    3,
+    3
+   ],
+   "variants": 1,
+   "themes": [
+    "forest"
+   ]
+  },
+  "dsz_utszeli_oltar": {
+   "name": "Útszéli oltár",
+   "size": [
+    1,
+    1
+   ],
+   "variants": 3,
+   "themes": [
+    "forest",
+    "winter",
+    "wasteland",
+    "swamp"
+   ]
+  },
+  "dsz_hordok_ladak": {
+   "name": "Hordók és ládák",
+   "size": [
+    1,
+    1
+   ],
+   "variants": 3,
+   "themes": [
+    "forest",
+    "winter",
+    "wasteland",
+    "swamp"
+   ]
+  },
+  "dsz_kidolt_fa": {
+   "name": "Kidőlt fatörzs",
+   "size": [
+    2,
+    1
+   ],
+   "variants": 2,
+   "themes": [
+    "forest",
+    "swamp"
+   ]
+  },
+  "dsz_oriascsontvaz": {
+   "name": "Óriás csontváza",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 2,
+   "themes": [
+    "wasteland",
+    "winter"
+   ]
+  },
+  "dsz_meteorszilank": {
+   "name": "Lehullott meteorszilánk",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 2,
+   "themes": [
+    "wasteland",
+    "forest",
+    "winter"
+   ]
+  },
+  "dsz_oszlopsor_rom": {
+   "name": "Romos oszlopsor",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 2,
+   "themes": [
+    "wasteland",
+    "forest"
+   ]
+  },
+  "dsz_befagyott_csonak": {
+   "name": "Befagyott csónak",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 1,
+   "themes": [
+    "winter"
+   ]
+  },
+  "dsz_hokunyho_rom": {
+   "name": "Beomlott jégkunyhó",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 1,
+   "themes": [
+    "winter"
+   ]
+  },
+  "dsz_colophaz_rom": {
+   "name": "Cölöpház-rom",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 1,
+   "themes": [
+    "swamp"
+   ]
+  },
+  "dsz_elsullyedt_szobor": {
+   "name": "Elsüllyedt szobor",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 2,
+   "themes": [
+    "swamp"
+   ]
+  },
+  "dsz_karavan_roncs": {
+   "name": "Karavánroncs",
+   "size": [
+    3,
+    2
+   ],
+   "variants": 1,
+   "themes": [
+    "wasteland"
+   ]
+  },
+  "dsz_hasadekkristaly": {
+   "name": "Hasadékkristály",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 3,
+   "themes": [
+    "wasteland",
+    "winter",
+    "forest"
+   ]
+  },
+  "dsz_lebego_ko": {
+   "name": "Lebegő kő",
+   "size": [
+    2,
+    2
+   ],
+   "variants": 2,
+   "themes": [
+    "wasteland",
+    "forest"
+   ]
+  }
+ }
+}

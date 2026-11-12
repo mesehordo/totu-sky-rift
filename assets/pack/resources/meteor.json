@@ -1,0 +1,27 @@
+{
+ "id": "meteor",
+ "type": "resource",
+ "image": "meteor.png",
+ "frame_size": [
+  75,
+  64
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  5,
+  -6
+ ],
+ "frames": 4,
+ "frames_meaning": "izzás-animáció",
+ "fps": 4,
+ "pack": [
+  "world.meteorite_deposit"
+ ],
+ "sheet_size": [
+  300,
+  64
+ ]
+}

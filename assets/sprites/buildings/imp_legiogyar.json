@@ -1,0 +1,43 @@
+{
+ "id": "imp_legiogyar",
+ "type": "building",
+ "image": "imp_legiogyar.png",
+ "team_mask": "imp_legiogyar_team.png",
+ "style": "imperial",
+ "frame_size": [
+  260,
+  284
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  62
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2080,
+  284
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

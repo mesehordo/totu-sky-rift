@@ -1,0 +1,39 @@
+{
+ "id": "elf_obeliszk",
+ "type": "building",
+ "image": "elf_obeliszk.png",
+ "frame_size": [
+  133,
+  107
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  35,
+  37
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "grey_elf_buildings.resonance_obelisk",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  665,
+  107
+ ]
+}

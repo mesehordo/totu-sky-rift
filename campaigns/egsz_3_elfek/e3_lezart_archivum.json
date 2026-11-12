@@ -1,0 +1,355 @@
+{
+ "id": "e3_lezart_archivum",
+ "title": "3. A lezárt archívum",
+ "faction": "elves",
+ "briefing": [
+  "A tanácsi archívum a Kilenc Lépcső legmélyén. Belépni csak engedéllyel szabad.",
+  "Szelai engedély nélkül megy. Juss el az archívumig, és vigyél vissza mindent, amit találsz.",
+  "Az archívum körül a raj fészkel – senki sem tudja, hogyan jutott be."
+ ],
+ "player": {
+  "resources": {
+   "wood": 495,
+   "stone": 405,
+   "meteor": 150
+  },
+  "units": {
+   "elf_hos_szelai": 1,
+   "elf_tollas_harcos": 4,
+   "elf_jade_ijasz": 4
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Archívumi raj",
+   "hold": 180,
+   "aggression": 1.0
+  }
+ ],
+ "objectives": [
+  {
+   "id": "archiv",
+   "type": "reach",
+   "text": "Szelai jusson el az archívumig",
+   "units": [
+    "elf_hos_szelai"
+   ],
+   "at": "archivum",
+   "radius": 3,
+   "marker": "Archívum",
+   "tag": null
+  },
+  {
+   "id": "vissza",
+   "type": "reach",
+   "text": "Vidd vissza a feljegyzéseket a táborba",
+   "after": "archiv",
+   "units": [
+    "elf_hos_szelai"
+   ],
+   "at": "tabor",
+   "radius": 4,
+   "marker": "Tábor"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "archivum",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "Engedély nélkül. Ha kérdeznek, én hoztam a döntést.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "archiv",
+   "message": "A feljegyzések: az elf csillagászok hetekkel a becsapódás előtt látták a közeledő égitestet.",
+   "color": [
+    140,
+    255,
+    200
+   ]
+  },
+  {
+   "on_objective": "archiv",
+   "message": "Csak a saját városaikat figyelmeztették. A többit kitörölték a nyilvános feljegyzésekből.",
+   "color": [
+    140,
+    255,
+    200
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": [
+     0.6,
+     0.3
+    ],
+    "units": {
+     "cro_karmos": 8,
+     "cro_tuskekopo": 2
+    }
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "vissza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "Hetekkel előbb látták. Csak a saját városaikat figyelmeztették. Ezt az eltitkolást nem folytatom.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "elf_hos_szelai",
+   "text": "Szelai elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Nem az elfek okozták a katasztrófát. De kevesebben halhattak volna meg. Szelai a mostani eltitkolást utasítja el.",
+ "next": "e4_repedes_a_halozaton",
+ "hero_level": 3,
+ "enemy_hero_level": 3,
+ "code": "ELF-03",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (III. hadjárat: A lezárt archívum)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4303,
+  "points": {
+   "tabor": [
+    10,
+    48
+   ],
+   "archivum": [
+    52,
+    10
+   ],
+   "lepcso1": [
+    24,
+    36
+   ],
+   "lepcso2": [
+    38,
+    22
+   ],
+   "feszek": [
+    46,
+    30
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      16,
+      30
+     ],
+     [
+      30,
+      30
+     ]
+    ],
+    "w": 2
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      32,
+      16
+     ],
+     [
+      46,
+      16
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "lepcso1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "lepcso1",
+     "lepcso2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "lepcso2",
+     "archivum"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      56,
+      24
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      20
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      37
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      38
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      24
+     ],
+     2.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      28,
+      17
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      13
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      16,
+      20
+     ],
+     4.2
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     51
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     44
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     53
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "feszek"
+  ],
+  "decor": [
+   {
+    "id": "elf_csillagvizsgalo",
+    "at": [
+     56,
+     6
+    ]
+   },
+   {
+    "id": "elf_naptemplom",
+    "at": [
+     44,
+     6
+    ],
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ }
+}

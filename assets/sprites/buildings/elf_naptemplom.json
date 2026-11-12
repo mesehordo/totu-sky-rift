@@ -1,0 +1,43 @@
+{
+ "id": "elf_naptemplom",
+ "type": "building",
+ "image": "elf_naptemplom.png",
+ "team_mask": "elf_naptemplom_team.png",
+ "style": "aztec",
+ "frame_size": [
+  260,
+  272
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  52
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2080,
+  272
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

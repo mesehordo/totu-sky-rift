@@ -1,0 +1,1126 @@
+{
+ "types": {
+  "kozelharcos": {
+   "icon": "⚔",
+   "name": "Közelharcos",
+   "desc": "kard, buzogány, balta"
+  },
+  "landzsas": {
+   "icon": "🛡",
+   "name": "Lándzsás / pajzsos",
+   "desc": "lándzsa, dárda, pajzsfal"
+  },
+  "lovesz": {
+   "icon": "🏹",
+   "name": "Lövész",
+   "desc": "íj, parittya, dobófegyver"
+  },
+  "lovas": {
+   "icon": "🐎",
+   "name": "Lovas / hátas",
+   "desc": "gyors hátas harcos"
+  },
+  "orias": {
+   "icon": "🗿",
+   "name": "Óriás / szörny",
+   "desc": "nagy testű lény vagy gép"
+  },
+  "varazslo": {
+   "icon": "✨",
+   "name": "Varázsló",
+   "desc": "mágiahasználó, támogató"
+  },
+  "repulo": {
+   "icon": "🪶",
+   "name": "Repülő",
+   "desc": "légi egység"
+  },
+  "ostrom": {
+   "icon": "💥",
+   "name": "Ostromgép",
+   "desc": "távoli, épületromboló"
+  },
+  "munkas": {
+   "icon": "⛏",
+   "name": "Munkás",
+   "desc": "gyűjt, épít"
+  }
+ },
+ "matrix": {
+  "kozelharcos": {
+   "landzsas": 1.25,
+   "varazslo": 1.25
+  },
+  "landzsas": {
+   "lovas": 1.5,
+   "orias": 1.25
+  },
+  "lovesz": {
+   "kozelharcos": 1.25,
+   "repulo": 1.5
+  },
+  "lovas": {
+   "lovesz": 1.5,
+   "varazslo": 1.5,
+   "ostrom": 1.5
+  },
+  "orias": {
+   "kozelharcos": 1.25,
+   "lovas": 1.25,
+   "epulet": 1.5
+  },
+  "varazslo": {
+   "orias": 1.5,
+   "landzsas": 1.25
+  },
+  "repulo": {
+   "ostrom": 1.5,
+   "varazslo": 1.25
+  },
+  "ostrom": {
+   "epulet": 2.0,
+   "landzsas": 1.25
+  },
+  "munkas": {}
+ },
+ "units": {
+  "elf_kofarago": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_tollas_harcos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_jade_ijasz": {
+   "type": "lovesz",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "elf_raptor_lovas": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_napszoro": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_quetzal": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_tollas_rex": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_hos_szelai": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_csillagdardas": {
+   "type": "landzsas",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "elf_obszidian_veto": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "elf_jadeor": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_hos_itzcoatl": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_hos_xochi": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_fopap": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_jaguar": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "elf_csillagjos": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_telepes": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_pajzshordozo": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_szigonyvezo": {
+   "type": "landzsas",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "urs_berserker": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_runapap": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_kardfogu": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_viharhollo": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_mammut": {
+   "type": "orias",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "urs_hos_ragna": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_dardaor": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_ostromszan": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "urs_kardfogu_tigris": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_hos_hjalmar": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_hos_bjarka": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_runako": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_medvealak": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_kurtos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "urs_runaorias": {
+   "type": "orias",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "cro_csapszolga": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_karmos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_tuskekopo": {
+   "type": "lovesz",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "cro_savkopo": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "cro_agyfalo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_szarnyas_rem": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_csapos_horror": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_hos_keth": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_pancelbogar": {
+   "type": "orias",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "cro_guboj": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_szemhordozo": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_hos_vor": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_hos_ssarha": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_robbanoatka": {
+   "type": "kozelharcos",
+   "extra": {
+    "epulet": 1.25
+   },
+   "nostrength": false
+  },
+  "cro_vadaszkarmos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "cro_ostromtaraj": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "cro_asoferegg": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_gyujtogeto": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_landzsas": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_ijas_vadasz": {
+   "type": "lovesz",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "wul_holdsaman": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_szellemfarkas": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_bolenylovas": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_mennydorgesmadar": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_totemorias": {
+   "type": "orias",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "wul_vandorszeker": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_hos_tava": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_tomahawkos": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_hos_varnu": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_hos_kurrin": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_emu": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_boleny": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_groomi": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_csordavezer": {
+   "type": "orias",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "wul_groomi_fioka": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_groomi_anya": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_totemfarago": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "wul_alomjaro": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_fabrikator": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_legios": {
+   "type": "kozelharcos",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_ballistarius": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_szellemidezo": {
+   "type": "varazslo",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_centurio": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_aquila": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_kolosszus": {
+   "type": "orias",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_szellemlegios": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_szellemkolosszus": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_hos_livia": {
+   "type": "varazslo",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_hos_nera": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_onager": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_hos_cassius": {
+   "type": "kozelharcos",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_lelekhorgony": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "imp_praetorianus": {
+   "type": "kozelharcos",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "imp_arato": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_toaso": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_csuzlis": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_kampokardos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_toidezo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_tavi_leny": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_gotelovas": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_szitakoto": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_teknos_mozsar": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "huk_hos_kvarra": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_hos_bulgok": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_hos_iriss": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_aradas_papja": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_iszapbeka": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_gyongyveto": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_kagylopajzsos": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_gyongyorias": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_melysegi_hivo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_ikrarako": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_ikra": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "huk_ebihal": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_lampasvivo": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_oni_harcos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_kohajito": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_nian_or": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_tengu": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_kitsune": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_illuzio_mas": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_kapudongeto": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 2.0
+   },
+   "nostrength": false
+  },
+  "oon_o_oni": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_hos_akahana": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_hos_shiro": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_hos_karasu": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_berserker_oni": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_dobos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_kokutya": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_lampaspap": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_holloharcos": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_viharhivo": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_favago": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "oon_tanuki": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "mic_sporaszedo": {
+   "type": "munkas",
+   "extra": {},
+   "nostrength": false
+  },
+  "mic_pofeteg": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "mic_fonalhalos": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "mic_tuskegomba_lovesz": {
+   "type": "lovesz",
+   "extra": {
+    "repulo": 1.5
+   },
+   "nostrength": false
+  },
+  "mic_emlekor": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "pin_jegdardas": {
+   "type": "landzsas",
+   "extra": {
+    "lovas": 1.25
+   },
+   "nostrength": false
+  },
+  "pin_hopajzsos": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "pin_rozmarlovas": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "pin_arapaly_saman": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "pin_kajakos": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "gho_koharapo": {
+   "type": "kozelharcos",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "gho_sziklagorgeto": {
+   "type": "ostrom",
+   "extra": {
+    "epulet": 1.5
+   },
+   "nostrength": false
+  },
+  "gho_pajzskoves": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "gho_meszkopo": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "gho_koheju_oreg": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "gho_meszbomba": {
+   "type": "kozelharcos",
+   "extra": {
+    "epulet": 2.0
+   },
+   "nostrength": false
+  },
+  "mho_hajnalpenge": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "mho_szerkezet_ijasz": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "mho_szikraor": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "mho_kardkovacs": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "mho_fogaskerek_golem": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "dar_fullanclandzsas": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "dar_gyantapajzsos": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "dar_rajenekes": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "dar_darazsraj": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "dar_szarnyas_ijasz": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "tok_fagyorias": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "tok_harangjaro": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "tok_hovihar_buso": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "tok_zuzmaraturpe": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "tok_jegveto_turpe": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "gal_fogaskalap": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "gal_tuskebunkos": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "gal_oriasgaloca": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "gal_sporakopo": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "gal_gyokergancsolo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "nii_papiruszlandzsas": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "nii_nadhajos_ijasz": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "nii_lotuszpajzsos": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "nii_arapalypap": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "nii_krokodilor": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "tuz_homokszablyas": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "tuz_parazsijasz": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "tuz_homokvihartancos": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "tuz_hoszovo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "tuz_delibab_csalo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "tuz_delibab_mas": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "ten_lampasor": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "ten_szelhimzo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "ten_tovisvivo": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "ten_lombijasz": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "ten_tolgyor": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "nil_szornykoto": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "nil_rakshasa": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "nil_makara_idezo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "nil_naga": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "nil_makara": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "nil_rakshasa_kotott": {
+   "type": "orias",
+   "extra": {},
+   "nostrength": false
+  },
+  "zha_csirkepasztor": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": true
+  },
+  "zha_tojasdobalo": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  },
+  "zha_kakaslovas": {
+   "type": "lovas",
+   "extra": {},
+   "nostrength": false
+  },
+  "zha_tolljos": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "zha_madarszellem": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "shr_runaszovo": {
+   "type": "varazslo",
+   "extra": {},
+   "nostrength": false
+  },
+  "shr_sziklafuto": {
+   "type": "kozelharcos",
+   "extra": {},
+   "nostrength": false
+  },
+  "shr_pajzsbogar": {
+   "type": "landzsas",
+   "extra": {},
+   "nostrength": false
+  },
+  "shr_tuszunyog": {
+   "type": "repulo",
+   "extra": {},
+   "nostrength": false
+  },
+  "shr_tuskelovo": {
+   "type": "lovesz",
+   "extra": {},
+   "nostrength": false
+  }
+ }
+}

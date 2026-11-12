@@ -1,0 +1,43 @@
+{
+ "id": "imp_aquila_torony",
+ "type": "building",
+ "image": "imp_aquila_torony.png",
+ "team_mask": "imp_aquila_torony_team.png",
+ "style": "imperial",
+ "frame_size": [
+  184,
+  204
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  4,
+  52
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1472,
+  204
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

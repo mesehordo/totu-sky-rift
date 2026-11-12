@@ -1,0 +1,15 @@
+{
+  "id": "build_cell",
+  "type": "ui_states",
+  "image": "build_cell.png",
+  "frame_size": [
+    82,
+    62
+  ],
+  "sheet_size": [
+    328,
+    62
+  ],
+  "frames": 4,
+  "order": "row-major source, horizontal export"
+}

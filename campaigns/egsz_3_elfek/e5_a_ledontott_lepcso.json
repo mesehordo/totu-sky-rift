@@ -1,0 +1,360 @@
+{
+ "id": "e5_a_ledontott_lepcso",
+ "title": "5. A ledöntött lépcső",
+ "faction": "elves",
+ "briefing": [
+  "A Kórus elérte a várost. Szelai tudatosan lebontja a nagy tornyot, hogy leválassza a többi városról.",
+  "A menekülést mágikus pajzs nélkül, hagyományos katonákkal kell fedezni.",
+  "Vezesd ki a lakókat (Kőfaragókat), és tartsd a vonalat."
+ ],
+ "player": {
+  "resources": {
+   "wood": 495,
+   "stone": 405
+  },
+  "units": {
+   "elf_hos_szelai": 1,
+   "elf_tollas_harcos": 6,
+   "elf_jade_ijasz": 4,
+   "elf_kofarago": 8
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "hold": 0,
+   "aggression": 1.3,
+   "resources": {
+    "wood": 520,
+    "stone": 280
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "id": "menekul",
+   "type": "reach",
+   "text": "Vezess 8 lakót (Kőfaragót) a déli kapuhoz",
+   "units": [
+    "elf_kofarago"
+   ],
+   "count": 8,
+   "at": "deli_kapu",
+   "radius": 5,
+   "marker": "Déli kapu"
+  },
+  {
+   "id": "fedez",
+   "type": "survive",
+   "text": "Fedezd a visszavonulást",
+   "after": "menekul",
+   "seconds": 90
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "torony",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "A torony nélkül nincs pajzs. Leválasztom a várost, hogy a többi éljen.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     },
+     {
+      "camera": "deli_kapu",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "Tegyétek, amit a nagyapáitok tettek: álljatok sorba.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Szelai",
+     "text": "A torony nélkül nincs pajzs. Tegyétek, amit a nagyapáitok tettek: álljatok sorba.",
+     "portrait": "elf_hos_szelai"
+    }
+   ]
+  },
+  {
+   "at": 60,
+   "message": "A raj áttöri a külső teraszt!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "raj",
+    "units": {
+     "cro_karmos": 10,
+     "cro_tuskekopo": 3
+    },
+    "to": "terasz"
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "fedez",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "deli_kapu",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "A rangom maradt a lépcsőn. A feljegyzéseket viszem: a Fekete Tükörnél valami épül.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "elf_hos_szelai",
+   "text": "Szelai elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Szelai elveszíti rangját – de magával viszi a feljegyzéseket: a Fekete Tükörnél épülő aurethi szerkezet egy földrésznyi éterhálózat központja lehet.",
+ "next": null,
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "code": "ELF-05",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (III. hadjárat: A ledöntött lépcső)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4505,
+  "points": {
+   "varos": [
+    32,
+    14
+   ],
+   "torony": [
+    32,
+    22
+   ],
+   "deli_kapu": [
+    32,
+    52
+   ],
+   "terasz": [
+    44,
+    30
+   ],
+   "raj": [
+    60,
+    40
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      20,
+      30
+     ],
+     [
+      28,
+      34
+     ]
+    ],
+    "w": 2
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      36,
+      34
+     ],
+     [
+      44,
+      38
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "varos",
+     "torony"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "torony",
+     [
+      32,
+      36
+     ]
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      32,
+      36
+     ],
+     "deli_kapu"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "torony",
+     "terasz"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      16,
+      23
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      26
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      29
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      44
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      19,
+      22
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      32
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      9
+     ],
+     3.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     26,
+     17
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     38,
+     10
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     35,
+     20
+    ]
+   }
+  ],
+  "starts": [
+   "varos",
+   "raj"
+  ],
+  "decor": [
+   {
+    "id": "elf_napszentely",
+    "at": [
+     22,
+     8
+    ],
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ }
+}

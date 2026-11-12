@@ -1,0 +1,43 @@
+{
+ "id": "urs_colopfal",
+ "type": "building",
+ "image": "urs_colopfal.png",
+ "team_mask": "urs_colopfal_team.png",
+ "style": "nordic",
+ "frame_size": [
+  96,
+  104
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  4,
+  28
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  768,
+  104
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

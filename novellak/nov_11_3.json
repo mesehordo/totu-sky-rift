@@ -1,0 +1,194 @@
+{
+ "id": "nov_11_3",
+ "code": "NOV-11_3",
+ "title": "A harmadik penge",
+ "faction": "imperium",
+ "novella": true,
+ "people": "Mhonyo",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/11_*.md – „A harmadik penge”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 73. év, Hamuhegy, Tikka műhelye. A harmadik pengét a szokás szerint eltörésre szánják.",
+  "Tikka egy hét alatt készült el vele. Hogy mit tesz vele, nem kell elmondania senkinek."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 8288,
+  "points": {
+   "muhely": [
+    20,
+    40
+   ],
+   "kohó": [
+    36,
+    26
+   ],
+   "inas": [
+    50,
+    44
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "muhely",
+     "kohó"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kohó",
+     "inas"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      51,
+      31
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      41
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      32,
+      17
+     ],
+     3.5
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "muhely",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "mho_kardkovacs",
+    "at": "muhely",
+    "n": 1,
+    "name": "Tikka mester",
+    "tag": "tikka"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "kovacsol",
+   "type": "guard",
+   "at": "kohó",
+   "radius": 2,
+   "seconds": 12,
+   "text": "Kovácsold ki a harmadik pengét",
+   "marker": "Kohó"
+  },
+  {
+   "id": "ad",
+   "type": "reach",
+   "at": "inas",
+   "radius": 3,
+   "text": "Vidd az inashoz",
+   "marker": "Inas",
+   "after": "kovacsol",
+   "tag": "tikka"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kohó",
+      "say": [
+       {
+        "who": "Tikka",
+        "text": "Az első az enyém volt. A második odaadásra. Ez a harmadik.",
+        "portrait": "mho_kardkovacs"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "ad",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "inas",
+      "say": [
+       {
+        "who": "Tikka",
+        "text": "Ha egyszer egészen találkozunk, akkor a tiéd. Addig vigyázz rá.",
+        "portrait": "mho_kardkovacs"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Az inas a pengét nézte a kezében. Nem törték el.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

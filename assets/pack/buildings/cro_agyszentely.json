@@ -1,0 +1,39 @@
+{
+ "id": "cro_agyszentely",
+ "type": "building",
+ "image": "cro_agyszentely.png",
+ "frame_size": [
+  118,
+  157
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  11,
+  55
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "croftian_buildings.psychic_spire",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  590,
+  157
+ ]
+}

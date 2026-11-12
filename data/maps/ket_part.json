@@ -1,0 +1,74 @@
+{
+ "id": "ket_part",
+ "order": 0,
+ "players": 2,
+ "size": 72,
+ "layout": "ring",
+ "theme": "forest",
+ "name": {
+  "hu": "Két part",
+  "en": "Two Shores"
+ },
+ "desc": {
+  "hu": "Kis, gyors pálya: egy folyó választja el a bázisokat, három gázlóval. Döntés: a középső gázlót tartod, vagy a szélsőkön kerülsz a Zhan-zhama tanyák mellett?",
+  "en": "Small, fast map: a river splits the bases, with three fords."
+ },
+ "features": {
+  "river": {
+   "fords": 3,
+   "width": 1.8
+  },
+  "lakes": [
+   1,
+   2,
+   3
+  ],
+  "ridges": [
+   2,
+   4,
+   7
+  ],
+  "forests": 10
+ },
+ "camps": {
+  "1": "zhan_zhama",
+  "2": "zhan_zhama"
+ },
+ "decor": [
+  {
+   "id": "zha_feszekhaz",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  },
+  {
+   "id": "zha_kakasudvar",
+   "at": "pair",
+   "d": 9,
+   "s": 7
+  }
+ ],
+ "ambient": [
+  {
+   "id": "zha_csirkepasztor",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 2,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Három gázló: a középső a legrövidebb, a két szélső kerülő a csirketanyák mellett visz el.",
+  "felallasok": "1v1",
+  "taborok": {
+   "1": "Zhan-zhama",
+   "2": "Zhan-zhama"
+  }
+ }
+}

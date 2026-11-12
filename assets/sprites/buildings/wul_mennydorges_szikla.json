@@ -1,0 +1,43 @@
+{
+ "id": "wul_mennydorges_szikla",
+ "type": "building",
+ "image": "wul_mennydorges_szikla.png",
+ "team_mask": "wul_mennydorges_szikla_team.png",
+ "style": "tribal",
+ "frame_size": [
+  260,
+  272
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  6,
+  52
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2080,
+  272
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

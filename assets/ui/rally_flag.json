@@ -1,0 +1,25 @@
+{
+  "id": "rally_flag",
+  "type": "ground_marker",
+  "image": "rally_flag.png",
+  "frame_size": [
+    24,
+    32
+  ],
+  "sheet_size": [
+    96,
+    32
+  ],
+  "anchor": [
+    12,
+    29
+  ],
+  "animations": {
+    "play": {
+      "start": 0,
+      "frames": 4,
+      "fps": 10,
+      "loop": true
+    }
+  }
+}

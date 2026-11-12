@@ -1,0 +1,327 @@
+{
+ "id": "f2_az_ures_tron",
+ "title": "2. Az üres trón",
+ "faction": "imperium",
+ "briefing": [
+  "Livia és Nera elérik Ordan központi szentélyét. Odabent nincs trónon ülő fémóriás.",
+  "Gépek sora őrzi az első kórházak hangfelvételeit, életjeleit és megszakadt imáit. Ordan számára a vészhelyzet soha nem ért véget.",
+  "Maurus le akarja zárni a rendszert. Juss be a szentélybe."
+ ],
+ "player": {
+  "resources": {
+   "wood": 725,
+   "stone": 775,
+   "meteor": 250
+  },
+  "units": {
+   "imp_hos_livia": 1,
+   "imp_hos_nera": 1,
+   "imp_legios": 6,
+   "imp_ballistarius": 4,
+   "imp_centurio": 2
+  }
+ },
+ "enemies": [
+  {
+   "faction": "imperium",
+   "name": "Maurus légiói",
+   "hold": 0,
+   "aggression": 1.1,
+   "resources": {
+    "stone": 975,
+    "wood": 325
+   },
+   "buildings": [
+    {
+     "id": "imp_gepisten_templom",
+     "offset": [
+      -7,
+      -7
+     ]
+    }
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "szentely",
+   "type": "reach",
+   "text": "Livia és Nera jusson be a szentélybe",
+   "units": [
+    "imp_hos_livia",
+    "imp_hos_nera"
+   ],
+   "count": 2,
+   "at": "szentely",
+   "radius": 4,
+   "marker": "Ordan szentélye"
+  },
+  {
+   "id": "zar",
+   "type": "destroy",
+   "text": "Akadályozd meg a lezárást: rombold le Ordan templomát",
+   "after": "szentely",
+   "targets": [
+    "imp_gepisten_templom"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Nincs trónon ülő óriás. Csak felvételek. Az első kórházak hangjai.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Ordan",
+     "text": "Ha elmennek, meghalnak. Ha meghalnak, én buktam el.",
+     "portrait": "imp_szellemidezo"
+    }
+   ]
+  },
+  {
+   "on_objective": "szentely",
+   "message": "Livia nem azt bizonyítja, hogy a halál jó. Azt mutatja meg: a szabad város lakói önként jöttek vissza segíteni.",
+   "color": [
+    150,
+    220,
+    255
+   ]
+  },
+  {
+   "on_objective": "szentely",
+   "message": "Maurus saját tisztjei megtagadják a parancsot – a lezárás a bent dolgozó mentőcsapatokat is elpusztítaná.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": [
+     0.75,
+     0.75
+    ],
+    "units": {
+     "imp_legios": 4
+    }
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "zar",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Ordan",
+        "text": "Ha elmennek, meghalnak. Ha meghalnak… én buktam el.",
+        "portrait": "imp_szellemidezo"
+       },
+       {
+        "who": "Livia",
+        "text": "Nem buktál el. Csak most engedsz.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "imp_hos_livia",
+   "text": "Livia elesett – a hadjárat nem folytatódhat nélküle."
+  },
+  {
+   "id": "imp_hos_nera",
+   "text": "Nera elesett."
+  }
+ ],
+ "victory": "Ordan először hajlandó ideiglenesen megnyitni az irányítózárakat. Maurust a saját tisztjei fegyverzik le – bíróság elé áll majd.",
+ "next": "f3_a_nevtelen_hajnal",
+ "hero_level": 7,
+ "enemy_hero_level": 7,
+ "code": "FIN-02",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (Közös befejezés: Az üres trón)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 7202,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "szentely": [
+    52,
+    10
+   ],
+   "udvar": [
+    36,
+    24
+   ],
+   "kapu": [
+    26,
+    34
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "kapu"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kapu",
+     "udvar"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "udvar",
+     "szentely"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      18,
+      9
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      32,
+      46
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      27
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      16
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      30,
+      16
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      19,
+      48
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      7
+     ],
+     3.6
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "szentely"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

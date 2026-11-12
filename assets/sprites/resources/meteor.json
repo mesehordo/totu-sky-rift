@@ -1,0 +1,26 @@
+{
+ "id": "meteor",
+ "type": "resource",
+ "image": "meteor.png",
+ "frame_size": [
+  176,
+  208
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  8,
+  8
+ ],
+ "frames": 4,
+ "frames_meaning": "izzás-animáció",
+ "fps": 4,
+ "sheet_size": [
+  704,
+  208
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

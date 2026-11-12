@@ -1,0 +1,846 @@
+﻿Kész;Kategória;Faj;Irány;Azonosító;Név;Fájl;Méret;Képkockák;Megjegyzés
+;Címer;Szürke elfek;;elves;Szürke elfek címere;assets/emblems/elves.png;256×256;1;a faj jelképe (menü, beállítóképernyő, zászlók)
+;Irány-címer;Szürke elfek;Nap temploma;elves_nap;Nap temploma jelképe;assets/paths/elves_nap.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Papokkal támogatott tömeghadsereg
+;Irány-címer;Szürke elfek;Jaguár-harcosok;elves_jaguar;Jaguár-harcosok jelképe;assets/paths/elves_jaguar.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Vadászat, lesből támadás
+;Irány-címer;Szürke elfek;Csillagvizsgálók;elves_csillag;Csillagvizsgálók jelképe;assets/paths/elves_csillag.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Távolsági ostrom, lassú őrlés
+;Épület;Szürke elfek;;elf_napszentely;Napszentély;assets/sprites/buildings/elf_napszentely.png;158×150 / képkocka;idle 4, build 4;"alapterület 4×4 csempe; csapatszín-maszk: elf_napszentely_team.png. Lépcsős piramis, főépület. Leadóhely, Kőfaragókat képez."
+;Épület-ikon;Szürke elfek;;elf_napszentely;Napszentély – ikon;assets/sprites/icons/elf_napszentely.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;;elf_obeliszk;Napobeliszk;assets/sprites/buildings/elf_obeliszk.png;98×112 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: elf_obeliszk_team.png. +8 létszám. Energiamezőt sugároz – az elf épületek csak ebben működnek."
+;Épület-ikon;Szürke elfek;;elf_obeliszk;Napobeliszk – ikon;assets/sprites/icons/elf_obeliszk.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;;elf_harcos_csarnok;Harcosok csarnoka;assets/sprites/buildings/elf_harcos_csarnok.png;120×116 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_harcos_csarnok_team.png. Tollas harcosokat és jáde-íjászokat képez."
+;Épület-ikon;Szürke elfek;;elf_harcos_csarnok;Harcosok csarnoka – ikon;assets/sprites/icons/elf_harcos_csarnok.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;;elf_obszidian_muhely;Obszidián műhely;assets/sprites/buildings/elf_obszidian_muhely.png;130×136 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_obszidian_muhely_team.png. Fegyver- és pajzsfejlesztések."
+;Épület-ikon;Szürke elfek;;elf_obszidian_muhely;Obszidián műhely – ikon;assets/sprites/icons/elf_obszidian_muhely.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;Jaguár-harcosok;elf_raptor_karam;Raptorkarám;assets/sprites/buildings/elf_raptor_karam.png;120×112 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_raptor_karam_team.png. Raptorlovasokat és tollaskoronás rexeket nevel."
+;Épület-ikon;Szürke elfek;Jaguár-harcosok;elf_raptor_karam;Raptorkarám – ikon;assets/sprites/icons/elf_raptor_karam.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;Csillagvizsgálók;elf_csillagvizsgalo;Csillagvizsgáló;assets/sprites/buildings/elf_csillagvizsgalo.png;124×124 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_csillagvizsgalo_team.png. Napszóró papokat képez, a csillagok tudását kutatja."
+;Épület-ikon;Szürke elfek;Csillagvizsgálók;elf_csillagvizsgalo;Csillagvizsgáló – ikon;assets/sprites/icons/elf_csillagvizsgalo.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;Nap temploma;elf_tollfeszek;Tollfészek-piramis;assets/sprites/buildings/elf_tollfeszek.png;120×114 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_tollfeszek_team.png. Quetzalokat nevel."
+;Épület-ikon;Szürke elfek;Nap temploma;elf_tollfeszek;Tollfészek-piramis – ikon;assets/sprites/icons/elf_tollfeszek.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;;elf_jade_oszlop;Jádeoszlop;assets/sprites/buildings/elf_jade_oszlop.png;94×104 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: elf_jade_oszlop_team.png. Védőtorony, földi és légi célpontokra."
+;Épület-ikon;Szürke elfek;;elf_jade_oszlop;Jádeoszlop – ikon;assets/sprites/icons/elf_jade_oszlop.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;;elf_napkapu;Napkapu;assets/sprites/buildings/elf_napkapu.png;114×104 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_napkapu_team.png. Hősidéző templomkapu: Szelai, Itzcoatl és Xochi."
+;Épület-ikon;Szürke elfek;;elf_napkapu;Napkapu – ikon;assets/sprites/icons/elf_napkapu.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Szürke elfek;Nap temploma;elf_naptemplom;Naptemplom;assets/sprites/buildings/elf_naptemplom.png;130×136 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: elf_naptemplom_team.png. Aranyozott lépcsős templom: a Nap főpapjai és napszóró papok."
+;Épület-ikon;Szürke elfek;Nap temploma;elf_naptemplom;Naptemplom – ikon;assets/sprites/icons/elf_naptemplom.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Egység;Szürke elfek;;elf_kofarago;Kőfaragó;assets/sprites/units/elf_kofarago.png;84×86 / képkocka;"idle 4, walk 6, attack 6, death 6, work 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_kofarago_team.png. Munkás. Megidézi az épületeket, majd visszatér gyűjteni.
+;Egység-ikon;Szürke elfek;;elf_kofarago;Kőfaragó – ikon;assets/sprites/icons/elf_kofarago.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_kofarago;Kőfaragó – arckép;assets/portraits/elf_kofarago.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_tollas_harcos;Tollas harcos;assets/sprites/units/elf_tollas_harcos.png;104×106 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_tollas_harcos_team.png. Obszidiánpengés buzogánnyal harcoló elit gyalogos.
+;Egység-ikon;Szürke elfek;;elf_tollas_harcos;Tollas harcos – ikon;assets/sprites/icons/elf_tollas_harcos.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_tollas_harcos;Tollas harcos – arckép;assets/portraits/elf_tollas_harcos.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_jade_ijasz;Jáde-íjász;assets/sprites/units/elf_jade_ijasz.png;94×92 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_jade_ijasz_team.png. Távolsági egység, földi és légi célpontokra is lő.
+;Egység-ikon;Szürke elfek;;elf_jade_ijasz;Jáde-íjász – ikon;assets/sprites/icons/elf_jade_ijasz.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_jade_ijasz;Jáde-íjász – arckép;assets/portraits/elf_jade_ijasz.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Jaguár-harcosok;elf_raptor_lovas;Raptorlovas;assets/sprites/units/elf_raptor_lovas.png;100×94 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_raptor_lovas_team.png. Farkatlan, tollas gyíkon lovagló gyors lovas. Bónusz a távolsági egységek ellen.
+;Egység-ikon;Szürke elfek;Jaguár-harcosok;elf_raptor_lovas;Raptorlovas – ikon;assets/sprites/icons/elf_raptor_lovas.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Jaguár-harcosok;elf_raptor_lovas;Raptorlovas – arckép;assets/portraits/elf_raptor_lovas.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Nap temploma;elf_napszoro;Napszóró pap;assets/sprites/units/elf_napszoro.png;100×100 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_napszoro_team.png. Meteoritmágus. Napvihart idéz az ellenségre.
+;Egység-ikon;Szürke elfek;Nap temploma;elf_napszoro;Napszóró pap – ikon;assets/sprites/icons/elf_napszoro.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Nap temploma;elf_napszoro;Napszóró pap – arckép;assets/portraits/elf_napszoro.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Nap temploma;elf_quetzal;Quetzal;assets/sprites/units/elf_quetzal.png;102×140 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_quetzal_team.png. Tollas, repülő dínó. Mindenre lecsap.
+;Egység-ikon;Szürke elfek;Nap temploma;elf_quetzal;Quetzal – ikon;assets/sprites/icons/elf_quetzal.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Nap temploma;elf_quetzal;Quetzal – arckép;assets/portraits/elf_quetzal.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Jaguár-harcosok;elf_tollas_rex;Tollaskoronás rex;assets/sprites/units/elf_tollas_rex.png;192×208 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_tollas_rex_team.png. Díszes tollkoronás óriásdínó, hátán íjászokkal. Területi harapás.
+;Egység-ikon;Szürke elfek;Jaguár-harcosok;elf_tollas_rex;Tollaskoronás rex – ikon;assets/sprites/icons/elf_tollas_rex.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Jaguár-harcosok;elf_tollas_rex;Tollaskoronás rex – arckép;assets/portraits/elf_tollas_rex.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_hos_szelai;Szelai (HŐS);assets/sprites/units/elf_hos_szelai.png;122×124 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: elf_hos_szelai_team.png. Rezonanciaépítész, akit a sors parancsnokká tett. Hálózatot épít és bont; Napvihart idéz."
+;Egység-ikon;Szürke elfek;;elf_hos_szelai;Szelai – ikon;assets/sprites/icons/elf_hos_szelai.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_hos_szelai;Szelai – arckép (HŐS);assets/portraits/elf_hos_szelai.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_csillagdardas;Csillagdárdás;assets/sprites/units/elf_csillagdardas.png;96×96 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_csillagdardas_team.png. Csillagérc-hegyű dárdákat hajít – messzire hord, légi célpontokra is.
+;Egység-ikon;Szürke elfek;;elf_csillagdardas;Csillagdárdás – ikon;assets/sprites/icons/elf_csillagdardas.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_csillagdardas;Csillagdárdás – arckép;assets/portraits/elf_csillagdardas.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Csillagvizsgálók;elf_obszidian_veto;Obszidián-vető;assets/sprites/units/elf_obszidian_veto.png;96×88 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_obszidian_veto_team.png. Kőfaragók ostromgépe: obszidiántömböket hajít, épületek ellen különösen erős.
+;Egység-ikon;Szürke elfek;Csillagvizsgálók;elf_obszidian_veto;Obszidián-vető – ikon;assets/sprites/icons/elf_obszidian_veto.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Csillagvizsgálók;elf_obszidian_veto;Obszidián-vető – arckép;assets/portraits/elf_obszidian_veto.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_jadeor;Jádeőr;assets/sprites/units/elf_jadeor.png;80×80 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_jadeor_team.png. Életre keltett jádeszobor (idézett).
+;Egység-ikon;Szürke elfek;;elf_jadeor;Jádeőr – ikon;assets/sprites/icons/elf_jadeor.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_jadeor;Jádeőr – arckép;assets/portraits/elf_jadeor.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_hos_itzcoatl;Itzcoatl (HŐS);assets/sprites/units/elf_hos_itzcoatl.png;134×138 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_hos_itzcoatl_team.png. A Kilenc Lépcső tollas hadura. Közelharcos, a sereg élén áll.
+;Egység-ikon;Szürke elfek;;elf_hos_itzcoatl;Itzcoatl – ikon;assets/sprites/icons/elf_hos_itzcoatl.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_hos_itzcoatl;Itzcoatl – arckép (HŐS);assets/portraits/elf_hos_itzcoatl.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;;elf_hos_xochi;Xochi (HŐS);assets/sprites/units/elf_hos_xochi.png;126×128 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_hos_xochi_team.png. A rezonancia mestere: jádeőröket ébreszt és gyógyít.
+;Egység-ikon;Szürke elfek;;elf_hos_xochi;Xochi – ikon;assets/sprites/icons/elf_hos_xochi.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;;elf_hos_xochi;Xochi – arckép (HŐS);assets/portraits/elf_hos_xochi.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Nap temploma;elf_fopap;Nap főpapja;assets/sprites/units/elf_fopap.png;116×116 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_fopap_team.png. A Nap főpapja: folyamatosan gyógyítja a körülötte harcolókat.
+;Egység-ikon;Szürke elfek;Nap temploma;elf_fopap;Nap főpapja – ikon;assets/sprites/icons/elf_fopap.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Nap temploma;elf_fopap;Nap főpapja – arckép;assets/portraits/elf_fopap.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Jaguár-harcosok;elf_jaguar;Jaguár-orvlövész;assets/sprites/units/elf_jaguar.png;106×108 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_jaguar_team.png. Jaguárbőrös vadász: az erdőből lő, lesállásban halálos.
+;Egység-ikon;Szürke elfek;Jaguár-harcosok;elf_jaguar;Jaguár-orvlövész – ikon;assets/sprites/icons/elf_jaguar.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Jaguár-harcosok;elf_jaguar;Jaguár-orvlövész – arckép;assets/portraits/elf_jaguar.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Szürke elfek;Csillagvizsgálók;elf_csillagjos;Csillagjós;assets/sprites/units/elf_csillagjos.png;106×108 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: elf_csillagjos_team.png. A csillagvizsgálók mestere: meteorzáport hív le messziről.
+;Egység-ikon;Szürke elfek;Csillagvizsgálók;elf_csillagjos;Csillagjós – ikon;assets/sprites/icons/elf_csillagjos.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Szürke elfek;Csillagvizsgálók;elf_csillagjos;Csillagjós – arckép;assets/portraits/elf_csillagjos.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Kutatás-ikon;Szürke elfek;;elf_obszidian_penge;Obszidián pengék;assets/research/elf_obszidian_penge.png;72×52;1;+2 sebzés a közelharci egységeknek.
+;Kutatás-ikon;Szürke elfek;;elf_jade_hegyek;Jádehegyű nyilak;assets/research/elf_jade_hegyek.png;72×52;1;+2 sebzés a távolsági egységeknek.
+;Kutatás-ikon;Szürke elfek;;elf_napegi_pajzs;Napégi pajzs;assets/research/elf_napegi_pajzs.png;72×52;1;+30 pajzs minden elf egységnek.
+;Kutatás-ikon;Szürke elfek;;elf_csillagfeny;Csillagfény-látás;assets/research/elf_csillagfeny.png;72×52;1;+1 lőtáv a távolsági egységeknek, +1 látótáv mindenkinek.
+;Kutatás-ikon;Szürke elfek;;elves_felemelkedes;Felemelkedés;assets/research/elves_felemelkedes.png;72×52;1;A nép fejlődési irányt választ (3 közül, végleg). Feltétel: 3 kész épület a főépületen kívül.
+;Címer;Ursanok;;ursan;Ursanok címere;assets/emblems/ursan.png;256×256;1;a faj jelképe (menü, beállítóképernyő, zászlók)
+;Irány-címer;Ursanok;Berserker-klán;ursan_berserker;Berserker-klán jelképe;assets/paths/ursan_berserker.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Korai, nyers közelharci nyomás
+;Irány-címer;Ursanok;Rúnakovácsok;ursan_runa;Rúnakovácsok jelképe;assets/paths/ursan_runa.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Erőd, technológia, késői erő
+;Irány-címer;Ursanok;Tundra hívása;ursan_tundra;Tundra hívása jelképe;assets/paths/ursan_tundra.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Nagytestű vadak, kevés, de hatalmas egység
+;Épület;Ursanok;;urs_nagyterem;Nagyterem;assets/sprites/buildings/urs_nagyterem.png;156×136 / képkocka;idle 4, build 4;"alapterület 4×4 csempe; csapatszín-maszk: urs_nagyterem_team.png. Faragott hosszúcsarnok, főépület. Leadóhely, Telepeseket képez."
+;Épület-ikon;Ursanok;;urs_nagyterem;Nagyterem – ikon;assets/sprites/icons/urs_nagyterem.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_hosszuhaz;Hosszúház;assets/sprites/buildings/urs_hosszuhaz.png;84×82 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: urs_hosszuhaz_team.png. Erődített hosszúház: 4 fős helyőrség, riadóban a telepesek menedéke."
+;Épület-ikon;Ursanok;;urs_hosszuhaz;Hosszúház – ikon;assets/sprites/icons/urs_hosszuhaz.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_fatelep;Fatelep;assets/sprites/buildings/urs_fatelep.png;84×82 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: urs_fatelep_team.png. Leadóhely fának, kőnek és meteoritnak."
+;Épület-ikon;Ursanok;;urs_fatelep;Fatelep – ikon;assets/sprites/icons/urs_fatelep.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_harcosok_haza;Harcosok háza;assets/sprites/buildings/urs_harcosok_haza.png;116×108 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_harcosok_haza_team.png. Pajzshordozókat, szigonyvetőket és berserkereket képez."
+;Épület-ikon;Ursanok;;urs_harcosok_haza;Harcosok háza – ikon;assets/sprites/icons/urs_harcosok_haza.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_runakovacs;Rúnakovács;assets/sprites/buildings/urs_runakovacs.png;128×132 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_runakovacs_team.png. Rúnapapokat képez, fegyvert és páncélt fejleszt."
+;Épület-ikon;Ursanok;;urs_runakovacs;Rúnakovács – ikon;assets/sprites/icons/urs_runakovacs.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;Tundra hívása;urs_vadak_karama;Vadak karáma;assets/sprites/buildings/urs_vadak_karama.png;116×106 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_vadak_karama_team.png. Kardfogú lovasokat és harci mamutokat nevel."
+;Épület-ikon;Ursanok;Tundra hívása;urs_vadak_karama;Vadak karáma – ikon;assets/sprites/icons/urs_vadak_karama.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;Tundra hívása;urs_sasszirt;Sasszirt;assets/sprites/buildings/urs_sasszirt.png;126×128 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_sasszirt_team.png. Viharhollókat nevel."
+;Épület-ikon;Ursanok;Tundra hívása;urs_sasszirt;Sasszirt – ikon;assets/sprites/icons/urs_sasszirt.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_ortorony;Őrtorony;assets/sprites/buildings/urs_ortorony.png;98×116 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: urs_ortorony_team.png. Fa-kő őrtorony íjászokkal."
+;Épület-ikon;Ursanok;;urs_ortorony;Őrtorony – ikon;assets/sprites/icons/urs_ortorony.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_eskufa;Esküfa;assets/sprites/buildings/urs_eskufa.png;114×104 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_eskufa_team.png. Ősi kőris, amely alatt a jarlok esküt tesznek: Ragna, Hjalmar és Bjarka."
+;Épület-ikon;Ursanok;;urs_eskufa;Esküfa – ikon;assets/sprites/icons/urs_eskufa.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_tanya;Tanya;assets/sprites/buildings/urs_tanya.png;112×98 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_tanya_team.png. Árpaföld, ólak és szénapajták: a jarlság népe innen él. +10 létszám."
+;Épület-ikon;Ursanok;;urs_tanya;Tanya – ikon;assets/sprites/icons/urs_tanya.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;;urs_colopfal;Cölöpfal;assets/sprites/buildings/urs_colopfal.png;48×52 / képkocka;idle 4, build 4;"alapterület 1×1 csempe; csapatszín-maszk: urs_colopfal_team.png. Hegyes karókból álló falszakasz – elzárja az utat. Olcsó, gyorsan épül; a telepesek javítj"
+;Épület-ikon;Ursanok;;urs_colopfal;Cölöpfal – ikon;assets/sprites/icons/urs_colopfal.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;Berserker-klán;urs_verfogadalom;Vérfogadalom-csarnok;assets/sprites/buildings/urs_verfogadalom.png;116×108 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: urs_verfogadalom_team.png. Itt teszik le a berserkerek a vérfogadalmat."
+;Épület-ikon;Ursanok;Berserker-klán;urs_verfogadalom;Vérfogadalom-csarnok – ikon;assets/sprites/icons/urs_verfogadalom.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Ursanok;Rúnakovácsok;urs_runaszentely;Rúnaszentély;assets/sprites/buildings/urs_runaszentely.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: urs_runaszentely_team.png. Rúnakőkör kovácsműhellyel: rúnaóriások és ostromszánok."
+;Épület-ikon;Ursanok;Rúnakovácsok;urs_runaszentely;Rúnaszentély – ikon;assets/sprites/icons/urs_runaszentely.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Egység;Ursanok;;urs_telepes;Telepes;assets/sprites/units/urs_telepes.png;82×84 / képkocka;"idle 4, walk 6, attack 6, death 6, work 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_telepes_team.png. Munkás. Épít (a végéig ott marad), javít, gyűjt.
+;Egység-ikon;Ursanok;;urs_telepes;Telepes – ikon;assets/sprites/icons/urs_telepes.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_telepes;Telepes – arckép;assets/portraits/urs_telepes.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_pajzshordozo;Pajzshordozó;assets/sprites/units/urs_pajzshordozo.png;90×94 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_pajzshordozo_team.png. Az ursan sereg gerince. Pajzsfal: a távolsági sebzés nagy részét elnyeli.
+;Egység-ikon;Ursanok;;urs_pajzshordozo;Pajzshordozó – ikon;assets/sprites/icons/urs_pajzshordozo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_pajzshordozo;Pajzshordozó – arckép;assets/portraits/urs_pajzshordozo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_szigonyvezo;Szigonyvető;assets/sprites/units/urs_szigonyvezo.png;100×104 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: urs_szigonyvezo_team.png. Távolsági, bónusz a nagy testű célpontok ellen; légi célpontra is."
+;Egység-ikon;Ursanok;;urs_szigonyvezo;Szigonyvető – ikon;assets/sprites/icons/urs_szigonyvezo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_szigonyvezo;Szigonyvető – arckép;assets/portraits/urs_szigonyvezo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Berserker-klán;urs_berserker;Medvebőrös berserker;assets/sprites/units/urs_berserker.png;94×92 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_berserker_team.png. Gyors, nagy sebzésű közelharcos.
+;Egység-ikon;Ursanok;Berserker-klán;urs_berserker;Medvebőrös berserker – ikon;assets/sprites/icons/urs_berserker.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Berserker-klán;urs_berserker;Medvebőrös berserker – arckép;assets/portraits/urs_berserker.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_runapap;Rúnapap;assets/sprites/units/urs_runapap.png;84×84 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_runapap_team.png. Gyógyító. Automatikusan foltozza a sebesült harcosokat.
+;Egység-ikon;Ursanok;;urs_runapap;Rúnapap – ikon;assets/sprites/icons/urs_runapap.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_runapap;Rúnapap – arckép;assets/portraits/urs_runapap.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Tundra hívása;urs_kardfogu;Kardfogú lovas;assets/sprites/units/urs_kardfogu.png;104×98 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_kardfogu_team.png. Kardfogú tigrisen lovagló gyors harcos. Roham képesség.
+;Egység-ikon;Ursanok;Tundra hívása;urs_kardfogu;Kardfogú lovas – ikon;assets/sprites/icons/urs_kardfogu.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Tundra hívása;urs_kardfogu;Kardfogú lovas – arckép;assets/portraits/urs_kardfogu.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Tundra hívása;urs_viharhollo;Viharholló;assets/sprites/units/urs_viharhollo.png;86×116 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_viharhollo_team.png. Óriás holló. Felderítő és légvédelem.
+;Egység-ikon;Ursanok;Tundra hívása;urs_viharhollo;Viharholló – ikon;assets/sprites/icons/urs_viharhollo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Tundra hívása;urs_viharhollo;Viharholló – arckép;assets/portraits/urs_viharhollo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Tundra hívása;urs_mammut;Harci mammut;assets/sprites/units/urs_mammut.png;176×160 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_mammut_team.png. Gyapjas mamut, hátán kőhajítókkal. Terület-sebzés, bónusz épületek ellen.
+;Egység-ikon;Ursanok;Tundra hívása;urs_mammut;Harci mammut – ikon;assets/sprites/icons/urs_mammut.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Tundra hívása;urs_mammut;Harci mammut – arckép;assets/portraits/urs_mammut.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_hos_ragna;Ragna Kőváll (HŐS);assets/sprites/units/urs_hos_ragna.png;136×140 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_hos_ragna_team.png. Egy határerőd parancsnoka. A pajzsa először a mellette állót védi.
+;Egység-ikon;Ursanok;;urs_hos_ragna;Ragna Kőváll – ikon;assets/sprites/icons/urs_hos_ragna.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_hos_ragna;Ragna Kőváll – arckép (HŐS);assets/portraits/urs_hos_ragna.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_dardaor;Dárdaőr;assets/sprites/units/urs_dardaor.png;104×106 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_dardaor_team.png. Hosszú dárdás védő – lovasság és nagy vadak ellen kiváló.
+;Egység-ikon;Ursanok;;urs_dardaor;Dárdaőr – ikon;assets/sprites/icons/urs_dardaor.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_dardaor;Dárdaőr – arckép;assets/portraits/urs_dardaor.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Rúnakovácsok;urs_ostromszan;Ostromszán;assets/sprites/units/urs_ostromszan.png;96×88 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_ostromszan_team.png. Szánra szerelt kőhajító, épületek ellen.
+;Egység-ikon;Ursanok;Rúnakovácsok;urs_ostromszan;Ostromszán – ikon;assets/sprites/icons/urs_ostromszan.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Rúnakovácsok;urs_ostromszan;Ostromszán – arckép;assets/portraits/urs_ostromszan.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_kardfogu_tigris;Kardfogú tigris;assets/sprites/units/urs_kardfogu_tigris.png;102×94 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_kardfogu_tigris_team.png. Bjarka hívására érkező vadállat (idézett).
+;Egység-ikon;Ursanok;;urs_kardfogu_tigris;Kardfogú tigris – ikon;assets/sprites/icons/urs_kardfogu_tigris.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_kardfogu_tigris;Kardfogú tigris – arckép;assets/portraits/urs_kardfogu_tigris.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_hos_hjalmar;Hjalmar Fagyjós (HŐS);assets/sprites/units/urs_hos_hjalmar.png;116×122 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_hos_hjalmar_team.png. A jégkorszak emlékét őrző jós: fagy, vihar és lassítás.
+;Egység-ikon;Ursanok;;urs_hos_hjalmar;Hjalmar Fagyjós – ikon;assets/sprites/icons/urs_hos_hjalmar.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_hos_hjalmar;Hjalmar Fagyjós – arckép (HŐS);assets/portraits/urs_hos_hjalmar.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_hos_bjarka;Bjarka, a Vadak Ura (HŐS);assets/sprites/units/urs_hos_bjarka.png;124×134 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_hos_bjarka_team.png. Vadász és vadidomár: kardfogú tigriseket és mamutokat hív harcba.
+;Egység-ikon;Ursanok;;urs_hos_bjarka;Bjarka, a Vadak Ura – ikon;assets/sprites/icons/urs_hos_bjarka.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_hos_bjarka;Bjarka, a Vadak Ura – arckép (HŐS);assets/portraits/urs_hos_bjarka.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;;urs_runako;Rúnakő;assets/sprites/units/urs_runako.png;72×72 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_runako_team.png. Rúnapap által állított kő (idézett). Aurája véd és gyógyít.
+;Egység-ikon;Ursanok;;urs_runako;Rúnakő – ikon;assets/sprites/icons/urs_runako.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;;urs_runako;Rúnakő – arckép;assets/portraits/urs_runako.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Berserker-klán;urs_medvealak;Medvealakváltó;assets/sprites/units/urs_medvealak.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_medvealak_team.png. Az ursan teljesen medvévé változik: hatalmas karmok, rettentő üvöltés.
+;Egység-ikon;Ursanok;Berserker-klán;urs_medvealak;Medvealakváltó – ikon;assets/sprites/icons/urs_medvealak.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Berserker-klán;urs_medvealak;Medvealakváltó – arckép;assets/portraits/urs_medvealak.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Berserker-klán;urs_kurtos;Harci kürtös;assets/sprites/units/urs_kurtos.png;110×112 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_kurtos_team.png. Kürtszava felszítja a harcosokat: +15% sebzés, +10% sebesség a közelben.
+;Egység-ikon;Ursanok;Berserker-klán;urs_kurtos;Harci kürtös – ikon;assets/sprites/icons/urs_kurtos.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Berserker-klán;urs_kurtos;Harci kürtös – arckép;assets/portraits/urs_kurtos.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Ursanok;Rúnakovácsok;urs_runaorias;Rúnaóriás;assets/sprites/units/urs_runaorias.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: urs_runaorias_team.png. Rúnákkal életre keltett kőóriás: lassú, de épületeket zúz.
+;Egység-ikon;Ursanok;Rúnakovácsok;urs_runaorias;Rúnaóriás – ikon;assets/sprites/icons/urs_runaorias.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Ursanok;Rúnakovácsok;urs_runaorias;Rúnaóriás – arckép;assets/portraits/urs_runaorias.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Kutatás-ikon;Ursanok;;urs_runapengek;Rúnás pengék;assets/research/urs_runapengek.png;72×52;1;+2 sebzés a közelharci egységeknek.
+;Kutatás-ikon;Ursanok;;urs_vasszigony;Vashegyű szigonyok;assets/research/urs_vasszigony.png;72×52;1;+2 sebzés a távolsági egységeknek.
+;Kutatás-ikon;Ursanok;;urs_medvebunda;Medvebunda-páncél;assets/research/urs_medvebunda.png;72×52;1;+1 páncél minden élő egységnek.
+;Kutatás-ikon;Ursanok;;urs_telegi_edzes;Télegi edzés;assets/research/urs_telegi_edzes.png;72×52;1;+25 életerő a gyalogságnak és a lovasságnak.
+;Kutatás-ikon;Ursanok;;ursan_felemelkedes;Felemelkedés;assets/research/ursan_felemelkedes.png;72×52;1;A nép fejlődési irányt választ (3 közül, végleg). Feltétel: 3 kész épület a főépületen kívül.
+;Címer;Croftianok;;croftian;Croftianok címere;assets/emblems/croftian.png;256×256;1;a faj jelképe (menü, beállítóképernyő, zászlók)
+;Irány-címer;Croftianok;Raj;croftian_raj;Raj jelképe;assets/paths/croftian_raj.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Olcsó tömeg, korai elárasztás
+;Irány-címer;Croftianok;Páncél;croftian_pancel;Páncél jelképe;assets/paths/croftian_pancel.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Lassú, szívós menetelés
+;Irány-címer;Croftianok;Kórus;croftian_korus;Kórus jelképe;assets/paths/croftian_korus.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Irányítás és átállítás
+;Épület;Croftianok;;cro_kaptar;Kaptár;assets/sprites/buildings/cro_kaptar.png;144×124 / képkocka;idle 4, build 4;"alapterület 4×4 csempe; csapatszín-maszk: cro_kaptar_team.png. Élő főépület. Lárvákat nevel (max. 3), minden egység innen kel ki – párhuzamosan."
+;Épület-ikon;Croftianok;;cro_kaptar;Kaptár – ikon;assets/sprites/icons/cro_kaptar.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_tapgomba;Tápgomba;assets/sprites/buildings/cro_tapgomba.png;78×70 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: cro_tapgomba_team.png. Tápláló gombatelep: messzire terjeszti a mélységet, és gyógyítja a rajt."
+;Épület-ikon;Croftianok;;cro_tapgomba;Tápgomba – ikon;assets/sprites/icons/cro_tapgomba.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_emeszto;Emésztőkamra;assets/sprites/buildings/cro_emeszto.png;72×60 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: cro_emeszto_team.png. Leadóhely minden nyersanyagnak."
+;Épület-ikon;Croftianok;;cro_emeszto;Emésztőkamra – ikon;assets/sprites/icons/cro_emeszto.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_ikrafeszek;Ikrafészek;assets/sprites/buildings/cro_ikrafeszek.png;98×84 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: cro_ikrafeszek_team.png. Lehetővé teszi a Karmosokat."
+;Épület-ikon;Croftianok;;cro_ikrafeszek;Ikrafészek – ikon;assets/sprites/icons/cro_ikrafeszek.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_tuskeverem;Tüskeverem;assets/sprites/buildings/cro_tuskeverem.png;110×94 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: cro_tuskeverem_team.png. Lehetővé teszi a Tüskeköpőket és a Savköpőket."
+;Épület-ikon;Croftianok;;cro_tuskeverem;Tüskeverem – ikon;assets/sprites/icons/cro_tuskeverem.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;Kórus;cro_agyszentely;Agyszentély;assets/sprites/buildings/cro_agyszentely.png;100×86 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: cro_agyszentely_team.png. Lehetővé teszi az Agyfalót és a Csápos horrort."
+;Épület-ikon;Croftianok;Kórus;cro_agyszentely;Agyszentély – ikon;assets/sprites/icons/cro_agyszentely.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_csontcsucs;Csontcsúcs;assets/sprites/buildings/cro_csontcsucs.png;78×96 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: cro_csontcsucs_team.png. Lehetővé teszi a Szárnyas rémeket."
+;Épület-ikon;Croftianok;;cro_csontcsucs;Csontcsúcs – ikon;assets/sprites/icons/cro_csontcsucs.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_tuskes_gyoker;Tüskés gyökér;assets/sprites/buildings/cro_tuskes_gyoker.png;68×72 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: cro_tuskes_gyoker_team.png. Védőépület, földi és légi célpontokra."
+;Épület-ikon;Croftianok;;cro_tuskes_gyoker;Tüskés gyökér – ikon;assets/sprites/icons/cro_tuskes_gyoker.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;kethri_tojaskamra;Kethri tojáskamra;assets/sprites/buildings/kethri_tojaskamra.png;78×70 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: kethri_tojaskamra_team.png. Fertőzetlen kethri tojások – a jövő nemzedéke. Védd meg!"
+;Épület-ikon;Croftianok;;kethri_tojaskamra;Kethri tojáskamra – ikon;assets/sprites/icons/kethri_tojaskamra.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;;cro_korus_kut;Kórus-kút;assets/sprites/buildings/cro_korus_kut.png;102×88 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: cro_korus_kut_team.png. Lüktető hangkút: innen szólnak a Kórus hősei – Keth, Vor-Uthul és Ssarha."
+;Épület-ikon;Croftianok;;cro_korus_kut;Kórus-kút – ikon;assets/sprites/icons/cro_korus_kut.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;Raj;cro_rajkamra;Rajkamra;assets/sprites/buildings/cro_rajkamra.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: cro_rajkamra_team.png. Lüktető keltetőkamra: robbanó atkák és vadászkarmosok (a Kaptárban kelnek ki)."
+;Épület-ikon;Croftianok;Raj;cro_rajkamra;Rajkamra – ikon;assets/sprites/icons/cro_rajkamra.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Croftianok;Páncél;cro_kitinkamra;Kitinkamra;assets/sprites/buildings/cro_kitinkamra.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: cro_kitinkamra_team.png. Páncélnövesztő kamra: páncélbogarak, ostromtaréjak, ásóférgek."
+;Épület-ikon;Croftianok;Páncél;cro_kitinkamra;Kitinkamra – ikon;assets/sprites/icons/cro_kitinkamra.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Egység;Croftianok;;cro_csapszolga;Csápszolga;assets/sprites/units/cro_csapszolga.png;50×48 / képkocka;"idle 4, walk 6, attack 6, death 6, work 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_csapszolga_team.png. Munkás. Épületté alakul át (elfogy).
+;Egység-ikon;Croftianok;;cro_csapszolga;Csápszolga – ikon;assets/sprites/icons/cro_csapszolga.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_csapszolga;Csápszolga – arckép;assets/portraits/cro_csapszolga.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_karmos;Karmos;assets/sprites/units/cro_karmos.png;46×44 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_karmos_team.png. Olcsó, gyors rajegység. Egy lárvából kettő kel ki.
+;Egység-ikon;Croftianok;;cro_karmos;Karmos – ikon;assets/sprites/icons/cro_karmos.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_karmos;Karmos – arckép;assets/portraits/cro_karmos.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_tuskekopo;Tüskeköpő;assets/sprites/units/cro_tuskekopo.png;76×74 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_tuskekopo_team.png. Csonttüskéket köp, földi és légi célpontokra.
+;Egység-ikon;Croftianok;;cro_tuskekopo;Tüskeköpő – ikon;assets/sprites/icons/cro_tuskekopo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_tuskekopo;Tüskeköpő – arckép;assets/portraits/cro_tuskekopo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_savkopo;Savköpő;assets/sprites/units/cro_savkopo.png;94×88 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_savkopo_team.png. Élő tüzérség. Messzire köpött savhólyagok, terület-sebzés, bónusz épületek ellen.
+;Egység-ikon;Croftianok;;cro_savkopo;Savköpő – ikon;assets/sprites/icons/cro_savkopo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_savkopo;Savköpő – arckép;assets/portraits/cro_savkopo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Kórus;cro_agyfalo;Agyfaló;assets/sprites/units/cro_agyfalo.png;58×64 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_agyfalo_team.png. Pszionikus rém. Őrület ködét bocsátja az ellenségre.
+;Egység-ikon;Croftianok;Kórus;cro_agyfalo;Agyfaló – ikon;assets/sprites/icons/cro_agyfalo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Kórus;cro_agyfalo;Agyfaló – arckép;assets/portraits/cro_agyfalo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_szarnyas_rem;Szárnyas rém;assets/sprites/units/cro_szarnyas_rem.png;86×116 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_szarnyas_rem_team.png. Hártyás szárnyú repülő ragadozó.
+;Egység-ikon;Croftianok;;cro_szarnyas_rem;Szárnyas rém – ikon;assets/sprites/icons/cro_szarnyas_rem.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_szarnyas_rem;Szárnyas rém – arckép;assets/portraits/cro_szarnyas_rem.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Kórus;cro_csapos_horror;Csápos horror;assets/sprites/units/cro_csapos_horror.png;128×132 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_csapos_horror_team.png. A mélység óriása. Csápjaival egyszerre több ellenfelet zúz.
+;Egység-ikon;Croftianok;Kórus;cro_csapos_horror;Csápos horror – ikon;assets/sprites/icons/cro_csapos_horror.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Kórus;cro_csapos_horror;Csápos horror – arckép;assets/portraits/cro_csapos_horror.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_hos_keth;Keth (HŐS);assets/sprites/units/cro_hos_keth.png;72×70 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: cro_hos_keth_team.png. Egy megszállt kethri város emlékőre; a Kórus parancsnoki csomópontja – de régi önmaga nem "
+;Egység-ikon;Croftianok;;cro_hos_keth;Keth – ikon;assets/sprites/icons/cro_hos_keth.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_hos_keth;Keth – arckép (HŐS);assets/portraits/cro_hos_keth.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Páncél;cro_pancelbogar;Páncélbogár;assets/sprites/units/cro_pancelbogar.png;94×90 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_pancelbogar_team.png. Karmosból mutálódott, páncélos rohamállat. Csak mutációval jön létre.
+;Egység-ikon;Croftianok;Páncél;cro_pancelbogar;Páncélbogár – ikon;assets/sprites/icons/cro_pancelbogar.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Páncél;cro_pancelbogar;Páncélbogár – arckép;assets/portraits/cro_pancelbogar.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_guboj;Gubó;assets/sprites/units/cro_guboj.png;30×36 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_guboj_team.png. Mutálódó egység – sérülékeny, de páncélos burok.
+;Egység-ikon;Croftianok;;cro_guboj;Gubó – ikon;assets/sprites/icons/cro_guboj.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_guboj;Gubó – arckép;assets/portraits/cro_guboj.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_szemhordozo;Szemhordozó;assets/sprites/units/cro_szemhordozo.png;70×76 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_szemhordozo_team.png. Lebegő szemzsák: messzire lát, és a Kórus létszámát hordozza (+8).
+;Egység-ikon;Croftianok;;cro_szemhordozo;Szemhordozó – ikon;assets/sprites/icons/cro_szemhordozo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_szemhordozo;Szemhordozó – arckép;assets/portraits/cro_szemhordozo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_hos_vor;Vor-Uthul (HŐS);assets/sprites/units/cro_hos_vor.png;70×70 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_hos_vor_team.png. A Mutáció Mestere: a saját testéből költ lárvákat, kitinpáncélt növeszt.
+;Egység-ikon;Croftianok;;cro_hos_vor;Vor-Uthul – ikon;assets/sprites/icons/cro_hos_vor.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_hos_vor;Vor-Uthul – arckép (HŐS);assets/portraits/cro_hos_vor.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;;cro_hos_ssarha;Ssarha, a Raj Hangja (HŐS);assets/sprites/units/cro_hos_ssarha.png;76×84 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_hos_ssarha_team.png. A Kórus hangja: a rajt egy akaratba fogja, és összeölti a sebeket.
+;Egység-ikon;Croftianok;;cro_hos_ssarha;Ssarha, a Raj Hangja – ikon;assets/sprites/icons/cro_hos_ssarha.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;;cro_hos_ssarha;Ssarha, a Raj Hangja – arckép (HŐS);assets/portraits/cro_hos_ssarha.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Raj;cro_robbanoatka;Robbanó atka;assets/sprites/units/cro_robbanoatka.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_robbanoatka_team.png. Olcsó, gyors atka: az ellenség közé rohan és felrobban.
+;Egység-ikon;Croftianok;Raj;cro_robbanoatka;Robbanó atka – ikon;assets/sprites/icons/cro_robbanoatka.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Raj;cro_robbanoatka;Robbanó atka – arckép;assets/portraits/cro_robbanoatka.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Raj;cro_vadaszkarmos;Vadászkarmos;assets/sprites/units/cro_vadaszkarmos.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_vadaszkarmos_team.png. Fürge karmos-változat: gyorsan üldöz és szaggat.
+;Egység-ikon;Croftianok;Raj;cro_vadaszkarmos;Vadászkarmos – ikon;assets/sprites/icons/cro_vadaszkarmos.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Raj;cro_vadaszkarmos;Vadászkarmos – arckép;assets/portraits/cro_vadaszkarmos.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Páncél;cro_ostromtaraj;Ostromtaréj;assets/sprites/units/cro_ostromtaraj.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_ostromtaraj_team.png. Élő ostromgép: messzire köpi a maró kitintüskéket, épületekre különösen.
+;Egység-ikon;Croftianok;Páncél;cro_ostromtaraj;Ostromtaréj – ikon;assets/sprites/icons/cro_ostromtaraj.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Páncél;cro_ostromtaraj;Ostromtaréj – arckép;assets/portraits/cro_ostromtaraj.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Croftianok;Páncél;cro_asoferegg;Ásóféreg;assets/sprites/units/cro_asoferegg.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: cro_asoferegg_team.png. A föld alatt közlekedő féreg: beásva rejtőzik, és alulról támad.
+;Egység-ikon;Croftianok;Páncél;cro_asoferegg;Ásóféreg – ikon;assets/sprites/icons/cro_asoferegg.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Croftianok;Páncél;cro_asoferegg;Ásóféreg – arckép;assets/portraits/cro_asoferegg.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Kutatás-ikon;Croftianok;;cro_inas_labak;Inas lábak;assets/research/cro_inas_labak.png;72×52;1;+30% sebesség a Karmosoknak.
+;Kutatás-ikon;Croftianok;;cro_savas_tuskek;Savas tüskék;assets/research/cro_savas_tuskek.png;72×52;1;+2 sebzés a távolsági egységeknek.
+;Kutatás-ikon;Croftianok;;cro_kitinpancel;Kitinpáncél;assets/research/cro_kitinpancel.png;72×52;1;+1 páncél minden egységnek.
+;Kutatás-ikon;Croftianok;;cro_eletnedv;Életnedv;assets/research/cro_eletnedv.png;72×52;1;+1 életerő-regeneráció másodpercenként.
+;Kutatás-ikon;Croftianok;;croftian_felemelkedes;Felemelkedés;assets/research/croftian_felemelkedes.png;72×52;1;A nép fejlődési irányt választ (3 közül, végleg). Feltétel: 3 kész épület a főépületen kívül.
+;Címer;Wullof;;wullof;Wullof címere;assets/emblems/wullof.png;256×256;1;a faj jelképe (menü, beállítóképernyő, zászlók)
+;Irány-címer;Wullof;Bölény-csorda;wullof_boleny;Bölény-csorda jelképe;assets/paths/wullof_boleny.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Kevés, drága, megállíthatatlan roham
+;Irány-címer;Wullof;Groomi-fészek;wullof_groomi;Groomi-fészek jelképe;assets/paths/wullof_groomi.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Gyors portyázás, vadászat a gyengékre
+;Irány-címer;Wullof;Ősök útja;wullof_osok;Ősök útja jelképe;assets/paths/wullof_osok.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Totemlánc, lassú és biztos előrenyomulás
+;Épület;Wullof;;wul_tanacssator;Tanácskunyhó;assets/sprites/buildings/wul_tanacssator.png;160×156 / képkocka;idle 4, build 4;"alapterület 4×4 csempe; csapatszín-maszk: wul_tanacssator_team.png. A törzs nagy kéregkunyhója. Leadóhely, Gyűjtögetőket nevel. Felszedhető."
+;Épület-ikon;Wullof;;wul_tanacssator;Tanácskunyhó – ikon;assets/sprites/icons/wul_tanacssator.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_tipi;Kéregkunyhó;assets/sprites/buildings/wul_tipi.png;88×94 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: wul_tipi_team.png. Eukaliptuszkéreg-kunyhó: Lándzsás harcosokat képez. Felszedhető."
+;Épület-ikon;Wullof;;wul_tipi;Kéregkunyhó – ikon;assets/sprites/icons/wul_tipi.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_harcosok_tuze;Harcosok tüze;assets/sprites/buildings/wul_harcosok_tuze.png;122×118 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: wul_harcosok_tuze_team.png. Dárdavetőket és bumerángvetőket képez. Felszedhető."
+;Épület-ikon;Wullof;;wul_harcosok_tuze;Harcosok tüze – ikon;assets/sprites/icons/wul_harcosok_tuze.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_bolenykaram;Emukarám;assets/sprites/buildings/wul_bolenykaram.png;116×106 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: wul_bolenykaram_team.png. Emukat tenyészt (karámonként legfeljebb 5). Csak az emuk növelik a létszámot. Felszedhető."
+;Épület-ikon;Wullof;;wul_bolenykaram;Emukarám – ikon;assets/sprites/icons/wul_bolenykaram.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_samansator;Sámánkunyhó;assets/sprites/buildings/wul_samansator.png;126×128 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: wul_samansator_team.png. Holdsámánokat képez, fejlesztéseket kutat. Felszedhető."
+;Épület-ikon;Wullof;;wul_samansator;Sámánkunyhó – ikon;assets/sprites/icons/wul_samansator.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_mennydorges_szikla;Vörös szikla;assets/sprites/buildings/wul_mennydorges_szikla.png;128×134 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: wul_mennydorges_szikla_team.png. A viharkakaduk fészke a pusztai vörös sziklán."
+;Épület-ikon;Wullof;;wul_mennydorges_szikla;Vörös szikla – ikon;assets/sprites/icons/wul_mennydorges_szikla.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_szellemtotem;Eukaliptusz-őrfa;assets/sprites/buildings/wul_szellemtotem.png;92×100 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: wul_szellemtotem_team.png. Kilátós őrfa: a fenti vadászok bumerángokkal védik a tábort."
+;Épület-ikon;Wullof;;wul_szellemtotem;Eukaliptusz-őrfa – ikon;assets/sprites/icons/wul_szellemtotem.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;;wul_osok_kore;Ősök köre;assets/sprites/buildings/wul_osok_kore.png;114×104 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: wul_osok_kore_team.png. Faragott oszlopok köre: Tava, Varnu és Kurrin hívása. Felszedhető."
+;Épület-ikon;Wullof;;wul_osok_kore;Ősök köre – ikon;assets/sprites/icons/wul_osok_kore.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;Bölény-csorda;wul_bolenyakol;Bölénykarám;assets/sprites/buildings/wul_bolenyakol.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: wul_bolenyakol_team.png. Bölényeket és termeszvár-óriásokat ad. Felszedhető."
+;Épület-ikon;Wullof;Bölény-csorda;wul_bolenyakol;Bölénykarám – ikon;assets/sprites/icons/wul_bolenyakol.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;Groomi-fészek;wul_groomi_feszek;Groomi-fészek;assets/sprites/buildings/wul_groomi_feszek.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: wul_groomi_feszek_team.png. Groomikat nevel; itt választható ki a köpésük."
+;Épület-ikon;Wullof;Groomi-fészek;wul_groomi_feszek;Groomi-fészek – ikon;assets/sprites/icons/wul_groomi_feszek.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Wullof;Ősök útja;wul_totemkert;Totemkert;assets/sprites/buildings/wul_totemkert.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: wul_totemkert_team.png. Faragott totemek kertje: Totemfaragókat, Álomjárókat és termeszvár-óriásokat ad."
+;Épület-ikon;Wullof;Ősök útja;wul_totemkert;Totemkert – ikon;assets/sprites/icons/wul_totemkert.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Egység;Wullof;;wul_gyujtogeto;Gyűjtögető;assets/sprites/units/wul_gyujtogeto.png;88×90 / képkocka;"idle 4, walk 6, attack 6, death 6, work 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: wul_gyujtogeto_team.png. Munkás. Gyűjt, épít, javít; fonott háti kosárban hordja a zsákmányt."
+;Egység-ikon;Wullof;;wul_gyujtogeto;Gyűjtögető – ikon;assets/sprites/icons/wul_gyujtogeto.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_gyujtogeto;Gyűjtögető – arckép;assets/portraits/wul_gyujtogeto.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_landzsas;Lándzsás harcos;assets/sprites/units/wul_landzsas.png;100×106 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_landzsas_team.png. Gyors, kovakőhegyű lándzsás, keskeny festett hárítópajzzsal. Falkában veszélyes.
+;Egység-ikon;Wullof;;wul_landzsas;Lándzsás harcos – ikon;assets/sprites/icons/wul_landzsas.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_landzsas;Lándzsás harcos – arckép;assets/portraits/wul_landzsas.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_ijas_vadasz;Bumerángvető;assets/sprites/units/wul_ijas_vadasz.png;94×96 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_ijas_vadasz_team.png. Távolsági vadász: a bumeráng visszatérő íven a közeli ellenségeket is eltalálja. Földi és 
+;Egység-ikon;Wullof;;wul_ijas_vadasz;Bumerángvető – ikon;assets/sprites/icons/wul_ijas_vadasz.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_ijas_vadasz;Bumerángvető – arckép;assets/portraits/wul_ijas_vadasz.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_holdsaman;Holdsámán;assets/sprites/units/wul_holdsaman.png;102×102 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_holdsaman_team.png. Gyógyít, és szellemfarkasokat hív a holdfényből.
+;Egység-ikon;Wullof;;wul_holdsaman;Holdsámán – ikon;assets/sprites/icons/wul_holdsaman.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_holdsaman;Holdsámán – arckép;assets/portraits/wul_holdsaman.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_szellemfarkas;Szellemfarkas;assets/sprites/units/wul_szellemfarkas.png;68×62 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_szellemfarkas_team.png. A holdfényből idézett szellem-dingó. Fél percig él.
+;Egység-ikon;Wullof;;wul_szellemfarkas;Szellemfarkas – ikon;assets/sprites/icons/wul_szellemfarkas.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_szellemfarkas;Szellemfarkas – arckép;assets/portraits/wul_szellemfarkas.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Bölény-csorda;wul_bolenylovas;Bölénylovas;assets/sprites/units/wul_bolenylovas.png;124×112 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_bolenylovas_team.png. Bölényen ülő wullof harcos: erős roham. Le is szállhat.
+;Egység-ikon;Wullof;Bölény-csorda;wul_bolenylovas;Bölénylovas – ikon;assets/sprites/icons/wul_bolenylovas.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Bölény-csorda;wul_bolenylovas;Bölénylovas – arckép;assets/portraits/wul_bolenylovas.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_mennydorgesmadar;Viharkakadu;assets/sprites/units/wul_mennydorgesmadar.png;116×156 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: wul_mennydorgesmadar_team.png. Óriás viharkakadu; villámai a célpont környékét is sújtják."
+;Egység-ikon;Wullof;;wul_mennydorgesmadar;Viharkakadu – ikon;assets/sprites/icons/wul_mennydorgesmadar.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_mennydorgesmadar;Viharkakadu – arckép;assets/portraits/wul_mennydorgesmadar.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Ősök útja;wul_totemorias;Termeszvár-óriás;assets/sprites/units/wul_totemorias.png;132×132 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_totemorias_team.png. Életre kelt vörös termeszvár – lassú, de az épületeket porrá zúzza.
+;Egység-ikon;Wullof;Ősök útja;wul_totemorias;Termeszvár-óriás – ikon;assets/sprites/icons/wul_totemorias.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Ősök útja;wul_totemorias;Termeszvár-óriás – arckép;assets/portraits/wul_totemorias.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_vandorszeker;Vándorbatyu;assets/sprites/units/wul_vandorszeker.png;96×92 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_vandorszeker_team.png. Felszedett tábor, rudakra kötve. Jobb gomb: Letelepítés máshol.
+;Egység-ikon;Wullof;;wul_vandorszeker;Vándorbatyu – ikon;assets/sprites/icons/wul_vandorszeker.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_vandorszeker;Vándorbatyu – arckép;assets/portraits/wul_vandorszeker.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_hos_tava;Tava (HŐS);assets/sprites/units/wul_hos_tava.png;114×116 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_hos_tava_team.png. Folyami térképész és követ a Hét Út Szövetségéből. Utat nyit és felderít.
+;Egység-ikon;Wullof;;wul_hos_tava;Tava – ikon;assets/sprites/icons/wul_hos_tava.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_hos_tava;Tava – arckép (HŐS);assets/portraits/wul_hos_tava.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_tomahawkos;Dárdavető portyázó;assets/sprites/units/wul_tomahawkos.png;98×100 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_tomahawkos_team.png. Gyors portyázó dárdavetővel (woomera): a munkások és a távolsági egységek réme.
+;Egység-ikon;Wullof;;wul_tomahawkos;Dárdavető portyázó – ikon;assets/sprites/icons/wul_tomahawkos.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_tomahawkos;Dárdavető portyázó – arckép;assets/portraits/wul_tomahawkos.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_hos_varnu;Varnu, a Holdsámán (HŐS);assets/sprites/units/wul_hos_varnu.png;136×130 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_hos_varnu_team.png. Az ősök szellemeivel beszél: gyógyít, ködöt és szellemfalkát hív.
+;Egység-ikon;Wullof;;wul_hos_varnu;Varnu, a Holdsámán – ikon;assets/sprites/icons/wul_hos_varnu.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_hos_varnu;Varnu, a Holdsámán – arckép (HŐS);assets/portraits/wul_hos_varnu.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_hos_kurrin;Kurrin Harcfőnök (HŐS);assets/sprites/units/wul_hos_kurrin.png;146×136 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_hos_kurrin_team.png. Harci bölényen lovagló harcfőnök: tapos, üvölt, és a Hét Út harcosait hívja.
+;Egység-ikon;Wullof;;wul_hos_kurrin;Kurrin Harcfőnök – ikon;assets/sprites/icons/wul_hos_kurrin.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_hos_kurrin;Kurrin Harcfőnök – arckép (HŐS);assets/portraits/wul_hos_kurrin.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;;wul_emu;Emu;assets/sprites/units/wul_emu.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_emu_team.png. Tenyészemu: +6 létszám. Emukarámonként legfeljebb 5 tartható.
+;Egység-ikon;Wullof;;wul_emu;Emu – ikon;assets/sprites/icons/wul_emu.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;;wul_emu;Emu – arckép;assets/portraits/wul_emu.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Bölény-csorda;wul_boleny;Bölény;assets/sprites/units/wul_boleny.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_boleny_team.png. Erős, de lassú bölény. Felültethető rá egy wullof gyalogos harcos.
+;Egység-ikon;Wullof;Bölény-csorda;wul_boleny;Bölény – ikon;assets/sprites/icons/wul_boleny.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Bölény-csorda;wul_boleny;Bölény – arckép;assets/portraits/wul_boleny.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Groomi-fészek;wul_groomi;Groomi;assets/sprites/units/wul_groomi.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_groomi_team.png. Piros szörnymadár: gyors, harapós földi vadász. A Groomi-fészekben sav-, tűz- vagy fagyköp
+;Egység-ikon;Wullof;Groomi-fészek;wul_groomi;Groomi – ikon;assets/sprites/icons/wul_groomi.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Groomi-fészek;wul_groomi;Groomi – arckép;assets/portraits/wul_groomi.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Bölény-csorda;wul_csordavezer;Csordavezér bika;assets/sprites/units/wul_csordavezer.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_csordavezer_team.png. Hatalmas bölénybika: épületeket tipor, rohamában mindent elsöpör.
+;Egység-ikon;Wullof;Bölény-csorda;wul_csordavezer;Csordavezér bika – ikon;assets/sprites/icons/wul_csordavezer.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Bölény-csorda;wul_csordavezer;Csordavezér bika – arckép;assets/portraits/wul_csordavezer.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Groomi-fészek;wul_groomi_fioka;Groomi-fióka;assets/sprites/units/wul_groomi_fioka.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_groomi_fioka_team.png. Kicsi, de fürge és harapós Groomi.
+;Egység-ikon;Wullof;Groomi-fészek;wul_groomi_fioka;Groomi-fióka – ikon;assets/sprites/icons/wul_groomi_fioka.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Groomi-fészek;wul_groomi_fioka;Groomi-fióka – arckép;assets/portraits/wul_groomi_fioka.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Groomi-fészek;wul_groomi_anya;Groomi-anya;assets/sprites/units/wul_groomi_anya.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_groomi_anya_team.png. Óriás Groomi-tojó: fiókákat keltet, és keményen harap.
+;Egység-ikon;Wullof;Groomi-fészek;wul_groomi_anya;Groomi-anya – ikon;assets/sprites/icons/wul_groomi_anya.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Groomi-fészek;wul_groomi_anya;Groomi-anya – arckép;assets/portraits/wul_groomi_anya.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Ősök útja;wul_totemfarago;Totemfaragó;assets/sprites/units/wul_totemfarago.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_totemfarago_team.png. Ősök-dalát éneklő faragó: a közeli szövetségesek +2 páncélt kapnak.
+;Egység-ikon;Wullof;Ősök útja;wul_totemfarago;Totemfaragó – ikon;assets/sprites/icons/wul_totemfarago.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Ősök útja;wul_totemfarago;Totemfaragó – arckép;assets/portraits/wul_totemfarago.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Wullof;Ősök útja;wul_alomjaro;Álomjáró;assets/sprites/units/wul_alomjaro.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: wul_alomjaro_team.png. Az ősök álmait járja: gyógyít, és szellemfarkasokat hív.
+;Egység-ikon;Wullof;Ősök útja;wul_alomjaro;Álomjáró – ikon;assets/sprites/icons/wul_alomjaro.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Wullof;Ősök útja;wul_alomjaro;Álomjáró – arckép;assets/portraits/wul_alomjaro.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Kutatás-ikon;Wullof;;wul_obszidian_landzsa;Kovakő lándzsahegyek;assets/research/wul_obszidian_landzsa.png;72×52;1;+2 sebzés a közelharci egységeknek.
+;Kutatás-ikon;Wullof;;wul_holdfeny_ijak;Vasfa bumerángok;assets/research/wul_holdfeny_ijak.png;72×52;1;+2 sebzés a távolsági egységeknek.
+;Kutatás-ikon;Wullof;;wul_bolenybor;Kengurubőr vértek;assets/research/wul_bolenybor.png;72×52;1;+1 páncél minden élő egységnek.
+;Kutatás-ikon;Wullof;;wul_falkaszellem;A falka szelleme;assets/research/wul_falkaszellem.png;72×52;1;+10% sebesség minden egységnek.
+;Kutatás-ikon;Wullof;;wul_savkopes;Savköpés;assets/research/wul_savkopes.png;72×52;1;A Groomik maró, mérgező savat köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a más
+;Kutatás-ikon;Wullof;;wul_tuzkopes;Tűzköpés;assets/research/wul_tuzkopes.png;72×52;1;A Groomik lángcsóvát köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő 
+;Kutatás-ikon;Wullof;;wul_fagykopes;Fagyköpés;assets/research/wul_fagykopes.png;72×52;1;A Groomik jeges köpetet köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik ket
+;Kutatás-ikon;Wullof;;wullof_felemelkedes;Felemelkedés;assets/research/wullof_felemelkedes.png;72×52;1;A nép fejlődési irányt választ (3 közül, végleg). Feltétel: 3 kész épület a főépületen kívül.
+;Címer;Micéliák;;mycel;Micéliák címere;assets/emblems/mycel.png;256×256;1;a faj jelképe (menü, beállítóképernyő, zászlók)
+;Irány-címer;Micéliák;Rothadás;mycel_rothadas;Rothadás jelképe;assets/paths/mycel_rothadas.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Felőrlő, méreggel nyújtott harc
+;Irány-címer;Micéliák;Óriásliget;mycel_liget;Óriásliget jelképe;assets/paths/mycel_liget.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Terjeszkedés és területfoglalás
+;Irány-címer;Micéliák;Álom;mycel_alom;Álom jelképe;assets/paths/mycel_alom.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Csel, rejtőzés, rajtaütés
+;Épület;Micéliák;;myc_szivgomba;Szívgomba;assets/sprites/buildings/myc_szivgomba.png;92×100 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: myc_szivgomba_team.png. A hálózat szíve: kicsi főépület és védőtorony egyben. +6 létszám (és a hálózat minden össz"
+;Épület-ikon;Micéliák;;myc_szivgomba;Szívgomba – ikon;assets/sprites/icons/myc_szivgomba.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;;myc_sporafonal;Spórafonal;assets/sprites/buildings/myc_sporafonal.png;44×46 / képkocka;idle 4, build 4;"alapterület 1×1 csempe; csapatszín-maszk: myc_sporafonal_team.png. Hálózati csomópont: összeköti az épületeket a Szívgombával."
+;Épület-ikon;Micéliák;;myc_sporafonal;Spórafonal – ikon;assets/sprites/icons/myc_sporafonal.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;;myc_termotest;Termőtest;assets/sprites/buildings/myc_termotest.png;120×116 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: myc_termotest_team.png. Pöfetegeket és Kalapos őröket növeszt."
+;Épület-ikon;Micéliák;;myc_termotest;Termőtest – ikon;assets/sprites/icons/myc_termotest.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;;myc_tuskegomba_telep;Tüskegomba-telep;assets/sprites/buildings/myc_tuskegomba_telep.png;118×110 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: myc_tuskegomba_telep_team.png. Tüskegomba-lövészeket növeszt."
+;Épület-ikon;Micéliák;;myc_tuskegomba_telep;Tüskegomba-telep – ikon;assets/sprites/icons/myc_tuskegomba_telep.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;;myc_gyokerbarlang;Gyökérbarlang;assets/sprites/buildings/myc_gyokerbarlang.png;120×116 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: myc_gyokerbarlang_team.png. Fejlesztések a hálózat mélyén."
+;Épület-ikon;Micéliák;;myc_gyokerbarlang;Gyökérbarlang – ikon;assets/sprites/icons/myc_gyokerbarlang.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;Álom;myc_alomkert;Álomkert;assets/sprites/buildings/myc_alomkert.png;120×114 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: myc_alomkert_team.png. Álomgomba-sámánokat nevel."
+;Épület-ikon;Micéliák;Álom;myc_alomkert;Álomkert – ikon;assets/sprites/icons/myc_alomkert.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;;myc_lebegobolcso;Lebegőbölcső;assets/sprites/buildings/myc_lebegobolcso.png;122×120 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: myc_lebegobolcso_team.png. Lebegő pöfetegeket nevel."
+;Épület-ikon;Micéliák;;myc_lebegobolcso;Lebegőbölcső – ikon;assets/sprites/icons/myc_lebegobolcso.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;;myc_emlekfa;Emlékfa;assets/sprites/buildings/myc_emlekfa.png;114×104 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: myc_emlekfa_team.png. Az elfeledett nevek fája: Mór, a Gyökéranya és Sporin hívása."
+;Épület-ikon;Micéliák;;myc_emlekfa;Emlékfa – ikon;assets/sprites/icons/myc_emlekfa.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;Rothadás;myc_rothadokert;Rothadókert;assets/sprites/buildings/myc_rothadokert.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: myc_rothadokert_team.png. Bomló tetemeken nőtt gombakert: rothasztók és tetemgombák."
+;Épület-ikon;Micéliák;Rothadás;myc_rothadokert;Rothadókert – ikon;assets/sprites/icons/myc_rothadokert.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Micéliák;Óriásliget;myc_oriasliget;Óriásliget;assets/sprites/buildings/myc_oriasliget.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: myc_oriasliget_team.png. Ősi fagombák ligete: fagomba-óriások."
+;Épület-ikon;Micéliák;Óriásliget;myc_oriasliget;Óriásliget – ikon;assets/sprites/icons/myc_oriasliget.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Egység;Micéliák;;myc_sporaszedo;Spóraszedő;assets/sprites/units/myc_sporaszedo.png;78×84 / képkocka;"idle 4, walk 6, attack 6, death 6, work 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_sporaszedo_team.png. Munkás. Bármelyik hálózatba kötött épületbe leadhatja a terhét.
+;Egység-ikon;Micéliák;;myc_sporaszedo;Spóraszedő – ikon;assets/sprites/icons/myc_sporaszedo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_sporaszedo;Spóraszedő – arckép;assets/portraits/myc_sporaszedo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_pofeteg;Pöfeteg;assets/sprites/units/myc_pofeteg.png;42×38 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_pofeteg_team.png. Olcsó, ugráló gombalény. Halálakor mérgező spórafelhő tör ki belőle. Hármasával Óriáspöfet
+;Egység-ikon;Micéliák;;myc_pofeteg;Pöfeteg – ikon;assets/sprites/icons/myc_pofeteg.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_pofeteg;Pöfeteg – arckép;assets/portraits/myc_pofeteg.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_tuskegomba_lovesz;Tüskegomba-lövész;assets/sprites/units/myc_tuskegomba_lovesz.png;86×88 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_tuskegomba_lovesz_team.png. Mérgező spóratüskéket lő, földi és légi célpontokra.
+;Egység-ikon;Micéliák;;myc_tuskegomba_lovesz;Tüskegomba-lövész – ikon;assets/sprites/icons/myc_tuskegomba_lovesz.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_tuskegomba_lovesz;Tüskegomba-lövész – arckép;assets/portraits/myc_tuskegomba_lovesz.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_kalapos_or;Kalapos őr;assets/sprites/units/myc_kalapos_or.png;94×104 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_kalapos_or_team.png. Vastag kalapú, páncélos gombaharcos.
+;Egység-ikon;Micéliák;;myc_kalapos_or;Kalapos őr – ikon;assets/sprites/icons/myc_kalapos_or.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_kalapos_or;Kalapos őr – arckép;assets/portraits/myc_kalapos_or.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;Álom;myc_alomsaman;Álomgomba-sámán;assets/sprites/units/myc_alomsaman.png;82×88 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_alomsaman_team.png. Gyökérkötéssel egy területen megbénítja az ellenséget.
+;Egység-ikon;Micéliák;Álom;myc_alomsaman;Álomgomba-sámán – ikon;assets/sprites/icons/myc_alomsaman.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;Álom;myc_alomsaman;Álomgomba-sámán – arckép;assets/portraits/myc_alomsaman.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_oriaspofeteg;Óriáspöfeteg;assets/sprites/units/myc_oriaspofeteg.png;76×64 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_oriaspofeteg_team.png. Három Pöfetegből összeolvadt óriás. Halálakor hatalmas spórarobbanás.
+;Egység-ikon;Micéliák;;myc_oriaspofeteg;Óriáspöfeteg – ikon;assets/sprites/icons/myc_oriaspofeteg.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_oriaspofeteg;Óriáspöfeteg – arckép;assets/portraits/myc_oriaspofeteg.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_lebego_pofeteg;Lebegő pöfeteg;assets/sprites/units/myc_lebego_pofeteg.png;78×90 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: myc_lebego_pofeteg_team.png. Gázzal telt, lebegő gombatest; spóraesőt szór."
+;Egység-ikon;Micéliák;;myc_lebego_pofeteg;Lebegő pöfeteg – ikon;assets/sprites/icons/myc_lebego_pofeteg.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_lebego_pofeteg;Lebegő pöfeteg – arckép;assets/portraits/myc_lebego_pofeteg.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_hos_mor;Mór (HŐS);assets/sprites/units/myc_hos_mor.png;102×110 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_hos_mor_team.png. Fiatal emlékkertész, magában hordja egy sérült emlékkert töredékeit. Gyógyít és fertőzést 
+;Egység-ikon;Micéliák;;myc_hos_mor;Mór – ikon;assets/sprites/icons/myc_hos_mor.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_hos_mor;Mór – arckép (HŐS);assets/portraits/myc_hos_mor.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;Rothadás;myc_rothaszto;Rothasztó;assets/sprites/units/myc_rothaszto.png;92×100 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_rothaszto_team.png. Bomló gombatest: közelharcban rothaszt, halálakor mérgező spórafelhőt ereget.
+;Egység-ikon;Micéliák;Rothadás;myc_rothaszto;Rothasztó – ikon;assets/sprites/icons/myc_rothaszto.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;Rothadás;myc_rothaszto;Rothasztó – arckép;assets/portraits/myc_rothaszto.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_hos_gyokeranya;A Gyökéranya (HŐS);assets/sprites/units/myc_hos_gyokeranya.png;132×152 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_hos_gyokeranya_team.png. Az ősi micélium teste: gyökeret ereszt, gúzsba köt, és megrengeti a földet.
+;Egység-ikon;Micéliák;;myc_hos_gyokeranya;A Gyökéranya – ikon;assets/sprites/icons/myc_hos_gyokeranya.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_hos_gyokeranya;A Gyökéranya – arckép (HŐS);assets/portraits/myc_hos_gyokeranya.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;;myc_hos_sporin;Sporin, a Bomlasztó (HŐS);assets/sprites/units/myc_hos_sporin.png;114×120 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_hos_sporin_team.png. A bomlás vándora: tüskéi rothasztanak, köpenye spórafelhő.
+;Egység-ikon;Micéliák;;myc_hos_sporin;Sporin, a Bomlasztó – ikon;assets/sprites/icons/myc_hos_sporin.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;;myc_hos_sporin;Sporin, a Bomlasztó – arckép (HŐS);assets/portraits/myc_hos_sporin.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;Rothadás;myc_tetemgomba;Tetemgomba;assets/sprites/units/myc_tetemgomba.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_tetemgomba_team.png. Az elesettekből kelt, gombával átszőtt test: lassú, de nem adja fel.
+;Egység-ikon;Micéliák;Rothadás;myc_tetemgomba;Tetemgomba – ikon;assets/sprites/icons/myc_tetemgomba.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;Rothadás;myc_tetemgomba;Tetemgomba – arckép;assets/portraits/myc_tetemgomba.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;Óriásliget;myc_fagomba_orias;Fagomba-óriás;assets/sprites/units/myc_fagomba_orias.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_fagomba_orias_team.png. Járó, ősi fagomba: a liget védelmezője, gyökereivel megköt.
+;Egység-ikon;Micéliák;Óriásliget;myc_fagomba_orias;Fagomba-óriás – ikon;assets/sprites/icons/myc_fagomba_orias.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;Óriásliget;myc_fagomba_orias;Fagomba-óriás – arckép;assets/portraits/myc_fagomba_orias.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Micéliák;Álom;myc_alomszovo;Álomszövő;assets/sprites/units/myc_alomszovo.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: myc_alomszovo_team.png. Altató spórákat szövő gomba-mágus.
+;Egység-ikon;Micéliák;Álom;myc_alomszovo;Álomszövő – ikon;assets/sprites/icons/myc_alomszovo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Micéliák;Álom;myc_alomszovo;Álomszövő – arckép;assets/portraits/myc_alomszovo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Kutatás-ikon;Micéliák;;myc_meregspora;Méregspóra;assets/research/myc_meregspora.png;72×52;1;+2 sebzés a távolsági egységeknek.
+;Kutatás-ikon;Micéliák;;myc_kemenykalap;Keménykalap;assets/research/myc_kemenykalap.png;72×52;1;+1 páncél minden egységnek.
+;Kutatás-ikon;Micéliák;;myc_gyors_micelium;Gyors micélium;assets/research/myc_gyors_micelium.png;72×52;1;+15% sebesség minden egységnek.
+;Kutatás-ikon;Micéliák;;myc_dus_spora;Dús spóra;assets/research/myc_dus_spora.png;72×52;1;+20 életerő minden gombaegységnek.
+;Kutatás-ikon;Micéliák;;mycel_felemelkedes;Felemelkedés;assets/research/mycel_felemelkedes.png;72×52;1;A nép fejlődési irányt választ (3 közül, végleg). Feltétel: 3 kész épület a főépületen kívül.
+;Címer;Vasbirodalom;;imperium;Vasbirodalom címere;assets/emblems/imperium.png;256×256;1;a faj jelképe (menü, beállítóképernyő, zászlók)
+;Irány-címer;Vasbirodalom;Légió;imperium_legio;Légió jelképe;assets/paths/imperium_legio.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Fegyelmezett tömeg alakzatban
+;Irány-címer;Vasbirodalom;Gépisten;imperium_gepisten;Gépisten jelképe;assets/paths/imperium_gepisten.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Kevés, hatalmas gép
+;Irány-címer;Vasbirodalom;Lélek;imperium_lelek;Lélek jelképe;assets/paths/imperium_lelek.png;128×128 (a játék 48×48-ra kicsinyíti);1;a Felemelkedés-ablak kártyáján: Kifárasztó, élőhalott játék
+;Épület;Vasbirodalom;;imp_forum;Fórum;assets/sprites/buildings/imp_forum.png;166×168 / képkocka;idle 4, build 4;"alapterület 4×4 csempe; csapatszín-maszk: imp_forum_team.png. Oszlopcsarnokos főtér gőzölgő gépházzal. Leadóhely, Fabrikátorokat gyárt."
+;Épület-ikon;Vasbirodalom;;imp_forum;Fórum – ikon;assets/sprites/icons/imp_forum.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;;imp_reaktor;Lélekreaktor;assets/sprites/buildings/imp_reaktor.png;86×86 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: imp_reaktor_team.png. +10 létszám – lélekenergiát ad a gépeknek."
+;Épület-ikon;Vasbirodalom;;imp_reaktor;Lélekreaktor – ikon;assets/sprites/icons/imp_reaktor.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;;imp_legiogyar;Légió-gyár;assets/sprites/buildings/imp_legiogyar.png;130×142 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: imp_legiogyar_team.png. Légiósokat és Ballistariusokat szerel össze."
+;Épület-ikon;Vasbirodalom;;imp_legiogyar;Légió-gyár – ikon;assets/sprites/icons/imp_legiogyar.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;Gépisten;imp_ontode;Öntöde;assets/sprites/buildings/imp_ontode.png;130×142 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: imp_ontode_team.png. Centurio-mechákat és Kolosszusokat önt."
+;Épület-ikon;Vasbirodalom;Gépisten;imp_ontode;Öntöde – ikon;assets/sprites/icons/imp_ontode.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;;imp_gepisten_templom;Ordan temploma;assets/sprites/buildings/imp_gepisten_templom.png;124×124 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: imp_gepisten_templom_team.png. Ordan, a Kéz, amely Megtart hálózatának szentélye. Szellemidézőket avat, fejlesztéseket ku"
+;Épület-ikon;Vasbirodalom;;imp_gepisten_templom;Ordan temploma – ikon;assets/sprites/icons/imp_gepisten_templom.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;;imp_hangar;Hangár;assets/sprites/buildings/imp_hangar.png;120×116 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: imp_hangar_team.png. Aquila-drónokat gyárt."
+;Épület-ikon;Vasbirodalom;;imp_hangar;Hangár – ikon;assets/sprites/icons/imp_hangar.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;;imp_aquila_torony;Aquila-torony;assets/sprites/buildings/imp_aquila_torony.png;92×102 / képkocka;idle 4, build 4;"alapterület 2×2 csempe; csapatszín-maszk: imp_aquila_torony_team.png. Sasos őrtorony íjpuskával."
+;Épület-ikon;Vasbirodalom;;imp_aquila_torony;Aquila-torony – ikon;assets/sprites/icons/imp_aquila_torony.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;;imp_panteon;Panteon;assets/sprites/buildings/imp_panteon.png;114×104 / képkocka;idle 4, build 4;"alapterület 3×3 csempe; csapatszín-maszk: imp_panteon_team.png. A megmentett hősök csarnoka: Livia, Nera és Cassius."
+;Épület-ikon;Vasbirodalom;;imp_panteon;Panteon – ikon;assets/sprites/icons/imp_panteon.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;Légió;imp_praetorium;Praetorium;assets/sprites/buildings/imp_praetorium.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: imp_praetorium_team.png. A légió parancsnoksága: praetoriánusok és Centurio-mechák."
+;Épület-ikon;Vasbirodalom;Légió;imp_praetorium;Praetorium – ikon;assets/sprites/icons/imp_praetorium.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Épület;Vasbirodalom;Lélek;imp_lelekkut;Lélekkút;assets/sprites/buildings/imp_lelekkut.png;kb. alapterület×32 px + magasság;4 álló-animáció + 4 építési fázis;"alapterület 3×3 csempe; csapatszín-maszk: imp_lelekkut_team.png. Lélekfénnyel izzó kút: állandó szellemlégiósok és szellemkolosszusok."
+;Épület-ikon;Vasbirodalom;Lélek;imp_lelekkut;Lélekkút – ikon;assets/sprites/icons/imp_lelekkut.png;72×52;1;"építés-menü / kijelölés; csapatszín-maszk: _team.png"
+;Egység;Vasbirodalom;;imp_fabrikator;Fabrikátor;assets/sprites/units/imp_fabrikator.png;48×46 / képkocka;"idle 4, walk 6, attack 6, death 6, work 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_fabrikator_team.png. Pókszerű munkásgép. Épít, gyűjt, és javítja az épületeket és a gépeket (jobb klikk a sérül
+;Egység-ikon;Vasbirodalom;;imp_fabrikator;Fabrikátor – ikon;assets/sprites/icons/imp_fabrikator.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_fabrikator;Fabrikátor – arckép;assets/portraits/imp_fabrikator.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_legios;Légiós;assets/sprites/units/imp_legios.png;92×92 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_legios_team.png. Kis lépegetőtestbe zárt légiós-szellem, scutummal és gladiusszal.
+;Egység-ikon;Vasbirodalom;;imp_legios;Légiós – ikon;assets/sprites/icons/imp_legios.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_legios;Légiós – arckép;assets/portraits/imp_legios.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_ballistarius;Ballistarius;assets/sprites/units/imp_ballistarius.png;92×92 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_ballistarius_team.png. Kis gép vállra szerelt íjpuskával.
+;Egység-ikon;Vasbirodalom;;imp_ballistarius;Ballistarius – ikon;assets/sprites/icons/imp_ballistarius.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_ballistarius;Ballistarius – arckép;assets/portraits/imp_ballistarius.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_szellemidezo;Szellemidéző;assets/sprites/units/imp_szellemidezo.png;88×90 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_szellemidezo_team.png. Lélekmentő gép-pap. A csatatér tetemeiből lélekhorgonyt ment, és szellemlégióst támaszt.
+;Egység-ikon;Vasbirodalom;;imp_szellemidezo;Szellemidéző – ikon;assets/sprites/icons/imp_szellemidezo.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_szellemidezo;Szellemidéző – arckép;assets/portraits/imp_szellemidezo.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;Légió;imp_centurio;Centurio-mecha;assets/sprites/units/imp_centurio.png;122×124 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_centurio_team.png. Közepes lépegető mecha forgócsöves gépágyúval.
+;Egység-ikon;Vasbirodalom;Légió;imp_centurio;Centurio-mecha – ikon;assets/sprites/icons/imp_centurio.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;Légió;imp_centurio;Centurio-mecha – arckép;assets/portraits/imp_centurio.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_aquila;Aquila-drón;assets/sprites/units/imp_aquila.png;94×128 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_aquila_team.png. Sas formájú repülő gép.
+;Egység-ikon;Vasbirodalom;;imp_aquila;Aquila-drón – ikon;assets/sprites/icons/imp_aquila.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_aquila;Aquila-drón – arckép;assets/portraits/imp_aquila.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;Gépisten;imp_kolosszus;Kolosszus;assets/sprites/units/imp_kolosszus.png;140×158 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_kolosszus_team.png. Óriás ostrom-mecha. Ostrom-módban mozdulatlan, de messzebbre és nagyobbat lő.
+;Egység-ikon;Vasbirodalom;Gépisten;imp_kolosszus;Kolosszus – ikon;assets/sprites/icons/imp_kolosszus.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;Gépisten;imp_kolosszus;Kolosszus – arckép;assets/portraits/imp_kolosszus.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;Lélek;imp_szellemlegios;Szellemlégiós;assets/sprites/units/imp_szellemlegios.png;88×86 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_szellemlegios_team.png. Egy elesett harcos lelke, a Szellemidéző akaratához kötve.
+;Egység-ikon;Vasbirodalom;Lélek;imp_szellemlegios;Szellemlégiós – ikon;assets/sprites/icons/imp_szellemlegios.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;Lélek;imp_szellemlegios;Szellemlégiós – arckép;assets/portraits/imp_szellemlegios.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;Lélek;imp_szellemkolosszus;Szellemkolosszus;assets/sprites/units/imp_szellemkolosszus.png;150×152 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_szellemkolosszus_team.png. Egy elesett óriás lelke.
+;Egység-ikon;Vasbirodalom;Lélek;imp_szellemkolosszus;Szellemkolosszus – ikon;assets/sprites/icons/imp_szellemkolosszus.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;Lélek;imp_szellemkolosszus;Szellemkolosszus – arckép;assets/portraits/imp_szellemkolosszus.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_hos_livia;Livia Varr (HŐS);assets/sprites/units/imp_hos_livia.png;100×98 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_hos_livia_team.png. Egykori orvos, a lélekhorgonyokat mentő légió tisztje.
+;Egység-ikon;Vasbirodalom;;imp_hos_livia;Livia Varr – ikon;assets/sprites/icons/imp_hos_livia.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_hos_livia;Livia Varr – arckép (HŐS);assets/portraits/imp_hos_livia.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_hos_nera;Nera (HŐS);assets/sprites/units/imp_hos_nera.png;96×96 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";"csapatszín-maszk: imp_hos_nera_team.png. Livia lánya: gyermekként került géptestbe; hetven év tapasztalattal, de a birodalmi jog sz"
+;Egység-ikon;Vasbirodalom;;imp_hos_nera;Nera – ikon;assets/sprites/icons/imp_hos_nera.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_hos_nera;Nera – arckép (HŐS);assets/portraits/imp_hos_nera.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;Gépisten;imp_onager;Onager-mecha;assets/sprites/units/imp_onager.png;100×92 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_onager_team.png. Négylábú hajítógép: messzire hord, épületek és csoportok ellen.
+;Egység-ikon;Vasbirodalom;Gépisten;imp_onager;Onager-mecha – ikon;assets/sprites/icons/imp_onager.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;Gépisten;imp_onager;Onager-mecha – arckép;assets/portraits/imp_onager.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_hos_cassius;Cassius Ferrum legátus (HŐS);assets/sprites/units/imp_hos_cassius.png;138×146 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_hos_cassius_team.png. A Hetedik Légió parancsnoka nehéz géptestben: roham, fegyelem és Ordan haragja.
+;Egység-ikon;Vasbirodalom;;imp_hos_cassius;Cassius Ferrum legátus – ikon;assets/sprites/icons/imp_hos_cassius.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_hos_cassius;Cassius Ferrum legátus – arckép (HŐS);assets/portraits/imp_hos_cassius.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;;imp_lelekhorgony;Lélekhorgony;assets/sprites/units/imp_lelekhorgony.png;82×80 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_lelekhorgony_team.png. Egy elesett gép lelke. Egy Fabrikátor 40 mp-en belül újraépítheti (javítással) – különben 
+;Egység-ikon;Vasbirodalom;;imp_lelekhorgony;Lélekhorgony – ikon;assets/sprites/icons/imp_lelekhorgony.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;;imp_lelekhorgony;Lélekhorgony – arckép;assets/portraits/imp_lelekhorgony.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Egység;Vasbirodalom;Légió;imp_praetorianus;Praetoriánus;assets/sprites/units/imp_praetorianus.png;a hasonló egységekéhez igazodva;"idle 4, walk 6, attack 6, death 6 (+ cast 6 varázslóknál); 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";csapatszín-maszk: imp_praetorianus_team.png. Elit gépharcos aranyozott páncélban: a légió gerince.
+;Egység-ikon;Vasbirodalom;Légió;imp_praetorianus;Praetoriánus – ikon;assets/sprites/icons/imp_praetorianus.png;72×52;1;kijelölés, képzés-menü
+;Arckép;Vasbirodalom;Légió;imp_praetorianus;Praetoriánus – arckép;assets/portraits/imp_praetorianus.png;128×128 (a játék 64×64-re kicsinyíti);1 (később: 3–4 kockás beszéd-animáció);"WC2/SC-szerű portré a kijelölő panelen; a hősöknél a bal felső sarokban is"
+;Kutatás-ikon;Vasbirodalom;;imp_legiopengek;Légiós pengék;assets/research/imp_legiopengek.png;72×52;1;+2 sebzés a közelharci egységeknek.
+;Kutatás-ikon;Vasbirodalom;;imp_gyorstoltes;Gyorstöltés;assets/research/imp_gyorstoltes.png;72×52;1;+2 sebzés a távolsági egységeknek.
+;Kutatás-ikon;Vasbirodalom;;imp_edzett_acel;Edzett acél;assets/research/imp_edzett_acel.png;72×52;1;+1 páncél minden gépnek.
+;Kutatás-ikon;Vasbirodalom;;imp_megerositett_vaz;Megerősített váz;assets/research/imp_megerositett_vaz.png;72×52;1;+30 életerő minden gépnek.
+;Kutatás-ikon;Vasbirodalom;;imperium_felemelkedes;Felemelkedés;assets/research/imperium_felemelkedes.png;72×52;1;A nép fejlődési irányt választ (3 közül, végleg). Feltétel: 3 kész épület a főépületen kívül.
+;Képesség-ikon;Croftianok;;atvaltozas;Mutáció: Páncélbogár;assets/abilities/atvaltozas.png;64×64 (37×37-re kicsinyítve);1;kinek: Karmos. A Karmos gubóba zárkózik, és páncélos bogárrá alakul.
+;Képesség-ikon;Croftianok;;beasas;Beásás;assets/abilities/beasas.png;64×64 (37×37-re kicsinyítve);1;kinek: Csápszolga, Karmos, Ostromtaréj, Páncélbogár, Tüskeköpő, Vadászkarmos, Ásóféreg. A föld alá ássa magát: láthatatlan (csak felfedő találja meg), gyorsan gyógyul, 
+;Képesség-ikon;Croftianok;Kórus;csapsopres;Csápsöprés;assets/abilities/csapsopres.png;64×64 (37×37-re kicsinyítve);1;kinek: Csápos horror. Körbecsapó csápok: nagy sebzés és lassítás. Ára: 40 életerő.
+;Képesség-ikon;Croftianok;;gubo_p;Gubó;assets/abilities/gubo_p.png;64×64 (37×37-re kicsinyítve);1;"kinek: Gubó. Mutálódik; ha elpusztul, az átalakulás elvész."
+;Képesség-ikon;Croftianok;;h_keth_csap;Csápcsapás;assets/abilities/h_keth_csap.png;64×64 (37×37-re kicsinyítve);1;kinek: Keth. Savas csapás egy célpontra.
+;Képesség-ikon;Croftianok;;h_keth_kod;Őrület köde;assets/abilities/h_keth_kod.png;64×64 (37×37-re kicsinyítve);1;kinek: Keth. Elmét bomlasztó spórafelhő.
+;Képesség-ikon;Croftianok;;h_keth_korushang;Kórus-hang;assets/abilities/h_keth_korushang.png;64×64 (37×37-re kicsinyítve);1;kinek: Keth. A közeli szövetségesek gyorsabbak és regenerálódnak.
+;Képesség-ikon;Croftianok;;h_keth_sokasag;A sokaság;assets/abilities/h_keth_sokasag.png;64×64 (37×37-re kicsinyítve);1;kinek: Keth. Végső képesség: hat Karmos kel ki.
+;Képesség-ikon;Croftianok;;h_ssa_felho;Spórafelhő;assets/abilities/h_ssa_felho.png;64×64 (37×37-re kicsinyítve);1;kinek: Ssarha, a Raj Hangja. Fojtó spórafelhő.
+;Képesség-ikon;Croftianok;;h_ssa_oltes;Hús-öltés;assets/abilities/h_ssa_oltes.png;64×64 (37×37-re kicsinyítve);1;kinek: Ssarha, a Raj Hangja. Automatikusan összefoltozza a közeli sérült élő szövetségeseket.
+;Képesség-ikon;Croftianok;;h_ssa_rajtudat;Rajtudat;assets/abilities/h_ssa_rajtudat.png;64×64 (37×37-re kicsinyítve);1;kinek: Ssarha, a Raj Hangja. A raj egy akarattal mozog: gyorsabb és erősebb.
+;Képesség-ikon;Croftianok;;h_ssa_remszarnyak;Rémszárnyak;assets/abilities/h_ssa_remszarnyak.png;64×64 (37×37-re kicsinyítve);1;kinek: Ssarha, a Raj Hangja. Végső képesség: négy szárnyas rém érkezik.
+;Képesség-ikon;Croftianok;;h_vor_larvak;Lárvahullám;assets/abilities/h_vor_larvak.png;64×64 (37×37-re kicsinyítve);1;kinek: Vor-Uthul. Karmosokat költ ki a saját testéből.
+;Képesség-ikon;Croftianok;;h_vor_pancel;Mutáns páncél;assets/abilities/h_vor_pancel.png;64×64 (37×37-re kicsinyítve);1;kinek: Vor-Uthul. Kitinlemezek nőnek a mester testén.
+;Képesség-ikon;Croftianok;;h_vor_robbanas;Kitinrobbanás;assets/abilities/h_vor_robbanas.png;64×64 (37×37-re kicsinyítve);1;kinek: Vor-Uthul. Végső képesség: kitinszilánkok repesznek szét a mester körül.
+;Képesség-ikon;Croftianok;;h_vor_sugar;Savsugár;assets/abilities/h_vor_sugar.png;64×64 (37×37-re kicsinyítve);1;kinek: Vor-Uthul. Maró savsugár.
+;Képesség-ikon;Croftianok;Páncél;kitinroham;Kitinroham;assets/abilities/kitinroham.png;64×64 (37×37-re kicsinyítve);1;kinek: Páncélbogár. 5 mp-es roham: +60% sebesség, +30% sebzés. Ára: 20 életerő.
+;Képesség-ikon;Croftianok;;korus_szem;A Kórus szeme;assets/abilities/korus_szem.png;64×64 (37×37-re kicsinyítve);1;kinek: Szemhordozó. Felfedi a közeli rejtőzködő és beásott ellenségeket.
+;Képesség-ikon;Croftianok;Kórus;oruletkod;Őrület köde;assets/abilities/oruletkod.png;64×64 (37×37-re kicsinyítve);1;kinek: Agyfaló. Elmét bomlasztó spórafelhő: 50% lassítás és folyamatos sebzés 6 mp-ig.
+;Képesség-ikon;Croftianok;;ragadozo_zuhanas;Ragadozó zuhanás;assets/abilities/ragadozo_zuhanas.png;64×64 (37×37-re kicsinyítve);1;kinek: Szárnyas rém. Lecsap egy célpontra. Ára: 15 életerő.
+;Képesség-ikon;Croftianok;Raj;robbanas;Önrobbantás;assets/abilities/robbanas.png;64×64 (37×37-re kicsinyítve);1;kinek: Robbanó atka. Felrobban: nagy sebzés a közelben – az atka elpusztul.
+;Képesség-ikon;Croftianok;;savtocsa;Savtócsa;assets/abilities/savtocsa.png;64×64 (37×37-re kicsinyítve);1;kinek: Savköpő. Maró savtócsa: sebez és lassít. Ára: 30 életerő.
+;Képesség-ikon;Croftianok;;tuskezapor;Tüskezápor;assets/abilities/tuskezapor.png;64×64 (37×37-re kicsinyítve);1;kinek: Tüskeköpő. Csonttüskék záporoznak a területre. Ára: 20 életerő.
+;Képesség-ikon;Micéliák;Álom;alomspora;Álomspóra;assets/abilities/alomspora.png;64×64 (37×37-re kicsinyítve);1;kinek: Álomszövő. Altató spórafelhő: a közeli ellenség 3 mp-re elalszik.
+;Képesség-ikon;Micéliák;Álom;gyokerkotes;Gyökérkötés;assets/abilities/gyokerkotes.png;64×64 (37×37-re kicsinyítve);1;kinek: Fagomba-óriás, Álomgomba-sámán. Gyökerek fonják körbe az ellenséget: 4 mp-ig szinte mozdulni sem tud.
+;Képesség-ikon;Micéliák;;h_gya_halo;Gyökérháló;assets/abilities/h_gya_halo.png;64×64 (37×37-re kicsinyítve);1;kinek: A Gyökéranya. Gyökerek fonják gúzsba az ellenséget.
+;Képesség-ikon;Micéliák;;h_gya_melygyoker;Mélygyökér;assets/abilities/h_gya_melygyoker.png;64×64 (37×37-re kicsinyítve);1;kinek: A Gyökéranya. Gyökeret ereszt: lassú, de szinte elpusztíthatatlan.
+;Képesség-ikon;Micéliák;;h_gya_rengés;Gyökérrengés;assets/abilities/h_gya_rengés.png;64×64 (37×37-re kicsinyítve);1;kinek: A Gyökéranya. Végső képesség: a föld alól feltörő gyökerek mindenkit megbénítanak.
+;Képesség-ikon;Micéliák;;h_gya_talaj;Tápláló talaj;assets/abilities/h_gya_talaj.png;64×64 (37×37-re kicsinyítve);1;kinek: A Gyökéranya. A közeli szövetségesek regenerációja és páncélja nő.
+;Képesség-ikon;Micéliák;;h_mor_ebredes;Az Emlékkert ébredése;assets/abilities/h_mor_ebredes.png;64×64 (37×37-re kicsinyítve);1;kinek: Mór. Végső képesség: két Óriáspöfeteg sarjad.
+;Képesség-ikon;Micéliák;;h_mor_emlekkert;Emlékkert;assets/abilities/h_mor_emlekkert.png;64×64 (37×37-re kicsinyítve);1;kinek: Mór. A közeli szövetségesek gyorsabban regenerálódnak.
+;Képesség-ikon;Micéliák;;h_mor_gyogyspora;Gyógyspóra;assets/abilities/h_mor_gyogyspora.png;64×64 (37×37-re kicsinyítve);1;kinek: Mór. Automatikusan gyógyítja a közeli sérült élő szövetségeseket.
+;Képesség-ikon;Micéliák;;h_mor_gyokerkotes;Gyökérkötés;assets/abilities/h_mor_gyokerkotes.png;64×64 (37×37-re kicsinyítve);1;kinek: Mór. Gyökerek fonják körbe az ellenséget.
+;Képesség-ikon;Micéliák;;h_spo_kopeny;Spóraköpeny;assets/abilities/h_spo_kopeny.png;64×64 (37×37-re kicsinyítve);1;kinek: Sporin, a Bomlasztó. Spórafelhőbe burkolózik: gyorsabb, és a lövések elvétik.
+;Képesség-ikon;Micéliák;;h_spo_raj;Pöfeteg-raj;assets/abilities/h_spo_raj.png;64×64 (37×37-re kicsinyítve);1;kinek: Sporin, a Bomlasztó. Végső képesség: hat pöfeteg sarjad – robbanó spórazsákok.
+;Képesség-ikon;Micéliák;;h_spo_rothadas;Rothadás;assets/abilities/h_spo_rothadas.png;64×64 (37×37-re kicsinyítve);1;kinek: Sporin, a Bomlasztó. Minden elrothad a területen.
+;Képesség-ikon;Micéliák;;h_spo_tuske;Bomlasztó tüske;assets/abilities/h_spo_tuske.png;64×64 (37×37-re kicsinyítve);1;kinek: Sporin, a Bomlasztó. Rothasztó spóratüske.
+;Képesség-ikon;Micéliák;;kalapfal;Kalapfal;assets/abilities/kalapfal.png;64×64 (37×37-re kicsinyítve);1;kinek: Kalapos őr. A kalap pajzzsá feszül: +4 páncél, -40% távolsági sebzés, de lassú.
+;Képesség-ikon;Micéliák;;osszeolvadas;Összeolvadás;assets/abilities/osszeolvadas.png;64×64 (37×37-re kicsinyítve);1;kinek: Pöfeteg. Három közeli Pöfeteg egyetlen Óriáspöfeteggé olvad.
+;Képesség-ikon;Micéliák;;osztodas3;Osztódás (3 ölés);assets/abilities/osztodas3.png;64×64 (37×37-re kicsinyítve);1;kinek: Pöfeteg. Minden három legyőzött ellenség után kettéosztódik.
+;Képesség-ikon;Micéliák;;osztodas4;Osztódás (4 ölés);assets/abilities/osztodas4.png;64×64 (37×37-re kicsinyítve);1;kinek: Kalapos őr, Rothasztó, Tetemgomba, Tüskegomba-lövész. Minden négy legyőzött ellenség után kettéosztódik.
+;Képesség-ikon;Micéliák;;p_halozati_gyujtes;Hálózati gyűjtés;assets/abilities/p_halozati_gyujtes.png;64×64 (37×37-re kicsinyítve);1;kinek: Spóraszedő. A terhét bármelyik hálózatba kötött épületbe leadhatja.
+;Képesség-ikon;Micéliák;;sporaeso;Spóraeső;assets/abilities/sporaeso.png;64×64 (37×37-re kicsinyítve);1;kinek: Lebegő pöfeteg. Spóraeső a területre. Ára: 3 spóra.
+;Képesség-ikon;Micéliák;;sporarobbanas;Spórarobbanás;assets/abilities/sporarobbanas.png;64×64 (37×37-re kicsinyítve);1;kinek: Óriáspöfeteg. Mérgező spórafelhő robban ki belőle. Ára: 3 spóra.
+;Képesség-ikon;Micéliák;;sporatuske;Spóratüske;assets/abilities/sporatuske.png;64×64 (37×37-re kicsinyítve);1;kinek: Tüskegomba-lövész. Mérgező tüske: sebez és lassít. Ára: 2 spóra.
+;Képesség-ikon;Szürke elfek;;csillagdarda;Csillagdárda;assets/abilities/csillagdarda.png;64×64 (37×37-re kicsinyítve);1;kinek: Csillagdárdás. Célzott, csillagérc-hegyű dárda: 45 sebzés és lassítás.
+;Képesség-ikon;Szürke elfek;;fenylepes;Fénylépés;assets/abilities/fenylepes.png;64×64 (37×37-re kicsinyítve);1;kinek: Raptorlovas, Tollas harcos. Fénnyé válik, és a kijelölt pontra lép (7 mező).
+;Képesség-ikon;Szürke elfek;;fenylepes_munkas;Fénylépés;assets/abilities/fenylepes_munkas.png;64×64 (37×37-re kicsinyítve);1;kinek: Kőfaragó. Menekülő teleport (5 mező).
+;Képesség-ikon;Szürke elfek;;h_itz_csapas;Földrengető csapás;assets/abilities/h_itz_csapas.png;64×64 (37×37-re kicsinyítve);1;kinek: Itzcoatl. A hadúr a földbe sújt: a körülötte állókat megsebzi és megbénítja.
+;Képesség-ikon;Szürke elfek;;h_itz_darda;Obszidián-dárda;assets/abilities/h_itz_darda.png;64×64 (37×37-re kicsinyítve);1;kinek: Itzcoatl. Hajított obszidián-dárda: nagy sebzés, lassítás.
+;Képesség-ikon;Szürke elfek;;h_itz_jelenlet;A hadúr jelenléte;assets/abilities/h_itz_jelenlet.png;64×64 (37×37-re kicsinyítve);1;kinek: Itzcoatl. A közeli szövetségesek páncélja és sebzése nő.
+;Képesség-ikon;Szürke elfek;;h_itz_kukulkan;Quetzlaru alakja;assets/abilities/h_itz_kukulkan.png;64×64 (37×37-re kicsinyítve);1;kinek: Itzcoatl. Végső képesség: a tollas kígyóisten ereje – kétszeres sebzés, +6 páncél.
+;Képesség-ikon;Szürke elfek;;h_szelai_csillagorok;A Kilenc Lépcső őrei;assets/abilities/h_szelai_csillagorok.png;64×64 (37×37-re kicsinyítve);1;kinek: Szelai. Végső képesség: négy tollas harcos-szellem.
+;Képesség-ikon;Szürke elfek;;h_szelai_levalasztas;Leválasztás;assets/abilities/h_szelai_levalasztas.png;64×64 (37×37-re kicsinyítve);1;kinek: Szelai. Rezonanciacsapás, amely egy célpontot kiszakít a hálózatából.
+;Képesség-ikon;Szürke elfek;;h_szelai_napvihar;Napvihar;assets/abilities/h_szelai_napvihar.png;64×64 (37×37-re kicsinyítve);1;kinek: Szelai. Izzó meteorpor-zápor.
+;Képesség-ikon;Szürke elfek;;h_szelai_rezonancia;Rezonancia;assets/abilities/h_szelai_rezonancia.png;64×64 (37×37-re kicsinyítve);1;kinek: Szelai. A közeli szövetségesek sebzése nő.
+;Képesség-ikon;Szürke elfek;;h_xochi_harmonia;Harmónia;assets/abilities/h_xochi_harmonia.png;64×64 (37×37-re kicsinyítve);1;kinek: Xochi. A közeli szövetségesek életereje és pajzsa gyorsabban töltődik.
+;Képesség-ikon;Szürke elfek;;h_xochi_hullam;Rezonanciahullám;assets/abilities/h_xochi_hullam.png;64×64 (37×37-re kicsinyítve);1;kinek: Xochi. Jádeszínű rezgés tépi szét a területet.
+;Képesség-ikon;Szürke elfek;;h_xochi_jadeor;Jádeőr;assets/abilities/h_xochi_jadeor.png;64×64 (37×37-re kicsinyítve);1;kinek: Xochi. Élő jádeszobrot ébreszt, amely a hívójáért harcol.
+;Képesség-ikon;Szürke elfek;;h_xochi_napkorona;Napkorona;assets/abilities/h_xochi_napkorona.png;64×64 (37×37-re kicsinyítve);1;kinek: Xochi. Végső képesség: a területen minden szövetséges gyógyul.
+;Képesség-ikon;Szürke elfek;;jade_celzas;Jáde-célzás;assets/abilities/jade_celzas.png;64×64 (37×37-re kicsinyítve);1;kinek: Jáde-íjász. 6 mp-ig +2 lőtáv és +20% sebzés.
+;Képesség-ikon;Szürke elfek;;jadetest;Jádetest;assets/abilities/jadetest.png;64×64 (37×37-re kicsinyítve);1;kinek: Jádeőr. A varázslatok csak fele sebzést okoznak neki.
+;Képesség-ikon;Szürke elfek;Jaguár-harcosok;lesallas;Les;assets/abilities/lesallas.png;64×64 (37×37-re kicsinyítve);1;kinek: Jaguár-orvlövész. Lesállás: nem mozog, de +50% sebzés és +1 lőtáv.
+;Képesség-ikon;Szürke elfek;Csillagvizsgálók;meteorhivas;Meteorhívás;assets/abilities/meteorhivas.png;64×64 (37×37-re kicsinyítve);1;kinek: Csillagjós. Meteorzápor: 3 mp alatt 105 sebzés a területen.
+;Képesség-ikon;Szürke elfek;Nap temploma;napfeny_aldas;Napfény-áldás;assets/abilities/napfeny_aldas.png;64×64 (37×37-re kicsinyítve);1;kinek: Nap főpapja. Automatikusan gyógyítja a közeli sebesült szövetségeseket.
+;Képesség-ikon;Szürke elfek;Csillagvizsgálók;napfokusz;Napfókusz;assets/abilities/napfokusz.png;64×64 (37×37-re kicsinyítve);1;kinek: Obszidián-vető. Telepítés: nem mozog, de +3 lőtáv és +20% sebzés.
+;Képesség-ikon;Szürke elfek;Nap temploma;napvihar;Napvihar;assets/abilities/napvihar.png;64×64 (37×37-re kicsinyítve);1;kinek: Napszóró pap. Izzó meteorpor-zápor: 4 mp alatt 88 sebzés minden ellenségnek a területen.
+;Képesség-ikon;Szürke elfek;Jaguár-harcosok;tollkorona_uvoltes;Tollkorona-üvöltés;assets/abilities/tollkorona_uvoltes.png;64×64 (37×37-re kicsinyítve);1;kinek: Tollaskoronás rex. Rémisztő üvöltés: a közeli ellenségek lelassulnak.
+;Képesség-ikon;Szürke elfek;Jaguár-harcosok;vagta;Vágta;assets/abilities/vagta.png;64×64 (37×37-re kicsinyítve);1;kinek: Raptorlovas. A gyíkhátas 4 mp-ig 80%-kal gyorsabb.
+;Képesség-ikon;Szürke elfek;Nap temploma;zuhanorepules;Zuhanórepülés;assets/abilities/zuhanorepules.png;64×64 (37×37-re kicsinyítve);1;kinek: Quetzal. Lecsap a földre: a közeli ellenségek sebződnek és megtántorodnak.
+;Képesség-ikon;Ursanok;;beszallas;Helyőrség;assets/abilities/beszallas.png;64×64 (37×37-re kicsinyítve);1;"kinek: Dárdaőr, Harci kürtös, Medvebőrös berserker, Pajzshordozó, Rúnapap, Szigonyvető, Telepes. A kijelölt egységek beszállnak a legközelebbi helyőrség-épületbe; ott védve vann"
+;Képesség-ikon;Ursanok;;dardafal;Dárdafal;assets/abilities/dardafal.png;64×64 (37×37-re kicsinyítve);1;kinek: Dárdaőr. Leszúrt dárdák: nem mozog, de +60% sebzés és +2 páncél.
+;Képesség-ikon;Ursanok;;gyogyitas;Rúnás gyógyítás;assets/abilities/gyogyitas.png;64×64 (37×37-re kicsinyítve);1;kinek: Rúnapap. Automatikusan gyógyítja a közeli sérült élő szövetségeseket.
+;Képesség-ikon;Ursanok;;h_bja_falka;A falka ereje;assets/abilities/h_bja_falka.png;64×64 (37×37-re kicsinyítve);1;kinek: Bjarka, a Vadak Ura. A közeli szövetségesek (és vadak) sebzése nő.
+;Képesség-ikon;Ursanok;;h_bja_mamutcsorda;Mamutcsorda;assets/abilities/h_bja_mamutcsorda.png;64×64 (37×37-re kicsinyítve);1;kinek: Bjarka, a Vadak Ura. Végső képesség: két harci mamut csatlakozik 40 másodpercre.
+;Képesség-ikon;Ursanok;;h_bja_medve;Kardfogú hívása;assets/abilities/h_bja_medve.png;64×64 (37×37-re kicsinyítve);1;kinek: Bjarka, a Vadak Ura. Kardfogú tigrist hív a hegyekből.
+;Képesség-ikon;Ursanok;;h_bja_szigony;Vadászszigony;assets/abilities/h_bja_szigony.png;64×64 (37×37-re kicsinyítve);1;kinek: Bjarka, a Vadak Ura. Szigonyt vet egy ellenségbe: sebzi és rövid időre megbénítja.
+;Képesség-ikon;Ursanok;;h_hja_bunda;Téli bundák;assets/abilities/h_hja_bunda.png;64×64 (37×37-re kicsinyítve);1;kinek: Hjalmar Fagyjós. A közeli szövetségesek páncélja és regenerációja nő.
+;Képesség-ikon;Ursanok;;h_hja_fagyott_ido;Megfagyott idő;assets/abilities/h_hja_fagyott_ido.png;64×64 (37×37-re kicsinyítve);1;kinek: Hjalmar Fagyjós. Végső képesség: minden közeli ellenség jégbe dermed.
+;Képesség-ikon;Ursanok;;h_hja_szilank;Jégszilánk;assets/abilities/h_hja_szilank.png;64×64 (37×37-re kicsinyítve);1;kinek: Hjalmar Fagyjós. Fagyos szilánk: sebez és erősen lassít.
+;Képesség-ikon;Ursanok;;h_hja_vihar;Hóvihar;assets/abilities/h_hja_vihar.png;64×64 (37×37-re kicsinyítve);1;kinek: Hjalmar Fagyjós. Jeges vihar csap le a területre.
+;Képesség-ikon;Ursanok;;h_ragna_esku;Az eskü súlya;assets/abilities/h_ragna_esku.png;64×64 (37×37-re kicsinyítve);1;kinek: Ragna Kőváll. A közeli szövetségesek páncélja nő.
+;Képesség-ikon;Ursanok;;h_ragna_hosszutel;Hosszú tél;assets/abilities/h_ragna_hosszutel.png;64×64 (37×37-re kicsinyítve);1;kinek: Ragna Kőváll. Végső képesség: fagyos vihar, amely lassít és sebez.
+;Képesség-ikon;Ursanok;;h_ragna_pajzsfal;Pajzsfal;assets/abilities/h_ragna_pajzsfal.png;64×64 (37×37-re kicsinyítve);1;kinek: Ragna Kőváll. A pajzs először a mellette állót védi: kevesebb távolsági sebzés, több páncél.
+;Képesség-ikon;Ursanok;;h_ragna_roham;Pajzsroham;assets/abilities/h_ragna_roham.png;64×64 (37×37-re kicsinyítve);1;kinek: Ragna Kőváll. Ragna nekiront egy ellenségnek: sebzi és rövid időre megbénítja.
+;Képesség-ikon;Ursanok;Berserker-klán;harci_kurt;Harci kürt;assets/abilities/harci_kurt.png;64×64 (37×37-re kicsinyítve);1;kinek: Harci kürtös. Kürtszó (egyszerre egy): a közeli szövetségesek +15% sebzés és +10% sebesség.
+;Képesség-ikon;Ursanok;;horgonyszigony;Horgonyszigony;assets/abilities/horgonyszigony.png;64×64 (37×37-re kicsinyítve);1;kinek: Szigonyvető. Szigony egy ellenségbe: sebez és 1,2 mp-re megbénít.
+;Képesség-ikon;Ursanok;Berserker-klán;medveuvoltes;Medveüvöltés;assets/abilities/medveuvoltes.png;64×64 (37×37-re kicsinyítve);1;kinek: Medvealakváltó. Rettentő üvöltés: sebez és megbénítja a közeli ellenséget.
+;Képesség-ikon;Ursanok;;pajzsfal;Pajzsfal;assets/abilities/pajzsfal.png;64×64 (37×37-re kicsinyítve);1;kinek: Pajzshordozó. Összezárt pajzsok: -60% távolsági sebzés, +2 páncél, de fele sebesség.
+;Képesség-ikon;Ursanok;Tundra hívása;roham;Roham;assets/abilities/roham.png;64×64 (37×37-re kicsinyítve);1;kinek: Bölénylovas, Csordavezér bika, Groomi, Groomi-anya, Groomi-fióka, Kardfogú lovas. 4 mp-ig +70% sebesség és +30% sebzés.
+;Képesség-ikon;Ursanok;;runako;Rúnakő;assets/abilities/runako.png;64×64 (37×37-re kicsinyítve);1;kinek: Rúnapap. Rúnakövet állít: a közeli szövetségesek páncélja és gyógyulása nő.
+;Képesség-ikon;Ursanok;;runako_aura;Rúnakő;assets/abilities/runako_aura.png;64×64 (37×37-re kicsinyítve);1;kinek: Rúnakő. A közeli szövetségesek páncélja és gyógyulása nő.
+;Képesség-ikon;Ursanok;;szellemtest;Szellemtest;assets/abilities/szellemtest.png;64×64 (37×37-re kicsinyítve);1;"kinek: Kardfogú tigris, Szellemfarkas, Szellemkolosszus, Szellemlégiós. Idézett lény; idővel szertefoszlik."
+;Képesség-ikon;Ursanok;Tundra hívása;taposas;Taposás;assets/abilities/taposas.png;64×64 (37×37-re kicsinyítve);1;kinek: Csordavezér bika, Harci mammut, Rúnaóriás. A mamut a földbe dobbant: sebez és megbénít.
+;Képesség-ikon;Ursanok;Rúnakovácsok;telepites;Telepítés;assets/abilities/telepites.png;64×64 (37×37-re kicsinyítve);1;kinek: Ostromszán. A szán lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés.
+;Képesség-ikon;Ursanok;Berserker-klán;verszomj;Vérszomj;assets/abilities/verszomj.png;64×64 (37×37-re kicsinyítve);1;kinek: Medvealakváltó, Medvebőrös berserker. 7 mp-ig +50% sebzés, +20% sebesség, de -2 páncél.
+;Képesség-ikon;Ursanok;Tundra hívása;zuhano_csapas;Zuhanó csapás;assets/abilities/zuhano_csapas.png;64×64 (37×37-re kicsinyítve);1;kinek: Viharholló. A holló lecsap egy célpontra.
+;Képesség-ikon;Vasbirodalom;Légió;geppuska_sorozat;Gépágyú-sorozat;assets/abilities/geppuska_sorozat.png;64×64 (37×37-re kicsinyítve);1;kinek: Centurio-mecha. 5 mp-ig +70% sebzés, de lassabb.
+;Képesség-ikon;Vasbirodalom;;gyorstoltes_u;Gyorstöltés;assets/abilities/gyorstoltes_u.png;64×64 (37×37-re kicsinyítve);1;kinek: Ballistarius. 6 mp-ig +40% sebzés.
+;Képesség-ikon;Vasbirodalom;;h_cas_fegyelem;Vasfegyelem;assets/abilities/h_cas_fegyelem.png;64×64 (37×37-re kicsinyítve);1;kinek: Cassius Ferrum legátus. A közeli szövetségesek páncélja nő.
+;Képesség-ikon;Vasbirodalom;;h_cas_harag;Ordan haragja;assets/abilities/h_cas_harag.png;64×64 (37×37-re kicsinyítve);1;kinek: Cassius Ferrum legátus. Végső képesség: Ordan lelke tölti meg a legátus gépét.
+;Képesség-ikon;Vasbirodalom;;h_cas_legio;Mechalégió;assets/abilities/h_cas_legio.png;64×64 (37×37-re kicsinyítve);1;kinek: Cassius Ferrum legátus. Légiósokat rendel a frontra.
+;Képesség-ikon;Vasbirodalom;;h_cas_roham;Légió-roham;assets/abilities/h_cas_roham.png;64×64 (37×37-re kicsinyítve);1;kinek: Cassius Ferrum legátus. A legátus gépteste előrelendül, és szétszórja az ellenséget.
+;Képesség-ikon;Vasbirodalom;;h_livia_horgony;Horgonyjavítás;assets/abilities/h_livia_horgony.png;64×64 (37×37-re kicsinyítve);1;kinek: Livia Varr. Automatikusan javítja a közeli sérült gépeket.
+;Képesség-ikon;Vasbirodalom;;h_livia_legio;A légió fegyelme;assets/abilities/h_livia_legio.png;64×64 (37×37-re kicsinyítve);1;kinek: Livia Varr. A közeli szövetségesek sebzése nő.
+;Képesség-ikon;Vasbirodalom;;h_livia_lelegzet;Második lélegzet;assets/abilities/h_livia_lelegzet.png;64×64 (37×37-re kicsinyítve);1;kinek: Livia Varr. Végső képesség: a területen minden szövetséges gyógyul.
+;Képesség-ikon;Vasbirodalom;;h_livia_lelek;Lélekmentés;assets/abilities/h_livia_lelek.png;64×64 (37×37-re kicsinyítve);1;kinek: Livia Varr. Egy közeli tetemből szellemlégióst támaszt.
+;Képesség-ikon;Vasbirodalom;;h_nera_batorsag;Bátorság;assets/abilities/h_nera_batorsag.png;64×64 (37×37-re kicsinyítve);1;kinek: Nera. „Félek – és mégis megyek.” A közeli szövetségesek páncélja nő.
+;Képesség-ikon;Vasbirodalom;;h_nera_horgony;Szabad horgony;assets/abilities/h_nera_horgony.png;64×64 (37×37-re kicsinyítve);1;kinek: Nera. Végső képesség: Nera felszabadult lelke 10 másodpercre félelmetes erővé válik.
+;Képesség-ikon;Vasbirodalom;;h_nera_loves;Célzott lövés;assets/abilities/h_nera_loves.png;64×64 (37×37-re kicsinyítve);1;kinek: Nera. Messzire hordó, erős lövés.
+;Képesség-ikon;Vasbirodalom;;h_nera_toltes;Gyorstöltés;assets/abilities/h_nera_toltes.png;64×64 (37×37-re kicsinyítve);1;kinek: Nera. Rövid ideig nagyobb sebzés.
+;Képesség-ikon;Vasbirodalom;;lelekhorgony;Lélekhorgony;assets/abilities/lelekhorgony.png;64×64 (37×37-re kicsinyítve);1;kinek: Aquila-drón, Ballistarius, Centurio-mecha, Kolosszus, Légiós, Lélekhorgony, Onager-mecha, Praetoriánus. Ha a gép elpusztul, a lelke horgonyban marad 40 mp-ig – egy Fabrikátor újraépíth
+;Képesség-ikon;Vasbirodalom;;lelekidezes;Lélekidézés;assets/abilities/lelekidezes.png;64×64 (37×37-re kicsinyítve);1;kinek: Szellemidéző. Egy közeli tetemből szellemlégióst (nagy tetemből szellemkolosszust) támaszt.
+;Képesség-ikon;Vasbirodalom;Gépisten;ostrom_telepites;Ostrom-telepítés;assets/abilities/ostrom_telepites.png;64×64 (37×37-re kicsinyítve);1;kinek: Onager-mecha. Lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés.
+;Képesség-ikon;Vasbirodalom;Gépisten;ostrommod;Ostrom-mód;assets/abilities/ostrommod.png;64×64 (37×37-re kicsinyítve);1;kinek: Kolosszus. A Kolosszus letelepszik: nem mozog, de +3 lőtáv és +25% sebzés.
+;Képesség-ikon;Vasbirodalom;;p_gepjavitas;Gépjavítás és újratestesítés;assets/abilities/p_gepjavitas.png;64×64 (37×37-re kicsinyítve);1;kinek: Fabrikátor. Jobb klikk sérült gépre: javítás. A lélekhorgonyokat is újraépíti.
+;Képesség-ikon;Vasbirodalom;;testudo;Testudo;assets/abilities/testudo.png;64×64 (37×37-re kicsinyítve);1;kinek: Légiós, Praetoriánus. Teknősalakzat: -55% távolsági sebzés, +1 páncél, de lassú.
+;Képesség-ikon;Vasbirodalom;;zuhanobomba;Zuhanóbomba;assets/abilities/zuhanobomba.png;64×64 (37×37-re kicsinyítve);1;kinek: Aquila-drón. Bombát old ki maga alá.
+;Képesség-ikon;Wullof;;bumerang;Bumeráng;assets/abilities/bumerang.png;64×64 (37×37-re kicsinyítve);1;kinek: Bumerángvető. Visszatérő bumeráng: a célpont után még két közeli ellenséget eltalál (csökkenő 
+;Képesség-ikon;Wullof;;erdei_rejtozes;Erdei rejtőzés;assets/abilities/erdei_rejtozes.png;64×64 (37×37-re kicsinyítve);1;"kinek: Bumerángvető, Dárdavető portyázó, Gyűjtögető, Lándzsás harcos, Totemfaragó. Fák mellett, álló helyzetben láthatatlan (lesállás), amíg nem támad; a közeli el"
+;Képesség-ikon;Wullof;Groomi-fészek;fagykopes;Fagyköpés;assets/abilities/fagykopes.png;64×64 (37×37-re kicsinyítve);1;kinek: Groomi. Jeges köpet: 10 sebzés, és a célpont 2,5 mp-re megfagy (nem mozog, nem támad).
+;Képesség-ikon;Wullof;Bölény-csorda;felultetes;Felültetés;assets/abilities/felultetes.png;64×64 (37×37-re kicsinyítve);1;kinek: Bölény. A legközelebbi wullof gyalogos harcos felül a bölényre: Bölénylovas lesz belőlük
+;Képesség-ikon;Wullof;Groomi-fészek;fiokakeltes;Fiókakeltetés;assets/abilities/fiokakeltes.png;64×64 (37×37-re kicsinyítve);1;kinek: Groomi-anya. Két Groomi-fióka kel ki a tojásaiból 45 másodpercre.
+;Képesség-ikon;Wullof;;h_kur_het_ut;A Hét Út harcosai;assets/abilities/h_kur_het_ut.png;64×64 (37×37-re kicsinyítve);1;kinek: Kurrin Harcfőnök. Végső képesség: öt lándzsás harcos érkezik a Hét Útról.
+;Képesség-ikon;Wullof;;h_kur_taposas;Bölénytaposás;assets/abilities/h_kur_taposas.png;64×64 (37×37-re kicsinyítve);1;kinek: Kurrin Harcfőnök. A harci bölény a földbe dobbant: sebez és megbénít.
+;Képesség-ikon;Wullof;;h_kur_uvoltes;Harci üvöltés;assets/abilities/h_kur_uvoltes.png;64×64 (37×37-re kicsinyítve);1;kinek: Kurrin Harcfőnök. A közeli szövetségesek sebzése nő.
+;Képesség-ikon;Wullof;;h_kur_verfalka;Vérfalka;assets/abilities/h_kur_verfalka.png;64×64 (37×37-re kicsinyítve);1;kinek: Kurrin Harcfőnök. Vadászláz: rövid ideig gyorsabb és erősebb.
+;Képesség-ikon;Wullof;;h_tava_farkasok;Szellemfarkasok;assets/abilities/h_tava_farkasok.png;64×64 (37×37-re kicsinyítve);1;kinek: Tava. Szellem-dingókat idéz.
+;Képesség-ikon;Wullof;;h_tava_madar;A Hét Út hívása;assets/abilities/h_tava_madar.png;64×64 (37×37-re kicsinyítve);1;kinek: Tava. Végső: két viharkakadu érkezik 45 másodpercre.
+;Képesség-ikon;Wullof;;h_tava_nyil;Nyomkereső nyíl;assets/abilities/h_tava_nyil.png;64×64 (37×37-re kicsinyítve);1;kinek: Tava. Tava célzott lövése: nagy sebzés és lassítás egy ellenségen.
+;Képesség-ikon;Wullof;;h_tava_utenek;Útének;assets/abilities/h_tava_utenek.png;64×64 (37×37-re kicsinyítve);1;kinek: Tava. A közeli szövetségesek gyorsabban mozognak (és jobban védekeznek).
+;Képesség-ikon;Wullof;;h_var_falka;Szellemfalka;assets/abilities/h_var_falka.png;64×64 (37×37-re kicsinyítve);1;kinek: Varnu, a Holdsámán. Szellem-dingók falkáját hívja.
+;Képesség-ikon;Wullof;;h_var_holdfeny;Holdfény;assets/abilities/h_var_holdfeny.png;64×64 (37×37-re kicsinyítve);1;kinek: Varnu, a Holdsámán. Automatikusan gyógyítja a közeli sérült szövetségeseket.
+;Képesség-ikon;Wullof;;h_var_kod;Ősök köde;assets/abilities/h_var_kod.png;64×64 (37×37-re kicsinyítve);1;kinek: Varnu, a Holdsámán. Az ősök szellemei ködként fonják körül az ellenséget.
+;Képesség-ikon;Wullof;;h_var_telihold;Telihold;assets/abilities/h_var_telihold.png;64×64 (37×37-re kicsinyítve);1;kinek: Varnu, a Holdsámán. Végső képesség: telihold-fény gyógyít a területen.
+;Képesség-ikon;Wullof;;harci_enek;Harci ének;assets/abilities/harci_enek.png;64×64 (37×37-re kicsinyítve);1;kinek: Lándzsás harcos. Ének (egyszerre egy): a közeli szövetségesek +8% sebzés.
+;Képesség-ikon;Wullof;;holdgyogyitas;Holdfény-gyógyítás;assets/abilities/holdgyogyitas.png;64×64 (37×37-re kicsinyítve);1;kinek: Holdsámán, Álomjáró. Automatikusan gyógyítja a közeli sérült élő szövetségeseket.
+;Képesség-ikon;Wullof;Bölény-csorda;leszallas;Leszállás;assets/abilities/leszallas.png;64×64 (37×37-re kicsinyítve);1;kinek: Bölénylovas. A lovas leszáll: újra külön bölény és gyalogos harcos.
+;Képesség-ikon;Wullof;Ősök útja;osok_haragja;Ősök haragja;assets/abilities/osok_haragja.png;64×64 (37×37-re kicsinyítve);1;kinek: Termeszvár-óriás, Totemfaragó. Ének: a közeli szövetségesek +2 páncél.
+;Képesség-ikon;Wullof;;riado_futas;Riadófutás;assets/abilities/riado_futas.png;64×64 (37×37-re kicsinyítve);1;kinek: Emu. Az emu megriad és elszalad: 4 mp-ig +80% sebesség.
+;Képesség-ikon;Wullof;Groomi-fészek;savkopes;Savköpés;assets/abilities/savkopes.png;64×64 (37×37-re kicsinyítve);1;kinek: Groomi. Maró sav: 8 sebzés, majd 6 mp-en át másodpercenként 6 méregsebzés.
+;Képesség-ikon;Wullof;;szellemfarkasok;Szellemfarkasok;assets/abilities/szellemfarkasok.png;64×64 (37×37-re kicsinyítve);1;kinek: Holdsámán, Álomjáró. Két szellem-dingót idéz 30 másodpercre.
+;Képesség-ikon;Wullof;;taborkocsi;Vándortábor;assets/abilities/taborkocsi.png;64×64 (37×37-re kicsinyítve);1;kinek: Vándorbatyu. Felszedett tábor – bárhol letelepíthető.
+;Képesség-ikon;Wullof;;tomahawk;Dárdavetés;assets/abilities/tomahawk.png;64×64 (37×37-re kicsinyítve);1;kinek: Dárdavető portyázó. Dárdavetővel (woomera) hajított dárda: messzire repül, sebez és lassít.
+;Képesség-ikon;Wullof;Groomi-fészek;tuzkopes;Tűzköpés;assets/abilities/tuzkopes.png;64×64 (37×37-re kicsinyítve);1;kinek: Groomi. Lángcsóva: 26 sebzés a célpontra, fele a körülötte állókra.
+;Képesség-ikon;Wullof;;vadaszles;Vadászles;assets/abilities/vadaszles.png;64×64 (37×37-re kicsinyítve);1;kinek: Bumerángvető. Lesállás: nem mozog, de +2 lőtáv és +20% sebzés.
+;Képesség-ikon;Wullof;;vandor_enek;Vándorének;assets/abilities/vandor_enek.png;64×64 (37×37-re kicsinyítve);1;kinek: Dárdavető portyázó, Holdsámán. Ének (egyszerre egy): a közeli szövetségesek +10% sebesség.
+;Képesség-ikon;Wullof;;villamcsapas;Villámcsapás;assets/abilities/villamcsapas.png;64×64 (37×37-re kicsinyítve);1;kinek: Viharkakadu. A madár villámot sújt maga köré.
+;Egység;Vadon (semleges);;vad_kristalybogar;Kristálybogár;assets/sprites/units/vad_kristalybogar.png;60×60 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";
+;Arckép;Vadon (semleges);;vad_kristalybogar;Kristálybogár – arckép;assets/portraits/vad_kristalybogar.png;128×128;1;
+;Egység;Vadon (semleges);;vad_hamufarkas;Hamufarkas;assets/sprites/units/vad_hamufarkas.png;92×84 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";
+;Arckép;Vadon (semleges);;vad_hamufarkas;Hamufarkas – arckép;assets/portraits/vad_hamufarkas.png;128×128;1;
+;Egység;Vadon (semleges);;vad_eterliderc;Éterlidérc;assets/sprites/units/vad_eterliderc.png;66×74 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";
+;Arckép;Vadon (semleges);;vad_eterliderc;Éterlidérc – arckép;assets/portraits/vad_eterliderc.png;128×128;1;
+;Egység;Vadon (semleges);;vad_kotroll;Kőtroll;assets/sprites/units/vad_kotroll.png;116×118 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";
+;Arckép;Vadon (semleges);;vad_kotroll;Kőtroll – arckép;assets/portraits/vad_kotroll.png;128×128;1;
+;Egység;Vadon (semleges);;vad_ercgolem;Csillagérc-gólem;assets/sprites/units/vad_ercgolem.png;144×140 / képkocka;"idle 4, walk 6, attack 6, death 6, cast 6; 8 irány (E, SE, S, SW, W, NW, N, NE – soronként)";
+;Arckép;Vadon (semleges);;vad_ercgolem;Csillagérc-gólem – arckép;assets/portraits/vad_ercgolem.png;128×128;1;
+;Nyersanyag;Közös;;wood;Fa (erdő);assets/sprites/resources/wood.png;72×112;6 (változatok);a fák összefüggő erdőt alkotnak: legyen több fajta, egymás mellé illő
+;Nyersanyag;Közös;;stone;Kő;assets/sprites/resources/stone.png;88×112;1 (egy kép);a fák összefüggő erdőt alkotnak: legyen több fajta, egymás mellé illő
+;Nyersanyag;Közös;;meteor;Meteorit;assets/sprites/resources/meteor.png;88×104;4 (izzás-animáció);a fák összefüggő erdőt alkotnak: legyen több fajta, egymás mellé illő
+;Terep;Közös;;grass;Fű;assets/sprites/tiles/tileset.png;32×32;6 változat;"a téma (erdő/tél/pusztaság/mocsár) a játékban színezéssel készül; külön téma-készlet is kérhető"
+;Terep;Közös;;dirt;Föld;assets/sprites/tiles/tileset.png;32×32;4 változat;"a téma (erdő/tél/pusztaság/mocsár) a játékban színezéssel készül; külön téma-készlet is kérhető"
+;Terep;Közös;;sand;Homok;assets/sprites/tiles/tileset.png;32×32;3 változat;"a téma (erdő/tél/pusztaság/mocsár) a játékban színezéssel készül; külön téma-készlet is kérhető"
+;Terep;Közös;;water;Víz (animált);assets/sprites/tiles/tileset.png;32×32;4 változat;"a téma (erdő/tél/pusztaság/mocsár) a játékban színezéssel készül; külön téma-készlet is kérhető"
+;Terep;Közös;;rock;Szikla (járhatatlan);assets/sprites/tiles/tileset.png;32×32;4 változat;"a téma (erdő/tél/pusztaság/mocsár) a játékban színezéssel készül; külön téma-készlet is kérhető"
+;Terep;Közös;;creep;Croftian mélység;assets/sprites/tiles/tileset.png;32×32;4 változat;"a téma (erdő/tél/pusztaság/mocsár) a játékban színezéssel készül; külön téma-készlet is kérhető"
+;Terep;Közös;;masks;Átmeneti maszkok;assets/sprites/tiles/masks.png;32×32;keskeny 7 + széles 11;szélek és belső sarkok (N,E,S,W,NE,SE,SW,NW) a terepfajták közé
+;Díszlet;Közös;;virag_sarga;virag sarga;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;virag_piros;virag piros;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;virag_kek;virag kek;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;fucsomo;fucsomo;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;kavics;kavics;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;gomba;gomba;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;csont;csont;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;tusko;tusko;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;farönk;farönk;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;bokor;bokor;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;nad;nad;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;tavirozsa;tavirozsa;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;kristaly;kristaly;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;koponya;koponya;assets/sprites/props/doodads.png;40×40;1;apró talajdísz
+;Díszlet;Közös;;rock;Sziklák;assets/sprites/props/rock.png;;változatok;
+;Lövedék;Közös;;arrow;arrow;assets/sprites/projectiles/arrow.png;24×24;fly 1;
+;Lövedék;Közös;;spear;spear;assets/sprites/projectiles/spear.png;24×24;fly 1;
+;Lövedék;Közös;;boulder;boulder;assets/sprites/projectiles/boulder.png;24×24;fly 4;
+;Lövedék;Közös;;acid;acid;assets/sprites/projectiles/acid.png;24×24;fly 2;
+;Lövedék;Közös;;magic;magic;assets/sprites/projectiles/magic.png;24×24;fly 4;
+;Lövedék;Közös;;boomerang;boomerang;assets/sprites/projectiles/boomerang.png;24×24;8 irány × 1–4 kocka;a bumeráng, tűz- és fagyköpés most kódból rajzolt – képpel szebb lenne
+;Lövedék;Közös;;fire;fire;assets/sprites/projectiles/fire.png;24×24;8 irány × 1–4 kocka;a bumeráng, tűz- és fagyköpés most kódból rajzolt – képpel szebb lenne
+;Lövedék;Közös;;frost;frost;assets/sprites/projectiles/frost.png;24×24;8 irány × 1–4 kocka;a bumeráng, tűz- és fagyköpés most kódból rajzolt – képpel szebb lenne
+;Effekt;Közös;;blood;blood;assets/sprites/effects/blood.png;24×24;play 5;
+;Effekt;Közös;;dust;dust;assets/sprites/effects/dust.png;40×40;play 5;
+;Effekt;Közös;;explosion;explosion;assets/sprites/effects/explosion.png;72×72;play 7;
+;Effekt;Közös;;gyokerkotes;gyokerkotes;assets/sprites/effects/gyokerkotes.png;128×128;play 6;
+;Effekt;Közös;;heal;heal;assets/sprites/effects/heal.png;32×32;play 6;
+;Effekt;Közös;;hit;hit;assets/sprites/effects/hit.png;24×24;play 4;
+;Effekt;Közös;;hosszutel;hosszutel;assets/sprites/effects/hosszutel.png;128×128;play 6;
+;Effekt;Közös;;lelegzet;lelegzet;assets/sprites/effects/lelegzet.png;128×128;play 6;
+;Effekt;Közös;;levelup;levelup;assets/sprites/effects/levelup.png;64×64;play 8;
+;Effekt;Közös;;napvihar;napvihar;assets/sprites/effects/napvihar.png;128×128;play 6;
+;Effekt;Közös;;oruletkod;oruletkod;assets/sprites/effects/oruletkod.png;128×128;play 6;
+;Effekt;Közös;;slash;slash;assets/sprites/effects/slash.png;32×32;play 4;
+;Tárgy-ikon;Közös;;gyogyfozet;Gyógyfőzet;assets/items/gyogyfozet.png;48×48;1;Azonnal 250 életerőt ad vissza.
+;Tárgy-ikon;Közös;;eterfozet;Éterfőzet;assets/items/eterfozet.png;48×48;1;Azonnal 100 energiát ad vissza.
+;Tárgy-ikon;Közös;;emlekkonyv;Emlékkönyv;assets/items/emlekkonyv.png;48×48;1;Egy elveszett emlékkert lapjai: +300 tapasztalat.
+;Tárgy-ikon;Közös;;erotom;Erő tómja;assets/items/erotom.png;48×48;1;Végleg +2 sebzés.
+;Tárgy-ikon;Közös;;eletertom;Életerő tómja;assets/items/eletertom.png;48×48;1;Végleg +60 életerő.
+;Tárgy-ikon;Közös;;csizma;Vándorcsizma;assets/items/csizma.png;48×48;1;+15% mozgási sebesség.
+;Tárgy-ikon;Közös;;vedogyuru;Védőgyűrű;assets/items/vedogyuru.png;48×48;1;+2 páncél.
+;Tárgy-ikon;Közös;;karomkesztyu;Karomkesztyű;assets/items/karomkesztyu.png;48×48;1;+5 sebzés.
+;Tárgy-ikon;Közös;;eletamulett;Életerő-amulett;assets/items/eletamulett.png;48×48;1;+150 életerő.
+;Tárgy-ikon;Közös;;regengyuru;Megújulás gyűrűje;assets/items/regengyuru.png;48×48;1;+2 életerő-regeneráció.
+;Tárgy-ikon;Közös;;eterko;Éterkő;assets/items/eterko.png;48×48;1;+60 energia, +1 energia-regeneráció.
+;Tárgy-ikon;Közös;;hosipajzs;Hősi pajzs;assets/items/hosipajzs.png;48×48;1;+4 páncél, +100 életerő.
+;Tárgy-ikon;Közös;;ercpenge;Csillagérc-penge;assets/items/ercpenge.png;48×48;1;Az égi kőből kovácsolt penge: +12 sebzés.
+;Tárgy-ikon;Közös;;arnykopeny;Árnyköpeny;assets/items/arnykopeny.png;48×48;1;+12% sebesség, +2 páncél, +1 regeneráció.
+;Tárgy-ikon;Közös;;orokhajnal;Az Örök Hajnal szilánkja;assets/items/orokhajnal.png;48×48;1;Ordan hálózatának töredéke: +200 életerő, +100 energia, +6 sebzés.
+;Parancsikon;Felület;;acid;acid;assets/ui/icons/acid.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;aim;aim;assets/ui/icons/aim.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;anchor;anchor;assets/ui/icons/anchor.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;attack;attack;assets/ui/icons/attack.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;aura;aura;assets/ui/icons/aura.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;axe;axe;assets/ui/icons/axe.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;back;back;assets/ui/icons/back.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;blink;blink;assets/ui/icons/blink.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;bolt;bolt;assets/ui/icons/bolt.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;bomb;bomb;assets/ui/icons/bomb.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;burrow;burrow;assets/ui/icons/burrow.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;burst;burst;assets/ui/icons/burst.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;charge;charge;assets/ui/icons/charge.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;cocoon;cocoon;assets/ui/icons/cocoon.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;deploy;deploy;assets/ui/icons/deploy.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;dive;dive;assets/ui/icons/dive.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;eye;eye;assets/ui/icons/eye.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;forest;forest;assets/ui/icons/forest.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;ghost;ghost;assets/ui/icons/ghost.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;harpoon;harpoon;assets/ui/icons/harpoon.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;heal;heal;assets/ui/icons/heal.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;hold;hold;assets/ui/icons/hold.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;house;house;assets/ui/icons/house.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;learn;learn;assets/ui/icons/learn.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;lightning;lightning;assets/ui/icons/lightning.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;merge;merge;assets/ui/icons/merge.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;move;move;assets/ui/icons/move.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;network;network;assets/ui/icons/network.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;pack;pack;assets/ui/icons/pack.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;rage;rage;assets/ui/icons/rage.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;rain;rain;assets/ui/icons/rain.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;repair;repair;assets/ui/icons/repair.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;roar;roar;assets/ui/icons/roar.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;rune;rune;assets/ui/icons/rune.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;shield;shield;assets/ui/icons/shield.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;song;song;assets/ui/icons/song.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;spear;spear;assets/ui/icons/spear.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;spearwall;spearwall;assets/ui/icons/spearwall.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;spines;spines;assets/ui/icons/spines.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;split;split;assets/ui/icons/split.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;stomp;stomp;assets/ui/icons/stomp.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;stop;stop;assets/ui/icons/stop.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;summon;summon;assets/ui/icons/summon.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;sweep;sweep;assets/ui/icons/sweep.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Parancsikon;Felület;;tent;tent;assets/ui/icons/tent.png;64×64 (37×37-re kicsinyítve);1;általános parancs/képesség-jel (mozgás, állj, támadás…), ha a képességnek nincs saját ikonja
+;Háttér;Felület;;menu_bg;Főmenü háttér;assets/ui/bg/menu.png;1920×1080;1 (vagy rétegek);A fontos rész a középső 1280×720-ban legyen (kisebb felbontáson a széle levágódik). (bekötés a rajz után)
+;Háttér;Felület;;menu_layers;Főmenü parallax-rétegek (opcionális);assets/ui/bg/menu_layer_1..4.png;1920×1080;4 réteg;"ég+csillagok, 2–3 hegyvonulat, előtér – átlátszó PNG-k; a menü most kódból rajzol csillagokat, hegyeket, meteorokat (bekötés a rajz után)"
+;Háttér;Felület;;logo;ÉGSZAKADÁS logó;assets/ui/logo.png;1200×300 (+ kicsi 600×150);1;átlátszó, a főmenü tetején (bekötés a rajz után)
+;Háttér;Felület;;app_icon;Program-ikon (ablak, tálca);assets/ui/app_icon.png;256×256 (+ 32×32, 16×16);1;(bekötés a rajz után)
+;Háttér;Felület;;setup_bg;Egyéni csata / LAN beállító háttér;assets/ui/bg/setup.png;1920×1080;1;sok szöveg és lenyíló menü kerül rá – legyen sötétebb, nyugodt (bekötés a rajz után)
+;Háttér;Felület;;campaign_bg;Hadjárat-választó háttér;assets/ui/bg/campaign.png;1920×1080;1;(bekötés a rajz után)
+;Háttér;Felület;;options_bg;Beállítások / profil / mentés / készítők háttér;assets/ui/bg/options.png;1920×1080;1 (közös);(bekötés a rajz után)
+;Háttér;Felület;;pause_bg;Szünet-ablak;assets/ui/pause.png;480×360;1;(bekötés a rajz után)
+;Háttér;Felület;;loading_elves;Töltőképernyő – Szürke elfek;assets/ui/bg/loading_elves.png;1920×1080;1;a pálya betöltésekor, a játékos faja szerint (bekötés a rajz után)
+;Háttér;Felület;;victory_elves;Győzelem – Szürke elfek;assets/ui/bg/victory_elves.png;1280×720;1;(bekötés a rajz után)
+;Háttér;Felület;;defeat_elves;Vereség – Szürke elfek;assets/ui/bg/defeat_elves.png;1280×720;1;(bekötés a rajz után)
+;Faj-kép;Felület;;faction_art_elves;Faj-kép a választóban – Szürke elfek;assets/ui/factions/elves.png;320×420;1;álló kép a faj jellegzetes alakjával (egyéni csata, LAN, hadjárat) (bekötés a rajz után)
+;Keret;Felület;;sidebar_elves;Oldalsáv – Szürke elfek díszítésével;assets/ui/sidebar_elves.png;264 széles: felső 264×320, ismételhető közép 264×64, alsó 264×280;3 darab;minitérkép-ablak 236×236 (14 px-től balra, 64 px-től felülről), alatta a 262 px magas panel (bekötés a rajz után)
+;Keret;Felület;;path_card_elves;Irány-kártya háttere – Szürke elfek;assets/ui/path_card_elves.png;300×470;1;a Felemelkedés-ablak kártyái mögé (bekötés a rajz után)
+;Háttér;Felület;;loading_ursan;Töltőképernyő – Ursanok;assets/ui/bg/loading_ursan.png;1920×1080;1;a pálya betöltésekor, a játékos faja szerint (bekötés a rajz után)
+;Háttér;Felület;;victory_ursan;Győzelem – Ursanok;assets/ui/bg/victory_ursan.png;1280×720;1;(bekötés a rajz után)
+;Háttér;Felület;;defeat_ursan;Vereség – Ursanok;assets/ui/bg/defeat_ursan.png;1280×720;1;(bekötés a rajz után)
+;Faj-kép;Felület;;faction_art_ursan;Faj-kép a választóban – Ursanok;assets/ui/factions/ursan.png;320×420;1;álló kép a faj jellegzetes alakjával (egyéni csata, LAN, hadjárat) (bekötés a rajz után)
+;Keret;Felület;;sidebar_ursan;Oldalsáv – Ursanok díszítésével;assets/ui/sidebar_ursan.png;264 széles: felső 264×320, ismételhető közép 264×64, alsó 264×280;3 darab;minitérkép-ablak 236×236 (14 px-től balra, 64 px-től felülről), alatta a 262 px magas panel (bekötés a rajz után)
+;Keret;Felület;;path_card_ursan;Irány-kártya háttere – Ursanok;assets/ui/path_card_ursan.png;300×470;1;a Felemelkedés-ablak kártyái mögé (bekötés a rajz után)
+;Háttér;Felület;;loading_croftian;Töltőképernyő – Croftianok;assets/ui/bg/loading_croftian.png;1920×1080;1;a pálya betöltésekor, a játékos faja szerint (bekötés a rajz után)
+;Háttér;Felület;;victory_croftian;Győzelem – Croftianok;assets/ui/bg/victory_croftian.png;1280×720;1;(bekötés a rajz után)
+;Háttér;Felület;;defeat_croftian;Vereség – Croftianok;assets/ui/bg/defeat_croftian.png;1280×720;1;(bekötés a rajz után)
+;Faj-kép;Felület;;faction_art_croftian;Faj-kép a választóban – Croftianok;assets/ui/factions/croftian.png;320×420;1;álló kép a faj jellegzetes alakjával (egyéni csata, LAN, hadjárat) (bekötés a rajz után)
+;Keret;Felület;;sidebar_croftian;Oldalsáv – Croftianok díszítésével;assets/ui/sidebar_croftian.png;264 széles: felső 264×320, ismételhető közép 264×64, alsó 264×280;3 darab;minitérkép-ablak 236×236 (14 px-től balra, 64 px-től felülről), alatta a 262 px magas panel (bekötés a rajz után)
+;Keret;Felület;;path_card_croftian;Irány-kártya háttere – Croftianok;assets/ui/path_card_croftian.png;300×470;1;a Felemelkedés-ablak kártyái mögé (bekötés a rajz után)
+;Háttér;Felület;;loading_wullof;Töltőképernyő – Wullof;assets/ui/bg/loading_wullof.png;1920×1080;1;a pálya betöltésekor, a játékos faja szerint (bekötés a rajz után)
+;Háttér;Felület;;victory_wullof;Győzelem – Wullof;assets/ui/bg/victory_wullof.png;1280×720;1;(bekötés a rajz után)
+;Háttér;Felület;;defeat_wullof;Vereség – Wullof;assets/ui/bg/defeat_wullof.png;1280×720;1;(bekötés a rajz után)
+;Faj-kép;Felület;;faction_art_wullof;Faj-kép a választóban – Wullof;assets/ui/factions/wullof.png;320×420;1;álló kép a faj jellegzetes alakjával (egyéni csata, LAN, hadjárat) (bekötés a rajz után)
+;Keret;Felület;;sidebar_wullof;Oldalsáv – Wullof díszítésével;assets/ui/sidebar_wullof.png;264 széles: felső 264×320, ismételhető közép 264×64, alsó 264×280;3 darab;minitérkép-ablak 236×236 (14 px-től balra, 64 px-től felülről), alatta a 262 px magas panel (bekötés a rajz után)
+;Keret;Felület;;path_card_wullof;Irány-kártya háttere – Wullof;assets/ui/path_card_wullof.png;300×470;1;a Felemelkedés-ablak kártyái mögé (bekötés a rajz után)
+;Háttér;Felület;;loading_mycel;Töltőképernyő – Micéliák;assets/ui/bg/loading_mycel.png;1920×1080;1;a pálya betöltésekor, a játékos faja szerint (bekötés a rajz után)
+;Háttér;Felület;;victory_mycel;Győzelem – Micéliák;assets/ui/bg/victory_mycel.png;1280×720;1;(bekötés a rajz után)
+;Háttér;Felület;;defeat_mycel;Vereség – Micéliák;assets/ui/bg/defeat_mycel.png;1280×720;1;(bekötés a rajz után)
+;Faj-kép;Felület;;faction_art_mycel;Faj-kép a választóban – Micéliák;assets/ui/factions/mycel.png;320×420;1;álló kép a faj jellegzetes alakjával (egyéni csata, LAN, hadjárat) (bekötés a rajz után)
+;Keret;Felület;;sidebar_mycel;Oldalsáv – Micéliák díszítésével;assets/ui/sidebar_mycel.png;264 széles: felső 264×320, ismételhető közép 264×64, alsó 264×280;3 darab;minitérkép-ablak 236×236 (14 px-től balra, 64 px-től felülről), alatta a 262 px magas panel (bekötés a rajz után)
+;Keret;Felület;;path_card_mycel;Irány-kártya háttere – Micéliák;assets/ui/path_card_mycel.png;300×470;1;a Felemelkedés-ablak kártyái mögé (bekötés a rajz után)
+;Háttér;Felület;;loading_imperium;Töltőképernyő – Vasbirodalom;assets/ui/bg/loading_imperium.png;1920×1080;1;a pálya betöltésekor, a játékos faja szerint (bekötés a rajz után)
+;Háttér;Felület;;victory_imperium;Győzelem – Vasbirodalom;assets/ui/bg/victory_imperium.png;1280×720;1;(bekötés a rajz után)
+;Háttér;Felület;;defeat_imperium;Vereség – Vasbirodalom;assets/ui/bg/defeat_imperium.png;1280×720;1;(bekötés a rajz után)
+;Faj-kép;Felület;;faction_art_imperium;Faj-kép a választóban – Vasbirodalom;assets/ui/factions/imperium.png;320×420;1;álló kép a faj jellegzetes alakjával (egyéni csata, LAN, hadjárat) (bekötés a rajz után)
+;Keret;Felület;;sidebar_imperium;Oldalsáv – Vasbirodalom díszítésével;assets/ui/sidebar_imperium.png;264 széles: felső 264×320, ismételhető közép 264×64, alsó 264×280;3 darab;minitérkép-ablak 236×236 (14 px-től balra, 64 px-től felülről), alatta a 262 px magas panel (bekötés a rajz után)
+;Keret;Felület;;path_card_imperium;Irány-kártya háttere – Vasbirodalom;assets/ui/path_card_imperium.png;300×470;1;a Felemelkedés-ablak kártyái mögé (bekötés a rajz után)
+;Hadjárat;Felület;;chapter_egsz_0_elojatek;Fejezet-illusztráció – egsz_0_elojatek;assets/ui/campaign/egsz_0_elojatek.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_1_wullof;Fejezet-illusztráció – egsz_1_wullof;assets/ui/campaign/egsz_1_wullof.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_1b_konvoj;Fejezet-illusztráció – egsz_1b_konvoj;assets/ui/campaign/egsz_1b_konvoj.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_2_ursan;Fejezet-illusztráció – egsz_2_ursan;assets/ui/campaign/egsz_2_ursan.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_3_elfek;Fejezet-illusztráció – egsz_3_elfek;assets/ui/campaign/egsz_3_elfek.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_4_gombanep;Fejezet-illusztráció – egsz_4_gombanep;assets/ui/campaign/egsz_4_gombanep.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_4b_finomito;Fejezet-illusztráció – egsz_4b_finomito;assets/ui/campaign/egsz_4b_finomito.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_5_aureth;Fejezet-illusztráció – egsz_5_aureth;assets/ui/campaign/egsz_5_aureth.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_6_keth;Fejezet-illusztráció – egsz_6_keth;assets/ui/campaign/egsz_6_keth.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Hadjárat;Felület;;chapter_egsz_7_hajnal;Fejezet-illusztráció – egsz_7_hajnal;assets/ui/campaign/egsz_7_hajnal.png;1280×720;1;"a fejezet elején és a hadjárat-választóban; küldetésenként külön eligazító kép is kérhető (bekötés a rajz után)"
+;Keret;Felület;;topbar;Felső nyersanyagsáv;assets/ui/topbar.png;ismételhető 64×28 + két vég 96×28;3;fa, kő, meteorit, létszám, idő (bekötés a rajz után)
+;Ikon;Felület;;res_wood;Nyersanyag-ikon: fa;assets/ui/res/wood.png;24×24 (rajz: 48×48);1;(bekötés a rajz után)
+;Ikon;Felület;;res_stone;Nyersanyag-ikon: kő;assets/ui/res/stone.png;24×24 (rajz: 48×48);1;(bekötés a rajz után)
+;Ikon;Felület;;res_meteor;Nyersanyag-ikon: meteorit;assets/ui/res/meteor.png;24×24 (rajz: 48×48);1;(bekötés a rajz után)
+;Ikon;Felület;;res_supply;Létszám-ikon (fajonként más is lehet);assets/ui/res/supply_<faj>.png;24×24;1–6;(bekötés a rajz után)
+;Ikon;Felület;;res_spell;Varázsforrás-ikonok: energia, ének, spóra, életerő-ár;assets/ui/res/spell_*.png;16×16;4;a költség-feliratokban és a kijelölő panelen (bekötés a rajz után)
+;Keret;Felület;;cmd_button;Parancsgomb kerete;assets/ui/cmd_button.png;37×37 (rajz: 74×74);5 állapot: normál, rámutatott, aktív, tiltott, passzív;6×2 rácsban a parancskártyán (bekötés a rajz után)
+;Keret;Felület;;cmd_cooldown;Újratöltés-óra;assets/ui/cooldown.png;37×37;8–16 kocka;most kódból sötétedő körcikk (bekötés a rajz után)
+;Keret;Felület;;build_cell;Építés/képzés-cella kerete;assets/ui/build_cell.png;82×62 (benne az ikon 76×56);4 állapot: normál, rámutatott, nem elérhető, folyamatban;(bekötés a rajz után)
+;Keret;Felület;;portrait_frame;Hősportré-keret (bal felső sarok);assets/ui/portrait_frame.png;58×50;2 (normál, kijelölt);+ szint-jelvény 20×16, képességpont-jelvény 16×16 (bekötés a rajz után)
+;Keret;Felület;;portrait_frame_big;Arckép-keret a kijelölő panelen;assets/ui/portrait_frame_big.png;72×72;1;(bekötés a rajz után)
+;Keret;Felület;;dialog;Párbeszéd-ablak (9-szeletes);assets/ui/dialog.png;96×96 forrás, 32 px sarkok;1;döntés-ablak, szünet, győzelem – egy kép, bármekkorára nyújtható (bekötés a rajz után)
+;Keret;Felület;;tooltip;Tooltip-keret (9-szeletes);assets/ui/tooltip.png;48×48 forrás, 12 px sarkok;1;(bekötés a rajz után)
+;Keret;Felület;;button_big;Menügomb;assets/ui/button_big.png;320×46;4 állapot: normál, rámutatott, lenyomott, tiltott;főmenü (bekötés a rajz után)
+;Keret;Felület;;button_small;Kis gomb;assets/ui/button_small.png;9-szeletes, 34 magas;4 állapot;(bekötés a rajz után)
+;Keret;Felület;;dropdown;Lenyíló menü: fej, nyíl, listaelem;assets/ui/dropdown_*.png;fej 9-szeletes 30 magas, nyíl 16×16, elem 24 magas;3;egyéni csata / LAN beállító (bekötés a rajz után)
+;Keret;Felület;;widgets;Jelölőnégyzet, csúszka, szövegmező;assets/ui/widgets.png;"20×20; csúszka 16×24; mező 9-szeletes";6;(bekötés a rajz után)
+;Keret;Felület;;minimap_frame;Minitérkép-keret;assets/ui/minimap_frame.png;264×264 (236×236 ablakkal);1;(bekötés a rajz után)
+;Keret;Felület;;item_frames;Tárgy-keretek ritkaság szerint;assets/ui/item_frame_*.png;48×48;4 (közönséges, ritka, epikus, legendás);(bekötés a rajz után)
+;Kurzor;Felület;;cursor_arrow;Kurzor: nyíl;assets/ui/cursors/arrow.png;32×32;1;a kattintópont a bal felső sarok (bekötés a rajz után)
+;Kurzor;Felület;;cursor_select;Kurzor: rámutatás barátra / ellenségre / semlegesre;assets/ui/cursors/select_*.png;32×32;3 (zöld, piros, sárga);(bekötés a rajz után)
+;Kurzor;Felület;;cursor_move;Kurzor: mozgás;assets/ui/cursors/move.png;32×32;1;(bekötés a rajz után)
+;Kurzor;Felület;;cursor_attack;Kurzor: támadás-célzás;assets/ui/cursors/attack.png;32×32;1–4;(bekötés a rajz után)
+;Kurzor;Felület;;cursor_cast;Kurzor: varázslat célzása;assets/ui/cursors/cast.png;32×32;1–4;(bekötés a rajz után)
+;Kurzor;Felület;;cursor_gather;Kurzor: gyűjtés (fa / kő / meteorit);assets/ui/cursors/gather_*.png;32×32;3;(bekötés a rajz után)
+;Kurzor;Felület;;cursor_build;Kurzor: építés, javítás;assets/ui/cursors/build.png;32×32;2;(bekötés a rajz után)
+;Kurzor;Felület;;cursor_scroll;Kurzor: képernyőgörgetés a szélen;assets/ui/cursors/scroll_*.png;32×32;8 irány;(bekötés a rajz után)
+;Kurzor;Felület;;cursor_no;Kurzor: tiltott;assets/ui/cursors/no.png;32×32;1;(bekötés a rajz után)
+;Jelölő;Felület;;select_ring;Kijelölő gyűrű az egység alatt;assets/ui/select_ring.png;24×12, 40×20, 64×32;3 méret;fehér, a játék színezi (bekötés a rajz után)
+;Jelölő;Felület;;move_marker;Mozgás-jel a célponton;assets/ui/move_marker.png;32×32;6 kocka;(bekötés a rajz után)
+;Jelölő;Felület;;attack_marker;Támadás-jel a célponton;assets/ui/attack_marker.png;32×32;6 kocka;(bekötés a rajz után)
+;Jelölő;Felület;;rally_flag;Gyülekezőpont-zászló;assets/ui/rally_flag.png;24×32;4 kocka;csapatszín-maszkkal (bekötés a rajz után)
+;Jelölő;Felület;;place_grid;Építési rács (jó / rossz hely);assets/ui/place_*.png;32×32;2;(bekötés a rajz után)
+;Jelölő;Felület;;minimap_ping;Riasztás a minitérképen;assets/ui/ping.png;32×32;6 kocka;(bekötés a rajz után)
+;Állapot-ikon;Felület;;status_icons;Állapot-ikonok az egység fölött: méreg, fagy/bénítás, lassítás, ének-aura, rejtőzés, beásva, alakzat, roham, vérszomj, felültetve;assets/ui/status/*.png;16×16;10;most nincs ilyen kijelzés – a rajz után bekötöm
+;Betűtípus;Felület;;font;Pixel-betűtípus (opcionális);assets/fonts/*.ttf;;;"ékezetes magyar betűkkel; most rendszerbetű van"

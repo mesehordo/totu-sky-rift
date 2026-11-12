@@ -1,0 +1,43 @@
+{
+ "id": "myc_tuskegomba_telep",
+ "type": "building",
+ "image": "myc_tuskegomba_telep.png",
+ "team_mask": "myc_tuskegomba_telep_team.png",
+ "style": "fungal",
+ "frame_size": [
+  236,
+  220
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  10
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1888,
+  220
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

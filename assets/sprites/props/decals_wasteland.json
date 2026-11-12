@@ -1,0 +1,24 @@
+{
+ "id": "decals_wasteland",
+ "image": "decals_wasteland.png",
+ "type": "prop",
+ "frame_size": [
+  128,
+  128
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  0,
+  0
+ ],
+ "frames": 8,
+ "sheet_size": [
+  1024,
+  128
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

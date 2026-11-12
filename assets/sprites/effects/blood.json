@@ -1,0 +1,27 @@
+{
+ "id": "blood",
+ "type": "effect",
+ "image": "blood.png",
+ "frame_size": [
+  48,
+  48
+ ],
+ "anchor": [
+  24,
+  28
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 5,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  240,
+  48
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

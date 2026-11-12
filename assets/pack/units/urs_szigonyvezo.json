@@ -1,0 +1,57 @@
+{
+ "id": "urs_szigonyvezo",
+ "type": "unit",
+ "image": "urs_szigonyvezo.png",
+ "frame_size": [
+  56,
+  53
+ ],
+ "anchor": [
+  28,
+  51
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 6,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 6,
+   "frames": 6,
+   "fps": 8,
+   "loop": true
+  },
+  "attack": {
+   "start": 12,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  },
+  "death": {
+   "start": 18,
+   "frames": 6,
+   "fps": 7,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "pack": "ursan.axe_thrower",
+ "pack_kind": "kézzel rajzolt (DK) + tükrözés",
+ "sheet_size": [
+  1344,
+  424
+ ],
+ "team_mask": "urs_szigonyvezo_team.png"
+}

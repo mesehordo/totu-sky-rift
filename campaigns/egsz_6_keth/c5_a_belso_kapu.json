@@ -1,0 +1,311 @@
+{
+ "id": "c5_a_belso_kapu",
+ "title": "5. A belső kapu",
+ "faction": "croftian",
+ "briefing": [
+  "Keth megszerzi a Kórus helyi összekapcsolási mintáját.",
+  "Ebből világossá válik a végső csapda: Ordan Örök Hajnala és a Kórus ugyanazt a központot akarja használni.",
+  "Pusztítsd el a helyi fészekanyát, amely a mintát őrzi."
+ ],
+ "player": {
+  "resources": {
+   "wood": 855,
+   "stone": 545,
+   "meteor": 200
+  },
+  "units": {
+   "cro_hos_keth": 1,
+   "cro_karmos": 8,
+   "cro_tuskekopo": 4,
+   "cro_agyfalo": 1
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Helyi Kórus",
+   "hold": 200,
+   "aggression": 1.1,
+   "resources": {
+    "wood": 455,
+    "stone": 245
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "type": "guard",
+   "at": "ter",
+   "radius": 3,
+   "seconds": 10,
+   "text": "Keth olvassa ki az összekapcsolási mintát a csomópontnál",
+   "marker": "Csomópont",
+   "id": "irt"
+  },
+  {
+   "id": "anya",
+   "type": "destroy",
+   "text": "Pusztítsd el a fészekanyát (Kaptár)",
+   "after": "irt",
+   "targets": [
+    "cro_kaptar"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "ter",
+      "say": [
+       {
+        "who": "Keth",
+        "text": "A minta a fészekanyánál van.",
+        "portrait": "cro_hos_keth"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Keth",
+     "text": "Két akarat, egy következtetés: csak akkor biztonságos a világ, ha senki nem dönthet benne külön.",
+     "portrait": "cro_hos_keth"
+    }
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "anya",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "cel",
+      "say": [
+       {
+        "who": "Keth",
+        "text": "Két akarat, egy kapu. A Kórus és Ordan ugyanazt akarja.",
+        "portrait": "cro_hos_keth"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "cro_hos_keth",
+   "text": "Keth elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A minta Keth kezében van. A Kórus nem Ordan alkotása, és Ordan sem fertőzött báb – de ugyanazt a kaput döngetik.",
+ "next": null,
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "code": "CRO-05",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (VII. hadjárat: c5_a_belso_kapu)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 6505,
+  "points": {
+   "feszek": [
+    10,
+    10
+   ],
+   "cel": [
+    52,
+    46
+   ],
+   "ter": [
+    30,
+    28
+   ],
+   "kapu": [
+    56,
+    8
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      20,
+      40
+     ],
+     [
+      40,
+      40
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "feszek",
+     "ter"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ter",
+     "cel"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ter",
+     "kapu"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      21,
+      35
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      19
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      47
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      15,
+      47
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      15,
+      38
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      34
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      55,
+      26
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      18,
+      46
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      25
+     ],
+     4.2
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     13
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     6
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     15
+    ]
+   }
+  ],
+  "starts": [
+   "feszek",
+   "cel"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

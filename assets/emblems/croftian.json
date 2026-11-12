@@ -1,0 +1,11 @@
+{
+ "id": "croftian",
+ "type": "emblem",
+ "image": "croftian.png",
+ "size": [
+  256,
+  256
+ ],
+ "faction": "Croftianok",
+ "generator": "TOTU grafika"
+}

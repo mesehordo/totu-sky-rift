@@ -1,0 +1,253 @@
+{
+ "id": "nov_06_3",
+ "code": "NOV-06_3",
+ "title": "Elvesztett ritmus",
+ "faction": "ooni",
+ "novella": true,
+ "people": "Ooni",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/06_*.md – „Elvesztett ritmus”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 30. év, Kilenc Gerenda, a hosszú éjszaka. Ryo keze megállt, és a dob elhallgatott.",
+  "A többiek ritmusa nem tört meg. Ryo mégis hallja a csendet a saját dobja helyén."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 6976,
+  "points": {
+   "dobsor": [
+    32,
+    30
+   ],
+   "oreg": [
+    10,
+    46
+   ],
+   "kapu": [
+    32,
+    12
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      0,
+      26
+     ],
+     [
+      26,
+      26
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      38,
+      26
+     ],
+     [
+      64,
+      26
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "dobsor",
+     "oreg"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "dobsor",
+     "kapu"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      51,
+      33
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      46,
+      24
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      30,
+      45
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      30
+     ],
+     3.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      7
+     ],
+     4.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "dobsor",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "oon_dobos",
+    "at": "dobsor",
+    "n": 1,
+    "name": "Ryo",
+    "tag": "ryo"
+   },
+   {
+    "id": "oon_dobos",
+    "at": "dobsor",
+    "n": 5
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "oreg",
+   "type": "reach",
+   "at": "oreg",
+   "radius": 3,
+   "text": "Ryo menjen el az öreg dobosmesterhez",
+   "marker": "Dobosmester",
+   "tag": "ryo"
+  },
+  {
+   "id": "vissza",
+   "type": "guard",
+   "at": "dobsor",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Ryo térjen vissza a dobjához, mielőtt a hajnal a kötélre esik",
+   "marker": "Ryo dobja",
+   "after": "oreg"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "dobsor",
+      "say": [
+       {
+        "who": "Ryo",
+        "text": "Egy ütésnyi csend. Mint egy lyuk.",
+        "portrait": "oon_dobos"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 150,
+   "unless_done": "vissza",
+   "fail": "Felkelt a nap – Ryo dobja üresen maradt."
+  },
+  {
+   "id": "zaras",
+   "on_objective": "vissza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "dobsor",
+      "say": [
+       {
+        "who": "Ryo",
+        "text": "Az utolsó ütés. Pontosan a helyén.",
+        "portrait": "oon_dobos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Az utolsó ütést, amikor a hajnal első fénye a kötélre esett, Ryo ütötte a többiekkel együtt.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

@@ -1,0 +1,16 @@
+{
+ "id": "egsz_4c_ooni",
+ "order": 5.3,
+ "title": "IV/b. Akiket átengedünk",
+ "desc": "Tava küldöttsége a hegyek alatt keres utat a Fekete Tükör felé. Sairen, az Ooni kapuőr lezárja a régi kapukat – és el kell döntenie, kiket enged át, amikor a megrepedt hegyek megmozdulnak.",
+ "requires": [
+  "egsz_4_gombanep"
+ ],
+ "missions": [
+  "o1_a_bezart_hago",
+  "o2_fogadalmi_kovek",
+  "o3_harom_kapu",
+  "o4_a_vilagvarrat",
+  "o5_a_nyitott_atjaro"
+ ]
+}

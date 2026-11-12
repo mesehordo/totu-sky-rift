@@ -1,0 +1,27 @@
+{
+ "id": "vfx_mark_cast",
+ "image": "vfx_mark_cast.png",
+ "type": "effect",
+ "frame_size": [
+  192,
+  128
+ ],
+ "anchor": [
+  96,
+  64
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 8,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  1536,
+  128
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

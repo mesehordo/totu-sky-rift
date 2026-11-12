@@ -1,0 +1,249 @@
+{
+ "id": "nov_04_2",
+ "code": "NOV-04_2",
+ "title": "Ébresztés",
+ "faction": "imperium",
+ "novella": true,
+ "people": "Vasbirodalom",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/04_*.md – „Ébresztés”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 64. év, Aureth, a Pons Ferri negyed új Lélekreaktora. Negyven horgonyt ébresztenek fel ma, a régi rend szerint.",
+  "Lucia nagyanyjának neve megint nincs a listán."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 6928,
+  "points": {
+   "raktar": [
+    10,
+    12
+   ],
+   "reaktor": [
+    50,
+    40
+   ],
+   "lista": [
+    44,
+    34
+   ],
+   "haz": [
+    10,
+    48
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "raktar",
+     "reaktor"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "reaktor",
+     "haz"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      45,
+      15
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      45,
+      8
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      27,
+      33
+     ],
+     3.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "raktar",
+   "_"
+  ],
+  "decor": [
+   {
+    "id": "imp_reaktor",
+    "at": [
+     54,
+     46
+    ]
+   },
+   {
+    "id": "imp_ontode",
+    "at": [
+     16,
+     18
+    ],
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "imp_fabrikator",
+    "at": "reaktor",
+    "n": 1,
+    "name": "Lucia Sabin",
+    "tag": "lucia"
+   },
+   {
+    "id": "imp_fabrikator",
+    "at": "raktar",
+    "n": 3,
+    "name": "Horgonyszállító",
+    "tag": "horgony"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "lista",
+   "type": "reach",
+   "at": "lista",
+   "radius": 3,
+   "text": "Olvasd el a bronztáblát a reaktorcsarnok bejáratánál",
+   "marker": "Lista",
+   "tag": "lucia"
+  },
+  {
+   "id": "horgonyok",
+   "type": "escort",
+   "tag": "horgony",
+   "min": 3,
+   "at": "reaktor",
+   "radius": 5,
+   "text": "Hozd át a negyven horgonyt a nyilvántartás raktárából",
+   "marker": "Reaktor",
+   "after": "lista"
+  },
+  {
+   "id": "haza",
+   "type": "reach",
+   "at": "haz",
+   "radius": 3,
+   "text": "Lucia menjen haza",
+   "marker": "Otthon",
+   "after": "horgonyok",
+   "tag": "lucia"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "lista",
+      "say": [
+       {
+        "who": "Lucia",
+        "text": "Harmadszor olvasom el. Hátha rosszul láttam.",
+        "portrait": "imp_fabrikator"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "lista",
+   "choice": {
+    "title": "A lista",
+    "text": "A nyilvántartás jelölte ki a neveket. Egy hely cseréje nem látszana.",
+    "options": [
+     {
+      "label": "A lista szerint",
+      "flag": "nov042_lista"
+     },
+     {
+      "label": "Nem nyúlok hozzá – de kérvényt írok",
+      "flag": "nov042_kerveny"
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "haza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "haz",
+      "say": [
+       {
+        "who": "Lucia",
+        "text": "Hét lista áll már a polcon. Ez a nyolcadik.",
+        "portrait": "imp_fabrikator"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A negyven horgony felébredt. Lucia a polcra tette az aznapi listát, a többi mellé.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

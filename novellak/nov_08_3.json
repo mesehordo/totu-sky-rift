@@ -1,0 +1,260 @@
+{
+ "id": "nov_08_3",
+ "code": "NOV-08_3",
+ "title": "Keserű olaj",
+ "faction": "mycel",
+ "novella": true,
+ "people": "Micéliák",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/08_*.md – „Keserű olaj”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 60. év, a Vízmosás Mélykertje. A tanács arról dönt, befogadja-e a kiszáradt tavú Huk’ucha családokat.",
+  "Hárs tudja, hogy veszíteni fog, és mégis feláll."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 8378,
+  "points": {
+   "kert": [
+    12,
+    44
+   ],
+   "ag": [
+    44,
+    20
+   ],
+   "emlek": [
+    30,
+    28
+   ],
+   "kijarat": [
+    52,
+    46
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      10,
+      4
+     ],
+     [
+      16,
+      50
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      54,
+      4
+     ],
+     [
+      48,
+      50
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "kert",
+     "emlek"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "emlek",
+     "ag"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "emlek",
+     "kijarat"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      56,
+      19
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      18,
+      28
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      24,
+      12
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      31,
+      38
+     ],
+     2.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "kert",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "myc_sporaszedo",
+    "at": "kert",
+    "n": 1,
+    "name": "Hárs",
+    "tag": "fo"
+   },
+   {
+    "id": "myc_kalapos_or",
+    "at": "kert",
+    "n": 2
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Szivárgó fertőzés",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "e",
+   "type": "reach",
+   "at": "emlek",
+   "radius": 3,
+   "text": "Járd be a szurdok emlékhelyét",
+   "marker": "Emlékhely",
+   "tag": "fo"
+  },
+  {
+   "id": "ag",
+   "type": "guard",
+   "at": "ag",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Hallgasd meg, ami itt történt",
+   "marker": "Ág",
+   "after": "e"
+  },
+  {
+   "id": "vissza",
+   "type": "reach",
+   "at": "kijarat",
+   "radius": 3,
+   "text": "Térj vissza a kert peremére",
+   "marker": "Perem",
+   "after": "ag",
+   "tag": "fo"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "emlek",
+      "say": [
+       {
+        "who": "Hárs",
+        "text": "Valaki keserű olajat kent a gyökerekre. Nem ismerem fel, kié.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "vissza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kijarat",
+      "say": [
+       {
+        "who": "Hárs",
+        "text": "Hét hat ellen, igennel.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A Huk’ucha családok a kert felszíni szélén telepedtek le.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

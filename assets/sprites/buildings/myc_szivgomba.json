@@ -1,0 +1,43 @@
+{
+ "id": "myc_szivgomba",
+ "type": "building",
+ "image": "myc_szivgomba.png",
+ "team_mask": "myc_szivgomba_team.png",
+ "style": "fungal",
+ "frame_size": [
+  184,
+  200
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  6,
+  48
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1472,
+  200
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

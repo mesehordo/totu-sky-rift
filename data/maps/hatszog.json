@@ -1,0 +1,63 @@
+{
+ "id": "hatszog",
+ "order": 13,
+ "players": 6,
+ "size": 128,
+ "layout": "ring",
+ "theme": "forest",
+ "name": {
+  "hu": "Hatszög",
+  "en": "Hexagon"
+ },
+ "desc": {
+  "hu": "Hat bázis körben, a szomszédok között patakok – szabad mindenki-mindenki ellen. A patakok mentén gazdag, de két szomszéd által is elérhető lelőhelyek.",
+  "en": "Six bases in a circle with streams between neighbours – a true free-for-all."
+ },
+ "features": {
+  "river": {
+   "fords": 2,
+   "width": 1.3
+  },
+  "forests": 12,
+  "crater": {
+   "radius": 0.06,
+   "meteors": 6
+  },
+  "rich": true
+ },
+ "camps": {
+  "1": "tenduur",
+  "2": "galoca"
+ },
+ "decor": [
+  {
+   "id": "ten_lampasfa",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  }
+ ],
+ "ambient": [
+  {
+   "id": "ten_lampasor",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 1,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Mindenkinek két szomszédja van: a köztes gazdag hely jutalom, de két irányból is támadható.",
+  "felallasok": "mindenki-mindenki ellen (6), kevesebb játékossal is",
+  "taborok": {
+   "1": "Tendüür",
+   "2": "Galóca"
+  }
+ }
+}

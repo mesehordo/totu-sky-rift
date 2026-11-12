@@ -1,0 +1,43 @@
+{
+ "id": "myc_alomkert",
+ "type": "building",
+ "image": "myc_alomkert.png",
+ "team_mask": "myc_alomkert_team.png",
+ "style": "fungal",
+ "frame_size": [
+  240,
+  228
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  16
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1920,
+  228
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

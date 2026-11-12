@@ -1,0 +1,82 @@
+{
+ "id": "negy_sarok",
+ "order": 7,
+ "players": 4,
+ "size": 112,
+ "layout": "corners",
+ "theme": "forest",
+ "name": {
+  "hu": "Négy sarok",
+  "en": "Four Corners"
+ },
+ "desc": {
+  "hu": "Klasszikus négyes: a sarkokban bázisok, középen nyílt csatatér kráterrel. Döntés: korai terjeszkedés a kakasudvarok felé, vagy azonnal a kráter?",
+  "en": "A classic for four: bases in the corners, an open battlefield and crater in the middle."
+ },
+ "features": {
+  "crater": {
+   "radius": 0.09,
+   "meteors": 4
+  },
+  "lakes": [
+   1,
+   2,
+   3.5
+  ],
+  "forests": 14
+ },
+ "camps": {
+  "1": "zhan_zhama",
+  "2": "ghoblin"
+ },
+ "decor": [
+  {
+   "id": "zha_kakasudvar",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  },
+  {
+   "id": "gho_ragoko_banya",
+   "at": "pair",
+   "d": 6,
+   "s": 0
+  }
+ ],
+ "ambient": [
+  {
+   "id": "zha_csirkepasztor",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 2,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  },
+  {
+   "id": "gho_koharapo",
+   "at": "pair",
+   "d": 4,
+   "s": 2,
+   "n": 1,
+   "shelter": {
+    "at": "pair",
+    "d": 6,
+    "s": 0
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Nyílt közép, peremi bővítések: a két szomszéd között Ghoblin-bánya, a bázis mellett Zhan-zhama tanya.",
+  "felallasok": "mindenki-mindenki ellen (4), kevesebb játékossal is",
+  "taborok": {
+   "1": "Zhan-zhama",
+   "2": "Ghoblin"
+  }
+ }
+}

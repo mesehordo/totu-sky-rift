@@ -1,0 +1,69 @@
+{
+ "id": "harmas_folyo",
+ "order": 5,
+ "players": 3,
+ "size": 104,
+ "layout": "ring",
+ "theme": "forest",
+ "name": {
+  "hu": "Hármas folyó",
+  "en": "Three Rivers"
+ },
+ "desc": {
+  "hu": "Három folyó három szektorra osztja a pályát; minden ágon két gázló. Döntés: a szomszéd felé nyitott, Galóca őrizte gazdag lelőhely, vagy a biztos, de szegényebb saját szektor?",
+  "en": "Three rivers cut the map into three sectors, each with two fords."
+ },
+ "features": {
+  "river": {
+   "fords": 2
+  },
+  "lakes": [
+   1,
+   2,
+   3
+  ],
+  "forests": 14,
+  "rich": true
+ },
+ "camps": {
+  "1": "galoca",
+  "2": "galoca"
+ },
+ "decor": [
+  {
+   "id": "gal_harapofeszek",
+   "at": "pair",
+   "d": 6,
+   "s": 6
+  },
+  {
+   "id": "gal_tuskekert",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  }
+ ],
+ "ambient": [
+  {
+   "id": "gal_fogaskalap",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 2,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Mindhárom szektor határán gazdag, őrzött lelőhely: aki elviszi, két gázlóra is figyelnie kell.",
+  "felallasok": "mindenki-mindenki ellen (3), kevesebb játékossal is",
+  "taborok": {
+   "1": "Galóca",
+   "2": "Galóca"
+  }
+ }
+}

@@ -1,0 +1,414 @@
+{
+ "id": "p0_masodik_lelegzet",
+ "title": "A második lélegzet",
+ "faction": "imperium",
+ "briefing": [
+  "Az Égszakadás éve. Egy második nap jelent meg az égen, aztán darabokra tört. A legnagyobb kő Aureth mellett csapódott be.",
+  "Livia Varr orvos a túlzsúfolt kórházat tartja életben. Ölében a kislánya, Nera – a körmei alatt különös fény dereng.",
+  "Vezesd vissza a vizet, tartsd fenn az energiát, kísérd a mentőcsapatokat. Mindenkit nem menthetsz meg.",
+  "Ha a kórház (Fórum) elesik, minden elveszett."
+ ],
+ "player": {
+  "resources": {
+   "wood": 400,
+   "stone": 450
+  },
+  "units": {
+   "imp_hos_livia": 1
+  }
+ },
+ "enemies": [
+  {
+   "faction": "imperium",
+   "name": "Kétségbeesett tömeg",
+   "hold": 99999,
+   "aggression": 0.4
+  }
+ ],
+ "objectives": [
+  {
+   "type": "guard",
+   "at": "kut",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Indítsd újra a kútszivattyút (Livia vagy egy munkás álljon mellette)",
+   "marker": "Kút",
+   "id": "viz"
+  },
+  {
+   "type": "build_at",
+   "target": "imp_reaktor",
+   "at": "korhaz",
+   "radius": 12,
+   "count": 2,
+   "after": "viz",
+   "text": "Építs 2 Lélekreaktort a kórház köré",
+   "marker": "Kórház",
+   "id": "energia"
+  },
+  {
+   "id": "kitart",
+   "type": "survive",
+   "text": "Tartsd működésben a kórházat",
+   "after": "energia",
+   "seconds": 180
+  },
+  {
+   "id": "mentok",
+   "type": "escort",
+   "optional": true,
+   "activate_near": {
+    "at": "muhely",
+    "r": 6
+   },
+   "tag": "mentok",
+   "min": 2,
+   "at": "korhaz",
+   "radius": 6,
+   "text": "Kísérd a műhelyben rekedt mentőcsapatot a kórházba",
+   "marker": "Kórház"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "krater",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "A második nap darabokra tört. A legnagyobb kő a kapunk előtt hullott le.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     },
+     {
+      "camera": "korhaz",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Víz, áram, ágyak. Aki tud járni, segítsen. Aki nem, azt mi visszük.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Livia",
+     "text": "Vizet a kezelőkbe! Mindenki, aki tud járni, segítsen.",
+     "portrait": "imp_hos_livia"
+    }
+   ]
+  },
+  {
+   "on_objective": "energia",
+   "message": "A tömeg betöri a kapukat – mindenki a kezelőkbe akar jutni!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "kapu",
+    "units": {
+     "imp_legios": 4
+    },
+    "to": "korhaz"
+   }
+  },
+  {
+   "at": 330,
+   "message": "Nera légzése leáll. A templomi hangszórók megszólalnak:",
+   "color": [
+    140,
+    255,
+    200
+   ]
+  },
+  {
+   "at": 334,
+   "message": "„Adjátok ide őket. Egyet sem engedek el.”",
+   "color": [
+    140,
+    255,
+    200
+   ]
+  },
+  {
+   "id": "mentok_csatl",
+   "on_enter": {
+    "at": "muhely",
+    "r": 5
+   },
+   "join": "mentok",
+   "say": [
+    {
+     "who": "Livia",
+     "text": "Ti is jöttök. Minden kéz kell, ami még meleg.",
+     "portrait": "imp_hos_livia"
+    }
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "kitart",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "korhaz",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Nera? Nera, hallasz? …A hangszórók megint szólnak.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "imp_forum",
+   "text": "A kórház elesett."
+  },
+  {
+   "id": "imp_hos_livia",
+   "text": "Livia elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Egy kis bronztest megmozdul Livia előtt. „Anya? Miért nem érzem a kezed?” – Akkor még mindketten azt hiszik, a legrosszabbon túl vannak.",
+ "next": null,
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "code": "PRO-01",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (Előjáték: A második lélegzet)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   60,
+   54
+  ],
+  "seed": 1,
+  "points": {
+   "korhaz": [
+    30,
+    40
+   ],
+   "kapu": [
+    30,
+    26
+   ],
+   "kut": [
+    14,
+    44
+   ],
+   "krater": [
+    46,
+    10
+   ],
+   "muhely": [
+    44,
+    42
+   ],
+   "tomeg": [
+    30,
+    8
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     "krater",
+     6
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "korhaz",
+     "kapu"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kapu",
+     "tomeg"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "korhaz",
+     "kut"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "korhaz",
+     "muhely"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      10,
+      22
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      19,
+      12
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      34
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      12,
+      17
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      24
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      36
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      29
+     ],
+     2.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     22,
+     46
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     38,
+     48
+    ]
+   }
+  ],
+  "starts": [
+   "korhaz",
+   "tomeg",
+   "muhely"
+  ],
+  "decor": [
+   {
+    "id": "imp_legiogyar",
+    "at": [
+     16,
+     34
+    ],
+    "ruin": true
+   },
+   {
+    "id": "imp_ontode",
+    "at": [
+     46,
+     30
+    ],
+    "ruin": true
+   }
+  ],
+  "ambient": [
+   {
+    "id": "imp_fabrikator",
+    "n": 2,
+    "at": "muhely",
+    "mode": "idle",
+    "shelter": "korhaz"
+   }
+  ]
+ },
+ "allies": [
+  {
+   "faction": "imperium",
+   "name": "Mentőcsapat",
+   "units": [
+    {
+     "id": "imp_fabrikator",
+     "n": 3,
+     "at": "muhely",
+     "tag": "mentok"
+    }
+   ]
+  }
+ ]
+}

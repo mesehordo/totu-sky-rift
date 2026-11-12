@@ -1,0 +1,27 @@
+{
+ "id": "hosszutel",
+ "type": "effect",
+ "image": "hosszutel.png",
+ "frame_size": [
+  256,
+  256
+ ],
+ "anchor": [
+  128,
+  158
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 6,
+   "fps": 10,
+   "loop": true
+  }
+ },
+ "sheet_size": [
+  1536,
+  256
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

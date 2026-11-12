@@ -1,0 +1,43 @@
+{
+ "id": "imp_reaktor",
+ "type": "building",
+ "image": "imp_reaktor.png",
+ "team_mask": "imp_reaktor_team.png",
+ "style": "imperial",
+ "frame_size": [
+  172,
+  172
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  4,
+  28
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1376,
+  172
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

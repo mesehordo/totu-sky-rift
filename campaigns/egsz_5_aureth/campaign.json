@@ -1,0 +1,16 @@
+{
+  "id": "egsz_5_aureth",
+  "order": 7,
+  "title": "V. Az isten, aki nem enged el",
+  "desc": "Livia hazaviszi a croftian támadás bizonyítékait. Ordan nem lepődik meg: régóta építi az Örök Hajnal hálózatát.",
+  "requires": [
+    "egsz_4b_finomito"
+  ],
+  "missions": [
+    "a1_lefoglalt_szallitmany",
+    "a2_ures_serlegek_varosa",
+    "a3_az_orok_hajnal",
+    "a4_a_szabad_horgony",
+    "a5_feltoltes_megtagadva"
+  ]
+}

@@ -1,0 +1,341 @@
+{
+ "id": "nov_16_2",
+ "code": "NOV-16_2",
+ "title": "A lótusz forog",
+ "faction": "elves",
+ "novella": true,
+ "people": "Niil-elfek",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/16_*.md – „A lótusz forog”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 70. év, Papiruszkapu, az áradás reggele. Ha a lótusz megáll és forog, a Lótuszsziget hívja vissza.",
+  "Nefri tudja: az idén az ár korábban jön, és magasabban."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 1435,
+  "points": {
+   "szentely": [
+    32,
+    40
+   ],
+   "lepcso": [
+    32,
+    30
+   ],
+   "domb": [
+    32,
+    6
+   ],
+   "_": [
+    60,
+    54
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      28
+     ],
+     [
+      20,
+      26
+     ],
+     [
+      44,
+      30
+     ],
+     [
+      65,
+      28
+     ]
+    ],
+    "w": 4
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      32,
+      22
+     ],
+     [
+      32,
+      34
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "lepcso"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "domb"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      24,
+      47
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      27
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      43,
+      35
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      12
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      11,
+      29
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      17,
+      36
+     ],
+     4.5
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "szentely",
+   "_",
+   "lepcso"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "nii_arapalypap",
+    "at": "lepcso",
+    "n": 1,
+    "name": "Nefri, árpapnő",
+    "tag": "nefri"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "lotusz",
+   "type": "guard",
+   "at": "lepcso",
+   "radius": 2,
+   "seconds": 5,
+   "text": "Tedd a lótuszt a vízre",
+   "marker": "Lépcső"
+  },
+  {
+   "id": "ki",
+   "type": "escort",
+   "tag": "hivok",
+   "min": 3,
+   "at": "domb",
+   "radius": 5,
+   "text": "A lótusz forog: vezesd fel a híveket a dombra",
+   "marker": "Domb",
+   "after": "lotusz"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "lepcso",
+      "say": [
+       {
+        "who": "Nefri",
+        "text": "Forog. Nem a sziget hív. Az örvény erősebb.",
+        "portrait": "nii_arapalypap"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "lotusz",
+   "join": "hivok"
+  },
+  {
+   "if_done": "lotusz",
+   "every": 1,
+   "delay": 40,
+   "max": 1,
+   "message": "Árad a folyó!",
+   "color": [
+    140,
+    200,
+    255
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "water",
+      "line": [
+       [
+        -1,
+        32
+       ],
+       [
+        20,
+        30
+       ],
+       [
+        44,
+        34
+       ],
+       [
+        65,
+        32
+       ]
+      ],
+      "w": 12
+     }
+    ],
+    "clear": [
+     {
+      "t": "dirt",
+      "line": [
+       [
+        32,
+        20
+       ],
+       [
+        32,
+        10
+       ]
+      ],
+      "w": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "ki",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "domb",
+      "say": [
+       {
+        "who": "Nefri",
+        "text": "Az ároszlopra felkerül egy nyitott félkör.",
+        "portrait": "nii_arapalypap"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "hivok",
+   "unless_done": "ki",
+   "text": "A hívők odavesztek az árban."
+  }
+ ],
+ "victory": "Az ároszlopon az idei forgás mellett ott a nyitott félkör.",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "allies": [
+  {
+   "faction": "niil_elf",
+   "name": "Hívők",
+   "units": [
+    {
+     "id": "nii_lotuszpajzsos",
+     "at": "szentely",
+     "n": 5,
+     "tag": "hivok"
+    }
+   ]
+  }
+ ]
+}

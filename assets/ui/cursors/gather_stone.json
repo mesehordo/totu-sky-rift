@@ -1,0 +1,13 @@
+{
+  "id": "gather_stone",
+  "type": "cursor",
+  "image": "gather_stone.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    16,
+    16
+  ]
+}

@@ -1,0 +1,88 @@
+{
+ "id": "labirintus",
+ "order": 19,
+ "players": 4,
+ "size": 120,
+ "layout": "ring",
+ "theme": "winter",
+ "name": {
+  "hu": "Labirintus",
+  "en": "Labyrinth"
+ },
+ "desc": {
+  "hu": "Sziklafalak útvesztője – a felderítés itt életet ment. A zugokban Pinguu és Tokla táborok.",
+  "en": "A maze of cliff walls – scouting saves lives here."
+ },
+ "features": {
+  "river": [
+   {
+    "terrain": "rock",
+    "fords": 3,
+    "width": 1.6,
+    "inner": 0
+   },
+   {
+    "terrain": "rock",
+    "fords": 2,
+    "width": 1.4,
+    "inner": 12,
+    "turn": 0.785
+   }
+  ],
+  "ring_wall": {
+   "radius": 0.24,
+   "gates": 4
+  },
+  "ridges": [
+   6,
+   6,
+   11
+  ],
+  "forests": 10,
+  "start_angle": 45
+ },
+ "camps": {
+  "1": "pinguu",
+  "2": "tokla",
+  "3": "pinguu"
+ },
+ "decor": [
+  {
+   "id": "pin_orlangszentely",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  },
+  {
+   "id": "tok_harangkapu",
+   "at": "pair",
+   "d": 10,
+   "s": 7,
+   "ruin": true
+  }
+ ],
+ "ambient": [
+  {
+   "id": "pin_hopajzsos",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 1,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Útvesztő: a rövid út szűk és őrzött, a hosszú kerülő nyitott – előbb nézz, aztán lépj.",
+  "felallasok": "mindenki-mindenki ellen (4), kevesebb játékossal is",
+  "taborok": {
+   "1": "Pinguu",
+   "2": "Tokla",
+   "3": "Pinguu"
+  }
+ }
+}

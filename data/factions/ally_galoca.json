@@ -1,0 +1,379 @@
+{
+  "id": "galoca",
+  "ally": true,
+  "order": 106,
+  "name": "Galóca",
+  "tagline": "Tüskés kalapú gombaharcosok",
+  "desc": "A Galócák tüskés kalapú, fogas gombaharcosok, akik a sűrű növényzetből rontanak a betolakodókra. Telepeik peremén már a földből előbújó tüskék is jelzik, meddig tart a türelmük.",
+  "style": "fungal",
+  "color": [
+    190,
+    40,
+    40
+  ],
+  "accent": [
+    240,
+    220,
+    120
+  ],
+  "mechanic": "standard",
+  "units": {
+    "gal_fogaskalap": {
+      "hp": 120,
+      "armor": 1,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.38,
+      "supply": 1,
+      "time": 14,
+      "cost": {
+        "wood": 50,
+        "stone": 15
+      },
+      "shape": "warrior",
+      "attack": {
+        "damage": 9,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_galoca",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Fogaskalap",
+      "desc": "Fogas kalapú, mohó gombaharcos.",
+      "abilities": [
+        "gal_harapas"
+      ],
+      "ally": "galoca",
+      "utype": "kozelharcos"
+    },
+    "gal_tuskebunkos": {
+      "hp": 165,
+      "armor": 2,
+      "speed": 2.3,
+      "sight": 7,
+      "radius": 0.42,
+      "supply": 2,
+      "time": 18,
+      "cost": {
+        "wood": 65,
+        "stone": 25
+      },
+      "shape": "shieldbearer",
+      "attack": {
+        "damage": 14,
+        "range": 0.3,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_galoca",
+        "armored",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Tüskebunkós",
+      "desc": "Két tüskés bunkóval csapkod.",
+      "ally": "galoca",
+      "utype": "landzsas"
+    },
+    "gal_oriasgaloca": {
+      "hp": 520,
+      "armor": 3,
+      "speed": 1.9,
+      "sight": 8,
+      "radius": 0.6,
+      "supply": 4,
+      "time": 36,
+      "cost": {
+        "wood": 180,
+        "stone": 90,
+        "meteor": 40
+      },
+      "shape": "golem",
+      "attack": {
+        "damage": 26,
+        "range": 0.5,
+        "cooldown": 1.8,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_galoca",
+        "large",
+        "melee",
+        "organic"
+      ],
+      "name": "Óriásgalóca",
+      "desc": "Hatalmas, fogas gombaóriás.",
+      "abilities": [
+        "gal_kalaptaposas"
+      ],
+      "ally": "galoca",
+      "utype": "orias"
+    },
+    "gal_sporakopo": {
+      "hp": 85,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 8,
+      "radius": 0.38,
+      "supply": 2,
+      "time": 20,
+      "cost": {
+        "wood": 70,
+        "stone": 25
+      },
+      "shape": "archer",
+      "attack": {
+        "damage": 12,
+        "range": 5.5,
+        "cooldown": 1.5,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "acid",
+        "poison": [
+          3,
+          4
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_galoca",
+        "infantry",
+        "organic",
+        "ranged"
+      ],
+      "name": "Spóraköpő",
+      "desc": "Mérges spórafelhőt köp.",
+      "ally": "galoca",
+      "utype": "lovesz"
+    },
+    "gal_gyokergancsolo": {
+      "hp": 80,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.37,
+      "supply": 2,
+      "time": 26,
+      "energy": 150,
+      "cost": {
+        "wood": 70,
+        "stone": 25,
+        "meteor": 50
+      },
+      "shape": "caster",
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "tags": [
+        "ally",
+        "ally_galoca",
+        "caster",
+        "organic",
+        "ranged"
+      ],
+      "name": "Gyökérgáncsoló",
+      "desc": "Gyökerekkel köti meg az ellenséget.",
+      "abilities": [
+        "gal_gyokergancs"
+      ],
+      "ally": "galoca",
+      "utype": "varazslo"
+    }
+  },
+  "buildings": {
+    "gal_harapofeszek": {
+      "name": "Harapófészek",
+      "desc": "Fogaskalapokat, tüskebunkósokat és óriásgalócákat képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "galoca",
+      "produces": [
+        "gal_fogaskalap",
+        "gal_tuskebunkos",
+        "gal_oriasgaloca"
+      ]
+    },
+    "gal_sporakurt": {
+      "name": "Spórakürt",
+      "desc": "Spóraköpőket és gyökérgáncsolókat képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "galoca",
+      "produces": [
+        "gal_sporakopo",
+        "gal_gyokergancsolo"
+      ],
+      "requires": [
+        "gal_harapofeszek"
+      ]
+    },
+    "gal_tuskekert": {
+      "name": "Tüskekert",
+      "desc": "A galóca fejlesztések kertje; tüskéi sebzik a közelébe érő ellenséget.",
+      "cost": {
+        "wood": 150,
+        "stone": 120
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tech",
+      "ally": "galoca",
+      "researches": [
+        "gal_tuskes_talaj",
+        "gal_merges_spora",
+        "gal_gyors_burjanzas"
+      ],
+      "requires": [
+        "gal_harapofeszek"
+      ]
+    }
+  },
+  "researches": {
+    "gal_tuskes_talaj": {
+      "name": "Tüskés talaj",
+      "desc": "+1 páncél a galóca egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "ally_galoca"
+          ],
+          "add": 1
+        }
+      ],
+      "ally": "galoca"
+    },
+    "gal_merges_spora": {
+      "name": "Mérges spóra",
+      "desc": "+2 sebzés a galóca egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ally_galoca"
+          ],
+          "add": 2
+        }
+      ],
+      "ally": "galoca"
+    },
+    "gal_gyors_burjanzas": {
+      "name": "Gyors burjánzás",
+      "desc": "+1 életerő-visszatöltés másodpercenként.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "regen",
+          "tags": [
+            "ally_galoca"
+          ],
+          "add": 1
+        }
+      ],
+      "ally": "galoca"
+    }
+  },
+  "ally_pack": {
+    "buildings": [
+      "gal_harapofeszek",
+      "gal_sporakurt",
+      "gal_tuskekert"
+    ],
+    "units": [
+      "gal_fogaskalap",
+      "gal_tuskebunkos",
+      "gal_oriasgaloca",
+      "gal_sporakopo",
+      "gal_gyokergancsolo"
+    ]
+  },
+  "ai": {
+    "build": [
+      "gal_harapofeszek",
+      "gal_sporakurt",
+      "gal_tuskekert"
+    ],
+    "army": {
+      "gal_fogaskalap": 3,
+      "gal_tuskebunkos": 3,
+      "gal_oriasgaloca": 2,
+      "gal_sporakopo": 3,
+      "gal_gyokergancsolo": 3
+    },
+    "research": [
+      "gal_tuskes_talaj",
+      "gal_merges_spora",
+      "gal_gyors_burjanzas"
+    ]
+  }
+}

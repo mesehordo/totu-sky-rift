@@ -1,0 +1,333 @@
+{
+ "id": "x2_finomito",
+ "title": "Átvezető: A finomító",
+ "faction": "imperium",
+ "briefing": [
+  "Az ércet, amelyet Ragna lefoglalt, Livia vissza akarja szerezni. Kiderül: mindkét fél szükséglete valódi.",
+  "A közös megoldás egy elhagyott finomító újraindítása.",
+  "Építs Lélekreaktorokat, és termelj ki elég ércet mindkét népnek."
+ ],
+ "player": {
+  "resources": {
+   "wood": 495,
+   "stone": 505
+  },
+  "units": {
+   "imp_hos_livia": 1,
+   "imp_legios": 3
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Finomítói raj",
+   "hold": 180,
+   "aggression": 0.9
+  }
+ ],
+ "objectives": [
+  {
+   "type": "build_at",
+   "target": "imp_reaktor",
+   "at": "finomito",
+   "radius": 12,
+   "count": 3,
+   "text": "Indíts újra 3 Lélekreaktort a finomító körül",
+   "marker": "Finomító",
+   "id": "reaktor"
+  },
+  {
+   "id": "erc",
+   "type": "gather",
+   "text": "Termelj ki 300 csillagércet",
+   "after": "reaktor",
+   "resource": "meteor",
+   "amount": 300
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "finomito",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Ugyanaz az érc fűtené a menekülteket, és töltené a horgonyainkat. Mindkettő igaz.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Livia",
+     "text": "Lemerülő családok várnak a horgonyaikra. Nem kitalált ürügy – ahogy az ursanok tüze sem.",
+     "portrait": "imp_hos_livia"
+    }
+   ]
+  },
+  {
+   "on_objective": "reaktor",
+   "message": "Ragna pajzshordozói őrzik a finomítót.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "tabor",
+    "units": {
+     "urs_hos_ragna": 1,
+     "urs_pajzshordozo": 3
+    }
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "erc",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "finomito",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "A finomító dolgozik. Mögöttünk pékek, jogászok, gyerekek – nem gépek.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "imp_hos_livia",
+   "text": "Livia elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A finomító működik. A játékos először látja az emberi civileket a géptestek mögött.",
+ "next": null,
+ "hero_level": 3,
+ "enemy_hero_level": 3,
+ "code": "INT-02",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (Átvezető: A közös finomító)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4801,
+  "points": {
+   "finomito": [
+    34,
+    26
+   ],
+   "tabor": [
+    10,
+    46
+   ],
+   "reaktor1": [
+    26,
+    36
+   ],
+   "reaktor2": [
+    42,
+    36
+   ],
+   "reaktor3": [
+    34,
+    16
+   ],
+   "raj": [
+    56,
+    8
+   ],
+   "erc": [
+    48,
+    20
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "reaktor1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "reaktor1",
+     "finomito"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "finomito",
+     "reaktor2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "finomito",
+     "reaktor3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      22,
+      22
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      26,
+      48
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      17,
+      32
+     ],
+     2.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      18
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      46
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      41
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      54,
+      37
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      21,
+      16
+     ],
+     3.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": "erc"
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     52,
+     26
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "raj"
+  ],
+  "decor": [
+   {
+    "id": "imp_finomito",
+    "at": "finomito",
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ }
+}

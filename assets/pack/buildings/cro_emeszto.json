@@ -1,0 +1,39 @@
+{
+ "id": "cro_emeszto",
+ "type": "building",
+ "image": "cro_emeszto.png",
+ "frame_size": [
+  87,
+  83
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  11,
+  13
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "croftian_buildings.meteorite_digester",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  435,
+  83
+ ]
+}

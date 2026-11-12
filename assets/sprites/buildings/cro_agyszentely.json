@@ -1,0 +1,43 @@
+{
+ "id": "cro_agyszentely",
+ "type": "building",
+ "image": "cro_agyszentely.png",
+ "team_mask": "cro_agyszentely_team.png",
+ "style": "organic",
+ "frame_size": [
+  200,
+  172
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  -26
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1600,
+  172
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

@@ -1,0 +1,428 @@
+{
+ "id": "nov_18_3",
+ "code": "NOV-18_3",
+ "title": "Lámpásgyújtás",
+ "faction": "wullof",
+ "novella": true,
+ "people": "Tendüür",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/18_*.md – „Lámpásgyújtás”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 66. év, a Lámpásliget pereme. Ilvi lámpásgyújtó: napnyugtakor végigrepüli a peremet.",
+  "Az aurethi a sötétben jött, és eltévedt."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 9039,
+  "points": {
+   "liget": [
+    32,
+    30
+   ],
+   "l1": [
+    12,
+    12
+   ],
+   "l2": [
+    52,
+    12
+   ],
+   "l3": [
+    56,
+    40
+   ],
+   "l4": [
+    10,
+    44
+   ],
+   "elveszett": [
+    40,
+    50
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "liget",
+     "l1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "liget",
+     "l2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "liget",
+     "l3"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "liget",
+     "l4"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "liget",
+     "elveszett"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      16,
+      30
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      33
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      28
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      22
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      26,
+      46
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      24
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      27
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      29
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      24,
+      11
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      28
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      23,
+      48
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      24,
+      44
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      27,
+      43
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      23
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      36,
+      6
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      41,
+      7
+     ],
+     4.5
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "liget",
+   "_",
+   "l1"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "ten_lampasor",
+    "at": "liget",
+    "n": 1,
+    "name": "Ilvi",
+    "tag": "ilvi"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "l1",
+   "type": "guard",
+   "at": "l1",
+   "radius": 2,
+   "seconds": 2,
+   "text": "Gyújtsd meg a(z) 1. lámpást a liget peremén",
+   "marker": "Lámpás"
+  },
+  {
+   "id": "l2",
+   "type": "guard",
+   "at": "l2",
+   "radius": 2,
+   "seconds": 2,
+   "text": "Gyújtsd meg a(z) 2. lámpást a liget peremén",
+   "marker": "Lámpás"
+  },
+  {
+   "id": "l3",
+   "type": "guard",
+   "at": "l3",
+   "radius": 2,
+   "seconds": 2,
+   "text": "Gyújtsd meg a(z) 3. lámpást a liget peremén",
+   "marker": "Lámpás"
+  },
+  {
+   "id": "l4",
+   "type": "guard",
+   "at": "l4",
+   "radius": 2,
+   "seconds": 2,
+   "text": "Gyújtsd meg a(z) 4. lámpást a liget peremén",
+   "marker": "Lámpás"
+  },
+  {
+   "id": "talal",
+   "type": "reach",
+   "at": "elveszett",
+   "radius": 3,
+   "text": "Keresd meg az eltévedt aurethit",
+   "marker": "Fény a sötétben",
+   "after": [
+    "l1",
+    "l2",
+    "l3",
+    "l4"
+   ],
+   "tag": "ilvi"
+  },
+  {
+   "id": "ki",
+   "type": "escort",
+   "tag": "aurethi",
+   "min": 1,
+   "at": "liget",
+   "radius": 5,
+   "text": "Vezesd ki a gyökereken át – ne a gyökerekre lépjen",
+   "marker": "Ösvény",
+   "after": "talal"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "liget",
+      "say": [
+       {
+        "who": "Ilvi",
+        "text": "A lámpások a fák szemei éjszakára.",
+        "portrait": "ten_lampasor"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "talal",
+   "join": "aurethi"
+  },
+  {
+   "at": 200,
+   "unless_done": "ki",
+   "fail": "Teljesen besötétedett."
+  },
+  {
+   "id": "zaras",
+   "on_objective": "ki",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "liget",
+      "say": [
+       {
+        "who": "Ilvi",
+        "text": "Hozz egy lámpást. És ne a gyökerekre lépj.",
+        "portrait": "ten_lampasor"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Egy hónap múlva egy kis bronz lámpás lógott egy alacsony ágon.",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "allies": [
+  {
+   "faction": "imperium",
+   "name": "Eltévedt",
+   "units": [
+    {
+     "id": "imp_fabrikator",
+     "at": "elveszett",
+     "n": 1,
+     "name": "Eltévedt aurethi",
+     "tag": "aurethi"
+    }
+   ]
+  }
+ ]
+}

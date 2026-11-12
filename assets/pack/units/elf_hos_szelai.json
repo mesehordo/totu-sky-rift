@@ -1,0 +1,56 @@
+{
+ "id": "elf_hos_szelai",
+ "type": "unit",
+ "image": "elf_hos_szelai.png",
+ "frame_size": [
+  69,
+  53
+ ],
+ "anchor": [
+  34,
+  38
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 1,
+   "frames": 4,
+   "fps": 9,
+   "loop": true
+  },
+  "attack": {
+   "start": 5,
+   "frames": 4,
+   "fps": 11,
+   "loop": false
+  },
+  "death": {
+   "start": 9,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "pack": "grey_elves.astral_priest",
+ "pack_kind": "statikus kép (DK) + tükrözés + generált mozgás",
+ "sheet_size": [
+  1035,
+  424
+ ]
+}

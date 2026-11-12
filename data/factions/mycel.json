@@ -1,0 +1,1072 @@
+{
+  "id": "mycel",
+  "order": 5,
+  "name": "Micéliák",
+  "tagline": "Spórafonal-hálózat • szívgombák • összeolvadás",
+  "desc": "A Mélykertek népe: önálló gombaszemélyek, akiket a föld alatti fonalhálózat köt össze (a fajnév munkacím). Épületeik csak spórafonalakkal a Szívgombához kötve működnek, de bármelyikbe leadható a nyersanyag; három Pöfeteg Óriáspöfeteggé olvad.",
+  "mechanic": "network",
+  "style": "fungal",
+  "color": [
+    214,
+    196,
+    162
+  ],
+  "accent": [
+    80,
+    225,
+    205
+  ],
+  "regen": 0.3,
+  "hq": "myc_szivgomba",
+  "worker": "myc_sporaszedo",
+  "supply_building": "myc_szivgomba",
+  "start_units": {
+    "myc_sporaszedo": 5
+  },
+  "units": {
+    "myc_sporaszedo": {
+      "name": "Spóraszedő",
+      "desc": "Munkás. Bármelyik hálózatba kötött épületbe leadhatja a terhét.",
+      "cost": {
+        "wood": 35,
+        "stone": 15
+      },
+      "supply": 1,
+      "time": 12,
+      "hp": 40,
+      "armor": 0,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.33,
+      "shape": "worker",
+      "worker": true,
+      "attack": {
+        "damage": 5,
+        "range": 0.3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "worker",
+        "organic",
+        "light",
+        "fungal"
+      ],
+      "abilities": [
+        "p_halozati_gyujtes"
+      ],
+      "utype": "munkas"
+    },
+    "myc_pofeteg": {
+      "name": "Pöfeteg",
+      "desc": "Olcsó, ugráló gombalény. Halálakor mérgező spórafelhő tör ki belőle. Hármasával Óriáspöfeteggé olvad.",
+      "cost": {
+        "wood": 40,
+        "stone": 15
+      },
+      "supply": 1,
+      "time": 12,
+      "hp": 45,
+      "armor": 0,
+      "speed": 2.9,
+      "sight": 7,
+      "radius": 0.33,
+      "shape": "puffball",
+      "attack": {
+        "damage": 7,
+        "range": 0.3,
+        "cooldown": 0.9,
+        "targets": [
+          "ground"
+        ]
+      },
+      "death_burst": {
+        "damage": 12,
+        "radius": 1.4
+      },
+      "abilities": [
+        "osszeolvadas",
+        "osztodas3"
+      ],
+      "tags": [
+        "melee",
+        "organic",
+        "light",
+        "fungal"
+      ],
+      "utype": "kozelharcos"
+    },
+    "myc_tuskegomba_lovesz": {
+      "name": "Tüskegomba-lövész",
+      "desc": "Mérgező spóratüskéket lő, földi és légi célpontokra.",
+      "cost": {
+        "wood": 85,
+        "stone": 30
+      },
+      "supply": 2,
+      "time": 19,
+      "hp": 80,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 8,
+      "radius": 0.38,
+      "shape": "mushroom_archer",
+      "attack": {
+        "damage": 10,
+        "range": 5,
+        "cooldown": 1.3,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "acid"
+      },
+      "requires": [
+        "myc_tuskegomba_telep"
+      ],
+      "tags": [
+        "ranged",
+        "organic",
+        "fungal"
+      ],
+      "abilities": [
+        "sporatuske",
+        "osztodas4"
+      ],
+      "utype": "lovesz",
+      "type_bonus": {
+        "repulo": 1.5
+      }
+    },
+    "myc_kalapos_or": {
+      "name": "Kalapos őr",
+      "desc": "Vastag kalapú, páncélos gombaharcos.",
+      "cost": {
+        "wood": 110,
+        "stone": 60
+      },
+      "supply": 2,
+      "time": 22,
+      "hp": 170,
+      "armor": 3,
+      "speed": 2.1,
+      "sight": 7,
+      "radius": 0.45,
+      "shape": "mushroom_guard",
+      "attack": {
+        "damage": 9,
+        "range": 0.35,
+        "cooldown": 1.3,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "melee",
+        "organic",
+        "armored",
+        "fungal"
+      ],
+      "abilities": [
+        "kalapfal",
+        "osztodas4"
+      ],
+      "utype": "kozelharcos"
+    },
+    "myc_alomsaman": {
+      "name": "Álomgomba-sámán",
+      "desc": "Gyökérkötéssel egy területen megbénítja az ellenséget.",
+      "cost": {
+        "wood": 70,
+        "meteor": 70,
+        "stone": 20
+      },
+      "supply": 2,
+      "time": 26,
+      "hp": 60,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.37,
+      "shape": "mushroom_caster",
+      "attack": {
+        "damage": 5,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "gyokerkotes"
+      ],
+      "requires": [
+        "myc_alomkert"
+      ],
+      "tags": [
+        "caster",
+        "ranged",
+        "organic",
+        "fungal"
+      ],
+      "path": "alom",
+      "utype": "varazslo"
+    },
+    "myc_oriaspofeteg": {
+      "name": "Óriáspöfeteg",
+      "desc": "Három Pöfetegből összeolvadt óriás. Halálakor hatalmas spórarobbanás.",
+      "cost": {
+        "wood": 125,
+        "stone": 45
+      },
+      "supply": 3,
+      "time": 1,
+      "hp": 360,
+      "armor": 2,
+      "speed": 2.2,
+      "sight": 8,
+      "radius": 0.72,
+      "shape": "puffball",
+      "attack": {
+        "damage": 26,
+        "range": 0.4,
+        "cooldown": 1.5,
+        "targets": [
+          "ground"
+        ],
+        "splash": 1.0
+      },
+      "death_burst": {
+        "damage": 35,
+        "radius": 2.2
+      },
+      "tags": [
+        "melee",
+        "organic",
+        "large",
+        "fungal"
+      ],
+      "abilities": [
+        "sporarobbanas"
+      ],
+      "utype": "orias"
+    },
+    "myc_lebego_pofeteg": {
+      "name": "Lebegő pöfeteg",
+      "desc": "Gázzal telt, lebegő gombatest; spóraesőt szór.",
+      "cost": {
+        "meteor": 60,
+        "wood": 70,
+        "stone": 40
+      },
+      "supply": 3,
+      "time": 28,
+      "hp": 150,
+      "armor": 1,
+      "speed": 3.2,
+      "sight": 9,
+      "radius": 0.55,
+      "shape": "floater",
+      "flying": true,
+      "attack": {
+        "damage": 12,
+        "range": 3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "acid",
+        "splash": 0.8
+      },
+      "requires": [
+        "myc_lebegobolcso"
+      ],
+      "tags": [
+        "flyer",
+        "fungal"
+      ],
+      "abilities": [
+        "sporaeso"
+      ],
+      "utype": "repulo"
+    },
+    "myc_hos_mor": {
+      "name": "Mór",
+      "desc": "Fiatal emlékkertész, magában hordja egy sérült emlékkert töredékeit. Gyógyít és fertőzést vizsgál.",
+      "hp": 240,
+      "armor": 1,
+      "speed": 2.6,
+      "sight": 10,
+      "radius": 0.4,
+      "energy": 150,
+      "attack": {
+        "damage": 10,
+        "range": 4.5,
+        "cooldown": 1.3,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "caster",
+        "ranged",
+        "organic",
+        "fungal"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 40,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_mor_gyogyspora",
+        "h_mor_gyokerkotes",
+        "h_mor_emlekkert",
+        "h_mor_ebredes"
+      ],
+      "growth": {
+        "hp": 35,
+        "damage": 2,
+        "armor": 0.3,
+        "energy": 25
+      },
+      "requires": [
+        "myc_emlekfa"
+      ],
+      "utype": "varazslo"
+    },
+    "myc_rothaszto": {
+      "name": "Rothasztó",
+      "desc": "Bomló gombatest: közelharcban rothaszt, halálakor mérgező spórafelhőt ereget.",
+      "cost": {
+        "wood": 75,
+        "stone": 25
+      },
+      "supply": 2,
+      "time": 20,
+      "hp": 150,
+      "armor": 1,
+      "speed": 2.4,
+      "sight": 7,
+      "radius": 0.42,
+      "shape": "warrior",
+      "attack": {
+        "damage": 12,
+        "range": 0.4,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ],
+        "bonus": {
+          "armored": 6
+        }
+      },
+      "death_burst": {
+        "radius": 1.8,
+        "damage": 40
+      },
+      "tags": [
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "abilities": [
+        "osztodas4"
+      ],
+      "path": "rothadas",
+      "utype": "kozelharcos"
+    },
+    "myc_hos_gyokeranya": {
+      "name": "A Gyökéranya",
+      "desc": "Az ősi micélium teste: gyökeret ereszt, gúzsba köt, és megrengeti a földet.",
+      "hp": 600,
+      "armor": 4,
+      "speed": 2.3,
+      "sight": 9,
+      "radius": 0.55,
+      "attack": {
+        "damage": 20,
+        "range": 0.5,
+        "cooldown": 1.3,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "melee",
+        "organic",
+        "large"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 45,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_gya_halo",
+        "h_gya_melygyoker",
+        "h_gya_talaj",
+        "h_gya_rengés"
+      ],
+      "growth": {
+        "hp": 70,
+        "damage": 3,
+        "armor": 0.6,
+        "energy": 12
+      },
+      "energy": 150,
+      "requires": [
+        "myc_emlekfa"
+      ],
+      "utype": "kozelharcos"
+    },
+    "myc_hos_sporin": {
+      "name": "Sporin, a Bomlasztó",
+      "desc": "A bomlás vándora: tüskéi rothasztanak, köpenye spórafelhő.",
+      "hp": 360,
+      "armor": 1,
+      "speed": 3.0,
+      "sight": 9,
+      "radius": 0.45,
+      "attack": {
+        "damage": 18,
+        "range": 5,
+        "cooldown": 1.2,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "acid"
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "ranged",
+        "organic"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 45,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_spo_tuske",
+        "h_spo_rothadas",
+        "h_spo_kopeny",
+        "h_spo_raj"
+      ],
+      "growth": {
+        "hp": 38,
+        "damage": 3,
+        "armor": 0.3,
+        "energy": 16
+      },
+      "energy": 150,
+      "requires": [
+        "myc_emlekfa"
+      ],
+      "utype": "lovesz"
+    },
+    "myc_tetemgomba": {
+      "name": "Tetemgomba",
+      "desc": "Az elesettekből kelt, gombával átszőtt test: lassú, de nem adja fel.",
+      "cost": {
+        "wood": 50,
+        "stone": 20
+      },
+      "supply": 1,
+      "time": 12,
+      "hp": 100,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 7,
+      "radius": 0.42,
+      "shape": "warrior",
+      "tags": [
+        "organic",
+        "melee",
+        "fungal"
+      ],
+      "abilities": [
+        "osztodas4"
+      ],
+      "attack": {
+        "damage": 8,
+        "range": 0.35,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "path": "rothadas",
+      "utype": "kozelharcos"
+    },
+    "myc_fagomba_orias": {
+      "name": "Fagomba-óriás",
+      "desc": "Járó, ősi fagomba: a liget védelmezője, gyökereivel megköt.",
+      "cost": {
+        "wood": 200,
+        "stone": 100,
+        "meteor": 40
+      },
+      "supply": 5,
+      "time": 36,
+      "hp": 700,
+      "armor": 3,
+      "speed": 2.0,
+      "sight": 7,
+      "radius": 0.75,
+      "shape": "golem",
+      "tags": [
+        "organic",
+        "melee",
+        "large",
+        "fungal"
+      ],
+      "abilities": [
+        "gyokerkotes"
+      ],
+      "attack": {
+        "damage": 24,
+        "range": 0.5,
+        "cooldown": 1.5,
+        "targets": [
+          "ground"
+        ]
+      },
+      "path": "liget",
+      "utype": "orias"
+    },
+    "myc_alomszovo": {
+      "name": "Álomszövő",
+      "desc": "Altató spórákat szövő gomba-mágus.",
+      "cost": {
+        "wood": 90,
+        "meteor": 70
+      },
+      "supply": 2,
+      "time": 24,
+      "hp": 110,
+      "armor": 0,
+      "speed": 2.8,
+      "sight": 7,
+      "radius": 0.42,
+      "shape": "mushroom_caster",
+      "tags": [
+        "caster",
+        "ranged",
+        "organic",
+        "fungal"
+      ],
+      "abilities": [
+        "alomspora"
+      ],
+      "attack": {
+        "damage": 9,
+        "range": 5,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "acid"
+      },
+      "path": "alom",
+      "utype": "varazslo"
+    }
+  },
+  "buildings": {
+    "myc_szivgomba": {
+      "name": "Szívgomba",
+      "desc": "A hálózat szíve: kicsi főépület és védőtorony egyben. +6 létszám (és a hálózat minden összekötött épülete +1), Spóraszedőket nevel, spórákkal lő. Akárhány építhető.",
+      "cost": {
+        "wood": 255,
+        "stone": 70
+      },
+      "time": 45,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 500,
+      "armor": 1,
+      "sight": 9,
+      "supply": 6,
+      "core": true,
+      "link_radius": 7,
+      "field_radius": 6,
+      "dropoff": [
+        "wood",
+        "stone",
+        "meteor"
+      ],
+      "attack": {
+        "damage": 4,
+        "range": 5,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "acid"
+      },
+      "produces": [
+        "myc_sporaszedo"
+      ],
+      "shape": "hq",
+      "detect": 7,
+      "researches": []
+    },
+    "myc_sporafonal": {
+      "name": "Spórafonal",
+      "desc": "Hálózati csomópont: összeköti az épületeket a Szívgombával.",
+      "cost": {
+        "wood": 25
+      },
+      "time": 8,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 120,
+      "armor": 0,
+      "sight": 5,
+      "link_radius": 6,
+      "field_radius": 3,
+      "shape": "node"
+    },
+    "myc_termotest": {
+      "name": "Termőtest",
+      "desc": "Pöfetegeket és Kalapos őröket növeszt.",
+      "cost": {
+        "wood": 165,
+        "stone": 35
+      },
+      "time": 36,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 750,
+      "armor": 1,
+      "sight": 7,
+      "link_radius": 4,
+      "produces": [
+        "myc_pofeteg",
+        "myc_kalapos_or"
+      ],
+      "shape": "barracks"
+    },
+    "myc_tuskegomba_telep": {
+      "name": "Tüskegomba-telep",
+      "desc": "Tüskegomba-lövészeket növeszt.",
+      "cost": {
+        "wood": 140,
+        "stone": 85
+      },
+      "time": 40,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 700,
+      "armor": 1,
+      "sight": 7,
+      "link_radius": 4,
+      "produces": [
+        "myc_tuskegomba_lovesz"
+      ],
+      "requires": [
+        "myc_termotest"
+      ],
+      "shape": "pen"
+    },
+    "myc_gyokerbarlang": {
+      "name": "Gyökérbarlang",
+      "desc": "Fejlesztések a hálózat mélyén.",
+      "cost": {
+        "stone": 125,
+        "meteor": 50
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 700,
+      "armor": 1,
+      "sight": 7,
+      "link_radius": 4,
+      "researches": [
+        "myc_meregspora",
+        "myc_kemenykalap",
+        "myc_gyors_micelium",
+        "myc_dus_spora"
+      ],
+      "requires": [
+        "myc_termotest"
+      ],
+      "shape": "tech"
+    },
+    "myc_alomkert": {
+      "name": "Álomkert",
+      "desc": "Álomgomba-sámánokat nevel.",
+      "cost": {
+        "meteor": 75,
+        "wood": 65,
+        "stone": 35
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 650,
+      "armor": 1,
+      "sight": 8,
+      "link_radius": 4,
+      "produces": [
+        "myc_alomsaman"
+      ],
+      "requires": [
+        "myc_gyokerbarlang"
+      ],
+      "shape": "observatory",
+      "path": "alom"
+    },
+    "myc_lebegobolcso": {
+      "name": "Lebegőbölcső",
+      "desc": "Lebegő pöfetegeket nevel.",
+      "cost": {
+        "stone": 150,
+        "meteor": 75,
+        "wood": 100
+      },
+      "time": 50,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 700,
+      "armor": 1,
+      "sight": 8,
+      "link_radius": 4,
+      "produces": [
+        "myc_lebego_pofeteg"
+      ],
+      "requires": [
+        "myc_termotest"
+      ],
+      "shape": "aerie"
+    },
+    "myc_emlekfa": {
+      "name": "Emlékfa",
+      "desc": "Az elfeledett nevek fája: Mór, a Gyökéranya és Sporin hívása.",
+      "cost": {
+        "wood": 215,
+        "stone": 35
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 2,
+      "sight": 8,
+      "produces": [
+        "myc_hos_mor",
+        "myc_hos_gyokeranya",
+        "myc_hos_sporin"
+      ],
+      "shape": "altar",
+      "altar": true
+    },
+    "myc_rothadokert": {
+      "name": "Rothadókert",
+      "desc": "Bomló tetemeken nőtt gombakert: rothasztók és tetemgombák.",
+      "cost": {
+        "wood": 180,
+        "stone": 60
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "produces": [
+        "myc_rothaszto",
+        "myc_tetemgomba"
+      ],
+      "shape": "barracks",
+      "path": "rothadas"
+    },
+    "myc_oriasliget": {
+      "name": "Óriásliget",
+      "desc": "Ősi fagombák ligete: fagomba-óriások.",
+      "cost": {
+        "wood": 240,
+        "stone": 100
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "produces": [
+        "myc_fagomba_orias"
+      ],
+      "shape": "tech",
+      "path": "liget"
+    }
+  },
+  "researches": {
+    "myc_meregspora": {
+      "name": "Méregspóra",
+      "desc": "+2 sebzés a távolsági egységeknek.",
+      "cost": {
+        "wood": 165,
+        "stone": 35
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "myc_kemenykalap": {
+      "name": "Keménykalap",
+      "desc": "+1 páncél minden egységnek.",
+      "cost": {
+        "stone": 185,
+        "wood": 65
+      },
+      "time": 70,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "fungal"
+          ],
+          "add": 1
+        }
+      ]
+    },
+    "myc_gyors_micelium": {
+      "name": "Gyors micélium",
+      "desc": "+15% sebesség minden egységnek.",
+      "cost": {
+        "meteor": 75,
+        "wood": 65,
+        "stone": 35
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "all"
+          ],
+          "add": 15
+        }
+      ]
+    },
+    "myc_dus_spora": {
+      "name": "Dús spóra",
+      "desc": "+20 életerő minden gombaegységnek.",
+      "cost": {
+        "meteor": 75,
+        "wood": 100,
+        "stone": 50
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "fungal"
+          ],
+          "add": 20
+        }
+      ]
+    }
+  },
+  "ai": {
+    "workers": 20,
+    "gather_ratio": {
+      "wood": 0.54,
+      "stone": 0.22,
+      "meteor": 0.24
+    },
+    "build_order": [
+      "myc_sporafonal",
+      "myc_termotest",
+      "myc_szivgomba",
+      "myc_emlekfa",
+      "myc_sporafonal",
+      "myc_termotest",
+      "myc_tuskegomba_telep",
+      "myc_gyokerbarlang",
+      "myc_szivgomba",
+      "myc_lebegobolcso"
+    ],
+    "army": {
+      "myc_pofeteg": 4,
+      "myc_tuskegomba_lovesz": 3,
+      "myc_kalapos_or": 2,
+      "myc_lebego_pofeteg": 1
+    },
+    "research_order": [
+      "myc_meregspora",
+      "myc_kemenykalap",
+      "myc_gyors_micelium",
+      "myc_dus_spora"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+      "rothadas",
+      "liget",
+      "alom"
+    ],
+    "paths": {
+      "rothadas": {
+        "build": [
+          "myc_rothadokert"
+        ],
+        "army": {
+          "myc_rothaszto": 3,
+          "myc_tetemgomba": 3
+        }
+      },
+      "liget": {
+        "build": [
+          "myc_oriasliget"
+        ],
+        "army": {
+          "myc_fagomba_orias": 2
+        }
+      },
+      "alom": {
+        "build": [
+          "myc_alomkert"
+        ],
+        "army": {
+          "myc_alomsaman": 1,
+          "myc_alomszovo": 2
+        }
+      }
+    }
+  },
+  "start_gather": "wood",
+  "network_supply": 1,
+  "supply_desc": "A hálózat: minden összekötött épület +1",
+  "spell_resource": "spores",
+  "balance_v6": true,
+  "paths": {
+    "rothadas": {
+      "name": "Rothadás",
+      "tagline": "Felőrlő, méreggel nyújtott harc",
+      "desc": "A közelharcosaid mérgeznek, és az elesett élőkből 25% eséllyel tetemgomba-zombi kel. Rothasztók vezetik a lassan terjedő pusztulást.",
+      "building": "myc_rothadokert",
+      "units": [
+        "myc_rothaszto",
+        "myc_tetemgomba"
+      ],
+      "rules": {
+        "poison_attacks": {
+          "tags": [
+            "melee"
+          ],
+          "dps": 3,
+          "dur": 4
+        },
+        "raise_from_kills": {
+          "unit": "myc_tetemgomba",
+          "chance": 0.12,
+          "lifetime": 30,
+          "color": [
+            170,
+            200,
+            120
+          ]
+        }
+      }
+    },
+    "liget": {
+      "name": "Óriásliget",
+      "tagline": "Terjeszkedés és területfoglalás",
+      "desc": "A hálózat minden összekötött épülete +2 létszámot ad, az épületek +250 életerőt kapnak. Járó fagomba-óriások védik a ligetet.",
+      "building": "myc_oriasliget",
+      "units": [
+        "myc_fagomba_orias"
+      ],
+      "rules": {
+        "network_supply_add": 2
+      },
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "building"
+          ],
+          "add": 250
+        }
+      ]
+    },
+    "alom": {
+      "name": "Álom",
+      "tagline": "Csel, rejtőzés, rajtaütés",
+      "desc": "Az erdőben minden egységed láthatatlan, amíg nem mozog és nem támad. Álomsámánok és Álomszövők altató spórákkal bénítják meg az ellenfelet.",
+      "building": "myc_alomkert",
+      "units": [
+        "myc_alomsaman",
+        "myc_alomszovo"
+      ],
+      "rules": {
+        "forest_stealth": {
+          "tags": [
+            "fungal"
+          ]
+        }
+      }
+    }
+  },
+  "ascension": {
+    "buildings": 3
+  },
+  "hidden": true
+}

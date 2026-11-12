@@ -1,0 +1,13 @@
+{
+  "id": "no",
+  "type": "cursor",
+  "image": "no.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    16,
+    16
+  ]
+}

@@ -1,0 +1,311 @@
+{
+ "id": "nov_02_1",
+ "code": "NOV-02_1",
+ "title": "A gabonakíséret",
+ "faction": "ursan",
+ "novella": true,
+ "people": "Ursanok",
+ "theme": "winter",
+ "source": "docs/tortenet/story/…/novellak/02_*.md – „A gabonakíséret”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A rablók rajtaütése; a döntés jelzője (csak a novellában)."
+ },
+ "briefing": [
+  "Az 58. év, a déli út. Sigvor az Esküfa alatt esküdött: a gabonából útközben senkinek nem ad.",
+  "Az úton Wullof menekültek táboroznak. Az eskü és az éhség ugyanazon az úton találkozik."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 2712,
+  "points": {
+   "jarlsag": [
+    32,
+    4
+   ],
+   "tabor": [
+    20,
+    26
+   ],
+   "rev": [
+    32,
+    52
+   ],
+   "szoros": [
+    40,
+    38
+   ],
+   "_": [
+    60,
+    30
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      0,
+      26
+     ],
+     [
+      26,
+      26
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      38,
+      26
+     ],
+     [
+      64,
+      26
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "jarlsag",
+     "tabor"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "szoros"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szoros",
+     "rev"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      10,
+      30
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      18,
+      36
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      9
+     ],
+     3.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      16
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      47,
+      49
+     ],
+     4.0
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "jarlsag",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "urs_hos_ragna",
+    "at": "jarlsag",
+    "n": 1,
+    "name": "Sigvor",
+    "tag": "sigvor"
+   },
+   {
+    "id": "urs_mammut",
+    "at": "jarlsag",
+    "n": 3,
+    "name": "Gabonaszán",
+    "tag": "gabona"
+   },
+   {
+    "id": "urs_pajzshordozo",
+    "at": "jarlsag",
+    "n": 4
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "ursan",
+   "name": "Rablók",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "tabor",
+   "type": "reach",
+   "at": "tabor",
+   "radius": 3,
+   "text": "Érj a menekülttáborhoz az úton",
+   "marker": "Tábor",
+   "tag": "gabona"
+  },
+  {
+   "id": "rev",
+   "type": "escort",
+   "tag": "gabona",
+   "min": 2,
+   "at": "rev",
+   "radius": 5,
+   "text": "Vidd le a gabonaszánokat a déli révig",
+   "marker": "Déli rév",
+   "after": "tabor"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Sigvor",
+        "text": "Negyven szán gabona, egy eskü. És egy tábor az út mellett.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "dontes",
+   "on_objective": "tabor",
+   "choice": {
+    "title": "Az eskü",
+    "text": "A táborban éhező Wullof családok. A szánokon a jarl gabonája.",
+    "options": [
+     {
+      "label": "Az eskü szerint továbbmegyünk",
+      "flag": "nov021_eskü"
+     },
+     {
+      "label": "Egy szánt itt hagyok – az eskümet a magam terhére szegem meg",
+      "flag": "nov021_szan"
+     }
+    ]
+   }
+  },
+  {
+   "id": "rabol",
+   "every": 70,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "_",
+    "to": "szoros",
+    "units": [
+     {
+      "id": "urs_berserker",
+      "n": 3,
+      "name": "Éhes rabló"
+     }
+    ]
+   },
+   "delay": 10,
+   "max": 2,
+   "if_done": "tabor"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "rev",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "rev",
+      "say": [
+       {
+        "who": "Wullof útbíró",
+        "text": "Mi is tudunk esküt tenni.",
+        "portrait": "wul_gyujtogeto"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "sigvor",
+   "text": "Sigvor elesett."
+  }
+ ],
+ "victory": "A gabona leért a révre. Az útbíró meghajolt, egész testtel, ahogy a Wullofok szoktak.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

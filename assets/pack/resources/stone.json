@@ -1,0 +1,27 @@
+{
+ "id": "stone",
+ "type": "resource",
+ "image": "stone.png",
+ "frame_size": [
+  76,
+  70
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  6,
+  0
+ ],
+ "frames": 1,
+ "frames_meaning": "változatok",
+ "fps": 0,
+ "pack": [
+  "world.stone_deposit"
+ ],
+ "sheet_size": [
+  76,
+  70
+ ]
+}

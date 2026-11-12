@@ -1,0 +1,13 @@
+{
+  "id": "cast",
+  "type": "cursor",
+  "image": "cast.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    16,
+    16
+  ]
+}

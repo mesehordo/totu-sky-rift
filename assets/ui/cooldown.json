@@ -1,0 +1,15 @@
+{
+  "id": "cmd_cooldown",
+  "type": "ui_states",
+  "image": "cooldown.png",
+  "frame_size": [
+    37,
+    37
+  ],
+  "sheet_size": [
+    296,
+    37
+  ],
+  "frames": 8,
+  "order": "row-major source, horizontal export"
+}

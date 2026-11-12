@@ -1,0 +1,11 @@
+{
+ "id": "imperium",
+ "type": "emblem",
+ "image": "imperium.png",
+ "size": [
+  256,
+  256
+ ],
+ "faction": "Vasbirodalom",
+ "generator": "TOTU grafika"
+}

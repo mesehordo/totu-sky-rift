@@ -1,0 +1,78 @@
+{
+ "id": "haromko",
+ "order": 6,
+ "players": 3,
+ "size": 96,
+ "layout": "ring",
+ "theme": "wasteland",
+ "name": {
+  "hu": "Háromkő",
+  "en": "Three Stones"
+ },
+ "desc": {
+  "hu": "Három sziklatorony a közép körül; a meteor a háromszög közepén. Döntés: a középső meteor, vagy a tornyok tövében, Shrissh-matah rúnavárak között húzódó kerülő?",
+  "en": "Three rock towers around the centre; the meteor sits in the middle of the triangle."
+ },
+ "features": {
+  "river": {
+   "terrain": "rock",
+   "fords": 1,
+   "width": 2.0,
+   "inner": 10
+  },
+  "ridges": [
+   3,
+   6,
+   10
+  ],
+  "crater": {
+   "radius": 0.07,
+   "meteors": 3
+  },
+  "forests": 12
+ },
+ "camps": {
+  "1": "shrissh_matah",
+  "2": "shrissh_matah",
+  "3": "shrissh_matah"
+ },
+ "decor": [
+  {
+   "id": "shr_tollvar",
+   "at": "pair",
+   "d": 14,
+   "s": 7
+  },
+  {
+   "id": "shr_runaszellozo",
+   "at": "base",
+   "d": 4,
+   "s": 12,
+   "ruin": true
+  }
+ ],
+ "ambient": [
+  {
+   "id": "shr_sziklafuto",
+   "at": "pair",
+   "d": 12,
+   "s": 4,
+   "n": 2,
+   "shelter": {
+    "at": "pair",
+    "d": 14,
+    "s": 7
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Egy gázló minden sziklakaron: a közép nyílt, a kerülők a rúnavárak alatt szűkek.",
+  "felallasok": "mindenki-mindenki ellen (3), kevesebb játékossal is",
+  "taborok": {
+   "1": "Shrissh-matah",
+   "2": "Shrissh-matah",
+   "3": "Shrissh-matah"
+  }
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "id": "doodads_forest",
+ "type": "prop",
+ "image": "doodads_forest.png",
+ "frame_size": [
+  80,
+  80
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  8,
+  32
+ ],
+ "frames": 14,
+ "names": [
+  "virag_sarga",
+  "virag_piros",
+  "virag_kek",
+  "fucsomo",
+  "kavics",
+  "gomba",
+  "csont",
+  "tusko",
+  "farönk",
+  "bokor",
+  "nad",
+  "tavirozsa",
+  "kristaly",
+  "koponya"
+ ],
+ "frames_meaning": "terep-díszletek (nem akadályoznak)",
+ "sheet_size": [
+  1120,
+  80
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

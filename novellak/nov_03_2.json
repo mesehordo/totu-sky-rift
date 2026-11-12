@@ -1,0 +1,234 @@
+{
+ "id": "nov_03_2",
+ "code": "NOV-03_2",
+ "title": "A Groomi köpése",
+ "faction": "wullof",
+ "novella": true,
+ "people": "Wullof",
+ "theme": "autumn",
+ "source": "docs/tortenet/story/…/novellak/03_*.md – „A Groomi köpése”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 69–70. év, Vörösszikla vadásztábora. A Groomi-fióka Djarra bundájának zsebében kelt ki.",
+  "A család minden este veszekszik. Djarrának választania kell."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5525,
+  "points": {
+   "tabor": [
+    12,
+    44
+   ],
+   "voros_szikla": [
+    50,
+    12
+   ],
+   "itato": [
+    30,
+    30
+   ],
+   "_": [
+    60,
+    50
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      20,
+      14
+     ],
+     3
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      40
+     ],
+     3
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "itato"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "itato",
+     "voros_szikla"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      33,
+      48
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      47
+     ],
+     2.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "tabor",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "wul_gyujtogeto",
+    "at": "tabor",
+    "n": 1,
+    "name": "Djarra",
+    "tag": "djarra"
+   },
+   {
+    "id": "wul_groomi_fioka",
+    "at": "tabor",
+    "n": 1,
+    "name": "Piros",
+    "tag": "piros"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "itato",
+   "type": "reach",
+   "at": "itato",
+   "radius": 3,
+   "text": "Itasd meg Pirost az itatónál",
+   "marker": "Itató",
+   "tag": "piros"
+  },
+  {
+   "id": "feszek",
+   "type": "reach",
+   "at": "voros_szikla",
+   "radius": 3,
+   "text": "Vidd Pirost a vörös szikla tövéhez, ahol a tojást találtad",
+   "marker": "Vörös szikla",
+   "after": "itato",
+   "tag": "piros"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Djarra",
+        "text": "Piros, ne köpj. Kérlek. Legalább ma ne.",
+        "portrait": "wul_gyujtogeto"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "feszek",
+   "choice": {
+    "title": "Piros",
+    "text": "A szabály szerint a vadon fiókája a vadoné. Piros a zsebedbe bújik.",
+    "options": [
+     {
+      "label": "Itt hagyom a fészeknél",
+      "flag": "nov032_vadon"
+     },
+     {
+      "label": "Hazaviszem, és vállalom a veszekedést",
+      "flag": "nov032_haza"
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "feszek",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "voros_szikla",
+      "say": [
+       {
+        "who": "Djarra",
+        "text": "Nem tudom, jól választok-e. Csak azt tudom, hogy választok.",
+        "portrait": "wul_gyujtogeto"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "piros",
+   "text": "Piros megsérült."
+  }
+ ],
+ "victory": "Djarra választott. A vörös szikla tövében a fészek azóta sem üres.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

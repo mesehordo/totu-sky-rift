@@ -1,0 +1,27 @@
+{
+ "id": "oruletkod",
+ "type": "effect",
+ "image": "oruletkod.png",
+ "frame_size": [
+  256,
+  256
+ ],
+ "anchor": [
+  128,
+  158
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 6,
+   "fps": 8,
+   "loop": true
+  }
+ },
+ "sheet_size": [
+  1536,
+  256
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

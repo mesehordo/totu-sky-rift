@@ -1,0 +1,374 @@
+{
+  "id": "zhan_zhama",
+  "ally": true,
+  "order": 111,
+  "name": "Zhan-zhama",
+  "tagline": "Apró nép, nagy kakasok",
+  "desc": "A sötétbőrű, apró termetű nép mellett egy közönséges tyúk is nagynak látszik, egy kakas pedig már hátasnak is megfelel. Csirkepásztoraik és keltetőik köré épül a telep élete, a Tolljósok pedig madárszellemeket idéznek.",
+  "style": "tribal",
+  "color": [
+    190,
+    60,
+    40
+  ],
+  "accent": [
+    240,
+    200,
+    80
+  ],
+  "mechanic": "standard",
+  "units": {
+    "zha_csirkepasztor": {
+      "hp": 80,
+      "armor": 1,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.32,
+      "supply": 1,
+      "time": 10,
+      "cost": {
+        "wood": 35,
+        "stone": 10
+      },
+      "shape": "warrior",
+      "attack": {
+        "damage": 9,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_zhan_zhama",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Csirkepásztor",
+      "desc": "Olcsó, gyors harcos – tyúkjai csipkedik az ellent.",
+      "ally": "zhan_zhama",
+      "utype": "kozelharcos",
+      "type_nostrength": true
+    },
+    "zha_tojasdobalo": {
+      "hp": 65,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 8,
+      "radius": 0.38,
+      "supply": 2,
+      "time": 20,
+      "cost": {
+        "wood": 50,
+        "stone": 15
+      },
+      "shape": "archer",
+      "attack": {
+        "damage": 10,
+        "range": 5.5,
+        "cooldown": 1.5,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "boulder"
+      },
+      "tags": [
+        "ally",
+        "ally_zhan_zhama",
+        "infantry",
+        "organic",
+        "ranged"
+      ],
+      "name": "Tojásdobáló",
+      "desc": "Kemény tojásokat hajít.",
+      "ally": "zhan_zhama",
+      "utype": "lovesz"
+    },
+    "zha_kakaslovas": {
+      "hp": 230,
+      "armor": 2,
+      "speed": 3.4,
+      "sight": 8,
+      "radius": 0.52,
+      "supply": 3,
+      "time": 26,
+      "cost": {
+        "wood": 110,
+        "stone": 35
+      },
+      "shape": "rider",
+      "attack": {
+        "damage": 16,
+        "range": 0.4,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_zhan_zhama",
+        "cavalry",
+        "melee",
+        "organic"
+      ],
+      "name": "Kakaslovas",
+      "desc": "Lándzsás, kakasháton száguldó lovas.",
+      "abilities": [
+        "zha_kukorekolas"
+      ],
+      "ally": "zhan_zhama",
+      "utype": "lovas"
+    },
+    "zha_tolljos": {
+      "hp": 80,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.37,
+      "supply": 2,
+      "time": 26,
+      "energy": 150,
+      "cost": {
+        "wood": 70,
+        "stone": 25,
+        "meteor": 50
+      },
+      "shape": "caster",
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "tags": [
+        "ally",
+        "ally_zhan_zhama",
+        "caster",
+        "organic",
+        "ranged"
+      ],
+      "name": "Tolljós",
+      "desc": "Madárszellemeket idéz, és gyógyít.",
+      "abilities": [
+        "zha_madarszellem_hivas",
+        "zha_tollgyogyitas"
+      ],
+      "ally": "zhan_zhama",
+      "utype": "varazslo"
+    },
+    "zha_madarszellem": {
+      "hp": 90,
+      "armor": 0,
+      "speed": 3.8,
+      "sight": 10,
+      "radius": 0.45,
+      "supply": 2,
+      "time": 24,
+      "flying": true,
+      "cost": {
+        "wood": 110,
+        "stone": 35,
+        "meteor": 40
+      },
+      "shape": "flyer",
+      "attack": {
+        "damage": 10,
+        "range": 3.5,
+        "cooldown": 1.1,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "tags": [
+        "ally",
+        "ally_zhan_zhama",
+        "flyer"
+      ],
+      "name": "Madárszellem",
+      "desc": "Arany fényből szőtt madárszellem.",
+      "ally": "zhan_zhama",
+      "utype": "repulo"
+    }
+  },
+  "buildings": {
+    "zha_feszekhaz": {
+      "name": "Fészekház",
+      "desc": "Csirkepásztorokat és tojásdobálókat képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "zhan_zhama",
+      "produces": [
+        "zha_csirkepasztor",
+        "zha_tojasdobalo"
+      ]
+    },
+    "zha_kakasudvar": {
+      "name": "Kakasudvar",
+      "desc": "Kakaslovasokat, tolljósokat és madárszellemeket képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "zhan_zhama",
+      "produces": [
+        "zha_kakaslovas",
+        "zha_tolljos",
+        "zha_madarszellem"
+      ],
+      "requires": [
+        "zha_feszekhaz"
+      ]
+    },
+    "zha_keltetoszentely": {
+      "name": "Keltetőszentély",
+      "desc": "A zhan-zhama fejlesztések szentélye.",
+      "cost": {
+        "wood": 150,
+        "stone": 120
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tech",
+      "ally": "zhan_zhama",
+      "researches": [
+        "zha_gyors_keltetes",
+        "zha_kakaskukorekolas",
+        "zha_tollszellem"
+      ],
+      "requires": [
+        "zha_feszekhaz"
+      ]
+    }
+  },
+  "researches": {
+    "zha_gyors_keltetes": {
+      "name": "Gyors keltetés",
+      "desc": "+10% sebesség minden egységnek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "all"
+          ],
+          "add": 10
+        }
+      ],
+      "ally": "zhan_zhama"
+    },
+    "zha_kakaskukorekolas": {
+      "name": "Kakaskukorékolás",
+      "desc": "+2 sebzés a zhan-zhama egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ally_zhan_zhama"
+          ],
+          "add": 2
+        }
+      ],
+      "ally": "zhan_zhama"
+    },
+    "zha_tollszellem": {
+      "name": "Tollszellem",
+      "desc": "+30 életerő a zhan-zhama egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "ally_zhan_zhama"
+          ],
+          "add": 30
+        }
+      ],
+      "ally": "zhan_zhama"
+    }
+  },
+  "ally_pack": {
+    "buildings": [
+      "zha_feszekhaz",
+      "zha_kakasudvar",
+      "zha_keltetoszentely"
+    ],
+    "units": [
+      "zha_csirkepasztor",
+      "zha_tojasdobalo",
+      "zha_kakaslovas",
+      "zha_tolljos",
+      "zha_madarszellem"
+    ]
+  },
+  "ai": {
+    "build": [
+      "zha_feszekhaz",
+      "zha_kakasudvar",
+      "zha_keltetoszentely"
+    ],
+    "army": {
+      "zha_csirkepasztor": 3,
+      "zha_tojasdobalo": 3,
+      "zha_kakaslovas": 2,
+      "zha_tolljos": 3,
+      "zha_madarszellem": 3
+    },
+    "research": [
+      "zha_gyors_keltetes",
+      "zha_kakaskukorekolas",
+      "zha_tollszellem"
+    ]
+  }
+}

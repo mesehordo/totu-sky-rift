@@ -1,0 +1,11 @@
+{
+ "id": "wullof",
+ "type": "emblem",
+ "image": "wullof.png",
+ "size": [
+  256,
+  256
+ ],
+ "faction": "Wullof",
+ "generator": "TOTU grafika"
+}

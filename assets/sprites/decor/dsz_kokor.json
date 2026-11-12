@@ -1,0 +1,28 @@
+{
+ "id": "dsz_kokor",
+ "image": "dsz_kokor.png",
+ "type": "decor",
+ "frame_size": [
+  288,
+  320
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  48,
+  104
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 1,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  288,
+  320
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

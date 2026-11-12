@@ -1,0 +1,373 @@
+{
+ "id": "nov_01_3",
+ "code": "NOV-01_3",
+ "title": "A harmadik éjszaka",
+ "faction": "elves",
+ "novella": true,
+ "people": "Szürke elfek",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/01_*.md – „A harmadik éjszaka”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A beomló út a lehulló kövek miatt."
+ },
+ "briefing": [
+  "A 0. év, Kilenc Lépcső, a harmadik éjszaka. A második nap fent van, és darabokra hullhat.",
+  "Citlali, archívumi inas, a tanács tizenkét levelét viszi a kapukhoz – és van egy tizenharmadik is, amelyet senki nem rendelt."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 7293,
+  "points": {
+   "archivum": [
+    32,
+    46
+   ],
+   "kapu_ny": [
+    6,
+    26
+   ],
+   "kapu_e": [
+    32,
+    4
+   ],
+   "kapu_k": [
+    58,
+    26
+   ],
+   "rev_ut": [
+    60,
+    50
+   ],
+   "_": [
+    2,
+    2
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      6,
+      20
+     ],
+     [
+      58,
+      20
+     ]
+    ],
+    "w": 1
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      6,
+      32
+     ],
+     [
+      58,
+      32
+     ]
+    ],
+    "w": 1
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "archivum",
+     "kapu_ny"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "archivum",
+     "kapu_e"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "archivum",
+     "kapu_k"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "archivum",
+     "rev_ut"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      10,
+      46
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      12,
+      49
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      24,
+      18
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      37
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      48,
+      7
+     ],
+     4.0
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "archivum",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "elf_kofarago",
+    "at": "archivum",
+    "n": 1,
+    "name": "Citlali",
+    "tag": "citlali"
+   },
+   {
+    "id": "elf_raptor_lovas",
+    "at": "archivum",
+    "n": 3,
+    "name": "Hírvivő",
+    "tag": "hirvivo"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "l1",
+   "type": "reach",
+   "at": "kapu_ny",
+   "radius": 3,
+   "text": "Vidd el a tanács leveleit a nyugati kapuhoz",
+   "marker": "Nyugati kapu",
+   "tag": "hirvivo"
+  },
+  {
+   "id": "l2",
+   "type": "reach",
+   "at": "kapu_e",
+   "radius": 3,
+   "text": "Vidd el a leveleket az északi kapuhoz",
+   "marker": "Északi kapu",
+   "tag": "hirvivo"
+  },
+  {
+   "id": "l3",
+   "type": "reach",
+   "at": "kapu_k",
+   "radius": 3,
+   "text": "Vidd el a leveleket a keleti kapuhoz",
+   "marker": "Keleti kapu",
+   "tag": "hirvivo"
+  },
+  {
+   "id": "l13",
+   "type": "reach",
+   "at": "rev_ut",
+   "radius": 3,
+   "text": "(A tizenharmadik levél) Küldd el Kettősrév felé is",
+   "marker": "Út Kettősrév felé",
+   "tag": "hirvivo",
+   "optional": true
+  },
+  {
+   "id": "vissza",
+   "type": "reach",
+   "at": "archivum",
+   "radius": 3,
+   "text": "Citlali térjen vissza az archívumba a hajnal előtt",
+   "marker": "Archívum",
+   "after": [
+    "l1",
+    "l2",
+    "l3"
+   ],
+   "tag": "citlali"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "archivum",
+      "say": [
+       {
+        "who": "Citlali",
+        "text": "Vigyétek a népet a templomok alatti termekbe. Ennyi áll mindegyikben.",
+        "portrait": "elf_kofarago"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 90,
+   "message": "Lehullott egy kő – az északi út beomlott!",
+   "color": [
+    255,
+    160,
+    110
+   ],
+   "grant": {
+    "tag": "hirvivo",
+    "abilities": [
+     "vagta"
+    ],
+    "text": "A raptorok megérzik a veszélyt: Vágta (képesség)."
+   },
+   "say": [
+    {
+     "who": "Citlali",
+     "text": "Kerüljetek! És most már ne kíméljétek a raptorokat.",
+     "portrait": "elf_kofarago"
+    }
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "rock",
+      "area": [
+       [
+        32,
+        16
+       ],
+       2
+      ]
+     }
+    ],
+    "clear": [
+     {
+      "t": "dirt",
+      "line": [
+       [
+        30,
+        22
+       ],
+       [
+        26,
+        14
+       ],
+       [
+        32,
+        6
+       ]
+      ],
+      "w": 2
+     }
+    ]
+   }
+  },
+  {
+   "at": 260,
+   "unless_done": "vissza",
+   "fail": "Felkelt a nap – Citlali nem ért vissza az archívumba."
+  },
+  {
+   "id": "zaras",
+   "on_objective": "vissza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "archivum",
+      "say": [
+       {
+        "who": "Citlali",
+        "text": "Soha nem tudom meg, odaért-e. De elküldtem.",
+        "portrait": "elf_kofarago"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "citlali",
+   "text": "Citlali megsérült."
+  }
+ ],
+ "victory": "Hajnalban a második nap széttört. A fennsíkra kevés kő esett.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

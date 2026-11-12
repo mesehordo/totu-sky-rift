@@ -1,0 +1,13 @@
+{
+  "id": "select_enemy",
+  "type": "cursor",
+  "image": "select_enemy.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    0,
+    0
+  ]
+}

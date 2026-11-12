@@ -1,0 +1,27 @@
+{
+ "id": "levelup",
+ "type": "effect",
+ "image": "levelup.png",
+ "frame_size": [
+  128,
+  128
+ ],
+ "anchor": [
+  64,
+  78
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 8,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  1024,
+  128
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

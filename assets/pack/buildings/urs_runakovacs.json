@@ -1,0 +1,40 @@
+{
+ "id": "urs_runakovacs",
+ "type": "building",
+ "image": "urs_runakovacs.png",
+ "frame_size": [
+  124,
+  114
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  14,
+  12
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.rune_forge",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  620,
+  114
+ ],
+ "team_mask": "urs_runakovacs_team.png"
+}

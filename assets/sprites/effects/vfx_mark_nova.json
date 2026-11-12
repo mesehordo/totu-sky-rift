@@ -1,0 +1,27 @@
+{
+ "id": "vfx_mark_nova",
+ "image": "vfx_mark_nova.png",
+ "type": "effect",
+ "frame_size": [
+  320,
+  200
+ ],
+ "anchor": [
+  160,
+  100
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 8,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  2560,
+  200
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

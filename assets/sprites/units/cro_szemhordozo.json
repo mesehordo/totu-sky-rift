@@ -1,0 +1,66 @@
+{
+ "id": "cro_szemhordozo",
+ "type": "unit",
+ "image": "cro_szemhordozo.png",
+ "team_mask": "cro_szemhordozo_team.png",
+ "frame_size": [
+  140,
+  152
+ ],
+ "anchor": [
+  68,
+  82
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "layout": "sorok = irányok (DIRS sorrendben), oszlopok = animációk képkockái egymás után",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 4,
+   "frames": 6,
+   "fps": 10,
+   "loop": true
+  },
+  "attack": {
+   "start": 10,
+   "frames": 6,
+   "fps": 12,
+   "loop": false
+  },
+  "death": {
+   "start": 16,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  },
+  "cast": {
+   "start": 22,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  }
+ },
+ "flying": true,
+ "rig": "floater",
+ "sheet_size": [
+  3920,
+  1216
+ ],
+ "generator": "TOTU HD grafika",
+ "team_colour_mode": "shade",
+ "scale": 2
+}

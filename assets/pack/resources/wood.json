@@ -1,0 +1,30 @@
+{
+ "id": "wood",
+ "type": "resource",
+ "image": "wood.png",
+ "frame_size": [
+  58,
+  62
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  13,
+  26
+ ],
+ "frames": 4,
+ "frames_meaning": "változatok",
+ "fps": 0,
+ "pack": [
+  "world.pine",
+  "world.broadleaf",
+  "world.pine",
+  "world.broadleaf"
+ ],
+ "sheet_size": [
+  232,
+  62
+ ]
+}

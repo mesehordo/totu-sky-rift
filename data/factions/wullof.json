@@ -1,0 +1,1768 @@
+{
+  "id": "wullof",
+  "order": 4,
+  "name": "Wullof",
+  "tagline": "Nomád táborok • falkaerő • vadászzsákmány",
+  "desc": "A Hét Út Szövetsége: dingónép folyóvárosokkal, vándorló közösségekkel és útének-dalokkal a vörös pusztán és az eukaliptuszerdőkben. A táboraik felszedhetők és máshol letelepíthetők; a létszámot az emucsordák adják, falkában erősebbek, és minden zsákmány fát hoz a törzsnek.",
+  "mechanic": "standard",
+  "style": "tribal",
+  "color": [
+    196,
+    150,
+    92
+  ],
+  "accent": [
+    215,
+    60,
+    40
+  ],
+  "repair": true,
+  "pack_bonus": {
+    "radius": 4,
+    "per": 0.1,
+    "max": 0.4,
+    "speed_per": 0.02
+  },
+  "bounty": 0.2,
+  "wagon": "wul_vandorszeker",
+  "unpack_time": 8,
+  "hq": "wul_tanacssator",
+  "worker": "wul_gyujtogeto",
+  "supply_building": "wul_bolenykaram",
+  "start_units": {
+    "wul_gyujtogeto": 5,
+    "wul_emu": 2
+  },
+  "units": {
+    "wul_gyujtogeto": {
+      "name": "Gyűjtögető",
+      "desc": "Munkás. Fát csapol: a fához kötődik, és hordás nélkül, lassan, folyamatosan jön a fa (egy fán egy csapoló). Aranyat hord, javít; építéskor mellette állva dolgozik; többen együtt gyorsabban építenek.",
+      "cost": {
+        "wood": 30,
+        "stone": 20
+      },
+      "supply": 1,
+      "time": 12,
+      "hp": 45,
+      "armor": 0,
+      "speed": 2.8,
+      "sight": 7,
+      "radius": 0.34,
+      "shape": "worker",
+      "worker": true,
+      "attack": {
+        "damage": 5,
+        "range": 0.3,
+        "cooldown": 1.3,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "worker",
+        "organic",
+        "light"
+      ],
+      "abilities": [
+        "erdei_rejtozes"
+      ],
+      "tap_wood": {
+        "amount": 8,
+        "time": 10,
+        "drain": 0.5
+      },
+      "utype": "munkas"
+    },
+    "wul_landzsas": {
+      "name": "Lándzsás harcos",
+      "desc": "Gyors, kovakőhegyű lándzsás, keskeny festett hárítópajzzsal; dárdavetővel (woomera) messzire is hajít. Falkában erős.",
+      "cost": {
+        "wood": 57,
+        "stone": 25
+      },
+      "supply": 2,
+      "time": 16,
+      "hp": 128,
+      "armor": 1,
+      "speed": 3.0,
+      "sight": 7,
+      "radius": 0.38,
+      "shape": "warrior",
+      "attack": {
+        "damage": 11,
+        "range": 0.45,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "abilities": [
+        "harci_enek",
+        "erdei_rejtozes",
+        "tomahawk"
+      ],
+      "utype": "landzsas"
+    },
+    "wul_ijas_vadasz": {
+      "name": "Bumerángvető",
+      "desc": "Távolsági vadász: a bumeráng visszatérő íven a közeli ellenségeket is eltalálja. Földi és légi célpontokra.",
+      "cost": {
+        "wood": 95,
+        "stone": 25
+      },
+      "supply": 2,
+      "time": 18,
+      "hp": 75,
+      "armor": 0,
+      "speed": 2.9,
+      "sight": 9,
+      "radius": 0.36,
+      "shape": "archer",
+      "attack": {
+        "damage": 11,
+        "range": 5.5,
+        "cooldown": 1.3,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "boomerang"
+      },
+      "tags": [
+        "infantry",
+        "ranged",
+        "organic"
+      ],
+      "abilities": [
+        "bumerang",
+        "vadaszles",
+        "erdei_rejtozes"
+      ],
+      "utype": "lovesz",
+      "type_bonus": {
+        "repulo": 1.5
+      }
+    },
+    "wul_holdsaman": {
+      "name": "Holdsámán",
+      "desc": "Gyógyít, és szellemfarkasokat hív a holdfényből.",
+      "cost": {
+        "wood": 85,
+        "meteor": 70,
+        "stone": 25
+      },
+      "supply": 2,
+      "time": 26,
+      "hp": 70,
+      "armor": 0,
+      "speed": 2.6,
+      "sight": 9,
+      "radius": 0.37,
+      "shape": "caster",
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "holdgyogyitas",
+        "szellemfarkasok",
+        "vandor_enek"
+      ],
+      "tags": [
+        "caster",
+        "ranged",
+        "organic"
+      ],
+      "utype": "varazslo"
+    },
+    "wul_szellemfarkas": {
+      "name": "Szellemfarkas",
+      "desc": "A holdfényből idézett szellem-dingó. Fél percig él.",
+      "cost": {},
+      "supply": 0,
+      "time": 1,
+      "lifetime": 30,
+      "no_corpse": true,
+      "hp": 80,
+      "armor": 0,
+      "speed": 3.7,
+      "sight": 7,
+      "radius": 0.36,
+      "shape": "spiritwolf",
+      "attack": {
+        "damage": 9,
+        "range": 0.3,
+        "cooldown": 0.9,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "melee",
+        "spirit"
+      ],
+      "abilities": [
+        "szellemtest"
+      ],
+      "utype": "kozelharcos"
+    },
+    "wul_bolenylovas": {
+      "name": "Bölénylovas",
+      "desc": "Bölényen ülő wullof harcos: erős roham. Le is szállhat.",
+      "cost": {
+        "wood": 155,
+        "stone": 45
+      },
+      "supply": 3,
+      "time": 26,
+      "hp": 320,
+      "armor": 2,
+      "speed": 3.0,
+      "sight": 8,
+      "radius": 0.52,
+      "shape": "rider",
+      "attack": {
+        "damage": 17,
+        "range": 0.4,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "roham",
+        "leszallas"
+      ],
+      "tags": [
+        "cavalry",
+        "melee",
+        "organic"
+      ],
+      "path": "boleny",
+      "utype": "lovas"
+    },
+    "wul_mennydorgesmadar": {
+      "name": "Viharkakadu",
+      "desc": "Óriás viharkakadu; villámai a célpont környékét is sújtják.",
+      "cost": {
+        "meteor": 95,
+        "wood": 100,
+        "stone": 55
+      },
+      "supply": 4,
+      "time": 32,
+      "hp": 170,
+      "armor": 1,
+      "speed": 3.6,
+      "sight": 10,
+      "radius": 0.58,
+      "shape": "flyer",
+      "flying": true,
+      "attack": {
+        "damage": 14,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic",
+        "splash": 1.0
+      },
+      "requires": [
+        "wul_samansator"
+      ],
+      "tags": [
+        "flyer",
+        "large"
+      ],
+      "abilities": [
+        "villamcsapas"
+      ],
+      "utype": "repulo"
+    },
+    "wul_totemorias": {
+      "name": "Termeszvár-óriás",
+      "desc": "Életre kelt vörös termeszvár – lassú, de az épületeket porrá zúzza.",
+      "cost": {
+        "wood": 330,
+        "meteor": 90,
+        "stone": 85
+      },
+      "supply": 5,
+      "time": 42,
+      "hp": 520,
+      "armor": 3,
+      "speed": 1.9,
+      "sight": 8,
+      "radius": 0.8,
+      "shape": "golem",
+      "attack": {
+        "damage": 32,
+        "range": 0.5,
+        "cooldown": 2.0,
+        "targets": [
+          "ground"
+        ],
+        "splash": 0.8,
+        "bonus": {
+          "building": 30
+        }
+      },
+      "requires": [
+        "wul_samansator"
+      ],
+      "tags": [
+        "large",
+        "melee"
+      ],
+      "abilities": [
+        "osok_haragja"
+      ],
+      "path": "osok",
+      "utype": "orias",
+      "type_bonus": {
+        "epulet": 1.5
+      }
+    },
+    "wul_vandorszeker": {
+      "name": "Vándorbatyu",
+      "desc": "Felszedett tábor, rudakra kötve. Jobb gomb: Letelepítés máshol.",
+      "cost": {},
+      "supply": 0,
+      "time": 1,
+      "hp": 300,
+      "armor": 1,
+      "speed": 2.3,
+      "sight": 6,
+      "radius": 0.6,
+      "shape": "wagon",
+      "tags": [
+        "large"
+      ],
+      "abilities": [
+        "taborkocsi"
+      ],
+      "utype": "orias"
+    },
+    "wul_hos_tava": {
+      "name": "Tava",
+      "desc": "Folyami térképész és követ a Hét Út Szövetségéből. Utat nyit és felderít.",
+      "hp": 260,
+      "armor": 1,
+      "speed": 3.3,
+      "sight": 13,
+      "radius": 0.4,
+      "attack": {
+        "damage": 16,
+        "range": 6,
+        "cooldown": 1.1,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "boomerang"
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "ranged",
+        "organic"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 40,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_tava_nyil",
+        "h_tava_utenek",
+        "h_tava_farkasok",
+        "h_tava_madar"
+      ],
+      "growth": {
+        "hp": 30,
+        "damage": 3,
+        "armor": 0.3,
+        "energy": 15
+      },
+      "energy": 150,
+      "requires": [
+        "wul_osok_kore"
+      ],
+      "utype": "lovesz"
+    },
+    "wul_tomahawkos": {
+      "name": "Dárdavető portyázó",
+      "desc": "Gyors portyázó dárdavetővel (woomera): a munkások és a távolsági egységek réme.",
+      "cost": {
+        "wood": 65,
+        "stone": 20
+      },
+      "supply": 2,
+      "time": 16,
+      "hp": 118,
+      "armor": 0,
+      "speed": 3.4,
+      "sight": 8,
+      "radius": 0.38,
+      "shape": "warrior",
+      "attack": {
+        "damage": 11,
+        "range": 0.4,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ],
+        "bonus": {
+          "worker": 8,
+          "ranged": 4
+        }
+      },
+      "tags": [
+        "infantry",
+        "melee",
+        "organic",
+        "light"
+      ],
+      "abilities": [
+        "tomahawk",
+        "vandor_enek",
+        "erdei_rejtozes"
+      ],
+      "hidden": true,
+      "utype": "landzsas"
+    },
+    "wul_hos_varnu": {
+      "name": "Varnu, a Holdsámán",
+      "desc": "Az ősök szellemeivel beszél: gyógyít, ködöt és szellemfalkát hív.",
+      "hp": 330,
+      "armor": 1,
+      "speed": 2.7,
+      "sight": 9,
+      "radius": 0.45,
+      "attack": {
+        "damage": 14,
+        "range": 5.5,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "caster",
+        "ranged",
+        "organic"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 45,
+      "hero": true,
+      "shape": "warrior",
+      "hero_abilities": [
+        "h_var_holdfeny",
+        "h_var_kod",
+        "h_var_falka",
+        "h_var_telihold"
+      ],
+      "growth": {
+        "hp": 32,
+        "damage": 2,
+        "armor": 0.3,
+        "energy": 20
+      },
+      "energy": 200,
+      "requires": [
+        "wul_osok_kore"
+      ],
+      "utype": "varazslo"
+    },
+    "wul_hos_kurrin": {
+      "name": "Kurrin Harcfőnök",
+      "desc": "Harci bölényen lovagló harcfőnök: tapos, üvölt, és a Hét Út harcosait hívja.",
+      "hp": 560,
+      "armor": 3,
+      "speed": 3.2,
+      "sight": 9,
+      "radius": 0.55,
+      "attack": {
+        "damage": 23,
+        "range": 0.5,
+        "cooldown": 1.15,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [],
+      "tags": [
+        "hero",
+        "melee",
+        "organic",
+        "cavalry"
+      ],
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 45,
+      "hero": true,
+      "shape": "rider",
+      "hero_abilities": [
+        "h_kur_taposas",
+        "h_kur_uvoltes",
+        "h_kur_verfalka",
+        "h_kur_het_ut"
+      ],
+      "growth": {
+        "hp": 62,
+        "damage": 3.5,
+        "armor": 0.5,
+        "energy": 10
+      },
+      "energy": 150,
+      "requires": [
+        "wul_osok_kore"
+      ],
+      "utype": "lovas"
+    },
+    "wul_emu": {
+      "name": "Emu",
+      "desc": "Tenyészemu: +6 létszám. Emukarámonként legfeljebb 5 tartható.",
+      "cost": {
+        "wood": 60
+      },
+      "supply": 0,
+      "unit_supply": 6,
+      "time": 15,
+      "hp": 110,
+      "armor": 0,
+      "speed": 3.2,
+      "sight": 7,
+      "radius": 0.4,
+      "shape": "emu",
+      "tags": [
+        "organic",
+        "livestock"
+      ],
+      "abilities": [
+        "riado_futas"
+      ],
+      "per_building": {
+        "building": "wul_bolenykaram",
+        "max": 5
+      },
+      "utype": "kozelharcos"
+    },
+    "wul_boleny": {
+      "name": "Bölény",
+      "desc": "Erős, de lassú bölény. Felültethető rá egy wullof gyalogos harcos.",
+      "cost": {
+        "wood": 110,
+        "stone": 40
+      },
+      "supply": 1,
+      "time": 20,
+      "hp": 260,
+      "armor": 2,
+      "speed": 2.7,
+      "sight": 6,
+      "radius": 0.55,
+      "shape": "bison",
+      "attack": {
+        "damage": 9,
+        "range": 0.4,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "organic",
+        "beast",
+        "melee"
+      ],
+      "abilities": [
+        "felultetes"
+      ],
+      "path": "boleny",
+      "ability_research": {
+        "felultetes": "wul_bolenylovaglas"
+      },
+      "utype": "kozelharcos"
+    },
+    "wul_groomi": {
+      "name": "Groomi",
+      "desc": "Piros szörnymadár: gyors, harapós földi vadász. A Groomi-fészekben sav-, tűz- vagy fagyköpést tanulhat (csak egyet).",
+      "cost": {
+        "wood": 85,
+        "meteor": 25
+      },
+      "supply": 2,
+      "time": 22,
+      "hp": 160,
+      "armor": 1,
+      "speed": 3.3,
+      "sight": 7,
+      "radius": 0.45,
+      "shape": "groomi",
+      "attack": {
+        "damage": 13,
+        "range": 0.4,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "organic",
+        "beast",
+        "melee"
+      ],
+      "abilities": [
+        "roham",
+        "savkopes",
+        "tuzkopes",
+        "fagykopes"
+      ],
+      "ability_research": {
+        "savkopes": "wul_savkopes",
+        "tuzkopes": "wul_tuzkopes",
+        "fagykopes": "wul_fagykopes"
+      },
+      "path": "groomi",
+      "utype": "kozelharcos"
+    },
+    "wul_csordavezer": {
+      "name": "Csordavezér bika",
+      "desc": "Hatalmas bölénybika: épületeket tipor, rohamában mindent elsöpör.",
+      "cost": {
+        "wood": 220,
+        "stone": 90,
+        "meteor": 40
+      },
+      "supply": 4,
+      "time": 34,
+      "hp": 650,
+      "armor": 3,
+      "speed": 2.6,
+      "sight": 7,
+      "radius": 0.75,
+      "shape": "bison",
+      "tags": [
+        "organic",
+        "beast",
+        "melee",
+        "large"
+      ],
+      "abilities": [
+        "taposas",
+        "roham"
+      ],
+      "attack": {
+        "damage": 26,
+        "range": 0.5,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ],
+        "bonus": {
+          "building": 25
+        }
+      },
+      "path": "boleny",
+      "utype": "orias",
+      "type_bonus": {
+        "epulet": 1.5
+      }
+    },
+    "wul_groomi_fioka": {
+      "name": "Groomi-fióka",
+      "desc": "Kicsi, de fürge és harapós Groomi.",
+      "cost": {
+        "wood": 40
+      },
+      "supply": 1,
+      "time": 10,
+      "hp": 70,
+      "armor": 0,
+      "speed": 3.5,
+      "sight": 7,
+      "radius": 0.3,
+      "shape": "groomi",
+      "tags": [
+        "organic",
+        "beast",
+        "melee",
+        "light"
+      ],
+      "abilities": [
+        "roham"
+      ],
+      "attack": {
+        "damage": 6,
+        "range": 0.35,
+        "cooldown": 0.8,
+        "targets": [
+          "ground"
+        ]
+      },
+      "path": "groomi",
+      "utype": "kozelharcos"
+    },
+    "wul_groomi_anya": {
+      "name": "Groomi-anya",
+      "desc": "Óriás Groomi-tojó: fiókákat keltet, és keményen harap.",
+      "cost": {
+        "wood": 160,
+        "meteor": 60
+      },
+      "supply": 4,
+      "time": 32,
+      "hp": 420,
+      "armor": 2,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.65,
+      "shape": "groomi",
+      "tags": [
+        "organic",
+        "beast",
+        "melee",
+        "large"
+      ],
+      "abilities": [
+        "fiokakeltes",
+        "roham"
+      ],
+      "attack": {
+        "damage": 20,
+        "range": 0.45,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "path": "groomi",
+      "utype": "orias"
+    },
+    "wul_totemfarago": {
+      "name": "Totemfaragó",
+      "desc": "Ősök-dalát éneklő faragó: a közeli szövetségesek +2 páncélt kapnak.",
+      "cost": {
+        "wood": 90,
+        "meteor": 30
+      },
+      "supply": 2,
+      "time": 20,
+      "hp": 110,
+      "armor": 0,
+      "speed": 2.8,
+      "sight": 7,
+      "radius": 0.42,
+      "shape": "warrior",
+      "tags": [
+        "caster",
+        "organic"
+      ],
+      "abilities": [
+        "osok_haragja",
+        "erdei_rejtozes"
+      ],
+      "attack": {
+        "damage": 7,
+        "range": 0.4,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "path": "osok",
+      "utype": "varazslo"
+    },
+    "wul_alomjaro": {
+      "name": "Álomjáró",
+      "desc": "Az ősök álmait járja: álomködöt borít az ellenségre, és az álmok útján ugrik egyik helyről a másikra.",
+      "cost": {
+        "wood": 80,
+        "meteor": 70
+      },
+      "supply": 2,
+      "time": 24,
+      "hp": 100,
+      "armor": 0,
+      "speed": 2.8,
+      "sight": 7,
+      "radius": 0.42,
+      "shape": "caster",
+      "tags": [
+        "caster",
+        "ranged",
+        "organic"
+      ],
+      "abilities": [
+        "alomkod",
+        "alomseta"
+      ],
+      "attack": {
+        "damage": 9,
+        "range": 5,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "path": "osok",
+      "utype": "varazslo"
+    },
+    "wul_ijas_vadasz_falka": {
+      "name": "Bumerángvető-falka (3)",
+      "desc": "Három Bumerángvető egyszerre, olcsóbban. (Falkaharc kutatás kell hozzá.)",
+      "cost": {
+        "wood": 247,
+        "stone": 65
+      },
+      "supply": 6,
+      "time": 36,
+      "hp": 75,
+      "armor": 0,
+      "speed": 2.9,
+      "sight": 9,
+      "radius": 0.36,
+      "shape": "archer",
+      "attack": {
+        "damage": 11,
+        "range": 5.5,
+        "cooldown": 1.3,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "boomerang"
+      },
+      "tags": [
+        "infantry",
+        "ranged",
+        "organic"
+      ],
+      "spawn_group": {
+        "unit": "wul_ijas_vadasz",
+        "count": 3
+      },
+      "requires_research": [
+        "wul_falkaharc"
+      ],
+      "sprite": "wul_ijas_vadasz",
+      "hidden": true,
+      "utype": "lovesz"
+    },
+    "wul_landzsas_falka": {
+      "name": "Lándzsás harcos-falka (3)",
+      "desc": "Három Lándzsás harcos egyszerre, olcsóbban.",
+      "cost": {
+        "wood": 148,
+        "stone": 65
+      },
+      "supply": 6,
+      "time": 32,
+      "hp": 128,
+      "armor": 1,
+      "speed": 3.0,
+      "sight": 7,
+      "radius": 0.38,
+      "shape": "warrior",
+      "attack": {
+        "damage": 11,
+        "range": 0.45,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "spawn_group": {
+        "unit": "wul_landzsas",
+        "count": 3
+      },
+      "requires_research": [
+        "wul_falkaharc"
+      ],
+      "sprite": "wul_landzsas",
+      "hidden": true,
+      "utype": "landzsas"
+    }
+  },
+  "buildings": {
+    "wul_tanacssator": {
+      "name": "Tanácskunyhó",
+      "desc": "A törzs nagy kéregkunyhója. Leadóhely, Gyűjtögetőket nevel. Felszedhető.",
+      "cost": {
+        "wood": 365,
+        "stone": 35
+      },
+      "time": 70,
+      "size": [
+        4,
+        4
+      ],
+      "hp": 1400,
+      "armor": 1,
+      "sight": 10,
+      "supply": 0,
+      "packable": true,
+      "dropoff": [
+        "wood",
+        "stone",
+        "meteor"
+      ],
+      "produces": [
+        "wul_gyujtogeto"
+      ],
+      "shape": "hq",
+      "researches": [
+        "wul_zsakmanyszerzes"
+      ],
+      "powers": [
+        "gp_osok_hivasa"
+      ]
+    },
+    "wul_tipi": {
+      "name": "Kéregkunyhó",
+      "desc": "Eukaliptuszkéreg-kunyhó: Lándzsás harcosokat képez. Felszedhető.",
+      "cost": {
+        "wood": 85
+      },
+      "time": 20,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 350,
+      "armor": 0,
+      "sight": 6,
+      "supply": 0,
+      "packable": true,
+      "shape": "house",
+      "produces": [
+        "wul_landzsas",
+        "wul_landzsas_falka"
+      ]
+    },
+    "wul_harcosok_tuze": {
+      "name": "Harcosok tüze",
+      "desc": "Dárdavetőket és bumerángvetőket képez. Felszedhető.",
+      "cost": {
+        "wood": 180,
+        "stone": 20
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 800,
+      "armor": 1,
+      "sight": 7,
+      "packable": true,
+      "produces": [
+        "wul_ijas_vadasz",
+        "wul_ijas_vadasz_falka"
+      ],
+      "shape": "barracks",
+      "requires": [
+        "wul_tipi"
+      ],
+      "researches": [
+        "wul_falkaharc"
+      ]
+    },
+    "wul_bolenykaram": {
+      "name": "Emukarám",
+      "desc": "Emukat tenyészt (karámonként legfeljebb 5). Csak az emuk növelik a létszámot. Felszedhető.",
+      "cost": {
+        "wood": 150
+      },
+      "time": 30,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "packable": true,
+      "produces": [
+        "wul_emu"
+      ],
+      "shape": "pen",
+      "supply": 0
+    },
+    "wul_samansator": {
+      "name": "Sámánkunyhó",
+      "desc": "Holdsámánokat képez, fejlesztéseket kutat. Felszedhető.",
+      "cost": {
+        "wood": 150,
+        "meteor": 50
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 700,
+      "armor": 1,
+      "sight": 8,
+      "packable": true,
+      "produces": [
+        "wul_holdsaman"
+      ],
+      "researches": [
+        "wul_obszidian_landzsa",
+        "wul_obszidian_landzsa_2",
+        "wul_obszidian_landzsa_3",
+        "wul_holdfeny_ijak",
+        "wul_holdfeny_ijak_2",
+        "wul_holdfeny_ijak_3",
+        "wul_bolenybor",
+        "wul_bolenybor_2",
+        "wul_bolenybor_3",
+        "wul_falkaszellem",
+        "wul_nyomolvasas",
+        "wul_holdtolte"
+      ],
+      "requires": [
+        "wul_harcosok_tuze"
+      ],
+      "shape": "tech"
+    },
+    "wul_mennydorges_szikla": {
+      "name": "Vörös szikla",
+      "desc": "A viharkakaduk fészke a pusztai vörös sziklán.",
+      "cost": {
+        "stone": 150,
+        "wood": 100,
+        "meteor": 75
+      },
+      "time": 50,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 2,
+      "sight": 9,
+      "produces": [
+        "wul_mennydorgesmadar"
+      ],
+      "requires": [
+        "wul_samansator"
+      ],
+      "shape": "aerie"
+    },
+    "wul_szellemtotem": {
+      "name": "Eukaliptusz-őrfa",
+      "desc": "Kilátós őrfa: a fenti vadászok bumerángokkal védik a tábort.",
+      "cost": {
+        "wood": 100,
+        "stone": 50
+      },
+      "time": 28,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 450,
+      "armor": 2,
+      "sight": 9,
+      "attack": {
+        "damage": 13,
+        "range": 7,
+        "cooldown": 1.2,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "boomerang"
+      },
+      "requires": [
+        "wul_harcosok_tuze"
+      ],
+      "shape": "tower",
+      "detect": 7
+    },
+    "wul_osok_kore": {
+      "name": "Ősök köre",
+      "desc": "Faragott oszlopok köre: Tava, Varnu és Kurrin hívása. Felszedhető.",
+      "cost": {
+        "wood": 180,
+        "stone": 100
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 2,
+      "sight": 8,
+      "produces": [
+        "wul_hos_tava",
+        "wul_hos_varnu",
+        "wul_hos_kurrin"
+      ],
+      "shape": "altar",
+      "altar": true,
+      "packable": true
+    },
+    "wul_bolenyakol": {
+      "name": "Bölénykarám",
+      "desc": "Bölényeket és Csordavezér bikákat képez. Felszedhető.",
+      "cost": {
+        "wood": 220,
+        "stone": 90
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "packable": true,
+      "produces": [
+        "wul_boleny",
+        "wul_csordavezer"
+      ],
+      "requires": [
+        "wul_harcosok_tuze"
+      ],
+      "shape": "bisonpen",
+      "path": "boleny",
+      "researches": [
+        "wul_bolenylovaglas"
+      ]
+    },
+    "wul_groomi_feszek": {
+      "name": "Groomi-fészek",
+      "desc": "Groomikat nevel; itt választható ki a köpésük.",
+      "cost": {
+        "wood": 200,
+        "meteor": 60
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 800,
+      "armor": 1,
+      "sight": 7,
+      "packable": true,
+      "produces": [
+        "wul_groomi",
+        "wul_groomi_anya"
+      ],
+      "researches": [
+        "wul_savkopes",
+        "wul_tuzkopes",
+        "wul_fagykopes"
+      ],
+      "requires": [
+        "wul_harcosok_tuze"
+      ],
+      "shape": "groominest",
+      "path": "groomi"
+    },
+    "wul_totemkert": {
+      "name": "Totemkert",
+      "desc": "Faragott totemek kertje: Totemfaragókat, Álomjárókat és termeszvár-óriásokat ad.",
+      "cost": {
+        "wood": 220,
+        "meteor": 60
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "produces": [
+        "wul_totemfarago",
+        "wul_alomjaro",
+        "wul_totemorias"
+      ],
+      "shape": "tech",
+      "packable": true,
+      "path": "osok"
+    },
+    "wul_diplomacia": {
+      "name": "Diplomácia csarnoka",
+      "desc": "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg.",
+      "cost": {
+        "wood": 180,
+        "stone": 120
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 1,
+      "sight": 8,
+      "shape": "tech",
+      "diplomacy": true
+    },
+    "wul_egko": {
+      "name": "Égkő",
+      "desc": "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja.",
+      "cost": {
+        "meteor": 75
+      },
+      "time": 15,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 300,
+      "armor": 1,
+      "sight": 7,
+      "shape": "egko",
+      "rift_source": true,
+      "no_power": true,
+      "no_creep": true,
+      "no_pond": true,
+      "no_light": true,
+      "foundation_free": true
+    }
+  },
+  "researches": {
+    "wul_obszidian_landzsa": {
+      "name": "Kovakő lándzsahegyek",
+      "desc": "+2 sebzés a közelharci egységeknek.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "wul_holdfeny_ijak": {
+      "name": "Vasfa bumerángok",
+      "desc": "+2 sebzés a távolsági egységeknek.",
+      "cost": {
+        "wood": 100,
+        "meteor": 50
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "wul_bolenybor": {
+      "name": "Kengurubőr vértek",
+      "desc": "+1 páncél minden élő egységnek.",
+      "cost": {
+        "stone": 150,
+        "wood": 100
+      },
+      "time": 70,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "organic"
+          ],
+          "add": 1
+        }
+      ]
+    },
+    "wul_falkaszellem": {
+      "name": "A falka szelleme",
+      "desc": "+10% sebesség minden egységnek.",
+      "cost": {
+        "meteor": 100,
+        "wood": 65,
+        "stone": 35
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "all"
+          ],
+          "add": 10
+        }
+      ]
+    },
+    "wul_savkopes": {
+      "name": "Savköpés",
+      "desc": "A Groomik maró, mérgező savat köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető.",
+      "cost": {
+        "wood": 100,
+        "meteor": 100
+      },
+      "time": 50,
+      "effects": [],
+      "exclusive": "groomi_kopes"
+    },
+    "wul_tuzkopes": {
+      "name": "Tűzköpés",
+      "desc": "A Groomik lángcsóvát köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető.",
+      "cost": {
+        "wood": 100,
+        "meteor": 100
+      },
+      "time": 50,
+      "effects": [],
+      "exclusive": "groomi_kopes"
+    },
+    "wul_fagykopes": {
+      "name": "Fagyköpés",
+      "desc": "A Groomik jeges köpetet köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető.",
+      "cost": {
+        "wood": 100,
+        "meteor": 100
+      },
+      "time": 50,
+      "effects": [],
+      "exclusive": "groomi_kopes"
+    },
+    "wul_zsakmanyszerzes": {
+      "name": "Zsákmányszerzés",
+      "desc": "A vadászzsákmány (ölésből) aranyat is hoz: a fa-zsákmány felét.",
+      "cost": {
+        "wood": 100,
+        "stone": 60
+      },
+      "time": 45,
+      "effects": [],
+      "rules": {
+        "bounty_gold": 0.5
+      }
+    },
+    "wul_falkaharc": {
+      "name": "Falkaharc",
+      "desc": "A Lándzsás harcosok és a Bumerángvetők falkában (hármasával, olcsóbban) is képezhetők: a képző épületen a „Falkában képez” kapcsolóval.",
+      "cost": {
+        "wood": 120,
+        "stone": 60
+      },
+      "time": 45,
+      "effects": []
+    },
+    "wul_bolenylovaglas": {
+      "name": "Bölénylovaglás",
+      "desc": "A wullof gyalogos harcosok felülhetnek a bölényre (a Bölény Felültetés gombja): Bölénylovas lesz belőlük.",
+      "cost": {
+        "wood": 100,
+        "stone": 80
+      },
+      "time": 40,
+      "effects": []
+    },
+    "wul_obszidian_landzsa_2": {
+      "name": "Kovakő lándzsahegyek II.",
+      "desc": "+2 sebzés a közelharci egységeknek. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "stone": 160
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "wul_obszidian_landzsa"
+      ]
+    },
+    "wul_obszidian_landzsa_3": {
+      "name": "Kovakő lándzsahegyek III.",
+      "desc": "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "stone": 240,
+        "meteor": 50
+      },
+      "time": 90,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "wul_obszidian_landzsa_2"
+      ],
+      "requires_ascended": true
+    },
+    "wul_holdfeny_ijak_2": {
+      "name": "Vasfa bumerángok II.",
+      "desc": "+2 sebzés a távolsági egységeknek. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "meteor": 80
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "wul_holdfeny_ijak"
+      ]
+    },
+    "wul_holdfeny_ijak_3": {
+      "name": "Vasfa bumerángok III.",
+      "desc": "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "meteor": 170
+      },
+      "time": 90,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "wul_holdfeny_ijak_2"
+      ],
+      "requires_ascended": true
+    },
+    "wul_bolenybor_2": {
+      "name": "Kengurubőr vértek II.",
+      "desc": "+1 páncél minden élő egységnek. (II. szint)",
+      "cost": {
+        "stone": 240,
+        "wood": 160
+      },
+      "time": 87,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "organic"
+          ],
+          "add": 1
+        }
+      ],
+      "requires_research": [
+        "wul_bolenybor"
+      ]
+    },
+    "wul_bolenybor_3": {
+      "name": "Kengurubőr vértek III.",
+      "desc": "+1 páncél minden élő egységnek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "stone": 360,
+        "wood": 240,
+        "meteor": 50
+      },
+      "time": 105,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "organic"
+          ],
+          "add": 1
+        }
+      ],
+      "requires_research": [
+        "wul_bolenybor_2"
+      ],
+      "requires_ascended": true
+    },
+    "wul_nyomolvasas": {
+      "name": "Ősi nyomolvasás",
+      "desc": "A wullof egységek 8 csempén belül felfedik a láthatatlan ellenséget.",
+      "cost": {
+        "wood": 80,
+        "stone": 80
+      },
+      "time": 35,
+      "effects": [],
+      "rules": {
+        "detect_all": 8
+      }
+    },
+    "wul_holdtolte": {
+      "name": "Holdtölte",
+      "desc": "Minden 4. percben 1 percig telihold van: a wullof egységek 15%-kal nagyobbat sebeznek.",
+      "cost": {
+        "wood": 100,
+        "stone": 80,
+        "meteor": 40
+      },
+      "time": 45,
+      "effects": [],
+      "rules": {
+        "moon": {
+          "period": 240,
+          "dur": 60,
+          "mult": 1.15
+        }
+      }
+    }
+  },
+  "ai": {
+    "workers": 20,
+    "gather_ratio": {
+      "wood": 0.58,
+      "stone": 0.2,
+      "meteor": 0.22
+    },
+    "build_order": [
+      "wul_bolenykaram",
+      "wul_tipi",
+      "wul_harcosok_tuze",
+      "wul_tipi",
+      "wul_osok_kore",
+      "wul_samansator",
+      "wul_diplomacia",
+      "wul_szellemtotem",
+      "wul_mennydorges_szikla"
+    ],
+    "army": {
+      "wul_landzsas": 6,
+      "wul_ijas_vadasz": 3,
+      "wul_holdsaman": 1,
+      "wul_mennydorgesmadar": 1
+    },
+    "research_order": [
+      "wul_falkaharc",
+      "wul_obszidian_landzsa",
+      "wul_holdfeny_ijak",
+      "wul_bolenybor",
+      "wul_falkaszellem",
+      "wul_bolenylovaglas",
+      "wul_obszidian_landzsa_2",
+      "wul_obszidian_landzsa_3",
+      "wul_holdfeny_ijak_2",
+      "wul_holdfeny_ijak_3",
+      "wul_bolenybor_2",
+      "wul_bolenybor_3",
+      "wul_nyomolvasas",
+      "wul_holdtolte"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+      "groomi",
+      "boleny",
+      "osok"
+    ],
+    "paths": {
+      "boleny": {
+        "build": [
+          "wul_bolenyakol"
+        ],
+        "army": {
+          "wul_boleny": 3,
+          "wul_csordavezer": 1
+        }
+      },
+      "groomi": {
+        "build": [
+          "wul_groomi_feszek"
+        ],
+        "army": {
+          "wul_groomi": 4,
+          "wul_groomi_anya": 1
+        },
+        "research": [
+          "wul_tuzkopes"
+        ]
+      },
+      "osok": {
+        "build": [
+          "wul_totemkert",
+          "wul_szellemtotem"
+        ],
+        "army": {
+          "wul_totemfarago": 1,
+          "wul_alomjaro": 1,
+          "wul_totemorias": 2
+        }
+      }
+    },
+    "ally_pref": [
+      "zhan_zhama",
+      "daresh",
+      "tenduur"
+    ]
+  },
+  "start_gather": "wood",
+  "supply_desc": "Emuk (Emukarámban tenyészthetők, karámonként legfeljebb 5)",
+  "bounty_res": "wood",
+  "spell_resource": "song",
+  "forest_stealth": true,
+  "balance_v6": true,
+  "supply_unit": "wul_emu",
+  "paths": {
+    "boleny": {
+      "name": "Bölény-csorda",
+      "tagline": "Kevés, drága, megállíthatatlan roham",
+      "desc": "Bölényeket nevelsz, és a harcosaid felülnek rájuk. A lovasság és a vadállatok gyorsabbak és erősebbek; a Csordavezér bika épületeket tipor. Középjátékban egyetlen, döntő rohamra épít.",
+      "building": "wul_bolenyakol",
+      "units": [
+        "wul_boleny",
+        "wul_bolenylovas",
+        "wul_csordavezer"
+      ],
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "cavalry",
+            "beast"
+          ],
+          "add": 15
+        },
+        {
+          "stat": "damage",
+          "tags": [
+            "cavalry"
+          ],
+          "add": 3
+        }
+      ]
+    },
+    "groomi": {
+      "name": "Groomi-fészek",
+      "tagline": "Gyors portyázás, vadászat a gyengékre",
+      "desc": "Piros szörnymadarak: a Groomik öléskor gyógyulnak és gyorsabbak, a Groomi-anya fiókákat keltet. A köpésük (sav, tűz vagy fagy) egyszer, végleg választható. Munkásvadászat, térképuralom.",
+      "building": "wul_groomi_feszek",
+      "units": [
+        "wul_groomi",
+        "wul_groomi_fioka",
+        "wul_groomi_anya"
+      ],
+      "rules": {
+        "heal_on_kill": {
+          "tags": [
+            "beast"
+          ],
+          "amount": 35
+        }
+      },
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "beast"
+          ],
+          "add": 10
+        }
+      ]
+    },
+    "osok": {
+      "name": "Ősök útja",
+      "tagline": "Totemlánc, lassú és biztos előrenyomulás",
+      "desc": "Totemkertet emelsz: a tornyok erősebbek és messzebbre látnak, az épületek szívósabbak. Totemfaragók és Álomjárók támogatják a termeszvár-óriásokat. Védekező, területfoglaló játék.",
+      "building": "wul_totemkert",
+      "units": [
+        "wul_totemfarago",
+        "wul_alomjaro",
+        "wul_totemorias"
+      ],
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "tower"
+          ],
+          "add": 6
+        },
+        {
+          "stat": "armor",
+          "tags": [
+            "building"
+          ],
+          "add": 2
+        },
+        {
+          "stat": "sight",
+          "tags": [
+            "tower"
+          ],
+          "add": 3
+        }
+      ]
+    }
+  },
+  "ascension": {
+    "buildings": 3
+  },
+  "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+  },
+  "builder": "stay"
+}

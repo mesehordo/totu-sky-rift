@@ -1,0 +1,28 @@
+{
+ "id": "dsz_szikla_wasteland",
+ "image": "dsz_szikla_wasteland.png",
+ "type": "decor",
+ "frame_size": [
+  224,
+  288
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  48,
+  136
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 4,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  896,
+  288
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

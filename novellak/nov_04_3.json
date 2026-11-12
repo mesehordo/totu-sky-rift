@@ -1,0 +1,238 @@
+{
+ "id": "nov_04_3",
+ "code": "NOV-04_3",
+ "title": "Levelek Veternába",
+ "faction": "imperium",
+ "novella": true,
+ "people": "Vasbirodalom",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/04_*.md – „Levelek Veternába”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Egy géptestű aurethi levelei a 12. és a 72. év között. A leveleket soha nem küldték el.",
+  "Aulus még egyszer végigjárja a helyeket, amelyekről írt."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 6886,
+  "points": {
+   "lakas": [
+    10,
+    46
+   ],
+   "hid": [
+    24,
+    34
+   ],
+   "piac": [
+    40,
+    30
+   ],
+   "szinhaz": [
+    30,
+    14
+   ],
+   "templom": [
+    54,
+    10
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "lakas",
+     "hid"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "hid",
+     "piac"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "piac",
+     "szinhaz"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szinhaz",
+     "templom"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      17,
+      13
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      13
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      29
+     ],
+     3.5
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "lakas",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "imp_legios",
+    "at": "lakas",
+    "n": 1,
+    "name": "Aulus",
+    "tag": "aulus"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "hid",
+   "type": "reach",
+   "at": "hid",
+   "radius": 3,
+   "text": "A híd, ahol a 12. évben az első levelet írta",
+   "marker": "Híd",
+   "tag": "aulus"
+  },
+  {
+   "id": "piac",
+   "type": "reach",
+   "at": "piac",
+   "radius": 3,
+   "text": "A piac, ahol a pékség illata a régi otthont idézte",
+   "marker": "Piac",
+   "after": "hid",
+   "tag": "aulus"
+  },
+  {
+   "id": "szinhaz",
+   "type": "reach",
+   "at": "szinhaz",
+   "radius": 3,
+   "text": "A színház, ahová Veternával jártak",
+   "marker": "Színház",
+   "after": "piac",
+   "tag": "aulus"
+  },
+  {
+   "id": "templom",
+   "type": "reach",
+   "at": "templom",
+   "radius": 3,
+   "text": "Vidd a levelesládát Umbrax templomába",
+   "marker": "Umbrax temploma",
+   "after": "szinhaz",
+   "tag": "aulus"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "lakas",
+      "say": [
+       {
+        "who": "Aulus",
+        "text": "Veterna, nem tudok erről írni. Csak le akarom írni, hogy valaki tudja.",
+        "portrait": "imp_legios"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "templom",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "templom",
+      "say": [
+       {
+        "who": "Aulus",
+        "text": "Ha nem találod meg őket: semmi baj. Én megtaláltalak.",
+        "portrait": "imp_legios"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A ládát Umbrax templomában találták meg, a férfi halála után.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

@@ -1,0 +1,37 @@
+{
+ "id": "acid",
+ "type": "projectile",
+ "image": "acid.png",
+ "frame_size": [
+  48,
+  48
+ ],
+ "anchor": [
+  24,
+  24
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "fly": {
+   "start": 0,
+   "frames": 2,
+   "fps": 12,
+   "loop": true
+  }
+ },
+ "sheet_size": [
+  96,
+  384
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

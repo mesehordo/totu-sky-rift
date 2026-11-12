@@ -1,0 +1,375 @@
+{
+ "id": "a2_ures_serlegek_varosa",
+ "title": "2. Az üres serlegek városa",
+ "faction": "imperium",
+ "briefing": [
+  "Aureth működő társadalom: kovácsok, jogászok, zenészek, egymás burkolatát javító szomszédok.",
+  "A pékségekben ma is sütnek – az illat emléket tart életben. A fogadásokon üres serlegeket emelnek.",
+  "Egy határváros ellen croftian roham indul. Védd meg a Fórumot."
+ ],
+ "player": {
+  "resources": {
+   "wood": 660,
+   "stone": 640,
+   "meteor": 100
+  },
+  "units": {
+   "imp_hos_livia": 1,
+   "imp_legios": 5,
+   "imp_ballistarius": 4
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Rohamraj",
+   "hold": 120,
+   "aggression": 1.1
+  }
+ ],
+ "objectives": [
+  {
+   "id": "vedd",
+   "type": "survive",
+   "text": "Védd meg a várost",
+   "seconds": 300
+  },
+  {
+   "id": "kapu",
+   "type": "guard",
+   "at": "kapu",
+   "radius": 3,
+   "seconds": 8,
+   "text": "Zárd le a városkaput, mielőtt a roham odaér",
+   "marker": "Városkapu"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "pekseg",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "A pékségben ma is sütnek. Az illat emléket tart életben.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     },
+     {
+      "camera": "kapu",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Mögöttünk nem katonák állnak. Pékek. Színészek. Gyerekek, akik hetven éve gyerekek.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Livia",
+     "text": "Mögöttünk nem katonák állnak. Pékek. Színészek. Gyerekek, akik hetven éve gyerekek.",
+     "portrait": "imp_hos_livia"
+    }
+   ]
+  },
+  {
+   "at": 150,
+   "message": "Nera csatlakozik a védőkhöz – Livia tiltása ellenére.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "imp_hos_nera": 1
+    }
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "kapu",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "forum",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Nera megsérült. Haragudnom kellene. Inkább… büszke vagyok.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "imp_forum",
+   "text": "A város elesett."
+  },
+  {
+   "id": "imp_hos_livia",
+   "text": "Livia elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A város áll. Nera megsérült – és Livia először nem tudja, haragudjon-e vagy büszke legyen.",
+ "next": "a3_az_orok_hajnal",
+ "hero_level": 2,
+ "enemy_hero_level": 2,
+ "code": "VAS-02",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (VI. hadjárat: Az üres serlegek városa)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5202,
+  "points": {
+   "forum": [
+    32,
+    40
+   ],
+   "kapu": [
+    32,
+    24
+   ],
+   "pekseg": [
+    20,
+    44
+   ],
+   "hatar": [
+    32,
+    4
+   ],
+   "kelet": [
+    58,
+    20
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      0,
+      22
+     ],
+     [
+      26,
+      24
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      38,
+      24
+     ],
+     [
+      52,
+      22
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "forum",
+     "kapu"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kapu",
+     "hatar"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kapu",
+     "kelet"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "forum",
+     "pekseg"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      57,
+      45
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      8
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      20,
+      34
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      17,
+      23
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      40,
+      31
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      32
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      48,
+      40
+     ],
+     2.8
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     25,
+     43
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     39,
+     36
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     35,
+     47
+    ]
+   }
+  ],
+  "starts": [
+   "forum",
+   "hatar"
+  ],
+  "decor": [
+   {
+    "id": "imp_reaktor",
+    "at": [
+     44,
+     44
+    ]
+   },
+   {
+    "id": "imp_legiogyar",
+    "at": "pekseg"
+   }
+  ],
+  "ambient": [
+   {
+    "id": "imp_fabrikator",
+    "n": 3,
+    "at": [
+     24,
+     48
+    ],
+    "path": [
+     [
+      24,
+      48
+     ],
+     [
+      40,
+      48
+     ],
+     [
+      32,
+      50
+     ]
+    ],
+    "shelter": "forum"
+   }
+  ]
+ }
+}

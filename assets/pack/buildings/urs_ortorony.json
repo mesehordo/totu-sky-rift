@@ -1,0 +1,40 @@
+{
+ "id": "urs_ortorony",
+ "type": "building",
+ "image": "urs_ortorony.png",
+ "frame_size": [
+  158,
+  148
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  47,
+  78
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.watchtower",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  790,
+  148
+ ],
+ "team_mask": "urs_ortorony_team.png"
+}

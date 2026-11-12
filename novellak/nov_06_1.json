@@ -1,0 +1,272 @@
+{
+ "id": "nov_06_1",
+ "code": "NOV-06_1",
+ "title": "Kötélkötés",
+ "faction": "ooni",
+ "novella": true,
+ "people": "Ooni",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/06_*.md – „Kötélkötés”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Az 57. év, Kilenc Gerenda, a főkapu. A hosszú éjszaka utáni első hajnalon kötik a fogadalmi kötelet.",
+  "Az Ōkuma és a Seiran család minden évben veszekszik, ki köti az első csomót."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4364,
+  "points": {
+   "okuma": [
+    10,
+    40
+   ],
+   "seiran": [
+    54,
+    40
+   ],
+   "kapu": [
+    32,
+    16
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      0,
+      26
+     ],
+     [
+      26,
+      26
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      38,
+      26
+     ],
+     [
+      64,
+      26
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "okuma",
+     "kapu"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "seiran",
+     "kapu"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      28,
+      40
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      51,
+      26
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      24
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      40
+     ],
+     3.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      27
+     ],
+     4.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "okuma",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "oon_oni_harcos",
+    "at": "okuma",
+    "n": 1,
+    "name": "Hoka (Ōkuma)",
+    "tag": "okuma"
+   },
+   {
+    "id": "oon_nian_or",
+    "at": "seiran",
+    "n": 1,
+    "name": "Gensai (Seiran)",
+    "tag": "seiran"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "ok",
+   "type": "reach",
+   "at": "kapu",
+   "radius": 3,
+   "text": "Hoka érjen a kötélhez",
+   "marker": "Fogadalmi kötél",
+   "tag": "okuma"
+  },
+  {
+   "id": "se",
+   "type": "reach",
+   "at": "kapu",
+   "radius": 3,
+   "text": "Gensai is érjen a kötélhez",
+   "marker": "Fogadalmi kötél",
+   "tag": "seiran"
+  },
+  {
+   "id": "csomo",
+   "type": "guard",
+   "at": "kapu",
+   "radius": 2,
+   "seconds": 5,
+   "text": "Kössétek meg együtt az első csomót",
+   "marker": "Kötél",
+   "after": [
+    "ok",
+    "se"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kapu",
+      "say": [
+       {
+        "who": "Hoka",
+        "text": "Mi álltunk elsőként a kapuba.",
+        "portrait": "oon_oni_harcos"
+       },
+       {
+        "who": "Gensai",
+        "text": "Mi keltünk át elsőként.",
+        "portrait": "oon_nian_or"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "csomo",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kapu",
+      "say": [
+       {
+        "who": "Gensai",
+        "text": "Ez nem…",
+        "portrait": "oon_nian_or"
+       },
+       {
+        "who": "Hoka",
+        "text": "Jövőre.",
+        "portrait": "oon_oni_harcos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Az első csomót idén együtt kötötték. Jövőre újra vitatkoznak.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

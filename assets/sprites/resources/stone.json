@@ -1,0 +1,26 @@
+{
+ "id": "stone",
+ "type": "resource",
+ "image": "stone.png",
+ "frame_size": [
+  208,
+  256
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  8,
+  52
+ ],
+ "frames": 1,
+ "frames_meaning": "egy kép",
+ "fps": 0,
+ "sheet_size": [
+  208,
+  256
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

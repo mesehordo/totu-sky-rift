@@ -1,0 +1,43 @@
+{
+ "id": "wul_szellemtotem",
+ "type": "building",
+ "image": "wul_szellemtotem.png",
+ "team_mask": "wul_szellemtotem_team.png",
+ "style": "tribal",
+ "frame_size": [
+  200,
+  232
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  4,
+  76
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1600,
+  232
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

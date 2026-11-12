@@ -1,0 +1,379 @@
+{
+ "id": "nov_07_2",
+ "code": "NOV-07_2",
+ "title": "Ikra a fűben",
+ "faction": "hukucha",
+ "novella": true,
+ "people": "Huk’ucha",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/07_*.md – „Ikra a fűben”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 71. év, a Tavirózsa-medencék nyugati széle. Lillep ikrarakó: láthatatlan csomókat rak a csapások mentén.",
+  "Tirri, a kislány, rálépett egyre. Most kavicsokkal jelölik meg az összeset, amire Lillep emlékszik."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 409,
+  "points": {
+   "tabor": [
+    8,
+    46
+   ],
+   "c1": [
+    16,
+    36
+   ],
+   "c2": [
+    24,
+    30
+   ],
+   "c3": [
+    32,
+    26
+   ],
+   "c4": [
+    40,
+    22
+   ],
+   "c5": [
+    48,
+    18
+   ],
+   "c6": [
+    56,
+    12
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      18,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      46,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      32,
+      40
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "c1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "c1",
+     "c2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "c2",
+     "c3"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "c3",
+     "c4"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "c4",
+     "c5"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "c5",
+     "c6"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      39,
+      41
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      22,
+      15
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      17
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      36,
+      8
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      43,
+      43
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      28,
+      8
+     ],
+     3.1
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "tabor",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "huk_ikrarako",
+    "at": "tabor",
+    "n": 1,
+    "name": "Lillep",
+    "tag": "lillep"
+   },
+   {
+    "id": "huk_toaso",
+    "at": "tabor",
+    "n": 1,
+    "name": "Tirri",
+    "tag": "tirri"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Zavaros víz",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "k1",
+   "type": "reach",
+   "at": "c1",
+   "radius": 3,
+   "text": "Jelöld meg kaviccsal az első ikracsomót",
+   "marker": "Ikra",
+   "tag": "tirri"
+  },
+  {
+   "id": "k2",
+   "type": "reach",
+   "at": "c2",
+   "radius": 3,
+   "text": "A másodikat",
+   "marker": "Ikra",
+   "after": "k1",
+   "tag": "tirri"
+  },
+  {
+   "id": "k3",
+   "type": "reach",
+   "at": "c3",
+   "radius": 3,
+   "text": "A harmadikat",
+   "marker": "Ikra",
+   "after": "k2",
+   "tag": "tirri"
+  },
+  {
+   "id": "k4",
+   "type": "reach",
+   "at": "c4",
+   "radius": 3,
+   "text": "A negyediket",
+   "marker": "Ikra",
+   "after": "k3",
+   "tag": "tirri"
+  },
+  {
+   "id": "k5",
+   "type": "reach",
+   "at": "c5",
+   "radius": 3,
+   "text": "Az ötödiket",
+   "marker": "Ikra",
+   "after": "k4",
+   "tag": "tirri"
+  },
+  {
+   "id": "k6",
+   "type": "reach",
+   "at": "c6",
+   "radius": 3,
+   "text": "A hatodikat",
+   "marker": "Ikra",
+   "after": "k5",
+   "tag": "tirri"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Tirri",
+        "text": "Miért harapnak az ebihalak?",
+        "portrait": "huk_toaso"
+       },
+       {
+        "who": "Lillep",
+        "text": "Mert rájuk léptél.",
+        "portrait": "huk_ikrarako"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zav",
+   "every": 70,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "_",
+    "to": "c3",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 2,
+      "name": "Zavaros víz"
+     }
+    ]
+   },
+   "delay": 40,
+   "max": 3
+  },
+  {
+   "id": "zaras",
+   "on_objective": "k6",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "c6",
+      "say": [
+       {
+        "who": "Lillep",
+        "text": "Kétszázkilencvenhárom kavics. Hét csomóra nem emlékszem.",
+        "portrait": "huk_ikrarako"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "tirri",
+   "text": "Tirri megsérült."
+  }
+ ],
+ "victory": "A háború végéig a nyugati csapás mentén kétszázkilencvenhárom kavics feküdt a fűben.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

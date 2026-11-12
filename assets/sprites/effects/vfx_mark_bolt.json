@@ -1,0 +1,27 @@
+{
+ "id": "vfx_mark_bolt",
+ "image": "vfx_mark_bolt.png",
+ "type": "effect",
+ "frame_size": [
+  96,
+  64
+ ],
+ "anchor": [
+  48,
+  32
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 4,
+   "fps": 12,
+   "loop": true
+  }
+ },
+ "sheet_size": [
+  384,
+  64
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

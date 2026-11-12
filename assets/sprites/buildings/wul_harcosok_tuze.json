@@ -1,0 +1,43 @@
+{
+ "id": "wul_harcosok_tuze",
+ "type": "building",
+ "image": "wul_harcosok_tuze.png",
+ "team_mask": "wul_harcosok_tuze_team.png",
+ "style": "tribal",
+ "frame_size": [
+  252,
+  256
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  38
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2016,
+  256
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

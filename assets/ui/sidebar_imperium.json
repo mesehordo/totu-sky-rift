@@ -1,0 +1,33 @@
+{
+  "id": "sidebar_imperium",
+  "type": "sidebar_skin",
+  "top": [
+    264,
+    320
+  ],
+  "middle": [
+    264,
+    64
+  ],
+  "bottom": [
+    264,
+    280
+  ],
+  "map_window": [
+    14,
+    64,
+    236,
+    236
+  ],
+  "source_window": [
+    21,
+    81,
+    244,
+    305
+  ],
+  "compatibility_preview": [
+    264,
+    760
+  ],
+  "integration": "Three-piece skin requires UI adapter; full preview supplied separately. Existing game files untouched."
+}

@@ -1,0 +1,39 @@
+{
+ "id": "elf_napszentely",
+ "type": "building",
+ "image": "elf_napszentely.png",
+ "frame_size": [
+  155,
+  139
+ ],
+ "footprint": [
+  4,
+  4
+ ],
+ "footprint_offset": [
+  13,
+  4
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "grey_elf_buildings.town_temple",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  775,
+  139
+ ]
+}

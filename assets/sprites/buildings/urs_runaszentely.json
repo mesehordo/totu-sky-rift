@@ -1,0 +1,43 @@
+{
+ "id": "urs_runaszentely",
+ "type": "building",
+ "image": "urs_runaszentely.png",
+ "team_mask": "urs_runaszentely_team.png",
+ "style": "nordic",
+ "frame_size": [
+  256,
+  264
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  46
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2048,
+  264
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

@@ -1,0 +1,40 @@
+{
+ "id": "urs_fatelep",
+ "type": "building",
+ "image": "urs_fatelep.png",
+ "frame_size": [
+  87,
+  69
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  12,
+  -1
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.lumber_camp",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  435,
+  69
+ ],
+ "team_mask": "urs_fatelep_team.png"
+}

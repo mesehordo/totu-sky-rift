@@ -1,0 +1,28 @@
+{
+ "id": "dsz_sziklaorom_forest",
+ "image": "dsz_sziklaorom_forest.png",
+ "type": "decor",
+ "frame_size": [
+  352,
+  320
+ ],
+ "footprint": [
+  4,
+  3
+ ],
+ "footprint_offset": [
+  48,
+  104
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 2,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  704,
+  320
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

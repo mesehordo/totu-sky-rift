@@ -1,0 +1,34 @@
+# Nagy grafikai/bináris mappák – nem verziókezeltek (külön mentendők)
+/assets/**/*_old*
+/assets/**/*_old/
+/assets/sprites.zip
+/backup_grafika/
+/dist/
+/docs/hud_kepek/
+/docs/menu_kepek/
+/docs/palya_kepek/
+/docs/proba/
+/docs/koncept/
+/docs/grafika_2026_11/
+/docs/grafika_2026_11_perspektiva/
+/docs/*.png
+
+# Futási adatok: profilok, mentések
+/saves/
+
+# Python- és profilozó-maradványok
+__pycache__/
+*.pyc
+/p.out
+
+# F3 A/B mérés fordítási kimenetei
+/tools/ab/csharp/bin/
+/tools/ab/csharp/obj/
+/tools/ab/csharp/bin_out/
+/tools/ab/cpp/build/
+/tools/ab/render/probe/bin/
+/tools/ab/render/probe/obj/
+/tools/ab/render/probe/bin_out/
+
+# Helyi, nem nyilvános munkaanyagok
+/_privat/

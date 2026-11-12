@@ -1,0 +1,43 @@
+{
+ "id": "elf_napszentely",
+ "type": "building",
+ "image": "elf_napszentely.png",
+ "team_mask": "elf_napszentely_team.png",
+ "style": "aztec",
+ "frame_size": [
+  316,
+  300
+ ],
+ "footprint": [
+  4,
+  4
+ ],
+ "footprint_offset": [
+  4,
+  20
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2528,
+  300
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

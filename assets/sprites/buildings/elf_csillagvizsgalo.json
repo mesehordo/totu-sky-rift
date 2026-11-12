@@ -1,0 +1,43 @@
+{
+ "id": "elf_csillagvizsgalo",
+ "type": "building",
+ "image": "elf_csillagvizsgalo.png",
+ "team_mask": "elf_csillagvizsgalo_team.png",
+ "style": "aztec",
+ "frame_size": [
+  248,
+  248
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  32
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1984,
+  248
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

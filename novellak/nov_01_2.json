@@ -1,0 +1,380 @@
+{
+ "id": "nov_01_2",
+ "code": "NOV-01_2",
+ "title": "A raptor, aki nem akart megjelenni",
+ "faction": "elves",
+ "novella": true,
+ "people": "Szürke elfek",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/01_*.md – „A raptor, aki nem akart megjelenni”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 61. év, Napobeliszk-mező Huitzil határában. Csontos harmincegy éve szolgál; nem akar nyugdíjba menni, és nem hajlandó beidéződni.",
+  "Tlilo a szemlére viszi – gyalog, ahogy az öreg raptor egykor járt."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 8435,
+  "points": {
+   "karam": [
+    10,
+    46
+   ],
+   "obeliszk1": [
+    24,
+    34
+   ],
+   "obeliszk2": [
+    40,
+    24
+   ],
+   "ocelotl": [
+    16,
+    20
+   ],
+   "szemle": [
+    54,
+    10
+   ],
+   "_": [
+    60,
+    50
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "karam",
+     "obeliszk1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "obeliszk1",
+     "obeliszk2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "obeliszk2",
+     "szemle"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "karam",
+     "ocelotl"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      22,
+      8
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      28,
+      8
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      44
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      33
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      9
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      26,
+      15
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      8
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      30,
+      20
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      6
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      32,
+      10
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      30,
+      6
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      36,
+      40
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      14
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      43,
+      7
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      35,
+      16
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      44
+     ],
+     5.0
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "karam",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "elf_raptor_lovas",
+    "at": "karam",
+    "n": 1,
+    "name": "Csontos",
+    "tag": "csontos"
+   },
+   {
+    "id": "elf_kofarago",
+    "at": "karam",
+    "n": 1,
+    "name": "Tlilo",
+    "tag": "tlilo"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "ocelotl",
+   "type": "reach",
+   "at": "ocelotl",
+   "radius": 3,
+   "text": "Kérdezd meg Ocelotlt, a régi gondozót, miért nem akar Csontos megjelenni",
+   "marker": "Ocelotl",
+   "tag": "tlilo"
+  },
+  {
+   "id": "o1",
+   "type": "reach",
+   "at": "obeliszk1",
+   "radius": 3,
+   "text": "Vezesd Csontost gyalog az első obeliszkig",
+   "marker": "Obeliszk",
+   "after": "ocelotl",
+   "tag": "csontos"
+  },
+  {
+   "id": "o2",
+   "type": "reach",
+   "at": "obeliszk2",
+   "radius": 3,
+   "text": "Tovább a második obeliszkig – gyalog, ahogy fiatalon járt",
+   "marker": "Obeliszk",
+   "after": "o1",
+   "tag": "csontos"
+  },
+  {
+   "id": "szemle",
+   "type": "reach",
+   "at": "szemle",
+   "radius": 3,
+   "text": "Érj be Csontossal a szemlére, a parancsnok elé",
+   "marker": "Szemle",
+   "after": "o2",
+   "tag": "csontos"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "karam",
+      "say": [
+       {
+        "who": "Tlilo",
+        "text": "Ha nem akarsz megjelenni, odasétálunk. Hosszú út, Csontos.",
+        "portrait": "elf_kofarago"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "szemle",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szemle",
+      "say": [
+       {
+        "who": "Tlilo",
+        "text": "Ott van. Gyalog jött. És megharapta a sisaktollát.",
+        "portrait": "elf_kofarago"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "csontos",
+   "text": "Csontos elesett."
+  }
+ ],
+ "victory": "Csontos gyalog érkezett a szemlére. A parancsnok nevetett, és a tolla odalett.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

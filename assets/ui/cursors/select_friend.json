@@ -1,0 +1,13 @@
+{
+  "id": "select_friend",
+  "type": "cursor",
+  "image": "select_friend.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    0,
+    0
+  ]
+}

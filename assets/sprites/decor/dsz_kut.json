@@ -1,0 +1,28 @@
+{
+ "id": "dsz_kut",
+ "image": "dsz_kut.png",
+ "type": "decor",
+ "frame_size": [
+  160,
+  160
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  48,
+  72
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 2,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  320,
+  160
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

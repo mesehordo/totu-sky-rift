@@ -1,0 +1,470 @@
+{
+ "id": "w5_akik_bennunk_maradtak",
+ "title": "5. Akik bennünk maradtak",
+ "faction": "wullof",
+ "briefing": [
+  "Hétfolyó nem tartható. A Wullofok elveszítik a várost – de a lakókat még kimenekíthetik.",
+  "Tartsd a rakpartot, amíg a csónakok el nem viszik a családokat, és vezesd ki az utolsó csoportot is.",
+  "Tava egy megsebzett ellenséges lényt is foglyul ejt…"
+ ],
+ "player": {
+  "resources": {
+   "wood": 825,
+   "stone": 425,
+   "meteor": 150
+  },
+  "units": {
+   "wul_hos_tava": 1,
+   "wul_landzsas": 5,
+   "wul_ijas_vadasz": 4,
+   "wul_holdsaman": 1,
+   "wul_gyujtogeto": 5
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus hada",
+   "hold": 0,
+   "aggression": 1.4,
+   "resources": {
+    "wood": 820,
+    "stone": 280
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "id": "rakpart",
+   "type": "survive",
+   "text": "Tartsd a rakpartot",
+   "seconds": 240
+  },
+  {
+   "id": "utolso",
+   "type": "reach",
+   "text": "Vezess 5 Gyűjtögetőt a csónakokhoz",
+   "after": "rakpart",
+   "units": [
+    "wul_gyujtogeto"
+   ],
+   "count": 5,
+   "at": "csonakok",
+   "radius": 4,
+   "marker": "Csónakok"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "varos",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "Hétfolyó nem tartható. A falakat nem védjük – az embereket.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     },
+     {
+      "camera": "csonakok",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "A csónakok a déli parton. Minden család beszáll, aztán mi.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 40,
+   "message": "A Folyóparti klán ígérete szerint harcosokat küld a rakpartra.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "if_flag": "folyopart",
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "wul_landzsas": 4,
+     "wul_bolenylovas": 1
+    }
+   }
+  },
+  {
+   "at": 40,
+   "message": "A Sziklavári kőfejtők csónakokat ácsoltak – több család fér el bennük.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "if_flag": "sziklavar",
+   "reward": {
+    "wood": 300
+   },
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "wul_gyujtogeto": 3
+    }
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Tava",
+     "text": "Nem a falakat védjük. Az embereket.",
+     "portrait": "wul_hos_tava"
+    }
+   ]
+  },
+  {
+   "at": 90,
+   "message": "A raj átkel a folyón!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "atkeles",
+    "units": {
+     "cro_karmos": 10,
+     "cro_tuskekopo": 3
+    },
+    "to": "rakpart"
+   }
+  },
+  {
+   "at": 180,
+   "message": "Ragna Kőváll pajzshordozói érkeznek északról – csak áthaladni jöttek, de most megállnak.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "eszak",
+    "units": {
+     "urs_pajzshordozo": 4
+    }
+   }
+  },
+  {
+   "on_objective": "utolso",
+   "message": "A fogoly lény nem a Kórus hangján szól: régi kethri kereskedőnyelven vizet kér.",
+   "color": [
+    210,
+    150,
+    255
+   ]
+  },
+  {
+   "on_objective": "utolso",
+   "message": "Utolsó önálló mondata: „A többiek még bennünk vannak.”",
+   "color": [
+    210,
+    150,
+    255
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "utolso",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "csonakok",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "Ismerem ezt a hangot. A vásári úton kínált vizet egy sebesült fuvarosnak.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "wul_hos_tava",
+   "text": "Tava elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Hétfolyó elveszett, de a lakói élnek. Keth egyik felderítője meghalt – és valaki még benne volt.",
+ "next": null,
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "code": "WUL-05",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (I. hadjárat: zárócsata)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 598,
+  "points": {
+   "rakpart": [
+    34,
+    48
+   ],
+   "csonakok": [
+    20,
+    52
+   ],
+   "varos": [
+    34,
+    30
+   ],
+   "atkeles": [
+    46,
+    20
+   ],
+   "eszak": [
+    30,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      14
+     ],
+     [
+      24,
+      16
+     ],
+     [
+      46,
+      14
+     ],
+     [
+      65,
+      16
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      18,
+      54
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      46,
+      11
+     ],
+     [
+      46,
+      19
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      18,
+      11
+     ],
+     [
+      18,
+      19
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "rakpart",
+     "varos"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "varos",
+     "atkeles"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "rakpart",
+     "csonakok"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      39,
+      12
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      27
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      10
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      25,
+      14
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      15,
+      9
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      18
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      28
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      36,
+      14
+     ],
+     5.0
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     27,
+     51
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     41,
+     44
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     37,
+     54
+    ]
+   }
+  ],
+  "starts": [
+   "rakpart",
+   "eszak"
+  ],
+  "decor": [
+   {
+    "id": "wul_tipi",
+    "at": [
+     28,
+     30
+    ],
+    "ruin": true
+   },
+   {
+    "id": "wul_tipi",
+    "at": [
+     40,
+     30
+    ],
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "button_small",
+  "type": "nine_slice_states",
+  "insets": [
+    8,
+    8,
+    8,
+    8
+  ],
+  "size": [
+    384,
+    34
+  ],
+  "frame_size": [
+    96,
+    34
+  ],
+  "sheet_size": [
+    384,
+    34
+  ],
+  "frames": 4
+}

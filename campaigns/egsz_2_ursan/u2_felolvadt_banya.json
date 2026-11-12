@@ -1,0 +1,363 @@
+{
+ "id": "u2_felolvadt_banya",
+ "title": "2. A felolvadt bánya",
+ "faction": "ursan",
+ "briefing": [
+  "A hegyi bányákban felolvadó jégből régi meteoritdarabok kerülnek elő.",
+  "Termelj ki 250 csillagércet – a jarl ezt követeli –, de vigyázz: a croftianok a hátországban jelennek meg.",
+  "A felszíni védvonalak itt keveset érnek: a mélyből jönnek."
+ ],
+ "player": {
+  "resources": {
+   "wood": 595,
+   "stone": 305
+  },
+  "units": {
+   "urs_hos_ragna": 1,
+   "urs_pajzshordozo": 4,
+   "urs_szigonyvezo": 2
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Bányabeli raj",
+   "hold": 99999,
+   "aggression": 0.8,
+   "buildings": [
+    {
+     "id": "cro_ikrafeszek",
+     "at": "tarna1",
+     "tag": "tarna"
+    },
+    {
+     "id": "cro_ikrafeszek",
+     "at": [
+      50,
+      36
+     ],
+     "tag": "tarna"
+    }
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "erc",
+   "type": "gather",
+   "text": "Termelj ki 250 csillagércet",
+   "resource": "meteor",
+   "amount": 250
+  },
+  {
+   "type": "destroy",
+   "targets": [
+    "tarna"
+   ],
+   "text": "Zárd le a két fertőzött tárnát (pusztítsd el a fészkeiket)",
+   "id": "tisztit"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "banya",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "A felolvadt jég régi csillagércet hozott elő. A jarl kéri. Megkapja.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     },
+     {
+      "camera": "tarna1",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "Pajzsfal a tárnák elé. Ezek alulról jönnek, nem a kapun.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Ragna",
+     "text": "Egy fatelep a kráter mellett – minél rövidebb az út, annál kevesebben halnak meg.",
+     "portrait": "urs_hos_ragna"
+    }
+   ]
+  },
+  {
+   "at": 150,
+   "message": "A bánya mélyéből lények törnek elő – a vonal mögött!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "tarna1",
+    "units": {
+     "cro_karmos": 6
+    },
+    "to": "tabor"
+   }
+  },
+  {
+   "on_objective": "erc",
+   "message": "A raj teljes erővel támad!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "tarna2",
+    "units": {
+     "cro_karmos": 8,
+     "cro_tuskekopo": 3
+    },
+    "to": "tabor"
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "tisztit",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "A bányászok köhögnek. A jarl nem akar róla hallani. Én igen.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "urs_hos_ragna",
+   "text": "Ragna elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A tárnák csendesek. De a bányászok köhögnek, és a jarl nem akar róla hallani.",
+ "next": "u3_tojasok_a_hamu_alatt",
+ "hero_level": 2,
+ "enemy_hero_level": 2,
+ "code": "URS-02",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (II. hadjárat: A felolvadt bánya)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3202,
+  "points": {
+   "tabor": [
+    12,
+    44
+   ],
+   "banya": [
+    44,
+    18
+   ],
+   "tarna1": [
+    30,
+    30
+   ],
+   "tarna2": [
+    52,
+    40
+   ],
+   "krater": [
+    50,
+    10
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     "krater",
+     5
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      30,
+      10
+     ],
+     6
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "tarna1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "tarna1",
+     "banya"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "tarna2"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      28,
+      17
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      45,
+      30
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      21,
+      7
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      25
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      25,
+      17
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      46,
+      28
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      27,
+      18
+     ],
+     2.8
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     7,
+     47
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     17,
+     40
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     15,
+     49
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     44,
+     22
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     40,
+     16
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "tarna2"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

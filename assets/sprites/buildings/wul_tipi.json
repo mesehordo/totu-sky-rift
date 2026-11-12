@@ -1,0 +1,43 @@
+{
+ "id": "wul_tipi",
+ "type": "building",
+ "image": "wul_tipi.png",
+ "team_mask": "wul_tipi_team.png",
+ "style": "tribal",
+ "frame_size": [
+  160,
+  156
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  4,
+  14
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1280,
+  156
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

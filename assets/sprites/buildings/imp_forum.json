@@ -1,0 +1,43 @@
+{
+ "id": "imp_forum",
+ "type": "building",
+ "image": "imp_forum.png",
+ "team_mask": "imp_forum_team.png",
+ "style": "imperial",
+ "frame_size": [
+  332,
+  336
+ ],
+ "footprint": [
+  4,
+  4
+ ],
+ "footprint_offset": [
+  4,
+  48
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2656,
+  336
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

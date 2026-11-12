@@ -1,0 +1,90 @@
+{
+ "id": "kraterfold",
+ "order": 2,
+ "players": 2,
+ "size": 88,
+ "layout": "ring",
+ "theme": "wasteland",
+ "name": {
+  "hu": "Kráterföld",
+  "en": "Crater Fields"
+ },
+ "desc": {
+  "hu": "Nyílt síkság, a közepén gazdag meteorkráterrel. Döntés: a kráter gyors elfoglalása, vagy a daresh-táborok őrizte, gazdag oldalsó lelőhelyek?",
+  "en": "Open plains with a rich meteor crater in the middle."
+ },
+ "features": {
+  "crater": {
+   "radius": 0.12,
+   "meteors": 4
+  },
+  "lakes": [
+   1,
+   2,
+   3
+  ],
+  "ridges": [
+   3,
+   4,
+   8
+  ],
+  "forests": 12,
+  "rich": "meteor"
+ },
+ "camps": {
+  "1": "daresh",
+  "2": "daresh",
+  "3": "daresh",
+  "4": "daresh"
+ },
+ "decor": [
+  {
+   "id": "dar_agyagkaptar",
+   "at": "pair",
+   "d": 20,
+   "s": 0
+  },
+  {
+   "id": "dar_szarnyudvar",
+   "at": "base",
+   "d": 5,
+   "s": 13
+  }
+ ],
+ "ambient": [
+  {
+   "id": "dar_fullanclandzsas",
+   "at": "base",
+   "d": 6,
+   "s": 13,
+   "n": 3,
+   "path": [
+    {
+     "at": "base",
+     "d": 6,
+     "s": 13
+    },
+    {
+     "at": "pair",
+     "d": 16,
+     "s": 0
+    }
+   ],
+   "shelter": {
+    "at": "base",
+    "d": 5,
+    "s": 13
+   }
+  }
+ ],
+ "plan": {
+  "dontes": "A kráter mindenkinek egyformán közel van; az oldalsó gazdag meteorhelyet Daresh-tábor őrzi.",
+  "felallasok": "1v1",
+  "taborok": {
+   "1": "Daresh",
+   "2": "Daresh",
+   "3": "Daresh",
+   "4": "Daresh"
+  }
+ }
+}

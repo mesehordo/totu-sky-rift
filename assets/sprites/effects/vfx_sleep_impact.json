@@ -1,0 +1,27 @@
+{
+ "id": "vfx_sleep_impact",
+ "image": "vfx_sleep_impact.png",
+ "type": "effect",
+ "frame_size": [
+  128,
+  128
+ ],
+ "anchor": [
+  64,
+  64
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 6,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  768,
+  128
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

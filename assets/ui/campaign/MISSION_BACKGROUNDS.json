@@ -1,0 +1,474 @@
+{
+  "schema": "totu-mission-background-catalog-v1",
+  "integration_status": "asset mapping only; original game code unchanged",
+  "entries": [
+    {
+      "campaign_id": "egsz_0_elojatek",
+      "mission_id": "p0_masodik_lelegzet",
+      "mission_title": "A második lélegzet",
+      "supplied_image_id": "00_01_masodik_lelegzet",
+      "game_path": "assets/ui/campaign/missions/p0_masodik_lelegzet.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "b649b67ee07c1007d868f52b2f41eaaf85bcf28554f28fd89548b6e9f976b41c",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_1_wullof",
+      "mission_id": "w1_hetfolyo_vasara",
+      "mission_title": "1. Hétfolyó vására",
+      "supplied_image_id": "01_01_hetfolyo_vasara",
+      "game_path": "assets/ui/campaign/missions/w1_hetfolyo_vasara.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "e027d64a99a32f3a7c4a5947706327cdd14daa279ca9659b7f68c8aa375a8d7c",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_1_wullof",
+      "mission_id": "w2_keseru_kutak",
+      "mission_title": "2. Keserű kutak",
+      "supplied_image_id": "01_02_keseru_kutak",
+      "game_path": "assets/ui/campaign/missions/w2_keseru_kutak.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "656d74c40c374b26b82f8fe33ee1c55baf4dfc08dd6d9d4dee7c1f6d65f671c1",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_1_wullof",
+      "mission_id": "w3_a_fold_megnyilik",
+      "mission_title": "3. A föld megnyílik",
+      "supplied_image_id": "01_03_fold_megnyilik",
+      "game_path": "assets/ui/campaign/missions/w3_a_fold_megnyilik.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "a71970f97bc648bc601746826a0f3418aaa71ab742d0cbdc2158736e3f1672c3",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_1_wullof",
+      "mission_id": "w4_ket_ut_kozott",
+      "mission_title": "4. Két út között",
+      "supplied_image_id": "01_04_ket_ut_kozott",
+      "game_path": "assets/ui/campaign/missions/w4_ket_ut_kozott.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "fa43f77ac78c68dc3a42aadf2cc5d3c7115d5dd0e18ea0eb4ad939f14c2ada31",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_1_wullof",
+      "mission_id": "w5_akik_bennunk_maradtak",
+      "mission_title": "5. Akik bennünk maradtak",
+      "supplied_image_id": "01_05_akik_bennunk_maradtak",
+      "game_path": "assets/ui/campaign/missions/w5_akik_bennunk_maradtak.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "0bf6a8798c933032084c133ee053c95c8154183f416cae8b49c2d197fdce6ff6",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_1b_konvoj",
+      "mission_id": "x1_vegyes_konvoj",
+      "mission_title": "Átvezető: A vegyes konvoj",
+      "supplied_image_id": "02_01_vegyes_konvoj",
+      "game_path": "assets/ui/campaign/missions/x1_vegyes_konvoj.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "25d1d7a1a8d9dd37b0d48d0187e788af7634145d6b306b46244d1a47c5094f9b",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_2_ursan",
+      "mission_id": "u1_ures_magtarak",
+      "mission_title": "1. Üres magtárak",
+      "supplied_image_id": "03_01_ures_magtarak",
+      "game_path": "assets/ui/campaign/missions/u1_ures_magtarak.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "a6c05db9fce428288ab9fa6e6ec8402fe0fd7e78e04ce1c11b727f0032483ae4",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_2_ursan",
+      "mission_id": "u2_felolvadt_banya",
+      "mission_title": "2. A felolvadt bánya",
+      "supplied_image_id": "03_02_felolvadt_banya",
+      "game_path": "assets/ui/campaign/missions/u2_felolvadt_banya.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "fe45845d100ae919584e23f4dd827500669c5aa39bfcade568a4acbc143d0eb2",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_2_ursan",
+      "mission_id": "u3_tojasok_a_hamu_alatt",
+      "mission_title": "3. Tojások a hamu alatt",
+      "supplied_image_id": "03_03_tojasok_hamu_alatt",
+      "game_path": "assets/ui/campaign/missions/u3_tojasok_a_hamu_alatt.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "145e65361cde53e4585f5641e974584e3b834128086091217193915fc6a7cc18",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_2_ursan",
+      "mission_id": "u4_a_jarl_adossaga",
+      "mission_title": "4. A jarl adóssága",
+      "supplied_image_id": "03_04_jarl_adossaga",
+      "game_path": "assets/ui/campaign/missions/u4_a_jarl_adossaga.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "197e39a6f31cad6352e1058a67896b99ca9ce432b903553bebfad02b3622e9c3",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_2_ursan",
+      "mission_id": "u5_nyitott_kapuk",
+      "mission_title": "5. Nyitott kapuk",
+      "supplied_image_id": "03_05_nyitott_kapuk",
+      "game_path": "assets/ui/campaign/missions/u5_nyitott_kapuk.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "3555b302672876d26a9fadf2227499b5a3d79c413670c598f6992cf9ba8a184e",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_3_elfek",
+      "mission_id": "e1_tiszta_erc",
+      "mission_title": "1. A tiszta érc",
+      "supplied_image_id": "04_01_tiszta_erc",
+      "game_path": "assets/ui/campaign/missions/e1_tiszta_erc.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "5c8a080383917490279babdb066453fc971ba47d63d208a7d025fd3f1f6e3880",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_3_elfek",
+      "mission_id": "e2_idegen_tornyok",
+      "mission_title": "2. Idegen tornyok",
+      "supplied_image_id": "04_02_idegen_tornyok",
+      "game_path": "assets/ui/campaign/missions/e2_idegen_tornyok.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "e823d5f807f1e3db5ffd937f7646dc145cd409b39b429bc57e6a685a5f72da5e",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_3_elfek",
+      "mission_id": "e3_lezart_archivum",
+      "mission_title": "3. A lezárt archívum",
+      "supplied_image_id": "04_03_lezart_archivum",
+      "game_path": "assets/ui/campaign/missions/e3_lezart_archivum.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "a41fd29b6448b86a6d20926ea4caeb351e6343bb799956abad2b72ca42ed528b",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_3_elfek",
+      "mission_id": "e4_repedes_a_halozaton",
+      "mission_title": "4. Repedés a hálózaton",
+      "supplied_image_id": "04_04_repedes_halozaton",
+      "game_path": "assets/ui/campaign/missions/e4_repedes_a_halozaton.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "c859d9f11105be4ca321f302a90b07ddd9e573764f96535edabf0d480cfad970",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_3_elfek",
+      "mission_id": "e5_a_ledontott_lepcso",
+      "mission_title": "5. A ledöntött lépcső",
+      "supplied_image_id": "04_05_ledontott_lepcso",
+      "game_path": "assets/ui/campaign/missions/e5_a_ledontott_lepcso.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "7dab5f1f31531180113815a9d173f71284cee688433eef48b6075a29404fe6cf",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_4_gombanep",
+      "mission_id": "g1_szaraz_kertek",
+      "mission_title": "1. Száraz kertek",
+      "supplied_image_id": "05_01_szaraz_kertek",
+      "game_path": "assets/ui/campaign/missions/g1_szaraz_kertek.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "0d613e77eb396257df6185497d817c653ff530c2e044344f24fdbf331efb0cc8",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_4_gombanep",
+      "mission_id": "g2_az_emlek_ara",
+      "mission_title": "2. Az emlék ára",
+      "supplied_image_id": "05_02_emlek_ara",
+      "game_path": "assets/ui/campaign/missions/g2_az_emlek_ara.png",
+      "source_size": [
+        1672,
+        940
+      ],
+      "sha256": "110a73210e52e08d68b201069e99fea2bd0a8f48e99433d33e7802feb5fa971c",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_4_gombanep",
+      "mission_id": "g3_az_elso_betegek",
+      "mission_title": "3. Az első betegek",
+      "supplied_image_id": "05_03_elso_betegek",
+      "game_path": "assets/ui/campaign/missions/g3_az_elso_betegek.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "c0fbe8ab0438cba5005b20a88a1d596b21869dfdc6d5cc96f98e5bfe5b619ca7",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_4_gombanep",
+      "mission_id": "g4_egy_nev_a_korusban",
+      "mission_title": "4. Egy név a Kórusban",
+      "supplied_image_id": "05_04_nev_korusban",
+      "game_path": "assets/ui/campaign/missions/g4_egy_nev_a_korusban.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "26e0c9a991d63dbc92a3bd30767100f42d1c71b5336d9826f12d60f7ed6b16c1",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_4_gombanep",
+      "mission_id": "g5_az_ego_kert",
+      "mission_title": "5. Az égő kert",
+      "supplied_image_id": "05_05_ego_kert",
+      "game_path": "assets/ui/campaign/missions/g5_az_ego_kert.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "e2de58027ea7f26667b532078c109cb620d5255c229724eade561dca6be5ccf5",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_4b_finomito",
+      "mission_id": "x2_finomito",
+      "mission_title": "Átvezető: A finomító",
+      "supplied_image_id": "06_01_finomito",
+      "game_path": "assets/ui/campaign/missions/x2_finomito.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "46ba5ec0db60e974f268e01cfcc97d61a9586397f48065a0135a2475b98d8a95",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_5_aureth",
+      "mission_id": "a1_lefoglalt_szallitmany",
+      "mission_title": "1. A lefoglalt szállítmány",
+      "supplied_image_id": "07_01_lefoglalt_szallitmany",
+      "game_path": "assets/ui/campaign/missions/a1_lefoglalt_szallitmany.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "9398fd603b73f3b26a298f8cd9ab42834359f9265988ae3dfc5c7ff020a190cb",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_5_aureth",
+      "mission_id": "a2_ures_serlegek_varosa",
+      "mission_title": "2. Az üres serlegek városa",
+      "supplied_image_id": "07_02_ures_serlegek_varosa",
+      "game_path": "assets/ui/campaign/missions/a2_ures_serlegek_varosa.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "1bd7554bea7792884c08f0548417ba27364434bf7fbf5f62b2dce9379b826937",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_5_aureth",
+      "mission_id": "a3_az_orok_hajnal",
+      "mission_title": "3. Az Örök Hajnal",
+      "supplied_image_id": "07_03_orok_hajnal",
+      "game_path": "assets/ui/campaign/missions/a3_az_orok_hajnal.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "b9dc7ab7692b9ef1ccc9b2b42e23b899ae228d6d346f1e25c7394f0fcaa92337",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_5_aureth",
+      "mission_id": "a4_a_szabad_horgony",
+      "mission_title": "4. A szabad horgony",
+      "supplied_image_id": "07_04_szabad_horgony",
+      "game_path": "assets/ui/campaign/missions/a4_a_szabad_horgony.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "8d7b00d0eff6c9d518ed2765333deedee1998e74a47352d94c01b5a551baa482",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_5_aureth",
+      "mission_id": "a5_feltoltes_megtagadva",
+      "mission_title": "5. Feltöltés megtagadva",
+      "supplied_image_id": "07_05_feltoltes_megtagadva",
+      "game_path": "assets/ui/campaign/missions/a5_feltoltes_megtagadva.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "944c019f92167e3630367bf95cf73415e95068a3a2a0adc7a3d11eaad63ac577",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_6_keth",
+      "mission_id": "c1_sebek_egyesitese",
+      "mission_title": "1. A sebek egyesítése",
+      "supplied_image_id": "08_01_sebek_egyesitese",
+      "game_path": "assets/ui/campaign/missions/c1_sebek_egyesitese.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "9ebf1df1bfb83213f5b96e309b66357b9ed9a151ceee3deb11ad809eeb184e7e",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_6_keth",
+      "mission_id": "c2_ismeros_kovek",
+      "mission_title": "2. Ismerős kövek",
+      "supplied_image_id": "08_02_ismeros_kovek",
+      "game_path": "assets/ui/campaign/missions/c2_ismeros_kovek.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "bee04177ab13601822a48a7da7d43fd37ed3def40e243c88212ae32f6d01055f",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_6_keth",
+      "mission_id": "c3_a_visszatero_nev",
+      "mission_title": "3. A visszatérő név",
+      "supplied_image_id": "08_03_visszatero_nev",
+      "game_path": "assets/ui/campaign/missions/c3_a_visszatero_nev.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "f6352d09121c3c4095c94e9df089aa21ff7676055ac0bf9d5b196ad60301d054",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_6_keth",
+      "mission_id": "c4_levalas",
+      "mission_title": "4. Leválás",
+      "supplied_image_id": "08_04_levalas",
+      "game_path": "assets/ui/campaign/missions/c4_levalas.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "5124395a402183eaba615231defa30b9cf0e0ac08d4e580aeaf1de954dc4b5bd",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_6_keth",
+      "mission_id": "c5_a_belso_kapu",
+      "mission_title": "5. A belső kapu",
+      "supplied_image_id": "08_05_belso_kapu",
+      "game_path": "assets/ui/campaign/missions/c5_a_belso_kapu.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "0c77cc3830e64984fbb2f7a3d0f9722b89dd6b7fce3331bedb3844c0b3452280",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_7_hajnal",
+      "mission_id": "f1_a_hid",
+      "mission_title": "1. A híd",
+      "supplied_image_id": "09_01_hid",
+      "game_path": "assets/ui/campaign/missions/f1_a_hid.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "4b6a93a8a8aa48933f79712147a258b10493e08c3f127fd2a05f64db1127cac2",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_7_hajnal",
+      "mission_id": "f2_az_ures_tron",
+      "mission_title": "2. Az üres trón",
+      "supplied_image_id": "09_02_ures_tron",
+      "game_path": "assets/ui/campaign/missions/f2_az_ures_tron.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "d4dac33f4afceb873b9b25c7c26687d3d5e32cdae7f4755e272c828a5d776bab",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    },
+    {
+      "campaign_id": "egsz_7_hajnal",
+      "mission_id": "f3_a_nevtelen_hajnal",
+      "mission_title": "3. A névtelen hajnal",
+      "supplied_image_id": "09_03_nevtelen_hajnal",
+      "game_path": "assets/ui/campaign/missions/f3_a_nevtelen_hajnal.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "sha256": "16ffc4b71f99f30880f58d9f67aece900f21e50690dd0db377db387ec0e667c8",
+      "display": "Aspect-preserving fit/cover at runtime; source unchanged"
+    }
+  ]
+}

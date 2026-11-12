@@ -1,0 +1,411 @@
+{
+  "id": "tuz_elf",
+  "ally": true,
+  "order": 108,
+  "name": "Tűz-elfek",
+  "tagline": "A dűnék elfjei",
+  "desc": "A dűnék elfjei vörös tetők alatt, árnyékos udvarok köré építik telepeiket. Ismerik a homokviharok járását, és a tűz mágiáját éppúgy használják a műhelyeikben, mint a harcban.",
+  "style": "imperial",
+  "color": [
+    170,
+    60,
+    40
+  ],
+  "accent": [
+    240,
+    170,
+    60
+  ],
+  "mechanic": "standard",
+  "units": {
+    "tuz_homokszablyas": {
+      "hp": 110,
+      "armor": 1,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.38,
+      "supply": 1,
+      "time": 14,
+      "cost": {
+        "wood": 50,
+        "stone": 15
+      },
+      "shape": "warrior",
+      "attack": {
+        "damage": 10,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_tuz_elf",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Homokszablyás",
+      "desc": "Ívelt szablyával vág.",
+      "abilities": [
+        "tuz_homokroham"
+      ],
+      "ally": "tuz_elf",
+      "utype": "kozelharcos"
+    },
+    "tuz_parazsijasz": {
+      "hp": 85,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 8,
+      "radius": 0.38,
+      "supply": 2,
+      "time": 20,
+      "cost": {
+        "wood": 70,
+        "stone": 25
+      },
+      "shape": "archer",
+      "attack": {
+        "damage": 13,
+        "range": 5.5,
+        "cooldown": 1.5,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "tags": [
+        "ally",
+        "ally_tuz_elf",
+        "infantry",
+        "organic",
+        "ranged"
+      ],
+      "name": "Parázsíjász",
+      "desc": "Izzó hegyű nyilakat lő.",
+      "ally": "tuz_elf",
+      "utype": "lovesz"
+    },
+    "tuz_homokvihartancos": {
+      "hp": 110,
+      "armor": 1,
+      "speed": 3.0,
+      "sight": 7,
+      "radius": 0.38,
+      "supply": 1,
+      "time": 14,
+      "cost": {
+        "wood": 50,
+        "stone": 15
+      },
+      "shape": "warrior",
+      "attack": {
+        "damage": 9,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_tuz_elf",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Homokvihar-táncos",
+      "desc": "Pörgő pengés táncos; körben sebez.",
+      "abilities": [
+        "tuz_pengetanc"
+      ],
+      "ally": "tuz_elf",
+      "utype": "kozelharcos"
+    },
+    "tuz_hoszovo": {
+      "hp": 80,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.37,
+      "supply": 2,
+      "time": 26,
+      "energy": 150,
+      "cost": {
+        "wood": 70,
+        "stone": 25,
+        "meteor": 50
+      },
+      "shape": "caster",
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "tags": [
+        "ally",
+        "ally_tuz_elf",
+        "caster",
+        "organic",
+        "ranged"
+      ],
+      "name": "Hőszövő",
+      "desc": "Tűzfalat sző az ellenségre.",
+      "abilities": [
+        "tuz_tuzfal"
+      ],
+      "ally": "tuz_elf",
+      "utype": "varazslo"
+    },
+    "tuz_delibab_csalo": {
+      "hp": 80,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.37,
+      "supply": 2,
+      "time": 26,
+      "energy": 150,
+      "cost": {
+        "wood": 70,
+        "stone": 25,
+        "meteor": 50
+      },
+      "shape": "caster",
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "tags": [
+        "ally",
+        "ally_tuz_elf",
+        "caster",
+        "organic",
+        "ranged"
+      ],
+      "name": "Délibáb-csaló",
+      "desc": "Délibáb-másokat idéz, hogy megtévessze az ellent.",
+      "abilities": [
+        "tuz_delibab"
+      ],
+      "ally": "tuz_elf",
+      "utype": "varazslo"
+    },
+    "tuz_delibab_mas": {
+      "hp": 40,
+      "armor": 1,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.38,
+      "supply": 1,
+      "time": 14,
+      "cost": {},
+      "shape": "warrior",
+      "attack": {
+        "damage": 5,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_tuz_elf",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Délibáb-más",
+      "desc": "Rövid életű délibáb-harcos.",
+      "ally": "tuz_elf",
+      "summoned": true,
+      "utype": "kozelharcos"
+    }
+  },
+  "buildings": {
+    "tuz_dunepavilon": {
+      "name": "Dűnepavilon",
+      "desc": "Homokszablyásokat, parázsíjászokat és homokvihar-táncosokat képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "tuz_elf",
+      "produces": [
+        "tuz_homokszablyas",
+        "tuz_parazsijasz",
+        "tuz_homokvihartancos"
+      ]
+    },
+    "tuz_delibabtorony": {
+      "name": "Délibábtorony",
+      "desc": "Hőszövőket és délibáb-csalókat képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "tuz_elf",
+      "produces": [
+        "tuz_hoszovo",
+        "tuz_delibab_csalo"
+      ],
+      "requires": [
+        "tuz_dunepavilon"
+      ]
+    },
+    "tuz_parazskemence": {
+      "name": "Parázskemence",
+      "desc": "A tűz-elf fejlesztések kemencéje.",
+      "cost": {
+        "wood": 150,
+        "stone": 120
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tech",
+      "ally": "tuz_elf",
+      "researches": [
+        "tuz_izzo_nyilhegy",
+        "tuz_homokvihar",
+        "tuz_tuzallo_pancel"
+      ],
+      "requires": [
+        "tuz_dunepavilon"
+      ]
+    }
+  },
+  "researches": {
+    "tuz_izzo_nyilhegy": {
+      "name": "Izzó nyílhegy",
+      "desc": "+2 sebzés a távolsági egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "ally": "tuz_elf"
+    },
+    "tuz_homokvihar": {
+      "name": "Homokvihar",
+      "desc": "+15% sebesség a tűz-elf egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "ally_tuz_elf"
+          ],
+          "add": 15
+        }
+      ],
+      "ally": "tuz_elf"
+    },
+    "tuz_tuzallo_pancel": {
+      "name": "Tűzálló páncél",
+      "desc": "+1 páncél a tűz-elf egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "ally_tuz_elf"
+          ],
+          "add": 1
+        }
+      ],
+      "ally": "tuz_elf"
+    }
+  },
+  "ally_pack": {
+    "buildings": [
+      "tuz_dunepavilon",
+      "tuz_delibabtorony",
+      "tuz_parazskemence"
+    ],
+    "units": [
+      "tuz_homokszablyas",
+      "tuz_parazsijasz",
+      "tuz_homokvihartancos",
+      "tuz_hoszovo",
+      "tuz_delibab_csalo"
+    ]
+  },
+  "ai": {
+    "build": [
+      "tuz_dunepavilon",
+      "tuz_delibabtorony",
+      "tuz_parazskemence"
+    ],
+    "army": {
+      "tuz_homokszablyas": 3,
+      "tuz_parazsijasz": 3,
+      "tuz_homokvihartancos": 3,
+      "tuz_hoszovo": 3,
+      "tuz_delibab_csalo": 3
+    },
+    "research": [
+      "tuz_izzo_nyilhegy",
+      "tuz_homokvihar",
+      "tuz_tuzallo_pancel"
+    ]
+  }
+}

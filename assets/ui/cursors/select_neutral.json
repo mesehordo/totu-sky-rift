@@ -1,0 +1,13 @@
+{
+  "id": "select_neutral",
+  "type": "cursor",
+  "image": "select_neutral.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    0,
+    0
+  ]
+}

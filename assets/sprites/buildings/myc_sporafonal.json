@@ -1,0 +1,43 @@
+{
+ "id": "myc_sporafonal",
+ "type": "building",
+ "image": "myc_sporafonal.png",
+ "team_mask": "myc_sporafonal_team.png",
+ "style": "fungal",
+ "frame_size": [
+  88,
+  92
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  4,
+  18
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  704,
+  92
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

@@ -1,0 +1,43 @@
+{
+ "id": "huk_gyongybuborek",
+ "image": "huk_gyongybuborek.png",
+ "team_mask": "huk_gyongybuborek_team.png",
+ "type": "building",
+ "frame_size": [
+  224,
+  288
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  48,
+  136
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1792,
+  288
+ ],
+ "scale": 2,
+ "team_colour_mode": "shade",
+ "generator": "TOTU HD grafika"
+}

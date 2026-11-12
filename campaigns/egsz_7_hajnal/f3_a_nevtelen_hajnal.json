@@ -1,0 +1,434 @@
+{
+ "id": "f3_a_nevtelen_hajnal",
+ "title": "3. A névtelen hajnal",
+ "faction": "ursan",
+ "briefing": [
+  "A Kórus áttöri a külső védelmet. Nincs egyetlen megölhető óriáskirálynő: több csomópontot kell egyszerre megszakítani.",
+  "Keth visszakapcsolódik a Kórushoz, hogy belülről nyissa meg a lezárt csomópontot. Mór őrzi a kapcsolatot.",
+  "Ragna tartja az átjárókat, amíg mindez elkészül. Pusztítsd el az összes fészekanyát."
+ ],
+ "player": {
+  "resources": {
+   "wood": 1320,
+   "stone": 880,
+   "meteor": 300
+  },
+  "units": {
+   "urs_hos_ragna": 1,
+   "urs_pajzshordozo": 6,
+   "urs_szigonyvezo": 4,
+   "urs_mammut": 1
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus magja",
+   "hold": 60,
+   "aggression": 1.4,
+   "resources": {
+    "wood": 1475,
+    "stone": 925
+   },
+   "buildings": [
+    {
+     "id": "cro_kaptar",
+     "offset": [
+      -14,
+      0
+     ]
+    },
+    {
+     "id": "cro_kaptar",
+     "offset": [
+      0,
+      -14
+     ]
+    }
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "csomopontok",
+   "type": "destroy",
+   "text": "Szakítsd meg mind a Kórus-csomópontokat (Kaptárak)",
+   "targets": [
+    "cro_kaptar"
+   ]
+  },
+  {
+   "id": "mag",
+   "type": "destroy_all",
+   "text": "Válaszd le a magot",
+   "after": "csomopontok"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "mag",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "A pajzs először a mellettünk állót védi. Ma mindenki mellettünk áll.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Ragna",
+     "text": "A pajzs először a mellettünk állót védi. Ma mindenki mellettünk áll.",
+     "portrait": "urs_hos_ragna"
+    }
+   ]
+  },
+  {
+   "at": 30,
+   "message": "A szövetség minden népe felsorakozik.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "wul_hos_tava": 1,
+     "elf_hos_szelai": 1,
+     "myc_hos_mor": 1,
+     "imp_hos_livia": 1,
+     "wul_landzsas": 3,
+     "elf_tollas_harcos": 3
+    }
+   }
+  },
+  {
+   "at": 200,
+   "say": [
+    {
+     "who": "Keth",
+     "text": "Nyitom a kaput. Ne várjatok rám.",
+     "portrait": "cro_hos_keth"
+    }
+   ]
+  },
+  {
+   "on_objective": "csomopontok",
+   "message": "Keth személyisége feloldódik a szétszakadó Kórusban. A halála lehetővé teszi a központ leválasztását.",
+   "color": [
+    210,
+    150,
+    255
+   ]
+  },
+  {
+   "on_objective": "mag",
+   "message": "Ordan megtartja a védőteret, amíg mindenki kijut. Utolsó szavai az első kórház hangjához szólnak:",
+   "color": [
+    140,
+    255,
+    200
+   ]
+  },
+  {
+   "on_objective": "mag",
+   "message": "„Most már elengedhetlek.”",
+   "color": [
+    140,
+    255,
+    200
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "mag",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "mag",
+      "say": [
+       {
+        "who": "Ordan",
+        "text": "Most már elengedhetlek.",
+        "portrait": "imp_szellemidezo"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "urs_hos_ragna",
+   "text": "Ragna elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A mag nem semmisül meg: kisebb, külön leállítható rendszerekre bontják. A világ megmarad – de senki nem kapja vissza sértetlenül a régi életét. Egy fiatal kethri megkérdezi Mórtól, milyen volt az ég a becsapódás előtt. Mór nem tudja. Felmennek a felszínre, és megnézik, milyen most.",
+ "next": null,
+ "victory_variants": [
+  {
+   "if_flag": "folyopart",
+   "text": "Hétfolyó: a Folyóparti klán harcosai őrzik az új utat; a Sziklaváriak sírjainál Tava minden évben megáll."
+  },
+  {
+   "if_flag": "sziklavar",
+   "text": "Hétfolyó: a Sziklavári családok kőből rakják az új kikötőt; a Folyópartiak még ma is szemrehányást tesznek Tavának."
+  },
+  {
+   "if_flag": "ragna_kapu",
+   "text": "Észak: azok, akiket Ragna a magtárak idején beengedett, ma vele őrzik a hágót."
+  },
+  {
+   "if_flag": "ragna_parancs",
+   "text": "Észak: Ragna megkereste a menekülteket, akiket egykor elküldött. Nem mind élték túl a telet."
+  },
+  {
+   "if_flag": "szelai_tava",
+   "text": "A Kilenc Lépcső: Szelai azon a napon tanult meg kérdezni – a tanács azóta sem bocsátott meg neki."
+  },
+  {
+   "if_flag": "szelai_parancs",
+   "text": "A Kilenc Lépcső: a ledöntött wullof totemek helyén Szelai saját kezével emelt újat."
+  },
+  {
+   "if_flag": "mor_betegek",
+   "text": "A Mélykertek: a betegek feljegyzései ma kethri családokat egyesítenek újra."
+  },
+  {
+   "if_flag": "mor_dalok",
+   "text": "A Mélykertek: a régi dalok visszatértek a kertekbe – a kethri betegek emlékei nem."
+  },
+  {
+   "if_flag": "nera_dont",
+   "text": "Aureth: Nera maga választ új testet. Livia megkérdezi, segíthet-e a szerelésben."
+  },
+  {
+   "if_flag": "nera_elzarva",
+   "text": "Aureth: Livia megtanulta, hogy a zárt ajtó nem védelem. Nera megbocsátott – lassan."
+  },
+  {
+   "if_flag": "keth_fiatalok",
+   "text": "Keth emlékkertjében a kethri fiatalok nevei állnak; ők már a felszínen nőnek fel."
+  },
+  {
+   "if_flag": "keth_harcosok",
+   "text": "Keth harcosai őrzik a Visszhang-kaput; a fiatalok, akiket hátrahagyott, a Kórusban maradtak."
+  },
+  {
+   "if_flag": "f_civil",
+   "text": "A híd: a parton maradt civilek élnek, és az út első kövét ők rakták le."
+  },
+  {
+   "if_flag": "f_ostrom",
+   "text": "A híd: az ostrom gyors volt. A parton emlékkő áll azoknak, akiket nem vártak meg."
+  }
+ ],
+ "hero_level": 8,
+ "enemy_hero_level": 8,
+ "code": "FIN-03",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (Közös befejezés: A névtelen hajnal)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 7303,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "mag": [
+    50,
+    12
+   ],
+   "k1": [
+    36,
+    18
+   ],
+   "k2": [
+    52,
+    30
+   ],
+   "k3": [
+    30,
+    8
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      40,
+      40
+     ],
+     5
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     [
+      24,
+      30
+     ]
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      24,
+      30
+     ],
+     "k1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "k1",
+     "mag"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      24,
+      30
+     ],
+     "k2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "k1",
+     "k3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      9,
+      21
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      45,
+      41
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      45
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      41
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      33,
+      42
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      46,
+      48
+     ],
+     3.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "mag"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

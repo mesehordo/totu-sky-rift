@@ -1,0 +1,1689 @@
+{
+  "id": "ooni",
+  "order": 8,
+  "name": "Ooni",
+  "tagline": "Onik, nianok és tengu követek",
+  "desc": "Az onik és nianok közösségében a buzogányos harcosok mellett négylábú őrzők és szárnyas tengu követek is szolgálnak. Csarnokaik márványoszlopai fölé ívelt cseréptetők borulnak, kapuiknál faragott őrzők és papírlámpások állnak.",
+  "mechanic": "lantern",
+  "style": "imperial",
+  "color": [
+    170,
+    40,
+    40
+  ],
+  "accent": [
+    80,
+    200,
+    140
+  ],
+  "hq": "oon_nian_csarnok",
+  "worker": "oon_lampasvivo",
+  "supply_building": "oon_lakohaz",
+  "start_units": {
+    "oon_lampasvivo": 2,
+    "oon_favago": 2,
+    "oon_tanuki": 1
+  },
+  "start_gather": "wood",
+  "supply_desc": "Oni lakóházakkal",
+  "ascension": {
+    "buildings": 3
+  },
+  "units": {
+    "oon_lampasvivo": {
+      "name": "Lámpásvivő",
+      "desc": "Kis oni munkás: papírlámpást állít (a nép csak lámpásfényben építhet), épít, és végig ott marad az építkezésen. Nem gyűjt. Több munkás nem gyorsít, de egy közeli Taiko-dobos ritmusa +50%-kal igen.",
+      "cost": {
+        "wood": 50
+      },
+      "supply": 1,
+      "time": 12,
+      "hp": 55,
+      "armor": 0,
+      "speed": 2.6,
+      "sight": 7,
+      "radius": 0.37,
+      "shape": "worker",
+      "tags": [
+        "worker",
+        "organic"
+      ],
+      "attack": {
+        "damage": 5,
+        "range": 0.3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "worker": true,
+      "gathers": [],
+      "utype": "munkas"
+    },
+    "oon_oni_harcos": {
+      "name": "Oni harcos",
+      "desc": "Vörös bőrű, szarvas oni, vasbuzogánnyal.",
+      "cost": {
+        "wood": 60,
+        "stone": 30
+      },
+      "supply": 2,
+      "time": 15,
+      "hp": 190,
+      "armor": 2,
+      "speed": 2.4,
+      "sight": 7,
+      "radius": 0.44,
+      "shape": "warrior",
+      "tags": [
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "attack": {
+        "damage": 15,
+        "range": 0.3,
+        "cooldown": 1.3,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "oon_buzogany_roham"
+      ],
+      "utype": "kozelharcos"
+    },
+    "oon_kohajito": {
+      "name": "Kőhajító oni",
+      "desc": "Sziklákat hajít az ellenségre.",
+      "cost": {
+        "wood": 65,
+        "stone": 40
+      },
+      "supply": 2,
+      "time": 20,
+      "hp": 120,
+      "armor": 1,
+      "speed": 2.3,
+      "sight": 8,
+      "radius": 0.42,
+      "shape": "archer",
+      "tags": [
+        "infantry",
+        "ranged",
+        "organic"
+      ],
+      "attack": {
+        "damage": 14,
+        "range": 5.5,
+        "cooldown": 1.7,
+        "targets": [
+          "ground"
+        ],
+        "projectile": "boulder"
+      },
+      "utype": "lovesz"
+    },
+    "oon_nian_or": {
+      "name": "Nian őrző",
+      "desc": "Négylábú, zöld sörényű őrző. Kapuőrként egy épület mellé állhat: az épület páncélt kap, a nian helyben marad és védi.",
+      "cost": {
+        "wood": 100,
+        "stone": 70
+      },
+      "supply": 3,
+      "time": 26,
+      "hp": 380,
+      "armor": 3,
+      "speed": 2.6,
+      "sight": 8,
+      "radius": 0.56,
+      "shape": "beast",
+      "tags": [
+        "beast",
+        "melee",
+        "organic",
+        "large"
+      ],
+      "attack": {
+        "damage": 17,
+        "range": 0.4,
+        "cooldown": 1.3,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "oon_kapuorzes"
+      ],
+      "utype": "orias"
+    },
+    "oon_tengu": {
+      "name": "Tengu követ",
+      "desc": "Szárnyas, hollótollú követ: legyezőjével szélvihart kavar.",
+      "cost": {
+        "wood": 100,
+        "stone": 35,
+        "meteor": 50
+      },
+      "supply": 2,
+      "time": 26,
+      "hp": 110,
+      "armor": 0,
+      "speed": 3.6,
+      "sight": 11,
+      "radius": 0.44,
+      "shape": "flyer",
+      "tags": [
+        "flyer",
+        "caster"
+      ],
+      "attack": {
+        "damage": 9,
+        "range": 4,
+        "cooldown": 1.3,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "oon_szelvihar"
+      ],
+      "flying": true,
+      "energy": 150,
+      "utype": "repulo"
+    },
+    "oon_kitsune": {
+      "name": "Kitsune-maszkos",
+      "desc": "Rókamaszkos mágus: illúzió-másokat szőve megtéveszti az ellent, és gyógyít.",
+      "cost": {
+        "wood": 75,
+        "stone": 25,
+        "meteor": 60
+      },
+      "supply": 2,
+      "time": 26,
+      "hp": 85,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 9,
+      "radius": 0.37,
+      "shape": "caster",
+      "tags": [
+        "caster",
+        "ranged",
+        "organic"
+      ],
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "oon_illuzio",
+        "oon_lampasgyogyitas"
+      ],
+      "energy": 150,
+      "utype": "varazslo"
+    },
+    "oon_illuzio_mas": {
+      "name": "Illúzió-más",
+      "desc": "Rövid életű rókaszellem-másolat.",
+      "cost": {},
+      "supply": 0,
+      "time": 1,
+      "hp": 50,
+      "armor": 0,
+      "speed": 2.6,
+      "sight": 7,
+      "radius": 0.4,
+      "shape": "warrior",
+      "tags": [
+        "summoned",
+        "melee"
+      ],
+      "attack": {
+        "damage": 5,
+        "range": 0.3,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "summoned": true,
+      "utype": "kozelharcos"
+    },
+    "oon_kapudongeto": {
+      "name": "Kapudöngető",
+      "desc": "Faltörő kos, onik tolják – épületek ellen.",
+      "cost": {
+        "wood": 200,
+        "stone": 100
+      },
+      "supply": 3,
+      "time": 30,
+      "hp": 420,
+      "armor": 3,
+      "speed": 1.8,
+      "sight": 7,
+      "radius": 0.6,
+      "shape": "artillery",
+      "tags": [
+        "siege",
+        "large",
+        "mech"
+      ],
+      "attack": {
+        "damage": 45,
+        "range": 0.5,
+        "cooldown": 2.6,
+        "targets": [
+          "ground"
+        ]
+      },
+      "requires": [
+        "oon_lampaskert"
+      ],
+      "utype": "ostrom",
+      "type_bonus": {
+        "epulet": 2.0
+      }
+    },
+    "oon_o_oni": {
+      "name": "Ō-oni",
+      "desc": "Óriás oni, a hegyek ura.",
+      "cost": {
+        "wood": 220,
+        "stone": 110,
+        "meteor": 50
+      },
+      "supply": 5,
+      "time": 40,
+      "hp": 780,
+      "armor": 4,
+      "speed": 2.0,
+      "sight": 8,
+      "radius": 0.72,
+      "shape": "golem",
+      "tags": [
+        "large",
+        "melee",
+        "organic"
+      ],
+      "attack": {
+        "damage": 34,
+        "range": 0.6,
+        "cooldown": 1.8,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "oon_oriasdobbantas"
+      ],
+      "requires": [
+        "oon_lampaskert"
+      ],
+      "utype": "orias"
+    },
+    "oon_hos_akahana": {
+      "name": "Akahana, a Vörös Buzogány",
+      "desc": "Az onik vezére: rohamoz és földet rengeti.",
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 40,
+      "hp": 460,
+      "armor": 3,
+      "speed": 2.7,
+      "sight": 9,
+      "radius": 0.48,
+      "shape": "warrior",
+      "tags": [
+        "hero",
+        "melee",
+        "organic"
+      ],
+      "attack": {
+        "damage": 26,
+        "range": 0.3,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "hero": true,
+      "energy": 120,
+      "hero_abilities": [
+        "h_aka_roham",
+        "h_aka_rengetes",
+        "h_aka_harag",
+        "h_aka_vorosvihar"
+      ],
+      "growth": {
+        "hp": 42,
+        "damage": 3,
+        "armor": 0.3,
+        "energy": 10
+      },
+      "requires": [
+        "oon_meselenyek"
+      ],
+      "utype": "kozelharcos"
+    },
+    "oon_hos_shiro": {
+      "name": "Shiro, a Kapuőr",
+      "desc": "A fehér nian: védi a kapukat és a társait.",
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 40,
+      "hp": 520,
+      "armor": 4,
+      "speed": 2.6,
+      "sight": 9,
+      "radius": 0.56,
+      "shape": "beast",
+      "tags": [
+        "hero",
+        "melee",
+        "organic",
+        "beast"
+      ],
+      "attack": {
+        "damage": 20,
+        "range": 0.4,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "hero": true,
+      "energy": 150,
+      "hero_abilities": [
+        "h_shi_pajzs",
+        "h_shi_uvoltes",
+        "h_shi_kapu",
+        "h_shi_oroktolany"
+      ],
+      "growth": {
+        "hp": 48,
+        "damage": 2,
+        "armor": 0.4,
+        "energy": 12
+      },
+      "requires": [
+        "oon_meselenyek"
+      ],
+      "utype": "orias"
+    },
+    "oon_hos_karasu": {
+      "name": "Karasu, a tengu bölcs",
+      "desc": "Az öreg tengu: szélvihart és villámot hív.",
+      "cost": {
+        "wood": 210,
+        "meteor": 40,
+        "stone": 70
+      },
+      "supply": 5,
+      "time": 40,
+      "hp": 260,
+      "armor": 1,
+      "speed": 3.6,
+      "sight": 12,
+      "radius": 0.44,
+      "shape": "flyer",
+      "tags": [
+        "hero",
+        "flyer",
+        "caster"
+      ],
+      "attack": {
+        "damage": 16,
+        "range": 5,
+        "cooldown": 1.2,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "hero": true,
+      "flying": true,
+      "energy": 200,
+      "hero_abilities": [
+        "h_kar_villam",
+        "h_kar_szel",
+        "h_kar_tollak",
+        "h_kar_tajfun"
+      ],
+      "growth": {
+        "hp": 26,
+        "damage": 3,
+        "armor": 0.2,
+        "energy": 20
+      },
+      "requires": [
+        "oon_meselenyek"
+      ],
+      "utype": "repulo"
+    },
+    "oon_berserker_oni": {
+      "name": "Tomboló oni",
+      "desc": "Kétbuzogányos, megszállott oni.",
+      "cost": {
+        "wood": 110,
+        "stone": 40
+      },
+      "supply": 3,
+      "time": 24,
+      "hp": 260,
+      "armor": 2,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.46,
+      "shape": "warrior",
+      "tags": [
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "attack": {
+        "damage": 20,
+        "range": 0.3,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "oon_tombolas"
+      ],
+      "path": "voros",
+      "utype": "kozelharcos"
+    },
+    "oon_dobos": {
+      "name": "Taiko-dobos",
+      "desc": "Harci dobjával bátorítja az onikat, és ritmusával +50%-kal gyorsítja a közeli építkezést.",
+      "cost": {
+        "wood": 80,
+        "stone": 30,
+        "meteor": 40
+      },
+      "supply": 2,
+      "time": 24,
+      "hp": 120,
+      "armor": 1,
+      "speed": 2.5,
+      "sight": 8,
+      "radius": 0.4,
+      "shape": "caster",
+      "tags": [
+        "infantry",
+        "organic"
+      ],
+      "attack": {
+        "damage": 8,
+        "range": 0.3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "oon_taiko"
+      ],
+      "utype": "kozelharcos"
+    },
+    "oon_kokutya": {
+      "name": "Kőkutya-őr",
+      "desc": "Élő kőoroszlán – a kapuk legkeményebb őre.",
+      "cost": {
+        "wood": 150,
+        "stone": 90
+      },
+      "supply": 4,
+      "time": 30,
+      "hp": 620,
+      "armor": 5,
+      "speed": 2.0,
+      "sight": 8,
+      "radius": 0.6,
+      "shape": "beast",
+      "tags": [
+        "beast",
+        "melee",
+        "large",
+        "mech"
+      ],
+      "attack": {
+        "damage": 18,
+        "range": 0.4,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "abilities": [
+        "oon_kapuorzes"
+      ],
+      "path": "kapu",
+      "utype": "orias"
+    },
+    "oon_lampaspap": {
+      "name": "Lámpáspap",
+      "desc": "A lámpások papja: gyógyít, és védőfényt von a társakra.",
+      "cost": {
+        "wood": 80,
+        "stone": 30,
+        "meteor": 60
+      },
+      "supply": 2,
+      "time": 26,
+      "hp": 95,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 10,
+      "radius": 0.38,
+      "shape": "caster",
+      "tags": [
+        "caster",
+        "ranged",
+        "organic"
+      ],
+      "attack": {
+        "damage": 6,
+        "range": 4,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "oon_vedofeny",
+        "oon_lampasgyogyitas"
+      ],
+      "energy": 180,
+      "path": "kapu",
+      "utype": "varazslo"
+    },
+    "oon_holloharcos": {
+      "name": "Hollótengu-harcos",
+      "desc": "Kardos tengu, a magasból csap le.",
+      "cost": {
+        "wood": 120,
+        "stone": 45,
+        "meteor": 40
+      },
+      "supply": 3,
+      "time": 26,
+      "hp": 170,
+      "armor": 1,
+      "speed": 3.8,
+      "sight": 10,
+      "radius": 0.46,
+      "shape": "flyer",
+      "tags": [
+        "flyer"
+      ],
+      "attack": {
+        "damage": 14,
+        "range": 1.5,
+        "cooldown": 1.0,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "flying": true,
+      "path": "tengu",
+      "utype": "repulo"
+    },
+    "oon_viharhivo": {
+      "name": "Viharhívó tengu",
+      "desc": "Villámot és tájfunt hív.",
+      "cost": {
+        "wood": 100,
+        "stone": 40,
+        "meteor": 80
+      },
+      "supply": 3,
+      "time": 30,
+      "hp": 120,
+      "armor": 0,
+      "speed": 3.4,
+      "sight": 11,
+      "radius": 0.44,
+      "shape": "flyer",
+      "tags": [
+        "flyer",
+        "caster"
+      ],
+      "attack": {
+        "damage": 10,
+        "range": 4.5,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "abilities": [
+        "oon_villamcsapas"
+      ],
+      "flying": true,
+      "energy": 200,
+      "path": "tengu",
+      "utype": "repulo"
+    },
+    "oon_favago": {
+      "name": "Favágó oni",
+      "desc": "Erős, széles vállú oni baltával: csak fát gyűjt, de egyszerre sokat (12). Harcban gyenge.",
+      "cost": {
+        "wood": 55
+      },
+      "supply": 1,
+      "time": 13,
+      "hp": 95,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 7,
+      "radius": 0.4,
+      "shape": "worker",
+      "tags": [
+        "worker",
+        "organic"
+      ],
+      "attack": {
+        "damage": 6,
+        "range": 0.3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "worker": true,
+      "builds": false,
+      "gathers": [
+        "wood"
+      ],
+      "carry": {
+        "wood": 12
+      },
+      "utype": "munkas"
+    },
+    "oon_tanuki": {
+      "name": "Tanuki-bányász",
+      "desc": "Alakváltó tanuki: aranyat és meteoritot bányászik. A bányák közelében, amíg nem harcol, álcázva dolgozik; néha egy-egy tárgyat is talál a mélyben (a leadóhelynél hagyja).",
+      "cost": {
+        "wood": 50,
+        "stone": 10
+      },
+      "supply": 1,
+      "time": 13,
+      "hp": 55,
+      "armor": 0,
+      "speed": 2.7,
+      "sight": 7,
+      "radius": 0.32,
+      "shape": "worker",
+      "tags": [
+        "worker",
+        "organic"
+      ],
+      "attack": {
+        "damage": 4,
+        "range": 0.3,
+        "cooldown": 1.4,
+        "targets": [
+          "ground"
+        ]
+      },
+      "worker": true,
+      "builds": false,
+      "gathers": [
+        "stone",
+        "meteor"
+      ],
+      "mine_stealth": 2,
+      "find_items": {
+        "chance": 0.02,
+        "pool": [
+          "gyogyfozet",
+          "eterfozet",
+          "csizma",
+          "regengyuru"
+        ]
+      },
+      "utype": "munkas"
+    }
+  },
+  "buildings": {
+    "oon_nian_csarnok": {
+      "name": "Nian csarnok",
+      "desc": "Márványoszlopok, ívelt cseréptető, faragott nian-őrzők. Leadóhely; Lámpásvivőket, Favágó onikat és Tanuki-bányászokat nevel; fénye körül építhet a nép.",
+      "cost": {
+        "wood": 360,
+        "stone": 60
+      },
+      "time": 70,
+      "size": [
+        4,
+        4
+      ],
+      "hp": 1500,
+      "armor": 1,
+      "sight": 10,
+      "shape": "hq",
+      "supply": 10,
+      "dropoff": [
+        "wood",
+        "stone",
+        "meteor"
+      ],
+      "produces": [
+        "oon_lampasvivo",
+        "oon_favago",
+        "oon_tanuki"
+      ],
+      "light_radius": 8,
+      "light_heal": 2,
+      "powers": [
+        "gp_isteni_szel"
+      ]
+    },
+    "oon_papirlampas": {
+      "name": "Papírlámpás",
+      "desc": "Olcsó lámpás: fénye bevilágít, tágítja az építési területet, és az Ooni egységek gyógyulnak benne.",
+      "cost": {
+        "wood": 25
+      },
+      "time": 6,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 120,
+      "armor": 1,
+      "sight": 8,
+      "shape": "lantern",
+      "lantern": true,
+      "light_radius": 6,
+      "light_heal": 2,
+      "foundation_free": true,
+      "researches": [
+        "oon_messzefeny"
+      ]
+    },
+    "oon_lakohaz": {
+      "name": "Oni lakóház",
+      "desc": "Cseréptetős oni ház: +8 létszám.",
+      "cost": {
+        "wood": 75,
+        "stone": 30
+      },
+      "time": 25,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 500,
+      "armor": 1,
+      "sight": 7,
+      "shape": "house",
+      "supply": 8
+    },
+    "oon_edzoudvar": {
+      "name": "Edzőudvar",
+      "desc": "Oni harcosokat, kőhajítókat, nian őrzőket és taiko-dobosokat képez.",
+      "cost": {
+        "wood": 150,
+        "stone": 50
+      },
+      "time": 35,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "produces": [
+        "oon_oni_harcos",
+        "oon_kohajito",
+        "oon_nian_or",
+        "oon_dobos"
+      ],
+      "researches": [
+        "oon_harci_dobok",
+        "oon_verszomj"
+      ]
+    },
+    "oon_meselenyek": {
+      "name": "Meselények szentélye",
+      "desc": "Kitsune-maszkosokat és hősöket képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80,
+        "meteor": 40
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "temple",
+      "produces": [
+        "oon_kitsune",
+        "oon_hos_akahana",
+        "oon_hos_shiro",
+        "oon_hos_karasu"
+      ],
+      "requires": [
+        "oon_edzoudvar"
+      ]
+    },
+    "oon_tengu_feszek": {
+      "name": "Tengu-fészek",
+      "desc": "Tengu követeket nevel.",
+      "cost": {
+        "wood": 160,
+        "stone": 70
+      },
+      "time": 40,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tower",
+      "produces": [
+        "oon_tengu"
+      ],
+      "requires": [
+        "oon_edzoudvar"
+      ],
+      "researches": [
+        "oon_tengu_tollak"
+      ]
+    },
+    "oon_lampaskert": {
+      "name": "Lámpáskert",
+      "desc": "Az Ooni fejlesztései és ostromszíne.",
+      "cost": {
+        "wood": 150,
+        "stone": 120
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 800,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tech",
+      "researches": [
+        "oon_vasbuzogany",
+        "oon_vasbuzogany_2",
+        "oon_vasbuzogany_3",
+        "oon_lakkozott_vert",
+        "oon_lakkozott_vert_2",
+        "oon_lakkozott_vert_3",
+        "oon_lampasolaj",
+        "oon_szelparna",
+        "oon_kettos_kapu",
+        "oon_kotel",
+        "oon_kotel_2",
+        "oon_kotel_3",
+        "oon_lampas_magia"
+      ],
+      "produces": [
+        "oon_kapudongeto",
+        "oon_o_oni"
+      ],
+      "requires": [
+        "oon_edzoudvar"
+      ]
+    },
+    "oon_kapuorzo_torony": {
+      "name": "Kapuőrző torony",
+      "desc": "Faragott nian-szoborral díszített őrtorony.",
+      "cost": {
+        "wood": 110,
+        "stone": 60
+      },
+      "time": 30,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 650,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tower",
+      "attack": {
+        "damage": 13,
+        "range": 7,
+        "cooldown": 1.2,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "detect": 7
+    },
+    "oon_voros_dojo": {
+      "name": "Vörös dódzsó",
+      "desc": "Tomboló onikat képez; a dódzsó dobjai erősebbek.",
+      "cost": {
+        "wood": 180,
+        "stone": 100
+      },
+      "time": 40,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 950,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "produces": [
+        "oon_berserker_oni"
+      ],
+      "path": "voros"
+    },
+    "oon_kapuszentely": {
+      "name": "Kapuszentély",
+      "desc": "Kőkutya-őröket és lámpáspapokat nevel.",
+      "cost": {
+        "wood": 180,
+        "stone": 120
+      },
+      "time": 40,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 1000,
+      "armor": 1,
+      "sight": 7,
+      "shape": "temple",
+      "produces": [
+        "oon_kokutya",
+        "oon_lampaspap"
+      ],
+      "path": "kapu",
+      "researches": [
+        "oon_kokutya_huseg"
+      ]
+    },
+    "oon_szelcsucs": {
+      "name": "Szélcsúcs",
+      "desc": "Hollótengu-harcosokat és viharhívókat nevel.",
+      "cost": {
+        "wood": 180,
+        "stone": 100,
+        "meteor": 40
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tower",
+      "produces": [
+        "oon_holloharcos",
+        "oon_viharhivo"
+      ],
+      "path": "tengu"
+    },
+    "oon_torii": {
+      "name": "Torii-kapu",
+      "desc": "Kapupár egyik fele. Az elsőt lámpásfényben, a másodikat bárhová teheted, ahol épp látsz; a két kapu között az egységek átkelnek (jobb klikk a kapura, 2 mp, utána 8 mp töltődés). Kis lámpásfényt is ad.",
+      "cost": {
+        "wood": 120,
+        "stone": 60
+      },
+      "time": 30,
+      "size": [
+        2,
+        2
+      ],
+      "hp": 600,
+      "armor": 1,
+      "sight": 7,
+      "shape": "gate",
+      "torii": true,
+      "light_radius": 3,
+      "light_heal": 1
+    },
+    "oon_egko": {
+      "name": "Égkő",
+      "desc": "Lerakott meteoritszilánk: Égkő-fényt áraszt (5 csempe), mint egy meteorit – a mágiahasználók erősebbek, a meteoritrokon népek gyógyulnak. MINDENKINEK hat, és bárki lerombolhatja.",
+      "cost": {
+        "meteor": 75
+      },
+      "time": 15,
+      "size": [
+        1,
+        1
+      ],
+      "hp": 300,
+      "armor": 1,
+      "sight": 7,
+      "shape": "egko",
+      "rift_source": true,
+      "no_power": true,
+      "no_creep": true,
+      "no_pond": true,
+      "no_light": true,
+      "foundation_free": true
+    },
+    "oon_diplomacia": {
+      "name": "Diplomácia csarnoka",
+      "desc": "Itt köthetsz szövetséget egy kisebb néppel (egyszer, véglegesen). A szövetség után a nép épületei a munkásaid építési listáján jelennek meg.",
+      "cost": {
+        "wood": 180,
+        "stone": 120
+      },
+      "time": 45,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 900,
+      "armor": 1,
+      "sight": 8,
+      "shape": "tech",
+      "diplomacy": true
+    }
+  },
+  "researches": {
+    "oon_vasbuzogany": {
+      "name": "Vasbuzogány",
+      "desc": "+2 sebzés a közelharcosoknak.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "oon_lakkozott_vert": {
+      "name": "Lakkozott vért",
+      "desc": "+1 páncél az élő egységeknek.",
+      "cost": {
+        "wood": 100,
+        "stone": 120
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "organic"
+          ],
+          "add": 1
+        }
+      ]
+    },
+    "oon_lampasolaj": {
+      "name": "Lámpásolaj",
+      "desc": "+1 látótáv minden egységnek.",
+      "cost": {
+        "wood": 120,
+        "stone": 80
+      },
+      "time": 50,
+      "effects": [
+        {
+          "stat": "sight",
+          "tags": [
+            "all"
+          ],
+          "add": 1
+        }
+      ]
+    },
+    "oon_szelparna": {
+      "name": "Szélpárna",
+      "desc": "+15% sebesség a repülőknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 80,
+        "meteor": 40
+      },
+      "time": 60,
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "flyer"
+          ],
+          "add": 15
+        }
+      ]
+    },
+    "oon_kettos_kapu": {
+      "name": "Kettős kapu",
+      "desc": "Két Torii-kapupár is építhető.",
+      "cost": {
+        "stone": 120,
+        "meteor": 60
+      },
+      "time": 50,
+      "effects": [],
+      "rules": {
+        "torii_pairs": 2
+      }
+    },
+    "oon_kotel": {
+      "name": "Fonott hajítókötél",
+      "desc": "+2 sebzés a távolsági egységeknek.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 35,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ]
+    },
+    "oon_messzefeny": {
+      "name": "Messzefény",
+      "desc": "+2 csempe lámpásfény minden lámpásnál: több helyen lehet építeni, és több helyen gyógyulnak az egységek.",
+      "cost": {
+        "wood": 120,
+        "stone": 80
+      },
+      "time": 40,
+      "effects": [],
+      "rules": {
+        "light_add": 2
+      }
+    },
+    "oon_harci_dobok": {
+      "name": "Harci dobok",
+      "desc": "A harci kedv 40%-kal lassabban fogy, a Taiko-dobos kétszer gyorsabban tölti.",
+      "cost": {
+        "wood": 100,
+        "stone": 100
+      },
+      "time": 40,
+      "effects": [],
+      "rules": {
+        "morale_hurt_mult": 0.6,
+        "drum_mult": 2.0
+      }
+    },
+    "oon_verszomj": {
+      "name": "Oni vérszomj",
+      "desc": "Az oni harcosok (Oni harcos, Tomboló oni, Ō-oni) ölésenként 20 életerőt kapnak vissza.",
+      "cost": {
+        "wood": 80,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 45,
+      "effects": [],
+      "rules": {
+        "kill_heal": {
+          "ids": [
+            "oon_oni_harcos",
+            "oon_berserker_oni",
+            "oon_o_oni",
+            "oon_kohajito"
+          ],
+          "hp": 20
+        }
+      }
+    },
+    "oon_tengu_tollak": {
+      "name": "Tengu-tollak",
+      "desc": "A repülő egységek +1 lőtávot és +10% sebességet kapnak.",
+      "cost": {
+        "wood": 120,
+        "stone": 80,
+        "meteor": 40
+      },
+      "time": 40,
+      "effects": [
+        {
+          "stat": "range",
+          "tags": [
+            "flyer"
+          ],
+          "add": 1
+        },
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "flyer"
+          ],
+          "add": 10
+        }
+      ]
+    },
+    "oon_vasbuzogany_2": {
+      "name": "Vasbuzogány II.",
+      "desc": "+2 sebzés a közelharcosoknak. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "stone": 160
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "oon_vasbuzogany"
+      ]
+    },
+    "oon_vasbuzogany_3": {
+      "name": "Vasbuzogány III.",
+      "desc": "+2 sebzés a közelharcosoknak. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "stone": 240,
+        "meteor": 50
+      },
+      "time": 90,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "oon_vasbuzogany_2"
+      ],
+      "requires_ascended": true
+    },
+    "oon_lakkozott_vert_2": {
+      "name": "Lakkozott vért II.",
+      "desc": "+1 páncél az élő egységeknek. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "stone": 190
+      },
+      "time": 75,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "organic"
+          ],
+          "add": 1
+        }
+      ],
+      "requires_research": [
+        "oon_lakkozott_vert"
+      ]
+    },
+    "oon_lakkozott_vert_3": {
+      "name": "Lakkozott vért III.",
+      "desc": "+1 páncél az élő egységeknek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "stone": 290,
+        "meteor": 50
+      },
+      "time": 90,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "organic"
+          ],
+          "add": 1
+        }
+      ],
+      "requires_research": [
+        "oon_lakkozott_vert_2"
+      ],
+      "requires_ascended": true
+    },
+    "oon_kotel_2": {
+      "name": "Fonott hajítókötél II.",
+      "desc": "+2 sebzés a távolsági egységeknek. (II. szint)",
+      "cost": {
+        "wood": 160,
+        "stone": 160
+      },
+      "time": 43,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "oon_kotel"
+      ]
+    },
+    "oon_kotel_3": {
+      "name": "Fonott hajítókötél III.",
+      "desc": "+2 sebzés a távolsági egységeknek. (III. szint; a Felemelkedés után)",
+      "cost": {
+        "wood": 240,
+        "stone": 240,
+        "meteor": 50
+      },
+      "time": 52,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "ranged"
+          ],
+          "add": 2
+        }
+      ],
+      "requires_research": [
+        "oon_kotel_2"
+      ],
+      "requires_ascended": true
+    },
+    "oon_kokutya_huseg": {
+      "name": "Kőkutya-hűség",
+      "desc": "A Kőkutya-őr mellett álló (2,5 csempén belüli) épület +2 páncélt kap.",
+      "cost": {
+        "wood": 80,
+        "stone": 100
+      },
+      "time": 35,
+      "effects": [],
+      "rules": {
+        "kokutya_guard": 2
+      }
+    },
+    "oon_lampas_magia": {
+      "name": "Lámpás-mágia",
+      "desc": "A lámpásfényben álló varázslók 20%-kal erősebbek.",
+      "cost": {
+        "wood": 80,
+        "stone": 80,
+        "meteor": 60
+      },
+      "time": 40,
+      "effects": [],
+      "rules": {
+        "lantern_magic": 1.2
+      }
+    }
+  },
+  "paths": {
+    "voros": {
+      "name": "Vörös buzogány",
+      "tagline": "Oni roham",
+      "desc": "Tomboló onik és harci dobok: a közelharcosok erősebbek és gyorsabbak, a Taiko-dobosok szívósabbak, és ritmusuk +75%-kal gyorsítja az építkezést. Korai, kemény nyomás.",
+      "building": "oon_voros_dojo",
+      "units": [
+        "oon_berserker_oni"
+      ],
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 3
+        },
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "infantry"
+          ],
+          "add": 10
+        },
+        {
+          "stat": "hp",
+          "tags": [
+            "oon_dobos"
+          ],
+          "add": 60
+        }
+      ],
+      "rules": {
+        "build_boost_mult": 1.75
+      }
+    },
+    "kapu": {
+      "name": "Kapuőrzők",
+      "tagline": "A nian-kapuk erőssége",
+      "desc": "Kőkutya-őrök és lámpáspapok; az épületek és a nagy testű őrzők erősebbek. Lassú, áttörhetetlen védelem.",
+      "building": "oon_kapuszentely",
+      "units": [
+        "oon_kokutya",
+        "oon_lampaspap"
+      ],
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "building"
+          ],
+          "add": 2
+        },
+        {
+          "stat": "hp",
+          "tags": [
+            "beast"
+          ],
+          "add": 80
+        }
+      ]
+    },
+    "tengu": {
+      "name": "Tengu szél",
+      "tagline": "Légierő és vihar",
+      "desc": "Hollótengu-harcosok és viharhívók; a repülők gyorsabbak. Mozgékony, légi portyázó játék.",
+      "building": "oon_szelcsucs",
+      "units": [
+        "oon_holloharcos",
+        "oon_viharhivo"
+      ],
+      "effects": [
+        {
+          "stat": "speed_pct",
+          "tags": [
+            "flyer"
+          ],
+          "add": 15
+        },
+        {
+          "stat": "damage",
+          "tags": [
+            "flyer"
+          ],
+          "add": 2
+        }
+      ]
+    }
+  },
+  "ai": {
+    "workers": 18,
+    "gather_ratio": {
+      "wood": 0.64,
+      "stone": 0.23,
+      "meteor": 0.13
+    },
+    "lantern": "oon_papirlampas",
+    "build_order": [
+      "oon_lakohaz",
+      "oon_papirlampas",
+      "oon_edzoudvar",
+      "oon_papirlampas",
+      "oon_lakohaz",
+      "oon_meselenyek",
+      "oon_diplomacia",
+      "oon_edzoudvar",
+      "oon_lampaskert",
+      "oon_papirlampas",
+      "oon_tengu_feszek",
+      "oon_kapuorzo_torony",
+      "oon_lakohaz"
+    ],
+    "army": {
+      "oon_oni_harcos": 4,
+      "oon_kohajito": 3,
+      "oon_nian_or": 1,
+      "oon_kitsune": 1,
+      "oon_tengu": 1,
+      "oon_kapudongeto": 1
+    },
+    "research_order": [
+      "oon_vasbuzogany",
+      "oon_lakkozott_vert",
+      "oon_lampasolaj",
+      "oon_szelparna",
+      "oon_kotel",
+      "oon_messzefeny",
+      "oon_harci_dobok",
+      "oon_verszomj",
+      "oon_tengu_tollak",
+      "oon_vasbuzogany_2",
+      "oon_vasbuzogany_3",
+      "oon_lakkozott_vert_2",
+      "oon_lakkozott_vert_3",
+      "oon_kotel_2",
+      "oon_kotel_3",
+      "oon_kokutya_huseg",
+      "oon_lampas_magia"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+      "voros",
+      "kapu",
+      "tengu"
+    ],
+    "paths": {
+      "voros": {
+        "build": [
+          "oon_voros_dojo"
+        ],
+        "army": {
+          "oon_berserker_oni": 3,
+          "oon_dobos": 1
+        }
+      },
+      "kapu": {
+        "build": [
+          "oon_kapuszentely"
+        ],
+        "army": {
+          "oon_kokutya": 1,
+          "oon_lampaspap": 1
+        }
+      },
+      "tengu": {
+        "build": [
+          "oon_szelcsucs"
+        ],
+        "army": {
+          "oon_holloharcos": 3,
+          "oon_viharhivo": 1
+        }
+      }
+    },
+    "heroes": [
+      "oon_hos_akahana",
+      "oon_hos_shiro",
+      "oon_hos_karasu"
+    ],
+    "builders": 3,
+    "ally_pref": [
+      "tokla",
+      "mhonyo",
+      "nila_uchana"
+    ]
+  },
+  "builder": "stay_single",
+  "build_boost": {
+    "unit": "oon_dobos",
+    "radius": 4,
+    "mult": 1.5
+  },
+  "gatherers": {
+    "wood": "oon_favago",
+    "stone": "oon_tanuki",
+    "meteor": "oon_tanuki"
+  },
+  "morale": {
+    "max": 100,
+    "hurt": 60,
+    "ally_death": 10,
+    "hero_death": 25,
+    "regen": 2,
+    "drum": {
+      "unit": "oon_dobos",
+      "radius": 4,
+      "regen": 8
+    },
+    "light_min": 30,
+    "break_until": 50,
+    "broken": {
+      "damage_mult": 0.7,
+      "speed_mult": 1.2
+    }
+  },
+  "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+  }
+}

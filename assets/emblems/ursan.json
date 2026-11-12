@@ -1,0 +1,11 @@
+{
+ "id": "ursan",
+ "type": "emblem",
+ "image": "ursan.png",
+ "size": [
+  256,
+  256
+ ],
+ "faction": "Ursanok",
+ "generator": "TOTU grafika"
+}

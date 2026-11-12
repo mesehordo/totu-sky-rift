@@ -1,0 +1,13 @@
+{
+  "id": "gather_meteor",
+  "type": "cursor",
+  "image": "gather_meteor.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    16,
+    16
+  ]
+}

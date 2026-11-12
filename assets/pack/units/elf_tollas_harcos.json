@@ -1,0 +1,56 @@
+{
+ "id": "elf_tollas_harcos",
+ "type": "unit",
+ "image": "elf_tollas_harcos.png",
+ "frame_size": [
+  42,
+  41
+ ],
+ "anchor": [
+  21,
+  39
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 6,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 6,
+   "frames": 6,
+   "fps": 8,
+   "loop": true
+  },
+  "attack": {
+   "start": 12,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  },
+  "death": {
+   "start": 18,
+   "frames": 6,
+   "fps": 7,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "pack": "grey_elves.obsidian_guard",
+ "pack_kind": "kézzel rajzolt (DK) + tükrözés",
+ "sheet_size": [
+  1008,
+  328
+ ]
+}

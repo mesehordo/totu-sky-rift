@@ -1,0 +1,631 @@
+{
+ "id": "o3_harom_kapu",
+ "code": "OON-03",
+ "title": "3. Három kapu",
+ "faction": "ooni",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. és 11. fejezet",
+ "canon": {
+  "rogzitett": "A Három kapu: az egyik szárny Ooni, a másik aurethi felügyelet alatt; a próbaáram eltolja a szerelőjáratot, az egyik vezérlő a régi végállást jelenti; két mérés alapján nyitják újra.",
+  "adaptacio": "A két csapat külön kijáratot mér be, majd kézzel állítják a vezérlőket.",
+  "uj_javaslat": "Cassia Vell, aurethi mérnök (névvel ellátott Fabrikátor)."
+ },
+ "briefing": [
+  "A Három kapu egyik szárnyát Ooni őrség, a másikat aurethi műszak felügyeli. Az Örök Hajnal próbaárama menet közben eltolhatja a szerelőjáratot.",
+  "Két csapatot vezetsz: Sairen a nyugati, Cassia Vell aurethi mérnök a keleti kijáratot méri be.",
+  "Az egyezség próbája: a veszélyben is elfogadjátok egymás helyszíni döntését."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4303,
+  "points": {
+   "ny_indul": [
+    8,
+    46
+   ],
+   "k_indul": [
+    56,
+    46
+   ],
+   "kij_ny": [
+    12,
+    12
+   ],
+   "kij_k": [
+    52,
+    12
+   ],
+   "kozep": [
+    32,
+    28
+   ],
+   "kapu": [
+    32,
+    8
+   ],
+   "vez_ny": [
+    24,
+    20
+   ],
+   "vez_k": [
+    40,
+    20
+   ],
+   "regi_jarat": [
+    32,
+    18
+   ],
+   "uj_ny": [
+    26,
+    12
+   ],
+   "uj_k": [
+    38,
+    12
+   ],
+   "melyseg": [
+    32,
+    50
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      32,
+      38
+     ],
+     7
+    ]
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      20,
+      4
+     ],
+     [
+      26,
+      16
+     ],
+     [
+      24,
+      26
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      44,
+      4
+     ],
+     [
+      38,
+      16
+     ],
+     [
+      40,
+      26
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      28,
+      14
+     ],
+     [
+      36,
+      14
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "ny_indul",
+     [
+      10,
+      30
+     ],
+     "kij_ny"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "k_indul",
+     [
+      54,
+      30
+     ],
+     "kij_k"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kij_ny",
+     "vez_ny",
+     "kozep",
+     "vez_k",
+     "kij_k"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kozep",
+     "regi_jarat",
+     [
+      32,
+      13
+     ],
+     "kapu"
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "melyseg",
+     [
+      22,
+      44
+     ],
+     [
+      16,
+      36
+     ],
+     [
+      10,
+      30
+     ]
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "melyseg",
+     [
+      42,
+      44
+     ],
+     [
+      48,
+      36
+     ],
+     [
+      54,
+      30
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 2
+   },
+   {
+    "area": [
+     [
+      18,
+      50
+     ],
+     4
+    ],
+    "density": 0.6
+   },
+   {
+    "area": [
+     [
+      46,
+      50
+     ],
+     4
+    ],
+    "density": 0.6
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "ny_indul",
+   "melyseg"
+  ],
+  "decor": [
+   {
+    "id": "oon_torii",
+    "at": "kapu"
+   },
+   {
+    "id": "imp_reaktor",
+    "at": [
+     46,
+     8
+    ],
+    "ruin": true
+   },
+   {
+    "id": "oon_papirlampas",
+    "at": [
+     18,
+     8
+    ]
+   }
+  ]
+ },
+ "player": {
+  "base": false,
+  "units": [
+   {
+    "id": "oon_oni_harcos",
+    "name": "Sairen, kapuőr",
+    "tag": "sairen",
+    "at": "ny_indul"
+   },
+   {
+    "id": "oon_hos_shiro",
+    "at": "ny_indul",
+    "tag": "ooni"
+   },
+   {
+    "id": "oon_oni_harcos",
+    "n": 3,
+    "at": "ny_indul",
+    "tag": "ooni"
+   },
+   {
+    "id": "imp_fabrikator",
+    "at": "k_indul",
+    "name": "Cassia Vell, aurethi mérnök",
+    "tag": "cassia"
+   },
+   {
+    "id": "imp_legios",
+    "n": 4,
+    "at": "k_indul",
+    "tag": "aureth"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "o3_ny",
+   "type": "reach",
+   "tag": "sairen",
+   "at": "kij_ny",
+   "radius": 3,
+   "text": "Sairen mérje be a nyugati kijáratot",
+   "marker": "Nyugati kijárat"
+  },
+  {
+   "id": "o3_k",
+   "type": "reach",
+   "tag": "cassia",
+   "at": "kij_k",
+   "radius": 3,
+   "text": "Cassia Vell mérje be a keleti kijáratot",
+   "marker": "Keleti kijárat"
+  },
+  {
+   "id": "o3_vez_ny",
+   "type": "guard",
+   "hidden": true,
+   "at": "vez_ny",
+   "radius": 2,
+   "seconds": 6,
+   "text": "Tarts őrt a nyugati vezérlőnél",
+   "marker": "Nyugati vezérlő"
+  },
+  {
+   "id": "o3_vez_k",
+   "type": "guard",
+   "hidden": true,
+   "at": "vez_k",
+   "radius": 2,
+   "seconds": 6,
+   "text": "Tarts őrt a keleti vezérlőnél",
+   "marker": "Keleti vezérlő"
+  },
+  {
+   "id": "o3_kapu",
+   "type": "escort",
+   "after": [
+    "o3_vez_ny",
+    "o3_vez_k"
+   ],
+   "tag": "cassia",
+   "min": 1,
+   "at": "kapu",
+   "radius": 4,
+   "text": "Vezessétek át Cassia Vellt az újranyitott kapun",
+   "marker": "Három kapu"
+  },
+  {
+   "id": "o3_sairen_kapu",
+   "type": "reach",
+   "after": [
+    "o3_vez_ny",
+    "o3_vez_k"
+   ],
+   "tag": "sairen",
+   "at": "kapu",
+   "radius": 4,
+   "text": "Sairen is érjen a kapuhoz"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kij_ny",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "Mi a nyugati szárnyat mérjük. Ti a keletit. A kapu csak akkor nyílik, ha mindkettő stimmel.",
+        "portrait": "oon_oni_harcos",
+        "to": "Cassia Vell"
+       }
+      ]
+     },
+     {
+      "camera": "kij_k",
+      "say": [
+       {
+        "who": "Cassia Vell",
+        "text": "A vezérlőnk szerint minden a régi helyén van. Megnézzük, igaz-e.",
+        "portrait": "imp_fabrikator",
+        "to": "Sairen"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "proba_aram",
+   "if_done": [
+    "o3_ny",
+    "o3_k"
+   ],
+   "at": 0,
+   "activate": [
+    "o3_vez_ny",
+    "o3_vez_k"
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "rock",
+      "line": [
+       [
+        32,
+        22
+       ],
+       [
+        32,
+        15
+       ]
+      ],
+      "w": 3
+     }
+    ],
+    "clear": [
+     {
+      "t": "dirt",
+      "line": [
+       "vez_ny",
+       "uj_ny",
+       [
+        30,
+        9
+       ],
+       "kapu"
+      ],
+      "w": 2
+     },
+     {
+      "t": "dirt",
+      "line": [
+       "vez_k",
+       "uj_k",
+       [
+        34,
+        9
+       ],
+       "kapu"
+      ],
+      "w": 2
+     }
+    ]
+   },
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "regi_jarat",
+      "say": [
+       {
+        "who": "Cassia Vell",
+        "text": "Áramlökés a hegyben… A vezérlő még mindig a régi végállást mutatja.",
+        "portrait": "imp_fabrikator",
+        "to": "Sairen",
+        "urgent": true
+       }
+      ]
+     },
+     {
+      "camera": "kozep",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "A régi járat bezárult. A kövek két új utat nyitottak – kétfelől.",
+        "portrait": "oon_oni_harcos"
+       },
+       {
+        "who": "Cassia Vell",
+        "text": "Akkor mindkét vezérlőt kézzel állítjuk. Te a nyugatit, én a keletit.",
+        "portrait": "imp_fabrikator"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "egyezseg",
+   "on_objective": "o3_vez_k",
+   "if_done": "o3_vez_ny",
+   "say": [
+    {
+     "who": "Sairen",
+     "text": "A te méréseddel nyitunk. Az én kötelem tartja.",
+     "portrait": "oon_oni_harcos"
+    },
+    {
+     "who": "Cassia Vell",
+     "text": "Elfogadom. Nyitás!",
+     "portrait": "imp_fabrikator"
+    }
+   ]
+  },
+  {
+   "id": "w_ny",
+   "every": 60,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "melyseg",
+    "to": [
+     10,
+     30
+    ],
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 35,
+   "until": "o3_kapu"
+  },
+  {
+   "id": "w_k",
+   "every": 60,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "melyseg",
+    "to": [
+     54,
+     30
+    ],
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 65,
+   "until": "o3_kapu"
+  },
+  {
+   "id": "w_kozep",
+   "every": 50,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "melyseg",
+    "to": "kozep",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 4,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     },
+     {
+      "id": "cro_tuskekopo",
+      "n": 1,
+      "name": "Lámpástalan"
+     }
+    ]
+   },
+   "delay": 5,
+   "until": "o3_kapu",
+   "if_done": [
+    "o3_ny",
+    "o3_k"
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "o3_sairen_kapu",
+   "if_done": "o3_kapu",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kapu",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "A Három kapu újra nyitva. A kötél két színű csomót kap: egyet nekünk, egyet Aurethnek.",
+        "portrait": "oon_oni_harcos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "sairen",
+   "text": "Sairen elesett – a nyugati mérés elveszett."
+  },
+  {
+   "tag": "cassia",
+   "text": "Cassia Vell elesett – a keleti vezérlőt senki sem állítja át."
+  }
+ ],
+ "victory": "Az Ooni és az aurethi őrség két mérés alapján nyitotta újra a Három kaput. Az egyezség kiállta a próbát.",
+ "next": "o4_a_vilagvarrat",
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "creeps": false
+}

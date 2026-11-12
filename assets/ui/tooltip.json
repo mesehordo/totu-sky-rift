@@ -1,0 +1,14 @@
+{
+  "id": "tooltip",
+  "type": "nine_slice",
+  "insets": [
+    12,
+    12,
+    12,
+    12
+  ],
+  "size": [
+    48,
+    48
+  ]
+}

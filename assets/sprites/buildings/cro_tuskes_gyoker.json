@@ -1,0 +1,43 @@
+{
+ "id": "cro_tuskes_gyoker",
+ "type": "building",
+ "image": "cro_tuskes_gyoker.png",
+ "team_mask": "cro_tuskes_gyoker_team.png",
+ "style": "organic",
+ "frame_size": [
+  136,
+  144
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  2,
+  10
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1088,
+  144
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

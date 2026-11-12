@@ -1,0 +1,289 @@
+{
+ "id": "nov_16_3",
+ "code": "NOV-16_3",
+ "title": "Csónakos lakodalom",
+ "faction": "elves",
+ "novella": true,
+ "people": "Niil-elfek",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/16_*.md – „Csónakos lakodalom”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 44. év, Papiruszkapu. A lakodalmat harminchét csónakon tartják – és a víz délben emelkedni kezd.",
+  "A csónakokat nem szabad szétoldani."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 2605,
+  "points": {
+   "lepcso": [
+    32,
+    12
+   ],
+   "k1": [
+    20,
+    30
+   ],
+   "k2": [
+    32,
+    34
+   ],
+   "k3": [
+    44,
+    30
+   ],
+   "_": [
+    60,
+    54
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      28
+     ],
+     [
+      20,
+      26
+     ],
+     [
+      44,
+      30
+     ],
+     [
+      65,
+      28
+     ]
+    ],
+    "w": 4
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      32,
+      22
+     ],
+     [
+      32,
+      34
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "lepcso",
+     "k1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "lepcso",
+     "k3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      6,
+      11
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      32
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      44,
+      46
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      19
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      34
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      23
+     ],
+     3.3
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "lepcso",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "nii_papiruszlandzsas",
+    "at": "lepcso",
+    "n": 1,
+    "name": "Csónakkészítő",
+    "tag": "csonak"
+   },
+   {
+    "id": "nii_nadhajos_ijasz",
+    "at": "lepcso",
+    "n": 3
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "c1",
+   "type": "guard",
+   "at": "k1",
+   "radius": 2,
+   "seconds": 6,
+   "text": "Kösd meg erősebben a nyugati csónakokat",
+   "marker": "Kötés"
+  },
+  {
+   "id": "c2",
+   "type": "guard",
+   "at": "k2",
+   "radius": 2,
+   "seconds": 6,
+   "text": "A középsőket",
+   "marker": "Kötés"
+  },
+  {
+   "id": "c3",
+   "type": "guard",
+   "at": "k3",
+   "radius": 2,
+   "seconds": 6,
+   "text": "A keletieket",
+   "marker": "Kötés"
+  },
+  {
+   "id": "kitart",
+   "type": "survive",
+   "seconds": 60,
+   "text": "Tartsd egyben a csónakszigetet, amíg az ár levonul",
+   "after": [
+    "c1",
+    "c2",
+    "c3"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "lepcso",
+      "say": [
+       {
+        "who": "Öreg árpapnő",
+        "text": "Nem oldjuk szét. Soha nem oldottuk.",
+        "portrait": "nii_arapalypap"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "kitart",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "k2",
+      "say": [
+       {
+        "who": "Csónakkészítő",
+        "text": "Lakodalom. Nem oldották szét.",
+        "portrait": "nii_papiruszlandzsas"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Az ároszlopra felvésték: Lakodalom. Nem oldották szét.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

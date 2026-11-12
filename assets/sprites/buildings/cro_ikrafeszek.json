@@ -1,0 +1,43 @@
+{
+ "id": "cro_ikrafeszek",
+ "type": "building",
+ "image": "cro_ikrafeszek.png",
+ "team_mask": "cro_ikrafeszek_team.png",
+ "style": "organic",
+ "frame_size": [
+  196,
+  168
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  2,
+  -28
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1568,
+  168
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

@@ -1,0 +1,43 @@
+{
+ "id": "cro_tuskeverem",
+ "type": "building",
+ "image": "cro_tuskeverem.png",
+ "team_mask": "cro_tuskeverem_team.png",
+ "style": "organic",
+ "frame_size": [
+  220,
+  188
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  2,
+  -10
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1760,
+  188
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

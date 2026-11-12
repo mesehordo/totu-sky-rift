@@ -1,0 +1,43 @@
+{
+ "id": "urs_harcosok_haza",
+ "type": "building",
+ "image": "urs_harcosok_haza.png",
+ "team_mask": "urs_harcosok_haza_team.png",
+ "style": "nordic",
+ "frame_size": [
+  232,
+  216
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  8
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1856,
+  216
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

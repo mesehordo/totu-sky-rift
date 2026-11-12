@@ -1,0 +1,40 @@
+{
+ "id": "urs_hosszuhaz",
+ "type": "building",
+ "image": "urs_hosszuhaz.png",
+ "frame_size": [
+  134,
+  97
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  35,
+  27
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.supply_house",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  670,
+  97
+ ],
+ "team_mask": "urs_hosszuhaz_team.png"
+}

@@ -1,0 +1,378 @@
+{
+  "id": "mhonyo",
+  "ally": true,
+  "order": 103,
+  "name": "Mhonyo",
+  "tagline": "Kardkovács manók",
+  "desc": "A kardkovács manók műhelyeiben a pengék mellett fogaskerekek, emelők és finom szerkezetek is készülnek. Mestereik egy kard súlypontját éppolyan gondosan állítják be, mint egy gép legapróbb alkatrészét.",
+  "style": "imperial",
+  "color": [
+    40,
+    44,
+    70
+  ],
+  "accent": [
+    220,
+    60,
+    40
+  ],
+  "mechanic": "standard",
+  "units": {
+    "mho_hajnalpenge": {
+      "hp": 110,
+      "armor": 1,
+      "speed": 3.0,
+      "sight": 7,
+      "radius": 0.38,
+      "supply": 1,
+      "time": 14,
+      "cost": {
+        "wood": 50,
+        "stone": 15
+      },
+      "shape": "warrior",
+      "attack": {
+        "damage": 8,
+        "range": 0.3,
+        "cooldown": 0.7,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_mhonyo",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Hajnalpenge",
+      "desc": "Villámgyors párbajozó; kétszer csap.",
+      "abilities": [
+        "mho_szelvagas"
+      ],
+      "ally": "mhonyo",
+      "utype": "kozelharcos"
+    },
+    "mho_szerkezet_ijasz": {
+      "hp": 85,
+      "armor": 0,
+      "speed": 2.5,
+      "sight": 8,
+      "radius": 0.38,
+      "supply": 2,
+      "time": 20,
+      "cost": {
+        "wood": 70,
+        "stone": 25
+      },
+      "shape": "archer",
+      "attack": {
+        "damage": 14,
+        "range": 6.5,
+        "cooldown": 1.8,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "arrow"
+      },
+      "tags": [
+        "ally",
+        "ally_mhonyo",
+        "infantry",
+        "organic",
+        "ranged"
+      ],
+      "name": "Szerkezet-íjász",
+      "desc": "Felhúzós számszeríj; hosszú lőtáv.",
+      "ally": "mhonyo",
+      "utype": "lovesz"
+    },
+    "mho_szikraor": {
+      "hp": 180,
+      "armor": 2,
+      "speed": 2.3,
+      "sight": 7,
+      "radius": 0.42,
+      "supply": 2,
+      "time": 18,
+      "cost": {
+        "wood": 65,
+        "stone": 25
+      },
+      "shape": "shieldbearer",
+      "attack": {
+        "damage": 12,
+        "range": 0.3,
+        "cooldown": 1.2,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_mhonyo",
+        "armored",
+        "infantry",
+        "melee",
+        "organic"
+      ],
+      "name": "Szikraőr",
+      "desc": "Izzó pengéjű, nehézpajzsos őr.",
+      "abilities": [
+        "mho_szikrapajzs"
+      ],
+      "ally": "mhonyo",
+      "utype": "landzsas"
+    },
+    "mho_kardkovacs": {
+      "hp": 80,
+      "armor": 0,
+      "speed": 2.4,
+      "sight": 9,
+      "radius": 0.37,
+      "supply": 2,
+      "time": 26,
+      "energy": 150,
+      "cost": {
+        "wood": 70,
+        "stone": 25,
+        "meteor": 50
+      },
+      "shape": "caster",
+      "attack": {
+        "damage": 10,
+        "range": 0.3,
+        "cooldown": 1.6,
+        "targets": [
+          "ground",
+          "air"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_mhonyo",
+        "caster",
+        "organic",
+        "ranged"
+      ],
+      "name": "Kardkovács",
+      "desc": "Javítja és élezi a társak fegyverét.",
+      "abilities": [
+        "mho_elezes",
+        "mho_javitas"
+      ],
+      "ally": "mhonyo",
+      "utype": "varazslo"
+    },
+    "mho_fogaskerek_golem": {
+      "hp": 520,
+      "armor": 3,
+      "speed": 1.9,
+      "sight": 8,
+      "radius": 0.6,
+      "supply": 4,
+      "time": 36,
+      "cost": {
+        "wood": 180,
+        "stone": 90,
+        "meteor": 40
+      },
+      "shape": "golem",
+      "attack": {
+        "damage": 26,
+        "range": 0.5,
+        "cooldown": 1.8,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "ally",
+        "ally_mhonyo",
+        "large",
+        "mech",
+        "melee"
+      ],
+      "name": "Fogaskerék-gólem",
+      "desc": "Kovácsolt gép-óriás.",
+      "abilities": [
+        "mho_gozkitores"
+      ],
+      "ally": "mhonyo",
+      "utype": "orias"
+    }
+  },
+  "buildings": {
+    "mho_szelpenge_udvar": {
+      "name": "Szélpenge udvar",
+      "desc": "Hajnalpengéket és szerkezet-íjászokat képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "mhonyo",
+      "produces": [
+        "mho_hajnalpenge",
+        "mho_szerkezet_ijasz"
+      ]
+    },
+    "mho_parazsszentely": {
+      "name": "Parázsszentély",
+      "desc": "Szikraőröket, kardkovácsokat és fogaskerék-gólemeket képez.",
+      "cost": {
+        "wood": 160,
+        "stone": 80
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "barracks",
+      "ally": "mhonyo",
+      "produces": [
+        "mho_szikraor",
+        "mho_kardkovacs",
+        "mho_fogaskerek_golem"
+      ],
+      "requires": [
+        "mho_szelpenge_udvar"
+      ]
+    },
+    "mho_harompenge_kovacsda": {
+      "name": "Hárompenge kovácsda",
+      "desc": "A mhonyo fejlesztések kovácsműhelye.",
+      "cost": {
+        "wood": 150,
+        "stone": 120
+      },
+      "time": 38,
+      "size": [
+        3,
+        3
+      ],
+      "hp": 850,
+      "armor": 1,
+      "sight": 7,
+      "shape": "tech",
+      "ally": "mhonyo",
+      "researches": [
+        "mho_kiegyensulyozott_penge",
+        "mho_szikrapancel",
+        "mho_gepjavitas"
+      ],
+      "requires": [
+        "mho_szelpenge_udvar"
+      ]
+    }
+  },
+  "researches": {
+    "mho_kiegyensulyozott_penge": {
+      "name": "Kiegyensúlyozott penge",
+      "desc": "+2 sebzés a közelharcosoknak.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "damage",
+          "tags": [
+            "melee"
+          ],
+          "add": 2
+        }
+      ],
+      "ally": "mhonyo"
+    },
+    "mho_szikrapancel": {
+      "name": "Szikrapáncél",
+      "desc": "+1 páncél a mhonyo egységeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "armor",
+          "tags": [
+            "ally_mhonyo"
+          ],
+          "add": 1
+        }
+      ],
+      "ally": "mhonyo"
+    },
+    "mho_gepjavitas": {
+      "name": "Gépjavítás",
+      "desc": "+60 életerő a gépeknek.",
+      "cost": {
+        "wood": 120,
+        "stone": 120,
+        "meteor": 40
+      },
+      "time": 55,
+      "effects": [
+        {
+          "stat": "hp",
+          "tags": [
+            "mech"
+          ],
+          "add": 60
+        }
+      ],
+      "ally": "mhonyo"
+    }
+  },
+  "ally_pack": {
+    "buildings": [
+      "mho_szelpenge_udvar",
+      "mho_parazsszentely",
+      "mho_harompenge_kovacsda"
+    ],
+    "units": [
+      "mho_hajnalpenge",
+      "mho_szerkezet_ijasz",
+      "mho_szikraor",
+      "mho_kardkovacs",
+      "mho_fogaskerek_golem"
+    ]
+  },
+  "ai": {
+    "build": [
+      "mho_szelpenge_udvar",
+      "mho_parazsszentely",
+      "mho_harompenge_kovacsda"
+    ],
+    "army": {
+      "mho_hajnalpenge": 3,
+      "mho_szerkezet_ijasz": 3,
+      "mho_szikraor": 3,
+      "mho_kardkovacs": 3,
+      "mho_fogaskerek_golem": 2
+    },
+    "research": [
+      "mho_kiegyensulyozott_penge",
+      "mho_szikrapancel",
+      "mho_gepjavitas"
+    ]
+  }
+}

@@ -1,0 +1,363 @@
+{
+ "id": "u4_a_jarl_adossaga",
+ "title": "4. A jarl adóssága",
+ "faction": "ursan",
+ "briefing": [
+  "Kiderül: Hrolf jarl tudatosan elhallgatta a bányászok megbetegedését – az ércből akarta fizetni a déli zsoldosait.",
+  "Nem a Kórus bábja. Egyszerűen azt hitte, kézben tart egy hasznos veszélyt.",
+  "Vedd el tőle a bányát: döntsd le a Nagytermét."
+ ],
+ "player": {
+  "resources": {
+   "wood": 825,
+   "stone": 475,
+   "meteor": 100
+  },
+  "units": {
+   "urs_hos_ragna": 1,
+   "urs_pajzshordozo": 5,
+   "urs_szigonyvezo": 3,
+   "urs_kardfogu": 2
+  }
+ },
+ "enemies": [
+  {
+   "faction": "ursan",
+   "name": "Hrolf jarl",
+   "hold": 300,
+   "aggression": 1.0,
+   "units": {
+    "urs_pajzshordozo": 3,
+    "urs_szigonyvezo": 2
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "id": "zsold",
+   "type": "kill",
+   "text": "Győzd le a jarl zsoldosait (15)",
+   "amount": 15
+  },
+  {
+   "id": "terem",
+   "type": "destroy",
+   "text": "Döntsd le a jarl Nagytermét",
+   "after": "zsold",
+   "targets": [
+    "urs_nagyterem"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "banya",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "A jarl tudta. Ércben akarta fizetni a zsoldosait, a bányászok tüdejével.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     },
+     {
+      "camera": "terem",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "Az eskü a népemnek szól, nem egy embernek, aki eladja őket.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Ragna",
+     "text": "Az eskü a népemnek szól – nem egy embernek, aki eladja őket.",
+     "portrait": "urs_hos_ragna"
+    }
+   ]
+  },
+  {
+   "at": 300,
+   "message": "A jarl zsoldosai pajzsfalat formálnak!",
+   "color": [
+    255,
+    120,
+    100
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "terem",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "terem",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "A bizonyíték a királyhoz kerül. Tudom, hogy ezzel a címemnek vége.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "urs_hos_ragna",
+   "text": "Ragna elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A jarl megtört. A bizonyíték a királyhoz kerül – Ragna tudja, hogy ezzel a karrierjének vége.",
+ "next": "u5_nyitott_kapuk",
+ "hero_level": 4,
+ "enemy_hero_level": 4,
+ "code": "URS-04",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (II. hadjárat: A jarl adóssága)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3404,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "banya": [
+    30,
+    30
+   ],
+   "terem": [
+    52,
+    12
+   ],
+   "zsoldos": [
+    40,
+    22
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      34
+     ],
+     [
+      20,
+      36
+     ],
+     [
+      40,
+      34
+     ],
+     [
+      65,
+      36
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      24,
+      31
+     ],
+     [
+      24,
+      40
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      46,
+      31
+     ],
+     [
+      46,
+      40
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "banya"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "banya",
+     "zsoldos"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "zsoldos",
+     "terem"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      31,
+      11
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      55,
+      26
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      48
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      28
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      29,
+      11
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      32,
+      41
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      10
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      40,
+      39
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      28
+     ],
+     4.3
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "terem"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Micéliák – játszható nép",
+  "label": "Példa",
+  "version": "1.0",
+  "author": "Mesehordo",
+  "description": "Példa-mod (alapból kikapcsolva). A kánon szerint a Micéliák szövetséges nép; teljes népként csak a Gombanép-hadjáratban játszhatók (rejtett faj). Ez a mod egyéni csatában és többjátékos módban is választhatóvá teszi őket – mintaként egy faj modolásához. A Mélykertek gombanépe játszható népként: önálló gombaszemélyek, akiket a föld alatti spórafonal-hálózat köt össze. Épületeik csak a Szívgombához kötve működnek, de bármelyikbe leadható a nyersanyag; a hálózat minden épülete +1 létszámot ad; három Pöfeteg Óriáspöfeteggé olvad. Saját hősök (Mór, a Gyökéranya, Sporin), három irány és Felemelkedés. Egyéni csatában és többjátékos módban választható, a gépi ellenfél is játssza.",
+  "dependencies": [],
+  "incompatible": [],
+  "enabled": false
+}

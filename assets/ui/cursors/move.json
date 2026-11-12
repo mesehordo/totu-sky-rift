@@ -1,0 +1,13 @@
+{
+  "id": "move",
+  "type": "cursor",
+  "image": "move.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    16,
+    16
+  ]
+}

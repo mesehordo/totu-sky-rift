@@ -1,0 +1,56 @@
+{
+ "id": "cro_csapos_horror",
+ "type": "unit",
+ "image": "cro_csapos_horror.png",
+ "frame_size": [
+  144,
+  123
+ ],
+ "anchor": [
+  72,
+  78
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 1,
+   "frames": 4,
+   "fps": 9,
+   "loop": true
+  },
+  "attack": {
+   "start": 5,
+   "frames": 4,
+   "fps": 11,
+   "loop": false
+  },
+  "death": {
+   "start": 9,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "pack": "croftian.plated_beetle",
+ "pack_kind": "statikus kép (DK) + tükrözés + generált mozgás",
+ "sheet_size": [
+  2160,
+  984
+ ]
+}

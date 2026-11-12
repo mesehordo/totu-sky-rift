@@ -1,0 +1,43 @@
+{
+ "id": "huk_melyseg_kapuja",
+ "image": "huk_melyseg_kapuja.png",
+ "team_mask": "huk_melyseg_kapuja_team.png",
+ "type": "building",
+ "frame_size": [
+  288,
+  320
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  48,
+  104
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  2304,
+  320
+ ],
+ "scale": 2,
+ "team_colour_mode": "shade",
+ "generator": "TOTU HD grafika"
+}

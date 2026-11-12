@@ -1,0 +1,302 @@
+{
+ "id": "nov_02_2",
+ "code": "NOV-02_2",
+ "title": "A mamut, akinek magyarázat jár",
+ "faction": "ursan",
+ "novella": true,
+ "people": "Ursanok",
+ "theme": "winter",
+ "source": "docs/tortenet/story/…/novellak/02_*.md – „A mamut, akinek magyarázat jár”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 66. év, Fjordvár. Az öreg Bundást el kell altatni, és Ylvának kell megírnia a magyarázatot.",
+  "Előtte még egyszer végigjárják a helyeit."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 2930,
+  "points": {
+   "karam": [
+    14,
+    44
+   ],
+   "repafold": [
+    30,
+    30
+   ],
+   "fjordpart": [
+    50,
+    16
+   ],
+   "fenyves": [
+    20,
+    12
+   ],
+   "_": [
+    2,
+    2
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      60,
+      10
+     ],
+     10
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      62,
+      40
+     ],
+     8
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "karam",
+     "repafold"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "repafold",
+     "fjordpart"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "fjordpart",
+     "fenyves"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "fenyves",
+     "karam"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      56,
+      36
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      35
+     ],
+     3.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      13
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      37,
+      46
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      47,
+      46
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      39,
+      6
+     ],
+     3.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      35,
+      43
+     ],
+     4.9
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "karam",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "urs_mammut",
+    "at": "karam",
+    "n": 1,
+    "name": "Bundás",
+    "tag": "bundas"
+   },
+   {
+    "id": "urs_telepes",
+    "at": "karam",
+    "n": 1,
+    "name": "Ylva",
+    "tag": "ylva"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "repa",
+   "type": "reach",
+   "at": "repafold",
+   "radius": 3,
+   "text": "Vidd el Bundást a répaföldre",
+   "marker": "Répaföld",
+   "tag": "bundas"
+  },
+  {
+   "id": "fjord",
+   "type": "reach",
+   "at": "fjordpart",
+   "radius": 3,
+   "text": "Aztán a fjordpartra, ahol fiatalon fürdött",
+   "marker": "Fjordpart",
+   "after": "repa",
+   "tag": "bundas"
+  },
+  {
+   "id": "fenyo",
+   "type": "reach",
+   "at": "fenyves",
+   "radius": 3,
+   "text": "A fenyveshez, ahol a nagyapád megtalálta",
+   "marker": "Fenyves",
+   "after": "fjord",
+   "tag": "bundas"
+  },
+  {
+   "id": "haza",
+   "type": "reach",
+   "at": "karam",
+   "radius": 3,
+   "text": "Ylva vezesse haza a karámba",
+   "marker": "Karám",
+   "after": "fenyo",
+   "tag": "ylva"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "karam",
+      "say": [
+       {
+        "who": "Ylva",
+        "text": "Miért nekem kell megírnom? …Jó. Előbb sétálunk egyet.",
+        "portrait": "urs_telepes"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "haza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "karam",
+      "say": [
+       {
+        "who": "Ylva",
+        "text": "Az utolsó sor: a sárgarépát mindig előbb ette meg.",
+        "portrait": "urs_telepes"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Ylva megírta a magyarázatot. Tizenegy sor, és mindegyik igaz.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

@@ -1,0 +1,239 @@
+{
+ "id": "nov_11_1",
+ "code": "NOV-11_1",
+ "title": "A gólem szokása",
+ "faction": "imperium",
+ "novella": true,
+ "people": "Mhonyo",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/11_*.md – „A gólem szokása”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 62. év, Hamuhegy kovácsfalu. Az aurethi mérnök negyedik napja ül a gólem előtt.",
+  "Tikka mester szerint nincs benne lélek. A gólemnek mégis szokásai vannak."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 1836,
+  "points": {
+   "udvar": [
+    12,
+    44
+   ],
+   "kut": [
+    28,
+    30
+   ],
+   "kohó": [
+    44,
+    20
+   ],
+   "fal": [
+    54,
+    40
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "udvar",
+     "kut"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kut",
+     "kohó"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kohó",
+     "fal"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "fal",
+     "udvar"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      7,
+      30
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      42,
+      8
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      7
+     ],
+     2.9
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "udvar",
+   "_",
+   "kut"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "imp_fabrikator",
+    "at": "udvar",
+    "n": 1,
+    "name": "Aurethi mérnök",
+    "tag": "mernok"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "k",
+   "type": "reach",
+   "at": "kut",
+   "radius": 3,
+   "text": "Kövesd a gólemet a kútig",
+   "marker": "Gólem útja",
+   "tag": "mernok"
+  },
+  {
+   "id": "h",
+   "type": "reach",
+   "at": "kohó",
+   "radius": 3,
+   "text": "A kohóig",
+   "marker": "Gólem útja",
+   "after": "k",
+   "tag": "mernok"
+  },
+  {
+   "id": "f",
+   "type": "reach",
+   "at": "fal",
+   "radius": 3,
+   "text": "A falig, ahol minden este megáll",
+   "marker": "Gólem útja",
+   "after": "h",
+   "tag": "mernok"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "udvar",
+      "say": [
+       {
+        "who": "Tikka mester",
+        "text": "Nincs benne lélek. Mondtam már.",
+        "portrait": "mho_kardkovacs"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "f",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "fal",
+      "say": [
+       {
+        "who": "Aurethi mérnök",
+        "text": "Minden este itt áll meg. Ugyanott, ahol a régi kovács.",
+        "portrait": "imp_fabrikator"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Tikka nem szedte szét többé a gólem fejét.",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "allies": [
+  {
+   "faction": "mhonyo",
+   "name": "Gólem",
+   "units": [
+    {
+     "id": "mho_fogaskerek_golem",
+     "at": "udvar",
+     "to": "fal",
+     "attack": false
+    }
+   ]
+  }
+ ]
+}

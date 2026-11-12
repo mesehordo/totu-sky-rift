@@ -1,0 +1,1 @@
+Ide kerülnek a zenék (.mp3). menuzene.mp3 = menü; a többi véletlenszerűen szól a csatákban. Részletek: docs/HANGOK.md

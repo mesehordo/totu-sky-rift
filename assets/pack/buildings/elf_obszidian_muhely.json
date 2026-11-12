@@ -1,0 +1,39 @@
+{
+ "id": "elf_obszidian_muhely",
+ "type": "building",
+ "image": "elf_obszidian_muhely.png",
+ "frame_size": [
+  117,
+  97
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  11,
+  -5
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "grey_elf_buildings.siege_workshop",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  585,
+  97
+ ]
+}

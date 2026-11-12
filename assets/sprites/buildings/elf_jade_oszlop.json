@@ -1,0 +1,43 @@
+{
+ "id": "elf_jade_oszlop",
+ "type": "building",
+ "image": "elf_jade_oszlop.png",
+ "team_mask": "elf_jade_oszlop_team.png",
+ "style": "aztec",
+ "frame_size": [
+  188,
+  208
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  4,
+  56
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1504,
+  208
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

@@ -1,0 +1,43 @@
+{
+ "id": "urs_fatelep",
+ "type": "building",
+ "image": "urs_fatelep.png",
+ "team_mask": "urs_fatelep_team.png",
+ "style": "nordic",
+ "frame_size": [
+  168,
+  164
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  4,
+  20
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1344,
+  164
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

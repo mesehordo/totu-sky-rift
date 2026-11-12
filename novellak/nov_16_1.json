@@ -1,0 +1,263 @@
+{
+ "id": "nov_16_1",
+ "code": "NOV-16_1",
+ "title": "Krokodilőr",
+ "faction": "elves",
+ "novella": true,
+ "people": "Niil-elfek",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/16_*.md – „Krokodilőr”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Az 56. év, Papiruszkapu, az Árvízszentély medencéje. Az öreg krokodil, Merru-ka, nem akar kimenni a medencéből.",
+  "Ineti három hónapja a gondozója."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 7033,
+  "points": {
+   "medence": [
+    20,
+    30
+   ],
+   "lepcso": [
+    32,
+    30
+   ],
+   "folyo": [
+    54,
+    30
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      28
+     ],
+     [
+      20,
+      26
+     ],
+     [
+      44,
+      30
+     ],
+     [
+      65,
+      28
+     ]
+    ],
+    "w": 4
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      32,
+      22
+     ],
+     [
+      32,
+      34
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "medence",
+     "lepcso"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "lepcso",
+     "folyo"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      56,
+      14
+     ],
+     2.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      44
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      23
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      55,
+      14
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      22,
+      42
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      42,
+      49
+     ],
+     4.6
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "medence",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "nii_papiruszlandzsas",
+    "at": "lepcso",
+    "n": 1,
+    "name": "Ineti",
+    "tag": "ineti"
+   },
+   {
+    "id": "nii_krokodilor",
+    "at": "medence",
+    "n": 1,
+    "name": "Merru-ka",
+    "tag": "merru"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "ki",
+   "type": "reach",
+   "at": "folyo",
+   "radius": 3,
+   "text": "Kísérd Merru-kát a nagy folyóig",
+   "marker": "Folyó",
+   "tag": "merru"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "medence",
+      "say": [
+       {
+        "who": "Ineti",
+        "text": "Száztíz év. A fejét a lépcsőre tette.",
+        "portrait": "nii_papiruszlandzsas"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "ki",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "folyo",
+      "say": [
+       {
+        "who": "Ineti",
+        "text": "Elment. Sokáig ültem a csónakban. Aztán visszaeveztem.",
+        "portrait": "nii_papiruszlandzsas"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "merru",
+   "text": "Merru-ka megsérült."
+  }
+ ],
+ "victory": "Merru-ka a nagy folyóba úszott. Ineti visszaevezett.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

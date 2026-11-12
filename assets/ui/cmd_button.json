@@ -1,0 +1,15 @@
+{
+  "id": "cmd_button",
+  "type": "ui_states",
+  "image": "cmd_button.png",
+  "frame_size": [
+    37,
+    37
+  ],
+  "sheet_size": [
+    185,
+    37
+  ],
+  "frames": 5,
+  "order": "row-major source, horizontal export"
+}

@@ -1,0 +1,28 @@
+{
+ "id": "dsz_utszeli_oltar",
+ "image": "dsz_utszeli_oltar.png",
+ "type": "decor",
+ "frame_size": [
+  160,
+  160
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  48,
+  72
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 3,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  480,
+  160
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

@@ -1,0 +1,301 @@
+{
+ "id": "nov_19_2",
+ "code": "NOV-19_2",
+ "title": "Rossz név",
+ "faction": "elves",
+ "novella": true,
+ "people": "Nila-uchana",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/19_*.md – „Rossz név”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 61. év, a Kék Isten szentélye. Valaki egy nevet kiabált, és a papok egyszerre megfordultak.",
+  "Ankit kutyája elszökött."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 742,
+  "points": {
+   "szentely": [
+    32,
+    30
+   ],
+   "h1": [
+    12,
+    12
+   ],
+   "h2": [
+    52,
+    14
+   ],
+   "h3": [
+    14,
+    46
+   ],
+   "haz": [
+    50,
+    46
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      18,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      46,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      32,
+      40
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "h1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "h2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "h3"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "haz"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      33,
+      17
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      29,
+      6
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      39
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      40,
+      46
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      42,
+      30
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      33
+     ],
+     4.9
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "szentely",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "nil_szornykoto",
+    "at": "szentely",
+    "n": 1,
+    "name": "Ankit",
+    "tag": "ankit"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "h1",
+   "type": "reach",
+   "at": "h1",
+   "radius": 3,
+   "text": "Keresd a kutyát a lótuszudvarban",
+   "marker": "Nyom",
+   "tag": "ankit"
+  },
+  {
+   "id": "h2",
+   "type": "reach",
+   "at": "h2",
+   "radius": 3,
+   "text": "A piacon",
+   "marker": "Nyom",
+   "tag": "ankit"
+  },
+  {
+   "id": "h3",
+   "type": "reach",
+   "at": "h3",
+   "radius": 3,
+   "text": "A folyóparton",
+   "marker": "Nyom",
+   "tag": "ankit"
+  },
+  {
+   "id": "haz",
+   "type": "reach",
+   "at": "haz",
+   "radius": 3,
+   "text": "Menj haza",
+   "marker": "Otthon",
+   "after": [
+    "h1",
+    "h2",
+    "h3"
+   ],
+   "tag": "ankit"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Ankit",
+        "text": "A kutyám. Elszökött.",
+        "portrait": "nil_szornykoto"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "haz",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "haz",
+      "say": [
+       {
+        "who": "Ankit",
+        "text": "Hazajött. Magától.",
+        "portrait": "nil_szornykoto"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A fiatalabb papok jelnek tartották. Az idősebbek szerint a kutyák mindig hazajönnek.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

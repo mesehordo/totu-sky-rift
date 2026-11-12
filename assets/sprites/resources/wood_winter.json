@@ -1,0 +1,26 @@
+{
+ "id": "wood_winter",
+ "type": "resource",
+ "image": "wood_winter.png",
+ "frame_size": [
+  240,
+  336
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  40,
+  160
+ ],
+ "frames": 6,
+ "frames_meaning": "változatok",
+ "fps": 0,
+ "sheet_size": [
+  1440,
+  336
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

@@ -1,0 +1,580 @@
+{
+ "id": "h5_a_szabad_folyoag",
+ "code": "HUK-05",
+ "title": "5. A szabad folyóág",
+ "faction": "hukucha",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. és 11. fejezet",
+ "canon": {
+  "rogzitett": "Több gátat kell egymás után nyitni, hogy az áradás a lakott tavak helyett üres kőmedencékbe fusson; hajózható kijárat; három túlfolyó a helyi őrségeknek.",
+  "adaptacio": "A zsilipek sorrendje és a lakott tó zsilipje mint tiltott választás.",
+  "uj_javaslat": "–"
+ },
+ "briefing": [
+  "Megérkezik a nagy áradás. Több gátat kell egymás után nyitni, hogy a víz a lakott tavak helyett üres kőmedencékbe fusson.",
+  "A sorrend dönt: előbb a felső kőmedence, aztán az alsó. A Nádas-tó zsilipjéhez nem szabad nyúlni.",
+  "Ez lesz a finálé hűtő- és elvezetőrendszerének mintája."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5505,
+  "points": {
+   "telep": [
+    14,
+    46
+   ],
+   "zsilip_a": [
+    24,
+    20
+   ],
+   "zsilip_b": [
+    38,
+    34
+   ],
+   "zsilip_c": [
+    46,
+    22
+   ],
+   "medence_a": [
+    14,
+    10
+   ],
+   "medence_c": [
+    54,
+    10
+   ],
+   "nadas": [
+    44,
+    46
+   ],
+   "folyo": [
+    32,
+    2
+   ],
+   "z1": [
+    62,
+    30
+   ],
+   "z2": [
+    4,
+    20
+   ],
+   "arany1": [
+    6,
+    36
+   ],
+   "meteor1": [
+    26,
+    52
+   ],
+   "kijarat": [
+    32,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     "folyo",
+     [
+      32,
+      14
+     ],
+     [
+      32,
+      28
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "water",
+    "area": [
+     "nadas",
+     4
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     "medence_a",
+     5
+    ],
+    "rough": 0.2
+   },
+   {
+    "t": "rock",
+    "area": [
+     "medence_c",
+     5
+    ],
+    "rough": 0.2
+   }
+  ],
+  "clear": [
+   {
+    "t": "grass",
+    "area": [
+     "medence_a",
+     3
+    ]
+   },
+   {
+    "t": "grass",
+    "area": [
+     "medence_c",
+     3
+    ]
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     "zsilip_a"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     [
+      28,
+      40
+     ],
+     "zsilip_b"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "zsilip_b",
+     "zsilip_c"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     [
+      30,
+      30
+     ],
+     [
+      34,
+      30
+     ]
+    ],
+    "w": 1
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     "kijarat"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      20,
+      32
+     ],
+     4
+    ],
+    "density": 0.6
+   },
+   {
+    "area": [
+     [
+      56,
+      40
+     ],
+     5
+    ],
+    "density": 0.7
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": "arany1"
+   },
+   {
+    "kind": "meteor",
+    "at": "meteor1"
+   }
+  ],
+  "starts": [
+   "telep",
+   "z1",
+   "nadas"
+  ],
+  "decor": [
+   {
+    "id": "huk_gyongybuborek",
+    "at": [
+     48,
+     50
+    ]
+   },
+   {
+    "id": "huk_gyongybuborek",
+    "at": [
+     40,
+     52
+    ]
+   }
+  ]
+ },
+ "player": {
+  "base": true,
+  "resources": {
+   "wood": 800,
+   "stone": 500,
+   "meteor": 150
+  },
+  "units": [
+   {
+    "id": "huk_toidezo",
+    "name": "Relluk, gátmester",
+    "tag": "relluk",
+    "at": "telep"
+   },
+   {
+    "id": "huk_hos_kvarra",
+    "at": "telep"
+   },
+   {
+    "id": "huk_hos_iriss",
+    "at": "telep"
+   },
+   {
+    "id": "huk_kampokardos",
+    "n": 5,
+    "at": "telep"
+   },
+   {
+    "id": "huk_csuzlis",
+    "n": 4,
+    "at": "telep"
+   },
+   {
+    "id": "huk_teknos_mozsar",
+    "n": 2,
+    "at": "telep"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "h5_a",
+   "type": "guard",
+   "at": "zsilip_a",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Nyisd meg a felső kőmedence zsilipjét",
+   "marker": "Felső zsilip"
+  },
+  {
+   "id": "h5_c",
+   "type": "guard",
+   "after": "h5_a",
+   "at": "zsilip_c",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Nyisd meg az alsó kőmedence zsilipjét",
+   "marker": "Alsó zsilip"
+  },
+  {
+   "id": "h5_ar",
+   "type": "survive",
+   "after": "h5_c",
+   "seconds": 120,
+   "text": "Tarts ki, amíg az áradás a kőmedencékbe fut"
+  },
+  {
+   "id": "h5_ki",
+   "type": "reach",
+   "after": "h5_ar",
+   "tag": "relluk",
+   "at": "kijarat",
+   "radius": 4,
+   "text": "Relluk vezesse a csónakokat a hajózható kijárathoz",
+   "marker": "Kijárat"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "folyo",
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Itt jön. Négyszer annyi víz, mint tavaly. Ha jól számolok. Most az egyszer jól kell számolnom.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     },
+     {
+      "camera": "zsilip_b",
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Ez a Nádas-tó zsilipje. Ha ezt nyitjuk, a víz a tóba fut, ahol laknak. Ehhez senki nem nyúl.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     },
+     {
+      "camera": "telep",
+      "say": [
+       {
+        "who": "Kvarra, a Tóanya",
+        "text": "Előbb a felső, aztán az alsó. A víz mindig lefelé tanul.",
+        "portrait": "huk_hos_kvarra",
+        "to": "Relluk"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "csapda",
+   "on_enter": {
+    "at": "zsilip_b",
+    "r": 1.5
+   },
+   "unless_done": "h5_ar",
+   "say": [
+    {
+     "who": "Kvarra, a Tóanya",
+     "text": "Ne! Az a Nádas-tó!",
+     "portrait": "huk_hos_kvarra",
+     "to": "Relluk",
+     "urgent": true
+    }
+   ],
+   "fail": "A Nádas-tó zsilipje megnyílt – az áradás a lakott tóba zúdult."
+  },
+  {
+   "id": "a_nyit",
+   "on_objective": "h5_a",
+   "message": "A felső kőmedence telik.",
+   "color": [
+    140,
+    210,
+    255
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "water",
+      "area": [
+       "medence_a",
+       3
+      ]
+     },
+     {
+      "t": "water",
+      "line": [
+       [
+        32,
+        14
+       ],
+       [
+        22,
+        14
+       ],
+       "medence_a"
+      ],
+      "w": 2
+     }
+    ]
+   },
+   "say": [
+    {
+     "who": "Relluk",
+     "text": "Egy. A víz megtalálta a régi partot.",
+     "portrait": "huk_toidezo"
+    }
+   ]
+  },
+  {
+   "id": "c_nyit",
+   "on_objective": "h5_c",
+   "message": "Az alsó kőmedence telik.",
+   "color": [
+    140,
+    210,
+    255
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "water",
+      "area": [
+       "medence_c",
+       3
+      ]
+     },
+     {
+      "t": "water",
+      "line": [
+       [
+        32,
+        16
+       ],
+       [
+        44,
+        14
+       ],
+       "medence_c"
+      ],
+      "w": 2
+     }
+    ]
+   },
+   "say": [
+    {
+     "who": "Relluk",
+     "text": "Kettő. A Nádas-tó száraz. Ezt most nem kell holnap kifizetnünk.",
+     "portrait": "huk_toidezo"
+    }
+   ]
+  },
+  {
+   "id": "w_kelet",
+   "every": 55,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z1",
+    "to": "zsilip_c",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 4,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 40,
+   "until": "h5_ar"
+  },
+  {
+   "id": "w_nyugat",
+   "every": 60,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z2",
+    "to": "zsilip_a",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 70,
+   "until": "h5_ar"
+  },
+  {
+   "id": "w_ar",
+   "every": 40,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z1",
+    "to": "telep",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 5,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     },
+     {
+      "id": "cro_tuskekopo",
+      "n": 1,
+      "name": "Zavaros víz"
+     }
+    ]
+   },
+   "delay": 10,
+   "until": "h5_ar",
+   "if_done": "h5_c"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "h5_ki",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "medence_a",
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Három túlfolyó a Fekete Tükörhöz. Mindegyik egy helyi őrségé. Külön is működnek.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     },
+     {
+      "camera": "kijarat",
+      "say": [
+       {
+        "who": "Kvarra, a Tóanya",
+        "text": "Külön tavak, közös folyó. Ahogy mindig mondtam.",
+        "portrait": "huk_hos_kvarra",
+        "to": "Relluk"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "relluk",
+   "text": "Relluk elesett."
+  },
+  {
+   "id": "huk_korallcsarnok",
+   "text": "A Korallcsarnok elesett."
+  }
+ ],
+ "victory": "Az áradás az üres kőmedencékbe futott. A Huk’ucha hajózható kijáratot nyitott a Fekete Tükörnél dolgozó csapatoknak.",
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "creeps": false
+}

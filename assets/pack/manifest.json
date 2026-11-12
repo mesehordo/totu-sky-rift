@@ -1,0 +1,214 @@
+{
+ "version": 1,
+ "source": {
+  "base": "meteor_rts_sprite_alapcsomag_v01.zip",
+  "anim": "meteor_rts_animaciok_v02.zip"
+ },
+ "note": "Külső sprite-csomag importja (tools/import_pack.py); a generált sprite-ok elé kerül.",
+ "units": {
+  "elf_kofarago": {
+   "meta": "units/elf_kofarago.json",
+   "icon": "icons/elf_kofarago.png"
+  },
+  "elf_tollas_harcos": {
+   "meta": "units/elf_tollas_harcos.json",
+   "icon": "icons/elf_tollas_harcos.png"
+  },
+  "elf_jade_ijasz": {
+   "meta": "units/elf_jade_ijasz.json",
+   "icon": "icons/elf_jade_ijasz.png"
+  },
+  "elf_raptor_lovas": {
+   "meta": "units/elf_raptor_lovas.json",
+   "icon": "icons/elf_raptor_lovas.png"
+  },
+  "elf_napszoro": {
+   "meta": "units/elf_napszoro.json",
+   "icon": "icons/elf_napszoro.png"
+  },
+  "elf_quetzal": {
+   "meta": "units/elf_quetzal.json",
+   "icon": "icons/elf_quetzal.png"
+  },
+  "elf_tollas_rex": {
+   "meta": "units/elf_tollas_rex.json",
+   "icon": "icons/elf_tollas_rex.png"
+  },
+  "elf_hos_szelai": {
+   "meta": "units/elf_hos_szelai.json",
+   "icon": "icons/elf_hos_szelai.png"
+  },
+  "urs_telepes": {
+   "meta": "units/urs_telepes.json",
+   "icon": "icons/urs_telepes.png"
+  },
+  "urs_pajzshordozo": {
+   "meta": "units/urs_pajzshordozo.json",
+   "icon": "icons/urs_pajzshordozo.png"
+  },
+  "urs_szigonyvezo": {
+   "meta": "units/urs_szigonyvezo.json",
+   "icon": "icons/urs_szigonyvezo.png"
+  },
+  "urs_berserker": {
+   "meta": "units/urs_berserker.json",
+   "icon": "icons/urs_berserker.png"
+  },
+  "urs_runapap": {
+   "meta": "units/urs_runapap.json",
+   "icon": "icons/urs_runapap.png"
+  },
+  "urs_kardfogu": {
+   "meta": "units/urs_kardfogu.json",
+   "icon": "icons/urs_kardfogu.png"
+  },
+  "urs_mammut": {
+   "meta": "units/urs_mammut.json",
+   "icon": "icons/urs_mammut.png"
+  },
+  "urs_hos_ragna": {
+   "meta": "units/urs_hos_ragna.json",
+   "icon": "icons/urs_hos_ragna.png"
+  },
+  "cro_csapszolga": {
+   "meta": "units/cro_csapszolga.json",
+   "icon": "icons/cro_csapszolga.png"
+  },
+  "cro_karmos": {
+   "meta": "units/cro_karmos.json",
+   "icon": "icons/cro_karmos.png"
+  },
+  "cro_tuskekopo": {
+   "meta": "units/cro_tuskekopo.json",
+   "icon": "icons/cro_tuskekopo.png"
+  },
+  "cro_savkopo": {
+   "meta": "units/cro_savkopo.json",
+   "icon": "icons/cro_savkopo.png"
+  },
+  "cro_agyfalo": {
+   "meta": "units/cro_agyfalo.json",
+   "icon": "icons/cro_agyfalo.png"
+  },
+  "cro_szarnyas_rem": {
+   "meta": "units/cro_szarnyas_rem.json",
+   "icon": "icons/cro_szarnyas_rem.png"
+  },
+  "cro_csapos_horror": {
+   "meta": "units/cro_csapos_horror.json",
+   "icon": "icons/cro_csapos_horror.png"
+  },
+  "cro_hos_keth": {
+   "meta": "units/cro_hos_keth.json",
+   "icon": "icons/cro_hos_keth.png"
+  }
+ },
+ "buildings": {
+  "elf_napszentely": {
+   "meta": "buildings/elf_napszentely.json",
+   "icon": "icons/elf_napszentely.png"
+  },
+  "elf_obeliszk": {
+   "meta": "buildings/elf_obeliszk.json",
+   "icon": "icons/elf_obeliszk.png"
+  },
+  "elf_harcos_csarnok": {
+   "meta": "buildings/elf_harcos_csarnok.json",
+   "icon": "icons/elf_harcos_csarnok.png"
+  },
+  "elf_obszidian_muhely": {
+   "meta": "buildings/elf_obszidian_muhely.json",
+   "icon": "icons/elf_obszidian_muhely.png"
+  },
+  "elf_raptor_karam": {
+   "meta": "buildings/elf_raptor_karam.json",
+   "icon": "icons/elf_raptor_karam.png"
+  },
+  "elf_csillagvizsgalo": {
+   "meta": "buildings/elf_csillagvizsgalo.json",
+   "icon": "icons/elf_csillagvizsgalo.png"
+  },
+  "elf_tollfeszek": {
+   "meta": "buildings/elf_tollfeszek.json",
+   "icon": "icons/elf_tollfeszek.png"
+  },
+  "elf_jade_oszlop": {
+   "meta": "buildings/elf_jade_oszlop.json",
+   "icon": "icons/elf_jade_oszlop.png"
+  },
+  "urs_nagyterem": {
+   "meta": "buildings/urs_nagyterem.json",
+   "icon": "icons/urs_nagyterem.png"
+  },
+  "urs_hosszuhaz": {
+   "meta": "buildings/urs_hosszuhaz.json",
+   "icon": "icons/urs_hosszuhaz.png"
+  },
+  "urs_fatelep": {
+   "meta": "buildings/urs_fatelep.json",
+   "icon": "icons/urs_fatelep.png"
+  },
+  "urs_harcosok_haza": {
+   "meta": "buildings/urs_harcosok_haza.json",
+   "icon": "icons/urs_harcosok_haza.png"
+  },
+  "urs_runakovacs": {
+   "meta": "buildings/urs_runakovacs.json",
+   "icon": "icons/urs_runakovacs.png"
+  },
+  "urs_vadak_karama": {
+   "meta": "buildings/urs_vadak_karama.json",
+   "icon": "icons/urs_vadak_karama.png"
+  },
+  "urs_sasszirt": {
+   "meta": "buildings/urs_sasszirt.json",
+   "icon": "icons/urs_sasszirt.png"
+  },
+  "urs_ortorony": {
+   "meta": "buildings/urs_ortorony.json",
+   "icon": "icons/urs_ortorony.png"
+  },
+  "cro_kaptar": {
+   "meta": "buildings/cro_kaptar.json",
+   "icon": "icons/cro_kaptar.png"
+  },
+  "cro_tapgomba": {
+   "meta": "buildings/cro_tapgomba.json",
+   "icon": "icons/cro_tapgomba.png"
+  },
+  "cro_emeszto": {
+   "meta": "buildings/cro_emeszto.json",
+   "icon": "icons/cro_emeszto.png"
+  },
+  "cro_ikrafeszek": {
+   "meta": "buildings/cro_ikrafeszek.json",
+   "icon": "icons/cro_ikrafeszek.png"
+  },
+  "cro_tuskeverem": {
+   "meta": "buildings/cro_tuskeverem.json",
+   "icon": "icons/cro_tuskeverem.png"
+  },
+  "cro_agyszentely": {
+   "meta": "buildings/cro_agyszentely.json",
+   "icon": "icons/cro_agyszentely.png"
+  },
+  "cro_csontcsucs": {
+   "meta": "buildings/cro_csontcsucs.json",
+   "icon": "icons/cro_csontcsucs.png"
+  },
+  "cro_tuskes_gyoker": {
+   "meta": "buildings/cro_tuskes_gyoker.json",
+   "icon": "icons/cro_tuskes_gyoker.png"
+  },
+  "kethri_tojaskamra": {
+   "meta": "buildings/kethri_tojaskamra.json",
+   "icon": "icons/kethri_tojaskamra.png"
+  }
+ },
+ "resources": {
+  "wood": "resources/wood.json",
+  "stone": "resources/stone.json",
+  "food": "resources/food.json",
+  "meteor": "resources/meteor.json"
+ }
+}

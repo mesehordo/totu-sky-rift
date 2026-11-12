@@ -1,0 +1,14 @@
+{
+  "id": "text_field",
+  "type": "nine_slice",
+  "insets": [
+    8,
+    8,
+    8,
+    8
+  ],
+  "size": [
+    64,
+    28
+  ]
+}

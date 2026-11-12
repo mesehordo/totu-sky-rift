@@ -1,0 +1,43 @@
+{
+ "id": "oon_papirlampas",
+ "image": "oon_papirlampas.png",
+ "team_mask": "oon_papirlampas_team.png",
+ "type": "building",
+ "frame_size": [
+  160,
+  192
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  48,
+  104
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1280,
+  192
+ ],
+ "scale": 2,
+ "team_colour_mode": "shade",
+ "generator": "TOTU HD grafika"
+}

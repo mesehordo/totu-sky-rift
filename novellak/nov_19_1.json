@@ -1,0 +1,290 @@
+{
+ "id": "nov_19_1",
+ "code": "NOV-19_1",
+ "title": "Makarán a folyón",
+ "faction": "elves",
+ "novella": true,
+ "people": "Nila-uchana",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/19_*.md – „Makarán a folyón”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Az 54. év, a Lótuszlépcsők alatti folyóág. Az aurethi zenész fülével hall.",
+  "Riddhi körbeviszi a folyón."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 8972,
+  "points": {
+   "atkelo": [
+    8,
+    30
+   ],
+   "a1": [
+    24,
+    26
+   ],
+   "a2": [
+    40,
+    32
+   ],
+   "a3": [
+    56,
+    28
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      28
+     ],
+     [
+      20,
+      26
+     ],
+     [
+      44,
+      30
+     ],
+     [
+      65,
+      28
+     ]
+    ],
+    "w": 4
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      32,
+      22
+     ],
+     [
+      32,
+      34
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "atkelo",
+     "a1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "a1",
+     "a2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "a2",
+     "a3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      10,
+      12
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      46
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      20,
+      45
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      8
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      45
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      13
+     ],
+     4.2
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "atkelo",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "nil_makara",
+    "at": "atkelo",
+    "n": 1,
+    "name": "Riddhi makarája",
+    "tag": "makara"
+   },
+   {
+    "id": "imp_legios",
+    "at": "atkelo",
+    "n": 1,
+    "name": "Gnaeus Voro, hárfás",
+    "tag": "gnaeus"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "a1",
+   "type": "reach",
+   "at": "a1",
+   "radius": 3,
+   "text": "Állj meg a(z) 1. hallgatóhelynél",
+   "marker": "Hallgatóhely",
+   "tag": "gnaeus"
+  },
+  {
+   "id": "a2",
+   "type": "reach",
+   "at": "a2",
+   "radius": 3,
+   "text": "Állj meg a(z) 2. hallgatóhelynél",
+   "marker": "Hallgatóhely",
+   "after": "a1",
+   "tag": "gnaeus"
+  },
+  {
+   "id": "a3",
+   "type": "reach",
+   "at": "a3",
+   "radius": 3,
+   "text": "Állj meg a(z) 3. hallgatóhelynél",
+   "marker": "Hallgatóhely",
+   "after": "a2",
+   "tag": "gnaeus"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "atkelo",
+      "say": [
+       {
+        "who": "Riddhi",
+        "text": "Most tedd a kezed a vízbe.",
+        "portrait": "nil_makara_idezo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "a3",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "a3",
+      "say": [
+       {
+        "who": "Gnaeus",
+        "text": "A makarának add át, hogy köszönöm.",
+        "portrait": "imp_legios"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Riddhi átadta. A makara a víz alatt felelt.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

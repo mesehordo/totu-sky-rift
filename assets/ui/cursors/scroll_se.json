@@ -1,0 +1,13 @@
+{
+  "id": "scroll_se",
+  "type": "cursor",
+  "image": "scroll_se.png",
+  "size": [
+    32,
+    32
+  ],
+  "hotspot": [
+    16,
+    16
+  ]
+}

@@ -1,0 +1,43 @@
+{
+ "id": "imp_gepisten_templom",
+ "type": "building",
+ "image": "imp_gepisten_templom.png",
+ "team_mask": "imp_gepisten_templom_team.png",
+ "style": "imperial",
+ "frame_size": [
+  248,
+  248
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  32
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1984,
+  248
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

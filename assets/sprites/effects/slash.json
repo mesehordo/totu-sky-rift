@@ -1,0 +1,27 @@
+{
+ "id": "slash",
+ "type": "effect",
+ "image": "slash.png",
+ "frame_size": [
+  64,
+  64
+ ],
+ "anchor": [
+  32,
+  38
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 4,
+   "fps": 16,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  256,
+  64
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

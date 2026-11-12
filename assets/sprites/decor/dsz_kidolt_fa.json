@@ -1,0 +1,28 @@
+{
+ "id": "dsz_kidolt_fa",
+ "image": "dsz_kidolt_fa.png",
+ "type": "decor",
+ "frame_size": [
+  224,
+  160
+ ],
+ "footprint": [
+  2,
+  1
+ ],
+ "footprint_offset": [
+  48,
+  72
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 2,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  448,
+  160
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

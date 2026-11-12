@@ -1,0 +1,39 @@
+{
+ "id": "elf_raptor_karam",
+ "type": "building",
+ "image": "elf_raptor_karam.png",
+ "frame_size": [
+  117,
+  100
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  11,
+  -2
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "grey_elf_buildings.reptile_stables",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  585,
+  100
+ ]
+}

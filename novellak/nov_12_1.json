@@ -1,0 +1,239 @@
+{
+ "id": "nov_12_1",
+ "code": "NOV-12_1",
+ "title": "Az üres versszak",
+ "faction": "elves",
+ "novella": true,
+ "people": "Daresh",
+ "theme": "wasteland",
+ "source": "docs/tortenet/story/…/novellak/12_*.md – „Az üres versszak”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Az 59. év, a Vörösfal kaptár. A királynő versszakát csak dúdolni szabad. Ivi szavakat akar írni rá.",
+  "Előbb megkérdezi a rajénekeseket."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 2285,
+  "points": {
+   "udvar": [
+    32,
+    40
+   ],
+   "e1": [
+    14,
+    24
+   ],
+   "e2": [
+    32,
+    12
+   ],
+   "e3": [
+    50,
+    24
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      20,
+      14
+     ],
+     3
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      40
+     ],
+     3
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "udvar",
+     "e1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "udvar",
+     "e2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "udvar",
+     "e3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      26,
+      49
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      18,
+      45
+     ],
+     3.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "udvar",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "dar_rajenekes",
+    "at": "udvar",
+    "n": 1,
+    "name": "Ivi",
+    "tag": "ivi"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "a",
+   "type": "reach",
+   "at": "e1",
+   "radius": 3,
+   "text": "Kérdezd meg a nyugati rajénekest",
+   "marker": "Rajénekes",
+   "tag": "ivi"
+  },
+  {
+   "id": "b",
+   "type": "reach",
+   "at": "e2",
+   "radius": 3,
+   "text": "Az északit",
+   "marker": "Rajénekes",
+   "tag": "ivi"
+  },
+  {
+   "id": "c",
+   "type": "reach",
+   "at": "e3",
+   "radius": 3,
+   "text": "A keletit",
+   "marker": "Rajénekes",
+   "tag": "ivi"
+  },
+  {
+   "id": "enek",
+   "type": "guard",
+   "at": "udvar",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Énekeld el a Szárnyudvaron",
+   "marker": "Szárnyudvar",
+   "after": [
+    "a",
+    "b",
+    "c"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "udvar",
+      "say": [
+       {
+        "who": "Ivi",
+        "text": "Háromszáztizenkét versszak. Egy szavak nélkül.",
+        "portrait": "dar_rajenekes"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "enek",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "udvar",
+      "say": [
+       {
+        "who": "Ivi",
+        "text": "A kaptár hallgat. Először életemben hallom, milyen, amikor a raj nem énekel.",
+        "portrait": "dar_rajenekes"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A királynő versszaka üres maradt. Azt továbbra is dúdolják.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

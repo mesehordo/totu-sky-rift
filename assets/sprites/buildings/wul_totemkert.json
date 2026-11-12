@@ -1,0 +1,43 @@
+{
+ "id": "wul_totemkert",
+ "type": "building",
+ "image": "wul_totemkert.png",
+ "team_mask": "wul_totemkert_team.png",
+ "style": "tribal",
+ "frame_size": [
+  236,
+  220
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  10
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1888,
+  220
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

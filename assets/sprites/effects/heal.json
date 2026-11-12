@@ -1,0 +1,27 @@
+{
+ "id": "heal",
+ "type": "effect",
+ "image": "heal.png",
+ "frame_size": [
+  64,
+  64
+ ],
+ "anchor": [
+  32,
+  38
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 6,
+   "fps": 10,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  384,
+  64
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

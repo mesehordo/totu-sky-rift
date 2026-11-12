@@ -1,0 +1,356 @@
+{
+ "id": "nov_15_1",
+ "code": "NOV-15_1",
+ "title": "Harapásnyom",
+ "faction": "mycel",
+ "novella": true,
+ "people": "Galóca",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/15_*.md – „Harapásnyom”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 74. év, a Csillámszurdok és a Fogvár Galóca-telep határa. Az ajtó előtt egy harapásnyomos gombafej.",
+  "Bodza egy hónapja követ. Nem tudja, mit kell vele csinálni."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4784,
+  "points": {
+   "kert": [
+    10,
+    46
+   ],
+   "k1": [
+    24,
+    30
+   ],
+   "k2": [
+    40,
+    30
+   ],
+   "fogas": [
+    54,
+    12
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "kert",
+     "k1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "k1",
+     "k2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "k2",
+     "fogas"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      35,
+      7
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      55,
+      31
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      36
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      19,
+      8
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      32,
+      11
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      29,
+      42
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      33,
+      13
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      43,
+      45
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      31,
+      8
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      39,
+      40
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      23,
+      8
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      12,
+      21
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      35
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      31,
+      20
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      8,
+      13
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      24
+     ],
+     2.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "kert",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "myc_sporaszedo",
+    "at": "kert",
+    "n": 1,
+    "name": "Bodza, követ",
+    "tag": "bodza"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "k1",
+   "type": "reach",
+   "at": "k1",
+   "radius": 3,
+   "text": "Járd be az első határkövet",
+   "marker": "Határkő",
+   "tag": "bodza"
+  },
+  {
+   "id": "k2",
+   "type": "reach",
+   "at": "k2",
+   "radius": 3,
+   "text": "A másodikat",
+   "marker": "Határkő",
+   "after": "k1",
+   "tag": "bodza"
+  },
+  {
+   "id": "fogas",
+   "type": "reach",
+   "at": "fogas",
+   "radius": 3,
+   "text": "Keresd meg Fogast, az őrparancsnokot",
+   "marker": "Fogvár",
+   "after": "k2",
+   "tag": "bodza"
+  },
+  {
+   "id": "var",
+   "type": "guard",
+   "at": "fogas",
+   "radius": 2,
+   "seconds": 10,
+   "text": "Várj. Ne csinálj semmit.",
+   "marker": "Fogvár",
+   "after": "fogas"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kert",
+      "say": [
+       {
+        "who": "Bodza",
+        "text": "Ez a Galóca-barátság jele. Azt hiszem.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "var",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "fogas",
+      "say": [
+       {
+        "who": "Fogas",
+        "text": "Az a tiéd. Csinálj vele, amit akarsz.",
+        "portrait": "gal_fogaskalap"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Bodza nem csinált vele semmit. Fogas szerint ez volt a helyes.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

@@ -1,0 +1,27 @@
+{
+ "id": "food",
+ "type": "resource",
+ "image": "food.png",
+ "frame_size": [
+  75,
+  67
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  5,
+  -3
+ ],
+ "frames": 3,
+ "frames_meaning": "telítettség: tele / fél / üres",
+ "fps": 0,
+ "pack": [
+  "world.berry_bush"
+ ],
+ "sheet_size": [
+  225,
+  67
+ ]
+}

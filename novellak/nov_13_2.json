@@ -1,0 +1,251 @@
+{
+ "id": "nov_13_2",
+ "code": "NOV-13_2",
+ "title": "A szél neve",
+ "faction": "elves",
+ "novella": true,
+ "people": "Shrissh-matah",
+ "theme": "wasteland",
+ "source": "docs/tortenet/story/…/novellak/13_*.md – „A szél neve”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 48. év, a Száraz-fennsík. A szél elállt, és Vrissa, a tűszúnyog-felderítő, nem tudott leszállni – lezuhant.",
+  "Gyalog kell átkelnie a fennsíkon."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 1152,
+  "points": {
+   "zuhanas": [
+    10,
+    40
+   ],
+   "bokor": [
+    24,
+    30
+   ],
+   "szikla": [
+    40,
+    22
+   ],
+   "runaszovo": [
+    54,
+    10
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      20,
+      14
+     ],
+     3
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      40
+     ],
+     3
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "zuhanas",
+     "bokor"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "bokor",
+     "szikla"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szikla",
+     "runaszovo"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      42,
+      42
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      54,
+      42
+     ],
+     3.7
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "zuhanas",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "shr_tuszunyog",
+    "at": "zuhanas",
+    "n": 1,
+    "name": "Vrissa",
+    "tag": "vrissa"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Gyíkok",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "b",
+   "type": "reach",
+   "at": "bokor",
+   "radius": 3,
+   "text": "Gyalogolj a tüskés bokorig",
+   "marker": "Bokor",
+   "tag": "vrissa"
+  },
+  {
+   "id": "s",
+   "type": "reach",
+   "at": "szikla",
+   "radius": 3,
+   "text": "A sziklaárnyékig",
+   "marker": "Árnyék",
+   "after": "b",
+   "tag": "vrissa"
+  },
+  {
+   "id": "r",
+   "type": "reach",
+   "at": "runaszovo",
+   "radius": 3,
+   "text": "Érj el a Rúnaszövőhöz",
+   "marker": "Rúnaszövő",
+   "after": "s",
+   "tag": "vrissa"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "zuhanas",
+      "say": [
+       {
+        "who": "Vrissa",
+        "text": "A szárnyam fáj. És itt egy gyík.",
+        "portrait": "shr_tuszunyog"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gyik",
+   "every": 40,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "_",
+    "to": "szikla",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 1,
+      "name": "Fennsíki gyík"
+     }
+    ]
+   },
+   "delay": 20,
+   "max": 3
+  },
+  {
+   "id": "zaras",
+   "on_objective": "r",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "runaszovo",
+      "say": [
+       {
+        "who": "Vrissa",
+        "text": "A rúna egyenes lett. A heg világos.",
+        "portrait": "shr_tuszunyog"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "vrissa",
+   "text": "Vrissa nem jutott el a Rúnaszövőhöz."
+  }
+ ],
+ "victory": "A szárny széle hónapok alatt begyógyult.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

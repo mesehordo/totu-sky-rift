@@ -1,0 +1,347 @@
+{
+ "id": "c1_sebek_egyesitese",
+ "title": "1. A sebek egyesítése",
+ "faction": "croftian",
+ "briefing": [
+  "A Kórus: az elszigetelt tudat fél, téved és meghal. Mi gyógyítunk – egyesítünk.",
+  "Kebelezd be a Wullof határtelepet.",
+  "(A pályán látni fogod, mi történik a lakókkal.)"
+ ],
+ "player": {
+  "units": {
+   "cro_hos_keth": 1,
+   "cro_karmos": 6
+  }
+ },
+ "enemies": [
+  {
+   "faction": "wullof",
+   "name": "Határtelep",
+   "hold": 300,
+   "aggression": 0.8
+  }
+ ],
+ "objectives": [
+  {
+   "type": "destroy",
+   "targets": [
+    "wul_tanacssator"
+   ],
+   "text": "Kebelezd be a határtelepet: döntsd le a Tanácskunyhót",
+   "id": "bekebelez"
+  },
+  {
+   "id": "dal",
+   "type": "reach",
+   "optional": true,
+   "tag": null,
+   "units": [
+    "cro_hos_keth"
+   ],
+   "at": "dal",
+   "radius": 3,
+   "text": "(Keth emléke) Állj meg a régi kereskedőhelynél",
+   "marker": "Egy dal emléke"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "ter",
+      "say": [
+       {
+        "who": "Kórus",
+        "text": "Az elszigetelt tudat fél, téved és meghal. Mi gyógyítunk.",
+        "portrait": "cro_hos_ssarha"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Kórus",
+     "text": "Nincs több félelem. Nincs több egyedüllét.",
+     "portrait": "cro_hos_ssarha"
+    }
+   ]
+  },
+  {
+   "at": 200,
+   "message": "Keth emléke: egy dal, amit valaha egy Wullof kereskedő énekelt neki.",
+   "color": [
+    210,
+    150,
+    255
+   ]
+  },
+  {
+   "id": "dal_emlek",
+   "on_objective": "dal",
+   "say": [
+    {
+     "who": "Keth",
+     "text": "Itt énekelt nekem egy Wullof kereskedő. Fizetség helyett.",
+     "portrait": "cro_hos_keth"
+    },
+    {
+     "who": "Kórus",
+     "text": "Az emlék zaj. Haladj.",
+     "portrait": "cro_hos_ssarha"
+    }
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "bekebelez",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "cel",
+      "say": [
+       {
+        "who": "Keth",
+        "text": "…hány név maradt bennük?",
+        "portrait": "cro_hos_keth"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "cro_hos_keth",
+   "text": "Keth elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Kórus: A sebek egyesültek. – Keth: …hány név maradt bennük?",
+ "next": "c2_ismeros_kovek",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "code": "CRO-01",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (VII. hadjárat: c1_sebek_egyesitese)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 6101,
+  "points": {
+   "feszek": [
+    10,
+    46
+   ],
+   "cel": [
+    50,
+    14
+   ],
+   "ter": [
+    30,
+    30
+   ],
+   "kapu": [
+    56,
+    48
+   ],
+   "dal": [
+    40,
+    22
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      20,
+      20
+     ],
+     [
+      36,
+      12
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "feszek",
+     "ter"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ter",
+     "cel"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ter",
+     "kapu"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      32,
+      9
+     ],
+     2.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      11,
+      18
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      16,
+      24
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      32
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      36,
+      47
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      18
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      34
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      45
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      39,
+      9
+     ],
+     3.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   }
+  ],
+  "starts": [
+   "feszek",
+   "cel"
+  ],
+  "decor": [
+   {
+    "id": "wul_tipi",
+    "at": [
+     46,
+     20
+    ]
+   },
+   {
+    "id": "wul_tipi",
+    "at": [
+     54,
+     18
+    ]
+   }
+  ],
+  "ambient": []
+ }
+}

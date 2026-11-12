@@ -1,0 +1,25 @@
+{
+ "id": "rock_winter",
+ "type": "prop",
+ "image": "rock_winter.png",
+ "frame_size": [
+  112,
+  144
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  8,
+  30
+ ],
+ "frames": 4,
+ "frames_meaning": "vĂˇltozatok",
+ "sheet_size": [
+  448,
+  144
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

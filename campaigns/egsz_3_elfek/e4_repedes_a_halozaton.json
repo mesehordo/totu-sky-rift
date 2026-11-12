@@ -1,0 +1,323 @@
+{
+ "id": "e4_repedes_a_halozaton",
+ "title": "4. Repedés a hálózaton",
+ "faction": "elves",
+ "briefing": [
+  "A Kórus Szelai saját rezonanciahálózatán keresztül tör be egy városba.",
+  "A tökéletesnek hitt összekapcsoltság csak gyorsítja a fertőzést.",
+  "Pusztítsd el a fészket, amely a hálózatba kapaszkodott."
+ ],
+ "player": {
+  "resources": {
+   "wood": 760,
+   "stone": 640,
+   "meteor": 200
+  },
+  "units": {
+   "elf_hos_szelai": 1,
+   "elf_tollas_harcos": 4,
+   "elf_jade_ijasz": 4,
+   "elf_napszoro": 1
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Hálózati raj",
+   "hold": 200,
+   "aggression": 1.1,
+   "resources": {
+    "wood": 390,
+    "stone": 210
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "id": "irt",
+   "type": "kill",
+   "text": "Pusztíts el 25 fertőzött lényt",
+   "amount": 25
+  },
+  {
+   "id": "feszek",
+   "type": "destroy",
+   "text": "Pusztítsd el a Kaptárt",
+   "after": "irt",
+   "targets": [
+    "cro_kaptar"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "torony2",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "A hálózatot én terveztem. A fertőzés az én tornyaimon fut.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     },
+     {
+      "camera": "varos",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "Akkor én tudom, hol kell elvágni.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Szelai",
+     "text": "A hálózatot én terveztem. Én tudom, hol kell elvágni.",
+     "portrait": "elf_hos_szelai"
+    }
+   ]
+  },
+  {
+   "at": 200,
+   "message": "A fertőzés a rezonanciatornyokon át terjed!",
+   "color": [
+    255,
+    120,
+    100
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "feszek",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kaptar",
+      "say": [
+       {
+        "who": "Szelai",
+        "text": "A fészek elesett. A hálózat sebezhetősége most már mindenki előtt ismert.",
+        "portrait": "elf_hos_szelai"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "elf_hos_szelai",
+   "text": "Szelai elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A fészek elesett – de a hálózat sebezhetősége most már mindenki előtt ismert.",
+ "next": "e5_a_ledontott_lepcso",
+ "hero_level": 4,
+ "enemy_hero_level": 4,
+ "code": "ELF-04",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (III. hadjárat: Repedés a hálózaton)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4404,
+  "points": {
+   "varos": [
+    14,
+    44
+   ],
+   "torony1": [
+    26,
+    30
+   ],
+   "torony2": [
+    40,
+    24
+   ],
+   "kaptar": [
+    52,
+    10
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "varos",
+     "torony1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "torony1",
+     "torony2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "torony2",
+     "kaptar"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      9,
+      25
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      39,
+      35
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      38,
+      39
+     ],
+     3.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      11,
+      10
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      27,
+      19
+     ],
+     5.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      22,
+      6
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      45,
+      35
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      24,
+      42
+     ],
+     2.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      41,
+      8
+     ],
+     3.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     8,
+     47
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     20,
+     40
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     17,
+     50
+    ]
+   }
+  ],
+  "starts": [
+   "varos",
+   "kaptar"
+  ],
+  "decor": [
+   {
+    "id": "elf_obeliszk",
+    "at": "torony1",
+    "ruin": true
+   },
+   {
+    "id": "elf_obeliszk",
+    "at": "torony2",
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ }
+}

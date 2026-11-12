@@ -1,0 +1,43 @@
+{
+ "id": "cro_korus_kut",
+ "type": "building",
+ "image": "cro_korus_kut.png",
+ "team_mask": "cro_korus_kut_team.png",
+ "style": "organic",
+ "frame_size": [
+  204,
+  176
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  4,
+  -30
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1632,
+  176
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

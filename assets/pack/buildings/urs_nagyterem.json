@@ -1,0 +1,40 @@
+{
+ "id": "urs_nagyterem",
+ "type": "building",
+ "image": "urs_nagyterem.png",
+ "frame_size": [
+  155,
+  134
+ ],
+ "footprint": [
+  4,
+  4
+ ],
+ "footprint_offset": [
+  13,
+  -1
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.town_longhouse",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  775,
+  134
+ ],
+ "team_mask": "urs_nagyterem_team.png"
+}

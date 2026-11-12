@@ -1,0 +1,74 @@
+{
+ "id": "osi_erdo",
+ "order": 3,
+ "players": 2,
+ "size": 96,
+ "layout": "ring",
+ "theme": "forest",
+ "name": {
+  "hu": "Ősi erdő",
+  "en": "Elder Forest"
+ },
+ "desc": {
+  "hu": "Sűrű rengeteg, keskeny ösvények – lesállásokhoz és rajtaütésekhez. Döntés: utat vágsz az erdőn át, vagy a Tendüür-ligetek mellett kerülsz?",
+  "en": "A dense old forest with narrow trails – made for ambushes and raids."
+ },
+ "features": {
+  "forests": 34,
+  "lakes": [
+   1,
+   2,
+   3
+  ],
+  "ridges": [
+   2,
+   4,
+   6
+  ]
+ },
+ "camps": {
+  "1": "tenduur",
+  "2": "tenduur",
+  "3": "tenduur",
+  "4": "tenduur"
+ },
+ "decor": [
+  {
+   "id": "ten_lampasfa",
+   "at": "pair",
+   "d": 12,
+   "s": 0
+  },
+  {
+   "id": "ten_tovisudvar",
+   "at": "base",
+   "d": 4,
+   "s": -12
+  }
+ ],
+ "ambient": [
+  {
+   "id": "ten_lampasor",
+   "at": "pair",
+   "d": 10,
+   "s": 2,
+   "n": 2,
+   "shelter": {
+    "at": "pair",
+    "d": 12,
+    "s": 0
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Sűrű erdő keskeny ösvényekkel: a favágás egyben útépítés; a ligeteket Tendüür-táborok őrzik.",
+  "felallasok": "1v1",
+  "taborok": {
+   "1": "Tendüür",
+   "2": "Tendüür",
+   "3": "Tendüür",
+   "4": "Tendüür"
+  }
+ }
+}

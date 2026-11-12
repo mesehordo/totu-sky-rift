@@ -1,0 +1,71 @@
+{
+ "id": "oon_favago",
+ "image": "oon_favago.png",
+ "team_mask": "oon_favago_team.png",
+ "team_colour_mode": "shade",
+ "type": "unit",
+ "rig": "biped",
+ "frame_size": [
+  200,
+  208
+ ],
+ "anchor": [
+  100,
+  129
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 4,
+   "frames": 6,
+   "fps": 10,
+   "loop": true
+  },
+  "attack": {
+   "start": 10,
+   "frames": 6,
+   "fps": 12,
+   "loop": false
+  },
+  "death": {
+   "start": 16,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  },
+  "work": {
+   "start": 22,
+   "frames": 6,
+   "fps": 9,
+   "loop": true
+  },
+  "cast": {
+   "start": 28,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "sheet_size": [
+  6800,
+  1664
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

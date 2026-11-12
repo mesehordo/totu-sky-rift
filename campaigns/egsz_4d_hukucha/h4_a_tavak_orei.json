@@ -1,0 +1,413 @@
+{
+ "id": "h4_a_tavak_orei",
+ "code": "HUK-04",
+ "title": "4. A tavak őrei",
+ "faction": "hukucha",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. és 11. fejezet",
+ "canon": {
+  "rogzitett": "Külön működtetett vízzárak; a túlfolyók egy-egy helyi őrséghez kerülnek.",
+  "adaptacio": "A három tó egyidejű védelme.",
+  "uj_javaslat": "A tavak nevei (Nádas-, Kagylós-, Gyöngyös-tó)."
+ },
+ "briefing": [
+  "Három lakott tó áll a folyó mentén. A Zavaros Víz most mindhármat egyszerre támadja.",
+  "Tartsd meg mindhárom tó buborékházait, amíg a gátmesterek elkészülnek a zsilipekkel.",
+  "Minden tónak saját őrsége lesz – ahogy a finálé túlfolyóinak is."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5404,
+  "points": {
+   "telep": [
+    32,
+    46
+   ],
+   "to1": [
+    12,
+    30
+   ],
+   "to2": [
+    32,
+    24
+   ],
+   "to3": [
+    52,
+    30
+   ],
+   "z1": [
+    6,
+    4
+   ],
+   "z2": [
+    32,
+    2
+   ],
+   "z3": [
+    58,
+    4
+   ],
+   "arany1": [
+    22,
+    50
+   ],
+   "arany2": [
+    44,
+    50
+   ],
+   "meteor1": [
+    32,
+    54
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      12,
+      24
+     ],
+     3
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      32,
+      18
+     ],
+     3
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      52,
+      24
+     ],
+     3
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     "to1",
+     "z1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     "to2",
+     "z2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     "to3",
+     "z3"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      22,
+      12
+     ],
+     5
+    ],
+    "density": 0.7
+   },
+   {
+    "area": [
+     [
+      42,
+      12
+     ],
+     5
+    ],
+    "density": 0.7
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": "arany1"
+   },
+   {
+    "kind": "stone",
+    "at": "arany2"
+   },
+   {
+    "kind": "meteor",
+    "at": "meteor1"
+   }
+  ],
+  "starts": [
+   "telep",
+   "z2"
+  ]
+ },
+ "player": {
+  "base": true,
+  "resources": {
+   "wood": 800,
+   "stone": 500,
+   "meteor": 150
+  },
+  "units": [
+   {
+    "id": "huk_toidezo",
+    "name": "Relluk, gátmester",
+    "tag": "relluk",
+    "at": "telep"
+   },
+   {
+    "id": "huk_hos_kvarra",
+    "at": "telep"
+   },
+   {
+    "id": "huk_hos_bulgok",
+    "at": "telep"
+   },
+   {
+    "id": "huk_kampokardos",
+    "n": 5,
+    "at": "telep"
+   },
+   {
+    "id": "huk_csuzlis",
+    "n": 4,
+    "at": "telep"
+   }
+  ],
+  "buildings": [
+   {
+    "id": "huk_gyongybuborek",
+    "at": "to1",
+    "tag": "to1"
+   },
+   {
+    "id": "huk_gyongybuborek",
+    "at": "to2",
+    "tag": "to2"
+   },
+   {
+    "id": "huk_gyongybuborek",
+    "at": "to3",
+    "tag": "to3"
+   },
+   {
+    "id": "huk_korallor",
+    "at": [
+     16,
+     33
+    ]
+   },
+   {
+    "id": "huk_korallor",
+    "at": [
+     48,
+     33
+    ]
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "h4_kitart",
+   "type": "survive",
+   "seconds": 300,
+   "text": "Tartsd meg mindhárom tavat, amíg a zsilipek elkészülnek"
+  },
+  {
+   "id": "h4_orseg",
+   "type": "build_at",
+   "optional": true,
+   "target": "huk_korallor",
+   "at": "to2",
+   "radius": 6,
+   "text": "Emelj Korallőrt a középső tónál",
+   "marker": "Korallőr"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "to1",
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Nádas-tó, Kagylós-tó, Gyöngyös-tó. Három tó, háromféle iszap, három őrség.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     },
+     {
+      "camera": "z2",
+      "say": [
+       {
+        "who": "Bul’gok Kampókirály",
+        "text": "Jönnek. Hadd jöjjenek. Kampóval fogadjuk őket.",
+        "portrait": "huk_hos_bulgok",
+        "to": "Relluk"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "w1",
+   "every": 55,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z1",
+    "to": "to1",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 60,
+   "until": "h4_kitart"
+  },
+  {
+   "id": "w2",
+   "every": 55,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z2",
+    "to": "to2",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 80,
+   "until": "h4_kitart"
+  },
+  {
+   "id": "w3",
+   "every": 55,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z3",
+    "to": "to3",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 100,
+   "until": "h4_kitart"
+  },
+  {
+   "id": "w_nagy",
+   "every": 1,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "z2",
+    "to": "telep",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 5,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     },
+     {
+      "id": "cro_tuskekopo",
+      "n": 2,
+      "name": "Zavaros víz"
+     }
+    ]
+   },
+   "delay": 220,
+   "until": "h4_kitart",
+   "max": 1
+  },
+  {
+   "id": "zaras",
+   "on_objective": "h4_kitart",
+   "say": [
+    {
+     "who": "Relluk",
+     "text": "Mindhárom tó áll. Mindegyiknek saját zsilipje lesz, és saját őrsége.",
+     "portrait": "huk_toidezo"
+    }
+   ]
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "to1",
+   "text": "A Nádas-tó buborékházai elestek."
+  },
+  {
+   "tag": "to2",
+   "text": "A Kagylós-tó buborékházai elestek."
+  },
+  {
+   "tag": "to3",
+   "text": "A Gyöngyös-tó buborékházai elestek."
+  },
+  {
+   "tag": "relluk",
+   "text": "Relluk elesett."
+  }
+ ],
+ "victory": "Mindhárom tó kitartott. A gátmesterek tavanként külön zsilipet és őrséget jelölnek ki.",
+ "next": "h5_a_szabad_folyoag",
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "creeps": false
+}

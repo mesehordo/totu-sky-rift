@@ -1,0 +1,210 @@
+{
+ "id": "nov_09_3",
+ "code": "NOV-09_3",
+ "title": "Ittu helye",
+ "faction": "ursan",
+ "novella": true,
+ "people": "Pinguu",
+ "theme": "winter",
+ "source": "docs/tortenet/story/…/novellak/09_*.md – „Ittu helye”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Az 50. év, Fehérperem, az Őrláng-szentély. A tűz bal oldalán Ittu helye: a gyerekek nem ülhetnek oda.",
+  "Ma éjjel Tekkuna, a vén lángőr, Nanukra bízza a lángot."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 1573,
+  "points": {
+   "szentely": [
+    32,
+    30
+   ],
+   "fa": [
+    12,
+    12
+   ],
+   "jeg": [
+    52,
+    46
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      64,
+      28
+     ],
+     14
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "fa"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "jeg"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      47,
+      30
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      51,
+      7
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      47,
+      22
+     ],
+     3.2
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "szentely",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "pin_hopajzsos",
+    "at": "szentely",
+    "n": 1,
+    "name": "Nanuk, lángőr-inas",
+    "tag": "nanuk"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "fa",
+   "type": "reach",
+   "at": "fa",
+   "radius": 3,
+   "text": "Hozz tüzelőt a szentélyhez",
+   "marker": "Tüzelő",
+   "tag": "nanuk"
+  },
+  {
+   "id": "lang",
+   "type": "guard",
+   "at": "szentely",
+   "radius": 2,
+   "seconds": 40,
+   "text": "Őrizd az Őrlángot éjjel",
+   "marker": "Őrláng",
+   "after": "fa"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Nanuk",
+        "text": "A kő meleg volt a bal oldalon. Csak azért ültem oda.",
+        "portrait": "pin_hopajzsos"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 150,
+   "unless_done": "lang",
+   "fail": "Az Őrláng kialudt."
+  },
+  {
+   "id": "zaras",
+   "on_objective": "lang",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Nanuk",
+        "text": "Minden este megérintem a bal oldali követ. Meleg.",
+        "portrait": "pin_hopajzsos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Ittu helye tavasszal megint üres lett. Nanuk azóta minden este megérinti.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

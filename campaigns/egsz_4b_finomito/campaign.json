@@ -1,0 +1,12 @@
+{
+  "id": "egsz_4b_finomito",
+  "order": 6,
+  "title": "Átvezető – A finomító",
+  "desc": "Egy elhagyott finomító újraindítása – ugyanaz az érc fűtené az ursan menekülteket és töltené az aurethi lélekhorgonyokat.",
+  "requires": [
+    "egsz_4d_hukucha"
+  ],
+  "missions": [
+    "x2_finomito"
+  ]
+}

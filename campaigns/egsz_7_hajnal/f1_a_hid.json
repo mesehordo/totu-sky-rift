@@ -1,0 +1,487 @@
+{
+ "id": "f1_a_hid",
+ "title": "1. A híd",
+ "faction": "wullof",
+ "briefing": [
+  "A szövetség egyszerre biztosít felszíni utánpótlási utat és föld alatti szerelőjáratot a Fekete Tükörhöz.",
+  "A korábbi szövetségesek erősítései itt érkeznek meg.",
+  "Dönts folyamatosan az ostrom és a civil evakuálás között."
+ ],
+ "player": {
+  "resources": {
+   "wood": 990,
+   "stone": 610,
+   "meteor": 200
+  },
+  "units": {
+   "wul_hos_tava": 1,
+   "wul_landzsas": 6,
+   "wul_ijas_vadasz": 4,
+   "wul_gyujtogeto": 6
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "hold": 120,
+   "aggression": 1.2,
+   "resources": {
+    "wood": 1050,
+    "stone": 350
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "id": "ut",
+   "type": "build",
+   "text": "Állíts fel 3 Szellemtotemet az út mentén",
+   "target": "wul_szellemtotem",
+   "count": 3
+  },
+  {
+   "id": "civilek",
+   "type": "reach",
+   "text": "Vezess 6 civilt (Gyűjtögetőt) a biztonságos partra",
+   "after": "ut",
+   "units": [
+    "wul_gyujtogeto"
+   ],
+   "count": 6,
+   "at": "biztos_part",
+   "radius": 5,
+   "marker": "Biztonságos part"
+  },
+  {
+   "id": "tarts",
+   "type": "survive",
+   "text": "Tartsd a hidat",
+   "after": "civilek",
+   "seconds": 120
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "hid",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "Ezen az úton a következő télen is meg kell érkeznie az élelemnek.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 90,
+   "message": "A Folyóparti klán emulovasai megérkeztek – ahogy ígérték.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "if_flag": "folyopart",
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "wul_bolenylovas": 3
+    }
+   }
+  },
+  {
+   "at": 90,
+   "message": "A Sziklavári kőfejtők köveket hoztak a hídfőhöz.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "if_flag": "sziklavar",
+   "reward": {
+    "stone": 400
+   }
+  },
+  {
+   "choice": {
+    "title": "Ostrom vagy evakuálás",
+    "text": "A szerelőjárat elkészült, de a parton még civilek várnak. A hadsereg most előrenyomulhat – vagy előbb kimenekíti őket.",
+    "options": [
+     {
+      "label": "Előre az ostrommal",
+      "hint": "Erősítés érkezik a frontra, de a parton maradt civilek közül sokan meghalnak.",
+      "flag": "f_ostrom",
+      "message": "A légió előrenyomul. A parton csend lesz.",
+      "color": [
+       255,
+       120,
+       100
+      ],
+      "spawn": {
+       "owner": 0,
+       "near": "player_rear",
+       "units": {
+        "wul_landzsas": 4,
+        "wul_ijas_vadasz": 3
+       }
+      }
+     },
+     {
+      "label": "Előbb a civilek",
+      "hint": "Lassabb az ostrom, de a civilek élnek – és segítenek.",
+      "flag": "f_civil",
+      "message": "A civilek átkelnek. Egyesek visszafordulnak, hogy segítsenek.",
+      "color": [
+       150,
+       220,
+       255
+      ],
+      "reward": {
+       "wood": 495,
+       "stone": 105
+      }
+     }
+    ]
+   },
+   "at": 150
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Tava",
+     "text": "Ezen az úton a következő télen is meg kell érkeznie az élelemnek.",
+     "portrait": "wul_hos_tava"
+    }
+   ]
+  },
+  {
+   "at": 60,
+   "message": "Ragna seregei tartják az átjárókat.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "urs_hos_ragna": 1,
+     "urs_pajzshordozo": 4
+    }
+   }
+  },
+  {
+   "at": 180,
+   "message": "Szelai a rezonanciakörökkel érkezik.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "elf_hos_szelai": 1,
+     "elf_jade_ijasz": 3
+    }
+   }
+  },
+  {
+   "at": 240,
+   "message": "A Kórus áttöri a külső vonalat!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "player_base",
+    "units": {
+     "cro_karmos": 12,
+     "cro_tuskekopo": 4,
+     "cro_csapos_horror": 1
+    }
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "tarts",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "hid",
+      "say": [
+       {
+        "who": "Tava",
+        "text": "A híd áll. A föld alatt a szerelőjárat kész. Mindenki megérkezett, aki megígérte.",
+        "portrait": "wul_hos_tava"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "wul_hos_tava",
+   "text": "Tava elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A híd áll. Az utánpótlás megérkezik – a föld alatt pedig a szerelőjárat elkészült.",
+ "next": "f2_az_ures_tron",
+ "hero_level": 6,
+ "enemy_hero_level": 6,
+ "code": "FIN-01",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (Közös befejezés: A híd)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 7101,
+  "points": {
+   "part": [
+    10,
+    48
+   ],
+   "hid": [
+    32,
+    30
+   ],
+   "tukor": [
+    54,
+    8
+   ],
+   "biztos_part": [
+    6,
+    30
+   ],
+   "jarat": [
+    44,
+    44
+   ],
+   "totem1": [
+    20,
+    40
+   ],
+   "totem2": [
+    26,
+    34
+   ],
+   "totem3": [
+    38,
+    26
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     [
+      -1,
+      22
+     ],
+     [
+      24,
+      24
+     ],
+     [
+      44,
+      22
+     ],
+     [
+      65,
+      24
+     ]
+    ],
+    "w": 4
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      32,
+      18
+     ],
+     [
+      32,
+      30
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "part",
+     "totem1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "totem1",
+     "totem2"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "totem2",
+     "hid"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "hid",
+     "tukor"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "part",
+     "biztos_part"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "hid",
+     "jarat"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      24,
+      7
+     ],
+     3.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      27
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      16,
+      9
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      34,
+      6
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      47,
+      24
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      33,
+      44
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      26,
+      14
+     ],
+     4.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     51
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     44
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     53
+    ]
+   }
+  ],
+  "starts": [
+   "part",
+   "tukor"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

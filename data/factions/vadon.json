@@ -1,0 +1,250 @@
+{
+  "id": "vadon",
+  "order": 99,
+  "neutral": true,
+  "name": "Vadon",
+  "tagline": "Semleges szörnyek",
+  "desc": "A Fényes Eső óta a vadonban éterrel átitatott lények őrzik a kristálylelőhelyeket és a kincseket.",
+  "mechanic": "standard",
+  "style": "nordic",
+  "color": [
+    150,
+    140,
+    120
+  ],
+  "accent": [
+    120,
+    220,
+    255
+  ],
+  "regen": 1.0,
+  "hq": "vad_kristalybogar",
+  "worker": "vad_kristalybogar",
+  "supply_building": "vad_kristalybogar",
+  "start_units": {},
+  "units": {
+    "vad_kristalybogar": {
+      "name": "Kristálybogár",
+      "desc": "Csillagérctől megnőtt bogár; páncélján kristályok nőnek.",
+      "cost": {
+        "wood": 40,
+        "stone": 20
+      },
+      "supply": 0,
+      "time": 1,
+      "hp": 170,
+      "armor": 2,
+      "speed": 2.6,
+      "sight": 6,
+      "radius": 0.45,
+      "shape": "bug",
+      "xp": 45,
+      "attack": {
+        "damage": 11,
+        "range": 0.3,
+        "cooldown": 1.1,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "creep",
+        "melee",
+        "organic"
+      ],
+      "abilities": [
+        "kristalypancel"
+      ],
+      "utype": "kozelharcos"
+    },
+    "vad_hamufarkas": {
+      "name": "Hamufarkas",
+      "desc": "A becsapódás hamujában élő falkavad.",
+      "cost": {
+        "wood": 45,
+        "stone": 25
+      },
+      "supply": 0,
+      "time": 1,
+      "hp": 230,
+      "armor": 1,
+      "speed": 3.6,
+      "sight": 7,
+      "radius": 0.5,
+      "shape": "rider",
+      "xp": 55,
+      "attack": {
+        "damage": 15,
+        "range": 0.4,
+        "cooldown": 1.0,
+        "targets": [
+          "ground"
+        ]
+      },
+      "tags": [
+        "creep",
+        "melee",
+        "organic"
+      ],
+      "abilities": [
+        "falkavadasz"
+      ],
+      "utype": "lovas"
+    },
+    "vad_eterliderc": {
+      "name": "Éterlidérc",
+      "desc": "Szabadon kóborló étercsomó – egykor talán egy lélek volt.",
+      "cost": {
+        "meteor": 50
+      },
+      "supply": 0,
+      "time": 1,
+      "hp": 190,
+      "armor": 0,
+      "speed": 2.8,
+      "sight": 8,
+      "radius": 0.45,
+      "shape": "caster",
+      "xp": 60,
+      "attack": {
+        "damage": 17,
+        "range": 4,
+        "cooldown": 1.4,
+        "targets": [
+          "ground",
+          "air"
+        ],
+        "projectile": "magic"
+      },
+      "tags": [
+        "creep",
+        "ranged"
+      ],
+      "abilities": [
+        "eterloket"
+      ],
+      "energy": 100,
+      "utype": "lovesz"
+    },
+    "vad_kotroll": {
+      "name": "Kőtroll",
+      "desc": "Hegyi óriás, bőrébe kristályok nőttek.",
+      "cost": {
+        "stone": 150
+      },
+      "supply": 0,
+      "time": 1,
+      "hp": 650,
+      "armor": 3,
+      "speed": 2.2,
+      "sight": 7,
+      "radius": 0.75,
+      "shape": "golem",
+      "xp": 140,
+      "attack": {
+        "damage": 32,
+        "range": 0.5,
+        "cooldown": 1.6,
+        "targets": [
+          "ground"
+        ],
+        "splash": 0.8
+      },
+      "tags": [
+        "creep",
+        "melee",
+        "large",
+        "organic"
+      ],
+      "abilities": [
+        "foldrenges"
+      ],
+      "utype": "orias"
+    },
+    "vad_ercgolem": {
+      "name": "Csillagérc-gólem",
+      "desc": "A Fekete Tükör pereméről indult élő érctömb. A vadon ura.",
+      "cost": {
+        "meteor": 300
+      },
+      "supply": 0,
+      "time": 1,
+      "hp": 1600,
+      "armor": 5,
+      "speed": 1.9,
+      "sight": 8,
+      "radius": 0.95,
+      "shape": "golem",
+      "xp": 400,
+      "attack": {
+        "damage": 55,
+        "range": 0.6,
+        "cooldown": 2.0,
+        "targets": [
+          "ground"
+        ],
+        "splash": 1.2
+      },
+      "tags": [
+        "creep",
+        "melee",
+        "large"
+      ],
+      "abilities": [
+        "foldrenges",
+        "kristalypancel"
+      ],
+      "utype": "orias"
+    }
+  },
+  "buildings": {},
+  "camps": {
+    "1": {
+      "units": {
+        "vad_kristalybogar": 3
+      },
+      "loot": [
+        "common"
+      ]
+    },
+    "2": {
+      "units": {
+        "vad_hamufarkas": 2,
+        "vad_kristalybogar": 2
+      },
+      "loot": [
+        "common"
+      ]
+    },
+    "3": {
+      "units": {
+        "vad_eterliderc": 2,
+        "vad_hamufarkas": 2
+      },
+      "loot": [
+        "common",
+        "rare"
+      ]
+    },
+    "4": {
+      "units": {
+        "vad_kotroll": 1,
+        "vad_eterliderc": 2
+      },
+      "loot": [
+        "rare"
+      ]
+    },
+    "5": {
+      "units": {
+        "vad_ercgolem": 1,
+        "vad_kotroll": 1,
+        "vad_eterliderc": 2
+      },
+      "loot": [
+        "artifact"
+      ]
+    }
+  },
+  "start_gather": "wood"
+}

@@ -1,0 +1,66 @@
+{
+ "id": "imp_szellemkolosszus",
+ "type": "unit",
+ "image": "imp_szellemkolosszus.png",
+ "team_mask": "imp_szellemkolosszus_team.png",
+ "frame_size": [
+  300,
+  304
+ ],
+ "anchor": [
+  150,
+  180
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "layout": "sorok = irányok (DIRS sorrendben), oszlopok = animációk képkockái egymás után",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 4,
+   "frames": 6,
+   "fps": 10,
+   "loop": true
+  },
+  "attack": {
+   "start": 10,
+   "frames": 6,
+   "fps": 12,
+   "loop": false
+  },
+  "death": {
+   "start": 16,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  },
+  "cast": {
+   "start": 22,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "rig": "biped",
+ "sheet_size": [
+  8400,
+  2432
+ ],
+ "generator": "TOTU HD grafika",
+ "team_colour_mode": "shade",
+ "scale": 2
+}

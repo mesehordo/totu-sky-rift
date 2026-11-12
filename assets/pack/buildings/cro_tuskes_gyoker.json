@@ -1,0 +1,39 @@
+{
+ "id": "cro_tuskes_gyoker",
+ "type": "building",
+ "image": "cro_tuskes_gyoker.png",
+ "frame_size": [
+  88,
+  114
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  12,
+  44
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "croftian_buildings.defense_tower",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  440,
+  114
+ ]
+}

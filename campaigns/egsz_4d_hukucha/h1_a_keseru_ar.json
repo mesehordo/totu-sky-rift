@@ -1,0 +1,492 @@
+{
+ "id": "h1_a_keseru_ar",
+ "code": "HUK-01",
+ "title": "1. A keserű ár",
+ "faction": "hukucha",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. és 11. fejezet",
+ "canon": {
+  "rogzitett": "Relluk kisebb, külön lezárható medencékre osztja az árteret; az első gát lezárása megóvja az üvegházakat, de a víz a menekülők kikötője felé fordul; Zavaros Víz.",
+  "adaptacio": "A gát döntés-ablakként; a tavacskák ásása.",
+  "uj_javaslat": "A döntés jelzői: h1_uveghaz / h1_kikoto."
+ },
+ "briefing": [
+  "A Fekete Tükör felől szennyezett víz érkezik a folyón. Több Huk’ucha telepet fenyeget.",
+  "Relluk külön lezárható medencékre osztja az árteret. Áss tavacskákat, és zárd le az első gátat – de a lezárt víz valahová máshová fordul.",
+  "A parton elszaporodik a Zavaros Víz: a gátmesterek így hívják a fertőzött lényeket."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5101,
+  "points": {
+   "telep": [
+    20,
+    40
+   ],
+   "folyo_be": [
+    32,
+    0
+   ],
+   "gat1": [
+    32,
+    20
+   ],
+   "uveghaz1": [
+    12,
+    30
+   ],
+   "uveghaz2": [
+    16,
+    24
+   ],
+   "kikoto": [
+    48,
+    38
+   ],
+   "arany1": [
+    8,
+    48
+   ],
+   "arany2": [
+    30,
+    50
+   ],
+   "meteor1": [
+    40,
+    50
+   ],
+   "zavar1": [
+    56,
+    6
+   ],
+   "zavar2": [
+    6,
+    6
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "line": [
+     "folyo_be",
+     [
+      32,
+      16
+     ],
+     [
+      30,
+      28
+     ],
+     [
+      40,
+      34
+     ],
+     [
+      48,
+      42
+     ],
+     [
+      64,
+      46
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      20
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     [
+      28,
+      20
+     ],
+     [
+      36,
+      20
+     ]
+    ],
+    "w": 1
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     "uveghaz1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "telep",
+     [
+      26,
+      34
+     ],
+     [
+      36,
+      38
+     ],
+     [
+      44,
+      42
+     ]
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      10,
+      12
+     ],
+     5
+    ],
+    "density": 0.7
+   },
+   {
+    "area": [
+     [
+      54,
+      24
+     ],
+     5
+    ],
+    "density": 0.7
+   },
+   {
+    "area": [
+     [
+      22,
+      10
+     ],
+     4
+    ],
+    "density": 0.5
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": "arany1"
+   },
+   {
+    "kind": "stone",
+    "at": "arany2"
+   },
+   {
+    "kind": "meteor",
+    "at": "meteor1"
+   }
+  ],
+  "starts": [
+   "telep",
+   "zavar1",
+   "kikoto"
+  ]
+ },
+ "player": {
+  "base": true,
+  "resources": {
+   "wood": 500,
+   "stone": 300,
+   "meteor": 80
+  },
+  "units": [
+   {
+    "id": "huk_toidezo",
+    "name": "Relluk, gátmester",
+    "tag": "relluk",
+    "at": "telep"
+   },
+   {
+    "id": "huk_hos_kvarra",
+    "at": "telep"
+   },
+   {
+    "id": "huk_kampokardos",
+    "n": 4,
+    "at": "telep"
+   },
+   {
+    "id": "huk_csuzlis",
+    "n": 3,
+    "at": "telep"
+   }
+  ],
+  "buildings": [
+   {
+    "id": "huk_gyongybuborek",
+    "at": "uveghaz1",
+    "tag": "uveghaz"
+   },
+   {
+    "id": "huk_gyongybuborek",
+    "at": "uveghaz2",
+    "tag": "uveghaz"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "h1_tavak",
+   "type": "ponds",
+   "amount": 12,
+   "text": "Áss ki legalább 12 csempényi tavacskát"
+  },
+  {
+   "id": "h1_gat",
+   "type": "guard",
+   "after": "h1_tavak",
+   "at": "gat1",
+   "radius": 2,
+   "seconds": 6,
+   "text": "Relluk zárja le az első gátat",
+   "marker": "Első gát"
+  },
+  {
+   "id": "h1_kitart",
+   "type": "survive",
+   "after": "h1_gat",
+   "seconds": 150,
+   "text": "Védd a telepet, amíg az ár levonul"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "folyo_be",
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Nézd a színét. Barna, mint a tea, csak keserű. Három tavat már megfertőzött fentebb.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     },
+     {
+      "camera": "telep",
+      "say": [
+       {
+        "who": "Kvarra, a Tóanya",
+        "text": "Előbb a saját tavaink. Áss, Relluk, és számolj közben, ahogy szoktál.",
+        "portrait": "huk_hos_kvarra",
+        "to": "Relluk"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gat_dontes",
+   "on_objective": "h1_gat",
+   "choice": {
+    "title": "Az első gát",
+    "text": "A gát lezárásával a víz nem éri el az üvegházakat – de a kikötő felé fordul, ahol menekülők várnak. Ha nyitva hagyod, a kikötő megmarad, az üvegházak elázhatnak.",
+    "options": [
+     {
+      "label": "Lezárom: az üvegházak maradnak",
+      "flag": "h1_uveghaz",
+      "hint": "Az üvegházak megmenekülnek; a kikötőből a menekülőket a következő küldetésben kell kimenteni.",
+      "reshape": {
+       "paint": [
+        {
+         "t": "water",
+         "line": [
+          [
+           40,
+           34
+          ],
+          [
+           46,
+           30
+          ],
+          [
+           52,
+           34
+          ],
+          "kikoto"
+         ],
+         "w": 3
+        }
+       ]
+      },
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Lezárva. A víz a kikötőnek fordul. Ezt holnap ki kell fizetnünk.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     },
+     {
+      "label": "Nyitva hagyom: a kikötő marad",
+      "flag": "h1_kikoto",
+      "hint": "A menekülők kikötője száraz marad; az üvegházakat elönti a keserű víz.",
+      "reshape": {
+       "paint": [
+        {
+         "t": "water",
+         "area": [
+          [
+           14,
+           27
+          ],
+          4
+         ]
+        }
+       ]
+      },
+      "message": "A keserű víz elönti az üvegházakat.",
+      "color": [
+       255,
+       160,
+       110
+      ],
+      "say": [
+       {
+        "who": "Relluk",
+        "text": "Nyitva marad. Az üvegházak… újraépítjük őket. A menekülőket nem lehet.",
+        "portrait": "huk_toidezo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "w_eszak",
+   "every": 60,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "zavar1",
+    "to": "gat1",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 60,
+   "until": "h1_kitart"
+  },
+  {
+   "id": "w_nyugat",
+   "every": 75,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "zavar2",
+    "to": "uveghaz2",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 110,
+   "until": "h1_kitart"
+  },
+  {
+   "id": "w_ar",
+   "every": 40,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "zavar1",
+    "to": "telep",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 4,
+      "name": "Zavaros víz",
+      "spread": 0.6
+     },
+     {
+      "id": "cro_tuskekopo",
+      "n": 1,
+      "name": "Zavaros víz"
+     }
+    ]
+   },
+   "delay": 5,
+   "until": "h1_kitart",
+   "if_done": "h1_gat"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "h1_kitart",
+   "say": [
+    {
+     "who": "Relluk",
+     "text": "Kilenc medence, egy gát, és egy döntés, amit még sokáig fogok számolni.",
+     "portrait": "huk_toidezo"
+    }
+   ]
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "huk_korallcsarnok",
+   "text": "A Korallcsarnok elesett."
+  },
+  {
+   "tag": "relluk",
+   "text": "Relluk elesett – a gátakat senki sem kezeli."
+  }
+ ],
+ "victory": "A keserű ár levonult. A medencék külön zárhatók – de minden lezárt víz máshová folyik.",
+ "next": "h2_buborekok_a_parton",
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "creeps": false,
+ "victory_variants": [
+  {
+   "if_flag": "h1_uveghaz",
+   "text": "Az üvegházak állnak. A kikötőt elöntötte a víz – a menekülők a parton várnak."
+  },
+  {
+   "if_flag": "h1_kikoto",
+   "text": "A kikötő száraz maradt. Az üvegházak helyén keserű tó áll."
+  }
+ ]
+}

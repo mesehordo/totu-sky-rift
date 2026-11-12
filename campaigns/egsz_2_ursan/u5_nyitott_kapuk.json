@@ -1,0 +1,377 @@
+{
+ "id": "u5_nyitott_kapuk",
+ "title": "5. Nyitott kapuk",
+ "faction": "ursan",
+ "briefing": [
+  "Ragna megnyitja a magtárakat és kiüríti a régi erődöt. Megszegi a parancsot, elveszíti a címét.",
+  "Egy vegyes menekülősereget kell délre vezetnie, a Hét Út szövetsége felé.",
+  "A pajzshordozói vele maradnak."
+ ],
+ "player": {
+  "resources": {
+   "wood": 560,
+   "stone": 340
+  },
+  "units": {
+   "urs_hos_ragna": 1,
+   "urs_pajzshordozo": 6,
+   "urs_szigonyvezo": 3,
+   "urs_runapap": 1,
+   "urs_telepes": 10
+  }
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "hold": 0,
+   "aggression": 1.3,
+   "resources": {
+    "wood": 520,
+    "stone": 280
+   }
+  }
+ ],
+ "objectives": [
+  {
+   "id": "evakual",
+   "type": "reach",
+   "text": "Vezess 10 menekültet a déli úthoz",
+   "units": [
+    "urs_telepes"
+   ],
+   "count": 10,
+   "at": "deli_ut",
+   "radius": 5,
+   "marker": "Déli út"
+  },
+  {
+   "id": "ragna",
+   "type": "reach",
+   "text": "Ragna is érjen oda",
+   "units": [
+    "urs_hos_ragna"
+   ],
+   "at": "deli_ut",
+   "radius": 5
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "erod",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "A kapu nyitva. Aki jön, jöjjön.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     },
+     {
+      "camera": "deli_ut",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "Délre, a Hét Út felé. A pajzs először a mellettünk állót védi.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 20,
+   "message": "Akiket a magtárak idején beengedtél, most vállvetve jönnek – pajzzsal.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "if_flag": "ragna_kapu",
+   "spawn": {
+    "owner": 0,
+    "near": "player_rear",
+    "units": {
+     "urs_pajzshordozo": 3,
+     "urs_telepes": 2
+    }
+   }
+  },
+  {
+   "at": 20,
+   "message": "Ragna a régi kapura gondol, amelyet zárva tartott. Ezt most nem ismétli meg.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "if_flag": "ragna_parancs"
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Ragna",
+     "text": "A kapu nyitva. Aki jön, jöjjön.",
+     "portrait": "urs_hos_ragna"
+    }
+   ]
+  },
+  {
+   "at": 100,
+   "message": "A raj elvágja az utat!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "raj",
+    "units": {
+     "cro_karmos": 8,
+     "cro_tuskekopo": 2
+    },
+    "to": "szoros"
+   }
+  },
+  {
+   "at": 200,
+   "message": "Tava felderítői várják a túloldalon.",
+   "color": [
+    150,
+    220,
+    255
+   ],
+   "spawn": {
+    "owner": 0,
+    "near": "deli_ut",
+    "units": {
+     "wul_ijas_vadasz": 3
+    }
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "ragna",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "deli_ut",
+      "say": [
+       {
+        "who": "Ragna",
+        "text": "Már nem egy birodalmat képviselek. Azokat vezetem, akik vállalták velem a döntést.",
+        "portrait": "urs_hos_ragna"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "urs_hos_ragna",
+   "text": "Ragna elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Ragna már nem egy birodalmat képvisel – azokat vezeti, akik vállalták vele a döntést.",
+ "next": null,
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "code": "URS-05",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (II. hadjárat: Nyitott kapuk)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3505,
+  "points": {
+   "erod": [
+    50,
+    10
+   ],
+   "deli_ut": [
+    10,
+    50
+   ],
+   "kanyar": [
+    34,
+    28
+   ],
+   "szoros": [
+    20,
+    40
+   ],
+   "raj": [
+    56,
+    46
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      18,
+      26
+     ],
+     6
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      40,
+      44
+     ],
+     5
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "erod",
+     "kanyar"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kanyar",
+     "szoros"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szoros",
+     "deli_ut"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      8,
+      22
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      24
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      52,
+      35
+     ],
+     4.5
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      28,
+      13
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      8
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      19
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      15,
+      23
+     ],
+     3.1
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     44,
+     13
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     56,
+     6
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     53,
+     16
+    ]
+   }
+  ],
+  "starts": [
+   "erod",
+   "raj"
+  ],
+  "decor": [],
+  "ambient": []
+ }
+}

@@ -1,0 +1,355 @@
+{
+ "id": "nov_20_2",
+ "code": "NOV-20_2",
+ "title": "Az idegen tojás",
+ "faction": "ooni",
+ "novella": true,
+ "people": "Zhan-zhama",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/20_*.md – „Az idegen tojás”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 66. év, Fehértoll, a Keltetőszentély. Reggel huszonhárom tojás volt. Este huszonnégy.",
+  "A nagy tojásból egy pingvinfióka kelt ki."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3543,
+  "points": {
+   "szentely": [
+    32,
+    30
+   ],
+   "piac": [
+    12,
+    12
+   ],
+   "harcos": [
+    52,
+    46
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "piac"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "harcos"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      20,
+      34
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      25,
+      7
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      54,
+      25
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      51,
+      26
+     ],
+     4.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      20
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      32
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      46,
+      19
+     ],
+     3.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      28
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      33,
+      11
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      12,
+      42
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      30,
+      8
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      54,
+      36
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      19,
+      48
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      10,
+      37
+     ],
+     4.2
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      29,
+      43
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      28
+     ],
+     2.5
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "szentely",
+   "_",
+   "piac"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "zha_tolljos",
+    "at": "szentely",
+    "n": 1,
+    "name": "Tuku-tuk, Tolljós",
+    "tag": "tuku"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "hal",
+   "type": "reach",
+   "at": "piac",
+   "radius": 3,
+   "text": "Hozz halpépet a piacról a fiókának",
+   "marker": "Piac",
+   "tag": "tuku"
+  },
+  {
+   "id": "harcos",
+   "type": "reach",
+   "at": "harcos",
+   "radius": 3,
+   "text": "Keresd meg a Pinguu harcost",
+   "marker": "Pinguu harcos",
+   "after": "hal",
+   "tag": "tuku"
+  },
+  {
+   "id": "fioka",
+   "type": "escort",
+   "tag": "fioka",
+   "min": 1,
+   "at": "harcos",
+   "radius": 5,
+   "text": "Vidd a fiókát a harcoshoz",
+   "marker": "Pinguu harcos",
+   "after": "harcos"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Tuku-tuk",
+        "text": "Csipog. Rám néz, és csipog.",
+        "portrait": "zha_tolljos"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "harcos",
+   "join": "fioka"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "fioka",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "harcos",
+      "say": [
+       {
+        "who": "Pinguu harcos",
+        "text": "A halpép borzalmas volt. Köszönöm.",
+        "portrait": "pin_hopajzsos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Tuku-tuk nem felelt. A szemében könnyek voltak.",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "allies": [
+  {
+   "faction": "pinguu",
+   "name": "Fióka",
+   "units": [
+    {
+     "id": "pin_kajakos",
+     "at": "szentely",
+     "n": 1,
+     "name": "Pingvinfióka",
+     "tag": "fioka"
+    }
+   ]
+  }
+ ]
+}

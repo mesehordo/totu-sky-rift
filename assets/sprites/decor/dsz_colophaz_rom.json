@@ -1,0 +1,28 @@
+{
+ "id": "dsz_colophaz_rom",
+ "image": "dsz_colophaz_rom.png",
+ "type": "decor",
+ "frame_size": [
+  224,
+  288
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  48,
+  136
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 1,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  224,
+  288
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

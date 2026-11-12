@@ -1,0 +1,57 @@
+{
+ "id": "urs_pajzshordozo",
+ "type": "unit",
+ "image": "urs_pajzshordozo.png",
+ "frame_size": [
+  56,
+  47
+ ],
+ "anchor": [
+  28,
+  45
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 6,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 6,
+   "frames": 6,
+   "fps": 8,
+   "loop": true
+  },
+  "attack": {
+   "start": 12,
+   "frames": 6,
+   "fps": 8,
+   "loop": false
+  },
+  "death": {
+   "start": 18,
+   "frames": 6,
+   "fps": 7,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "pack": "ursan.shieldbearer",
+ "pack_kind": "kézzel rajzolt (DK) + tükrözés",
+ "sheet_size": [
+  1344,
+  376
+ ],
+ "team_mask": "urs_pajzshordozo_team.png"
+}

@@ -1,0 +1,36 @@
+{
+ "id": "masks",
+ "type": "tileset",
+ "image": "masks.png",
+ "tile_size": [
+  64,
+  64
+ ],
+ "rows": {
+  "narrow": {
+   "row": 0,
+   "width": 7
+  },
+  "wide": {
+   "row": 1,
+   "width": 11
+  }
+ },
+ "order": [
+  "N",
+  "E",
+  "S",
+  "W",
+  "NE",
+  "SE",
+  "SW",
+  "NW"
+ ],
+ "note": "átmeneti alfa-maszkok: oldalak (N,E,S,W) és belső sarkok; a szomszéd terep textúráját vágják ki",
+ "sheet_size": [
+  512,
+  128
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

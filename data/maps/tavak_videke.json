@@ -1,0 +1,80 @@
+{
+ "id": "tavak_videke",
+ "order": 10,
+ "players": 4,
+ "size": 112,
+ "layout": "ring",
+ "theme": "swamp",
+ "name": {
+  "hu": "Tavak vidéke",
+  "en": "Lakelands"
+ },
+ "desc": {
+  "hu": "Apró tavak és gázlók szabdalt vidéke; sok kis csata, sok kerülőút. A tóparton Nila-uchana és Niil-elf táborok, a szomszédok között gazdag lelőhely.",
+  "en": "Land broken by many small lakes; many skirmishes, many detours."
+ },
+ "features": {
+  "lakes": [
+   6,
+   2,
+   4
+  ],
+  "forests": 12,
+  "start_angle": 45,
+  "rich": true
+ },
+ "camps": {
+  "1": "nila_uchana",
+  "2": "niil_elf"
+ },
+ "decor": [
+  {
+   "id": "nil_lotuszudvar",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  },
+  {
+   "id": "nii_lotuszkikoto",
+   "at": "pair",
+   "d": 12,
+   "s": 0
+  }
+ ],
+ "ambient": [
+  {
+   "id": "nii_nadhajos_ijasz",
+   "at": "pair",
+   "d": 10,
+   "s": 2,
+   "n": 2,
+   "shelter": {
+    "at": "pair",
+    "d": 12,
+    "s": 0
+   },
+   "mode": "idle"
+  },
+  {
+   "id": "nil_naga",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 1,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Sok kis tó: rövid, de szűk gázlók és hosszabb, nyílt kerülők; a gazdag helyek a szomszéd felé nyitottak.",
+  "felallasok": "mindenki-mindenki ellen (4), kevesebb játékossal is",
+  "taborok": {
+   "1": "Nila-uchana",
+   "2": "Niil-elf"
+  }
+ }
+}

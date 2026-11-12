@@ -1,0 +1,40 @@
+{
+ "id": "urs_sasszirt",
+ "type": "building",
+ "image": "urs_sasszirt.png",
+ "frame_size": [
+  118,
+  110
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  11,
+  8
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.shaman_lodge",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  590,
+  110
+ ],
+ "team_mask": "urs_sasszirt_team.png"
+}

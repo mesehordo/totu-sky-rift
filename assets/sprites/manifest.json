@@ -1,0 +1,1140 @@
+{
+ "version": 1,
+ "tile_size": 32,
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "units": {
+  "elf_kofarago": {
+   "meta": "units/elf_kofarago.json"
+  },
+  "elf_tollas_harcos": {
+   "meta": "units/elf_tollas_harcos.json"
+  },
+  "elf_jade_ijasz": {
+   "meta": "units/elf_jade_ijasz.json"
+  },
+  "elf_raptor_lovas": {
+   "meta": "units/elf_raptor_lovas.json"
+  },
+  "elf_napszoro": {
+   "meta": "units/elf_napszoro.json"
+  },
+  "elf_quetzal": {
+   "meta": "units/elf_quetzal.json"
+  },
+  "elf_tollas_rex": {
+   "meta": "units/elf_tollas_rex.json"
+  },
+  "urs_telepes": {
+   "meta": "units/urs_telepes.json"
+  },
+  "urs_pajzshordozo": {
+   "meta": "units/urs_pajzshordozo.json"
+  },
+  "urs_szigonyvezo": {
+   "meta": "units/urs_szigonyvezo.json"
+  },
+  "urs_berserker": {
+   "meta": "units/urs_berserker.json"
+  },
+  "urs_runapap": {
+   "meta": "units/urs_runapap.json"
+  },
+  "urs_kardfogu": {
+   "meta": "units/urs_kardfogu.json"
+  },
+  "urs_viharhollo": {
+   "meta": "units/urs_viharhollo.json"
+  },
+  "urs_mammut": {
+   "meta": "units/urs_mammut.json"
+  },
+  "cro_csapszolga": {
+   "meta": "units/cro_csapszolga.json"
+  },
+  "cro_karmos": {
+   "meta": "units/cro_karmos.json"
+  },
+  "cro_tuskekopo": {
+   "meta": "units/cro_tuskekopo.json"
+  },
+  "cro_savkopo": {
+   "meta": "units/cro_savkopo.json"
+  },
+  "cro_agyfalo": {
+   "meta": "units/cro_agyfalo.json"
+  },
+  "cro_szarnyas_rem": {
+   "meta": "units/cro_szarnyas_rem.json"
+  },
+  "cro_csapos_horror": {
+   "meta": "units/cro_csapos_horror.json"
+  },
+  "wul_gyujtogeto": {
+   "meta": "units/wul_gyujtogeto.json"
+  },
+  "wul_landzsas": {
+   "meta": "units/wul_landzsas.json"
+  },
+  "wul_ijas_vadasz": {
+   "meta": "units/wul_ijas_vadasz.json"
+  },
+  "wul_holdsaman": {
+   "meta": "units/wul_holdsaman.json"
+  },
+  "wul_szellemfarkas": {
+   "meta": "units/wul_szellemfarkas.json"
+  },
+  "wul_bolenylovas": {
+   "meta": "units/wul_bolenylovas.json"
+  },
+  "wul_mennydorgesmadar": {
+   "meta": "units/wul_mennydorgesmadar.json"
+  },
+  "wul_totemorias": {
+   "meta": "units/wul_totemorias.json"
+  },
+  "wul_vandorszeker": {
+   "meta": "units/wul_vandorszeker.json"
+  },
+  "myc_sporaszedo": {
+   "meta": "units/myc_sporaszedo.json"
+  },
+  "myc_pofeteg": {
+   "meta": "units/myc_pofeteg.json"
+  },
+  "myc_tuskegomba_lovesz": {
+   "meta": "units/myc_tuskegomba_lovesz.json"
+  },
+  "myc_kalapos_or": {
+   "meta": "units/myc_kalapos_or.json"
+  },
+  "myc_alomsaman": {
+   "meta": "units/myc_alomsaman.json"
+  },
+  "myc_oriaspofeteg": {
+   "meta": "units/myc_oriaspofeteg.json"
+  },
+  "myc_lebego_pofeteg": {
+   "meta": "units/myc_lebego_pofeteg.json"
+  },
+  "imp_fabrikator": {
+   "meta": "units/imp_fabrikator.json"
+  },
+  "imp_legios": {
+   "meta": "units/imp_legios.json"
+  },
+  "imp_ballistarius": {
+   "meta": "units/imp_ballistarius.json"
+  },
+  "imp_szellemidezo": {
+   "meta": "units/imp_szellemidezo.json"
+  },
+  "imp_centurio": {
+   "meta": "units/imp_centurio.json"
+  },
+  "imp_aquila": {
+   "meta": "units/imp_aquila.json"
+  },
+  "imp_kolosszus": {
+   "meta": "units/imp_kolosszus.json"
+  },
+  "imp_szellemlegios": {
+   "meta": "units/imp_szellemlegios.json"
+  },
+  "imp_szellemkolosszus": {
+   "meta": "units/imp_szellemkolosszus.json"
+  },
+  "urs_hos_ragna": {
+   "meta": "units/urs_hos_ragna.json"
+  },
+  "elf_hos_szelai": {
+   "meta": "units/elf_hos_szelai.json"
+  },
+  "elf_csillagdardas": {
+   "meta": "units/elf_csillagdardas.json"
+  },
+  "elf_obszidian_veto": {
+   "meta": "units/elf_obszidian_veto.json"
+  },
+  "elf_jadeor": {
+   "meta": "units/elf_jadeor.json"
+  },
+  "elf_hos_itzcoatl": {
+   "meta": "units/elf_hos_itzcoatl.json"
+  },
+  "elf_hos_xochi": {
+   "meta": "units/elf_hos_xochi.json"
+  },
+  "urs_dardaor": {
+   "meta": "units/urs_dardaor.json"
+  },
+  "urs_ostromszan": {
+   "meta": "units/urs_ostromszan.json"
+  },
+  "urs_kardfogu_tigris": {
+   "meta": "units/urs_kardfogu_tigris.json"
+  },
+  "urs_hos_hjalmar": {
+   "meta": "units/urs_hos_hjalmar.json"
+  },
+  "urs_hos_bjarka": {
+   "meta": "units/urs_hos_bjarka.json"
+  },
+  "cro_hos_keth": {
+   "meta": "units/cro_hos_keth.json"
+  },
+  "cro_pancelbogar": {
+   "meta": "units/cro_pancelbogar.json"
+  },
+  "cro_guboj": {
+   "meta": "units/cro_guboj.json"
+  },
+  "cro_szemhordozo": {
+   "meta": "units/cro_szemhordozo.json"
+  },
+  "cro_hos_vor": {
+   "meta": "units/cro_hos_vor.json"
+  },
+  "cro_hos_ssarha": {
+   "meta": "units/cro_hos_ssarha.json"
+  },
+  "wul_hos_tava": {
+   "meta": "units/wul_hos_tava.json"
+  },
+  "wul_tomahawkos": {
+   "meta": "units/wul_tomahawkos.json"
+  },
+  "wul_hos_varnu": {
+   "meta": "units/wul_hos_varnu.json"
+  },
+  "wul_hos_kurrin": {
+   "meta": "units/wul_hos_kurrin.json"
+  },
+  "myc_hos_mor": {
+   "meta": "units/myc_hos_mor.json"
+  },
+  "myc_rothaszto": {
+   "meta": "units/myc_rothaszto.json"
+  },
+  "myc_hos_gyokeranya": {
+   "meta": "units/myc_hos_gyokeranya.json"
+  },
+  "myc_hos_sporin": {
+   "meta": "units/myc_hos_sporin.json"
+  },
+  "imp_hos_livia": {
+   "meta": "units/imp_hos_livia.json"
+  },
+  "imp_hos_nera": {
+   "meta": "units/imp_hos_nera.json"
+  },
+  "imp_onager": {
+   "meta": "units/imp_onager.json"
+  },
+  "imp_hos_cassius": {
+   "meta": "units/imp_hos_cassius.json"
+  },
+  "vad_kristalybogar": {
+   "meta": "units/vad_kristalybogar.json"
+  },
+  "vad_hamufarkas": {
+   "meta": "units/vad_hamufarkas.json"
+  },
+  "vad_eterliderc": {
+   "meta": "units/vad_eterliderc.json"
+  },
+  "vad_kotroll": {
+   "meta": "units/vad_kotroll.json"
+  },
+  "vad_ercgolem": {
+   "meta": "units/vad_ercgolem.json"
+  },
+  "urs_runako": {
+   "meta": "units/urs_runako.json"
+  },
+  "imp_lelekhorgony": {
+   "meta": "units/imp_lelekhorgony.json"
+  },
+  "elf_fopap": {
+   "meta": "units/elf_fopap.json"
+  },
+  "elf_jaguar": {
+   "meta": "units/elf_jaguar.json"
+  },
+  "elf_csillagjos": {
+   "meta": "units/elf_csillagjos.json"
+  },
+  "urs_medvealak": {
+   "meta": "units/urs_medvealak.json"
+  },
+  "urs_kurtos": {
+   "meta": "units/urs_kurtos.json"
+  },
+  "urs_runaorias": {
+   "meta": "units/urs_runaorias.json"
+  },
+  "cro_robbanoatka": {
+   "meta": "units/cro_robbanoatka.json"
+  },
+  "cro_vadaszkarmos": {
+   "meta": "units/cro_vadaszkarmos.json"
+  },
+  "cro_ostromtaraj": {
+   "meta": "units/cro_ostromtaraj.json"
+  },
+  "cro_asoferegg": {
+   "meta": "units/cro_asoferegg.json"
+  },
+  "wul_emu": {
+   "meta": "units/wul_emu.json"
+  },
+  "wul_boleny": {
+   "meta": "units/wul_boleny.json"
+  },
+  "wul_groomi": {
+   "meta": "units/wul_groomi.json"
+  },
+  "wul_csordavezer": {
+   "meta": "units/wul_csordavezer.json"
+  },
+  "wul_groomi_fioka": {
+   "meta": "units/wul_groomi_fioka.json"
+  },
+  "wul_groomi_anya": {
+   "meta": "units/wul_groomi_anya.json"
+  },
+  "wul_totemfarago": {
+   "meta": "units/wul_totemfarago.json"
+  },
+  "wul_alomjaro": {
+   "meta": "units/wul_alomjaro.json"
+  },
+  "myc_tetemgomba": {
+   "meta": "units/myc_tetemgomba.json"
+  },
+  "myc_fagomba_orias": {
+   "meta": "units/myc_fagomba_orias.json"
+  },
+  "myc_alomszovo": {
+   "meta": "units/myc_alomszovo.json"
+  },
+  "imp_praetorianus": {
+   "meta": "units/imp_praetorianus.json"
+  },
+  "huk_ikrarako": {
+   "meta": "units/huk_ikrarako.json"
+  },
+  "oon_favago": {
+   "meta": "units/oon_favago.json"
+  },
+  "oon_lampaspap": {
+   "meta": "units/oon_lampaspap.json"
+  }
+ },
+ "buildings": {
+  "elf_napszentely": {
+   "meta": "buildings/elf_napszentely.json"
+  },
+  "elf_obeliszk": {
+   "meta": "buildings/elf_obeliszk.json"
+  },
+  "elf_harcos_csarnok": {
+   "meta": "buildings/elf_harcos_csarnok.json"
+  },
+  "elf_obszidian_muhely": {
+   "meta": "buildings/elf_obszidian_muhely.json"
+  },
+  "elf_raptor_karam": {
+   "meta": "buildings/elf_raptor_karam.json"
+  },
+  "elf_csillagvizsgalo": {
+   "meta": "buildings/elf_csillagvizsgalo.json"
+  },
+  "elf_tollfeszek": {
+   "meta": "buildings/elf_tollfeszek.json"
+  },
+  "elf_jade_oszlop": {
+   "meta": "buildings/elf_jade_oszlop.json"
+  },
+  "urs_nagyterem": {
+   "meta": "buildings/urs_nagyterem.json"
+  },
+  "urs_hosszuhaz": {
+   "meta": "buildings/urs_hosszuhaz.json"
+  },
+  "urs_fatelep": {
+   "meta": "buildings/urs_fatelep.json"
+  },
+  "urs_harcosok_haza": {
+   "meta": "buildings/urs_harcosok_haza.json"
+  },
+  "urs_runakovacs": {
+   "meta": "buildings/urs_runakovacs.json"
+  },
+  "urs_vadak_karama": {
+   "meta": "buildings/urs_vadak_karama.json"
+  },
+  "urs_sasszirt": {
+   "meta": "buildings/urs_sasszirt.json"
+  },
+  "urs_ortorony": {
+   "meta": "buildings/urs_ortorony.json"
+  },
+  "cro_kaptar": {
+   "meta": "buildings/cro_kaptar.json"
+  },
+  "cro_tapgomba": {
+   "meta": "buildings/cro_tapgomba.json"
+  },
+  "cro_emeszto": {
+   "meta": "buildings/cro_emeszto.json"
+  },
+  "cro_ikrafeszek": {
+   "meta": "buildings/cro_ikrafeszek.json"
+  },
+  "cro_tuskeverem": {
+   "meta": "buildings/cro_tuskeverem.json"
+  },
+  "cro_agyszentely": {
+   "meta": "buildings/cro_agyszentely.json"
+  },
+  "cro_csontcsucs": {
+   "meta": "buildings/cro_csontcsucs.json"
+  },
+  "cro_tuskes_gyoker": {
+   "meta": "buildings/cro_tuskes_gyoker.json"
+  },
+  "wul_tanacssator": {
+   "meta": "buildings/wul_tanacssator.json"
+  },
+  "wul_tipi": {
+   "meta": "buildings/wul_tipi.json"
+  },
+  "wul_harcosok_tuze": {
+   "meta": "buildings/wul_harcosok_tuze.json"
+  },
+  "wul_bolenykaram": {
+   "meta": "buildings/wul_bolenykaram.json"
+  },
+  "wul_samansator": {
+   "meta": "buildings/wul_samansator.json"
+  },
+  "wul_mennydorges_szikla": {
+   "meta": "buildings/wul_mennydorges_szikla.json"
+  },
+  "wul_szellemtotem": {
+   "meta": "buildings/wul_szellemtotem.json"
+  },
+  "myc_szivgomba": {
+   "meta": "buildings/myc_szivgomba.json"
+  },
+  "myc_sporafonal": {
+   "meta": "buildings/myc_sporafonal.json"
+  },
+  "myc_termotest": {
+   "meta": "buildings/myc_termotest.json"
+  },
+  "myc_tuskegomba_telep": {
+   "meta": "buildings/myc_tuskegomba_telep.json"
+  },
+  "myc_gyokerbarlang": {
+   "meta": "buildings/myc_gyokerbarlang.json"
+  },
+  "myc_alomkert": {
+   "meta": "buildings/myc_alomkert.json"
+  },
+  "myc_lebegobolcso": {
+   "meta": "buildings/myc_lebegobolcso.json"
+  },
+  "imp_forum": {
+   "meta": "buildings/imp_forum.json"
+  },
+  "imp_reaktor": {
+   "meta": "buildings/imp_reaktor.json"
+  },
+  "imp_legiogyar": {
+   "meta": "buildings/imp_legiogyar.json"
+  },
+  "imp_ontode": {
+   "meta": "buildings/imp_ontode.json"
+  },
+  "imp_gepisten_templom": {
+   "meta": "buildings/imp_gepisten_templom.json"
+  },
+  "imp_hangar": {
+   "meta": "buildings/imp_hangar.json"
+  },
+  "imp_aquila_torony": {
+   "meta": "buildings/imp_aquila_torony.json"
+  },
+  "kethri_tojaskamra": {
+   "meta": "buildings/kethri_tojaskamra.json"
+  },
+  "elf_napkapu": {
+   "meta": "buildings/elf_napkapu.json"
+  },
+  "urs_eskufa": {
+   "meta": "buildings/urs_eskufa.json"
+  },
+  "urs_tanya": {
+   "meta": "buildings/urs_tanya.json"
+  },
+  "cro_korus_kut": {
+   "meta": "buildings/cro_korus_kut.json"
+  },
+  "wul_osok_kore": {
+   "meta": "buildings/wul_osok_kore.json"
+  },
+  "myc_emlekfa": {
+   "meta": "buildings/myc_emlekfa.json"
+  },
+  "imp_panteon": {
+   "meta": "buildings/imp_panteon.json"
+  },
+  "urs_colopfal": {
+   "meta": "buildings/urs_colopfal.json"
+  },
+  "elf_naptemplom": {
+   "meta": "buildings/elf_naptemplom.json"
+  },
+  "urs_verfogadalom": {
+   "meta": "buildings/urs_verfogadalom.json"
+  },
+  "urs_runaszentely": {
+   "meta": "buildings/urs_runaszentely.json"
+  },
+  "cro_rajkamra": {
+   "meta": "buildings/cro_rajkamra.json"
+  },
+  "cro_kitinkamra": {
+   "meta": "buildings/cro_kitinkamra.json"
+  },
+  "wul_bolenyakol": {
+   "meta": "buildings/wul_bolenyakol.json"
+  },
+  "wul_groomi_feszek": {
+   "meta": "buildings/wul_groomi_feszek.json"
+  },
+  "wul_totemkert": {
+   "meta": "buildings/wul_totemkert.json"
+  },
+  "myc_rothadokert": {
+   "meta": "buildings/myc_rothadokert.json"
+  },
+  "myc_oriasliget": {
+   "meta": "buildings/myc_oriasliget.json"
+  },
+  "imp_praetorium": {
+   "meta": "buildings/imp_praetorium.json"
+  },
+  "imp_lelekkut": {
+   "meta": "buildings/imp_lelekkut.json"
+  },
+  "cro_diplomacia": {
+   "meta": "buildings/cro_diplomacia.json"
+  },
+  "dar_agyagkaptar": {
+   "meta": "buildings/dar_agyagkaptar.json"
+  },
+  "dar_gyantamuhely": {
+   "meta": "buildings/dar_gyantamuhely.json"
+  },
+  "dar_szarnyudvar": {
+   "meta": "buildings/dar_szarnyudvar.json"
+  },
+  "elf_diplomacia": {
+   "meta": "buildings/elf_diplomacia.json"
+  },
+  "gal_harapofeszek": {
+   "meta": "buildings/gal_harapofeszek.json"
+  },
+  "gal_sporakurt": {
+   "meta": "buildings/gal_sporakurt.json"
+  },
+  "gal_tuskekert": {
+   "meta": "buildings/gal_tuskekert.json"
+  },
+  "gho_fogadalomharang": {
+   "meta": "buildings/gho_fogadalomharang.json"
+  },
+  "gho_kocipo_malom": {
+   "meta": "buildings/gho_kocipo_malom.json"
+  },
+  "gho_ragoko_banya": {
+   "meta": "buildings/gho_ragoko_banya.json"
+  },
+  "huk_arvizkapu": {
+   "meta": "buildings/huk_arvizkapu.json"
+  },
+  "huk_diplomacia": {
+   "meta": "buildings/huk_diplomacia.json"
+  },
+  "huk_goteistallo": {
+   "meta": "buildings/huk_goteistallo.json"
+  },
+  "huk_gyongybuborek": {
+   "meta": "buildings/huk_gyongybuborek.json"
+  },
+  "huk_gyongykert": {
+   "meta": "buildings/huk_gyongykert.json"
+  },
+  "huk_gyongymuhely": {
+   "meta": "buildings/huk_gyongymuhely.json"
+  },
+  "huk_korallcsarnok": {
+   "meta": "buildings/huk_korallcsarnok.json"
+  },
+  "huk_korallor": {
+   "meta": "buildings/huk_korallor.json"
+  },
+  "huk_melyseg_kapuja": {
+   "meta": "buildings/huk_melyseg_kapuja.json"
+  },
+  "huk_nadbarakk": {
+   "meta": "buildings/huk_nadbarakk.json"
+  },
+  "huk_toteremto": {
+   "meta": "buildings/huk_toteremto.json"
+  },
+  "imp_diplomacia": {
+   "meta": "buildings/imp_diplomacia.json"
+  },
+  "mho_harompenge_kovacsda": {
+   "meta": "buildings/mho_harompenge_kovacsda.json"
+  },
+  "mho_parazsszentely": {
+   "meta": "buildings/mho_parazsszentely.json"
+  },
+  "mho_szelpenge_udvar": {
+   "meta": "buildings/mho_szelpenge_udvar.json"
+  },
+  "nii_arvizszentely": {
+   "meta": "buildings/nii_arvizszentely.json"
+  },
+  "nii_lotuszkikoto": {
+   "meta": "buildings/nii_lotuszkikoto.json"
+  },
+  "nii_nadpalota": {
+   "meta": "buildings/nii_nadpalota.json"
+  },
+  "nil_lotuszudvar": {
+   "meta": "buildings/nil_lotuszudvar.json"
+  },
+  "nil_makara_medence": {
+   "meta": "buildings/nil_makara_medence.json"
+  },
+  "nil_szornyek_csarnoka": {
+   "meta": "buildings/nil_szornyek_csarnoka.json"
+  },
+  "oon_diplomacia": {
+   "meta": "buildings/oon_diplomacia.json"
+  },
+  "oon_edzoudvar": {
+   "meta": "buildings/oon_edzoudvar.json"
+  },
+  "oon_kapuorzo_torony": {
+   "meta": "buildings/oon_kapuorzo_torony.json"
+  },
+  "oon_kapuszentely": {
+   "meta": "buildings/oon_kapuszentely.json"
+  },
+  "oon_lakohaz": {
+   "meta": "buildings/oon_lakohaz.json"
+  },
+  "oon_lampaskert": {
+   "meta": "buildings/oon_lampaskert.json"
+  },
+  "oon_meselenyek": {
+   "meta": "buildings/oon_meselenyek.json"
+  },
+  "oon_nian_csarnok": {
+   "meta": "buildings/oon_nian_csarnok.json"
+  },
+  "oon_papirlampas": {
+   "meta": "buildings/oon_papirlampas.json"
+  },
+  "oon_szelcsucs": {
+   "meta": "buildings/oon_szelcsucs.json"
+  },
+  "oon_tengu_feszek": {
+   "meta": "buildings/oon_tengu_feszek.json"
+  },
+  "oon_voros_dojo": {
+   "meta": "buildings/oon_voros_dojo.json"
+  },
+  "pin_arapalymuhely": {
+   "meta": "buildings/pin_arapalymuhely.json"
+  },
+  "pin_jegcsarnok": {
+   "meta": "buildings/pin_jegcsarnok.json"
+  },
+  "pin_orlangszentely": {
+   "meta": "buildings/pin_orlangszentely.json"
+  },
+  "shr_runaszellozo": {
+   "meta": "buildings/shr_runaszellozo.json"
+  },
+  "shr_tollvar": {
+   "meta": "buildings/shr_tollvar.json"
+  },
+  "shr_tuskekelteto": {
+   "meta": "buildings/shr_tuskekelteto.json"
+  },
+  "ten_fenyfeszek": {
+   "meta": "buildings/ten_fenyfeszek.json"
+  },
+  "ten_lampasfa": {
+   "meta": "buildings/ten_lampasfa.json"
+  },
+  "ten_tovisudvar": {
+   "meta": "buildings/ten_tovisudvar.json"
+  },
+  "tok_harangkapu": {
+   "meta": "buildings/tok_harangkapu.json"
+  },
+  "tok_maszkcsur": {
+   "meta": "buildings/tok_maszkcsur.json"
+  },
+  "tok_zuzmaramuhely": {
+   "meta": "buildings/tok_zuzmaramuhely.json"
+  },
+  "tuz_delibabtorony": {
+   "meta": "buildings/tuz_delibabtorony.json"
+  },
+  "tuz_dunepavilon": {
+   "meta": "buildings/tuz_dunepavilon.json"
+  },
+  "tuz_parazskemence": {
+   "meta": "buildings/tuz_parazskemence.json"
+  },
+  "urs_diplomacia": {
+   "meta": "buildings/urs_diplomacia.json"
+  },
+  "wul_diplomacia": {
+   "meta": "buildings/wul_diplomacia.json"
+  },
+  "zha_feszekhaz": {
+   "meta": "buildings/zha_feszekhaz.json"
+  },
+  "zha_kakasudvar": {
+   "meta": "buildings/zha_kakasudvar.json"
+  },
+  "zha_keltetoszentely": {
+   "meta": "buildings/zha_keltetoszentely.json"
+  },
+  "cro_egko": {
+   "meta": "buildings/cro_egko.json"
+  },
+  "cro_tarna": {
+   "meta": "buildings/cro_tarna.json"
+  },
+  "elf_egko": {
+   "meta": "buildings/elf_egko.json"
+  },
+  "elf_napfuro": {
+   "meta": "buildings/elf_napfuro.json"
+  },
+  "huk_egko": {
+   "meta": "buildings/huk_egko.json"
+  },
+  "imp_egko": {
+   "meta": "buildings/imp_egko.json"
+  },
+  "imp_finomito": {
+   "meta": "buildings/imp_finomito.json"
+  },
+  "imp_szobor_arcanor": {
+   "meta": "buildings/imp_szobor_arcanor.json"
+  },
+  "imp_szobor_ferrox": {
+   "meta": "buildings/imp_szobor_ferrox.json"
+  },
+  "imp_szobor_umbrax": {
+   "meta": "buildings/imp_szobor_umbrax.json"
+  },
+  "imp_szoborpark": {
+   "meta": "buildings/imp_szoborpark.json"
+  },
+  "oon_egko": {
+   "meta": "buildings/oon_egko.json"
+  },
+  "oon_torii": {
+   "meta": "buildings/oon_torii.json"
+  },
+  "urs_egko": {
+   "meta": "buildings/urs_egko.json"
+  },
+  "wul_egko": {
+   "meta": "buildings/wul_egko.json"
+  },
+  "urs_colopfal_v": {
+   "meta": "buildings/urs_colopfal_v.json"
+  }
+ },
+ "resources": {
+  "wood": "resources/wood.json",
+  "stone": "resources/stone.json",
+  "food": "resources/food.json",
+  "meteor": "resources/meteor.json"
+ },
+ "projectiles": {
+  "arrow": "projectiles/arrow.json",
+  "spear": "projectiles/spear.json",
+  "boulder": "projectiles/boulder.json",
+  "boomerang": "projectiles/boomerang.json",
+  "acid": "projectiles/acid.json",
+  "magic": "projectiles/magic.json"
+ },
+ "effects": {
+  "explosion": "effects/explosion.json",
+  "hit": "effects/hit.json",
+  "blood": "effects/blood.json",
+  "heal": "effects/heal.json",
+  "napvihar": "effects/napvihar.json",
+  "oruletkod": "effects/oruletkod.json",
+  "slash": "effects/slash.json",
+  "dust": "effects/dust.json",
+  "gyokerkotes": "effects/gyokerkotes.json",
+  "hosszutel": "effects/hosszutel.json",
+  "lelegzet": "effects/lelegzet.json",
+  "levelup": "effects/levelup.json",
+  "vfx_arcane_area": {
+   "meta": "effects/vfx_arcane_area.json"
+  },
+  "vfx_arcane_bolt": {
+   "meta": "effects/vfx_arcane_bolt.json"
+  },
+  "vfx_arcane_impact": {
+   "meta": "effects/vfx_arcane_impact.json"
+  },
+  "vfx_arcane_nova": {
+   "meta": "effects/vfx_arcane_nova.json"
+  },
+  "vfx_blind_area": {
+   "meta": "effects/vfx_blind_area.json"
+  },
+  "vfx_blind_bolt": {
+   "meta": "effects/vfx_blind_bolt.json"
+  },
+  "vfx_blind_cast": {
+   "meta": "effects/vfx_blind_cast.json"
+  },
+  "vfx_blind_impact": {
+   "meta": "effects/vfx_blind_impact.json"
+  },
+  "vfx_blind_nova": {
+   "meta": "effects/vfx_blind_nova.json"
+  },
+  "vfx_fear_area": {
+   "meta": "effects/vfx_fear_area.json"
+  },
+  "vfx_fear_bolt": {
+   "meta": "effects/vfx_fear_bolt.json"
+  },
+  "vfx_fear_cast": {
+   "meta": "effects/vfx_fear_cast.json"
+  },
+  "vfx_fire_area": {
+   "meta": "effects/vfx_fire_area.json"
+  },
+  "vfx_fire_bolt": {
+   "meta": "effects/vfx_fire_bolt.json"
+  },
+  "vfx_fire_cast": {
+   "meta": "effects/vfx_fire_cast.json"
+  },
+  "vfx_fire_impact": {
+   "meta": "effects/vfx_fire_impact.json"
+  },
+  "vfx_fire_nova": {
+   "meta": "effects/vfx_fire_nova.json"
+  },
+  "vfx_ice_area": {
+   "meta": "effects/vfx_ice_area.json"
+  },
+  "vfx_ice_bolt": {
+   "meta": "effects/vfx_ice_bolt.json"
+  },
+  "vfx_ice_cast": {
+   "meta": "effects/vfx_ice_cast.json"
+  },
+  "vfx_ice_impact": {
+   "meta": "effects/vfx_ice_impact.json"
+  },
+  "vfx_ice_nova": {
+   "meta": "effects/vfx_ice_nova.json"
+  },
+  "vfx_lightning_area": {
+   "meta": "effects/vfx_lightning_area.json"
+  },
+  "vfx_lightning_bolt": {
+   "meta": "effects/vfx_lightning_bolt.json"
+  },
+  "vfx_lightning_cast": {
+   "meta": "effects/vfx_lightning_cast.json"
+  },
+  "vfx_lightning_impact": {
+   "meta": "effects/vfx_lightning_impact.json"
+  },
+  "vfx_lightning_nova": {
+   "meta": "effects/vfx_lightning_nova.json"
+  },
+  "vfx_mark_area": {
+   "meta": "effects/vfx_mark_area.json"
+  },
+  "vfx_mark_bolt": {
+   "meta": "effects/vfx_mark_bolt.json"
+  },
+  "vfx_mark_cast": {
+   "meta": "effects/vfx_mark_cast.json"
+  },
+  "vfx_mark_nova": {
+   "meta": "effects/vfx_mark_nova.json"
+  },
+  "vfx_poison_area": {
+   "meta": "effects/vfx_poison_area.json"
+  },
+  "vfx_poison_bolt": {
+   "meta": "effects/vfx_poison_bolt.json"
+  },
+  "vfx_poison_cast": {
+   "meta": "effects/vfx_poison_cast.json"
+  },
+  "vfx_poison_impact": {
+   "meta": "effects/vfx_poison_impact.json"
+  },
+  "vfx_root_area": {
+   "meta": "effects/vfx_root_area.json"
+  },
+  "vfx_root_bolt": {
+   "meta": "effects/vfx_root_bolt.json"
+  },
+  "vfx_root_cast": {
+   "meta": "effects/vfx_root_cast.json"
+  },
+  "vfx_root_impact": {
+   "meta": "effects/vfx_root_impact.json"
+  },
+  "vfx_root_nova": {
+   "meta": "effects/vfx_root_nova.json"
+  },
+  "vfx_silence_area": {
+   "meta": "effects/vfx_silence_area.json"
+  },
+  "vfx_silence_bolt": {
+   "meta": "effects/vfx_silence_bolt.json"
+  },
+  "vfx_silence_cast": {
+   "meta": "effects/vfx_silence_cast.json"
+  },
+  "vfx_silence_nova": {
+   "meta": "effects/vfx_silence_nova.json"
+  },
+  "vfx_sleep_area": {
+   "meta": "effects/vfx_sleep_area.json"
+  },
+  "vfx_sleep_bolt": {
+   "meta": "effects/vfx_sleep_bolt.json"
+  },
+  "vfx_sleep_cast": {
+   "meta": "effects/vfx_sleep_cast.json"
+  },
+  "vfx_sleep_impact": {
+   "meta": "effects/vfx_sleep_impact.json"
+  },
+  "vfx_sleep_nova": {
+   "meta": "effects/vfx_sleep_nova.json"
+  },
+  "vfx_sunder_area": {
+   "meta": "effects/vfx_sunder_area.json"
+  },
+  "vfx_sunder_cast": {
+   "meta": "effects/vfx_sunder_cast.json"
+  },
+  "vfx_sunder_impact": {
+   "meta": "effects/vfx_sunder_impact.json"
+  },
+  "vfx_sunder_nova": {
+   "meta": "effects/vfx_sunder_nova.json"
+  },
+  "vfx_water_area": {
+   "meta": "effects/vfx_water_area.json"
+  },
+  "vfx_water_bolt": {
+   "meta": "effects/vfx_water_bolt.json"
+  },
+  "vfx_water_impact": {
+   "meta": "effects/vfx_water_impact.json"
+  },
+  "vfx_water_nova": {
+   "meta": "effects/vfx_water_nova.json"
+  },
+  "vfx_wind_area": {
+   "meta": "effects/vfx_wind_area.json"
+  },
+  "vfx_wind_cast": {
+   "meta": "effects/vfx_wind_cast.json"
+  },
+  "vfx_wind_impact": {
+   "meta": "effects/vfx_wind_impact.json"
+  },
+  "vfx_arcane_cast": {
+   "meta": "effects/vfx_arcane_cast.json"
+  },
+  "vfx_fear_impact": {
+   "meta": "effects/vfx_fear_impact.json"
+  },
+  "vfx_fear_nova": {
+   "meta": "effects/vfx_fear_nova.json"
+  },
+  "vfx_mark_impact": {
+   "meta": "effects/vfx_mark_impact.json"
+  },
+  "vfx_poison_nova": {
+   "meta": "effects/vfx_poison_nova.json"
+  },
+  "vfx_silence_impact": {
+   "meta": "effects/vfx_silence_impact.json"
+  },
+  "vfx_sunder_bolt": {
+   "meta": "effects/vfx_sunder_bolt.json"
+  },
+  "vfx_water_cast": {
+   "meta": "effects/vfx_water_cast.json"
+  },
+  "vfx_wind_bolt": {
+   "meta": "effects/vfx_wind_bolt.json"
+  },
+  "vfx_wind_nova": {
+   "meta": "effects/vfx_wind_nova.json"
+  }
+ },
+ "tiles": {
+  "tileset": "tiles/tileset.json",
+  "masks": "tiles/masks.json"
+ },
+ "props": {
+  "rock": "props/rock.json",
+  "doodads": "props/doodads.json",
+  "decals_swamp": {
+   "meta": "props/decals_swamp.json"
+  },
+  "decals_wasteland": {
+   "meta": "props/decals_wasteland.json"
+  },
+  "decals_winter": {
+   "meta": "props/decals_winter.json"
+  },
+  "doodads_swamp": {
+   "meta": "props/doodads_swamp.json"
+  },
+  "doodads_wasteland": {
+   "meta": "props/doodads_wasteland.json"
+  },
+  "doodads_winter": {
+   "meta": "props/doodads_winter.json"
+  }
+ },
+ "scale": 2,
+ "decor": {
+  "dsz_befagyott_csonak": {
+   "meta": "decor/dsz_befagyott_csonak.json"
+  },
+  "dsz_colophaz_rom": {
+   "meta": "decor/dsz_colophaz_rom.json"
+  },
+  "dsz_elsullyedt_szobor": {
+   "meta": "decor/dsz_elsullyedt_szobor.json"
+  },
+  "dsz_hasadekkristaly": {
+   "meta": "decor/dsz_hasadekkristaly.json"
+  },
+  "dsz_hokunyho_rom": {
+   "meta": "decor/dsz_hokunyho_rom.json"
+  },
+  "dsz_hordok_ladak": {
+   "meta": "decor/dsz_hordok_ladak.json"
+  },
+  "dsz_karavan_roncs": {
+   "meta": "decor/dsz_karavan_roncs.json"
+  },
+  "dsz_kidolt_fa": {
+   "meta": "decor/dsz_kidolt_fa.json"
+  },
+  "dsz_kokor": {
+   "meta": "decor/dsz_kokor.json"
+  },
+  "dsz_kut": {
+   "meta": "decor/dsz_kut.json"
+  },
+  "dsz_lebego_ko": {
+   "meta": "decor/dsz_lebego_ko.json"
+  },
+  "dsz_malom_rom": {
+   "meta": "decor/dsz_malom_rom.json"
+  },
+  "dsz_meteorszilank": {
+   "meta": "decor/dsz_meteorszilank.json"
+  },
+  "dsz_orhaz_rom": {
+   "meta": "decor/dsz_orhaz_rom.json"
+  },
+  "dsz_oriascsontvaz": {
+   "meta": "decor/dsz_oriascsontvaz.json"
+  },
+  "dsz_oszlopsor_rom": {
+   "meta": "decor/dsz_oszlopsor_rom.json"
+  },
+  "dsz_szekerroncs": {
+   "meta": "decor/dsz_szekerroncs.json"
+  },
+  "dsz_szikla_forest": {
+   "meta": "decor/dsz_szikla_forest.json"
+  },
+  "dsz_szikla_swamp": {
+   "meta": "decor/dsz_szikla_swamp.json"
+  },
+  "dsz_szikla_wasteland": {
+   "meta": "decor/dsz_szikla_wasteland.json"
+  },
+  "dsz_szikla_winter": {
+   "meta": "decor/dsz_szikla_winter.json"
+  },
+  "dsz_sziklafal_forest": {
+   "meta": "decor/dsz_sziklafal_forest.json"
+  },
+  "dsz_sziklafal_swamp": {
+   "meta": "decor/dsz_sziklafal_swamp.json"
+  },
+  "dsz_sziklafal_wasteland": {
+   "meta": "decor/dsz_sziklafal_wasteland.json"
+  },
+  "dsz_sziklafal_winter": {
+   "meta": "decor/dsz_sziklafal_winter.json"
+  },
+  "dsz_sziklaorom_forest": {
+   "meta": "decor/dsz_sziklaorom_forest.json"
+  },
+  "dsz_sziklaorom_swamp": {
+   "meta": "decor/dsz_sziklaorom_swamp.json"
+  },
+  "dsz_sziklaorom_wasteland": {
+   "meta": "decor/dsz_sziklaorom_wasteland.json"
+  },
+  "dsz_sziklaorom_winter": {
+   "meta": "decor/dsz_sziklaorom_winter.json"
+  },
+  "dsz_utszeli_oltar": {
+   "meta": "decor/dsz_utszeli_oltar.json"
+  }
+ }
+}

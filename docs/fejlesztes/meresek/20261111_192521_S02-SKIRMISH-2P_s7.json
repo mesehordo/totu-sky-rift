@@ -1,0 +1,280 @@
+{
+ "test_id": "S02-SKIRMISH-2P",
+ "status": "measured",
+ "date": "2026-11-11 19:25",
+ "env": {
+  "commit": "b152690",
+  "worktree_dirty": false,
+  "python": "3.13.14",
+  "pygame": "2.5.8",
+  "os": "Windows-10-10.0.19045-SP0",
+  "cpu": "Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz",
+  "cpu_count": 8
+ },
+ "seed": 7,
+ "map": "skirmish (generált)",
+ "players": [
+  "croftian",
+  "ooni"
+ ],
+ "difficulty": "normal",
+ "mods": true,
+ "sim_hz": 30,
+ "tick_budget_ms": 33.33,
+ "game_minutes": 6.07,
+ "ticks": 10920,
+ "wall_s": 52.7,
+ "realtime_factor": 6.9,
+ "result": "croftian",
+ "tick_ms": {
+  "p50": 1.541,
+  "p95": 23.924,
+  "p99": 43.087,
+  "max": 115.448,
+  "mean": 4.825
+ },
+ "ticks_over_budget": 196,
+ "render_ms": null,
+ "render_resolution": null,
+ "subsystems_ms": {
+  "path_queue": {
+   "p50": 0.001,
+   "p95": 20.466,
+   "p99": 37.683,
+   "max": 108.119,
+   "mean": 2.583,
+   "total_s": 28.2,
+   "share_of_tick_pct": 53.5
+  },
+  "pathfind": {
+   "p50": 0.0,
+   "p95": 19.782,
+   "p99": 36.085,
+   "max": 107.749,
+   "mean": 2.486,
+   "total_s": 27.14,
+   "share_of_tick_pct": 51.5
+  },
+  "units": {
+   "p50": 0.689,
+   "p95": 3.977,
+   "p99": 5.218,
+   "max": 7.847,
+   "mean": 1.19,
+   "total_s": 12.99,
+   "share_of_tick_pct": 24.7
+  },
+  "separation": {
+   "p50": 0.317,
+   "p95": 1.734,
+   "p99": 2.283,
+   "max": 2.981,
+   "mean": 0.578,
+   "total_s": 6.31,
+   "share_of_tick_pct": 12.0
+  },
+  "fow_vis": {
+   "p50": 0.0,
+   "p95": 1.174,
+   "p99": 1.83,
+   "max": 4.118,
+   "mean": 0.16,
+   "total_s": 1.75,
+   "share_of_tick_pct": 3.3
+  },
+  "spatial_hash": {
+   "p50": 0.037,
+   "p95": 0.103,
+   "p99": 0.125,
+   "max": 0.486,
+   "mean": 0.048,
+   "total_s": 0.53,
+   "share_of_tick_pct": 1.0
+  },
+  "buildings": {
+   "p50": 0.038,
+   "p95": 0.052,
+   "p99": 0.075,
+   "max": 2.23,
+   "mean": 0.04,
+   "total_s": 0.44,
+   "share_of_tick_pct": 0.8
+  },
+  "ai": {
+   "p50": 0.002,
+   "p95": 0.288,
+   "p99": 0.822,
+   "max": 3.815,
+   "mean": 0.037,
+   "total_s": 0.4,
+   "share_of_tick_pct": 0.8
+  },
+  "effects": {
+   "p50": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.188,
+   "mean": 0.0,
+   "total_s": 0.0,
+   "share_of_tick_pct": 0.0
+  }
+ },
+ "peak_working_set_mib": null,
+ "max_units": 72,
+ "timeline": [
+  {
+   "minute": 0.0,
+   "units": 10,
+   "buildings": 2,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 3,
+   "supply": {
+    "croftian": [
+     5.0,
+     10
+    ],
+    "ooni": [
+     5.0,
+     10
+    ]
+   },
+   "tick_ms_p95_last_min": 0.302
+  },
+  {
+   "minute": 1.0,
+   "units": 13,
+   "buildings": 11,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 0,
+   "supply": {
+    "croftian": [
+     6.0,
+     18
+    ],
+    "ooni": [
+     8.0,
+     26
+    ]
+   },
+   "tick_ms_p95_last_min": 1.908
+  },
+  {
+   "minute": 2.0,
+   "units": 15,
+   "buildings": 12,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 0,
+   "supply": {
+    "croftian": [
+     7.0,
+     18
+    ],
+    "ooni": [
+     9.0,
+     26
+    ]
+   },
+   "tick_ms_p95_last_min": 12.739
+  },
+  {
+   "minute": 3.0,
+   "units": 25,
+   "buildings": 12,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 0,
+   "supply": {
+    "croftian": [
+     17.0,
+     18
+    ],
+    "ooni": [
+     9.0,
+     26
+    ]
+   },
+   "tick_ms_p95_last_min": 18.033
+  },
+  {
+   "minute": 4.0,
+   "units": 44,
+   "buildings": 12,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 0,
+   "supply": {
+    "croftian": [
+     25.0,
+     34
+    ],
+    "ooni": [
+     11.0,
+     26
+    ]
+   },
+   "tick_ms_p95_last_min": 20.527
+  },
+  {
+   "minute": 5.0,
+   "units": 62,
+   "buildings": 12,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 0,
+   "supply": {
+    "croftian": [
+     34.0,
+     42
+    ],
+    "ooni": [
+     11.0,
+     26
+    ]
+   },
+   "tick_ms_p95_last_min": 24.538
+  },
+  {
+   "minute": 6.0,
+   "units": 72,
+   "buildings": 7,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 10,
+   "supply": {
+    "croftian": [
+     42.0,
+     50
+    ],
+    "ooni": [
+     0.0,
+     0
+    ]
+   },
+   "tick_ms_p95_last_min": 42.518
+  },
+  {
+   "minute": 6.07,
+   "units": 72,
+   "buildings": 6,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 0,
+   "supply": {
+    "croftian": [
+     43.0,
+     50
+    ],
+    "ooni": [
+     0.0,
+     0
+    ]
+   },
+   "tick_ms_p95_last_min": 44.009
+  }
+ ],
+ "profiled": false,
+ "notes": ""
+}

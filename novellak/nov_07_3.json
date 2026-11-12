@@ -1,0 +1,251 @@
+{
+ "id": "nov_07_3",
+ "code": "NOV-07_3",
+ "title": "Hamis Tóének",
+ "faction": "hukucha",
+ "novella": true,
+ "people": "Huk’ucha",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/07_*.md – „Hamis Tóének”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 40. év, Békanyál medence. Brokk a legjobb tóásó, és a leghamisabban énekel.",
+  "A régi hit szerint a tavacska csak akkor marad meg, ha megéneklik."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3527,
+  "points": {
+   "szentely": [
+    40,
+    20
+   ],
+   "asas": [
+    22,
+    38
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      18,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      46,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      32,
+      40
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "szentely",
+     "asas"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      8,
+      32
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      34
+     ],
+     3.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      25,
+      10
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      18
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      26
+     ],
+     2.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      7,
+      31
+     ],
+     3.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "szentely",
+   "_"
+  ],
+  "decor": [
+   {
+    "id": "huk_toteremto",
+    "at": [
+     46,
+     14
+    ]
+   }
+  ],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "huk_toaso",
+    "at": "asas",
+    "n": 1,
+    "name": "Brokk",
+    "tag": "brokk"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "to",
+   "type": "ponds",
+   "at": "asas",
+   "radius": 5,
+   "amount": 6,
+   "text": "Áss egy tavacskát (6 csempe)",
+   "marker": "Ásás"
+  },
+  {
+   "id": "enek",
+   "type": "guard",
+   "at": "szentely",
+   "radius": 2,
+   "seconds": 10,
+   "text": "Énekelj a Tóteremtő szentélyben – akármilyen hamisan",
+   "marker": "Szentély",
+   "after": "to"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Brokk",
+        "text": "Hét éve kérik, hogy ne énekeljek. Ma is fogok.",
+        "portrait": "huk_toaso"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "enek",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szentely",
+      "say": [
+       {
+        "who": "Pap",
+        "text": "A rezonanciatábla… ugyanannyi Tóéneket mutat, mint bárki másé.",
+        "portrait": "huk_aradas_papja"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A Békanyál szentélye azóta a leghamisabb a medencék közt – és a legtöbb Tóéneket adja.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

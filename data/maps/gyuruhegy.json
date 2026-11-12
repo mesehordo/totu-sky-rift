@@ -1,0 +1,82 @@
+{
+ "id": "gyuruhegy",
+ "order": 9,
+ "players": 4,
+ "size": 120,
+ "layout": "ring",
+ "theme": "winter",
+ "name": {
+  "hu": "Gyűrűhegy",
+  "en": "Ring Mountain"
+ },
+ "desc": {
+  "hu": "Sziklagyűrű öleli a pálya kincses közepét, négy kapuval. A gyűrű előtt Tokla harangkapuk. Döntés: befelé a kincsért, vagy kint, a szomszéd bővítései felé?",
+  "en": "A ring of cliffs guards the rich centre, with four gates."
+ },
+ "features": {
+  "ring_wall": {
+   "radius": 0.17,
+   "gates": 4
+  },
+  "crater": {
+   "radius": 0.08,
+   "meteors": 4
+  },
+  "forests": 14,
+  "start_angle": 45
+ },
+ "camps": {
+  "1": "tokla",
+  "2": "tokla",
+  "3": "tokla"
+ },
+ "decor": [
+  {
+   "id": "tok_harangkapu",
+   "at": "pair",
+   "d": 4,
+   "s": 0
+  },
+  {
+   "id": "tok_zuzmaramuhely",
+   "at": "base",
+   "d": 4,
+   "s": -12
+  }
+ ],
+ "ambient": [
+  {
+   "id": "tok_harangjaro",
+   "at": "base",
+   "d": 6,
+   "s": -12,
+   "n": 2,
+   "path": [
+    {
+     "at": "base",
+     "d": 6,
+     "s": -12
+    },
+    {
+     "at": "pair",
+     "d": 6,
+     "s": 3
+    }
+   ],
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": -12
+   }
+  }
+ ],
+ "plan": {
+  "dontes": "A gyűrű négy kapuja szűkület: aki a belsőt tartja, mind a négy kaput figyelnie kell.",
+  "felallasok": "mindenki-mindenki ellen (4), kevesebb játékossal is",
+  "taborok": {
+   "1": "Tokla",
+   "2": "Tokla",
+   "3": "Tokla"
+  }
+ }
+}

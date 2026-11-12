@@ -1,0 +1,515 @@
+{
+ "test_id": "S02-nyolc_tuz-8P",
+ "status": "measured",
+ "date": "2026-11-11 19:51",
+ "env": {
+  "commit": "320d42e",
+  "worktree_dirty": true,
+  "python": "3.13.14",
+  "pygame": "2.5.8",
+  "os": "Windows-10-10.0.19045-SP0",
+  "cpu": "Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz",
+  "cpu_count": 8
+ },
+ "seed": 1,
+ "map": "nyolc_tuz",
+ "players": [
+  "croftian",
+  "ursan",
+  "imperium",
+  "ursan",
+  "ooni",
+  "ooni",
+  "ooni",
+  "mycel"
+ ],
+ "difficulty": "normal",
+ "mods": true,
+ "sim_hz": 30,
+ "tick_budget_ms": 33.33,
+ "game_minutes": 12.0,
+ "ticks": 21600,
+ "wall_s": 1343.4,
+ "realtime_factor": 0.54,
+ "result": null,
+ "tick_ms": {
+  "p50": 24.961,
+  "p95": 217.128,
+  "p99": 365.307,
+  "max": 935.449,
+  "mean": 62.191
+ },
+ "ticks_over_budget": 7804,
+ "render_ms": null,
+ "render_resolution": null,
+ "subsystems_ms": {
+  "path_queue": {
+   "p50": 8.741,
+   "p95": 198.573,
+   "p99": 348.813,
+   "max": 915.772,
+   "mean": 47.754,
+   "total_s": 1031.49,
+   "share_of_tick_pct": 76.8
+  },
+  "pathfind": {
+   "p50": 8.261,
+   "p95": 198.006,
+   "p99": 347.879,
+   "max": 911.319,
+   "mean": 47.313,
+   "total_s": 1021.96,
+   "share_of_tick_pct": 76.1
+  },
+  "units": {
+   "p50": 8.338,
+   "p95": 12.33,
+   "p99": 14.52,
+   "max": 40.642,
+   "mean": 8.035,
+   "total_s": 173.56,
+   "share_of_tick_pct": 12.9
+  },
+  "separation": {
+   "p50": 3.051,
+   "p95": 4.046,
+   "p99": 4.415,
+   "max": 7.922,
+   "mean": 2.958,
+   "total_s": 63.9,
+   "share_of_tick_pct": 4.8
+  },
+  "fow_vis": {
+   "p50": 0.0,
+   "p95": 6.038,
+   "p99": 6.974,
+   "max": 10.579,
+   "mean": 0.809,
+   "total_s": 17.47,
+   "share_of_tick_pct": 1.3
+  },
+  "ai": {
+   "p50": 0.005,
+   "p95": 2.269,
+   "p99": 5.044,
+   "max": 159.755,
+   "mean": 0.497,
+   "total_s": 10.74,
+   "share_of_tick_pct": 0.8
+  },
+  "buildings": {
+   "p50": 0.289,
+   "p95": 0.731,
+   "p99": 1.071,
+   "max": 7.223,
+   "mean": 0.332,
+   "total_s": 7.18,
+   "share_of_tick_pct": 0.5
+  },
+  "spatial_hash": {
+   "p50": 0.331,
+   "p95": 0.443,
+   "p99": 0.489,
+   "max": 1.062,
+   "mean": 0.331,
+   "total_s": 7.15,
+   "share_of_tick_pct": 0.5
+  },
+  "projectiles": {
+   "p50": 0.005,
+   "p95": 0.042,
+   "p99": 0.119,
+   "max": 5.256,
+   "mean": 0.017,
+   "total_s": 0.36,
+   "share_of_tick_pct": 0.0
+  },
+  "effects": {
+   "p50": 0.0,
+   "p95": 0.001,
+   "p99": 0.002,
+   "max": 0.381,
+   "mean": 0.0,
+   "total_s": 0.01,
+   "share_of_tick_pct": 0.0
+  }
+ },
+ "peak_working_set_mib": 50.4,
+ "max_units": 300,
+ "timeline": [
+  {
+   "minute": 0.0,
+   "units": 172,
+   "buildings": 8,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 29,
+   "supply": {
+    "croftian": [
+     5.0,
+     10
+    ],
+    "ursan": [
+     5.0,
+     12
+    ],
+    "imperium": [
+     6.0,
+     12
+    ],
+    "ooni": [
+     5.0,
+     10
+    ],
+    "mycel": [
+     5.0,
+     7
+    ]
+   },
+   "tick_ms_p95_last_min": 3.659
+  },
+  {
+   "minute": 1.0,
+   "units": 195,
+   "buildings": 37,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 4,
+   "supply": {
+    "croftian": [
+     6.0,
+     18
+    ],
+    "ursan": [
+     12.0,
+     22
+    ],
+    "imperium": [
+     10.0,
+     32
+    ],
+    "ooni": [
+     8.0,
+     26
+    ],
+    "mycel": [
+     12.0,
+     16
+    ]
+   },
+   "tick_ms_p95_last_min": 26.618
+  },
+  {
+   "minute": 2.0,
+   "units": 220,
+   "buildings": 45,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 9,
+   "supply": {
+    "croftian": [
+     6.0,
+     18
+    ],
+    "ursan": [
+     17.0,
+     22
+    ],
+    "imperium": [
+     19.0,
+     32
+    ],
+    "ooni": [
+     8.0,
+     26
+    ],
+    "mycel": [
+     17.0,
+     17
+    ]
+   },
+   "tick_ms_p95_last_min": 136.365
+  },
+  {
+   "minute": 3.0,
+   "units": 255,
+   "buildings": 52,
+   "projectiles": 0,
+   "effects": 0,
+   "path_queue": 10,
+   "supply": {
+    "croftian": [
+     16.0,
+     18
+    ],
+    "ursan": [
+     20.0,
+     32
+    ],
+    "imperium": [
+     25.0,
+     32
+    ],
+    "ooni": [
+     8.0,
+     26
+    ],
+    "mycel": [
+     33.0,
+     36
+    ]
+   },
+   "tick_ms_p95_last_min": 41.097
+  },
+  {
+   "minute": 4.0,
+   "units": 284,
+   "buildings": 62,
+   "projectiles": 1,
+   "effects": 0,
+   "path_queue": 8,
+   "supply": {
+    "croftian": [
+     24.0,
+     34
+    ],
+    "ursan": [
+     32.0,
+     32
+    ],
+    "imperium": [
+     29.0,
+     42
+    ],
+    "ooni": [
+     8.0,
+     26
+    ],
+    "mycel": [
+     40.0,
+     57
+    ]
+   },
+   "tick_ms_p95_last_min": 112.513
+  },
+  {
+   "minute": 5.0,
+   "units": 300,
+   "buildings": 67,
+   "projectiles": 2,
+   "effects": 0,
+   "path_queue": 13,
+   "supply": {
+    "croftian": [
+     33.5,
+     42
+    ],
+    "ursan": [
+     22.0,
+     42
+    ],
+    "imperium": [
+     29.0,
+     42
+    ],
+    "ooni": [
+     8.0,
+     26
+    ],
+    "mycel": [
+     58.0,
+     63
+    ]
+   },
+   "tick_ms_p95_last_min": 206.527
+  },
+  {
+   "minute": 6.0,
+   "units": 291,
+   "buildings": 72,
+   "projectiles": 3,
+   "effects": 0,
+   "path_queue": 29,
+   "supply": {
+    "croftian": [
+     29.0,
+     42
+    ],
+    "ursan": [
+     14.0,
+     32
+    ],
+    "imperium": [
+     29.0,
+     42
+    ],
+    "ooni": [
+     4.0,
+     26
+    ],
+    "mycel": [
+     62.0,
+     63
+    ]
+   },
+   "tick_ms_p95_last_min": 208.633
+  },
+  {
+   "minute": 7.0,
+   "units": 290,
+   "buildings": 74,
+   "projectiles": 4,
+   "effects": 0,
+   "path_queue": 21,
+   "supply": {
+    "croftian": [
+     25.5,
+     42
+    ],
+    "ursan": [
+     6.0,
+     32
+    ],
+    "imperium": [
+     22.0,
+     42
+    ],
+    "ooni": [
+     1.0,
+     8
+    ],
+    "mycel": [
+     77.0,
+     81
+    ]
+   },
+   "tick_ms_p95_last_min": 215.408
+  },
+  {
+   "minute": 8.0,
+   "units": 275,
+   "buildings": 75,
+   "projectiles": 2,
+   "effects": 0,
+   "path_queue": 15,
+   "supply": {
+    "croftian": [
+     26.0,
+     42
+    ],
+    "ursan": [
+     4.0,
+     20
+    ],
+    "imperium": [
+     5.0,
+     42
+    ],
+    "ooni": [
+     0.0,
+     0
+    ],
+    "mycel": [
+     82.0,
+     90
+    ]
+   },
+   "tick_ms_p95_last_min": 214.195
+  },
+  {
+   "minute": 9.0,
+   "units": 261,
+   "buildings": 60,
+   "projectiles": 4,
+   "effects": 0,
+   "path_queue": 10,
+   "supply": {
+    "croftian": [
+     33.5,
+     42
+    ],
+    "ursan": [
+     4.0,
+     10
+    ],
+    "imperium": [
+     0.0,
+     10
+    ],
+    "ooni": [
+     0.0,
+     0
+    ],
+    "mycel": [
+     90.0,
+     90
+    ]
+   },
+   "tick_ms_p95_last_min": 376.008
+  },
+  {
+   "minute": 10.0,
+   "units": 238,
+   "buildings": 56,
+   "projectiles": 1,
+   "effects": 0,
+   "path_queue": 7,
+   "supply": {
+    "croftian": [
+     42.0,
+     50
+    ],
+    "ursan": [
+     0.0,
+     0
+    ],
+    "imperium": [
+     0.0,
+     0
+    ],
+    "ooni": [
+     0.0,
+     0
+    ],
+    "mycel": [
+     90.0,
+     90
+    ]
+   },
+   "tick_ms_p95_last_min": 198.578
+  },
+  {
+   "minute": 11.0,
+   "units": 208,
+   "buildings": 57,
+   "projectiles": 5,
+   "effects": 0,
+   "path_queue": 7,
+   "supply": {
+    "croftian": [
+     41.5,
+     42
+    ],
+    "ursan": [
+     0.0,
+     0
+    ],
+    "imperium": [
+     0.0,
+     0
+    ],
+    "ooni": [
+     0.0,
+     0
+    ],
+    "mycel": [
+     89.0,
+     90
+    ]
+   },
+   "tick_ms_p95_last_min": 209.836
+  }
+ ],
+ "profiled": false,
+ "notes": ""
+}

@@ -1,0 +1,11 @@
+{
+ "id": "elves",
+ "type": "emblem",
+ "image": "elves.png",
+ "size": [
+  256,
+  256
+ ],
+ "faction": "Szürke elfek",
+ "generator": "TOTU grafika"
+}

@@ -1,0 +1,26 @@
+{
+ "id": "food",
+ "type": "resource",
+ "image": "food.png",
+ "frame_size": [
+  176,
+  224
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  8,
+  22
+ ],
+ "frames": 3,
+ "frames_meaning": "telítettség: tele / fél / üres",
+ "fps": 0,
+ "sheet_size": [
+  528,
+  224
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

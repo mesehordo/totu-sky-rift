@@ -1,0 +1,27 @@
+{
+ "id": "dust",
+ "type": "effect",
+ "image": "dust.png",
+ "frame_size": [
+  80,
+  80
+ ],
+ "anchor": [
+  40,
+  48
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 5,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  400,
+  80
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

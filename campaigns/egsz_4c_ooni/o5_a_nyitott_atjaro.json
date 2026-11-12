@@ -1,0 +1,549 @@
+{
+ "id": "o5_a_nyitott_atjaro",
+ "code": "OON-05",
+ "title": "5. A nyitott átjáró",
+ "faction": "ooni",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. és 11. fejezet",
+ "canon": {
+  "rogzitett": "Az egyik kaput külön civil átjáróvá alakítják, hogy a visszavonulás se zárhassa rájuk az utat.",
+  "adaptacio": "Két civil csoport kimenekítése, a katonai út omlása.",
+  "uj_javaslat": "–"
+ },
+ "briefing": [
+  "Az egyik kaput külön átjáróvá alakítják a civileknek, hogy a hadsereg későbbi visszavonulása se zárhassa rájuk az utat.",
+  "Vezesd át a hátsó város lakóit a civil kapun, miközben a hadsereg kitart, aztán vonulj vissza te is.",
+  "A hegy közben omladozik: a katonai út le fog zárulni."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 4505,
+  "points": {
+   "varos": [
+    32,
+    44
+   ],
+   "hatso": [
+    10,
+    10
+   ],
+   "civil_kapu": [
+    20,
+    30
+   ],
+   "kijarat": [
+    8,
+    50
+   ],
+   "katonai_ut": [
+    44,
+    30
+   ],
+   "eszak": [
+    40,
+    4
+   ],
+   "kelet": [
+    60,
+    18
+   ],
+   "omlas1": [
+    44,
+    34
+   ],
+   "omlas2": [
+    40,
+    26
+   ],
+   "arany1": [
+    40,
+    50
+   ],
+   "meteor1": [
+    24,
+    50
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      0,
+      30
+     ],
+     [
+      18,
+      30
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      22,
+      30
+     ],
+     [
+      40,
+      30
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      48,
+      30
+     ],
+     [
+      64,
+      30
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "hatso",
+     [
+      14,
+      20
+     ],
+     "civil_kapu",
+     [
+      16,
+      40
+     ],
+     "kijarat"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "eszak",
+     "omlas2",
+     "katonai_ut",
+     "omlas1",
+     "varos"
+    ],
+    "w": 3
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "varos",
+     [
+      20,
+      46
+     ],
+     "kijarat"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "kelet",
+     [
+      50,
+      20
+     ],
+     "omlas2"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 2
+   },
+   {
+    "area": [
+     [
+      52,
+      46
+     ],
+     6
+    ],
+    "density": 0.7
+   },
+   {
+    "area": [
+     [
+      30,
+      14
+     ],
+     6
+    ],
+    "density": 0.6
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": "arany1"
+   },
+   {
+    "kind": "meteor",
+    "at": "meteor1"
+   }
+  ],
+  "starts": [
+   "varos",
+   "eszak",
+   "hatso"
+  ],
+  "decor": [
+   {
+    "id": "oon_torii",
+    "at": "civil_kapu"
+   },
+   {
+    "id": "oon_lakohaz",
+    "at": [
+     6,
+     6
+    ]
+   },
+   {
+    "id": "oon_lakohaz",
+    "at": [
+     14,
+     6
+    ],
+    "ruin": true
+   }
+  ]
+ },
+ "player": {
+  "base": true,
+  "resources": {
+   "wood": 700,
+   "stone": 450,
+   "meteor": 150
+  },
+  "units": [
+   {
+    "id": "oon_oni_harcos",
+    "name": "Sairen, kapuőr",
+    "tag": "sairen",
+    "at": "varos"
+   },
+   {
+    "id": "oon_hos_shiro",
+    "at": "varos"
+   },
+   {
+    "id": "oon_hos_akahana",
+    "at": "varos"
+   },
+   {
+    "id": "oon_oni_harcos",
+    "n": 6,
+    "at": "varos"
+   },
+   {
+    "id": "oon_kohajito",
+    "n": 3,
+    "at": "varos"
+   },
+   {
+    "id": "oon_nian_or",
+    "n": 2,
+    "at": "katonai_ut"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "A Kórus",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "o5_civil1",
+   "type": "escort",
+   "tag": "civil1",
+   "min": 3,
+   "at": "kijarat",
+   "radius": 5,
+   "text": "Vezesd az első civil csoportot a civil kapun át a kijárathoz",
+   "marker": "Kijárat"
+  },
+  {
+   "id": "o5_civil2",
+   "type": "escort",
+   "hidden": true,
+   "tag": "civil2",
+   "min": 3,
+   "at": "kijarat",
+   "radius": 5,
+   "text": "Vezesd a második civil csoportot is a kijárathoz",
+   "marker": "Kijárat"
+  },
+  {
+   "id": "o5_visszavonulas",
+   "type": "reach",
+   "after": [
+    "o5_civil1",
+    "o5_civil2"
+   ],
+   "tag": "sairen",
+   "at": "kijarat",
+   "radius": 5,
+   "text": "Vonuljon vissza Sairen is a kijárathoz"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "civil_kapu",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "Ez a kapu a civileké. Ha mi elesünk, ez akkor is nyitva marad.",
+        "portrait": "oon_oni_harcos"
+       }
+      ]
+     },
+     {
+      "camera": "hatso",
+      "say": [
+       {
+        "who": "Shiro, a Kapuőr",
+        "text": "A hátsó városban még várnak. Két csoportban hozzuk őket.",
+        "portrait": "oon_hos_shiro",
+        "to": "Sairen"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "civil1_csatl",
+   "on_enter": {
+    "at": "hatso",
+    "r": 6
+   },
+   "join": "civil1",
+   "say": [
+    {
+     "who": "Lámpásvivő",
+     "text": "Minden lámpást hozunk. Nem hagyunk sötétet magunk után.",
+     "portrait": "oon_lampasvivo",
+     "to": "Sairen"
+    }
+   ]
+  },
+  {
+   "id": "civil2_jon",
+   "on_objective": "o5_civil1",
+   "activate": "o5_civil2",
+   "say": [
+    {
+     "who": "Shiro, a Kapuőr",
+     "text": "A második csoport a hátsó város tetején vár. Gyorsan, a hegy recseg!",
+     "portrait": "oon_hos_shiro",
+     "urgent": true
+    }
+   ],
+   "spawn": {
+    "owner": 2,
+    "near": "hatso",
+    "tag": "civil2",
+    "units": [
+     {
+      "id": "oon_lampasvivo",
+      "n": 3
+     },
+     {
+      "id": "oon_tanuki",
+      "n": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "civil2_csatl",
+   "if_done": "o5_civil1",
+   "on_enter": {
+    "at": "hatso",
+    "r": 6
+   },
+   "join": "civil2"
+  },
+  {
+   "id": "omlas",
+   "at": 150,
+   "message": "Omlás! A katonai út a szorosban lezárult.",
+   "color": [
+    255,
+    160,
+    110
+   ],
+   "reshape": {
+    "paint": [
+     {
+      "t": "rock",
+      "line": [
+       "omlas2",
+       "omlas1"
+      ],
+      "w": 4
+     }
+    ]
+   },
+   "say": [
+    {
+     "who": "Sairen",
+     "text": "A katonai út elveszett. A civil kapu áll. Ezért építettük külön.",
+     "portrait": "oon_oni_harcos",
+     "urgent": true
+    }
+   ]
+  },
+  {
+   "id": "w_eszak",
+   "every": 55,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "eszak",
+    "to": "katonai_ut",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 4,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 30,
+   "until": "o5_visszavonulas"
+  },
+  {
+   "id": "w_kelet",
+   "every": 65,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "kelet",
+    "to": "varos",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     },
+     {
+      "id": "cro_tuskekopo",
+      "n": 1,
+      "name": "Lámpástalan"
+     }
+    ]
+   },
+   "delay": 80,
+   "until": "o5_visszavonulas"
+  },
+  {
+   "id": "w_civil",
+   "every": 70,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "eszak",
+    "to": "civil_kapu",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 3,
+      "name": "Lámpástalan",
+      "spread": 0.6
+     }
+    ]
+   },
+   "delay": 170,
+   "until": "o5_visszavonulas"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "o5_visszavonulas",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kijarat",
+      "say": [
+       {
+        "who": "Sairen",
+        "text": "Mindenki átért. A kötélre ma nem csomó kerül, hanem egy új szál: a civil kapué.",
+        "portrait": "oon_oni_harcos"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "tag": "sairen",
+   "text": "Sairen elesett."
+  },
+  {
+   "tag": "civil1",
+   "unless_done": "o5_civil1",
+   "text": "Az első civil csoport odaveszett."
+  },
+  {
+   "tag": "civil2",
+   "unless_done": "o5_civil2",
+   "text": "A második civil csoport odaveszett."
+  }
+ ],
+ "victory": "A civilek a külön kapun át biztonságba jutottak. A hadsereg visszavonult, de a civil átjáró nyitva maradt.",
+ "hero_level": 5,
+ "enemy_hero_level": 5,
+ "creeps": false,
+ "allies": [
+  {
+   "faction": "ooni",
+   "name": "A hátsó város",
+   "units": [
+    {
+     "id": "oon_lampasvivo",
+     "n": 3,
+     "at": "hatso",
+     "tag": "civil1"
+    },
+    {
+     "id": "oon_tanuki",
+     "n": 2,
+     "at": "hatso",
+     "tag": "civil1"
+    }
+   ]
+  }
+ ]
+}

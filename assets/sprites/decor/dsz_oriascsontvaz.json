@@ -1,0 +1,28 @@
+{
+ "id": "dsz_oriascsontvaz",
+ "image": "dsz_oriascsontvaz.png",
+ "type": "decor",
+ "frame_size": [
+  288,
+  288
+ ],
+ "footprint": [
+  3,
+  2
+ ],
+ "footprint_offset": [
+  48,
+  136
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 2,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  576,
+  288
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

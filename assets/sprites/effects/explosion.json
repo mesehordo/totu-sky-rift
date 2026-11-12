@@ -1,0 +1,27 @@
+{
+ "id": "explosion",
+ "type": "effect",
+ "image": "explosion.png",
+ "frame_size": [
+  144,
+  144
+ ],
+ "anchor": [
+  72,
+  88
+ ],
+ "animations": {
+  "play": {
+   "start": 0,
+   "frames": 7,
+   "fps": 12,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  1008,
+  144
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

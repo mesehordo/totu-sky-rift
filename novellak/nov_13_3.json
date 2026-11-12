@@ -1,0 +1,240 @@
+{
+ "id": "nov_13_3",
+ "code": "NOV-13_3",
+ "title": "Itatóhely",
+ "faction": "elves",
+ "novella": true,
+ "people": "Shrissh-matah",
+ "theme": "wasteland",
+ "source": "docs/tortenet/story/…/novellak/13_*.md – „Itatóhely”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 73. év, a Keserűkút, a Daresh és a Shrissh-matah határán.",
+  "– Ez a mi kutunk. – Nem. A mienk."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 1958,
+  "points": {
+   "keserukut": [
+    32,
+    28
+   ],
+   "shr": [
+    10,
+    44
+   ],
+   "dar": [
+    54,
+    12
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      20,
+      14
+     ],
+     3
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      40
+     ],
+     3
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "shr",
+     "keserukut"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "dar",
+     "keserukut"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      48,
+      46
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      34,
+      46
+     ],
+     5.0
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "keserukut",
+   "_",
+   "shr"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "shr_sziklafuto",
+    "at": "shr",
+    "n": 1,
+    "name": "Thikka",
+    "tag": "thikka"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "kut",
+   "type": "reach",
+   "at": "keserukut",
+   "radius": 3,
+   "text": "Thikka érjen a kúthoz",
+   "marker": "Keserűkút",
+   "tag": "thikka"
+  },
+  {
+   "id": "darazs",
+   "type": "escort",
+   "tag": "darazs",
+   "min": 1,
+   "at": "keserukut",
+   "radius": 3,
+   "text": "A darázsgyerek is ihasson",
+   "marker": "Kút",
+   "after": "kut"
+  },
+  {
+   "id": "runa",
+   "type": "guard",
+   "at": "keserukut",
+   "radius": 2,
+   "seconds": 6,
+   "text": "Vésd alá a harmadik rúnát",
+   "marker": "Kút",
+   "after": "darazs"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "keserukut",
+      "say": [
+       {
+        "who": "Thikka",
+        "text": "A mi nevünk rúna. A ti nevetek csak hang.",
+        "portrait": "shr_sziklafuto"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_enter": {
+    "at": "keserukut",
+    "r": 4,
+    "tag": "thikka"
+   },
+   "join": "darazs"
+  },
+  {
+   "id": "zaras",
+   "on_objective": "runa",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "keserukut",
+      "say": [
+       {
+        "who": "Thikka",
+        "text": "Ferde lett. Azt jelenti: ma együtt ittunk.",
+        "portrait": "shr_sziklafuto"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A két rúna alatt ott a harmadik, ferdén.",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "allies": [
+  {
+   "faction": "daresh",
+   "name": "Darázsgyerek",
+   "units": [
+    {
+     "id": "dar_szarnyas_ijasz",
+     "at": "dar",
+     "n": 1,
+     "name": "Darázsgyerek",
+     "tag": "darazs"
+    }
+   ]
+  }
+ ]
+}

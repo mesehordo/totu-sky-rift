@@ -1,0 +1,66 @@
+{
+ "id": "urs_kurtos",
+ "type": "unit",
+ "image": "urs_kurtos.png",
+ "team_mask": "urs_kurtos_team.png",
+ "frame_size": [
+  220,
+  224
+ ],
+ "anchor": [
+  108,
+  126
+ ],
+ "directions": [
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+  "N",
+  "NE"
+ ],
+ "layout": "sorok = irányok (DIRS sorrendben), oszlopok = animációk képkockái egymás után",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "walk": {
+   "start": 4,
+   "frames": 6,
+   "fps": 10,
+   "loop": true
+  },
+  "attack": {
+   "start": 10,
+   "frames": 6,
+   "fps": 12,
+   "loop": false
+  },
+  "death": {
+   "start": 16,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  },
+  "cast": {
+   "start": 22,
+   "frames": 6,
+   "fps": 9,
+   "loop": false
+  }
+ },
+ "flying": false,
+ "rig": "biped",
+ "sheet_size": [
+  6160,
+  1792
+ ],
+ "generator": "TOTU HD grafika",
+ "team_colour_mode": "shade",
+ "scale": 2
+}

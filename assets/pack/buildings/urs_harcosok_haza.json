@@ -1,0 +1,40 @@
+{
+ "id": "urs_harcosok_haza",
+ "type": "building",
+ "image": "urs_harcosok_haza.png",
+ "frame_size": [
+  117,
+  107
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  11,
+  5
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.barracks",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  585,
+  107
+ ],
+ "team_mask": "urs_harcosok_haza_team.png"
+}

@@ -1,0 +1,40 @@
+{
+ "id": "urs_vadak_karama",
+ "type": "building",
+ "image": "urs_vadak_karama.png",
+ "frame_size": [
+  117,
+  109
+ ],
+ "footprint": [
+  3,
+  3
+ ],
+ "footprint_offset": [
+  11,
+  7
+ ],
+ "directions": [
+  "S"
+ ],
+ "pack": "ursan_buildings.beast_stables",
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 1,
+   "fps": 0,
+   "loop": true
+  },
+  "build": {
+   "start": 1,
+   "frames": 4,
+   "fps": 0,
+   "loop": false
+  }
+ },
+ "sheet_size": [
+  585,
+  109
+ ],
+ "team_mask": "urs_vadak_karama_team.png"
+}

@@ -1,0 +1,327 @@
+{
+ "id": "a3_az_orok_hajnal",
+ "title": "3. Az Örök Hajnal",
+ "faction": "imperium",
+ "briefing": [
+  "Ordan terve: minden értelmes lényt át kell vezetni egy ellenőrzött, gépi létformába, mielőtt a Kórus eléri őket.",
+  "Aki ellenáll, azt betegként kezeli. Maurus legátus az egyetlen biztos esélynek tartja.",
+  "Livia látni akarja a tervet: rombold le az Örök Hajnal adótornyait."
+ ],
+ "player": {
+  "resources": {
+   "wood": 825,
+   "stone": 675,
+   "meteor": 200
+  },
+  "units": {
+   "imp_hos_livia": 1,
+   "imp_hos_nera": 1,
+   "imp_legios": 5,
+   "imp_ballistarius": 4,
+   "imp_centurio": 1
+  }
+ },
+ "enemies": [
+  {
+   "faction": "imperium",
+   "name": "Maurus légiói",
+   "hold": 240,
+   "aggression": 0.9,
+   "buildings": [
+    {
+     "id": "imp_aquila_torony",
+     "offset": [
+      -8,
+      -2
+     ]
+    },
+    {
+     "id": "imp_aquila_torony",
+     "offset": [
+      -2,
+      -8
+     ]
+    },
+    {
+     "id": "imp_aquila_torony",
+     "offset": [
+      -14,
+      -14
+     ]
+    }
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "tornyok",
+   "type": "destroy",
+   "text": "Rombold le az Örök Hajnal adótornyait (Aquila-tornyok)",
+   "targets": [
+    "imp_aquila_torony"
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "templom",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Nem engedem el őket.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Ordan",
+     "text": "Nem engedem el őket. Egyet sem.",
+     "portrait": "imp_szellemidezo"
+    }
+   ]
+  },
+  {
+   "at": 240,
+   "say": [
+    {
+     "who": "Maurus",
+     "text": "Néhány év kényszer jobb, mint egy örök vereség.",
+     "portrait": "imp_centurio"
+    }
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "tornyok",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "tabor",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "A „néhány év” hetven éve tart.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "imp_hos_livia",
+   "text": "Livia elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "A „néhány év” a birodalom történetében már hetven éve tart.",
+ "next": "a4_a_szabad_horgony",
+ "hero_level": 3,
+ "enemy_hero_level": 3,
+ "code": "VAS-03",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (VI. hadjárat: a3_az_orok_hajnal)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5303,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "templom": [
+    50,
+    12
+   ],
+   "torony1": [
+    36,
+    22
+   ],
+   "torony2": [
+    52,
+    30
+   ],
+   "reaktor": [
+    24,
+    34
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "reaktor"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "reaktor",
+     "torony1"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "torony1",
+     "templom"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "torony1",
+     "torony2"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      6,
+      31
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      54,
+      46
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      42
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      14,
+      7
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      22,
+      24
+     ],
+     3.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      11,
+      7
+     ],
+     2.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      12,
+      17
+     ],
+     4.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      45,
+      45
+     ],
+     4.2
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "templom"
+  ],
+  "decor": [
+   {
+    "id": "imp_forum",
+    "at": [
+     56,
+     48
+    ],
+    "ruin": true
+   }
+  ],
+  "ambient": []
+ }
+}

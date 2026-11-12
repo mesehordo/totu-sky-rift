@@ -1,0 +1,40 @@
+{
+ "id": "doodads_swamp",
+ "image": "doodads_swamp.png",
+ "type": "prop",
+ "frame_size": [
+  80,
+  80
+ ],
+ "footprint": [
+  1,
+  1
+ ],
+ "footprint_offset": [
+  8,
+  32
+ ],
+ "frames": 14,
+ "sheet_size": [
+  1120,
+  80
+ ],
+ "names": [
+  "virag_sarga",
+  "virag_piros",
+  "virag_kek",
+  "fucsomo",
+  "kavics",
+  "gomba",
+  "csont",
+  "tusko",
+  "farönk",
+  "bokor",
+  "nad",
+  "tavirozsa",
+  "kristaly",
+  "koponya"
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

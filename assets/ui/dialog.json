@@ -1,0 +1,14 @@
+{
+  "id": "dialog",
+  "type": "nine_slice",
+  "insets": [
+    32,
+    32,
+    32,
+    32
+  ],
+  "size": [
+    96,
+    96
+  ]
+}

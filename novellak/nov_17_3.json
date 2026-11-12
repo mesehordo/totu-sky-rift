@@ -1,0 +1,222 @@
+{
+ "id": "nov_17_3",
+ "code": "NOV-17_3",
+ "title": "Ciszternaőr",
+ "faction": "elves",
+ "novella": true,
+ "people": "Tűz-elfek",
+ "theme": "wasteland",
+ "source": "docs/tortenet/story/…/novellak/17_*.md – „Ciszternaőr”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 20. év, a Tövisdomb ciszterna, az aszály harmadik éve. A víz három falunak kell egész nyárra.",
+  "Napnyugtakor Wullof karaván érkezik."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3082,
+  "points": {
+   "ciszterna": [
+    32,
+    30
+   ],
+   "karavan": [
+    10,
+    46
+   ],
+   "rud": [
+    40,
+    24
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "area": [
+     [
+      20,
+      14
+     ],
+     3
+    ]
+   },
+   {
+    "t": "rock",
+    "area": [
+     [
+      46,
+      40
+     ],
+     3
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "ciszterna",
+     "karavan"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ciszterna",
+     "rud"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      57,
+      49
+     ],
+     4.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      6,
+      6
+     ],
+     2.6
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "ciszterna",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "tuz_hoszovo",
+    "at": "ciszterna",
+    "n": 1,
+    "name": "Ahnar",
+    "tag": "ahnar"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "meres",
+   "type": "guard",
+   "at": "rud",
+   "radius": 2,
+   "seconds": 5,
+   "text": "Mérd meg a víz szintjét a jelzett rúddal",
+   "marker": "Mérőrúd"
+  },
+  {
+   "id": "karavan",
+   "type": "reach",
+   "at": "karavan",
+   "radius": 3,
+   "text": "Menj ki a karavánhoz",
+   "marker": "Karaván",
+   "after": "meres",
+   "tag": "ahnar"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "ciszterna",
+      "say": [
+       {
+        "who": "Ahnar",
+        "text": "Hat nemzedék őrzi. És minden nap kevesebb.",
+        "portrait": "tuz_hoszovo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "on_objective": "karavan",
+   "choice": {
+    "title": "Víz",
+    "text": "A karaván szomjas. A ciszterna félig üres.",
+    "options": [
+     {
+      "label": "Adok – a falvak egy hónapig takarékoskodnak",
+      "flag": "nov173_ad"
+     },
+     {
+      "label": "Nem adhatok",
+      "flag": "nov173_nem"
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "karavan",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "ciszterna",
+      "say": [
+       {
+        "who": "Wullof kereskedő",
+        "text": "A víz, amit nem vendégként kaptunk, nem vendégség volt. Ez a só sem az.",
+        "portrait": "wul_gyujtogeto"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Ősszel egy Wullof kereskedő egy szekér sót hozott.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

@@ -1,0 +1,253 @@
+{
+ "id": "nov_19_3",
+ "code": "NOV-19_3",
+ "title": "A nága változata",
+ "faction": "elves",
+ "novella": true,
+ "people": "Nila-uchana",
+ "theme": "swamp",
+ "source": "docs/tortenet/story/…/novellak/19_*.md – „A nága változata”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "Az 50. év, a Makara-medence partja. A gyerekeknek nem szabad a nágák közelébe menniük.",
+  "– Akarod hallani az igazat? – kérdezte a nága."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 6960,
+  "points": {
+   "haz": [
+    10,
+    46
+   ],
+   "medence": [
+    44,
+    20
+   ],
+   "_": [
+    60,
+    52
+   ]
+  },
+  "paint": [
+   {
+    "t": "water",
+    "area": [
+     [
+      18,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      46,
+      18
+     ],
+     4
+    ]
+   },
+   {
+    "t": "water",
+    "area": [
+     [
+      32,
+      40
+     ],
+     4
+    ]
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "haz",
+     "medence"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      9,
+      24
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      9,
+      35
+     ],
+     3.6
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      26,
+      45
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      46,
+      39
+     ],
+     4.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      53,
+      32
+     ],
+     3.3
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      35,
+      41
+     ],
+     4.4
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "haz",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "nil_szornykoto",
+    "at": "haz",
+    "n": 1,
+    "name": "Lakshi",
+    "tag": "lakshi"
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "–",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "part",
+   "type": "reach",
+   "at": "medence",
+   "radius": 3,
+   "text": "Ülj le a Makara-medence partján",
+   "marker": "Medence",
+   "tag": "lakshi"
+  },
+  {
+   "id": "hallgat",
+   "type": "guard",
+   "at": "medence",
+   "radius": 2,
+   "seconds": 10,
+   "text": "Hallgasd meg a nága változatát",
+   "marker": "Nága",
+   "after": "part"
+  },
+  {
+   "id": "haza",
+   "type": "reach",
+   "at": "haz",
+   "radius": 3,
+   "text": "Menj haza, és mondd el anyádnak",
+   "marker": "Otthon",
+   "after": "hallgat",
+   "tag": "lakshi"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "medence",
+      "say": [
+       {
+        "who": "Nága",
+        "text": "Akarod hallani az igazat?",
+        "portrait": "nil_naga"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "zaras",
+   "on_objective": "haza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "haz",
+      "say": [
+       {
+        "who": "Lakshi",
+        "text": "A nagyanyám is hallotta. Ő azt gondolta, a nága még mindig vár, hogy valaki elhiggye.",
+        "portrait": "nil_szornykoto"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "Lakshi elmondta az anyjának. Az anyja elgondolkodott.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

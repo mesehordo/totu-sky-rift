@@ -1,0 +1,25 @@
+{
+  "id": "minimap_ping",
+  "type": "ground_marker",
+  "image": "ping.png",
+  "frame_size": [
+    32,
+    32
+  ],
+  "sheet_size": [
+    192,
+    32
+  ],
+  "anchor": [
+    16,
+    16
+  ],
+  "animations": {
+    "play": {
+      "start": 0,
+      "frames": 6,
+      "fps": 10,
+      "loop": false
+    }
+  }
+}

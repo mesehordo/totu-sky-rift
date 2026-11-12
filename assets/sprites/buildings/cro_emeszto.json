@@ -1,0 +1,43 @@
+{
+ "id": "cro_emeszto",
+ "type": "building",
+ "image": "cro_emeszto.png",
+ "team_mask": "cro_emeszto_team.png",
+ "style": "organic",
+ "frame_size": [
+  144,
+  120
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  6,
+  -14
+ ],
+ "directions": [
+  "S"
+ ],
+ "animations": {
+  "idle": {
+   "start": 0,
+   "frames": 4,
+   "fps": 5,
+   "loop": true
+  },
+  "build": {
+   "start": 4,
+   "frames": 4,
+   "fps": 0,
+   "loop": false,
+   "note": "építési fázisok: a haladás aránya választja ki"
+  }
+ },
+ "sheet_size": [
+  1152,
+  120
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

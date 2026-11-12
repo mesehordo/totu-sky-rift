@@ -1,0 +1,347 @@
+{
+ "id": "a1_lefoglalt_szallitmany",
+ "title": "1. A lefoglalt szállítmány",
+ "faction": "imperium",
+ "briefing": [
+  "Livia először ellenségként találkozik a szövetséggel: egy csillagércszállítmányt akar visszaszerezni, amelyet Ragna foglalt le.",
+  "Szerezd vissza az ércet – de ne ölj több ursant, mint amennyit muszáj.",
+  "Ugyanaz az érc fűtené a menekülteket és töltené Aureth horgonyait."
+ ],
+ "player": {
+  "units": {
+   "imp_hos_livia": 1,
+   "imp_legios": 3,
+   "imp_ballistarius": 2
+  }
+ },
+ "enemies": [
+  {
+   "faction": "ursan",
+   "name": "Ragna őrsége",
+   "hold": 99999,
+   "aggression": 0.5
+  }
+ ],
+ "objectives": [
+  {
+   "id": "erc",
+   "type": "gather",
+   "text": "Szerezz vissza 250 csillagércet",
+   "resource": "meteor",
+   "amount": 250
+  },
+  {
+   "type": "escort",
+   "tag": "szallitmany",
+   "min": 2,
+   "at": "tabor",
+   "radius": 7,
+   "text": "Kísérd vissza az ércszállító Aratókat a táborba",
+   "marker": "Tábor",
+   "id": "visszaver"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "szallitmany",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Minden horgony egy ember. Minden ércdarab egy nap. De nem ölünk több ursant, mint muszáj.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": 3,
+   "say": [
+    {
+     "who": "Livia",
+     "text": "Minden horgony egy ember. Minden ércdarab egy nap.",
+     "portrait": "imp_hos_livia"
+    }
+   ]
+  },
+  {
+   "on_objective": "erc",
+   "message": "Az ursan őrség utánatok jön!",
+   "color": [
+    255,
+    120,
+    100
+   ],
+   "spawn": {
+    "owner": 1,
+    "near": "orseg",
+    "units": {
+     "urs_pajzshordozo": 4,
+     "urs_szigonyvezo": 2
+    },
+    "to": "ut"
+   }
+  },
+  {
+   "id": "szallitmany_csatl",
+   "on_enter": {
+    "at": "szallitmany",
+    "r": 5
+   },
+   "join": "szallitmany",
+   "say": [
+    {
+     "who": "Livia",
+     "text": "Megvannak a szekerek. Most vissza – lassan, hogy senki ne kövessen dühből.",
+     "portrait": "imp_hos_livia"
+    }
+   ]
+  },
+  {
+   "id": "zaras",
+   "on_objective": "visszaver",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "orseg",
+      "say": [
+       {
+        "who": "Livia",
+        "text": "Ragna üzent: holnap menjek vissza beszélni. Megyek.",
+        "portrait": "imp_hos_livia"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [
+  {
+   "id": "imp_hos_livia",
+   "text": "Livia elesett – a hadjárat nem folytatódhat nélküle."
+  }
+ ],
+ "victory": "Az érc a tiéd – és Ragna üzenete is: „Holnap gyere vissza. Beszéljünk.”",
+ "next": "a2_ures_serlegek_varosa",
+ "hero_level": 1,
+ "enemy_hero_level": 1,
+ "code": "VAS-01",
+ "source": "docs/tortenet/story/edited/01_vilag_es_fotortenet.md – 8. fejezet (VI. hadjárat: A lefoglalt szállítmány)",
+ "canon": {
+  "rogzitett": "A küldetés eseményei, döntése és jelzői az eredeti hadjáratból.",
+  "adaptacio": "Kézzel tervezett pálya elnevezett helyekkel, céljelölők, párbeszéd és átvezetők.",
+  "uj_javaslat": "–"
+ },
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 5101,
+  "points": {
+   "tabor": [
+    10,
+    46
+   ],
+   "szallitmany": [
+    46,
+    18
+   ],
+   "orseg": [
+    54,
+    10
+   ],
+   "ut": [
+    30,
+    32
+   ]
+  },
+  "paint": [],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "tabor",
+     "ut"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "ut",
+     "szallitmany"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "szallitmany",
+     "orseg"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      15,
+      34
+     ],
+     3.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      28,
+      12
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      57,
+      30
+     ],
+     4.9
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      40,
+      33
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      55,
+      22
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      56,
+      46
+     ],
+     4.4
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      30,
+      21
+     ],
+     4.0
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      49,
+      49
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      35,
+      42
+     ],
+     4.5
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [
+   {
+    "kind": "stone",
+    "at": [
+     5,
+     49
+    ]
+   },
+   {
+    "kind": "stone",
+    "at": [
+     15,
+     42
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     13,
+     51
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     44,
+     22
+    ]
+   },
+   {
+    "kind": "meteor",
+    "at": [
+     50,
+     16
+    ]
+   }
+  ],
+  "starts": [
+   "tabor",
+   "orseg",
+   "szallitmany"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "allies": [
+  {
+   "faction": "imperium",
+   "name": "Lefoglalt szállítmány",
+   "units": [
+    {
+     "id": "imp_arato",
+     "n": 3,
+     "at": "szallitmany",
+     "tag": "szallitmany"
+    }
+   ]
+  }
+ ]
+}

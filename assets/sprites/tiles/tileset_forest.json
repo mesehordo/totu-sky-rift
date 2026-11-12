@@ -1,0 +1,42 @@
+{
+ "id": "tileset_forest",
+ "type": "tileset",
+ "image": "tileset_forest.png",
+ "tile_size": [
+  64,
+  64
+ ],
+ "rows": {
+  "grass": {
+   "row": 0,
+   "variants": 6
+  },
+  "dirt": {
+   "row": 1,
+   "variants": 4
+  },
+  "sand": {
+   "row": 2,
+   "variants": 3
+  },
+  "water": {
+   "row": 3,
+   "variants": 4
+  },
+  "rock": {
+   "row": 4,
+   "variants": 4
+  },
+  "creep": {
+   "row": 5,
+   "variants": 4
+  }
+ },
+ "note": "a víz 4 változata animációs képkockaként is használható; a creep a croftian mélység",
+ "sheet_size": [
+  384,
+  384
+ ],
+ "generator": "TOTU HD grafika",
+ "scale": 2
+}

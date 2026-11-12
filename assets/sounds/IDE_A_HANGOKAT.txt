@@ -1,0 +1,1 @@
+Hanghatások: common/, factions/<nép>/, units/<egység>/ – részletek: docs/HANGOK.md

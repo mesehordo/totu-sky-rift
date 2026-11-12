@@ -1,0 +1,69 @@
+{
+ "id": "egszakadas_kratere",
+ "order": 18,
+ "players": 8,
+ "size": 152,
+ "layout": "ring",
+ "theme": "wasteland",
+ "name": {
+  "hu": "Az Égszakadás krátere",
+  "en": "The Skyfall Crater"
+ },
+ "desc": {
+  "hu": "Óriáskráter a világ közepén, tele csillagérccel; sziklafal védi, nyolc kapuval. A fal előtt Mhonyo és Shrissh-matah őrhelyek.",
+  "en": "A giant crater full of star-ore at the heart of the world; guarded by cliffs with eight gates."
+ },
+ "features": {
+  "ring_wall": {
+   "radius": 0.15,
+   "gates": 8
+  },
+  "crater": {
+   "radius": 0.13,
+   "meteors": 8
+  },
+  "forests": 10
+ },
+ "camps": {
+  "1": "mhonyo",
+  "2": "shrissh_matah"
+ },
+ "decor": [
+  {
+   "id": "elf_napkapu",
+   "at": "pair",
+   "d": 6,
+   "s": 0,
+   "ruin": true
+  },
+  {
+   "id": "mho_szelpenge_udvar",
+   "at": "base",
+   "d": 4,
+   "s": 12
+  }
+ ],
+ "ambient": [
+  {
+   "id": "mho_szikraor",
+   "at": "base",
+   "d": 6,
+   "s": 12,
+   "n": 1,
+   "shelter": {
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   "mode": "idle"
+  }
+ ],
+ "plan": {
+  "dontes": "Nyolc kapu a kráterfalon: aki bent terjeszkedik, gazdag, de minden kaput védenie kell.",
+  "felallasok": "mindenki-mindenki ellen (8), kevesebb játékossal is",
+  "taborok": {
+   "1": "Mhonyo",
+   "2": "Shrissh-matah"
+  }
+ }
+}

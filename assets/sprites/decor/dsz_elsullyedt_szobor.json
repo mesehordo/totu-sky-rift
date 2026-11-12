@@ -1,0 +1,28 @@
+{
+ "id": "dsz_elsullyedt_szobor",
+ "image": "dsz_elsullyedt_szobor.png",
+ "type": "decor",
+ "frame_size": [
+  224,
+  288
+ ],
+ "footprint": [
+  2,
+  2
+ ],
+ "footprint_offset": [
+  48,
+  136
+ ],
+ "directions": [
+  "S"
+ ],
+ "frames": 2,
+ "frames_meaning": "változatok",
+ "sheet_size": [
+  448,
+  288
+ ],
+ "scale": 2,
+ "generator": "TOTU HD grafika"
+}

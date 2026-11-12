@@ -1,0 +1,279 @@
+{
+ "id": "nov_08_1",
+ "code": "NOV-08_1",
+ "title": "Elvágott ág",
+ "faction": "mycel",
+ "novella": true,
+ "people": "Micéliák",
+ "theme": null,
+ "source": "docs/tortenet/story/…/novellak/08_*.md – „Elvágott ág”",
+ "canon": {
+  "rogzitett": "A novella szereplői, helyszíne, ideje és fő eseménye.",
+  "adaptacio": "A novella fő konfliktusa egyetlen helyszínen, játszható feladatként.",
+  "uj_javaslat": "A pálya helyei, a feladat időkorlátja és a kísérő mellékszereplők."
+ },
+ "briefing": [
+  "A 68. év, a Csillámszurdok Mélykertje. A keleti ágat Gyopár és Nádi együtt ültették tizenhét éve.",
+  "Nádi meghalt. Az ágban az marad, amit hátrahagyott – és az ágat el kell vágni, mert fertőzött."
+ ],
+ "layout": {
+  "size": [
+   64,
+   56
+  ],
+  "seed": 3646,
+  "points": {
+   "kert": [
+    12,
+    44
+   ],
+   "ag": [
+    44,
+    20
+   ],
+   "emlek": [
+    30,
+    28
+   ],
+   "kijarat": [
+    52,
+    46
+   ],
+   "_": [
+    60,
+    4
+   ]
+  },
+  "paint": [
+   {
+    "t": "rock",
+    "line": [
+     [
+      10,
+      4
+     ],
+     [
+      16,
+      50
+     ]
+    ],
+    "w": 3
+   },
+   {
+    "t": "rock",
+    "line": [
+     [
+      54,
+      4
+     ],
+     [
+      48,
+      50
+     ]
+    ],
+    "w": 3
+   }
+  ],
+  "clear": [
+   {
+    "t": "dirt",
+    "line": [
+     "kert",
+     "emlek"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "emlek",
+     "ag"
+    ],
+    "w": 2
+   },
+   {
+    "t": "dirt",
+    "line": [
+     "emlek",
+     "kijarat"
+    ],
+    "w": 2
+   }
+  ],
+  "forest": [
+   {
+    "border": 3
+   },
+   {
+    "area": [
+     [
+      16,
+      12
+     ],
+     4.1
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      13,
+      15
+     ],
+     3.8
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      50,
+      29
+     ],
+     2.7
+    ],
+    "density": 0.75
+   },
+   {
+    "area": [
+     [
+      48,
+      8
+     ],
+     2.6
+    ],
+    "density": 0.75
+   }
+  ],
+  "resources": [],
+  "starts": [
+   "kert",
+   "_"
+  ],
+  "decor": [],
+  "ambient": []
+ },
+ "player": {
+  "base": false,
+  "resources": {
+   "wood": 0,
+   "stone": 0,
+   "meteor": 0
+  },
+  "units": [
+   {
+    "id": "myc_sporaszedo",
+    "at": "kert",
+    "n": 1,
+    "name": "Gyopár",
+    "tag": "fo"
+   },
+   {
+    "id": "myc_kalapos_or",
+    "at": "kert",
+    "n": 2
+   }
+  ]
+ },
+ "enemies": [
+  {
+   "faction": "croftian",
+   "name": "Szivárgó fertőzés",
+   "base": false,
+   "ai": false,
+   "units": []
+  }
+ ],
+ "objectives": [
+  {
+   "id": "e",
+   "type": "reach",
+   "at": "emlek",
+   "radius": 3,
+   "text": "Járd be a szurdok emlékhelyét",
+   "marker": "Emlékhely",
+   "tag": "fo"
+  },
+  {
+   "id": "ag",
+   "type": "guard",
+   "at": "ag",
+   "radius": 2,
+   "seconds": 8,
+   "text": "Kapcsolódj a keleti ághoz, és figyelj",
+   "marker": "Ág",
+   "after": "e"
+  },
+  {
+   "id": "vissza",
+   "type": "reach",
+   "at": "kijarat",
+   "radius": 3,
+   "text": "Térj vissza a kert peremére",
+   "marker": "Perem",
+   "after": "ag",
+   "tag": "fo"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "nyitas",
+   "at": 0.2,
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "emlek",
+      "say": [
+       {
+        "who": "Gyopár",
+        "text": "Egy tavaszi reggel illata. Ennyi maradt.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "fert",
+   "every": 60,
+   "at": 0,
+   "spawn": {
+    "owner": 1,
+    "near": "_",
+    "to": "ag",
+    "units": [
+     {
+      "id": "cro_karmos",
+      "n": 2,
+      "name": "Szivárgó fertőzés"
+     }
+    ]
+   },
+   "delay": 30,
+   "max": 3
+  },
+  {
+   "id": "zaras",
+   "on_objective": "vissza",
+   "cinematic": {
+    "shots": [
+     {
+      "camera": "kijarat",
+      "say": [
+       {
+        "who": "Gyopár",
+        "text": "Tavasszal új ágat ültetek. Egyedül.",
+        "portrait": "myc_sporaszedo"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "fail_if_lost": [],
+ "victory": "A keleti ág helyére Gyopár tavasszal új ágat ültetett.",
+ "hero_level": 1,
+ "enemy_hero_level": 1
+}

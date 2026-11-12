@@ -1,0 +1,75 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Az új C++-motor fordítása és tesztje minden célrendszeren (UJ_MOTOR_TERV.md, M1 kapu).
+name: motor
+
+on:
+  push:
+    paths: ["engine/**", ".github/workflows/motor.yml"]
+  pull_request:
+    paths: ["engine/**", ".github/workflows/motor.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: "Windows x64 (MSVC)", os: windows-latest }
+          - { name: "Linux x64 (GCC)", os: ubuntu-24.04 }
+          - { name: "macOS arm64 (Apple Silicon)", os: macos-15 }
+          - { name: "macOS x64 (Intel)", os: macos-15-intel }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: engine
+      - name: Linux-függőségek (SDL3 videó- és hangfejlécek)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ninja-build libx11-dev libxext-dev libxrandr-dev \
+            libxcursor-dev libxi-dev libxss-dev libxtst-dev libwayland-dev libxkbcommon-dev wayland-protocols \
+            libegl1-mesa-dev libgl1-mesa-dev libasound2-dev libpulse-dev libdbus-1-dev libudev-dev
+      - name: Konfigurálás
+        run: cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release -DTOTU_SYSTEM_SDL=OFF
+      - name: Fordítás
+        run: cmake --build build --config Release --parallel
+      - name: Tesztek
+        run: ctest --test-dir build -C Release --output-on-failure
+
+  freebsd:
+    name: FreeBSD x64 (clang)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: engine
+      - uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          prepare: pkg install -y cmake git pkgconf
+          run: |
+            cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release -DTOTU_SYSTEM_SDL=OFF
+            cmake --build build --parallel 4
+            ctest --test-dir build --output-on-failure
+
+  openbsd:
+    name: OpenBSD x64 (clang)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: engine
+      - uses: vmactions/openbsd-vm@v1
+        with:
+          usesh: true
+          prepare: pkg_add -I cmake git
+          run: |
+            cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release -DTOTU_SYSTEM_SDL=OFF
+            cmake --build build --parallel 4
+            ctest --test-dir build --output-on-failure
