@@ -1668,7 +1668,7 @@
     "max": 100,
     "hurt": 60,
     "ally_death": 10,
-    "hero_death": 25,
+    "hero_death": 25, "hero_death_breaks": true,
     "regen": 2,
     "drum": {
       "unit": "oon_dobos",

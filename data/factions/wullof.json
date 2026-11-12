@@ -1663,7 +1663,6 @@
   "bounty_res": "wood",
   "spell_resource": "song",
   "forest_stealth": true,
-  "balance_v6": true,
   "supply_unit": "wul_emu",
   "paths": {
     "boleny": {

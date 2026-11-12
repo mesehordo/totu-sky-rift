@@ -792,7 +792,8 @@ class Game:
         if not self.map.inb(tx, ty) or not self.pond[ty * self.map.w + tx]:
             return 1.0
         ps = self.data.game.get("pond_speed", {"own": 1.3, "other": 0.7})
-        return ps["own"] if ent.defn.get("faction") == "hukucha" else ps["other"]
+        own = self.data.factions.get(ent.defn.get("faction"), {}).get("pond_affinity")  # D21: adatkulcs
+        return ps["own"] if own else ps["other"]
 
     def on_own_creep(self, ent):
         p = ent.owner
@@ -1171,7 +1172,10 @@ class Game:
             for u in self.query(e.x, e.y, r + 32):
                 if u.is_unit and u.alive and u.owner is e.owner and getattr(u, "morale", None) is not None \
                         and dmath.hypot(u.x - e.x, u.y - e.y) <= r:
-                    u.morale = max(0.0, u.morale - mo.get("hero_death" if hero else "ally_death", 10))
+                    if hero and mo.get("hero_death_breaks"):  # a közeli hős eleste azonnal megtöri (D21)
+                        u.morale = 0.0
+                    else:
+                        u.morale = max(0.0, u.morale - mo.get("hero_death" if hero else "ally_death", 10))
                     if u.morale <= 0:
                         u.broken = True
         heroes.grant_kill_xp(self, e, src)
@@ -1788,11 +1792,14 @@ class Game:
             acc = getattr(p, "rot_acc", 0.0)
             budget = p.rules.get("rot_cap", cr.get("cap", 6.5)) * dt
             gone = []
-            for r in m.resources:
+            # D21: a keret a saját főépülethez legközelebbi fáknál fogy el először (a mélység a bázis felől „eszi”
+            # az erdőt); egyenlő távolságnál a csempe sorrendje dönt. Főépület nélkül csak a csempe sorrendje.
+            trees = [r for r in m.resources if r.kind == "wood" and p.creep[r.ty * m.w + r.tx]]
+            trees.sort(key=lambda r: (min((dmath.sq(h.x - r.x) + dmath.sq(h.y - r.y) for h in hqs), default=0.0),
+                                      r.ty, r.tx))
+            for r in trees:
                 if budget <= 0:
                     break
-                if r.kind != "wood" or not p.creep[r.ty * m.w + r.tx]:
-                    continue
                 rate = cr.get("rate", 0.1) * p.rules.get("rot_mult", 1.0)
                 if any(dmath.hypot(h.x - r.x, h.y - r.y) <= cr.get("hq_radius", 9) * TILE for h in hqs):
                     rate *= cr.get("hq_mult", 2.0)
@@ -2543,7 +2550,8 @@ class Game:
             return
         if element not in ("fire", "poison") and not (attack and attack.get("poison")):
             damage *= 0.2
-            if src is not None and src.is_unit and src.alive and src.defn.get("faction") != "croftian":
+            if (src is not None and src.is_unit and src.alive
+                    and not self.data.factions.get(src.defn.get("faction"), {}).get("spike_immune")):
                 strength = spike.owner.rules.get("spike_mult", 1.0)
                 src.poison = (None, self.SPIKE["dps"] * strength, self.time + 2.0)
         spike.hp = max(0, spike.hp - damage)
@@ -2562,7 +2570,8 @@ class Game:
             return
         m = self.map
         for u in self.units:
-            if not u.alive or u.flying or u.inside is not None or u.defn.get("faction") == "croftian":
+            if (not u.alive or u.flying or u.inside is not None
+                    or self.data.factions.get(u.defn.get("faction"), {}).get("spike_immune")):
                 continue
             tx, ty = int(u.x // TILE), int(u.y // TILE)
             if m.inb(tx, ty) and sp[ty * m.w + tx]:

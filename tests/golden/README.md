@@ -13,3 +13,7 @@ Mind a `pelda_mod` és a `micelia` nélkül, alapadatokkal készült (`--no-mods
 
 Utolsó újrarögzítés: 2026-11-12, a determinisztikus matematika (`rts/dmath.py`, C#-port P0) miatt.
 `dmath_vectors.json`: a `dmath` függvényeinek bit-pontos referenciakimenetei (`python tools/test_dmath.py --vectors tests/golden/dmath_vectors.json --n 5000`) a C#-átirat ellenőrzéséhez.
+
+2026-11-12, D21: a `skirmish_croftian_ooni_s7.trep` újrarögzítve – a mélységi rothadás új sorrendje miatt tért el
+(900. tick). A régi rothadás-függvénnyel visszajátszva mind a 30 hash egyezett, tehát a többi változtatás
+(fajnév → adatkulcs, hős halála) ebben a felvételben nem okozott eltérést.

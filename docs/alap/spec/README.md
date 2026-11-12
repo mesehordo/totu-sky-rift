@@ -37,13 +37,14 @@ Minden szabály azonosítót kap (`MECH-…`, `KEP-…`, `KUT-…`), és ezekbő
 
 ## A név szerinti elágazások (általánosítandók)
 
-A leltár 16. pontján felül a fajazonosítóra is ágazik a kód; az új motorban mind adatkulcs lesz:
+A leltár 16. pontján felül a fajazonosítóra is ágazik a kód; az új motorban mind adatkulcs lesz (D21). Az első
+hármat a Python-referenciában is átírtam (a viselkedés azonos, golden-próbával igazolva):
 
 | Hely | Mai feltétel | Javasolt adatkulcs |
 |---|---|---|
-| G 795 `pond_speed` | `defn.faction == "hukucha"` → saját tó gyorsít | faj: `pond.own_speed: true` |
-| G 2565, 2546 tüskék | `faction == "croftian"` → nem hat rá / nem mérgeződik | tüske-adat: `immune_factions` vagy a tulajdonos faja |
-| E 17, 398, 1503 idézések | croftian idézés nem jár le, a hős idézése állandó (max. 4) | faj: `summons_permanent: true` |
+| G 795 `pond_speed` | ~~`defn.faction == "hukucha"`~~ | **kész (D21):** faj `pond_affinity: true` |
+| G 2551, 2571 tüskék | ~~`faction == "croftian"`~~ | **kész (D21):** faj `spike_immune: true` |
+| E 17, 398, 1503 idézések | ~~`faction == "croftian"`~~ | **kész (D21):** faj `summons_permanent: true` |
 | G 2717 lámpásfény-gyógyulás | csak `faction == "ooni"` egységek | épület: `light_heal_factions` (alapból a saját faj) |
 | G 2724 Kőkutya-hűség | `defn.id == "oon_kokutya"` | egység: `guard_armor` (+ szabály-szorzó) |
 | G 2730 Kapuőrzés | `"oon_kapuorzes" in toggles` | képesség: `guard_armor: 3` |

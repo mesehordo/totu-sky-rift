@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D21 | ELDÖNTVE (2026-11-12): a specifikáció furcsaságai – a közeli hős eleste azonnal megtöri a morált; a fajnévhez kötött szabályok adatkulcsok lesznek; a mélységi rothadás a főépülethez közelebbi fáknál kezdődik; a felesleges `detect_units` és `balance_v6` törölve |
 | D17 | ELDÖNTVE (2026-11-12): a cél a 0 A.D. / AoE / WC3 / SC1 minősége; **nem nulláról újraírás**, hanem bitre azonos port + Q1–Q6 minőségi szakasz mérhető kapukkal; a kliens `RenderSnapshot`-ot kap és interpolál (P8); a D4 az F5 előtt újranézendő |
 | D16 | ELDÖNTVE (2026-11-12): **szabálybefagyasztás a C#-port idejére** – a Python-játékban csak hibajavítás és adatban (JSON) felvehető tartalom; új mechanika (pl. D13 patrol/stance) a port után, a C#-magban |
 
@@ -155,3 +156,14 @@ FreeBSD-n csak közösségi portként.
 **Döntés:** C++20 motor (D18), Lua 5.4 szkript (D19), győzelmi feltételek + hadjárattérkép (D20).
 Terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md), [ADR-002](dontesek/ADR-002-uj-motor.md). A PORT_TERV és az ADR-001 felülírva.
 
+### D21 – A specifikáció furcsaságai · ELDÖNTVE (2026-11-12)
+
+1. **Harci kedv:** a sérülés egyedül továbbra sem töri meg az egységet; **a közelében (8 csempe) elesett hős azonnal
+   megtöri** a morált (`morale.hero_death_breaks`).
+2. **Fajnév helyett adatkulcs:** `pond_affinity` (a tó gyorsítja a népet), `spike_immune` (a tüske nem hat rá, és
+   nem mérgezi meg), `summons_permanent` (az idézések nem járnak le, a hős idézései állandók). A mai fajoknál a
+   viselkedés változatlan; egy mod új faja is megkaphatja. A specifikáció README-jében felsorolt többi név
+   szerinti szabály az új motorban ugyanígy adatkulcs lesz.
+3. **Mélységi rothadás:** a keret a saját főépülethez legközelebbi fáknál fogy el először.
+4. **Halott adat:** a `detect_units` felesleges volt (a Szemhordozó „A Kórus szeme” képességgel már felfed,
+   9 csempén), a `balance_v6` régi jelölő – mindkettő törölve.

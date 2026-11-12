@@ -196,3 +196,8 @@
 **Talált furcsaságok (tulajdonosi megerősítésre):** a Harci kedv sérülésből egyedül nem tör meg (`hurt` 60 < 100); a tüskék és a tó-sebesség fajnévhez kötöttek; a croftian idézések nem járnak le (fajnév); a rothadás kerete a lelőhelylista sorrendjében fogy; a `detect_units` és a `balance_v6` halott adat; az elfek `self_build` kulcsát csak a gépi ellenfél használja.
 **Következik:** `KEPESSEGEK.md` (23 képességtípus), utána kutatás/szabálymódosítók, hősök/tárgyak/táborok, kisnépek.
 
+## 2026-11-12 – D21: a specifikáció furcsaságainak rendezése
+
+**Döntések (tulajdonos):** a közeli hős eleste azonnal megtöri a morált (a sérülés egyedül továbbra sem); a fajnévhez kötött szabályok adatkulcsok; a mélységi rothadás a főépülethez közelebbi fáknál kezdődik; a „felfedés bevezetése” – kiderült, hogy a Szemhordozó már felfed („A Kórus szeme”, 9 csempe), így a `detect_units` felesleges volt; törölve a `balance_v6`-tal együtt.
+**Változás (Python-referencia):** `game.kill` – `morale.hero_death_breaks` (Ooni: true); `pond_speed` → faj `pond_affinity` (Huk’ucha); tüskék → faj `spike_immune` (Croftian); idézések → faj `summons_permanent` (Croftian, `entities.py` 3 helyen); `_update_rot` – a fák a legközelebbi saját főépülettől mért távolság szerint; adat: `ooni.json`, `hukucha.json`, `croftian.json`, `wullof.json`, `mycel.json`.
+**Ellenőrzés:** HUD- és mentéstesztek, 46/46 küldetés; golden: a croftian–ooni felvétel a 900. ticktől eltért; a régi rothadás-függvénnyel 30/30 hash egyezett (a többi átírás viselkedése azonos) – újrarögzítve, 3/3. Specifikáció, döntések (D21), leltár frissítve.

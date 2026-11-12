@@ -1510,10 +1510,7 @@
   "start_gather": "wood",
   "supply_unit": "cro_szemhordozo",
   "supply_desc": "Szemhordozók (egységek)",
-  "spell_resource": "hp",
-  "detect_units": [
-    "cro_szemhordozo"
-  ],
+  "spell_resource": "hp", "spike_immune": true, "summons_permanent": true,
   "paths": {
     "raj": {
       "name": "Raj",

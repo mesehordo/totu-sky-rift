@@ -14,7 +14,7 @@ STEER_TURNS = tuple((dmath.cos(a), dmath.sin(a)) for a in (0.45, 0.9, 1.35, 1.8,
 REACH = 22  # ennyi px-en belül "odaért" egy épülethez/nyersanyaghoz
 
 def summon_duration(owner, duration):
-    if duration is None or owner.faction["id"] == "croftian":
+    if duration is None or owner.faction.get("summons_permanent"):
         return duration
     return duration * owner.rules.get("summon_research_mult", 1.0)
 
@@ -395,7 +395,7 @@ class Unit(Entity):
 
     @property
     def summon_seconds(self):
-        if self.lifetime is None or "anchor" in self.tags or self.owner.faction["id"] == "croftian":
+        if self.lifetime is None or "anchor" in self.tags or self.owner.faction.get("summons_permanent"):
             return None
         return max(0, math.ceil(self.lifetime))
 
@@ -1500,7 +1500,7 @@ class Unit(Entity):
         radius = udef.get("radius", 0.4) * TILE
         flying = udef.get("flying", False)
         count = ab.get("count", 1)
-        permanent = self.hero and self.defn.get("faction") == "croftian"
+        permanent = self.hero and game.data.factions.get(self.defn.get("faction"), {}).get("summons_permanent")
         if permanent:
             hero_id = self.defn["id"]  # újraélesztés után is ugyanahhoz a hőshöz tartoznak
             remaining = 4 - game.hero_summon_count(self.owner, hero_id)

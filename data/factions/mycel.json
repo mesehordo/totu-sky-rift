@@ -995,7 +995,6 @@
   "network_supply": 1,
   "supply_desc": "A hálózat: minden összekötött épület +1",
   "spell_resource": "spores",
-  "balance_v6": true,
   "paths": {
     "rothadas": {
       "name": "Rothadás",

@@ -164,15 +164,16 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 
 - **Adat:** faj `creep_rot`: `rate` 0,06, `hq_mult` 2,5, `hq_radius` 9, `cap` (alap 6,5); szabály `rot_mult`, `rot_cap`.
 - **Szabály:** 30 tickenként (`dt` = 1 s), játékosonként:
-  1. `keret = rot_cap (vagy cap) × dt`; a fák a lelőhelylista sorrendjében.
+  1. `keret = rot_cap (vagy cap) × dt`; a saját mélységen álló fák **a legközelebbi saját főépülettől mért távolság**
+     szerint növekvő sorrendben (egyenlőségnél csempe-sor, majd -oszlop; főépület nélkül csak ez) – D21.
   2. Minden saját mélységen álló fa: `ütem = rate × rot_mult`, a saját főépülettől `hq_radius` csempén belül × `hq_mult`;
      `elvesz = min(maradék fa, ütem × dt, keret)`; a keret csökken; a fa „rothad”.
   3. Az elvett mennyiség gyűlik; az egész rész fa-bevétel lesz (a gyűjtött statisztikába is). Az elfogyott fa eltűnik.
 - **Kód:** G 1781–1815.
 - **Próba:** P1 – 10 fa a Kaptártól 5 csempére, mélységen: 60 s alatt `10 × 0,06 × 2,5 × 60 = 90` fa (keret alatt).
   P2 – 200 fa: a bevétel a kerettel korlátozott (≤ 6,5/s).
-- **Megjegyzés:** a keret a lista sorrendjében fogy, így a lista eleji fák rothadnak előbb – az új motorban a
-  sorrendet rögzíteni kell (pl. lelőhely-azonosító szerint).
+- **Döntés (D21):** a mélység a bázis felől „eszi” az erdőt. P3 – 400 fa a mélységen: az első percben a főépülethez
+  legközelebbi fák fogynak, a távoliak érintetlenek.
 
 ### MECH-CREEP-5 – Fertőzés (ölésből kikelő Karmos)
 
@@ -195,19 +196,20 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
   szabály `spike_size`, `spike_max`, `spike_mult`.
 - **Szabály:**
   1. A Csápszolga odamegy és lerak egy `spike_size × spike_size` foltot (nem olvad bele); legfeljebb `spike_max` csempe.
-  2. 15 tickenként minden nem croftian, földi, nem bent lévő egység, amely tüskés csempén áll:
+  2. 15 tickenként minden földi, nem bent lévő, **nem `spike_immune` fajú** egység, amely tüskés csempén áll:
      lassítás `max(0,2, 1 − 0,4 × spike_mult)` 0,7 s-ig; méreg `4 × spike_mult` /s 2 s-ig.
   3. A tüske támadható célpont, de **nem blokkolja** az útvonalat. Tűz- és méregsebzés teljes, más × 0,2, és a nem
-     croftian támadót megmérgezi.
-- **Kód:** G 2470–2574. **Megjegyzés:** a faj- és épületazonosító név szerint szerepel (README).
+     `spike_immune` fajú támadót megmérgezi.
+- **Kód:** G 2470–2580. **Megjegyzés:** az épületazonosító (`cro_merges_tuskek`) még név szerint szerepel (README).
 
 ### MECH-CREEP-8 – Egyéb croftian szabályok
 
 - **Építés:** `consume` – a Csápszolga beleolvad az épületbe (elfogy).
 - **Szemhordozó:** `unit_supply` 8 (létszámot ad); a gép a `supply_unit`-ként termeli.
-- **Idézések:** a croftian idézések **nem járnak le**, a hős idézése állandó (hősönként legfeljebb 4) – név szerinti szabály.
+- **Idézések:** `summons_permanent` (D21) – az idézések **nem járnak le**, a hős idézése állandó (hősönként legfeljebb 4).
 - **Varázserő:** `spell_resource: hp` (a képesség életerőből fizet – KEP-…).
-- **`detect_units`:** adatban szerepel, a kód nem használja (leltár 15. pont) – tulajdonosi döntés: törlés vagy bevezetés.
+- **Felfedés:** a Szemhordozó „A Kórus szeme” passzív képességgel 9 csempén belül felfed (a felesleges `detect_units`
+  kulcs törölve, D21); a Tüskés gyökér épület szintén felfedő (`detect`).
 
 ---
 
@@ -232,9 +234,9 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 
 ### MECH-POND-3 – Mozgás tavon
 
-- **Adat:** `game.pond_speed` `own` 1,3, `other` 0,7.
-- **Szabály:** **bármely** tavon álló földi egység: Huk’ucha × 1,3, mindenki más × 0,7 (a tó gazdájától függetlenül).
-- **Megjegyzés:** a feltétel a faj neve (`hukucha`) – README. **Próba:** P1 – ursan egység tavon: 0,7×.
+- **Adat:** `game.pond_speed` `own` 1,3, `other` 0,7; faj `pond_affinity` (Huk’ucha: true).
+- **Szabály:** **bármely** tavon álló földi egység: ha az egység faja `pond_affinity` → × 1,3, különben × 0,7 (a tó
+  gazdájától függetlenül). **Próba:** P1 – ursan egység tavon: 0,7×; huk’ucha egység: 1,3×.
 
 ### MECH-POND-4 – A tó gyorsítja az építést
 
@@ -325,13 +327,14 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 
 ### MECH-LANT-2 – Harci kedv (morál)
 
-- **Adat:** faj `morale`: `max` 100, `hurt` 60, `ally_death` 10, `hero_death` 25, `regen` 2, `drum` (`oon_dobos`,
+- **Adat:** faj `morale`: `max` 100, `hurt` 60, `ally_death` 10, `hero_death` 25, `hero_death_breaks` true, `regen` 2, `drum` (`oon_dobos`,
   `radius` 4, `regen` 8), `light_min` 30, `break_until` 50, `broken` (`damage_mult` 0,7, `speed_mult` 1,2);
   szabály `morale_hurt_mult`, `drum_mult`.
 - **Szabály:**
   1. Csak a nem munkás, támadó, nem idézett ooni egységnek van morálja (első frissítéskor `max`).
   2. Sérüléskor: `morál −= sebzés / max_hp × hurt × morale_hurt_mult`; 0-nál **megtört**.
-  3. Haláleset: az elesett (nem idézett) társ 5 csempés (hősnél 8) körében a saját egységek morálja −10 (hősnél −25).
+  3. Haláleset: az elesett (nem idézett) társ 5 csempés körében a saját egységek morálja −10. **Hős** eleste:
+     a 8 csempés körében a morál azonnal 0 – megtörnek (`hero_death_breaks`, D21; nélküle −`hero_death`).
   4. 15 tickenként: töltés `regen`/s, ha 3 s óta nem sérült; + `drum.regen × drum_mult`/s, ha egy **másik** dobos
      `drum.radius` csempén belül van; legfeljebb `max`. Saját fényforrás körében legalább `light_min`.
   5. Megtört egység: a módosítói közé kerül a `broken` (sebzés × 0,7, sebesség × 1,2); `break_until` (50) elérésekor helyreáll.
@@ -339,8 +342,8 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 - **Próba:** P1 – 100 max_hp-s egység 50 sebzést kap (páncél után) → morál 100 → 70. P2 – ezután 5 csempén belül
   7 társ elesik (−70) → morál 0, megtört: sebzés × 0,7, sebesség × 1,2; töltődés után 50-nél helyreáll.
   P3 – dobos mellett, sérülés nélkül 0-ról 100-ra 10 s alatt (2 + 8 = 10/s).
-- **Megjegyzés:** `hurt` 60 mellett a sérülés egyedül nem töri meg az egységet (a halálig legfeljebb −60), csak
-  az elesett társak vagy a közbeni gyógyulás – ez valószínűleg szándékos, de tulajdonosi megerősítést kér.
+- **Döntés (D21):** `hurt` 60 mellett a sérülés egyedül nem töri meg az egységet (a halálig legfeljebb −60) –
+  ez így marad; a közeli hős eleste viszont azonnal megtöri. P4 – a hős 6 csempén belül elesik → morál 0, megtört.
 
 ### MECH-LANT-3 – Taiko-dobos, Torii-kapupár, őrök
 
@@ -402,5 +405,6 @@ A leltár 4. pontjának (faj-szintű kulcsok) minden játékszabályt hordozó k
 `hq`, `worker`, `supply_building`, `start_units`, `start_gather`, `units`, `buildings`, `researches`, `paths`,
 `ai`, `camps`, `color`, `accent`, `style`, `name`, `desc`, `tagline`, `order`, `id`, `supply_desc`, `resource_names`
 (kezdés, tartalom, megjelenés, szöveg – a sablonformátum része), a `hidden` (a Micéliák csak a hadjáratban
-választhatók, D12) és a `neutral` (a Vadon semleges szörnyei, `KISFAJOK.md`), valamint a halott `balance_v6` és `detect_units`.
+választhatók, D12) és a `neutral` (a Vadon semleges szörnyei, `KISFAJOK.md`). Új kulcsok (D21): `pond_affinity`,
+`spike_immune`, `summons_permanent`, `morale.hero_death_breaks`.
 A képességek (`KEP-`), a kutatások és szabálymódosítók (`KUT-`), a hősök és a kisnépek külön fájlba kerülnek.

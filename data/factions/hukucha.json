@@ -1623,7 +1623,7 @@
     ]
   },
   "builder": "leave",
-  "pond_build_bonus": 0.6,
+  "pond_build_bonus": 0.6, "pond_affinity": true,
   "faith": {
     "rate": 0.3,
     "max": 8,
