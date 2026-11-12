@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D26 | ELDÖNTVE (2026-11-12): kisnépek – egy kimondott szövetségi bónusz a gazda seregére, a többi kutatás csak saját; a tó a gazda népét nézi; zsoldosbérlés a kisnép-táborokból beállítással |
 | D25 | ELDÖNTVE (2026-11-12): hősök, tárgyak, táborok – állandók adatba, elemek állapotként; tárgyak képességhordozók; bolt (semleges kereskedő, faji bolt) beállítás szerint; táborok újraéledése pályabeállítás |
 | D24 | ELDÖNTVE (2026-11-12): kutatások – egységes módosítórendszer (0 A.D.), többszintű kutatások (WC3), a viselkedés-szabályok passzív képességek |
 | D23 | ELDÖNTVE (2026-11-12): **mod.io-támogatás** a modrendszerben – kiegészítő online modtár, nem a modrendszer alapja; a játék nélküle is teljesen modolható |
@@ -223,3 +224,13 @@ Alap: [spec/HOSOK_TARGYAK_TABOROK.md](spec/HOSOK_TARGYAK_TABOROK.md) E–F. Az �
    hadjáratban küldetésenként.
 4. **Táborok újraéledése pályabeállítás:** alapból nem élednek újra; a pálya vagy a lobbi bekapcsolhatja,
    újraéledési idővel.
+
+### D26 – Szövetséges kisnépek · ELDÖNTVE (2026-11-12)
+
+Alap: [spec/KISFAJOK.md](spec/KISFAJOK.md) E–F.
+1. **Szövetségi bónusz:** minden kisnép pontosan egy kimondott bónuszt ad a gazda seregére; a többi kutatása csak a
+   saját (`ally_<nép>`) egységeire hat. A konkrét bónuszok a mai széles hatókörű kutatásokból választhatók – balanszmunka.
+2. **A tó a gazda népét nézi:** a Huk’ucha szövetséges egységei is gyorsulnak a saját tavon. Hibajavításként a
+   Python-referenciában is (`pond_speed`, D16 szerint megengedett); a golden felvételek változatlanok.
+3. **Zsoldosbérlés** a pályán álló kisnép-táborokból (WC3, 0 A.D.), szövetség nélkül is, korlátozott számban; a
+   pálya vagy a lobbi kapcsolja be. Új motor (M7/M12).

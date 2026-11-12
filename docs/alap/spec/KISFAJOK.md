@@ -26,7 +26,7 @@ A kisnép elemei a **gazda játékoshoz** tartoznak, ezért a gazda szabályai r
 | Energiaellátás (elfek): ellátatlan épület nem termel | igen | E 1748 |
 | Faji töltés (`regen`), mélységi gyógyulás és -sebesség | igen (`owner.faction`) | E 191, 387 |
 | Harci kedv (Ooni), falkaszellem (Wullof), Égkő-fény | igen | G 1973, 762, 1937 |
-| Tó sebessége (Huk’ucha) | **nem** – a tó az egység **saját faját** nézi (`pond_affinity`): a Huk’ucha gazda szövetséges egységeit a saját tava **lassítja** (× 0,7) | G 789 |
+| Tó sebessége (Huk’ucha) | **igen** (D26; korábban a tó az egység saját faját nézte, és a Huk’ucha szövetségeseit lassította) | G 789 |
 | Felemelkedés | a kisnép-épület is számít a különböző fajták közé | G 656 |
 
 ## C. KIS-3 – A 13 kisnép
@@ -95,3 +95,9 @@ A kisnép elemei a **gazda játékoshoz** tartoznak, ezért a gazda szabályai r
 2. **A Huk’ucha tava és a szövetséges egységek:** a tó a gazda népét nézze (a saját szövetségesei is gyorsulnak a
    tavon) – javaslom; vagy maradjon az egység saját faja.
 3. **Zsoldosbérlés a kisnép-táborokból** (WC3, 0 A.D.) – bekerüljön-e.
+
+---
+
+**Döntés (D26, 2026-11-12):** minden kisnép pontosan egy kimondott szövetségi bónuszt ad a gazda seregére, a többi
+kutatása csak a saját egységeire hat (a bónuszok balanszmunka); a tó a gazda népét nézi (a Python-referenciában is
+javítva); zsoldosbérlés a kisnép-táborokból, pálya- vagy lobbibeállítással.

@@ -238,3 +238,9 @@
 ## 2026-11-12 – M0: kisnépek és a Vadon specifikációja (az M0 specifikáció utolsó része)
 
 **Kimenet:** `docs/alap/spec/KISFAJOK.md` – a szövetség megkötése és tartalma (3 épület, 5–6 egység, 3 kutatás), a beilleszkedés a gazda népbe (építési hely, építési stílus, ellátás, töltés, morál, falka, Égkő-fény a kisnépre is érvényes; a tó sebessége nem), a 13 kisnép áttekintése, a kisnép-táborok és a Vadon. Átvizsgálás: 11 kisnépnél van a gazda egész seregére ható kutatás (egyenetlenül); a Huk’ucha tava lassítja a saját szövetségeseit; a kisnép-Micéliák se gépi előnylistán, se táborként nem szerepelnek. Javaslat: kimondott szövetségi bónusz (0 A.D.), zsoldosbérlés a kisnép-táborokból (WC3, 0 A.D.), a gazdaszabály általános elve. 3 döntési pont.
+
+## 2026-11-12 – D26: kisnépek; az M0 specifikáció kész
+
+**Döntések (tulajdonos):** egy szövetségi bónusz kisnépenként, a többi kutatás csak saját; a tó a gazda népét nézi; zsoldosbérlés beállítással.
+**Változás (Python-referencia, hibajavítás):** `pond_speed` a gazda népének `pond_affinity` kulcsát nézi. Ellenőrzés: HUD-teszt, golden 3/3 (változatlan).
+**Állapot:** a viselkedési specifikáció mind az öt része kész (`docs/alap/spec/`: fajmechanikák, képességek, kutatások és szabályok, hősök/tárgyak/táborok/elemek, kisnépek), a döntések D21–D26.

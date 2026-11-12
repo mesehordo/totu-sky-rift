@@ -235,8 +235,9 @@ Tartalom: 1. közös faji rendszerek · 2. Mélység (Croftianok) · 3. Tó (Huk
 ### MECH-POND-3 – Mozgás tavon
 
 - **Adat:** `game.pond_speed` `own` 1,3, `other` 0,7; faj `pond_affinity` (Huk’ucha: true).
-- **Szabály:** **bármely** tavon álló földi egység: ha az egység faja `pond_affinity` → × 1,3, különben × 0,7 (a tó
-  gazdájától függetlenül). **Próba:** P1 – ursan egység tavon: 0,7×; huk’ucha egység: 1,3×.
+- **Szabály:** **bármely** tavon álló földi egység: ha a **gazdája népe** `pond_affinity` → × 1,3, különben × 0,7 (a tó
+  gazdájától függetlenül; D26: a Huk’ucha szövetséges kisnép-egységei is gyorsulnak). **Próba:** P1 – ursan egység
+  tavon: 0,7×; huk’ucha egység: 1,3×; a Huk’ucha játékos Pinguu-egysége: 1,3×.
 
 ### MECH-POND-4 – A tó gyorsítja az építést
 

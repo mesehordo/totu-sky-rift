@@ -792,7 +792,7 @@ class Game:
         if not self.map.inb(tx, ty) or not self.pond[ty * self.map.w + tx]:
             return 1.0
         ps = self.data.game.get("pond_speed", {"own": 1.3, "other": 0.7})
-        own = self.data.factions.get(ent.defn.get("faction"), {}).get("pond_affinity")  # D21: adatkulcs
+        own = ent.owner.faction.get("pond_affinity")  # D26: a gazda népe dönt (a szövetségesei is gyorsulnak)
         return ps["own"] if own else ps["other"]
 
     def on_own_creep(self, ent):
