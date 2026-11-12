@@ -255,3 +255,10 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 ## 2026-11-12 – D27: ADR-003/004/005 elfogadva; az M0 lezárva
 
 **Döntés (tulajdonos):** mindhárom műszaki ADR elfogadva. Az M0 (leltár, viselkedési specifikáció, döntések D21–D27, ADR-002–005) kész; következik az M2 determinisztikus mag.
+
+## 2026-11-12 – M2, 1. lépés: determinisztikus matematika
+
+**Kód (`engine/src/core/`):** `fixed` – Q16.16 (`int32`, `int64` köztes), telítés, `from_ratio`, pontos egész gyök (hardveres kezdőérték + egész korrekció), `sqrt`, `length`; `angle` – bináris szög (65 536 = kör), szinusz/koszinusz a rögzített negyedhullám-táblázatból interpolációval, atan2 egész CORDIC-kal, 8 irány; `angle_tables.inc` – generált (`tools/gen_fixed_tables.py`); `rng.hpp` – PCG32 (a referencia-implementáció sorozatát adja), torzítatlan `below`/`range`/`chance`; `decimal` – tizedes szöveg → `Fixed` csak egész aritmetikával (12 tizedesjegyig, kitevővel, tartományellenőrzéssel).
+**Tesztek (`engine/tests/test_math.cpp`):** műveletek, gyök (20 000 véletlen érték), szögfüggvények pontossága (sin/cos ≤ 2 egység, atan2 ≤ 1 egység), PCG32 referenciasorozat és egyenletesség, tizedes beolvasás, és egy rögzített **determinizmus-hash** (50 000 lépés minden műveletből): `0xf77842dd87d0cb56`.
+**CI:** mind a 6 feladat zöld – a hash Windows MSVC, Linux GCC, macOS arm64 és Intel (Clang), FreeBSD és OpenBSD (Clang) alatt is ugyanaz. Ez az M2 kapujának első része.
+
