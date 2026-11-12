@@ -62,14 +62,27 @@ target_include_directories(totu_core PUBLIC src)
 target_link_libraries(totu_core PRIVATE totu_options PUBLIC totu_lua)
 target_compile_definitions(totu_core PUBLIC TOTU_VERSION="${PROJECT_VERSION}")
 
+# --- képek (PNG, stb_image – MIT / közkincs, változatlan): grafikus kártya nélkül is (tesztek, atlaszkészítő) ---
+add_library(totu_stb STATIC src/render/stb_impl.cpp)
+target_include_directories(totu_stb SYSTEM PUBLIC third_party/stb)
+if(MSVC)
+  target_compile_options(totu_stb PRIVATE /W0 /utf-8)
+else()
+  target_compile_options(totu_stb PRIVATE -w)
+endif()
+add_library(totu_image STATIC src/render/image.cpp)
+target_include_directories(totu_image PUBLIC src)
+target_link_libraries(totu_image PUBLIC totu_stb PRIVATE totu_options)
+
 # --- tesztek -----------------------------------------------------------------------------------------------------
 enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
-  tests/test_form.cpp)
+  tests/test_form.cpp tests/test_image.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
-                                              TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data")
-target_link_libraries(totu_tests PRIVATE totu_core totu_options)
+                                              TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
+                                              TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
+target_link_libraries(totu_tests PRIVATE totu_core totu_image totu_options)
 add_test(NAME core COMMAND totu_tests)
 
 # --- ablak nĂ©lkĂĽli szimulĂˇciĂłs futtatĂł Ă©s az M2 kapu: a golden visszajĂˇtszĂˇs minden rendszeren egyezik -----------
@@ -100,7 +113,11 @@ if(TOTU_CLIENT)
       GIT_SHALLOW TRUE)
     FetchContent_MakeAvailable(SDL3)
   endif()
+  # megjelenítő (ADR-003): saját vékony réteg, OpenGL 3.3 core
+  add_library(totu_render STATIC src/render/gl.cpp src/render/rhi.cpp src/render/sprite_batch.cpp src/render/sprite_sheet.cpp)
+  target_link_libraries(totu_render PUBLIC totu_core totu_image PRIVATE totu_options)
   add_executable(totu src/client/main.cpp)
-  target_link_libraries(totu PRIVATE totu_core totu_options SDL3::SDL3)
+  target_link_libraries(totu PRIVATE totu_core totu_render totu_options SDL3::SDL3)
+  target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
   add_test(NAME client_version COMMAND totu --version)
 endif()

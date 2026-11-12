@@ -36,3 +36,15 @@ OpenGL-je elavult). Igény: atlaszos sprite-rajzolás nagy tételben (1600+ egys
 
 - A raylib-próba (`tools/ab/render/`) mérése érvényes kiinduló adat; a végleges renderelő saját kód.
 - A D2 (raylib-cs) felülírva, ha a javaslat elfogadott.
+
+## Megvalósítás (M5) – lépések
+
+1. Grafikus réteg (OpenGL 3.3 core): saját függvénybetöltő, textúra, shader, render-célpont, példányos sprite-köteg,
+   csapatszín-shader (a meglévő „shade” mód), PNG (stb_image), képernyőkép, mérés; Linux-képpróba a CI-ben (Mesa).
+2. Atlaszkészítő: a sprite-lapok vágva, determinisztikusan 4096²-es lapokra, igény szerinti betöltés, minőségi lépcső
+   (a HD lap felezése gyengébb kártyán).
+3. Világnézet: kamera, terep átmenetekkel és a magaslat festett peremével (D33), Y-rendezés, 8 irány, animáció,
+   interpoláció a tickek között, alakzatos tartalék a sprite nélküli egységeknek.
+4. Fények: napszaki tónus és a napszakkal forgó árnyék (D35), fényforrások, köd, víz.
+5. Effektek: részecskék, időjárás (D35), utófeldolgozás.
+6. Kapu: 1600 egység p99 ≤ 16,7 ms; képernyőkép-összevetés a CI-ben; mind az öt rendszeren fordul.

@@ -27,7 +27,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: engine
+          # a motor és egyetlen sprite-lap (a kép- és megjelenítőpróbákhoz)
+          sparse-checkout: |
+            /engine/
+            /assets/sprites/units/cro_agyfalo.json
+            /assets/sprites/units/cro_agyfalo.png
+            /assets/sprites/units/cro_agyfalo_team.png
+          sparse-checkout-cone-mode: false
       - name: Linux-függőségek (SDL3 videó- és hangfejlécek)
         if: runner.os == 'Linux'
         run: |
@@ -41,6 +47,19 @@ jobs:
         run: cmake --build build --config Release --parallel
       - name: Tesztek
         run: ctest --test-dir build -C Release --output-on-failure
+      - name: Megjelenítőpróba (Mesa szoftveres OpenGL 3.3, virtuális kijelző)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1280x720x24" \
+            ./build/totu --demo 200 --frames 30 --size 960x540 --screenshot kepproba.png --check
+      - name: A képpróba képe
+        if: runner.os == 'Linux' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kepproba-linux
+          path: kepproba.png
+          if-no-files-found: ignore
 
   freebsd:
     name: FreeBSD x64 (clang)
