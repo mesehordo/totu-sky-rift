@@ -1001,7 +1001,7 @@ Az öreg tengu: szélvihart és villámot hív.
 | Kőhajító oni | lövész | 65 fa, 40 arany | 120 / 1 | 14 sebzés, 5.5 lőtáv | Sziklákat hajít az ellenségre. |
 | Nian őrző | óriás | 100 fa, 70 arany | 380 / 3 | 17 sebzés, közel | Négylábú, zöld sörényű őrző. Kapuőrként egy épület mellé állhat: az épület páncélt kap, a nian helyben marad és védi. |
 | Tengu követ | repülő, repül | 100 fa, 35 arany, 50 meteorit | 110 / 0 | 9 sebzés, 4 lőtáv | Szárnyas, hollótollú követ: legyezőjével szélvihart kavar. |
-| Kitsune-maszkos | varázsló | 75 fa, 25 arany, 60 meteorit | 85 / 0 | 6 sebzés, 4 lőtáv | Rókamaszkos mágus: illúzió-másokat szőve megtéveszti az ellent, és gyógyít. |
+| Kitsu-mata | lövész | 70 fa, 30 arany, 10 meteorit | 80 / 0 | 12 sebzés, 5,5 lőtáv | Az onik egyik változata, eredetileg nindzsaszerű harcos. Az égkövek használatát megtanulva tenyeréből mágikus lövedékeket lő ki: az Ooni sereg lövésze. |
 | Illúzió-más | közelharcos, idézett | – | 50 / 0 | 5 sebzés, közel | Rövid életű rókaszellem-másolat. |
 | Kapudöngető | ostromgép | 200 fa, 100 arany | 420 / 3 | 45 sebzés, közel | Faltörő kos, onik tolják – épületek ellen. |
 | Ō-oni | óriás | 220 fa, 110 arany, 50 meteorit | 780 / 4 | 34 sebzés, közel | Óriás oni, a hegyek ura. |
@@ -1035,7 +1035,7 @@ Az öreg tengu: szélvihart és villámot hív.
 | Papírlámpás | 25 fa | – | Olcsó lámpás: fénye bevilágít, tágítja az építési területet, és az Ooni egységek gyógyulnak benne. |
 | Oni lakóház | 75 fa, 30 arany | – | Cseréptetős oni ház: +8 létszám. |
 | Edzőudvar | 150 fa, 50 arany | Oni harcos, Kőhajító oni, Nian őrző, Taiko-dobos | Oni harcosokat, kőhajítókat, nian őrzőket és taiko-dobosokat képez. |
-| Meselények szentélye | 160 fa, 80 arany, 40 meteorit | Kitsune-maszkos, Akahana, a Vörös Buzogány, Shiro, a Kapuőr, Karasu, a tengu bölcs | Kitsune-maszkosokat és hősöket képez. |
+| Meselények szentélye | 160 fa, 80 arany, 40 meteorit | Kitsu-mata, Akahana, a Vörös Buzogány, Shiro, a Kapuőr, Karasu, a tengu bölcs | Kitsu-matákat és hősöket képez. |
 | Tengu-fészek | 160 fa, 70 arany | Tengu követ | Tengu követeket nevel. |
 | Lámpáskert | 150 fa, 120 arany | Kapudöngető, Ō-oni | Az Ooni fejlesztései és ostromszíne. |
 | Kapuőrző torony | 110 fa, 60 arany | – | Faragott nian-szoborral díszített őrtorony. |

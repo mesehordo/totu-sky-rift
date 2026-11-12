@@ -246,52 +246,42 @@
    "faction": "ooni",
    "name": "unit.oon_kitsune.name",
    "desc": "unit.oon_kitsune.desc",
-   "shape": "caster",
+   "shape": "archer",
    "tags": [
-    "caster",
     "ranged",
     "organic"
    ],
-   "class": "varazslo"
+   "class": "lovesz"
   },
   "Cost": {
    "resources": {
-    "wood": 75,
-    "stone": 25,
-    "meteor": 60
+    "wood": 70,
+    "stone": 30,
+    "meteor": 10
    },
    "supply": 2,
-   "time": 26
+   "time": 20
   },
   "Health": {
-   "max": 85,
+   "max": 80,
    "armor": 0
   },
   "Movement": {
-   "speed": 2.5,
+   "speed": 2.8,
    "radius": 0.37
   },
   "Vision": {
    "sight": 9
   },
   "Attack": {
-   "damage": 6,
-   "range": 4,
-   "cooldown": 1.6,
+   "damage": 12,
+   "range": 5.5,
+   "cooldown": 1.4,
    "targets": [
     "ground",
     "air"
    ],
    "projectile": "magic"
-  },
-  "Abilities": {
-   "list": [
-    "oon_illuzio",
-    "oon_lampasgyogyitas"
-   ]
-  },
-  "Energy": {
-   "max": 150
   }
  },
  "oon_illuzio_mas": {

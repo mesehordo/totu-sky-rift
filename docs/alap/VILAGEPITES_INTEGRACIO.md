@@ -15,7 +15,7 @@ dokumentáció az irányadó; ahol régebbi a játéknál (lásd 1.), a tulajdon
 
 | Döntés | Teendő | Mikor |
 |---|---|---|
-| **CF-006 – kitsu-mata** (2026-11-11): az `oon_kitsune` oni változat, tenyérből mágikus lövedéket kilövő lövész, az Ooni íjász-szerepe | név, leírás, támadás, képességek – számjavaslat a tulajdonosnak (jóváhagyásra) | most |
+| **CF-006 – kitsu-mata** (2026-11-11): az `oon_kitsune` oni változat, tenyérből mágikus lövedéket kilövő lövész, az Ooni íjász-szerepe | **átvezetve (D29):** név, leírás, lövész-adatok; saját képesség később | kész |
 | Oroszlános gárda: elit királyi testőrség, hős idézi | hős, létszám, időtartam, költség kidolgozása (OQ-AUR-06) | M7 (hősök) |
 | Aurethi címer: szárnyas kos vagy szárnyas oroszlán | választás (OQ-AUR-05); a grafika a tulajdonosé | a tulajdonos döntése |
 | Aurethi műszaki gondolkodás (Leonardo-szerű találmányok), mozaikok, festmények | a megjelenés és az új tartalom iránya | grafika, M7 |

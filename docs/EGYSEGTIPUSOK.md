@@ -167,7 +167,7 @@ A szorzó a támadó sebzésére vonatkozik (a páncél előtt). A karakterlapon
 | Kőhajító oni | 🏹 Lövész | ⚔ Közelharcos ×1,25 · 🪶 Repülő ×1,5 | – |  |
 | Nian őrző | 🗿 Óriás / szörny | ⚔ Közelharcos ×1,25 · 🐎 Lovas / hátas ×1,25 · 🏛 Épületek ×1,5 | – |  |
 | Tengu követ | 🪶 Repülő | 💥 Ostromgép ×1,5 · ✨ Varázsló ×1,25 | – |  |
-| Kitsune-maszkos | ✨ Varázsló | 🗿 Óriás / szörny ×1,5 · 🛡 Lándzsás / pajzsos ×1,25 | – |  |
+| Kitsu-mata | 🏹 Lövész | (a lövész típusszorzói) | – | D29: korábban Kitsune-maszkos, varázsló |
 | Illúzió-más | ⚔ Közelharcos | 🛡 Lándzsás / pajzsos ×1,25 · ✨ Varázsló ×1,25 | – | idézett |
 | Kapudöngető | 💥 Ostromgép | 🏛 Épületek ×2 · 🛡 Lándzsás / pajzsos ×1,25 | 🏛 Épületek ×2 | leírás: épületek ellen; faltörő kos – közelről |
 | Ō-oni | 🗿 Óriás / szörny | ⚔ Közelharcos ×1,25 · 🐎 Lovas / hátas ×1,25 · 🏛 Épületek ×1,5 | – |  |

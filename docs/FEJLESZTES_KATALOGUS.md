@@ -69,7 +69,7 @@ Ebből választhatsz. Minden fajnak van már alap sebzés- és páncélfejleszt�
 ### Ooni
 - **Kőkutya-hűség** (17): a Kőkutya-őr mellett álló épület +2 páncél.
 - **Lámpás-mágia** (20): a lámpásfényben a varázslók +20% erősebbek.
-- **Maszkok tánca** (8): a Kitsune-maszkos 5 mp-re láthatatlanná válik.
+- **Maszkok tánca** (8): a kitsu-mata 5 mp-re láthatatlanná válik (ötlet; a kitsu-mata 2026-11-12 óta lövész).
 
 ## 3. Ami most bekerült (✅)
 

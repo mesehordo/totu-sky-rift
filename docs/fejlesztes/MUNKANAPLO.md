@@ -291,3 +291,7 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Átvezetve:** CF-001 – a megjelenített név mindenhol „Aurethi Birodalom” (275 csere 48 fájlban, 55 névelő „az”-ra javítva; az azonosítók és fájlnevek változatlanok; a munkanapló mint történeti feljegyzés érintetlen). CF-007 nem ütközés (`stone` = Arany).
 **Terv:** `docs/alap/VILAGEPITES_INTEGRACIO.md` – rendezett pontok, a játékra váró kreátori döntések (kitsu-mata most, oroszlános gárda, címer, wer-ursanok, Ghoblin-név, Tendüür, Ooni), nyitott kérdések (nyersanyag), és hogy a világépítési anyag mely mérföldkőben kerül a motorba. Az `engine/content` mostantól az egyetlen tartalomforrás (`engine/content/README.md`).
 
+## 2026-11-12 – D29: kitsu-mata
+
+**Döntés (tulajdonos):** a javasolt számok jóváhagyva. **Változás:** `engine/content` – `oon_kitsune`: Kitsu-mata, lövész (`archer` alak, `lovesz` osztály, `ranged`/`organic`), 80 életerő, 12 sebzés, 5,5 lőtáv, 1,4 s, 2,8 sebesség, 70 fa + 30 arany + 10 meteorit, 20 s, energia és képességek nélkül; új magyar és angol név és leírás. A régi Illúzió képesség és az illúzió-másolat egység a tartalomban marad (most nem használja semmi). Dokumentumok igazítva (egységtípusok, fejlesztés-katalógus, új fajok terve, főfajok, döntések, világépítési terv). A sprite még a régi rókamaszkos – a grafika a tulajdonosé. 19 teszt zöld.
+

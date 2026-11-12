@@ -98,7 +98,7 @@ Az egyéni csatában a gépnek megadható a szövetséges nép. A determinizmus 
 | **Nian őrző** | négylábú, kitartó; *épülethez köthető (lásd 2.3)* |
 | **Tengu követ** | repülő mágus / felderítő |
 | *Kőhajító oni* | távolsági (kőzápor) |
-| *Kitsune-maszkos* | illúziókat szövő mágus |
+| *Kitsu-mata* | oni változat, tenyérből mágikus lövedéket kilövő lövész (korábban: Kitsune-maszkos, illúziót szövő mágus) |
 | *Kapudöngető* | ostromgép, onik tolják |
 | *Ō-oni* | óriás oni, késői nehéz egység |
 

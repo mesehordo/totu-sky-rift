@@ -3479,11 +3479,11 @@ msgid "Szárnyas, hollótollú követ: legyezőjével szélvihart kavar."
 msgstr ""
 
 msgctxt "unit.oon_kitsune.name"
-msgid "Kitsune-maszkos"
+msgid "Kitsu-mata"
 msgstr ""
 
 msgctxt "unit.oon_kitsune.desc"
-msgid "Rókamaszkos mágus: illúzió-másokat szőve megtéveszti az ellent, és gyógyít."
+msgid "Az onik egyik változata, eredetileg nindzsaszerű harcos. Az égkövek használatát megtanulva tenyeréből mágikus lövedékeket lő ki: az Ooni sereg lövésze."
 msgstr ""
 
 msgctxt "unit.oon_illuzio_mas.name"
