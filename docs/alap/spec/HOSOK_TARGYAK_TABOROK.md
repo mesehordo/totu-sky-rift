@@ -154,3 +154,8 @@ Kelt: 2026-11-12 · referencia: `H` = `rts/heroes.py`, `G` = `rts/game.py`, `E` 
 3. **Bolt / kereskedő** – semleges kereskedő a csatapályán, faji bolt, vagy egyik sem (a tárgy csak táborból és
    küldetésből jön, mint ma).
 4. **Táborok újraéledése** – ma nem élednek újra (mint a WC3-ban); maradjon így, vagy pályabeállítás legyen.
+
+---
+
+**Döntés (D25, 2026-11-12):** állandók adatba és elemek állapotként; tárgyak képességhordozók; bolt (semleges
+kereskedő, faji bolt) pálya- és lobbibeállítás szerint; a táborok újraéledése pályabeállítás.

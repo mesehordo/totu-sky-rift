@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D25 | ELDÖNTVE (2026-11-12): hősök, tárgyak, táborok – állandók adatba, elemek állapotként; tárgyak képességhordozók; bolt (semleges kereskedő, faji bolt) beállítás szerint; táborok újraéledése pályabeállítás |
 | D24 | ELDÖNTVE (2026-11-12): kutatások – egységes módosítórendszer (0 A.D.), többszintű kutatások (WC3), a viselkedés-szabályok passzív képességek |
 | D23 | ELDÖNTVE (2026-11-12): **mod.io-támogatás** a modrendszerben – kiegészítő online modtár, nem a modrendszer alapja; a játék nélküle is teljesen modolható |
 | D22 | ELDÖNTVE (2026-11-12): képességmodell – faji varázserő-forrás (a hősök és a varázslók energiát használnak); egységes alapértékek, a varázssebzés mindenhol a szorzóval nő; bekerül az ellenséges aura, az eloszlatás és immunitás, a varázslási idő és csatornázás, az automatikus használat; élőt a gyógyítás, gépet a javítás gyógyít |
@@ -208,3 +209,17 @@ Alap: [spec/KUTATAS_ES_SZABALYOK.md](spec/KUTATAS_ES_SZABALYOK.md) E–F. Az új
 2. **Többszintű kutatások:** az összetartozó I./II./III. kutatások egy elem szintjei; a számok változatlanok.
 3. **Viselkedés-szabályok passzív képességként:** a 14 viselkedés-kulcs a D22 képességmodell eseményalapú passzív
    képessége lesz, amelyet a kutatás vagy az ág a szűrt egységeknek ad; a panelen látható.
+
+### D25 – Hősök, tárgyak, táborok, elemek · ELDÖNTVE (2026-11-12)
+
+Alap: [spec/HOSOK_TARGYAK_TABOROK.md](spec/HOSOK_TARGYAK_TABOROK.md) E–F. Az új motorban:
+1. **Állandók adatba, elemek állapotként:** `game.heroes` és `game.camps` adatszakasz (szinthatárok, tapasztalat,
+   leltár, hőskorlát, újraélesztés, tábor-körök, zsákmány); az elem a D22 állapotmodell része, a kölcsönhatások
+   (`removes`, `amplifies`, `immune_tags`) adatban. A játékmenet nem változik.
+2. **Tárgyak képességhordozók** (WC3): aktív képesség töltetekkel, passzív, aura, találatkori hatás, egyedi tárgy;
+   a mai 15 tárgy változatlan, az újak balanszmunka.
+3. **Bolt beállítás szerint:** a motor a semleges kereskedőt (a pályán) és a faji tárgyboltot is tudja; a pálya és a
+   lobbi beállítása dönti el, melyik legyen (mindkettő, egyik, vagy egyik sem – ez utóbbi a mai állapot); a
+   hadjáratban küldetésenként.
+4. **Táborok újraéledése pályabeállítás:** alapból nem élednek újra; a pálya vagy a lobbi bekapcsolhatja,
+   újraéledési idővel.

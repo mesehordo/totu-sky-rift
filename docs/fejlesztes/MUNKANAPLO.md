@@ -230,3 +230,7 @@
 ## 2026-11-12 – M0: hősök, tárgyak, táborok és elemek specifikációja
 
 **Kimenet:** `docs/alap/spec/HOSOK_TARGYAK_TABOROK.md` – hősök (3-as korlát, újraélesztés `0,6 + 0,12 × szint` idővel, szinthatárok, tapasztalat-képlet és -elosztás 12 csempén, szintlépés, képességtanulás 1/3/5. és végső 6. szinttől, statisztika-összesítés), 15 tárgy, táborok (tükrözött elhelyezés, 5 szint, kisnép-táborok, felriadás, visszatérés, zsákmány), a 13 elem hatásai és kölcsönhatásai. Átvizsgálás: kódba égetett állandók, csak statot adó tárgyak és bolt hiánya, az elemek két helyen és kódba égetett kölcsönhatással, eltérő halmozás; új név szerinti szabály (Nian-őr Kapuőrzése lovas ellen) a README táblázatába. Javaslat: adatszakasz az állandóknak, tárgy mint képességhordozó (WC3), bolt, zsákmánytáblák, elem mint állapot adatban leírt kölcsönhatással. 4 döntési pont.
+
+## 2026-11-12 – D25: hősök, tárgyak, táborok, elemek
+
+**Döntés (tulajdonos):** állandók adatba, elemek állapotként; tárgyak képességhordozók; a bolt (semleges kereskedő, faji bolt) pálya- és lobbibeállítás – a kettős jelölést a tulajdonos „beállítás legyen” válasszal pontosította; a táborok újraéledése pályabeállítás. Rögzítve: `DONTESEK.md` D25, `spec/HOSOK_TARGYAK_TABOROK.md`, `spec/README.md`.
