@@ -14,9 +14,9 @@ NavConfig NavConfig::from_json(const content::Value* nav, std::vector<std::strin
     errors.push_back("navigation.navcells_per_tile: a motor csak 2-t támogat");
   }
   if (const content::Value* v = nav->find("clearance_cap")) {
-    const auto n = v->as_int();
-    if (!n || *n < 1 || *n > 64) errors.push_back("navigation.clearance_cap: 1 és 64 közötti egész");
-    else c.clearance_cap = static_cast<int>(*n);
+    const long long n = v->as_int().value_or(0);
+    if (n < 1 || n > 64) errors.push_back("navigation.clearance_cap: 1 és 64 közötti egész");
+    else c.clearance_cap = static_cast<int>(n);
   }
   if (const content::Value* s = nav->find("size_classes"); s && s->is_array()) {
     std::vector<SizeClass> sizes;
@@ -25,12 +25,13 @@ NavConfig NavConfig::from_json(const content::Value* nav, std::vector<std::strin
       const content::Value* r = item.find("max_radius");
       const content::Value* cl = item.find("clearance");
       const auto rf = r ? r->as_fixed() : std::nullopt;
-      const auto cn = cl ? cl->as_int() : std::nullopt;
-      if (!id || !id->is_string() || !rf || !cn || *cn < 1 || *cn > c.clearance_cap) {
+      // (egyszerű érték: a GCC az optional-ra téves „inicializálatlan” figyelmeztetést ad)
+      const long long cn = (cl ? cl->as_int() : std::nullopt).value_or(0);
+      if (!id || !id->is_string() || !rf || cn < 1 || cn > c.clearance_cap) {
         errors.push_back("navigation.size_classes: minden elemhez id, max_radius és 1..clearance_cap közötti clearance kell");
         return c;
       }
-      sizes.push_back({id->text(), *rf, static_cast<uint8_t>(*cn)});
+      sizes.push_back({id->text(), *rf, static_cast<uint8_t>(cn)});
     }
     std::sort(sizes.begin(), sizes.end(), [](const SizeClass& a, const SizeClass& b) { return a.max_radius < b.max_radius; });
     if (!sizes.empty()) c.sizes = std::move(sizes);

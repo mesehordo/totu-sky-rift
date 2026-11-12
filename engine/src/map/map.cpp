@@ -81,9 +81,10 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
   const size_t before = errors.size();
   const content::Value* wv = doc.find("width");
   const content::Value* hv = doc.find("height");
-  const auto w = wv ? wv->as_int() : std::nullopt;
-  const auto h = hv ? hv->as_int() : std::nullopt;
-  if (!w || !h || *w < 1 || *h < 1 || *w > kMaxMapSize || *h > kMaxMapSize) {
+  // (egyszerű érték: a GCC az optional-ra téves „inicializálatlan” figyelmeztetést ad)
+  const long long w = (wv ? wv->as_int() : std::nullopt).value_or(0);
+  const long long h = (hv ? hv->as_int() : std::nullopt).value_or(0);
+  if (w < 1 || h < 1 || w > kMaxMapSize || h > kMaxMapSize) {
     errors.push_back("a pálya `width` és `height` értéke 1 és 512 közötti egész legyen");
     return std::nullopt;
   }
@@ -91,7 +92,7 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
     errors.push_back("nincs betöltött terepfajta");
     return std::nullopt;
   }
-  const int W = static_cast<int>(*w), H = static_cast<int>(*h);
+  const int W = static_cast<int>(w), H = static_cast<int>(h);
   Map m(W, H, 0);
   const size_t n = static_cast<size_t>(W) * static_cast<size_t>(H);
 
