@@ -11,7 +11,7 @@ Cél: az új motor ([UJ_MOTOR_TERV.md](../UJ_MOTOR_TERV.md)) minden fajszabályt
 |---|---|---|
 | [FAJMECHANIKAK.md](FAJMECHANIKAK.md) | a 6 fajmechanika és a faji rendszerek (főfajonként), valamint a közös faji rendszerek (felemelkedés, Égkő-fény, Áhítat, bányák, építési stílusok, létszám, Hadtáp, szövetség) | **kész** (első változat) |
 | [KEPESSEGEK.md](KEPESSEGEK.md) | a 23 képességtípus működése, átvizsgálás (egységesség, értelmesség), javaslatok a 0 A.D.-ből és a WC3-ból, javasolt képességmodell | **kész**; döntések: D22 (E pont) |
-| [KUTATAS_ES_SZABALYOK.md](KUTATAS_ES_SZABALYOK.md) | a kutatás menete, a 10 statnév, a 39 szabálymódosító (25 paraméterhangoló, 14 viselkedés), fejlődési ágak; átvizsgálás és javaslat | **kész** (első változat; 3 döntési pont) |
+| [KUTATAS_ES_SZABALYOK.md](KUTATAS_ES_SZABALYOK.md) | a kutatás menete, a 10 statnév, a 39 szabálymódosító (25 paraméterhangoló, 14 viselkedés), fejlődési ágak; átvizsgálás és javaslat | **kész**; döntések: D24 |
 | `HOSOK_TARGYAK_TABOROK.md` | hősök (tapasztalat, szint, képességtanulás, újraélesztés), tárgyak, semleges táborok, elemek | tervezett |
 | `KISFAJOK.md` | a 13 szövetséges nép (`ally_pack`) és a Vadon | tervezett |
 

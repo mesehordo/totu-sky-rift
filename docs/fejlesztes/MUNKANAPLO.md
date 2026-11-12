@@ -223,3 +223,6 @@
 
 **Kimenet:** `docs/alap/spec/KUTATAS_ES_SZABALYOK.md` – a kutatás menete (feltételek, sor, egyszeri érvényesülés, a meglévő egységek életerő-növelése), a 10 statnév forrásokkal és értékekkel, a 39 szabálykulcs csoportosítva (25 paraméterhangoló, 14 viselkedés-szabály) kódhelyekkel, az összefésülés szabálya (felülírás; `chance`-nél a nagyobb), az ágak. Átvizsgálás: két párhuzamos rendszer (összeadó `effects` és felülíró `rules`), kulcsonként külön kód, rejtett sorrendfüggés, csak összeadó statnövelés, a viselkedés-szabályok valójában passzív képességek. Javaslat: 0 A.D. Modifications és Requirements, WC3 többszintű fejlesztések, a viselkedés-szabályok a D22 képességmodell passzív képességeiként; halmozási szabály. Gépi ellenőrzés: a leltár minden szabály-, stat-, kutatás- és ágkulcsa szerepel. 3 tulajdonosi döntési pont.
 
+## 2026-11-12 – D24: kutatások és szabálymódosítók
+
+**Döntés (tulajdonos):** egységes módosítórendszer, többszintű kutatások, a viselkedés-szabályok passzív képességek – rögzítve: `DONTESEK.md` D24, `spec/KUTATAS_ES_SZABALYOK.md`, `spec/README.md`.

@@ -154,3 +154,8 @@ passzív képesség lesz. A mai viselkedés (A–D) a próbák alapja.
    felületen egy gomb szintjelzővel. Javaslom.
 3. **Viselkedés-szabályok passzív képességként** – a kutatás/ág képességet ad, ami a hős- és egységpanelen is
    látszik (ma láthatatlan szabály). Javaslom.
+
+---
+
+**Döntés (D24, 2026-11-12):** mindhárom javaslat elfogadva – egységes módosítórendszer, többszintű kutatások,
+a viselkedés-szabályok passzív képességek.
