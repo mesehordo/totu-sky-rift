@@ -1,6 +1,6 @@
 # Napszakok és időjárás
 
-> Állapot: **JAVASLAT** (2026-11-12), a tulajdonos kérésére (D35).
+> Állapot: **ELFOGADVA** (2026-11-12, D35); a faji és általános számok javaslatok, a balansz az M7-ben véglegesíti.
 > - A rendszer a motorban az M5–M7-ben készül (látvány: M5, környezeti rendszer és szabályok: M6, faji hatások: M7).
 > - A pályaszerkesztő és a küldetésvezérlés az M11-ben.
 > - Minden szám adat (`game.json` → `environment`, fajonként a faj- és egységsablonokban), a balansz az M7-ben dől el.
@@ -136,8 +136,8 @@ az idő taktikai döntés legyen (mikor támadjak, hol várjak). Mind adat (felt
 | M8 | napóra, időjárás-ikon, előrejelzés, súgó |
 | M11 | szerkesztő: éghajlat, ártér, fagyó víz, vándorló dűnék, visszanövő erdő jelölése; küldetésvezérlés |
 
-## 7. Nyitott kérdések (a tulajdonosnak)
+## 7. Döntések (tulajdonos, 2026-11-12)
 
-- A faji javaslatok (3–4. pont) jók-e így, vagy van, amit a világ tényei másképp kívánnak?
-- Az alapértelmezés: napszak *hatással*, időjárás *hangulat* – legyen-e más?
-- A Wullof éjszakai láthatatlansága mely egységeket érintse (javaslat: a vadászok és a felderítők)?
+- **Alapbeállítás:** napszak *hatással*, időjárás *hangulat* (a lobbiban átállítható, a küldetés felülírhatja).
+- **Wullof éjszakai láthatatlanság:** a vadászok és a felderítők (állva vagy lassan haladva; támadáskor felfedik magukat).
+- **Számok:** a 3–4a. pont értékei kiinduló javaslatok; a balansz az M7-ben.

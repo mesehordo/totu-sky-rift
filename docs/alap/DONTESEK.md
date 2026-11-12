@@ -292,7 +292,7 @@ játékos), **nagy** 256 × 256 (4–8 játékos); a szerkesztőben egyedi mére
 ajánlott játékosszámok adatban (`game.json` → `map_sizes`), a modok bővíthetik. A régi játék 88 × 88-as pályája a
 kicsinél is kisebb volt.
 
-### D35 – Napszakok és időjárás · KÉRÉS RÖGZÍTVE, A RÉSZLETEK JAVASLAT (2026-11-12)
+### D35 – Napszakok és időjárás · ELDÖNTVE (2026-11-12)
 
 A tulajdonos kérése: legyenek **napszakok** (mozgó árnyékok, esteledés, virradat) és **időjárás** a motorban,
 egyelőre főleg díszletként, de WC3-szerűen játékhatással is (faji és általános szabályok), az időjárás pedig a pályát
@@ -300,10 +300,10 @@ is változtathatja (eső: kiárad a folyó, pocsolyák, visszanő 1–2 fa; hó:
 indításakor kapcsolható (napszak: ki / hangulat / hatással; időjárás: ki / hangulat / hatással / hatással +
 pályaváltozás). **Minden népre hat a napszak és az időjárás is** (a tulajdonos kiegészítése) – mind a 21 népnek
 (főnépek, kisnépek, Vadon) van napszakos és időjárásos hatása. A javasolt működés, a faji és az általános hatások, a pályaváltozások és az ütemezés:
-[spec/NAPSZAK_ES_IDOJARAS.md](spec/NAPSZAK_ES_IDOJARAS.md) – a faji számok és néhány részlet tulajdonosi jóváhagyásra
-vár; a megvalósítás M5–M8, M11.
+[spec/NAPSZAK_ES_IDOJARAS.md](spec/NAPSZAK_ES_IDOJARAS.md); a megvalósítás M5–M8, M11. **Döntések:** alapbeállítás
+napszak *hatással*, időjárás *hangulat*; éjszaka a Wullof vadászai és felderítői láthatatlanok; a számok az M7-ben.
 
-### D36 – Többféle gépi ellenfél, modolható AI · KÉRÉS RÖGZÍTVE, A RÉSZLETEK JAVASLAT (2026-11-12)
+### D36 – Többféle gépi ellenfél, modolható AI · ELDÖNTVE (2026-11-12)
 
 A tulajdonos kérése: ne csak nehézségi szintek legyenek, hanem többféle **személyiség** is (védekező, támadó,
 kiegyenlített és más logikus stílusok) – ez a küldetésekhez is jól illik –, és az AI **modként** is hozzáadható
@@ -311,4 +311,5 @@ legyen. Javaslat: két független tengely – nehézség (6 szint, a legfelső n
 védekező, támadó, kiegyenlített, gyors roham, terjeszkedő, technológus, portyázó, ostromló, csapatjátékos,
 alkalmazkodó, népe szerinti) –, a személyiség adat; Lua-AI keretrendszer menedzserekkel, csak a látott információval;
 küldetés-AI (építési lista, hullámok); AI-modok három szinten. Részletek: [spec/GEPI_ELLENFEL.md](spec/GEPI_ELLENFEL.md);
-megvalósítás M9, M11, M13.
+megvalósítás M9, M11, M13. **Döntések:** 6 nehézségi szint (csalás csak a jelölt „Őrült” szinten); a hadjáratban
+népe szerinti személyiség; **tanuló AI** is legyen – a meccsen belül alkalmazkodik, a végén felejt (determinizmus).

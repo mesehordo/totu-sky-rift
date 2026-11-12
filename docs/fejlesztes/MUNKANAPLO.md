@@ -379,3 +379,7 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Tesztek:** 55 (2 új), mind zöld; a rögzített út-hash (`0x0f4f54236284369a`) és navigációs állapothash (`0x6daebed53e7984a7`) a szándékos keresési változás miatt újra rögzítve.
 **Flow field:** a mérés szerint nem kell (ADR-006: csak mért igény esetén) – a 8 × 200-as terhelés így is a kapun belül van; ha a megjelenítővel együtt szűk lesz, az M5-ben újramérjük.
 **M4 kapu:** a CI mind a 6 feladatában (Windows MSVC, Linux GCC, macOS arm64 és Intel, FreeBSD, OpenBSD) a `golden_replay_m4` **egyezik** (a golden M2 és M3 is), a rögzített út- és navigációs hash minden rendszeren ugyanaz; a 8 × 200-as mérés a fejlesztői gépen p99 24,8 ms. **Az M4 (térkép és mozgás) kész.**
+
+## 2026-11-12 – D35 és D36 eldöntve
+
+**Döntések (tulajdonos):** D35 – alapbeállítás napszak *hatással*, időjárás *hangulat*; éjszaka a Wullof vadászai és felderítői láthatatlanok; a számok az M7 balanszában. D36 – 6 nehézségi szint (csalás csak a jelölt „Őrült” szinten), a hadjáratban népe szerinti személyiség, és tanuló AI is: a meccsen belül alkalmazkodik (egységmix, védelem helye, támadás iránya, időzítés; a személyiség korlátai között), a meccs végén felejt – így determinisztikus marad. A két terv (`spec/NAPSZAK_ES_IDOJARAS.md`, `spec/GEPI_ELLENFEL.md`) elfogadottra állítva.

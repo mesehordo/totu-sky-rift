@@ -1,6 +1,6 @@
 # Gépi ellenfél (AI)
 
-> Állapot: **JAVASLAT** (2026-11-12), a tulajdonos kérésére (D36). Megvalósítás: M9 (keretrendszer, személyiségek,
+> Állapot: **ELFOGADVA** (2026-11-12, D36). Megvalósítás: M9 (keretrendszer, személyiségek,
 > nehézségek), M11 (küldetés-AI), M13 (AI-modok). Alap: ADR-004 (determinizmus), M3 (Lua-réteg, homokozó),
 > [KULDETESEK_TERV](../KULDETESEK_TERV.md), [FORRASOK_ES_TANULSAGOK](../FORRASOK_ES_TANULSAGOK.md) (0 A.D. Petra, WC3
 > AI-szkriptek, microRTS).
@@ -92,9 +92,26 @@ A személyiség **adat** (paraméterkészlet). Ugyanaz a kód többféleképpen 
 - A nehézségek sorrendje tartja magát: a magasabb szint az esetek többségében nyer az alacsonyabb ellen.
 - A mintamod (új személyiség, adatból) betölthető és a lobbiban választható.
 
-## 5. Nyitott kérdések (a tulajdonosnak)
+## 5. Tanuló AI (D36: kérve)
 
-- A szintek neve és száma így jó-e (6 szint, a legfelső csalással, külön jelölve)?
-- Legyen-e az alapértelmezés a hadjáratban a *népe szerinti* személyiség?
-- Legyen-e „tanuló” AI (a játékos szokásaihoz igazodó) – ez determinizmus mellett csak meccsenként lehet, a
-  javaslatom: most ne.
+A gépi ellenfél **a meccsen belül** tanul, és a meccs végén elfelejt mindent (nincs meccsek közötti emlékezet –
+a hálózati játék és a visszajátszás determinizmusa ezt kívánja).
+
+- **Mit figyel:** a felderített ellenséges egységösszetétel, az ellenfél támadásainak ideje és iránya, mely egységei
+  vesztek el mi ellen, hol vannak a falai és a tornyai.
+- **Mit igazít:** az egységmix súlyait (ellencsapat: sok lovas ellen lándzsás, sok íjász ellen gyors lovas …), a
+  védekezés helyét (ahonnan jöttek a támadások), a támadás irányát (a gyenge pontra), az időzítést (az ellenfél
+  szokásos támadási ideje előtt védekezik).
+- **Hogyan:** az alkalmazkodás a személyiség paramétereit tolja el, korlátok között (a védekező nem válik
+  rohamozóvá); a tanulás állapota a gépi játékos Lua-állapotában, a szimuláció része (hash, mentés, visszajátszás).
+- **Nehézség szerint:** Kezdő és Könnyű nem tanul; Normál lassan; Nehéz és Mester gyorsan; az *Alkalmazkodó*
+  személyiség a legerősebben.
+- **Próba (M9):** egy ismétlődő játékosstratégia ellen a tanuló AI a meccs második felében mérhetően jobban teljesít,
+  mint ugyanaz tanulás nélkül.
+
+## 6. Döntések (tulajdonos, 2026-11-12)
+
+- **Nehézség:** 6 szint – Kezdő, Könnyű, Normál, Nehéz, Mester, és a választható „Őrült” (nyíltan jelölt csalás:
+  +50% gyűjtés); a többi szint sosem csal.
+- **Hadjárat:** az ellenfél alapértelmezett személyisége a *népe szerinti* (a küldetés felülírhatja).
+- **Tanuló AI:** igen, a meccsen belül (5. pont).
