@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# CodeQL kódelemzés: biztonsági hibák és gyakori programozási hibák keresése a C++-motorban és a munkafolyamatokban.
+# Fut minden pushra a main ágon, pull requestre, és hetente egyszer. Eredmények: Security → Code scanning.
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Elemzés (${{ matrix.language }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: c-cpp
+            build-mode: manual
+          - language: actions
+            build-mode: none
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            engine
+            .github
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+      - name: Fordítás (csak a C++-elemzéshez; a kliens és a külső SDL nélkül – csak a saját kód)
+        if: matrix.language == 'c-cpp'
+        run: |
+          cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release -DTOTU_CLIENT=OFF
+          cmake --build build --parallel
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.language }}

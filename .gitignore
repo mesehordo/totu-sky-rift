@@ -32,3 +32,20 @@ __pycache__/
 
 # Helyi, nem nyilvános munkaanyagok
 /_privat/
+
+# A régi Python-játék és eszközei: csak helyben, referenciaként (a GitHubon nincs fent, 2026-11-12)
+/main.py
+/rts/
+/mods/
+/data/
+/campaigns/
+/tests/
+/DESIGN.md
+/docs/architecture_audit/
+/docs/MODDING.md
+/docs/MULTIPLAYER.md
+/.github/workflows/referencia.yml
+/tools/*
+!/tools/ab/
+!/tools/gen_fixed_tables.py
+!/tools/fejlesztoi_kornyezet.ps1

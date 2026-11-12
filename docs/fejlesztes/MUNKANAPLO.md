@@ -276,3 +276,8 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Betöltő** (`content/loader`): VFS → sablontárak → séma. A valódi tartalom betöltése két azonosító-ütközést talált (épület és kutatás, kutatás és képesség azonos néven) – megoldás: fajtánkénti névtér (ADR-005 kiegészítés).
 **Eredmény:** 220 egység, 152 épület, 168 kutatás, 269 képesség, 15 tárgy, 13 állapot, 22 faj – mind érvényes; 18 teszt zöld.
 
+## 2026-11-12 – A Python-játék lekerült a GitHubról; CodeQL
+
+**Döntés (tulajdonos):** a régi Python-játék és a hozzá tartozó anyagok ne legyenek a GitHubon; helyben, referenciaként megmaradnak. Az IPTV-projekt botjai közül csak a CodeQL kerül be (a CodeRabbit látható gépi átnéző lenne, és PR-ok nélkül nem is futna; a Dependabotot a tulajdonos nem kérte).
+**Változás:** 222 fájl kikerült a követésből (a gépen megmaradt, a `.gitignore` tartja távol): `main.py`, `rts/`, `mods/`, `data/`, `campaigns/`, `tests/`, a Python-eszközök (`tools/`, kivéve `tools/ab/`, `gen_fixed_tables.py`, `fejlesztoi_kornyezet.ps1`), `DESIGN.md`, `docs/architecture_audit/`, `docs/MODDING.md`, `docs/MULTIPLAYER.md`, a `referencia` munkafolyamat. A tartalom az új formátumban az `engine/content/` alatt van; a konverter és a leltáreszköz helyben fut. README újraírva (csak az új motor), `LICENSE.md` igazítva, új `.github/workflows/codeql.yml` (C++ – csak a saját kód – és a munkafolyamatok).
+

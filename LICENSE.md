@@ -11,15 +11,15 @@ Az *TOTU: Sky Rift – A kölcsönkapott öröklét* világa szerzői jogi véde
 * a fajok és egységek leíró szövegei.
 
 Érintett fájlok különösen: `docs/EGSZAKADAS_vilag_es_tortenet_v01.md`, `docs/STORY_CAMPAIGN.md`,
-`docs/FACTIONS_LORE.md`, a `campaigns/` mappa, a `tools/campaign_egszakadas.py` szövegei, valamint a
-`data/` fájlok `name`, `desc`, `tagline` szövegei.
+`docs/FACTIONS_LORE.md`, a `docs/tortenet/`, a `novellak/` és a `stories/` mappa, a küldetések szövegei, valamint a
+játéktartalom (`engine/content/`) nevei, leírásai és fordításai (`locale/*.po`).
 
 Ezek a jogosult előzetes, írásos engedélye nélkül nem másolhatók, nem dolgozhatók át, és nem használhatók fel
 más műben.
 
 ## 2. A programkód – GNU GPL 3. verzió vagy későbbi
 
-A program forráskódja és eszközei (`main.py`, `rts/`, `tools/`, valamint az új motor kódja – az 1. pontban felsorolt
+A program forráskódja és eszközei (az `engine/` és a `tools/` kódja – az 1. pontban felsorolt
 szövegek kivételével) szabad szoftver: terjeszthető és módosítható a Free Software Foundation által kiadott
 **GNU General Public License 3. verziója, vagy (választásod szerint) bármely későbbi verziója** feltételei szerint
 (SPDX: `GPL-3.0-or-later`). A licenc teljes szövege: [`COPYING`](COPYING).
@@ -59,7 +59,6 @@ történet, népek leírása) csak engedéllyel.
 
 ## 3. Külső összetevők
 
-A játék a saját licencük szerint használja: Python, pygame-ce (LGPL), numpy és Pillow (a sprite-ok
-előállításához); az új C++-motor az SDL3 (zlib) könyvtárat használja, később a Lua (MIT) és további, a GPL 3-mal összeférő
+A motor a saját licencük szerint használja: az SDL3 (zlib) könyvtárat, később a Lua (MIT) és további, a GPL 3-mal összeférő
 licencű könyvtárakat; ezek listája és licencszövege a motor kiadásával együtt jelenik meg. Mindegyik összefér a GPL 3-mal. A *Warcraft*, *StarCraft*, *Armies of Exigo* és *Command & Conquer* a tulajdonosaik védjegyei;
 csak ihletforrásként szerepelnek, a játék nem tartalmaz belőlük semmit.
