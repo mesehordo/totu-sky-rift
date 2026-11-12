@@ -295,3 +295,7 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 
 **Döntés (tulajdonos):** a javasolt számok jóváhagyva. **Változás:** `engine/content` – `oon_kitsune`: Kitsu-mata, lövész (`archer` alak, `lovesz` osztály, `ranged`/`organic`), 80 életerő, 12 sebzés, 5,5 lőtáv, 1,4 s, 2,8 sebesség, 70 fa + 30 arany + 10 meteorit, 20 s, energia és képességek nélkül; új magyar és angol név és leírás. A régi Illúzió képesség és az illúzió-másolat egység a tartalomban marad (most nem használja semmi). Dokumentumok igazítva (egységtípusok, fejlesztés-katalógus, új fajok terve, főfajok, döntések, világépítési terv). A sprite még a régi rókamaszkos – a grafika a tulajdonosé. 19 teszt zöld.
 
+## 2026-11-12 – A tanulmányok forrásainak feldolgozása
+
+**Kimenet:** `docs/alap/FORRASOK_ES_TANULSAGOK.md`. A tanulmánycsomag 354 egyedi hivatkozásából kb. 150 szakmai; a motor M2–M12 mérföldköveit közvetlenül érintőket ellenőriztem: AoE-hálózat (*1500 Archers*), *Fix Your Timestep*, Recoil-teljesítményleírás, Pottinger-féle csoportmozgás, Red Blob útkeresés, ORCA/RVO2 (Apache-2.0, lebegőpontos), OpenRA traitek és Lua-API, 0 A.D. komponensek, Luau-sandbox, StarCraft-triggerek, ink, microRTS, Glicko-2; a HPA*-cikk most nem elérhető (404). Tíz kiegészítés a motortervhez (rendszerenkénti hash, mindig bekapcsolt mérés, fő ciklus, mozgásrétegek, Lua-sandbox, feltételrendszer, lockstep-paraméterek, trigger-API, előléptetés, épületfoglalás), ebből kettő tulajdonosi döntés; olvasási lista mérföldkövenként.
+
