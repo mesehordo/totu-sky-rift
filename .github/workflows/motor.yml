@@ -68,11 +68,8 @@ jobs:
       - uses: vmactions/openbsd-vm@v1
         with:
           usesh: true
-          prepare: pkg_add -I cmake git
+          prepare: pkg_add -I cmake git sdl3
           run: |
-            cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release -DTOTU_SYSTEM_SDL=OFF
+            cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release
             cmake --build build --parallel 4
-            uname -a; file build/totu build/totu_tests; readelf -lW build/totu | sed -n 1,40p
-            mount | grep -E " / | /home"
-            ./build/totu --version; echo "kilépési kód: $?"
             ctest --test-dir build --output-on-failure
