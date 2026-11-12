@@ -1,0 +1,8 @@
+{
+ "id": "micelia",
+ "version": "0.1.0",
+ "depends": [
+  "totu"
+ ],
+ "_leiras": "A Micéliák mint játszható főnép (mod). Az alapjátékban a Micéliák szövetséges kisnépként érhetők el."
+}

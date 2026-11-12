@@ -20,13 +20,14 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D9 | ELDÖNTVE (2026-11-11): teljes 0 A.D.-szintű modolás (sandboxolt szkript, modkezelő, függőségek, modlock) |
 | D10 | ELDÖNTVE (2026-11-11): átállás verziózott JSON-mentésre, a régi mentések egyszeri átalakításával |
 | D11 | ELDÖNTVE (2026-11-11): 1 szövetséges nép, annak 3 épületével |
-| D12 | ELDÖNTVE (2026-11-11): a Micéliák rejtett alapfaj (csak a Gombanép-hadjáratban játszható); a `micelia` mod kikapcsolt példa-mod |
+| D12 | FELÜLÍRVA (2026-11-12) a D28-cal. Korábban: a Micéliák rejtett alapfaj (csak a Gombanép-hadjáratban játszható) |
 | D13 | ELDÖNTVE (2026-11-11): patrol és stance is bekerül |
 | D14 | ELDÖNTVE (2026-11-11): nincs régi tesztgép – a minimum becslés marad, a dokumentáció ezt jelzi |
 | D15 | ELDÖNTVE (2026-11-11): a rangsorolt verseny cél; az internetes mód tervezésében számolunk vele |
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D28 | ELDÖNTVE (2026-11-12): a Micéliák csak szövetséges kisnép és mod-faj; a Micélia- és a novella-küldetések kikerülnek; a küldetések az új motorra nulláról készülnek (M11) |
 | D27 | ELDÖNTVE (2026-11-12): ADR-003 (megjelenítő), ADR-004 (fixpontos szimuláció), ADR-005 (JSON-sablonok öröklődéssel és komponensekkel) elfogadva – az M0 lezárva |
 | D26 | ELDÖNTVE (2026-11-12): kisnépek – egy kimondott szövetségi bónusz a gazda seregére, a többi kutatás csak saját; a tó a gazda népét nézi; zsoldosbérlés a kisnép-táborokból beállítással |
 | D25 | ELDÖNTVE (2026-11-12): hősök, tárgyak, táborok – állandók adatba, elemek állapotként; tárgyak képességhordozók; bolt (semleges kereskedő, faji bolt) beállítás szerint; táborok újraéledése pályabeállítás |
@@ -241,3 +242,11 @@ Alap: [spec/KISFAJOK.md](spec/KISFAJOK.md) E–F.
 [ADR-003](dontesek/ADR-003-megjelenito.md) megjelenítő (saját RHI: OpenGL 3.3 + SDL3 GPU),
 [ADR-004](dontesek/ADR-004-szamabrazolas.md) számábrázolás (fixpontos Q16.16, mérve),
 [ADR-005](dontesek/ADR-005-adatformatum.md) adat- és sablonformátum – elfogadva. Ezzel az M0 lezárult; következik az M2.
+
+### D28 – Micéliák és küldetések · ELDÖNTVE (2026-11-12)
+
+1. **A Micéliák csak szövetséges kisnép és mod-faj.** Az alaptartalomban a kisnép-változat (`faction_micelia`) van; a
+   játszható főnép a `micelia` modban (`engine/content/mods/micelia/`, függősége az alap). A D12 felülírva.
+2. **A Micélia-küldetések és a novella-küldetések kikerülnek** (a novellák maradnak).
+3. **A küldetések az új motorra nulláról készülnek** (M11, WC3-szintű küldetésrendszer és szerkesztő); a régi
+   küldetések helyben referenciaként megmaradnak, a GitHubon nincsenek fent.

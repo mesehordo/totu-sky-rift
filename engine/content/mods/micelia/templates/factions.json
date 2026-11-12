@@ -1,0 +1,211 @@
+{
+ "faction_mycel": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.mycel.name",
+   "desc": "faction.mycel.desc",
+   "tagline": "faction.mycel.tagline"
+  },
+  "Roster": {
+   "units": [
+    "myc_sporaszedo",
+    "myc_pofeteg",
+    "myc_tuskegomba_lovesz",
+    "myc_kalapos_or",
+    "myc_alomsaman",
+    "myc_oriaspofeteg",
+    "myc_lebego_pofeteg",
+    "myc_hos_mor",
+    "myc_rothaszto",
+    "myc_hos_gyokeranya",
+    "myc_hos_sporin",
+    "myc_tetemgomba",
+    "myc_fagomba_orias",
+    "myc_alomszovo"
+   ],
+   "buildings": [
+    "myc_szivgomba",
+    "myc_sporafonal",
+    "myc_termotest",
+    "myc_tuskegomba_telep",
+    "myc_gyokerbarlang",
+    "myc_alomkert",
+    "myc_lebegobolcso",
+    "myc_emlekfa",
+    "myc_rothadokert",
+    "myc_oriasliget"
+   ],
+   "researches": [
+    "myc_meregspora",
+    "myc_kemenykalap",
+    "myc_gyors_micelium",
+    "myc_dus_spora"
+   ]
+  },
+  "Paths": {
+   "rothadas": {
+    "name": "path.mycel.rothadas.name",
+    "desc": "path.mycel.rothadas.desc",
+    "tagline": "path.mycel.rothadas.tagline",
+    "building": "myc_rothadokert",
+    "units": [
+     "myc_rothaszto",
+     "myc_tetemgomba"
+    ],
+    "rules": {
+     "poison_attacks": {
+      "tags": [
+       "melee"
+      ],
+      "dps": 3,
+      "dur": 4
+     },
+     "raise_from_kills": {
+      "unit": "myc_tetemgomba",
+      "chance": 0.12,
+      "lifetime": 30,
+      "color": [
+       170,
+       200,
+       120
+      ]
+     }
+    }
+   },
+   "liget": {
+    "name": "path.mycel.liget.name",
+    "desc": "path.mycel.liget.desc",
+    "tagline": "path.mycel.liget.tagline",
+    "building": "myc_oriasliget",
+    "units": [
+     "myc_fagomba_orias"
+    ],
+    "rules": {
+     "network_supply_add": 2
+    },
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "building"
+      ],
+      "add": 250
+     }
+    ]
+   },
+   "alom": {
+    "name": "path.mycel.alom.name",
+    "desc": "path.mycel.alom.desc",
+    "tagline": "path.mycel.alom.tagline",
+    "building": "myc_alomkert",
+    "units": [
+     "myc_alomsaman",
+     "myc_alomszovo"
+    ],
+    "rules": {
+     "forest_stealth": {
+      "tags": [
+       "fungal"
+      ]
+     }
+    }
+   }
+  },
+  "Faction": {
+   "order": 5,
+   "mechanic": "network",
+   "style": "fungal",
+   "color": [
+    214,
+    196,
+    162
+   ],
+   "accent": [
+    80,
+    225,
+    205
+   ],
+   "regen": 0.3,
+   "hq": "myc_szivgomba",
+   "worker": "myc_sporaszedo",
+   "supply_building": "myc_szivgomba",
+   "start_units": {
+    "myc_sporaszedo": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.54,
+     "stone": 0.22,
+     "meteor": 0.24
+    },
+    "build_order": [
+     "myc_sporafonal",
+     "myc_termotest",
+     "myc_szivgomba",
+     "myc_emlekfa",
+     "myc_sporafonal",
+     "myc_termotest",
+     "myc_tuskegomba_telep",
+     "myc_gyokerbarlang",
+     "myc_szivgomba",
+     "myc_lebegobolcso"
+    ],
+    "army": {
+     "myc_pofeteg": 4,
+     "myc_tuskegomba_lovesz": 3,
+     "myc_kalapos_or": 2,
+     "myc_lebego_pofeteg": 1
+    },
+    "research_order": [
+     "myc_meregspora",
+     "myc_kemenykalap",
+     "myc_gyors_micelium",
+     "myc_dus_spora"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "rothadas",
+     "liget",
+     "alom"
+    ],
+    "paths": {
+     "rothadas": {
+      "build": [
+       "myc_rothadokert"
+      ],
+      "army": {
+       "myc_rothaszto": 3,
+       "myc_tetemgomba": 3
+      }
+     },
+     "liget": {
+      "build": [
+       "myc_oriasliget"
+      ],
+      "army": {
+       "myc_fagomba_orias": 2
+      }
+     },
+     "alom": {
+      "build": [
+       "myc_alomkert"
+      ],
+      "army": {
+       "myc_alomsaman": 1,
+       "myc_alomszovo": 2
+      }
+     }
+    }
+   },
+   "start_gather": "wood",
+   "network_supply": 1,
+   "supply_desc": "A hálózat: minden összekötött épület +1",
+   "spell_resource": "spores",
+   "ascension": {
+    "buildings": 3
+   },
+   "hidden": true
+  }
+ }
+}

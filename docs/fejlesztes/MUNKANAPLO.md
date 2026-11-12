@@ -281,3 +281,7 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Döntés (tulajdonos):** a régi Python-játék és a hozzá tartozó anyagok ne legyenek a GitHubon; helyben, referenciaként megmaradnak. Az IPTV-projekt botjai közül csak a CodeQL kerül be (a CodeRabbit látható gépi átnéző lenne, és PR-ok nélkül nem is futna; a Dependabotot a tulajdonos nem kérte).
 **Változás:** 222 fájl kikerült a követésből (a gépen megmaradt, a `.gitignore` tartja távol): `main.py`, `rts/`, `mods/`, `data/`, `campaigns/`, `tests/`, a Python-eszközök (`tools/`, kivéve `tools/ab/`, `gen_fixed_tables.py`, `fejlesztoi_kornyezet.ps1`), `DESIGN.md`, `docs/architecture_audit/`, `docs/MODDING.md`, `docs/MULTIPLAYER.md`, a `referencia` munkafolyamat. A tartalom az új formátumban az `engine/content/` alatt van; a konverter és a leltáreszköz helyben fut. README újraírva (csak az új motor), `LICENSE.md` igazítva, új `.github/workflows/codeql.yml` (C++ – csak a saját kód – és a munkafolyamatok).
 
+## 2026-11-12 – D28: a Micélia csak kisnép és mod-faj
+
+**Változás:** a konverter a Micélia főnépet a `micelia` mod rétegébe teszi (`engine/content/mods/micelia/`: `mod.json` függőséggel, egységek, épületek, kutatások, faj); az alapban 21 faj marad (a kisnép-Micéliával). Új teszt: az alap egyedül (206 egység, 142 épület, 164 kutatás, 21 faj) és a mod réteggel (220 / 152 / 168 / 22) is érvényes; 19 teszt zöld. A Micélia- és novella-küldetések kikerülnek, a küldetések az M11-ben nulláról készülnek.
+

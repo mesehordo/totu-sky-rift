@@ -22,7 +22,7 @@ TEST_CASE("séma: típus, kötelező, ismeretlen kulcs, felsorolás, határok, $
   CHECK(s.validate(*parse(R"({"a": 1, "zz": 1})")).size() == 1);    // ismeretlen kulcs
 }
 
-TEST_CASE("tartalom: a 22 faj teljes konvertált tartalma betölthető és érvényes") {
+TEST_CASE("tartalom: az alaptartalom (21 faj) betölthető és érvényes") {
   Vfs vfs;
   vfs.add_layer("totu", std::filesystem::path(TOTU_CONTENT_DIR) / "base");
   ContentSet store;
@@ -33,13 +33,13 @@ TEST_CASE("tartalom: a 22 faj teljes konvertált tartalma betölthető és érv�
   auto n = [&](const char* k) { auto it = rep.count_by_kind.find(k); return it == rep.count_by_kind.end() ? 0 : it->second; };
   std::printf("  egység %d, épület %d, kutatás %d, képesség %d, tárgy %d, állapot %d, faj %d\n", n("unit"),
               n("building"), n("research"), n("ability"), n("item"), n("status"), n("faction"));
-  CHECK(n("unit") == 220);
-  CHECK(n("building") == 152);
-  CHECK(n("research") == 168);
+  CHECK(n("unit") == 206);
+  CHECK(n("building") == 142);
+  CHECK(n("research") == 164);
   CHECK(n("ability") == 269);
   CHECK(n("item") == 15);
   CHECK(n("status") == 13);
-  CHECK(n("faction") == 22);
+  CHECK(n("faction") == 21);  // a Micélia főnép modként (D28)
   // mintaértékek: a Csápszolga (konverter + öröklődés + determinisztikus számok)
   const Value* u = store.get("entity", "cro_csapszolga");
   CHECK(u != nullptr);
@@ -56,3 +56,22 @@ TEST_CASE("tartalom: a 22 faj teljes konvertált tartalma betölthető és érv�
   const Value* hq = store.get("entity", "cro_kaptar");
   CHECK(hq && hq->find("Footprint")->find("size")->items()[0].as_int() == 4);
 }
+
+TEST_CASE("tartalom: a Micélia-mod réteggel a 22 faj teljes tartalma") {
+  const auto root = std::filesystem::path(TOTU_CONTENT_DIR);
+  std::string err;
+  auto mod = read_mod_info(root / "mods" / "micelia", &err);
+  CHECK(mod && mod->id == "micelia" && mod->depends.size() == 1 && mod->depends[0] == "totu");
+  Vfs vfs;
+  vfs.add_layer("totu", root / "base");
+  vfs.add_layer("micelia", root / "mods" / "micelia");
+  ContentSet store;
+  const LoadReport rep = ContentLoader(vfs, root / "schema").load(store);
+  for (size_t i = 0; i < rep.errors.size() && i < 10; ++i) std::printf("  tartalomhiba: %s\n", rep.errors[i].c_str());
+  CHECK(rep.errors.empty());
+  auto n = [&](const char* k) { auto it = rep.count_by_kind.find(k); return it == rep.count_by_kind.end() ? 0 : it->second; };
+  CHECK(n("unit") == 220 && n("building") == 152 && n("research") == 168 && n("faction") == 22);
+  CHECK(store.get("faction", "faction_mycel") != nullptr);
+  CHECK(store.get("faction", "faction_micelia") != nullptr);   // a kisnép-változat az alapban
+}
+
