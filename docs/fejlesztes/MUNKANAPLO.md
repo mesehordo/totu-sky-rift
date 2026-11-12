@@ -325,3 +325,4 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Golden:** `engine/tests/data/golden_m3.trep` (forrás: `golden_m3.lua`, 8 hullámos védekező küldetés időzítőkkel, halál-eseménnyel, véletlennel, rendezéssel, bejárással, korutinnal) – 3600 tick, 120 ellenőrzőpont, végső hash `0xc07b15c50bafd4ab`.
 **Tesztek:** 31 (9 új: homokozó, require, rendezett bejárás és címmentes szövegek, math és hatványozás, utasításkeret – a szkript saját pcall-jával sem kerülheti meg – és memóriakorlát, csak olvasható adat, Game API és események, mentés–betöltés–folytatás bájtra azonos mentéssel, szkriptes visszajátszás és az eltérő szkript megtalálása).
 **Leírás:** `docs/alap/spec/SZKRIPT_API.md`. `LICENSE.md` – a Lua a külső összetevők között.
+**M3 kapu:** a CI mind a 6 feladatában (Windows MSVC, Linux GCC, macOS arm64 és Intel, FreeBSD, OpenBSD) a `golden_replay_m3` **egyezik**, és a `golden_replay` (M2) is; a CodeQL-elemzés hibátlan, nyitott figyelmeztetés nélkül.
