@@ -15,7 +15,7 @@ Az új motor (C++20 + Lua) fejlesztés alatt áll – terv és ütemterv: [docs/
 |---|---|
 | M0 Alapozás – tartalmi leltár, viselkedési specifikáció, döntések, ADR-ek | kész |
 | M1 Platform-váz – SDL3-ablak, OpenGL 3.3, CI mind az öt rendszeren | kész |
-| M2 Determinisztikus mag – fixpontos matematika, tartalomréteg, modrétegek, sablonok | folyamatban |
+| M2 Determinisztikus mag – fixpontos matematika, tartalomréteg, modrétegek, sablonok, mentés, visszajátszás | kész – a golden visszajátszás mind az öt rendszeren egyezik |
 | M3–M14 – Lua, mozgás, megjelenítő, játékmag, fajok, felület, gépi ellenfél, hálózat, küldetések, játékmódok, modrendszer, kiadás | tervezett |
 
 Célrendszerek: Windows, Linux, macOS (Intel és Apple Silicon), FreeBSD, OpenBSD – mindegyiket a CI ellenőrzi.

@@ -4,12 +4,12 @@
 
 | Mező | Érték |
 |---|---|
-| Aktív szakasz | Új motor: M0 és M1 kész; **M2 folyamatban** – 1. lépés (matematika) és 2. lépés (JSON, VFS, modok, sablonok, entitás–komponens tár) kész, CI zöld |
+| Aktív szakasz | Új motor: M0, M1 és **M2 kész** (a golden visszajátszás mind az öt rendszeren egyezik); következik az M3 (Lua-réteg) |
 | Aktív feladat | S01-02: ablakos kézi próba (F-002) |
 | Kiindulópont | nyilvános GitHub-repó (csak az új motor, a tartalom, a grafika és a történet); a régi Python-játék helyben, gitből kizárva, referenciaként; a régi történet mentése a repó melletti `.bundle` fájlban |
 | Utolsó ellenőrzött állapot | 2026-11-12: `test_dmath.py`, `test_hud.py`, `test_snapshot.py`, `golden_replays.py` 3/3 (újrarögzítve a `dmath` után), `snapshot_check.py --all-missions` 46/46 |
 | Környezet | Windows 10, i7-6700K, RX 550, 32 GB; Python 3.13.14, pygame-ce 2.5.8, numpy 2.5.4; .NET SDK 10.0.404, GCC 16.2 (WinLibs), CMake 4.4.4 – betöltés: `. tools/fejlesztoi_kornyezet.ps1` |
-| Következő konkrét lépés | M2, 3. lépés: JSON-séma, konverter a mai adatokból (fajok, képességek, kutatások, tárgyak az ADR-005 formára) |
+| Következő konkrét lépés | M3: Lua 5.4 beágyazása sandboxszal (FORRASOK_ES_TANULSAGOK 2.4), determinisztikus `math`, rendezett bejárás, utasításkeret, API; kapu: szkriptes visszajátszás minden rendszeren azonos – vagy a küldetés-tervlapok |
 
 ## Nyitott döntések (felhasználó)
 
