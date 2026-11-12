@@ -19,6 +19,14 @@ using core::Fixed;
 
 constexpr int kMaxPassClasses = 32;
 
+// A megjelenítő adatai (a szimuláció nem használja): táj, csempesor, rang (a magasabb rangú szomszéd ráfolyik az
+// alacsonyabbra), árnyalat, part (a víz előtti sáv csempesora; üres = nincs).
+struct TerrainArt {
+  std::string set = "tileset", row = "grass", shore;
+  int prio = 0;
+  uint8_t tint[3] = {255, 255, 255};
+};
+
 struct TerrainType {
   std::string id;
   std::string name;
@@ -27,6 +35,7 @@ struct TerrainType {
   Fixed speed = Fixed::from_int(1);
   bool buildable = true;
   bool hides = false;
+  TerrainArt art;
 };
 
 struct MovementClass {

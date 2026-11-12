@@ -27,12 +27,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # a motor és egyetlen sprite-lap (a kép- és megjelenítőpróbákhoz)
+          # a motor, egyetlen sprite-lap és a csempekészletek (a kép- és megjelenítőpróbákhoz)
           sparse-checkout: |
             /engine/
             /assets/sprites/units/cro_agyfalo.json
             /assets/sprites/units/cro_agyfalo.png
             /assets/sprites/units/cro_agyfalo_team.png
+            /assets/sprites/tiles/
           sparse-checkout-cone-mode: false
       - name: Linux-függőségek (SDL3 videó- és hangfejlécek)
         if: runner.os == 'Linux'
@@ -55,6 +56,8 @@ jobs:
             ./build/totu --demo 200 --frames 30 --size 960x540 --screenshot kepproba.png --check
           ./build/totu_atlas assets atlasz_ci --only cro_
           LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1280x720x24"             ./build/totu --demo 300 --atlas atlasz_ci --frames 30 --size 960x540 --screenshot kepproba_atlasz.png --check
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1280x720x24" \
+            ./build/totu --world engine/tests/data/maps/DEMO-VILAG.json --atlas atlasz_ci --frames 60 --size 960x540 --screenshot kepproba_vilag.png --check
       - name: A képpróba képe
         if: runner.os == 'Linux' && always()
         uses: actions/upload-artifact@v4

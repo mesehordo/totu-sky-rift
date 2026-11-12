@@ -70,6 +70,15 @@ bool TerrainTable::load(content::ContentSet& content, std::vector<std::string>& 
     x.speed = fixed_or(tr, "speed", Fixed::from_int(1));
     x.buildable = bool_or(tr, "buildable", true);
     x.hides = bool_or(tr, "hides", false);
+    if (const content::Value* art = tr ? tr->find("art") : nullptr; art && art->is_object()) {
+      x.art.set = text_or(art, "set", "tileset");
+      x.art.row = text_or(art, "row", "grass");
+      x.art.shore = text_or(art, "shore", "");
+      if (const content::Value* pr = art->find("prio")) x.art.prio = static_cast<int>(pr->as_int().value_or(0));
+      if (const content::Value* tn = art->find("tint"); tn && tn->is_array() && tn->items().size() == 3) {
+        for (size_t k = 0; k < 3; ++k) x.art.tint[k] = static_cast<uint8_t>(tn->items()[k].as_int().value_or(255));
+      }
+    }
     for (const auto& o : terrains_) {
       if (o.ch == x.ch) errors.push_back("terrain/" + id + ": a `" + ch + "` jelet már a(z) " + o.id + " használja");
     }

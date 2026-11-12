@@ -120,10 +120,11 @@ if(TOTU_CLIENT)
   endif()
   # megjelenítő (ADR-003): saját vékony réteg, OpenGL 3.3 core
   add_library(totu_render STATIC src/render/gl.cpp src/render/rhi.cpp src/render/sprite_batch.cpp src/render/sprite_sheet.cpp
-              src/render/atlas.cpp)
+              src/render/atlas.cpp src/render/terrain_view.cpp)
   target_link_libraries(totu_render PUBLIC totu_core totu_image totu_assets PRIVATE totu_options)
-  add_executable(totu src/client/main.cpp)
+  add_executable(totu src/client/main.cpp src/client/world.cpp)
   target_link_libraries(totu PRIVATE totu_core totu_render totu_options SDL3::SDL3)
-  target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
+  target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets"
+                                          TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
   add_test(NAME client_version COMMAND totu --version)
 endif()

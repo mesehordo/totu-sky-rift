@@ -6,12 +6,16 @@
 //   totu --bench                   képkockaidő-mérés (függőleges szinkron nélkül, a GPU bevárásával): p50, p99
 //   totu --screenshot kép.png      a futás végén képernyőkép (a képpróbákhoz)
 //   totu --atlas mappa             a bemutató atlaszból rajzol (Y-rendezve, a népek keverve – mint a világnézet)
+//   totu --world pálya.json        világnézet: terep, két sereg a szimulációból (--demo N: játékosonként N egység);
+//                                  kamera: nyilak / WASD, görgő; bal gombos keret: kijelölés; jobb gomb: mozgatás
+//                                  alakzatban (1–6: alakzat); --content mappa: a tartalom helye
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -22,7 +26,9 @@
 #include <vector>
 
 #include "core/platform_info.hpp"
+#include "client/world.hpp"
 #include "render/atlas.hpp"
+#include "render/terrain_view.hpp"
 #include "render/rhi.hpp"
 #include "render/sprite_batch.hpp"
 #include "render/sprite_sheet.hpp"
@@ -43,7 +49,8 @@ struct Options {
   long frames = -1;
   int demo = 0;
   bool bench = false, hidden = false, check = false;
-  std::string screenshot, atlas;
+  std::string screenshot, atlas, world;
+  std::string content = TOTU_CONTENT_DIR;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -159,6 +166,24 @@ struct AtlasDemo {
   }
 };
 
+// egyszerű tartalék-textúrák: puha szélű kör (sprite nélküli egység, kijelölés) és fehér négyzet (keret)
+render::Image circle_image(int n) {
+  render::Image img;
+  img.width = img.height = n;
+  img.rgba.assign(static_cast<size_t>(n * n) * 4, 255);
+  const float r = static_cast<float>(n) / 2.0f;
+  for (int y = 0; y < n; ++y) {
+    for (int x = 0; x < n; ++x) {
+      const float d = std::sqrt((static_cast<float>(x) + 0.5f - r) * (static_cast<float>(x) + 0.5f - r) +
+                                (static_cast<float>(y) + 0.5f - r) * (static_cast<float>(y) + 0.5f - r));
+      const float a = std::clamp(r - d, 0.0f, 1.0f);
+      img.at(x, y)[3] = static_cast<uint8_t>(a * 255.0f);
+      if (d > r - 2.5f) { img.at(x, y)[0] = img.at(x, y)[1] = img.at(x, y)[2] = 40; }   // sötét perem
+    }
+  }
+  return img;
+}
+
 double percentile(std::vector<double> v, double p) {
   if (v.empty()) return 0;
   std::sort(v.begin(), v.end());
@@ -181,6 +206,8 @@ int main(int argc, char** argv) {
     else if (a == "--screenshot") o.screenshot = next();
     else if (a == "--assets") o.assets = next();
     else if (a == "--atlas") o.atlas = next();
+    else if (a == "--world") o.world = next();
+    else if (a == "--content") o.content = next();
     else if (a == "--size") {   // SZxM
       char* end = nullptr;
       const char* v = next();
@@ -229,8 +256,19 @@ int main(int argc, char** argv) {
     }
     render::SpriteBatch batch;
     Demo demo;
-    demo.units = o.atlas.empty() ? o.demo : 0;
+    demo.units = (o.atlas.empty() && o.world.empty()) ? o.demo : 0;
     AtlasDemo adem;
+    client::World world;
+    render::TerrainView terrain;
+    render::Atlas world_atlas;
+    render::Texture fallback, white;
+    client::Camera cam;
+    bool have_world = false, world_atlas_ok = false;
+    sim::Formation formation = sim::Formation::Auto;
+    float drag_x = 0, drag_y = 0;
+    bool dragging = false;
+    double sim_accum = 0;
+    std::vector<double> sim_times, draw_times;   // a mérésben külön: szimulációs tick és rajzolás
     if (rc == 0) {
       std::printf("grafika: %s (legnagyobb textúra %d)\n", dev.info().c_str(), dev.max_texture_size());
       if (!batch.init(dev, &err)) {
@@ -239,6 +277,27 @@ int main(int argc, char** argv) {
       } else if (demo.units > 0 && !demo.load(dev, o.assets, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
+      } else if (!o.world.empty()) {
+        if (!world.load(o.content, o.world, 20261112, &err) || !terrain.init(dev, o.assets, &err)) {
+          std::fprintf(stderr, "%s\n", err.c_str());
+          rc = 1;
+        } else {
+          terrain.set_map(world.map(), world.terrain());
+          world.spawn_demo(2, o.demo > 0 ? o.demo : 60);
+          if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
+          if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
+          fallback = dev.create_array_from(circle_image(32), false);
+          render::Image px;
+          px.width = px.height = 1;
+          px.rgba = {255, 255, 255, 255};
+          white = dev.create_array_from(px, false);
+          const float mw = static_cast<float>(world.map().width()) * client::World::kTilePx;
+          const float mh = static_cast<float>(world.map().height()) * client::World::kTilePx;
+          cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
+          cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
+          if (o.bench || !o.screenshot.empty()) world.order_demo_attack();
+          have_world = true;
+        }
       } else if (!o.atlas.empty() && o.demo > 0 && !adem.load(dev, o.atlas, o.demo, o.width, o.height, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
@@ -252,13 +311,89 @@ int main(int argc, char** argv) {
       SDL_Event ev;
       while (SDL_PollEvent(&ev)) {
         if (ev.type == SDL_EVENT_QUIT || (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE)) running = false;
+        if (!have_world) continue;
+        if (ev.type == SDL_EVENT_MOUSE_WHEEL) {
+          const float old = cam.zoom;
+          cam.zoom = std::clamp(cam.zoom * (ev.wheel.y > 0 ? 1.12f : 1.0f / 1.12f), 1.0f, 2.0f);
+          float mx = 0, my = 0;
+          SDL_GetMouseState(&mx, &my);
+          cam.x += mx / old - mx / cam.zoom;   // a kurzor alatti pont marad
+          cam.y += my / old - my / cam.zoom;
+        }
+        if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
+          dragging = true;
+          drag_x = cam.x + ev.button.x / cam.zoom;
+          drag_y = cam.y + ev.button.y / cam.zoom;
+        }
+        if (ev.type == SDL_EVENT_MOUSE_BUTTON_UP && ev.button.button == SDL_BUTTON_LEFT && dragging) {
+          dragging = false;
+          world.select_box(drag_x, drag_y, cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom);
+        }
+        if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_RIGHT) {
+          world.order_move(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom, formation);
+        }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key >= SDLK_1 && ev.key.key <= SDLK_6) {
+          formation = static_cast<sim::Formation>(ev.key.key - SDLK_1);   // 1 nincs, 2 WC3-szerű, 3 sor, 4 doboz …
+        }
+      }
+      if (have_world) {   // kamera billentyűkkel
+        const bool* keys = SDL_GetKeyboardState(nullptr);
+        const float step = 12.0f / cam.zoom;
+        if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A]) cam.x -= step;
+        if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) cam.x += step;
+        if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W]) cam.y -= step;
+        if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S]) cam.y += step;
       }
       const auto f0 = std::chrono::steady_clock::now();
       int w = 0, h = 0;
       SDL_GetWindowSizeInPixels(win, &w, &h);
       dev.bind_target(nullptr, w, h);
       dev.clear(0.12f, 0.16f, 0.10f, 1.0f);
-      if (demo.units > 0 || !adem.units.empty()) {
+      if (have_world) {
+        // fix 30 Hz-es szimuláció; mérésnél és képernyőképnél determinisztikusan: két képkockánként egy tick
+        const bool fixed = o.bench || !o.screenshot.empty();
+        float alpha = 0;
+        if (fixed) {
+          if (frame % 2 == 1) {
+            const auto s0 = std::chrono::steady_clock::now();
+            world.step();
+            sim_times.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - s0).count());
+          }
+          alpha = frame % 2 == 1 ? 0.0f : 0.5f;
+        } else {
+          static auto last = std::chrono::steady_clock::now();
+          const auto now = std::chrono::steady_clock::now();
+          sim_accum += std::min(0.25, std::chrono::duration<double>(now - last).count());
+          last = now;
+          while (sim_accum >= 1.0 / 30.0) {
+            world.step();
+            sim_accum -= 1.0 / 30.0;
+          }
+          alpha = static_cast<float>(sim_accum * 30.0);
+        }
+        const double t = fixed ? static_cast<double>(frame) / 60.0
+                               : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+        const float vx1 = cam.x + static_cast<float>(w) / cam.zoom, vy1 = cam.y + static_cast<float>(h) / cam.zoom;
+        const render::Mat4 proj = render::ortho(cam.x, vx1, vy1, cam.y);
+        terrain.draw(proj, cam.x, cam.y, vx1, vy1, t);
+        batch.begin(proj);
+        world.draw(batch, world_atlas_ok ? &world_atlas : nullptr, fallback, cam, w, h, alpha, t);
+        if (dragging) {   // kijelölő keret
+          float mx = 0, my = 0;
+          SDL_GetMouseState(&mx, &my);
+          const float x0 = std::min(drag_x, cam.x + mx / cam.zoom), y0 = std::min(drag_y, cam.y + my / cam.zoom);
+          const float x1 = std::max(drag_x, cam.x + mx / cam.zoom), y1 = std::max(drag_y, cam.y + my / cam.zoom);
+          const float t1 = 1.5f / cam.zoom;
+          for (const auto& r : {std::array<float, 4>{x0, y0, x1 - x0, t1}, std::array<float, 4>{x0, y1 - t1, x1 - x0, t1},
+                                std::array<float, 4>{x0, y0, t1, y1 - y0}, std::array<float, 4>{x1 - t1, y0, t1, y1 - y0}}) {
+            render::SpriteInstance in;
+            in.x = r[0]; in.y = r[1]; in.w = r[2]; in.h = r[3];
+            in.tint[0] = 90; in.tint[1] = 255; in.tint[2] = 90;
+            batch.draw(white, nullptr, in);
+          }
+        }
+        batch.end();
+      } else if (demo.units > 0 || !adem.units.empty()) {
         // a bemutató determinisztikus időt használ, ha képernyőkép vagy mérés készül (azonos kép minden gépen)
         const double t = (o.bench || !o.screenshot.empty())
                              ? static_cast<double>(frame) / 60.0
@@ -292,6 +427,11 @@ int main(int argc, char** argv) {
       if (o.bench) dev.api().Finish();
       SDL_GL_SwapWindow(win);
       times.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - f0).count());
+      if (have_world && o.bench) {
+        double st = 0;
+        if (frame % 2 == 1 && !sim_times.empty()) st = sim_times.back();
+        draw_times.push_back(times.back() - st);
+      }
       if (!dev.check("képkocka", &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
@@ -306,6 +446,20 @@ int main(int argc, char** argv) {
                   percentile(times, 1.0));
     }
     if (o.bench && !adem.units.empty()) std::printf("atlasz: %d lap betöltve\n", adem.atlas.loaded_pages());
+    if (o.bench && have_world && draw_times.size() > 10) {
+      draw_times.erase(draw_times.begin(), draw_times.begin() + 10);
+      std::printf("  rajzolás (szimuláció nélkül): p50 %.2f ms, p99 %.2f ms; szimulációs tick: p50 %.2f ms, p99 %.2f ms\n",
+                  percentile(draw_times, 0.5), percentile(draw_times, 0.99), percentile(sim_times, 0.5),
+                  percentile(sim_times, 0.99));
+    }
+    if (o.bench && have_world) {
+      std::printf("világ: %d egység látszott, %d terep-négyzet, %lld tick, élő egység %zu\n", world.drawn_units(),
+                  terrain.last_quads(), static_cast<long long>(world.sim().tick()), world.sim().world().entity_count());
+    }
+    world_atlas.release();
+    terrain.shutdown();
+    dev.destroy(fallback);
+    dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {
       dev.destroy(s.base);

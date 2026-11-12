@@ -88,6 +88,12 @@ TEST_CASE("terep: terepfajták, járhatósági és mozgásosztályok a tartalomb
   CHECK(!t.passable(land, *t.terrain("cliff")));
   CHECK(t.passable(land, *t.terrain("ramp")) && t.passable(land, *t.terrain("bridge")));
   CHECK(*t.terrain_by_char('~') == *t.terrain("shallow_water"));
+  // a megjelenítő adatai (art): táj, sor, rang, árnyalat, part
+  const auto& deep = t.terrains()[*t.terrain("deep_water")].art;
+  CHECK(deep.set == "tileset" && deep.row == "water" && deep.shore == "sand" && deep.prio == 30);
+  const auto& mud = t.terrains()[*t.terrain("mud")].art;
+  CHECK(mud.row == "dirt" && mud.tint[0] == 150 && mud.tint[2] == 100);
+  CHECK(t.terrains()[*t.terrain("snow")].art.set == "winter");
 }
 
 TEST_CASE("pálya: sorok jelmagyarázattal, futáshossz-kódolás, hibák") {

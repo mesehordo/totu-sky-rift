@@ -1,5 +1,5 @@
 {
- "_leiras": "Terepfajták (ADR-006, D32). A `pass` a járhatósági osztály (a mozgásosztályok ebből döntenek), a `speed` a terep saját sebességszorzója, a `char` az alapértelmezett jel a pálya szöveges sorai számára. A sok fajta nagyrészt látványváltozat azonos szabályokkal; a modok újakat adhatnak.",
+ "_leiras": "Terepfajták (ADR-006, D32). A `pass` a járhatósági osztály (a mozgásosztályok ebből döntenek), a `speed` a terep saját sebességszorzója, a `char` az alapértelmezett jel a pálya szöveges sorai számára. A sok fajta nagyrészt látványváltozat azonos szabályokkal; a modok újakat adhatnak. Az `art` a megjelenítőnek szól: a táj (tileset, winter, forest), a csempesor, a rang (a magasabb rangú szomszéd terep ráfolyik az alacsonyabbra), az árnyalat és a part (a víz előtti sáv); a végleges terepgrafika a tulajdonosé.",
  "template_terrain": {
   "Identity": {
    "kind": "terrain"
@@ -17,7 +17,12 @@
    "name": "Fű"
   },
   "Terrain": {
-   "char": "."
+   "char": ".",
+   "art": {
+    "set": "tileset",
+    "row": "grass",
+    "prio": 0
+   }
   }
  },
  "grass_lush": {
@@ -26,7 +31,12 @@
    "name": "Dús fű"
   },
   "Terrain": {
-   "char": ","
+   "char": ",",
+   "art": {
+    "set": "forest",
+    "row": "grass",
+    "prio": 0
+   }
   }
  },
  "grass_dry": {
@@ -35,7 +45,17 @@
    "name": "Száraz fű"
   },
   "Terrain": {
-   "char": "'"
+   "char": "'",
+   "art": {
+    "set": "tileset",
+    "row": "grass",
+    "prio": 0,
+    "tint": [
+     225,
+     210,
+     150
+    ]
+   }
   }
  },
  "meadow": {
@@ -44,7 +64,17 @@
    "name": "Virágos rét"
   },
   "Terrain": {
-   "char": "*"
+   "char": "*",
+   "art": {
+    "set": "tileset",
+    "row": "grass",
+    "prio": 0,
+    "tint": [
+     255,
+     235,
+     245
+    ]
+   }
   }
  },
  "dirt": {
@@ -53,7 +83,12 @@
    "name": "Föld"
   },
   "Terrain": {
-   "char": ":"
+   "char": ":",
+   "art": {
+    "set": "tileset",
+    "row": "dirt",
+    "prio": 10
+   }
   }
  },
  "mud": {
@@ -63,7 +98,17 @@
   },
   "Terrain": {
    "char": "%",
-   "speed": 0.8
+   "speed": 0.8,
+   "art": {
+    "set": "tileset",
+    "row": "dirt",
+    "prio": 11,
+    "tint": [
+     150,
+     125,
+     100
+    ]
+   }
   }
  },
  "road": {
@@ -73,7 +118,17 @@
   },
   "Terrain": {
    "char": "=",
-   "speed": 1.15
+   "speed": 1.15,
+   "art": {
+    "set": "tileset",
+    "row": "dirt",
+    "prio": 12,
+    "tint": [
+     235,
+     215,
+     180
+    ]
+   }
   }
  },
  "paved": {
@@ -83,7 +138,17 @@
   },
   "Terrain": {
    "char": "+",
-   "speed": 1.2
+   "speed": 1.2,
+   "art": {
+    "set": "tileset",
+    "row": "rock",
+    "prio": 13,
+    "tint": [
+     215,
+     210,
+     200
+    ]
+   }
   }
  },
  "ruins": {
@@ -93,7 +158,17 @@
   },
   "Terrain": {
    "char": "r",
-   "speed": 1.1
+   "speed": 1.1,
+   "art": {
+    "set": "forest",
+    "row": "rock",
+    "prio": 13,
+    "tint": [
+     200,
+     190,
+     175
+    ]
+   }
   }
  },
  "sand": {
@@ -103,7 +178,12 @@
   },
   "Terrain": {
    "char": "s",
-   "speed": 0.9
+   "speed": 0.9,
+   "art": {
+    "set": "tileset",
+    "row": "sand",
+    "prio": 10
+   }
   }
  },
  "gravel": {
@@ -112,7 +192,17 @@
    "name": "Kavics"
   },
   "Terrain": {
-   "char": "g"
+   "char": "g",
+   "art": {
+    "set": "tileset",
+    "row": "sand",
+    "prio": 11,
+    "tint": [
+     175,
+     175,
+     170
+    ]
+   }
   }
  },
  "snow": {
@@ -122,7 +212,12 @@
   },
   "Terrain": {
    "char": "n",
-   "speed": 0.85
+   "speed": 0.85,
+   "art": {
+    "set": "winter",
+    "row": "grass",
+    "prio": 5
+   }
   }
  },
  "ice": {
@@ -132,7 +227,17 @@
   },
   "Terrain": {
    "char": "i",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "winter",
+    "row": "water",
+    "prio": 25,
+    "tint": [
+     225,
+     240,
+     255
+    ]
+   }
   }
  },
  "ash": {
@@ -142,7 +247,17 @@
   },
   "Terrain": {
    "char": "a",
-   "speed": 0.95
+   "speed": 0.95,
+   "art": {
+    "set": "tileset",
+    "row": "dirt",
+    "prio": 12,
+    "tint": [
+     115,
+     112,
+     110
+    ]
+   }
   }
  },
  "lava_rock": {
@@ -151,7 +266,17 @@
    "name": "Láva-kőzet"
   },
   "Terrain": {
-   "char": "l"
+   "char": "l",
+   "art": {
+    "set": "tileset",
+    "row": "rock",
+    "prio": 20,
+    "tint": [
+     130,
+     90,
+     80
+    ]
+   }
   }
  },
  "mossy_stone": {
@@ -160,7 +285,12 @@
    "name": "Mohás kő"
   },
   "Terrain": {
-   "char": "m"
+   "char": "m",
+   "art": {
+    "set": "forest",
+    "row": "rock",
+    "prio": 20
+   }
   }
  },
  "forest_floor": {
@@ -170,7 +300,12 @@
   },
   "Terrain": {
    "char": "f",
-   "speed": 0.95
+   "speed": 0.95,
+   "art": {
+    "set": "forest",
+    "row": "dirt",
+    "prio": 9
+   }
   }
  },
  "swamp": {
@@ -183,7 +318,18 @@
    "pass": "shallow",
    "speed": 0.75,
    "buildable": false,
-   "hides": true
+   "hides": true,
+   "art": {
+    "set": "forest",
+    "row": "water",
+    "prio": 28,
+    "tint": [
+     130,
+     150,
+     100
+    ],
+    "shore": "dirt"
+   }
   }
  },
  "shallow_water": {
@@ -194,7 +340,18 @@
   "Terrain": {
    "char": "~",
    "pass": "shallow",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "tileset",
+    "row": "water",
+    "prio": 29,
+    "tint": [
+     205,
+     235,
+     235
+    ],
+    "shore": "sand"
+   }
   }
  },
  "deep_water": {
@@ -205,7 +362,13 @@
   "Terrain": {
    "char": "W",
    "pass": "deep",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "tileset",
+    "row": "water",
+    "prio": 30,
+    "shore": "sand"
+   }
   }
  },
  "rock": {
@@ -216,7 +379,12 @@
   "Terrain": {
    "char": "#",
    "pass": "blocked",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "tileset",
+    "row": "rock",
+    "prio": 20
+   }
   }
  },
  "cliff": {
@@ -227,7 +395,17 @@
   "Terrain": {
    "char": "^",
    "pass": "cliff",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "tileset",
+    "row": "rock",
+    "prio": 21,
+    "tint": [
+     140,
+     128,
+     118
+    ]
+   }
   }
  },
  "ramp": {
@@ -238,7 +416,17 @@
   "Terrain": {
    "char": "/",
    "pass": "ramp",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "tileset",
+    "row": "dirt",
+    "prio": 10,
+    "tint": [
+     210,
+     190,
+     160
+    ]
+   }
   }
  },
  "bridge": {
@@ -249,7 +437,17 @@
   "Terrain": {
    "char": "H",
    "pass": "bridge",
-   "buildable": false
+   "buildable": false,
+   "art": {
+    "set": "tileset",
+    "row": "dirt",
+    "prio": 14,
+    "tint": [
+     175,
+     125,
+     85
+    ]
+   }
   }
  }
 }
