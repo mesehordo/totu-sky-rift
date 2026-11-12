@@ -262,3 +262,10 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Tesztek (`engine/tests/test_math.cpp`):** műveletek, gyök (20 000 véletlen érték), szögfüggvények pontossága (sin/cos ≤ 2 egység, atan2 ≤ 1 egység), PCG32 referenciasorozat és egyenletesség, tizedes beolvasás, és egy rögzített **determinizmus-hash** (50 000 lépés minden műveletből): `0xf77842dd87d0cb56`.
 **CI:** mind a 6 feladat zöld – a hash Windows MSVC, Linux GCC, macOS arm64 és Intel (Clang), FreeBSD és OpenBSD (Clang) alatt is ugyanaz. Ez az M2 kapujának első része.
 
+## 2026-11-12 – M2, 2. lépés: tartalomréteg és entitás–komponens tár
+
+**Kód:** `engine/src/content/json` – saját JSON-elemző (a számok szövegként, a `parse_fixed` alakítja őket; kulcssorrend megtartva; hibák sor- és oszlopszámmal; UTF-8, `\u`-párok, BOM; ismétlődő kulcs hiba; determinisztikus kiírás); `vfs` – rétegezett fájlrendszer (a felső réteg takar, a lista unió és rendezett, `..` és abszolút út tiltva), `mod.json` (azonosító, verzió, függőségek, ütközések), betöltési sorrend függőségekkel, hiba hiányzó függőségre, ütközésre és körre; `templates` – sablontár: `inherits` (egy vagy több szülő), foltok későbbi rétegekből (`null` törlés, `+`/`-` listaműveletek), `_` kezdetű megjegyzések, körkörös és hiányzó szülő, kétszeres definíció egy rétegben; `engine/src/sim/world.hpp` – entitás–komponens tár: soha újra nem használt azonosító, azonosító szerint rendezett tárolók (determinisztikus bejárás), késleltetett törlés.
+**A tesztek közben talált két tervezési hiba (javítva):** egy mod `+`/`-` listafoltja és `null` törlése elveszett, ha a kulcs nem a sablonban, hanem a szülőjében volt – a foltrétegben most foltként/törlésjelzőként megmarad, és az öröklődés feloldásakor érvényesül; két egymás utáni listafolt sorrendhelyesen vonódik össze. A „kétszer ugyanabban a rétegben” ellenőrzés most minden réteget nyilvántart.
+**Tesztek:** 16 (ebből 6 új), mind zöld; CI mind a 6 feladat zöld.
+**Még hátra az M2-ből:** JSON-séma ellenőrzés, a mai adatok konvertere (ADR-005/9), állapothash a világra, snapshot, replay, fejléc nélküli futtató, és a kapu: egy replay mind az öt rendszeren ugyanazt a hash-sorozatot adja.
+
