@@ -2,10 +2,13 @@
 // Az atlaszkészítő tesztjei (M5, 2. lépés), grafikus kártya nélkül: polcos elrendezés (átfedés nélkül, a lapon
 // belül, determinisztikusan), vágás, több lapra bontás, minden képkocka és maszkja pixelre egyezik az eredetivel,
 // a leírás oda-vissza alakítása, fél minőség, valódi sprite-lap.
+#include <algorithm>
+#include <array>
 #include <filesystem>
 #include <fstream>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "check.hpp"
 #include "core/rng.hpp"
