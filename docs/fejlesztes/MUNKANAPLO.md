@@ -218,3 +218,8 @@
 **Döntések (tulajdonos):** a Második lélegzet gyógyít és javít, a Foltozás gépjavító (D22); a modrendszerbe bekerül a mod.io-támogatás (D23).
 **Ellenőrzés:** a mod.io C++ SDK licence MIT/BSL (GPL 3-mal összefér); hivatalos platformjai Windows, Linux, macOS – FreeBSD-n és OpenBSD-n a REST API közvetlenül. A tulajdonos anyaga (`TOTU_Sky_Rift_mod_io_integracio.md`) GPLv2+-t írt; a projekt licence GPL-3.0-or-later, ez a tervbe így került.
 **Kimenet:** `UJ_MOTOR_TERV.md` 3.2/6. pont (felépítés, megvalósítás, többjátékos modegyeztetés, jogi és üzleti teendők) és M13; `DONTESEK.md` D23 és D22-kiegészítés; `spec/KEPESSEGEK.md` E pont.
+
+## 2026-11-12 – M0: kutatások, szabálymódosítók és ágak specifikációja
+
+**Kimenet:** `docs/alap/spec/KUTATAS_ES_SZABALYOK.md` – a kutatás menete (feltételek, sor, egyszeri érvényesülés, a meglévő egységek életerő-növelése), a 10 statnév forrásokkal és értékekkel, a 39 szabálykulcs csoportosítva (25 paraméterhangoló, 14 viselkedés-szabály) kódhelyekkel, az összefésülés szabálya (felülírás; `chance`-nél a nagyobb), az ágak. Átvizsgálás: két párhuzamos rendszer (összeadó `effects` és felülíró `rules`), kulcsonként külön kód, rejtett sorrendfüggés, csak összeadó statnövelés, a viselkedés-szabályok valójában passzív képességek. Javaslat: 0 A.D. Modifications és Requirements, WC3 többszintű fejlesztések, a viselkedés-szabályok a D22 képességmodell passzív képességeiként; halmozási szabály. Gépi ellenőrzés: a leltár minden szabály-, stat-, kutatás- és ágkulcsa szerepel. 3 tulajdonosi döntési pont.
+
