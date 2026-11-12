@@ -58,6 +58,7 @@ LoadReport ContentLoader::load(ContentSet& out) {
   }
   auto entity = load_schema(schema_dir_ / "entity.schema.json", rep.errors);
   auto other = load_schema(schema_dir_ / "other.schema.json", rep.errors);
+  auto world = load_schema(schema_dir_ / "world.schema.json", rep.errors);
   for (auto& [ns_name, store] : out.ns) {
   for (const auto& id : store.ids()) {
     if (id.rfind("template_", 0) == 0) continue;           // absztrakt alapsablon
@@ -68,7 +69,9 @@ LoadReport ContentLoader::load(ContentSet& out) {
     const std::string k = (kind && kind->is_string()) ? kind->text() : "";
     if (k.empty()) { rep.errors.push_back(ns_name + "/" + id + ": hiányzik az Identity.kind"); continue; }
     ++rep.count_by_kind[k];
-    const Schema* sch = (k == "unit" || k == "building") ? (entity ? &*entity : nullptr) : (other ? &*other : nullptr);
+    const Schema* sch = (k == "unit" || k == "building")     ? (entity ? &*entity : nullptr)
+                        : (k == "terrain" || k == "movement") ? (world ? &*world : nullptr)
+                                                              : (other ? &*other : nullptr);
     if (!sch) continue;
     for (const auto& e : sch->validate(*t)) rep.errors.push_back(ns_name + "/" + id + ": " + e);
   }

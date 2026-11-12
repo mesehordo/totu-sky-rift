@@ -1,0 +1,255 @@
+{
+ "_leiras": "Terepfajták (ADR-006, D32). A `pass` a járhatósági osztály (a mozgásosztályok ebből döntenek), a `speed` a terep saját sebességszorzója, a `char` az alapértelmezett jel a pálya szöveges sorai számára. A sok fajta nagyrészt látványváltozat azonos szabályokkal; a modok újakat adhatnak.",
+ "template_terrain": {
+  "Identity": {
+   "kind": "terrain"
+  },
+  "Terrain": {
+   "pass": "land",
+   "speed": 1,
+   "buildable": true,
+   "hides": false
+  }
+ },
+ "grass": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Fű"
+  },
+  "Terrain": {
+   "char": "."
+  }
+ },
+ "grass_lush": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Dús fű"
+  },
+  "Terrain": {
+   "char": ","
+  }
+ },
+ "grass_dry": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Száraz fű"
+  },
+  "Terrain": {
+   "char": "'"
+  }
+ },
+ "meadow": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Virágos rét"
+  },
+  "Terrain": {
+   "char": "*"
+  }
+ },
+ "dirt": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Föld"
+  },
+  "Terrain": {
+   "char": ":"
+  }
+ },
+ "mud": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Sár"
+  },
+  "Terrain": {
+   "char": "%",
+   "speed": 0.8
+  }
+ },
+ "road": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Földút"
+  },
+  "Terrain": {
+   "char": "=",
+   "speed": 1.15
+  }
+ },
+ "paved": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Kövezett út"
+  },
+  "Terrain": {
+   "char": "+",
+   "speed": 1.2
+  }
+ },
+ "ruins": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Romos kövezet"
+  },
+  "Terrain": {
+   "char": "r",
+   "speed": 1.1
+  }
+ },
+ "sand": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Homok"
+  },
+  "Terrain": {
+   "char": "s",
+   "speed": 0.9
+  }
+ },
+ "gravel": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Kavics"
+  },
+  "Terrain": {
+   "char": "g"
+  }
+ },
+ "snow": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Hó"
+  },
+  "Terrain": {
+   "char": "n",
+   "speed": 0.85
+  }
+ },
+ "ice": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Jég"
+  },
+  "Terrain": {
+   "char": "i",
+   "buildable": false
+  }
+ },
+ "ash": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Hamu"
+  },
+  "Terrain": {
+   "char": "a",
+   "speed": 0.95
+  }
+ },
+ "lava_rock": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Láva-kőzet"
+  },
+  "Terrain": {
+   "char": "l"
+  }
+ },
+ "mossy_stone": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Mohás kő"
+  },
+  "Terrain": {
+   "char": "m"
+  }
+ },
+ "forest_floor": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Erdei talaj"
+  },
+  "Terrain": {
+   "char": "f",
+   "speed": 0.95
+  }
+ },
+ "swamp": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Mocsár"
+  },
+  "Terrain": {
+   "char": "w",
+   "pass": "shallow",
+   "speed": 0.75,
+   "buildable": false,
+   "hides": true
+  }
+ },
+ "shallow_water": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Gázló"
+  },
+  "Terrain": {
+   "char": "~",
+   "pass": "shallow",
+   "buildable": false
+  }
+ },
+ "deep_water": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Mély víz"
+  },
+  "Terrain": {
+   "char": "W",
+   "pass": "deep",
+   "buildable": false
+  }
+ },
+ "rock": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Szikla"
+  },
+  "Terrain": {
+   "char": "#",
+   "pass": "blocked",
+   "buildable": false
+  }
+ },
+ "cliff": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Szirt"
+  },
+  "Terrain": {
+   "char": "^",
+   "pass": "cliff",
+   "buildable": false
+  }
+ },
+ "ramp": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Rámpa"
+  },
+  "Terrain": {
+   "char": "/",
+   "pass": "ramp",
+   "buildable": false
+  }
+ },
+ "bridge": {
+  "inherits": "template_terrain",
+  "Identity": {
+   "name": "Híd"
+  },
+  "Terrain": {
+   "char": "H",
+   "pass": "bridge",
+   "buildable": false
+  }
+ }
+}

@@ -269,5 +269,77 @@
     0.4
    ]
   ]
+ },
+ "navigation": {
+  "_leiras": "ADR-006: fél csempés navrács; méretosztályok a sugár szerint, a szükséges szabad tér navcellában (Csebisev-távolság a legközelebbi akadálytól).",
+  "navcells_per_tile": 2,
+  "clearance_cap": 8,
+  "cluster": 16,
+  "size_classes": [
+   {
+    "id": "small",
+    "max_radius": 0.5,
+    "clearance": 1
+   },
+   {
+    "id": "medium",
+    "max_radius": 0.75,
+    "clearance": 2
+   },
+   {
+    "id": "large",
+    "max_radius": 2,
+    "clearance": 3
+   }
+  ]
+ },
+ "elevation_rules": {
+  "_leiras": "D33 (javaslat, a balansz az M6–M7-ben véglegesíti): szintek −1 (mélység) … 2 (nagyon magas); Δ = a támadó szintje − a célponté.",
+  "levels": {
+   "min": -1,
+   "max": 2
+  },
+  "vision_per_level": 1,
+  "depression_vision": -1,
+  "uphill_vision_needs_presence": 2,
+  "reveal_shooter_seconds": 2,
+  "ranged_range_per_level": 0.5,
+  "ranged_range_max": 1,
+  "building_range_per_level": 1,
+  "uphill_miss_per_level": 0.25,
+  "uphill_miss_max": 0.4,
+  "damage_per_level": 0.1,
+  "ramp_speed_up": 0.85,
+  "ramp_speed_down": 1.1,
+  "depression_hidden_beyond": 6,
+  "ignore_tag": "ignore_elevation"
+ },
+ "map_sizes": {
+  "_leiras": "D34: pályaméretek csempében (a navrács ennek kétszerese). A javasolt játékosszám csak ajánlás; egyedi méret a szerkesztőben legfeljebb 512.",
+  "small": {
+   "name": "Kicsi",
+   "size": 96,
+   "players": [
+    2,
+    2
+   ]
+  },
+  "medium": {
+   "name": "Közepes",
+   "size": 160,
+   "players": [
+    2,
+    4
+   ]
+  },
+  "large": {
+   "name": "Nagy",
+   "size": 256,
+   "players": [
+    4,
+    8
+   ]
+  },
+  "max_custom": 512
  }
 }

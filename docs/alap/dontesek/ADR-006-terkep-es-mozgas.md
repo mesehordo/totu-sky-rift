@@ -1,6 +1,6 @@
 # ADR-006: Térkép és mozgás
 
-**Státusz:** JAVASLAT – tulajdonosi jóváhagyásra vár (a terep és a formáció kérdését a D32 már eldöntötte)
+**Státusz:** ELFOGADOTT – a tulajdonos jóváhagyta 2026-11-12 (D32, D33)
 **Érintett:** M4 (térkép, mozgás), M5 (megjelenítő: terep, szintek), M6 (látótér, harc a magaslaton), M7 (fajok:
 tó, fény, terjedő talaj), M9 (gépi ellenfél), M11 (szerkesztő).
 Alap: ADR-004 (fixpontos számábrázolás), ADR-005 (adatformátum), D32, [FORRASOK_ES_TANULSAGOK](../FORRASOK_ES_TANULSAGOK.md) 2.3.
@@ -25,13 +25,13 @@ Mindezt bitre determinisztikusan, mind az öt rendszeren.
 
 ### 1. Pálya
 
-- **Rács:** 1 csempe = 1 egység (fixpontos), négyzetes csempék. A pálya legfeljebb 512 × 512 csempe, a szokásos
-  méret 128–256.
+- **Rács:** 1 csempe = 1 egység (fixpontos), négyzetes csempék. **Pályaméretek (D34):** kicsi 96 × 96, közepes
+  160 × 160, nagy 256 × 256; egyedi méret legfeljebb 512 × 512 (`game.json` → `map_sizes`).
 - **Navigációs rács:** fél csempe (navcella). A sugarak (0,22–0,95 csempe) így pontosan érvényesülnek. Egy
   512-es pálya 1024² navcella, ami osztályonként egy bájttömb.
 - **Rétegek:**
   1. terep (csempénként terepfajta-azonosító);
-  2. **szint** (0–2, D32);
+  2. **szint** (−1–2, D32, D33);
   3. fedőrétegek (Huk'ucha-tó, terjedő talaj, fény; ezek tartalma M7, a hely most készül);
   4. statikus akadályok (épület alapterülete, erőforrás, fa);
   5. dinamikus akadályok (egységek, kapuk).
@@ -52,17 +52,43 @@ kövezett út, földút, homok, kavics, hó, jég, hamu, láva-kőzet, mohás k�
 szirt, rámpa, híd, romos kövezet … A modok újakat adhatnak. Az induló készlet a régi pályák négy fajtáját
 átveszi, a többit a grafikai készlethez igazítjuk (a csempeképek a tulajdonoséi).
 
-### 3. „Kamu” magaslatok (D32, StarCraft 1-szerűen)
+### 3. „Kamu” magaslatok és mélységek (D32, D33; StarCraft 1-szerűen)
 
-- A szint csempetulajdonság (0 alacsony, 1 magas, 2 nagyon magas). Valódi 3D nincs: a megjelenítő festett
-  szirtperemmel és árnyékkal mutatja (M5).
-- A **szirt** járhatatlan terepfajta a szintek határán. A **rámpa** járható, és két szintet köt össze. Az
-  útkereső ezért a szinteket külön semmivel nem kezeli: a szirt egyszerű akadály.
-- A játékszabályok helye már most a pályaadatban van, a számok az M6-ban jönnek:
-  - alacsonyról magasra csak akkor lehet ellátni, ha ott van saját egység, vagy repülő egység lát oda;
-  - felfelé lőve találati esély-csökkentés jár.
+- **A szint csempetulajdonság:**
 
-  A szabályokat adatkulcs állítja (`elevation_rules`), így modolhatók.
+  | Szint | Jelentés |
+  |---|---|
+  | −1 | mélység: szurdok, mélyút, völgy |
+  | 0 | alapszint |
+  | 1 | magaslat |
+  | 2 | nagyon magas |
+
+  Valódi 3D nincs: a megjelenítő festett szirtperemmel és árnyékkal mutatja (M5).
+- A **szirt** járhatatlan a szintek határán. A pálya `auto_cliffs` beállítása a szinthatáron magától jelöli. A
+  **rámpa** járható terepfajta, két szintet köt össze. Az útkereső számára a szirt egyszerű akadály.
+- **Pályaszerkesztő (M11, D33):**
+  - „magaslat”, „mélység” és „alapszint” ecset, szintenként;
+  - a szirtperem automatikusan keletkezik, a rámpa külön ecset;
+  - az ellenőrző szól, ha egy magaslat vagy mélység rámpa nélkül elérhetetlen (ez lehet szándékos, pl. csak
+    repülőknek).
+- **Szabályok (D33, javaslat):** Δ = a támadó (vagy megfigyelő) szintje − a célpont szintje. Minden szám adatban van
+  (`game.json` → `elevation_rules`), kutatás és képesség módosíthatja (D24), a balansz az M6–M7-ben véglegesíti.
+
+  | Szabály | Javasolt érték |
+  |---|---|
+  | **Látótáv** | +1 csempe szintenként 0 fölött (magaslat +1, nagyon magas +2); mélységben −1 |
+  | **Ráláthatás** | alacsonyabb szintről a magasabb szint ködben marad, kivéve: saját vagy szövetséges egység áll ott (2 csempén belül), repülő lát oda, vagy a magasabbról lövő egység a lövés után 2 mp-re láthatóvá válik (SC1) |
+  | **Lőtáv** | távolsági egység Δ > 0 esetén +0,5 csempe szintenként (legfeljebb +1); torony és más épület +1 szintenként |
+  | **Találat felfelé** | távolsági lövés Δ < 0 esetén 25% esély a hibára szintenként, legfeljebb 40%; közelharcra, varázslatra és képességre nem vonatkozik |
+  | **Sebzés** | lefelé (Δ > 0) +10% szintenként, felfelé (Δ < 0) −10% szintenként (AoE-szerűen); közelharcra is érvényes |
+  | **Mozgás** | rámpán felfelé ×0,85, lefelé ×1,1 |
+  | **Mélység mint fedezék** | a mélységben álló egység a nála magasabb szintről csak 6 csempén belülről látható (rejtőzködő mélyút) |
+  | **Repülők** | nincs szintjük: mindenhova látnak, nem kapnak és nem adnak szintbónuszt, a földről rájuk leadott lövés nem számít felfelé lövésnek |
+  | **Kivételek** | az `ignore_elevation` címkéjű egység (pl. ostromgép, tüzérség) a hiba- és sebzésszabályt figyelmen kívül hagyja |
+
+  A szabályok így két taktikai helyzetet adnak, mint a WC3-ban és a StarCraftban: a magaslat a védőnek, a mélység a
+  lesben állónak kedvez. A sebzés mellett a hibalehetőség a véletlenszám-folyamot használja (ADR-004), tehát
+  determinisztikus.
 
 ### 4. Mozgásosztályok és méret
 
@@ -155,7 +181,7 @@ Tesztpályák (`engine/tests/data/maps/`), ablak nélkül futnak, mind az öt re
 | **NAV-BRIDGE** | két sereg (2 × 50) egy hídon szemből; mindenki átér a mért időkereten belül, beragadás nélkül |
 | **NAV-MAMMOTH** | nagy egység szűk kapun: átfér, ha elég széles, és azonnal kerül, ha nem |
 | **NAV-CHOKE** | útlezárás építéssel: a lezárás után azonnal más út vagy a legközelebbi pont, nincs keringés |
-| **NAV-HIGH** | rámpa és szirt: a szirten nem lehet átmenni, a rámpán igen |
+| **NAV-HIGH** | rámpa és szirt (magaslat és mélység): a szirten nem lehet átmenni, a rámpán igen |
 | **NAV-UNREACH** | elérhetetlen cél (szigeten): a válasz egy tickben, a legközelebbi ponttal |
 | **NAV-FORM** | formációs vonulás és újraösszeállás szűkület után |
 
@@ -185,6 +211,6 @@ Tesztpályák (`engine/tests/data/maps/`), ablak nélkül futnak, mind az öt re
 
 ## Nyitott kérdések (nem akadályozzák a kezdést)
 
-- A magaslat számai (látás, találati esély) – M6, balansz.
+- A magaslat- és mélységszabályok számai (3. pont) – M6–M7, balansz.
 - A terepfajták végleges listája – a grafikai készlettel együtt (M5); az M4 az induló készlettel dolgozik.
 - A HPA*-cikk számai (klaszterméret) – a mérés dönt (16 × 16 a kiinduló).

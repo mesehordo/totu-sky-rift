@@ -1,0 +1,62 @@
+{
+ "_leiras": "Mozgásosztályok (ADR-006): melyik járhatósági osztályon mehet az egység, és milyen szorzóval (a terep saját szorzójával összeszorozva). A hiányzó osztály járhatatlan. A repülő nem keres utat, csak kikerül. A `water` a modok hajóinak készül (az alapjátékban nincs hajó).",
+ "template_movement": {
+  "Identity": {
+   "kind": "movement"
+  },
+  "MovementClass": {
+   "flying": false,
+   "passes": {}
+  }
+ },
+ "land": {
+  "inherits": "template_movement",
+  "Identity": {
+   "name": "Szárazföldi"
+  },
+  "MovementClass": {
+   "passes": {
+    "land": 1,
+    "shallow": 0.7,
+    "ramp": 1,
+    "bridge": 1
+   }
+  }
+ },
+ "amphibious": {
+  "inherits": "template_movement",
+  "Identity": {
+   "name": "Kétéltű"
+  },
+  "MovementClass": {
+   "passes": {
+    "land": 1,
+    "shallow": 1,
+    "deep": 0.8,
+    "ramp": 1,
+    "bridge": 1
+   }
+  }
+ },
+ "water": {
+  "inherits": "template_movement",
+  "Identity": {
+   "name": "Vízi"
+  },
+  "MovementClass": {
+   "passes": {
+    "shallow": 0.8,
+    "deep": 1
+   }
+  }
+ },
+ "flying": {
+  "inherits": "template_movement",
+  "Identity": {
+   "name": "Repülő"
+  },
+  "MovementClass": {
+   "flying": true
+  }
+ }
+}

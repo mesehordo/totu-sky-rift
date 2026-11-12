@@ -273,4 +273,21 @@ A számok balanszmunka (M7). Részletek: [spec/ELFOGLALAS_ES_ELOLEPTETES.md](spe
    (szint csempetulajdonságként, szirt járhatatlan, rámpa átjáró; a megjelenítő festett peremmel mutatja).
 2. **Csoportmozgás:** alapból WC3-szerű (a csoport együtt, a leglassabb tag sebességével, közelharcosok elöl,
    kikapcsolható), emellett választható AoE-alakzatok (sor, doboz, szétszórt, szárnyas).
-Megvalósítás: [ADR-006](dontesek/ADR-006-terkep-es-mozgas.md) (javaslat), M4.
+Megvalósítás: [ADR-006](dontesek/ADR-006-terkep-es-mozgas.md), M4.
+
+### D33 – Magaslat és mélység szabályai; ADR-006 elfogadva · ELDÖNTVE (2026-11-12)
+
+1. A **pályaszerkesztőben** a terep magaslattá (1–2. szint) vagy mélységgé (−1. szint) nyilvánítható; a szirtperem
+   automatikus, a rámpa külön ecset.
+2. A szintekre **extra szabályok** érvényesek (a tulajdonos kérése, az én javaslatom szerint): magasabbról
+   messzebb látni és messzebbre lőni, felülről nagyobb, alulról kisebb a sebzés, felfelé lőve hibalehetőség,
+   alulról a magaslat ködben marad, a mélység fedezéket ad, a rámpa lassít felfelé. A számok adatban
+   (`elevation_rules`), a balansz az M6–M7-ben véglegesíti. Részletek: ADR-006, 3. pont.
+3. Az **ADR-006 elfogadva**; indul az M4 1. lépése.
+
+### D34 – Pályaméretek · ELDÖNTVE (2026-11-12)
+
+Többféle pályaméret (a tulajdonos kérése): **kicsi** 96 × 96 csempe (ajánlott 1 v 1), **közepes** 160 × 160 (2–4
+játékos), **nagy** 256 × 256 (4–8 játékos); a szerkesztőben egyedi méret legfeljebb 512 × 512. A méretek és az
+ajánlott játékosszámok adatban (`game.json` → `map_sizes`), a modok bővíthetik. A régi játék 88 × 88-as pályája a
+kicsinél is kisebb volt.

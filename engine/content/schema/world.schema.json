@@ -1,0 +1,78 @@
+{
+ "_leiras": "A terepfajták és a mozgásosztályok sémája (ADR-006).",
+ "type": "object",
+ "required": [
+  "Identity"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "Identity": {
+   "type": "object",
+   "required": [
+    "kind"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "kind": {
+     "enum": [
+      "terrain",
+      "movement"
+     ]
+    },
+    "name": {
+     "type": "string"
+    },
+    "desc": {
+     "type": "string"
+    }
+   }
+  },
+  "Terrain": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "char"
+   ],
+   "properties": {
+    "pass": {
+     "type": "string"
+    },
+    "speed": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 10
+    },
+    "buildable": {
+     "type": "boolean"
+    },
+    "hides": {
+     "type": "boolean"
+    },
+    "char": {
+     "type": "string"
+    },
+    "art": {
+     "type": "object"
+    }
+   }
+  },
+  "MovementClass": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "flying": {
+     "type": "boolean"
+    },
+    "passes": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+     }
+    }
+   }
+  }
+ }
+}

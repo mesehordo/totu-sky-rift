@@ -51,7 +51,10 @@ add_library(totu_core
   src/content/loader.cpp
   src/sim/sim.cpp
   src/sim/replay.cpp
-  src/script/host.cpp)
+  src/script/host.cpp
+  src/map/terrain.cpp
+  src/map/map.cpp
+  src/map/navgrid.cpp)
 target_include_directories(totu_core PUBLIC src)
 target_link_libraries(totu_core PRIVATE totu_options PUBLIC totu_lua)
 target_compile_definitions(totu_core PUBLIC TOTU_VERSION="${PROJECT_VERSION}")
@@ -59,7 +62,7 @@ target_compile_definitions(totu_core PUBLIC TOTU_VERSION="${PROJECT_VERSION}")
 # --- tesztek -----------------------------------------------------------------------------------------------------
 enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
-  tests/test_script.cpp)
+  tests/test_script.cpp tests/test_map.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
 target_link_libraries(totu_tests PRIVATE totu_core totu_options)
 add_test(NAME core COMMAND totu_tests)

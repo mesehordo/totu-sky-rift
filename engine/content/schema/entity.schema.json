@@ -47,7 +47,8 @@
    "properties": {
     "speed": {"type": "number", "minimum": 0},
     "radius": {"type": "number", "minimum": 0},
-    "flying": {"type": "boolean"}
+    "flying": {"type": "boolean"},
+    "class": {"type": "string"}
    }
   },
   "Vision": {
