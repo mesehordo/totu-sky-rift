@@ -212,3 +212,14 @@ A meglévő `abilities.json` eszközzel konvertálható az új formára; a mai v
 3. **Új lehetőségek (B-5):** ellenséges aura, eloszlatás és varázslatimmunitás, varázslási idő és csatornázás,
    automatikus használat kapcsolója – melyik kerüljön a játékba, és melyik legyen csak modolási lehetőség.
 4. **Gyógyítás célpontja:** csak élőlény, vagy a gépeket a javítás gyógyítja (WC3-szerűen) – egységesen.
+
+---
+
+## E. Döntések (D22, 2026-11-12) és következményeik
+
+| # | Döntés | Következmény a mai tartalomra |
+|---|---|---|
+| 1 | Faji varázserő-forrás; a hősök és a `caster` varázslók energiát használnak | **nincs változás**: az Ursanok, Croftianok, Wullof és Micéliák 35 energiás képessége mind hősé vagy varázslóé. Ellenőrzés: `tools/tartalom_leltar.py` → leltár 17. pont (ma: nincs sértés). A Huk’ucha és az Ooni `spell_resource` kulcsa hiányzik – a gyakorlatban energia; a konverzió `energy`-re állítja. |
+| 2 | Egységes alapértékek; varázssebzés mindenhol a szorzóval | A konverter minden képességbe beírja a mai tényleges értéket (pl. az idézés 1 s-os alap-újratöltését kifejezetten), így csak az új tartalomra hat az új alapérték. Változás: a területi mezők épületsebzése és a Békaugrás landolási sebzése Égkő-fényben és lámpásfényben nő. |
+| 3 | Ellenséges aura, eloszlatás és immunitás, varázslási idő és csatornázás, automatikus használat | Motorképesség (M7); a konkrét képességek kiosztása balanszmunka. Javasolt kezdés: a végső képességek (`ultimate`, 24 db) kapjanak varázslási időt; a gépek és gólemek (21 `mech` egység) közül a nagyok varázslatimmunitást; a gyógyító és a buffoló képességek automatikus használatot. |
+| 4 | Élőt gyógyítás, gépet javítás | A 20 `autoheal` közül csak a `h_livia_horgony` (Horgonyjavítás) gépjavító. **Két képesség, ahol döntés kell:** `h_livia_lelegzet` (Második lélegzet, Vasbirodalom-hős, területi) ma a gépeket is gyógyítja – javaslat: kifejezetten gyógyít **és** javít, különben a Vasbirodalom gyengül; `mho_javitas` (Foltozás, Mhonyo) a neve szerint javítás, de ma csak élőt gyógyít – javaslat: gépjavító legyen. |

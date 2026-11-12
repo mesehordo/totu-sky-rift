@@ -483,3 +483,7 @@ Ezekre az egységekre, épületekre, kutatásokra, képességekre vagy tárgyakr
 | `oon_kapuorzes` | képesség | `game` 1059,2739,3688 |
 | `cro_merges_tuskek` | épület | `ai` 687; `game` 2506,2542 |
 | `imp_alapozas` | épület | `ai` 262,263; `game` 2388 |
+
+## 17. Varázserő-szabály (D22)
+
+A nem hős, nem `caster` címkés egység képessége csak a faj varázserő-forrásából fizethet (vagy csak újratöltés), ha az nem az energia. Sértések: **nincs**.

@@ -277,6 +277,26 @@ for tok in sorted(hard, key=lambda t: (ids[t], t)):
     w(f"| `{tok}` | {ids[tok]} | {fmt_refs(dict(hard[tok]))} |")
 w("")
 
+# --- D22: varázserő-szabály – a nem hős, nem `caster` egység képessége nem fizethet energiával, ha a faj
+# varázserő-forrása nem az energia (a hős és a varázsló energiát használ)
+violations = []
+for fid, f in factions.items():
+    res = f.get("spell_resource")
+    if res in (None, "energy"):
+        continue
+    for uid, u in f.get("units", {}).items():
+        if u.get("hero") or "caster" in u.get("tags", []):
+            continue
+        for a in u.get("abilities", []):
+            ab = abilities.get(a, {})
+            if ab.get("energy") or any(lv.get("energy") for lv in ab.get("levels") or []):
+                violations.append(f"`{fid}`/`{uid}`: `{a}`")
+w("## 17. Varázserő-szabály (D22)")
+w("")
+w("A nem hős, nem `caster` címkés egység képessége csak a faj varázserő-forrásából fizethet (vagy csak újratöltés), "
+  "ha az nem az energia. Sértések: " + (", ".join(violations) if violations else "**nincs**") + ".")
+w("")
+
 out_md = os.path.join(ROOT, "docs", "alap", "TARTALOM_LELTAR.md")
 with open(out_md, "w", encoding="utf-8") as f:
     f.write("\n".join(L))

@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D22 | ELDÖNTVE (2026-11-12): képességmodell – faji varázserő-forrás (a hősök és a varázslók energiát használnak); egységes alapértékek, a varázssebzés mindenhol a szorzóval nő; bekerül az ellenséges aura, az eloszlatás és immunitás, a varázslási idő és csatornázás, az automatikus használat; élőt a gyógyítás, gépet a javítás gyógyít |
 | D21 | ELDÖNTVE (2026-11-12): a specifikáció furcsaságai – a közeli hős eleste azonnal megtöri a morált; a fajnévhez kötött szabályok adatkulcsok lesznek; a mélységi rothadás a főépülethez közelebbi fáknál kezdődik; a felesleges `detect_units` és `balance_v6` törölve |
 | D17 | ELDÖNTVE (2026-11-12): a cél a 0 A.D. / AoE / WC3 / SC1 minősége; **nem nulláról újraírás**, hanem bitre azonos port + Q1–Q6 minőségi szakasz mérhető kapukkal; a kliens `RenderSnapshot`-ot kap és interpolál (P8); a D4 az F5 előtt újranézendő |
 | D16 | ELDÖNTVE (2026-11-12): **szabálybefagyasztás a C#-port idejére** – a Python-játékban csak hibajavítás és adatban (JSON) felvehető tartalom; új mechanika (pl. D13 patrol/stance) a port után, a C#-magban |
@@ -167,3 +168,21 @@ Terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md), [ADR-002](dontesek/ADR-002-uj-motor.
 3. **Mélységi rothadás:** a keret a saját főépülethez legközelebbi fáknál fogy el először.
 4. **Halott adat:** a `detect_units` felesleges volt (a Szemhordozó „A Kórus szeme” képességgel már felfed,
    9 csempén), a `balance_v6` régi jelölő – mindkettő törölve.
+
+### D22 – Képességmodell · ELDÖNTVE (2026-11-12)
+
+Alap: [spec/KEPESSEGEK.md](spec/KEPESSEGEK.md) B–D. Az új motorban (M7) valósul meg; a Python-referencia a D16
+miatt nem kap új mechanikát.
+
+1. **Varázserő-identitás:** a nem hős, nem `caster` címkés egység képessége a faj forrásából fizet (Ursanok és
+   Wullof: csak újratöltés – a Wullof énekei ingyenesek; Croftianok: életerő; Micéliák: spóra); a hősök és a
+   varázslók energiát használnak. A mai adat ennek már megfelel (a 35 energiás képesség mind hősé vagy varázslóé);
+   a szabályt a `tools/tartalom_leltar.py` 17. pontja ellenőrzi, az új motor sémaellenőrzése tiltja.
+2. **Egységes alapértékek:** közös alap-újratöltés, -hatótáv, -sugár, -időtartam minden képességre; a mai
+   képességek a konvertáláskor a mai tényleges értéküket kapják meg kifejezetten (a játékmenet nem változik).
+   A varázssebzés mindenhol a varázserő-szorzóval nő (a területi épületsebzés és a landolási sebzés is).
+3. **Új elemek a játékban:** ellenséges aura; eloszlatás és varázslatimmunitás; varázslási idő és csatornázás
+   (megszakítható nagy varázslatok); automatikus használat kapcsolója adatban leírt feltétellel (a gépi
+   ellenfél is ezt használja). A konkrét képességek és számok balanszdöntések – képességenként, később.
+4. **Gyógyítás:** minden gyógyítás csak élőlényre hat; a gépeket a javítás (munkás, Fabrikátor) és a kifejezett
+   gépjavító képességek gyógyítják. Érintett mai képességek (javaslat a KEPESSEGEK.md E pontjában).
