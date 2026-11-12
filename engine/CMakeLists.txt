@@ -28,6 +28,15 @@ else()
   endif()
 endif()
 
+# --- Lua 5.4.8 (MIT, változatlan forrás) egy C++ fordítási egységként; a determinizmus-makrók a lua_build.cpp-ben ---
+add_library(totu_lua STATIC src/script/lua_build.cpp)
+target_include_directories(totu_lua PUBLIC third_party/lua)
+if(MSVC)
+  target_compile_options(totu_lua PRIVATE /W0 /utf-8 /fp:precise /EHsc)
+else()
+  target_compile_options(totu_lua PRIVATE -w -ffp-contract=off)
+endif()
+
 # --- mag: grafika nélküli, minden rendszeren tesztelt könyvtár --------------------------------------------------
 add_library(totu_core
   src/core/platform_info.cpp
@@ -41,14 +50,16 @@ add_library(totu_core
   src/content/schema.cpp
   src/content/loader.cpp
   src/sim/sim.cpp
-  src/sim/replay.cpp)
+  src/sim/replay.cpp
+  src/script/host.cpp)
 target_include_directories(totu_core PUBLIC src)
-target_link_libraries(totu_core PRIVATE totu_options)
+target_link_libraries(totu_core PRIVATE totu_options PUBLIC totu_lua)
 target_compile_definitions(totu_core PUBLIC TOTU_VERSION="${PROJECT_VERSION}")
 
 # --- tesztek -----------------------------------------------------------------------------------------------------
 enable_testing()
-add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp)
+add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
+  tests/test_script.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
 target_link_libraries(totu_tests PRIVATE totu_core totu_options)
 add_test(NAME core COMMAND totu_tests)
@@ -57,6 +68,8 @@ add_test(NAME core COMMAND totu_tests)
 add_executable(totu_sim src/tools/totu_sim.cpp)
 target_link_libraries(totu_sim PRIVATE totu_core totu_options)
 add_test(NAME golden_replay COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m2.trep)
+# M3 kapu: a szkriptes golden visszajátszás (Lua-küldetés + csata) minden rendszeren egyezik
+add_test(NAME golden_replay_m3 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m3.trep)
 
 # --- kliens (SDL3 + OpenGL 3.3 core) ------------------------------------------------------------------------------
 if(TOTU_CLIENT)

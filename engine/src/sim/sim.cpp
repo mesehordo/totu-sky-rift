@@ -25,23 +25,51 @@ void Sim::queue(Command c) {
   pending_.insert(it, std::move(c));
 }
 
+EntityId Sim::spawn(const Command& c) {
+  const EntityId e = world_.create();
+  world_.add(e, Position{c.x, c.y});
+  world_.add(e, Movement{c.speed, c.x, c.y, false});
+  world_.add(e, Health{c.hp, c.hp, c.owner});
+  world_.add(e, Attack{c.damage, c.spread, c.range, c.cooldown, 0});
+  return e;
+}
+
+bool Sim::order_move(EntityId e, Fixed x, Fixed y) {
+  if (!world_.alive(e)) return false;   // a parancs késhet: a végrehajtáskor is ellenőrzünk
+  Movement* m = world_.get<Movement>(e);
+  if (!m) return false;
+  m->tx = x; m->ty = y; m->moving = true;
+  return true;
+}
+
+bool Sim::kill(EntityId e) {
+  if (!world_.alive(e)) return false;
+  Health* h = world_.get<Health>(e);
+  if (!h || h->hp <= 0) return false;
+  h->hp = 0;
+  world_.destroy(e);
+  died_.emplace_back(e, h->owner);
+  return true;
+}
+
 void Sim::apply(const Command& c) {
   switch (c.kind) {
-    case Command::Kind::Spawn: {
-      const EntityId e = world_.create();
-      world_.add(e, Position{c.x, c.y});
-      world_.add(e, Movement{c.speed, c.x, c.y, false});
-      world_.add(e, Health{c.hp, c.hp, c.owner});
-      world_.add(e, Attack{c.damage, c.spread, c.range, c.cooldown, 0});
+    case Command::Kind::Spawn:
+      spawn(c);
       break;
-    }
     case Command::Kind::Move:
-      for (const EntityId e : c.units) {
-        if (!world_.alive(e)) continue;   // a parancs késhet: a végrehajtáskor is ellenőrzünk
-        if (Movement* m = world_.get<Movement>(e)) { m->tx = c.x; m->ty = c.y; m->moving = true; }
-      }
+      for (const EntityId e : c.units) order_move(e, c.x, c.y);
       break;
   }
+}
+
+void Sim::report_deaths() {
+  // index szerint, mert egy eseménykezelő újabb halált okozhat (kill), ami a lista végére kerül
+  for (size_t i = 0; i < died_.size(); ++i) {
+    const auto [id, owner] = died_[i];
+    for (SimHooks* h : hooks_) h->on_death(*this, id, owner);
+  }
+  died_.clear();
 }
 
 void Sim::movement_system() {
@@ -85,7 +113,10 @@ void Sim::combat_system() {
     const auto spread = static_cast<uint32_t>(std::max(0, a.spread));
     th->hp -= a.damage + static_cast<int32_t>(combat_rng_.below(spread));
     a.ready_tick = tick_ + a.cooldown;
-    if (th->hp <= 0) world_.destroy(best);
+    if (th->hp <= 0) {
+      world_.destroy(best);
+      died_.emplace_back(best, th->owner);
+    }
   });
 }
 
@@ -95,10 +126,13 @@ void Sim::step() {
   while (n < pending_.size() && pending_[n].tick <= tick_) ++n;
   for (size_t i = 0; i < n; ++i) apply(pending_[i]);
   pending_.erase(pending_.begin(), pending_.begin() + static_cast<std::ptrdiff_t>(n));
-  // 2. rendszerek rögzített sorrendben
+  // 2. a csatlakozók (szkriptek) a csatlakoztatás sorrendjében
+  for (SimHooks* h : hooks_) h->on_tick(*this);
+  // 3. rendszerek rögzített sorrendben, majd a halál-események
   movement_system();
   combat_system();
-  // 3. a tick végén a törlések
+  report_deaths();
+  // 4. a tick végén a törlések
   world_.flush();
   ++tick_;
 }
@@ -109,7 +143,14 @@ uint64_t Sim::hash() const {
   h.add_u64(world_.hash());
   h.add_u64(combat_rng_.state());
   h.add_u64(combat_rng_.increment());
+  for (const SimHooks* k : hooks_) h.add_u64(k->hash());   // csatlakozó nélkül a hash az M2-es marad
   return h.value();
+}
+
+std::vector<std::pair<std::string, uint64_t>> Sim::component_hashes() const {
+  auto out = world_.component_hashes();
+  for (size_t i = 0; i < hooks_.size(); ++i) out.emplace_back("Szkript" + std::to_string(i + 1), hooks_[i]->hash());
+  return out;
 }
 
 void save_command(core::ByteWriter& w, const Command& c) {
@@ -142,19 +183,21 @@ std::optional<Command> load_command(core::ByteReader& r) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(1);   // séma
+  w.u32(2);   // séma (2: a csatlakozók állapotával)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
   world_.save(w);
   w.u32(static_cast<uint32_t>(pending_.size()));
   for (const auto& c : pending_) save_command(w, c);
+  w.u32(static_cast<uint32_t>(hooks_.size()));
+  for (const SimHooks* k : hooks_) k->save(w);
   return w.data();
 }
 
 bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
-  if (r.str() != "totu-sim" || r.u32() != 1) return false;
+  if (r.str() != "totu-sim" || r.u32() != 2) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -165,6 +208,11 @@ bool Sim::load(const std::vector<uint8_t>& data) {
     auto c = load_command(r);
     if (!c) return false;
     pending_.push_back(std::move(*c));
+  }
+  died_.clear();
+  if (r.u32() != hooks_.size()) return false;   // ugyanazok a csatlakozók kellenek, mint mentéskor
+  for (SimHooks* k : hooks_) {
+    if (!k->load(r)) return false;
   }
   return r.ok() && r.at_end();
 }

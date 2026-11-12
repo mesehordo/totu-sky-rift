@@ -59,6 +59,7 @@ történet, népek leírása) csak engedéllyel.
 
 ## 3. Külső összetevők
 
-A motor a saját licencük szerint használja: az SDL3 (zlib) könyvtárat, később a Lua (MIT) és további, a GPL 3-mal összeférő
-licencű könyvtárakat; ezek listája és licencszövege a motor kiadásával együtt jelenik meg. Mindegyik összefér a GPL 3-mal. A *Warcraft*, *StarCraft*, *Armies of Exigo* és *Command & Conquer* a tulajdonosaik védjegyei;
+A motor a saját licencük szerint használja: az SDL3 (zlib) könyvtárat, a Lua 5.4.8-at (MIT; a forrás és a licencszöveg:
+`engine/third_party/lua/`), később további, a GPL 3-mal összeférő licencű könyvtárakat; ezek listája és licencszövege
+a motor kiadásával együtt jelenik meg. Mindegyik összefér a GPL 3-mal. A *Warcraft*, *StarCraft*, *Armies of Exigo* és *Command & Conquer* a tulajdonosaik védjegyei;
 csak ihletforrásként szerepelnek, a játék nem tartalmaz belőlük semmit.

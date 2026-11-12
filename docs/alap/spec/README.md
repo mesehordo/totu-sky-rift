@@ -15,6 +15,7 @@ Cél: az új motor ([UJ_MOTOR_TERV.md](../UJ_MOTOR_TERV.md)) minden fajszabályt
 | [HOSOK_TARGYAK_TABOROK.md](HOSOK_TARGYAK_TABOROK.md) | hősök (toborzás, tapasztalat, szint, képességtanulás, újraélesztés), tárgyak, semleges táborok, a 13 elem; átvizsgálás és javaslat | **kész**; döntések: D25 |
 | [ELFOGLALAS_ES_ELOLEPTETES.md](ELFOGLALAS_ES_ELOLEPTETES.md) | új mechanikák: épületelfoglalás, megszállás, előléptetés (D30) | **terv** (M7) |
 | [KISFAJOK.md](KISFAJOK.md) | a szövetség, a beilleszkedés a gazda népbe, a 13 kisnép, kisnép-táborok és a Vadon; átvizsgálás és javaslat | **kész**; döntések: D26 |
+| [SZKRIPT_API.md](SZKRIPT_API.md) | a Lua-réteg (M3): homokozó, determinizmus, korlátok, Game felület, események, mentés, szkriptes visszajátszás | **kész** (első változat, M3) |
 
 ## Egy szabály leírása
 

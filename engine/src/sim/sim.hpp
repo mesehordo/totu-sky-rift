@@ -79,15 +79,40 @@ struct Command {
   std::vector<EntityId> units;   // Move
 };
 
+class Sim;
+
+// Eseménycsatlakozó (M3): a szkriptréteg (script/host) ezen át kapcsolódik a szimulációhoz. A csatlakozó állapota
+// a szimuláció állapotának része: benne van a hashben és a mentésben (a csatlakoztatás sorrendjében).
+class SimHooks {
+ public:
+  virtual ~SimHooks() = default;
+  virtual void on_tick(Sim& sim) = 0;                              // a tick parancsai után, a rendszerek előtt
+  virtual void on_death(Sim& sim, EntityId id, uint8_t owner) = 0;   // a rendszerek után, a törlés előtt
+  virtual uint64_t hash() const = 0;
+  virtual void save(core::ByteWriter& w) const = 0;
+  virtual bool load(core::ByteReader& r) = 0;
+};
+
 class Sim {
  public:
   explicit Sim(uint64_t seed);
+
+  // A csatlakozót a hívó birtokolja, és túl kell élnie a szimulációt. Betöltés előtt ugyanazokat a csatlakozókat
+  // kell ugyanabban a sorrendben felvenni, mint mentéskor.
+  void add_hooks(SimHooks* h) { hooks_.push_back(h); }
+
+  // Közvetlen műveletek a csatlakozóknak (a szkripteknek): azonnal hatnak, ezért csak a tick rögzített pontjain
+  // (on_tick / on_death) hívhatók – így a sorrend minden gépen ugyanaz.
+  EntityId spawn(const Command& c);                       // Spawn parancs azonnal; az új egység azonosítója
+  bool order_move(EntityId e, Fixed x, Fixed y);
+  bool kill(EntityId e);                                  // életerő 0, törlés a tick végén, halál-esemény
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
   void step();                           // egy tick (1/30 s)
   int64_t tick() const { return tick_; }
   uint64_t hash() const;                 // a teljes állapot (világ + véletlenszám-folyamok + tick)
-  std::vector<std::pair<std::string, uint64_t>> component_hashes() const { return world_.component_hashes(); }
+  // komponensenként, majd csatlakozónként („Szkript1”, …) – az eltéréskereső ebből mondja meg, mi tért el
+  std::vector<std::pair<std::string, uint64_t>> component_hashes() const;
   World& world() { return world_; }
 
   std::vector<uint8_t> save() const;     // teljes mentés (a még végre nem hajtott parancsokkal)
@@ -95,6 +120,7 @@ class Sim {
 
  private:
   void apply(const Command& c);
+  void report_deaths();
   void movement_system();
   void combat_system();
   void register_components();
@@ -103,6 +129,8 @@ class Sim {
   core::Pcg32 combat_rng_;
   int64_t tick_ = 0;
   std::vector<Command> pending_;         // a jövőbeli parancsok (tick szerint, beérkezési sorrendben)
+  std::vector<std::pair<EntityId, uint8_t>> died_;   // a tick halottai (a halál sorrendjében)
+  std::vector<SimHooks*> hooks_;
 };
 
 void save_command(core::ByteWriter& w, const Command& c);

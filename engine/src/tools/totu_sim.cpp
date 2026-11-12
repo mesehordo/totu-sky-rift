@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Ablak nélküli szimulációs futtató (M2).
 //   totu_sim scenario <ki.trep> [--seed S] [--units N] [--ticks T]   próbacsata rögzítése visszajátszásként
+//   totu_sim scripted <ki.trep> <szkript.lua> [--seed S] [--ticks T]   Lua-küldetés rögzítése (M3)
 //   totu_sim verify <be.trep>                                         visszajátszás ellenőrzése (kilépési kód 0 = egyezik)
 // A forgatókönyv két sereg csatája: mindkét fél N egysége a pálya két szélén jelenik meg, és rendszeres
 // mozgásparancsokat kap; a parancsokat a visszajátszás rögzíti, így az ellenőrzés a forgatókönyv nélkül is fut.
@@ -102,10 +103,33 @@ int main(int argc, char** argv) {
                 static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
     return 0;
   }
+  if (argc >= 4 && std::strcmp(argv[1], "scripted") == 0) {
+    const auto seed = static_cast<uint64_t>(arg_ll(argc, argv, "--seed", 20261112));
+    const int64_t ticks = arg_ll(argc, argv, "--ticks", 3600);
+    const auto src = read_file(argv[3]);
+    if (src.empty()) { std::fprintf(stderr, "nem olvasható: %s\n", argv[3]); return 2; }
+    std::string name = argv[3];
+    const auto slash = name.find_last_of("/\\");
+    if (slash != std::string::npos) name = name.substr(slash + 1);
+    const auto t0 = std::chrono::steady_clock::now();
+    sim::Replay r = sim::record(seed, ticks, {}, 30, {{"kuldetes", name, std::string(src.begin(), src.end())}});
+    const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+    const auto v = sim::verify(r);   // a napló kiírásához (és mert a felvételnek önmagával egyeznie kell)
+    for (const auto& m : v.script_messages) std::printf("%s\n", m.c_str());
+    if (!v.ok) { std::fprintf(stderr, "a felvétel önmagával sem egyezik: %s\n", v.error.c_str()); return 1; }
+    if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
+    std::printf("rögzítve: %s – %lld tick, %zu ellenőrzőpont, végső hash 0x%016llx (%.1f ms)\n", argv[2],
+                static_cast<long long>(r.ticks), r.checkpoints.size(),
+                static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
+    return 0;
+  }
   if (argc >= 3 && std::strcmp(argv[1], "verify") == 0) {
     auto r = sim::decode(read_file(argv[2]));
     if (!r) { std::fprintf(stderr, "hibás vagy hiányzó visszajátszás: %s\n", argv[2]); return 2; }
     const auto v = sim::verify(*r);
+    if (!v.script_messages.empty()) {
+      std::printf("szkriptnapló: %zu sor, az utolsó: %s\n", v.script_messages.size(), v.script_messages.back().c_str());
+    }
     if (v.ok) {
       std::printf("EGYEZIK: %zu ellenőrzőpont, végső hash 0x%016llx\n", v.checked,
                   static_cast<unsigned long long>(r->checkpoints.back().hash));
@@ -116,6 +140,7 @@ int main(int argc, char** argv) {
     std::printf("\n");
     return 1;
   }
-  std::fprintf(stderr, "használat: totu_sim scenario <ki.trep> [--seed S] [--units N] [--ticks T] | verify <be.trep>\n");
+  std::fprintf(stderr, "használat: totu_sim scenario <ki.trep> [--seed S] [--units N] [--ticks T] | "
+                       "scripted <ki.trep> <szkript.lua> [--seed S] [--ticks T] | verify <be.trep>\n");
   return 2;
 }
