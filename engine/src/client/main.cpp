@@ -129,7 +129,15 @@ int main(int argc, char** argv) {
     else if (a == "--check") o.check = true;
     else if (a == "--screenshot") o.screenshot = next();
     else if (a == "--assets") o.assets = next();
-    else if (a == "--size") std::sscanf(next(), "%dx%d", &o.width, &o.height);
+    else if (a == "--size") {   // SZxM
+      char* end = nullptr;
+      const char* v = next();
+      const long w = std::strtol(v, &end, 10);
+      if (end && *end == 'x') {
+        const long h = std::strtol(end + 1, nullptr, 10);
+        if (w > 0 && h > 0 && w <= 16384 && h <= 16384) { o.width = static_cast<int>(w); o.height = static_cast<int>(h); }
+      }
+    }
   }
   print_version();
   if (!SDL_Init(SDL_INIT_VIDEO)) {
