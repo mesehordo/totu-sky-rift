@@ -304,3 +304,9 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Döntés (tulajdonos):** két épületre ható képesség – elfoglalás (tulajdonosváltás, az épület saját listája képezhető, a képességei nem) és megszállás (a tulajdonos ott nem képezhet és nem kutathat, a távolharcos megszálló kilő; férőhely méret szerint; kiűzés 50% alatt vagy visszafoglalással) –, valamint előléptetés (Veterán, Elit). Kiosztás: népenként 2–3 egység (az én javaslatom, a népek jelleméhez), Ghoblin és Daresh kisnépnél minden egység. Terv: `docs/alap/spec/ELFOGLALAS_ES_ELOLEPTETES.md`; a számok az M7 balanszmunkája.
 
 **D30 pontosítás (tulajdonos):** főnépenként 3 egység kap épületképességet, népenként variált kombinációban (2 E + 1 M, 1 E + 2 M, mindkettőre képes egységekkel) – a kiosztás a specifikációban átírva.
+
+## 2026-11-12 – A küldetések terve az új motorra (D31); a novella-küldetések pályái lekerültek
+
+**Felismerés:** a repó `novellak/` mappájában a novella-küldetések pályái voltak (61 fájl), nem a novellák szövege (az a `docs/tortenet/story/` alatt és a `stories/` könyvtárban van) – a D28 szerint lekerültek a GitHubról (helyben megvannak); a hivatkozások javítva.
+**Kimenet:** `docs/alap/KULDETESEK_TERV.md` – elvek (a történet vezet, valódi helyszínek, változatos küldetéstípusok, tétes döntések, három nehézség, modolható eszközök), a küldetésrendszer elemei (triggerek, események, célok, régiók, átvezetők, párbeszéd, erősítés, küldetés-AI, pályánkénti objektumadat, hadjáratállapot, mentés, eligazítás), a hadjárat váza a világépítés helyeivel (11 rész, kb. 41 küldetés), munkamenet (fejezetenkénti tervlapok tulajdonosi jóváhagyással).
+**Döntések (D31):** Mór szövetséges hősként más fejezetekben, a gombanép-szál a VII. fejezetbe olvad; az Ooni- és a Huk’ucha-hadjárat marad.
