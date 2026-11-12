@@ -58,4 +58,4 @@ Részletek: [engine/README.md](engine/README.md). A játéktartalom az új sablo
 | [docs/alap/dontesek/](docs/alap/dontesek/) | műszaki döntések (ADR) |
 | [docs/alap/spec/](docs/alap/spec/) | a szabályok viselkedési specifikációja |
 | [docs/fejlesztes/](docs/fejlesztes/) | állapot, munkanapló, mérések |
-| [docs/tortenet/](docs/tortenet/), [novellak/](novellak/) | a világ, a történet és a novellák |
+| [docs/tortenet/](docs/tortenet/), [stories/](stories/) | a világ, a történet és a novellák (a játékbeli könyvtár is) |

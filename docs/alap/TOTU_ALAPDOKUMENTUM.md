@@ -8,7 +8,7 @@ Kelt: 2026-11-11 · kódállapot: helyi Git, `d986749`.
 | Elsőbbség | Forrás | Mire irányadó |
 |---|---|---|
 | 1 | A tulajdonos döntései (`DONTESEK.md`, ELDÖNTVE sorok) | termék, irány, kánon, licenc |
-| 2 | Kánon: `docs/tortenet/FOFAJOK.md`, `SZOVETSEGES_NEPEK.md`, `docs/tortenet/story/`, `novellak/` | világ, fajok, egységek, történet |
+| 2 | Kánon: `docs/tortenet/FOFAJOK.md`, `SZOVETSEGES_NEPEK.md`, `docs/tortenet/story/` (a novellákkal) | világ, fajok, egységek, történet |
 | 3 | Ez a dokumentum | követelmények, sorrend, tesztek |
 | 4 | A kód és a mérések (`docs/fejlesztes/meresek/`) | mi működik ténylegesen |
 | 5 | A tanulmányok | háttér, ötletek, módszertan |

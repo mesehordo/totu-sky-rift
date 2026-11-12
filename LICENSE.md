@@ -11,7 +11,7 @@ Az *TOTU: Sky Rift – A kölcsönkapott öröklét* világa szerzői jogi véde
 * a fajok és egységek leíró szövegei.
 
 Érintett fájlok különösen: `docs/EGSZAKADAS_vilag_es_tortenet_v01.md`, `docs/STORY_CAMPAIGN.md`,
-`docs/FACTIONS_LORE.md`, a `docs/tortenet/`, a `novellak/` és a `stories/` mappa, a küldetések szövegei, valamint a
+`docs/FACTIONS_LORE.md`, a `docs/tortenet/` (benne a novellák) és a `stories/` mappa, a küldetések szövegei, valamint a
 játéktartalom (`engine/content/`) nevei, leírásai és fordításai (`locale/*.po`).
 
 Ezek a jogosult előzetes, írásos engedélye nélkül nem másolhatók, nem dolgozhatók át, és nem használhatók fel
