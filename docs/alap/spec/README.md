@@ -12,7 +12,7 @@ Cél: az új motor ([UJ_MOTOR_TERV.md](../UJ_MOTOR_TERV.md)) minden fajszabályt
 | [FAJMECHANIKAK.md](FAJMECHANIKAK.md) | a 6 fajmechanika és a faji rendszerek (főfajonként), valamint a közös faji rendszerek (felemelkedés, Égkő-fény, Áhítat, bányák, építési stílusok, létszám, Hadtáp, szövetség) | **kész** (első változat) |
 | [KEPESSEGEK.md](KEPESSEGEK.md) | a 23 képességtípus működése, átvizsgálás (egységesség, értelmesség), javaslatok a 0 A.D.-ből és a WC3-ból, javasolt képességmodell | **kész**; döntések: D22 (E pont) |
 | [KUTATAS_ES_SZABALYOK.md](KUTATAS_ES_SZABALYOK.md) | a kutatás menete, a 10 statnév, a 39 szabálymódosító (25 paraméterhangoló, 14 viselkedés), fejlődési ágak; átvizsgálás és javaslat | **kész**; döntések: D24 |
-| `HOSOK_TARGYAK_TABOROK.md` | hősök (tapasztalat, szint, képességtanulás, újraélesztés), tárgyak, semleges táborok, elemek | tervezett |
+| [HOSOK_TARGYAK_TABOROK.md](HOSOK_TARGYAK_TABOROK.md) | hősök (toborzás, tapasztalat, szint, képességtanulás, újraélesztés), tárgyak, semleges táborok, a 13 elem; átvizsgálás és javaslat | **kész** (első változat; 4 döntési pont) |
 | `KISFAJOK.md` | a 13 szövetséges nép (`ally_pack`) és a Vadon | tervezett |
 
 ## Egy szabály leírása
@@ -51,3 +51,4 @@ hármat a Python-referenciában is átírtam (a viselkedés azonos, golden-prób
 | G 1185 Lélekhorgony | `"lelekhorgony" in abilities` | képesség: `soul_anchor: true` |
 | G 2499 tüskelerakás | `defs["cro_merges_tuskek"]` | faj: `spikes: {building: …}` |
 | G 1610 Áhítat-effekt színe | `faction.id == "elves"` | faj: `faith.color` (csak megjelenítés) |
+| G 1058 Kapuőrzés lassítása | `oon_nian_or` + `oon_kapuorzes` + `utype == "lovas"` | képesség: találatkori hatás (D22) célpontszűréssel |
