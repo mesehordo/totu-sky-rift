@@ -14,6 +14,7 @@
 #include "core/fixed.hpp"
 #include "core/hash.hpp"
 #include "core/rng.hpp"
+#include "sim/formation.hpp"
 #include "sim/world.hpp"
 
 namespace totu::map {
@@ -93,21 +94,25 @@ struct Path {
   uint32_t idx = 0;                               // a következő útpont
   uint8_t pending = 0;                            // útkérés vár a sorban
   uint8_t shoved = 0;                             // félretolt egység (megérkezve megáll, nem keres utat)
+  uint8_t group = 0;                              // alakzat tagja (a saját helyére megy)
   int64_t request_tick = 0;
+  int64_t moved_tick = -1000;                     // az utolsó tick, amikor ténylegesen elmozdult
   int32_t stuck = 0;                              // tick óta nincs haladás
   int32_t repaths = 0;
+  int32_t retries = 0;                            // dugó miatti újrakezdések (utána végleg megáll)
   int32_t wait = 0;                               // tick óta vár egy mozgó egység mögött (sor a szűkületben)
+  Fixed cap;                                      // csoportsebesség (0 = nincs): a leglassabb tag sebessége
   Fixed best;                                     // a következő útponttól mért eddigi legkisebb távolság
   void hash(core::StateHash& h) const {
     h.add_i64(gx.raw()); h.add_i64(gy.raw()); h.add_u64(wps.size());
     for (const auto& [x, y] : wps) { h.add_i64(x.raw()); h.add_i64(y.raw()); }
-    h.add_u64(idx); h.add_u64(pending); h.add_u64(shoved); h.add_i64(request_tick); h.add_i64(stuck);
-    h.add_i64(repaths); h.add_i64(wait); h.add_i64(best.raw());
+    h.add_u64(idx); h.add_u64(pending); h.add_u64(shoved); h.add_u64(group); h.add_i64(request_tick); h.add_i64(moved_tick); h.add_i64(stuck);
+    h.add_i64(repaths); h.add_i64(retries); h.add_i64(wait); h.add_i64(cap.raw()); h.add_i64(best.raw());
   }
   void save(core::ByteWriter& w) const {
     w.i32(gx.raw()); w.i32(gy.raw()); w.u32(static_cast<uint32_t>(wps.size()));
     for (const auto& [x, y] : wps) { w.i32(x.raw()); w.i32(y.raw()); }
-    w.u32(idx); w.u8(pending); w.u8(shoved); w.i64(request_tick); w.i32(stuck); w.i32(repaths); w.i32(wait); w.i32(best.raw());
+    w.u32(idx); w.u8(pending); w.u8(shoved); w.u8(group); w.i64(request_tick); w.i64(moved_tick); w.i32(stuck); w.i32(repaths); w.i32(retries); w.i32(wait); w.i32(cap.raw()); w.i32(best.raw());
   }
   static Path load(core::ByteReader& r) {
     Path p;
@@ -117,8 +122,8 @@ struct Path {
       const Fixed x = Fixed::from_raw(r.i32()), y = Fixed::from_raw(r.i32());
       p.wps.emplace_back(x, y);
     }
-    p.idx = r.u32(); p.pending = r.u8(); p.shoved = r.u8(); p.request_tick = r.i64(); p.stuck = r.i32();
-    p.repaths = r.i32(); p.wait = r.i32(); p.best = Fixed::from_raw(r.i32());
+    p.idx = r.u32(); p.pending = r.u8(); p.shoved = r.u8(); p.group = r.u8(); p.request_tick = r.i64(); p.moved_tick = r.i64(); p.stuck = r.i32();
+    p.repaths = r.i32(); p.retries = r.i32(); p.wait = r.i32(); p.cap = Fixed::from_raw(r.i32()); p.best = Fixed::from_raw(r.i32());
     return p;
   }
 };
@@ -128,9 +133,12 @@ struct NavParams {
   int path_budget = 32;                         // útkeresés tickenként (a többi a sorban vár)
   int stuck_ticks = 15;                         // ennyi tick haladás nélkül → kitérés / újratervezés
   int wait_ticks = 120;                         // ennyi várakozás egy mozgó egység mögött számít beragadásnak
-  int max_repaths = 3;                          // utána megáll
+  int max_repaths = 3;                          // utána megáll (dugóban előbb szünet és újrakezdés)
+  int max_retries = 3;                          // dugó miatti újrakezdések
+  int retry_pause = 90;                         // tick: ennyivel tovább próbálkozik egy újrakezdés
   Fixed arrive_slack = Fixed::from_int(3);      // beragadva ennyin belül a célhoz: megérkezett (tömeg a célnál)
-  Fixed hard_ratio = Fixed::from_ratio(7, 10);  // kemény sugár = sugár × arány (soha nem lapolódhat át)
+  Fixed hard_ratio = Fixed::from_ratio(45, 100);  // kemény sugár = sugár × arány (soha nem lapolódhat át; a
+                                                  // puha sugár – a teljes sugár – tömegben megsérthető, ADR-006)
 };
 
 struct NavStats {
@@ -138,6 +146,7 @@ struct NavStats {
   int queued = 0;
   int64_t paths_total = 0;
   int64_t direct_total = 0;    // látóvonalas közvetlen utak (keresés nélkül)
+  int64_t shared_total = 0;    // csoporttagok, akik a csoport közös útját kapták
 };
 
 // --- parancsok -----------------------------------------------------------------------------------------------------
@@ -190,6 +199,11 @@ class Sim {
   bool set_body(EntityId e, Fixed radius, uint8_t movement_class);
   // Akadály- vagy terepváltozás után: minden mozgó egység újratervez (a következő útkeresési körben).
   void navigation_changed();
+  // Csoportos mozgás alakzatban (ADR-006 7. pont): minden tag a saját helyére megy (a csoport célpontja köré, a
+  // haladási irány szerint forgatva); a WC3-szerű alakzatnál elöl a közelharcosok; együtt haladva a leglassabb tag
+  // sebességével. Az azonos méretű és mozgásosztályú tagok egy közös utat kapnak (egy útkeresés a csoportnak).
+  void order_group_move(std::vector<EntityId> units, Fixed x, Fixed y, Formation f = Formation::Auto);
+  void set_formations(const FormationSet& f) { formations_ = f; }
   const NavStats& nav_stats() const { return nav_stats_; }
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
@@ -213,6 +227,7 @@ class Sim {
   bool nav_free(EntityId e, const Body& b, uint8_t owner, Fixed x, Fixed y, Fixed cx, Fixed cy, EntityId* blocker);
   void nav_bucket_move(EntityId e, Fixed ox, Fixed oy, Fixed nx, Fixed ny);
   bool nav_shove(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py);
+  bool nav_nudge(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py);
   void nav_arrive(EntityId e, Movement& m, Path& p, const Position& pos);
   void movement_system();
   void combat_system();
@@ -225,6 +240,7 @@ class Sim {
   std::vector<std::pair<EntityId, uint8_t>> died_;   // a tick halottai (a halál sorrendjében)
   std::vector<SimHooks*> hooks_;
   map::Pathfinder* nav_ = nullptr;
+  FormationSet formations_;
   NavParams nav_params_;
   NavStats nav_stats_;
   int nav_bw_ = 0, nav_bh_ = 0;                  // a térbeli rács (2 × 2 csempés vödrök) mérete

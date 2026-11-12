@@ -5,6 +5,7 @@
 // sorrendben, fixpontosan – determinisztikus.
 #include <algorithm>
 #include <array>
+#include <map>
 
 #include "core/angle.hpp"
 #include "map/pathfinder.hpp"
@@ -75,6 +76,10 @@ void Sim::nav_request(EntityId e, Fixed x, Fixed y) {
   p->request_tick = tick_;
   p->stuck = 0;
   p->repaths = 0;
+  p->retries = 0;
+  p->wait = 0;
+  p->cap = Fixed{};
+  p->group = 0;
   p->best = Fixed::max();
 }
 
@@ -239,6 +244,31 @@ bool Sim::nav_shove(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py) {
   return false;
 }
 
+// Szemből jövő, mozgó saját egység: egy kis oldalirányú lökés (puha ütközés-szétválasztás), az útját nem változtatja
+// meg – így a két irányú forgalom sávokra válik (híd, szoros), nem akad össze.
+bool Sim::nav_nudge(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py) {
+  const Body* bb = world_.get<Body>(blocker);
+  Position* pos = world_.get<Position>(blocker);
+  Path* bp = world_.get<Path>(blocker);
+  const Health* bh = world_.get<Health>(blocker);
+  if (!bb || !pos || !bp) return false;
+  const Fixed len = core::length(vx, vy);
+  if (len.raw() == 0) return false;
+  const Fixed step = Fixed::from_ratio(3, 20);
+  const int64_t cross = int64_t{vx.raw()} * (pos->y - py).raw() - int64_t{vy.raw()} * (pos->x - px).raw();
+  const int first = cross >= 0 ? 1 : -1;
+  for (int side : {first, -first}) {
+    const Fixed nx = pos->x + Fixed::from_int(-side) * vy * step / len, ny = pos->y + Fixed::from_int(side) * vx * step / len;
+    if (!nav_free(blocker, *bb, bh ? bh->owner : 0, nx, ny, pos->x, pos->y, nullptr)) continue;
+    nav_bucket_move(blocker, pos->x, pos->y, nx, ny);
+    pos->x = nx;
+    pos->y = ny;
+    bp->moved_tick = tick_;
+    return true;
+  }
+  return false;
+}
+
 void Sim::nav_movement() {
   nav_rebuild_buckets();
   const map::NavGrid& nav = nav_->nav();
@@ -277,6 +307,7 @@ void Sim::nav_movement() {
     const Fixed dx = wx - pos->x, dy = wy - pos->y;
     const Fixed dist = core::length(dx, dy);
     Fixed speed = m.speed;
+    if (p->cap.raw() > 0 && p->cap < speed) speed = p->cap;   // csoportsebesség
     if (b->grid >= 0) {
       const map::NavCell c = map::Pathfinder::cell_of(pos->x, pos->y);
       const Fixed mult = nav.speed(b->grid, c.x, c.y);
@@ -303,23 +334,47 @@ void Sim::nav_movement() {
       pos->x += vx;
       pos->y += vy;
       moved = straight = true;
+      p->moved_tick = tick_;
     }
     // 2. Ha egy előttünk ugyanarra haladó saját egység áll az útban: kivárjuk (sor), nem lépünk ki oldalra – az
-    //    oldalazás a sorban csak ide-oda ingást okozna. Álló, idegen vagy szemből jövő akadálynál kitérünk.
+    //    oldalazás a sorban csak ide-oda ingást okozna. Álló, idegen vagy szemből jövő akadálynál kitérünk; szemből
+    //    jövőnél mindenki előbb jobbra (rögzített kézzel), így két sáv alakul ki (pl. hídon).
     const Movement* bm = blocker != kNoEntity ? world_.get<Movement>(blocker) : nullptr;
-    bool follow = false;
+    bool follow = false, oncoming = false;
     if (!moved && bm && bm->moving) {
       const Health* bh = healths.get(blocker);
       const Path* bp = paths.get(blocker);
       const Position* bpos = positions.get(blocker);
-      if (bh && bh->owner == owner && bp && bpos && bp->idx < bp->wps.size()) {
+      if (bp && bpos && bp->idx < bp->wps.size()) {
         const Fixed hx = bp->wps[bp->idx].first - bpos->x, hy = bp->wps[bp->idx].second - bpos->y;
-        follow = int64_t{hx.raw()} * vx.raw() + int64_t{hy.raw()} * vy.raw() > 0;
+        const int64_t dot = int64_t{hx.raw()} * vx.raw() + int64_t{hy.raw()} * vy.raw();
+        follow = dot > 0 && bh && bh->owner == owner;
+        oncoming = dot < 0;
+      }
+    }
+    // Terep állja az utat (sarok): falmenti csúszás – a mozgás egyik tengelyirányú összetevője a teljes sebességgel.
+    if (!moved && blocker == kNoEntity) {
+      const Fixed ax = vx.raw() >= 0 ? speed : Fixed{} - speed, ay = vy.raw() >= 0 ? speed : Fixed{} - speed;
+      const bool x_first = (vx.raw() < 0 ? -vx.raw() : vx.raw()) >= (vy.raw() < 0 ? -vy.raw() : vy.raw());
+      for (int pass = 0; pass < 2 && !moved; ++pass) {
+        const bool along_x = (pass == 0) == x_first;
+        if ((along_x ? vx : vy).raw() == 0) continue;
+        const Fixed nx = pos->x + (along_x ? ax : Fixed{}), ny = pos->y + (along_x ? Fixed{} : ay);
+        if (nav_free(e, *b, owner, nx, ny, pos->x, pos->y, nullptr)) {
+          nav_bucket_move(e, pos->x, pos->y, nx, ny);
+          pos->x = nx;
+          pos->y = ny;
+          moved = true;
+          p->moved_tick = tick_;
+        }
       }
     }
     if (!moved && !follow) {
-      for (size_t k = 1; k < turns().size(); ++k) {
-        const Turn& t = turns()[k];
+      static constexpr size_t kDefault[6] = {1, 2, 3, 4, 5, 6};   // +30, -30, +60, -60, +90, -90
+      static constexpr size_t kRight[6] = {1, 3, 5, 2, 4, 6};     // előbb az egyik oldal végig
+      const size_t* order = oncoming ? kRight : kDefault;
+      for (size_t q = 0; q < 6; ++q) {
+        const Turn& t = turns()[order[q]];
         const Fixed rx = vx * t.c - vy * t.s, ry = vx * t.s + vy * t.c;
         const Fixed nx = pos->x + rx, ny = pos->y + ry;
         if (nav_free(e, *b, owner, nx, ny, pos->x, pos->y, nullptr)) {
@@ -327,19 +382,27 @@ void Sim::nav_movement() {
           pos->x = nx;
           pos->y = ny;
           moved = true;
+          p->moved_tick = tick_;
           break;
         }
       }
     }
-    // Tömeg a célnál: az utolsó útpont felé, egy egység útját állja, és már a célhoz közel – megérkezett.
-    if (!moved && blocker != kNoEntity && p->idx + 1 == p->wps.size() && dist <= nav_params_.arrive_slack) {
-      nav_arrive(e, m, *p, *pos);
-      return;
+    if (!moved && oncoming) {
+      const Health* bh = healths.get(blocker);
+      if (bh && bh->owner == owner) nav_nudge(blocker, vx, vy, pos->x, pos->y);
     }
     // az álló saját egységet félretoljuk
+    bool shoved = false;
     if (blocker != kNoEntity && !(bm && bm->moving)) {
       const Health* bh = healths.get(blocker);
-      if (bh && bh->owner == owner) nav_shove(blocker, vx, vy, pos->x, pos->y);
+      if (bh && bh->owner == owner) shoved = nav_shove(blocker, vx, vy, pos->x, pos->y);
+    }
+    // Tömeg a célnál: az utolsó útpont felé egy egység útját állja (és nem tolható félre), már a célhoz közel –
+    // megérkezett. Alakzat tagjának a saját helye pontos: neki csak 1 csempén belül.
+    const Fixed slack = p->group ? Fixed::from_int(1) : nav_params_.arrive_slack;
+    if (!moved && !shoved && blocker != kNoEntity && p->idx + 1 == p->wps.size() && dist <= slack) {
+      nav_arrive(e, m, *p, *pos);
+      return;
     }
     if (moved && straight && can_reach) {
       ++p->idx;
@@ -349,18 +412,32 @@ void Sim::nav_movement() {
       if (p->idx >= p->wps.size()) nav_arrive(e, m, *p, *pos);
       return;
     }
-    // Egy mozgó egység mögötti várakozás (sor a szűkületben) nem beragadás – az újratervezés sem segítene, mert az
-    // útkereső az egységeket nem látja. Csak a hosszú várakozás (pl. két szemből elakadt egység) számít annak.
-    const bool waiting = !moved && bm && bm->moving;
+    // Mozgó egység miatti akadályoztatás (sor a szűkületben, szemből jövők a hídon) nem beragadás – az újratervezés
+    // sem segítene (az útkereső az egységeket nem látja), a feladás pedig dugót csinálna (a megállt egység maga is
+    // akadály). Ilyenkor vár; ha sokáig, a nagyobb azonosítójú enged: hátrább és jobbra lép (patthelyzet feloldása).
+    // Beragadás (újratervezés, végül megállás) csak terep vagy álló akadály miatt lehet.
+    const Path* blp = blocker != kNoEntity ? paths.get(blocker) : nullptr;
+    const bool waiting = blocker != kNoEntity && bm && bm->moving && blp && tick_ - blp->moved_tick <= 3;
     const Fixed nd = core::length(wx - pos->x, wy - pos->y);
     if (nd < p->best) {
       p->best = nd;
       p->stuck = 0;
       p->wait = 0;
     } else if (waiting) {
+      p->stuck = 0;
       if (++p->wait >= nav_params_.wait_ticks) {
         p->wait = 0;
-        p->stuck = nav_params_.stuck_ticks;
+        if (e > blocker) {
+          const Turn& t = turns()[5];   // +90°: jobbra
+          const Fixed bx = Fixed{} - vx + (vx * t.c - vy * t.s), by = Fixed{} - vy + (vx * t.s + vy * t.c);
+          const Fixed nx = pos->x + bx / Fixed::from_int(2), ny = pos->y + by / Fixed::from_int(2);
+          if (nav_free(e, *b, owner, nx, ny, pos->x, pos->y, nullptr)) {
+            nav_bucket_move(e, pos->x, pos->y, nx, ny);
+            pos->x = nx;
+            pos->y = ny;
+            p->best = Fixed::max();
+          }
+        }
       }
     } else {
       ++p->stuck;
@@ -369,7 +446,30 @@ void Sim::nav_movement() {
       // a tényleges végpont: elérhetetlen célnál a legközelebbi elérhető pont (ahol a többiek már összegyűltek)
       const auto [ex, ey] = p->wps.empty() ? std::make_pair(p->gx, p->gy) : p->wps.back();
       const Fixed gd = core::length(ex - pos->x, ey - pos->y);
-      if (p->shoved || gd <= nav_params_.arrive_slack || p->repaths >= nav_params_.max_repaths) {
+      // Elfogyott újratervezés: csak mozdulatlan környezetben áll meg végleg – ha a közelben valaki még ténylegesen
+      // halad (az utolsó 1 mp-ben; oldódó dugó), türelmesen próbálkozik tovább (különben a dugó után ottmaradna).
+      bool alive_jam = false;
+      if (p->repaths >= nav_params_.max_repaths && !p->shoved && gd > nav_params_.arrive_slack) {
+        const int bx = std::clamp(tile_of(pos->x) / kBucket, 0, nav_bw_ - 1), by = std::clamp(tile_of(pos->y) / kBucket, 0, nav_bh_ - 1);
+        for (int yy = std::max(0, by - 1); yy <= std::min(nav_bh_ - 1, by + 1) && !alive_jam; ++yy) {
+          for (int xx = std::max(0, bx - 1); xx <= std::min(nav_bw_ - 1, bx + 1) && !alive_jam; ++xx) {
+            for (const EntityId o : buckets_[static_cast<size_t>(yy * nav_bw_ + xx)]) {
+              const Path* op = paths.get(o);
+              if (o != e && op && tick_ - op->moved_tick <= 30) { alive_jam = true; break; }
+            }
+          }
+        }
+      }
+      if (alive_jam) {
+        p->stuck = 0;
+      } else if (p->repaths >= nav_params_.max_repaths && !p->shoved && gd > nav_params_.arrive_slack &&
+                 p->retries < nav_params_.max_retries) {
+        // megállt dugó (nem zsákutca): nem adja fel végleg, hanem tovább próbálkozik – a dugó gyakran éppen azért
+        // oldódik, mert valaki enged; a zsákutcában a végpont közelében megáll (az előző ág)
+        ++p->retries;
+        p->repaths = 0;
+        p->stuck = -nav_params_.retry_pause;
+      } else if (p->shoved || gd <= nav_params_.arrive_slack || p->repaths >= nav_params_.max_repaths) {
         nav_arrive(e, m, *p, *pos);   // tömeg a célnál, vagy nincs tovább: megáll (nincs körözés)
       } else {
         p->pending = 1;
@@ -379,6 +479,132 @@ void Sim::nav_movement() {
       }
     }
   });
+}
+
+void Sim::order_group_move(std::vector<EntityId> units, Fixed x, Fixed y, Formation f) {
+  std::sort(units.begin(), units.end());
+  units.erase(std::unique(units.begin(), units.end()), units.end());
+  std::vector<EntityId> ids;
+  for (const EntityId e : units) {
+    if (!world_.alive(e) || !world_.get<Movement>(e) || !world_.get<Position>(e)) continue;
+    if (nav_ && (!world_.get<Body>(e) || !world_.get<Path>(e))) continue;
+    ids.push_back(e);
+  }
+  if (!nav_ || ids.size() < 2) {
+    for (const EntityId e : ids) order_move(e, x, y);
+    return;
+  }
+  const auto n = static_cast<int64_t>(ids.size());
+  // a csoport közepe és a haladási irány
+  int64_t sx = 0, sy = 0;
+  Fixed max_r;
+  for (const EntityId e : ids) {
+    const Position& p = *world_.get<Position>(e);
+    sx += p.x.raw();
+    sy += p.y.raw();
+    max_r = std::max(max_r, world_.get<Body>(e)->radius);
+  }
+  const Fixed cx = Fixed::from_raw(static_cast<int32_t>(sx / n)), cy = Fixed::from_raw(static_cast<int32_t>(sy / n));
+  Fixed fx = Fixed{}, fy = Fixed::from_int(1);
+  if (const Fixed len = core::length(x - cx, y - cy); len.raw() > 0) {
+    fx = (x - cx) / len;
+    fy = (y - cy) / len;
+  }
+  const Fixed rx = Fixed{} - fy, ry = fx;   // oldalirány
+  const FormationSpec& spec = formations_[f];
+  const auto slots = formation_slots(f, static_cast<int>(n), spec, max_r * Fixed::from_int(2) + Fixed::from_ratio(1, 5));
+  const Fixed depth_center = slots.back().depth / Fixed::from_int(2);
+
+  // a tagok sorrendje: (a WC3-szerű alakzatnál előbb a közelharcosok), elöl lévők előbb, azonosító
+  struct Member {
+    EntityId e;
+    int cat;
+    Fixed fwd, lat;
+  };
+  std::vector<Member> ms;
+  Fixed cap = Fixed::max();
+  for (const EntityId e : ids) {
+    const Position& p = *world_.get<Position>(e);
+    const Attack* a = world_.get<Attack>(e);
+    const int cat = (f == Formation::Auto && a && a->range > Fixed::from_ratio(3, 2)) ? 1 : 0;
+    ms.push_back({e, cat, (p.x - cx) * fx + (p.y - cy) * fy, (p.x - cx) * rx + (p.y - cy) * ry});
+    cap = std::min(cap, world_.get<Movement>(e)->speed);
+  }
+  std::sort(ms.begin(), ms.end(), [](const Member& a, const Member& b) {
+    if (a.cat != b.cat) return a.cat < b.cat;
+    if (a.fwd != b.fwd) return a.fwd > b.fwd;
+    return a.e < b.e;
+  });
+  // soronként: a sor tagjai oldalirány szerint rendezve kapják a sor helyeit (balról jobbra) – nincs keresztezés
+  std::vector<std::pair<EntityId, std::pair<Fixed, Fixed>>> goals;
+  size_t i = 0;
+  while (i < slots.size()) {
+    size_t j = i;
+    while (j < slots.size() && slots[j].row == slots[i].row) ++j;
+    std::vector<Member> row(ms.begin() + static_cast<std::ptrdiff_t>(i), ms.begin() + static_cast<std::ptrdiff_t>(j));
+    std::sort(row.begin(), row.end(), [](const Member& a, const Member& b) { return a.lat != b.lat ? a.lat < b.lat : a.e < b.e; });
+    for (size_t k = 0; k < row.size(); ++k) {
+      const Slot& s = slots[i + k];
+      const Fixed ahead = depth_center - s.depth;
+      goals.push_back({row[k].e, {x + rx * s.lateral + fx * ahead, y + ry * s.lateral + fy * ahead}});
+    }
+    i = j;
+  }
+  std::sort(goals.begin(), goals.end());
+  // a helyek járhatósága: ha a hely nem jó, a legközelebbi elérhető pont a tag saját komponensében
+  for (auto& [e, g] : goals) {
+    const Body& b = *world_.get<Body>(e);
+    const Position& p = *world_.get<Position>(e);
+    if (b.grid >= 0) {
+      const map::NavCell gc = map::Pathfinder::cell_of(g.first, g.second);
+      const uint32_t comp = nav_->component(b.grid, b.size, map::Pathfinder::cell_of(p.x, p.y));
+      if (comp && nav_->component(b.grid, b.size, gc) != comp) {
+        if (const auto nc = nav_->nearest(b.grid, b.size, comp, gc)) g = map::Pathfinder::center_of(*nc);
+      }
+    }
+    Movement& m = *world_.get<Movement>(e);
+    m.tx = g.first;
+    m.ty = g.second;
+    m.moving = true;
+    nav_request(e, g.first, g.second);
+    world_.get<Path>(e)->cap = spec.together ? cap : Fixed{};
+    world_.get<Path>(e)->group = 1;
+  }
+  // közös út osztályonként (mozgásosztály, méret): egy útkeresés a csoport középhez legközelebbi tagjából
+  std::map<std::pair<int, int>, std::vector<EntityId>> classes;
+  for (const auto& [e, g] : goals) {
+    const Body& b = *world_.get<Body>(e);
+    if (b.grid >= 0) classes[{b.grid, b.size}].push_back(e);
+  }
+  for (const auto& [key, members] : classes) {
+    if (members.size() < 2) continue;
+    EntityId rep = members.front();
+    int64_t best = -1;
+    for (const EntityId e : members) {
+      const Position& p = *world_.get<Position>(e);
+      const int64_t d = core::length_sq_raw(p.x - cx, p.y - cy);
+      if (best < 0 || d < best) { best = d; rep = e; }
+    }
+    const Position& rp = *world_.get<Position>(rep);
+    auto r = nav_->find_path(key.first, key.second, rp.x, rp.y, x, y);
+    ++nav_stats_.paths_total;
+    if (!r.found || r.waypoints.size() < 2) continue;   // egyenes út: a tagok úgyis látóvonalon mennek
+    r.waypoints.pop_back();   // a csoport célpontja helyett a tag saját helye
+    const map::NavCell first = map::Pathfinder::cell_of(r.waypoints.front().first, r.waypoints.front().second);
+    const map::NavCell last = map::Pathfinder::cell_of(r.waypoints.back().first, r.waypoints.back().second);
+    for (const EntityId e : members) {
+      const Position& p = *world_.get<Position>(e);
+      Path& path = *world_.get<Path>(e);
+      if (!nav_->line_of_sight(key.first, key.second, map::Pathfinder::cell_of(p.x, p.y), first)) continue;
+      if (!nav_->line_of_sight(key.first, key.second, last, map::Pathfinder::cell_of(path.gx, path.gy))) continue;
+      path.wps = r.waypoints;
+      path.wps.emplace_back(path.gx, path.gy);
+      path.idx = 0;
+      path.pending = 0;
+      path.best = Fixed::max();
+      ++nav_stats_.shared_total;
+    }
+  }
 }
 
 }  // namespace totu::sim

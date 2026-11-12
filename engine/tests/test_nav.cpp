@@ -75,7 +75,7 @@ bool no_hard_overlap(World& w, const std::vector<sim::EntityId>& ids) {
     for (size_t j = i + 1; j < ids.size(); ++j) {
       const auto* a = w.sim.world().get<sim::Body>(ids[i]);
       const auto* b = w.sim.world().get<sim::Body>(ids[j]);
-      const Fixed sum = a->radius * F(7, 10) + b->radius * F(7, 10);   // ugyanúgy, mint a szimulációban
+      const Fixed sum = a->radius * sim::NavParams{}.hard_ratio + b->radius * sim::NavParams{}.hard_ratio;   // ugyanúgy, mint a szimulációban
       const int64_t d2 = core::length_sq_raw(w.pos(ids[i]).x - w.pos(ids[j]).x, w.pos(ids[i]).y - w.pos(ids[j]).y);
       if (d2 + 4 < int64_t{sum.raw()} * sum.raw()) return false;
     }
@@ -219,7 +219,7 @@ TEST_CASE("navigáció: útkérés-keret, determinizmus, mentés–betöltés–
   CHECK(c.sim.hash() == a.sim.hash());
   CHECK(c.sim.save() == a.sim.save());
   std::printf("  navigációs állapothash: 0x%016llx\n", static_cast<unsigned long long>(a.sim.hash()));
-  CHECK(a.sim.hash() == 0x0cee3ee6afee1873ull);   // minden rendszeren ugyanaz (mozgás, ütközés, kitérés)
+  CHECK(a.sim.hash() == 0xe28045f47c51f3c1ull);   // minden rendszeren ugyanaz (mozgás, ütközés, kitérés)
   bool body = false;
   for (const auto& [n, h] : a.sim.component_hashes()) body |= n == "Path";
   CHECK(body);

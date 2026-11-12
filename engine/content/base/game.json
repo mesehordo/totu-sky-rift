@@ -341,5 +341,30 @@
    ]
   },
   "max_custom": 512
+ },
+ "formations": {
+  "_leiras": "ADR-006 7. pont, D32: alakzatok – auto (WC3-szerű, alapértelmezett: elöl a közelharcosok, a leglassabb tag sebességével), line (sor), box (doboz), spread (szétszórt), flank (szárnyas), none (a helyek szétosztása, mindenki a saját sebességével). A helyek távolsága a legnagyobb egységhez igazodva nő.",
+  "auto": {
+   "spacing": 1,
+   "max_row": 20
+  },
+  "line": {
+   "spacing": 1,
+   "max_row": 20
+  },
+  "box": {
+   "spacing": 1
+  },
+  "spread": {
+   "spacing": 2
+  },
+  "flank": {
+   "spacing": 1,
+   "gap": 4
+  },
+  "none": {
+   "spacing": 1,
+   "together": false
+  }
  }
 }
