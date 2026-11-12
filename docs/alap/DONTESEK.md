@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D23 | ELDÖNTVE (2026-11-12): **mod.io-támogatás** a modrendszerben – kiegészítő online modtár, nem a modrendszer alapja; a játék nélküle is teljesen modolható |
 | D22 | ELDÖNTVE (2026-11-12): képességmodell – faji varázserő-forrás (a hősök és a varázslók energiát használnak); egységes alapértékek, a varázssebzés mindenhol a szorzóval nő; bekerül az ellenséges aura, az eloszlatás és immunitás, a varázslási idő és csatornázás, az automatikus használat; élőt a gyógyítás, gépet a javítás gyógyít |
 | D21 | ELDÖNTVE (2026-11-12): a specifikáció furcsaságai – a közeli hős eleste azonnal megtöri a morált; a fajnévhez kötött szabályok adatkulcsok lesznek; a mélységi rothadás a főépülethez közelebbi fáknál kezdődik; a felesleges `detect_units` és `balance_v6` törölve |
 | D17 | ELDÖNTVE (2026-11-12): a cél a 0 A.D. / AoE / WC3 / SC1 minősége; **nem nulláról újraírás**, hanem bitre azonos port + Q1–Q6 minőségi szakasz mérhető kapukkal; a kliens `RenderSnapshot`-ot kap és interpolál (P8); a D4 az F5 előtt újranézendő |
@@ -186,3 +187,12 @@ miatt nem kap új mechanikát.
    ellenfél is ezt használja). A konkrét képességek és számok balanszdöntések – képességenként, később.
 4. **Gyógyítás:** minden gyógyítás csak élőlényre hat; a gépeket a javítás (munkás, Fabrikátor) és a kifejezett
    gépjavító képességek gyógyítják. Érintett mai képességek (javaslat a KEPESSEGEK.md E pontjában).
+
+**D22 kiegészítés (2026-11-12, elfogadva):** a „Második lélegzet” (`h_livia_lelegzet`) gyógyít **és** javít; a
+„Foltozás” (`mho_javitas`) gépjavító képesség.
+
+### D23 – mod.io-támogatás · ELDÖNTVE (2026-11-12)
+
+A modolhatósághoz (K1, D9) a [mod.io](https://mod.io/) online modtár is hozzátartozik: játékon belüli
+modböngésző, letöltés, frissítés, feltöltés. Kiegészítő szolgáltatás – a helyi modok és a LAN mod.io nélkül is
+működnek. Megvalósítás és feltételek: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) 3.2/6. pont; mérföldkő: M13.

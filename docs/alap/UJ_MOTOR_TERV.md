@@ -79,6 +79,26 @@ Hálózat: lockstep-parancscsere relészerveren át (vagy a D4 szerinti modell) 
 5. **Infrastruktúra:** `mod.json` (verzió, függőségek, ütközések), modkezelő a menüben, modlock-hash a
    többjátékos lobbiban, mintamodok, SDK-dokumentáció (CC BY 4.0, D8). A grafika a modokban a D8 modkivétele
    szerint használható.
+6. **Online modtár – mod.io (D23):** a játékon belüli modböngésző a [mod.io](https://mod.io/) szolgáltatásával:
+   keresés, letöltés, telepítés, frissítés, gyűjtemények, értékelés, feltöltés a szerkesztőből. **Kiegészítő
+   szolgáltatás, nem a modrendszer alapja:** a játék internet és mod.io nélkül is teljesen modolható (helyi
+   mappák és ZIP-ek), és a LAN-játék is működik nélküle.
+
+   ```
+   játék + modkezelő → TOTU mod-API (betöltés, sémaellenőrzés, függőségek, ütközések, betöltési sorrend, hash)
+                          ├── helyi modok (mappa / ZIP)
+                          └── mod.io (online modtár) – letöltés után ugyanúgy helyi mod
+   ```
+
+   - **Megvalósítás:** a hivatalos C++ SDK (MIT/BSL – összefér a GPL 3-mal) Windows-on, Linuxon és macOS-en;
+     FreeBSD-n és OpenBSD-n, ahol az SDK nem támogatott, a nyilvános REST API közvetlenül (libcurl). A mod.io-kód
+     külön modulban (`Totu.ModIo`-szerű könyvtár), fordítási kapcsolóval kihagyható.
+   - **Többjátékos mód:** a lobbi a modok azonosítóját, pontos verzióját, betöltési sorrendjét és tartalom-hash-ét
+     írja elő (modlock); a kliens összeveti, és a hiányzót a mod.io-ról letölti, ha onnan származik. Az egyezést
+     mindig a hash dönti el, nem a mod.io.
+   - **Jogi és üzleti:** a mod.io felhasználási feltételei a feltöltött tartalomra nem kizárólagos engedélyt
+     kérhetnek; a TOTU grafikája, zenéje és története a modokban nem terjeszthető (D8 modkivétel), ezt a
+     feltöltés ellenőrzi. Az árazást, a korlátokat és a feltételeket éles indulás előtt tisztázni kell.
 
 ### 3.3 Küldetések (K2) és játékmódok (K3)
 
@@ -131,7 +151,7 @@ determinizmust és a modolhatóságot utólag nem lehet beépíteni, ezért ezek
 | **M10** | Hálózat | lockstep relével (vagy a D4 döntése szerint), lobbi, modlock, szinkronhiba-észlelés, újracsatlakozás, megfigyelő | 8 kliens vegyes rendszereken szinkronhiba nélkül; NET-LOSS, NET-REJOIN |
 | **M11** | Küldetésrendszer és szerkesztő | világszerkesztő, trigger-szerkesztő, objektumszerkesztő, átvezetők, párbeszéd, küldetésnapló, hadjáratlánc | egy mintaküldetés, amely minden WC3-szintű elemet használ; a szerkesztő változatlanul visszamenti |
 | **M12** | Játékmódok | győzelmi feltételek; hadjárattérkép (tartományok, körök, seregek, csatagenerálás, automatikus kiértékelés) | egy teljes hadjárattérkép-játék végigjátszható |
-| **M13** | Modrendszer kiadása | modkezelő, függőségek, SDK-dokumentáció, mintamodok (új kisfaj + képesség + küldetés + győzelmi feltétel) | a mintamod többjátékos módban, modlockkal működik |
+| **M13** | Modrendszer kiadása | modkezelő, függőségek, SDK-dokumentáció, mintamodok (új kisfaj + képesség + küldetés + győzelmi feltétel); **mod.io-integráció** (modböngésző, letöltés, frissítés, feltöltés a szerkesztőből, hiányzó modok letöltése a lobbiban) | a mintamod többjátékos módban, modlockkal működik; ugyanez mod.io-ról letöltve, és mod.io nélkül (offline) is |
 | **M14** | Kiadás | csomagok (Windows-telepítő, AppImage/Flatpak, macOS dmg, FreeBSD/OpenBSD port), teljesítmény- és minőségellenőrzés, nyilvános teszt | tiszta gépen telepíthető mind az 5 rendszeren |
 
 Párhuzamosítható: az M5 (megjelenítő) az M2 után az M3–M4 mellett haladhat; az M8 az M6 után.

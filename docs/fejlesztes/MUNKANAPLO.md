@@ -212,3 +212,9 @@
 **Döntések (tulajdonos):** faji varázserő-forrás, a hősök és a varázslók energiát használnak; egységes alapértékek, a varázssebzés mindenhol a szorzóval; bekerül az ellenséges aura, az eloszlatás és immunitás, a varázslási idő és csatornázás, az automatikus használat; élőt gyógyítás, gépet javítás.
 **Felmérés:** a négy érintett faj 35 energiás képessége mind hősé vagy varázslóé – a mai adat megfelel, balanszváltozás nem kell; új ellenőrzés: `tools/tartalom_leltar.py` 17. pont (sértés: nincs). Gyógyítás: 25 gyógyító képesség, ebből egy gépjavító; nyitott javaslat két képességre (Második lélegzet, Foltozás).
 **Kimenet:** `DONTESEK.md` D22, `spec/KEPESSEGEK.md` E pont, `spec/README.md`, leltár 17. pont.
+
+## 2026-11-12 – D22 kiegészítés és D23: mod.io
+
+**Döntések (tulajdonos):** a Második lélegzet gyógyít és javít, a Foltozás gépjavító (D22); a modrendszerbe bekerül a mod.io-támogatás (D23).
+**Ellenőrzés:** a mod.io C++ SDK licence MIT/BSL (GPL 3-mal összefér); hivatalos platformjai Windows, Linux, macOS – FreeBSD-n és OpenBSD-n a REST API közvetlenül. A tulajdonos anyaga (`TOTU_Sky_Rift_mod_io_integracio.md`) GPLv2+-t írt; a projekt licence GPL-3.0-or-later, ez a tervbe így került.
+**Kimenet:** `UJ_MOTOR_TERV.md` 3.2/6. pont (felépítés, megvalósítás, többjátékos modegyeztetés, jogi és üzleti teendők) és M13; `DONTESEK.md` D23 és D22-kiegészítés; `spec/KEPESSEGEK.md` E pont.
