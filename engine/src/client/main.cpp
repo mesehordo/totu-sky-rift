@@ -5,6 +5,7 @@
 //   totu --demo N                  bemutató jelenet: N egység valódi sprite-okkal, csapatszínnel, animációval
 //   totu --bench                   képkockaidő-mérés (függőleges szinkron nélkül, a GPU bevárásával): p50, p99
 //   totu --screenshot kép.png      a futás végén képernyőkép (a képpróbákhoz)
+//   totu --atlas mappa             a bemutató atlaszból rajzol (Y-rendezve, a népek keverve – mint a világnézet)
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
 #include <SDL3/SDL.h>
@@ -21,6 +22,7 @@
 #include <vector>
 
 #include "core/platform_info.hpp"
+#include "render/atlas.hpp"
 #include "render/rhi.hpp"
 #include "render/sprite_batch.hpp"
 #include "render/sprite_sheet.hpp"
@@ -41,7 +43,7 @@ struct Options {
   long frames = -1;
   int demo = 0;
   bool bench = false, hidden = false, check = false;
-  std::string screenshot;
+  std::string screenshot, atlas;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -108,6 +110,55 @@ struct Demo {
   }
 };
 
+// Bemutató atlaszból: népenként egy egységtípus, véletlen (rögzített magú) helyen, Y szerint rendezve rajzolva.
+struct AtlasDemo {
+  render::Atlas atlas;
+  std::vector<const render::AtlasSheet*> sheets;
+  struct U {
+    float x, y;
+    int sheet, team, phase;
+  };
+  std::vector<U> units;
+
+  bool load(render::Device& dev, const std::string& dir, int n, int w, int h, std::string* error) {
+    if (!atlas.load(dev, dir, error)) return false;
+    std::string last;
+    for (const auto& s : atlas.data().sheets) {
+      if (s.type != "unit" || !s.has_mask || !s.anims.count("walk")) continue;
+      const std::string prefix = s.id.substr(0, 3);
+      if (prefix == last) continue;
+      sheets.push_back(&s);
+      last = prefix;
+      if (sheets.size() == 8) break;
+    }
+    if (sheets.empty()) {
+      if (error) *error = "az atlaszban nincs egység";
+      return false;
+    }
+    if (!atlas.prepare(sheets, error)) return false;   // a meccs elején: a résztvevő típusok lapjai egy tömbben
+    uint32_t r = 12345;
+    auto rnd = [&]() { r = r * 1664525u + 1013904223u; return r >> 8; };
+    for (int i = 0; i < n; ++i) {
+      units.push_back({static_cast<float>(rnd() % static_cast<uint32_t>(w)), static_cast<float>(rnd() % static_cast<uint32_t>(h)),
+                       static_cast<int>(rnd() % sheets.size()), static_cast<int>(rnd() % 8), static_cast<int>(rnd() % 100)});
+    }
+    std::sort(units.begin(), units.end(), [](const U& a, const U& b) { return a.y < b.y; });
+    return true;
+  }
+
+  void draw(render::SpriteBatch& batch, double t) {
+    static const uint8_t teams[8][4] = {{220, 40, 40, 255},  {40, 90, 230, 255},  {40, 180, 60, 255}, {230, 200, 40, 255},
+                                        {160, 60, 200, 255}, {240, 130, 30, 255}, {40, 200, 200, 255}, {235, 235, 235, 255}};
+    for (const auto& u : units) {
+      const auto& s = *sheets[static_cast<size_t>(u.sheet)];
+      const auto& a = s.anims.at("walk");
+      const int dir = (u.phase + static_cast<int>(t * 0.5)) % s.directions;
+      const int col = a.start + static_cast<int>(t * a.fps + u.phase) % a.frames;
+      atlas.draw(batch, s, dir, col, u.x, u.y, 0.5f / s.scale, teams[u.team]);
+    }
+  }
+};
+
 double percentile(std::vector<double> v, double p) {
   if (v.empty()) return 0;
   std::sort(v.begin(), v.end());
@@ -129,6 +180,7 @@ int main(int argc, char** argv) {
     else if (a == "--check") o.check = true;
     else if (a == "--screenshot") o.screenshot = next();
     else if (a == "--assets") o.assets = next();
+    else if (a == "--atlas") o.atlas = next();
     else if (a == "--size") {   // SZxM
       char* end = nullptr;
       const char* v = next();
@@ -177,13 +229,17 @@ int main(int argc, char** argv) {
     }
     render::SpriteBatch batch;
     Demo demo;
-    demo.units = o.demo;
+    demo.units = o.atlas.empty() ? o.demo : 0;
+    AtlasDemo adem;
     if (rc == 0) {
       std::printf("grafika: %s (legnagyobb textúra %d)\n", dev.info().c_str(), dev.max_texture_size());
       if (!batch.init(dev, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
-      } else if (o.demo > 0 && !demo.load(dev, o.assets, &err)) {
+      } else if (demo.units > 0 && !demo.load(dev, o.assets, &err)) {
+        std::fprintf(stderr, "%s\n", err.c_str());
+        rc = 1;
+      } else if (!o.atlas.empty() && o.demo > 0 && !adem.load(dev, o.atlas, o.demo, o.width, o.height, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
       }
@@ -202,13 +258,14 @@ int main(int argc, char** argv) {
       SDL_GetWindowSizeInPixels(win, &w, &h);
       dev.bind_target(nullptr, w, h);
       dev.clear(0.12f, 0.16f, 0.10f, 1.0f);
-      if (demo.units > 0) {
+      if (demo.units > 0 || !adem.units.empty()) {
         // a bemutató determinisztikus időt használ, ha képernyőkép vagy mérés készül (azonos kép minden gépen)
         const double t = (o.bench || !o.screenshot.empty())
                              ? static_cast<double>(frame) / 60.0
                              : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
-        demo.draw(batch, t, w, h);
+        if (demo.units > 0) demo.draw(batch, t, w, h);
+        else adem.draw(batch, t);
         batch.end();
       }
       const bool last = o.frames >= 0 && frame + 1 >= o.frames;
@@ -248,6 +305,8 @@ int main(int argc, char** argv) {
                   o.demo, frame, batch.draw_calls(), batch.sprites(), percentile(times, 0.5), percentile(times, 0.99),
                   percentile(times, 1.0));
     }
+    if (o.bench && !adem.units.empty()) std::printf("atlasz: %d lap betöltve\n", adem.atlas.loaded_pages());
+    adem.atlas.release();
     for (auto& s : demo.sheets) {
       dev.destroy(s.base);
       dev.destroy(s.mask);

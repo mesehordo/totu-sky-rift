@@ -38,6 +38,7 @@ constexpr GLenum ONE_MINUS_SRC_ALPHA = 0x0303, COLOR_BUFFER_BIT = 0x4000, DEPTH_
 constexpr GLenum FRAMEBUFFER = 0x8D40, COLOR_ATTACHMENT0 = 0x8CE0, FRAMEBUFFER_COMPLETE = 0x8CD5, READ_FRAMEBUFFER = 0x8CA8;
 constexpr GLenum PACK_ALIGNMENT = 0x0D05, UNPACK_ALIGNMENT = 0x0CF5, MAX_TEXTURE_SIZE = 0x0D33;
 constexpr GLenum VERSION = 0x1F02, RENDERER = 0x1F01, VENDOR = 0x1F00, CULL_FACE = 0x0B44;
+constexpr GLenum TEXTURE_2D_ARRAY = 0x8C1A, R8 = 0x8229, RED = 0x1903, MAX_ARRAY_TEXTURE_LAYERS = 0x88FF;
 
 #define TOTU_GL_FUNCS(X)                                                                                         \
   X(const GLubyte*, GetString, (GLenum name))                                                                    \
@@ -63,6 +64,10 @@ constexpr GLenum VERSION = 0x1F02, RENDERER = 0x1F01, VENDOR = 0x1F00, CULL_FACE
                        GLenum type, const void* data))                                                           \
   X(void, TexSubImage2D, (GLenum target, GLint level, GLint x, GLint y, GLsizei w, GLsizei h, GLenum fmt,        \
                           GLenum type, const void* data))                                                        \
+  X(void, TexImage3D, (GLenum target, GLint level, GLint ifmt, GLsizei w, GLsizei h, GLsizei d, GLint border,       \
+                       GLenum fmt, GLenum type, const void* data))                                               \
+  X(void, TexSubImage3D, (GLenum target, GLint level, GLint x, GLint y, GLint z, GLsizei w, GLsizei h, GLsizei d, \
+                          GLenum fmt, GLenum type, const void* data))                                            \
   X(void, GenerateMipmap, (GLenum target))                                                                       \
   X(void, GenBuffers, (GLsizei n, GLuint* b))                                                                    \
   X(void, DeleteBuffers, (GLsizei n, const GLuint* b))                                                           \

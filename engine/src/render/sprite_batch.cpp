@@ -12,33 +12,34 @@ layout(location = 0) in vec4 a_rect;   // x, y, w, h
 layout(location = 1) in vec4 a_uv;     // u0, v0, u1, v1
 layout(location = 2) in vec4 a_tint;
 layout(location = 3) in vec4 a_team;
+layout(location = 4) in vec4 a_layer;
 uniform mat4 u_proj;
-out vec2 v_uv;
+out vec3 v_uv;
 out vec4 v_tint;
 out vec4 v_team;
 const vec2 corners[6] = vec2[6](vec2(0, 0), vec2(1, 0), vec2(1, 1), vec2(0, 0), vec2(1, 1), vec2(0, 1));
 void main() {
   vec2 c = corners[gl_VertexID % 6];
   gl_Position = u_proj * vec4(a_rect.xy + c * a_rect.zw, 0.0, 1.0);
-  v_uv = mix(a_uv.xy, a_uv.zw, c);
+  v_uv = vec3(mix(a_uv.xy, a_uv.zw, c), a_layer.x);
   v_tint = a_tint;
   v_team = a_team;
 }
 )";
 
 const char* kFragment = R"(#version 330 core
-in vec2 v_uv;
+in vec3 v_uv;
 in vec4 v_tint;
 in vec4 v_team;
-uniform sampler2D u_base;
-uniform sampler2D u_mask;
+uniform sampler2DArray u_base;
+uniform sampler2DArray u_mask;
 uniform int u_use_mask;
 out vec4 o_color;
 void main() {
   vec4 c = texture(u_base, v_uv);                 // előszorzott alfa
   if (c.a <= 0.002) discard;
   if (u_use_mask != 0 && v_team.a > 0.0) {
-    float m = texture(u_mask, v_uv).a * v_team.a;
+    float m = texture(u_mask, v_uv).r * v_team.a;   // R8 maszk
     vec3 straight = c.rgb / c.a;
     // „shade” mód (a meglévő grafika szerint): a maszk alatti, szürkére festett részt szorozza a csapatszínnel
     c.rgb = mix(straight, straight * v_team.rgb, m) * c.a;
@@ -84,6 +85,7 @@ bool SpriteBatch::init(Device& dev, std::string* error) {
   attr(1, 4, gl::FLOAT, false, offsetof(SpriteInstance, u0));
   attr(2, 4, gl::UNSIGNED_BYTE, true, offsetof(SpriteInstance, tint));
   attr(3, 4, gl::UNSIGNED_BYTE, true, offsetof(SpriteInstance, team));
+  attr(4, 4, gl::UNSIGNED_BYTE, false, offsetof(SpriteInstance, layer));
   gl.BindVertexArray(0);
   pending_.reserve(kCapacity);
   return dev.check("sprite-köteg", error);
@@ -125,9 +127,9 @@ void SpriteBatch::flush() {
   gl.Uniform1i(loc_mask_, 1);
   gl.Uniform1i(loc_use_mask_, mask_ ? 1 : 0);
   gl.ActiveTexture(gl::TEXTURE0);
-  gl.BindTexture(gl::TEXTURE_2D, base_);
+  gl.BindTexture(gl::TEXTURE_2D_ARRAY, base_);
   gl.ActiveTexture(gl::TEXTURE0 + 1);
-  gl.BindTexture(gl::TEXTURE_2D, mask_ ? mask_ : base_);
+  gl.BindTexture(gl::TEXTURE_2D_ARRAY, mask_ ? mask_ : base_);
   gl.BindVertexArray(vao_);
   gl.BindBuffer(gl::ARRAY_BUFFER, vbo_);
   // a puffer „árvává tétele” (orphaning): a meghajtó nem vár a korábbi rajzolásra

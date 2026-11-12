@@ -23,6 +23,7 @@ bool Device::init(gl::Loader loader, std::string* error) {
     return false;
   }
   gl_.GetIntegerv(gl::MAX_TEXTURE_SIZE, &max_texture_);
+  gl_.GetIntegerv(gl::MAX_ARRAY_TEXTURE_LAYERS, &max_layers_);
   gl_.PixelStorei(gl::UNPACK_ALIGNMENT, 1);
   gl_.PixelStorei(gl::PACK_ALIGNMENT, 1);
   gl_.Disable(gl::DEPTH_TEST);
@@ -54,6 +55,47 @@ Texture Device::create_texture(const Image& img, bool smooth) {
   gl_.TexImage2D(gl::TEXTURE_2D, 0, static_cast<gl::GLint>(gl::RGBA8), img.width, img.height, 0, gl::RGBA,
                  gl::UNSIGNED_BYTE, img.rgba.data());
   if (smooth) gl_.GenerateMipmap(gl::TEXTURE_2D);
+  return t;
+}
+
+Texture Device::create_array(int w, int h, int layers, bool single_channel) {
+  Texture t;
+  t.width = w;
+  t.height = h;
+  t.layers = layers;
+  t.single_channel = single_channel;
+  gl_.GenTextures(1, &t.id);
+  gl_.BindTexture(gl::TEXTURE_2D_ARRAY, t.id);
+  gl_.TexParameteri(gl::TEXTURE_2D_ARRAY, gl::TEXTURE_MIN_FILTER, gl::LINEAR_MIPMAP_LINEAR);
+  gl_.TexParameteri(gl::TEXTURE_2D_ARRAY, gl::TEXTURE_MAG_FILTER, gl::LINEAR);
+  gl_.TexParameteri(gl::TEXTURE_2D_ARRAY, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE);
+  gl_.TexParameteri(gl::TEXTURE_2D_ARRAY, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE);
+  gl_.TexImage3D(gl::TEXTURE_2D_ARRAY, 0, static_cast<gl::GLint>(single_channel ? gl::R8 : gl::RGBA8), w, h, layers, 0,
+                 single_channel ? gl::RED : gl::RGBA, gl::UNSIGNED_BYTE, nullptr);
+  return t;
+}
+
+void Device::upload_layer(const Texture& t, int layer, const Image& img) {
+  gl_.BindTexture(gl::TEXTURE_2D_ARRAY, t.id);
+  if (t.single_channel) {
+    std::vector<uint8_t> a(static_cast<size_t>(img.width) * static_cast<size_t>(img.height));
+    for (size_t i = 0; i < a.size(); ++i) a[i] = img.rgba[i * 4 + 3];
+    gl_.TexSubImage3D(gl::TEXTURE_2D_ARRAY, 0, 0, 0, layer, img.width, img.height, 1, gl::RED, gl::UNSIGNED_BYTE, a.data());
+  } else {
+    gl_.TexSubImage3D(gl::TEXTURE_2D_ARRAY, 0, 0, 0, layer, img.width, img.height, 1, gl::RGBA, gl::UNSIGNED_BYTE,
+                      img.rgba.data());
+  }
+}
+
+void Device::finish_array(const Texture& t) {
+  gl_.BindTexture(gl::TEXTURE_2D_ARRAY, t.id);
+  gl_.GenerateMipmap(gl::TEXTURE_2D_ARRAY);
+}
+
+Texture Device::create_array_from(const Image& img, bool single_channel) {
+  Texture t = create_array(img.width, img.height, 1, single_channel);
+  upload_layer(t, 0, img);
+  finish_array(t);
   return t;
 }
 

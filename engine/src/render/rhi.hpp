@@ -17,6 +17,8 @@ namespace totu::render {
 struct Texture {
   gl::GLuint id = 0;
   int width = 0, height = 0;
+  int layers = 0;              // > 0: tömbtextúra (a sprite-köteg ezt használja)
+  bool single_channel = false; // R8 (csapatmaszk: csak az alfa)
 };
 
 struct Program {
@@ -40,7 +42,14 @@ class Device {
   std::string info() const;     // gyártó, eszköz, GL-változat
   int max_texture_size() const { return max_texture_; }
 
-  Texture create_texture(const Image& img, bool smooth = true);
+  Texture create_texture(const Image& img, bool smooth = true);   // egyszerű 2D (render-célpont)
+  // Tömbtextúra `layers` réteggel (RGBA8, vagy R8 a maszkhoz – abba a kép alfája kerül); a rétegeket utána egyenként
+  // kell feltölteni, végül a finish_array készíti a mipmapeket.
+  Texture create_array(int w, int h, int layers, bool single_channel);
+  void upload_layer(const Texture& t, int layer, const Image& img);
+  void finish_array(const Texture& t);
+  Texture create_array_from(const Image& img, bool single_channel);   // egyrétegű tömb egy képből
+  int max_array_layers() const { return max_layers_; }
   void destroy(Texture& t);
   Program create_program(const char* vertex_src, const char* fragment_src, std::string* error);
   void destroy(Program& p);
@@ -54,7 +63,7 @@ class Device {
 
  private:
   gl::Api gl_;
-  int max_texture_ = 0;
+  int max_texture_ = 0, max_layers_ = 0;
 };
 
 }  // namespace totu::render

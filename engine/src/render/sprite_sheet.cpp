@@ -102,11 +102,8 @@ std::optional<SpriteSheet> load_sprite_sheet(Device& dev, const std::string& jso
     s.scale /= 2.0f;
   }
   premultiply(*img);
-  s.base = dev.create_texture(*img, true);
-  if (mask) {
-    premultiply(*mask);
-    s.mask = dev.create_texture(*mask, true);
-  }
+  s.base = dev.create_array_from(*img, false);
+  if (mask) s.mask = dev.create_array_from(*mask, true);
   return s;
 }
 
