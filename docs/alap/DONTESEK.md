@@ -302,3 +302,13 @@ pályaváltozás). **Minden népre hat a napszak és az időjárás is** (a tula
 (főnépek, kisnépek, Vadon) van napszakos és időjárásos hatása. A javasolt működés, a faji és az általános hatások, a pályaváltozások és az ütemezés:
 [spec/NAPSZAK_ES_IDOJARAS.md](spec/NAPSZAK_ES_IDOJARAS.md) – a faji számok és néhány részlet tulajdonosi jóváhagyásra
 vár; a megvalósítás M5–M8, M11.
+
+### D36 – Többféle gépi ellenfél, modolható AI · KÉRÉS RÖGZÍTVE, A RÉSZLETEK JAVASLAT (2026-11-12)
+
+A tulajdonos kérése: ne csak nehézségi szintek legyenek, hanem többféle **személyiség** is (védekező, támadó,
+kiegyenlített és más logikus stílusok) – ez a küldetésekhez is jól illik –, és az AI **modként** is hozzáadható
+legyen. Javaslat: két független tengely – nehézség (6 szint, a legfelső nyíltan „csaló”) és személyiség (11 stílus:
+védekező, támadó, kiegyenlített, gyors roham, terjeszkedő, technológus, portyázó, ostromló, csapatjátékos,
+alkalmazkodó, népe szerinti) –, a személyiség adat; Lua-AI keretrendszer menedzserekkel, csak a látott információval;
+küldetés-AI (építési lista, hullámok); AI-modok három szinten. Részletek: [spec/GEPI_ELLENFEL.md](spec/GEPI_ELLENFEL.md);
+megvalósítás M9, M11, M13.

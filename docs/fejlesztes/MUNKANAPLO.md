@@ -364,3 +364,8 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 **Tesztpályák:** NAV-BRIDGE (folyó 4 csempés híddal), NAV-FORM (4 csempés rés).
 **Tesztek:** 53 (4 új): alakzatok és az adat; NAV-FORM (24 egység a résen át, a 432. tickre összeáll, elöl a közelharcosok, 5 útkeresés + 20 közös út); sor alakzat; NAV-BRIDGE (két 50 fős szövetséges sereg szemből: mind a 100 átkel a 604. tickre, átfedés nélkül, 102 útkeresés). A rögzített navigációs állapothash újra rögzítve (`0xe28045f47c51f3c1`; a `Path` új mezői miatt változott).
 **Mérés – kell-e flow field?** Nem: 100 egység szemből egy hídon tickenként átlag 0,05 ms, legrosszabb 3,1 ms; a csoportos parancs osztályonként egyetlen útkeresés. A flow field az ADR-006 szerint csak mért igény esetén jön – az 5. lépés 8 × 200-as mérése dönt véglegesen.
+
+## 2026-11-12 – D36: többféle gépi ellenfél, modolható AI (kérés rögzítve, javaslat)
+
+**Kérés (tulajdonos):** a nehézségi szinteken túl többféle személyiségű AI (védekező, támadó, kiegyenlített és más logikus stílusok, a küldetésekhez is), és AI modként is hozzáadható legyen.
+**Kimenet:** `docs/alap/spec/GEPI_ELLENFEL.md` – nehézség (6 szint, csalás csak a nyíltan jelölt legfelsőn) és személyiség (11 stílus, adatként) két tengelyen; Lua-AI keretrendszer menedzserekkel (0 A.D. Petra mintájára), csak a látott információval, ütemezve; küldetés-AI WC3-szerűen; AI-modok három szinten; próbák; nyitott kérdések. A motorterv M9-e kiegészítve.
