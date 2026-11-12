@@ -34,14 +34,17 @@ add_library(totu_core
   src/core/hash.cpp
   src/core/fixed.cpp
   src/core/angle.cpp
-  src/core/decimal.cpp)
+  src/core/decimal.cpp
+  src/content/json.cpp
+  src/content/vfs.cpp
+  src/content/templates.cpp)
 target_include_directories(totu_core PUBLIC src)
 target_link_libraries(totu_core PRIVATE totu_options)
 target_compile_definitions(totu_core PUBLIC TOTU_VERSION="${PROJECT_VERSION}")
 
 # --- tesztek -----------------------------------------------------------------------------------------------------
 enable_testing()
-add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp)
+add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp)
 target_link_libraries(totu_tests PRIVATE totu_core totu_options)
 add_test(NAME core COMMAND totu_tests)
 
