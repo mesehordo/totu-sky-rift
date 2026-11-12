@@ -50,6 +50,7 @@ NavGrid::NavGrid(const Map& map, const TerrainTable& table, NavConfig config)
   base_.assign(class_ids_.size(), std::vector<uint8_t>(n, 0));
   clear_.assign(class_ids_.size(), std::vector<uint8_t>(n, 0));
   blocked_.assign(n, 0);
+  gate_.assign(n, 0);
   rebuild_all();
 }
 
@@ -201,6 +202,20 @@ void NavGrid::terrain_changed(TileRect r) {
   after_change(r);
 }
 
+void NavGrid::set_gate(TileRect r, uint8_t mask) {
+  r.w = std::min(r.w, map_.width() - r.x);
+  r.h = std::min(r.h, map_.height() - r.y);
+  if (r.x < 0 || r.y < 0 || r.w <= 0 || r.h <= 0) return;
+  for (int y = r.y * kNavPerTile; y < (r.y + r.h) * kNavPerTile; ++y) {
+    for (int x = r.x * kNavPerTile; x < (r.x + r.w) * kNavPerTile; ++x) gate_[index(x, y)] = mask;
+  }
+  gates_.erase(std::remove_if(gates_.begin(), gates_.end(), [&](const auto& g) {
+                 return g.first.x == r.x && g.first.y == r.y && g.first.w == r.w && g.first.h == r.h;
+               }),
+               gates_.end());
+  if (mask) gates_.emplace_back(r, mask);
+}
+
 uint64_t NavGrid::hash() const {
   core::StateHash h;
   h.add_i64(nw_);
@@ -208,6 +223,7 @@ uint64_t NavGrid::hash() const {
   for (const auto& cl : clear_) {
     h.add_bytes(std::string_view(reinterpret_cast<const char*>(cl.data()), cl.size()));
   }
+  h.add_bytes(std::string_view(reinterpret_cast<const char*>(gate_.data()), gate_.size()));
   return h.value();
 }
 

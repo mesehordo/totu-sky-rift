@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "content/json.hpp"
+#include "map/pathfinder.hpp"
 #include "script/host.hpp"
 
 namespace totu::sim {
@@ -36,7 +38,36 @@ std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Re
   return hosts;
 }
 
-void run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, std::vector<std::string>* messages = nullptr) {
+// A pálya és a navigáció a futás idejére (a szimuláció csak hivatkozik rájuk).
+struct Navigation {
+  std::optional<map::Map> map;
+  std::unique_ptr<map::NavGrid> nav;
+  std::unique_ptr<map::Pathfinder> pf;
+};
+
+bool attach_map(Sim& s, const Replay& r, const map::TerrainTable* terrain, Navigation& nav, std::string& error) {
+  if (r.map.empty()) return true;
+  if (!terrain) {
+    error = "a pályás visszajátszáshoz terepadat kell";
+    return false;
+  }
+  std::vector<std::string> errors;
+  const auto doc = content::parse(r.map);
+  if (doc) nav.map = map::Map::from_json(*doc, *terrain, errors);
+  if (!nav.map) {
+    error = "hibás pálya a visszajátszásban" + (errors.empty() ? std::string() : ": " + errors.front());
+    return false;
+  }
+  nav.nav = std::make_unique<map::NavGrid>(*nav.map, *terrain);
+  nav.pf = std::make_unique<map::Pathfinder>(*nav.nav);
+  s.attach_navigation(nav.pf.get());
+  return true;
+}
+
+bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::TerrainTable* terrain, std::string& error,
+         std::vector<std::string>* messages = nullptr) {
+  Navigation navigation;
+  if (!attach_map(s, r, terrain, navigation, error)) return false;
   const auto hosts = attach_scripts(s, r);
   for (const auto& c : r.commands) s.queue(c);
   for (int64_t t = 0; t < r.ticks; ++t) {
@@ -46,28 +77,39 @@ void run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, std::vector<std:
   if (messages) {
     for (const auto& h : hosts) messages->insert(messages->end(), h->messages().begin(), h->messages().end());
   }
+  return true;
+}
+
+int format_of(const Replay& r) {
+  if (!r.map.empty()) return 3;
+  for (const auto& c : r.commands) {
+    if (c.needs_v3()) return 3;
+  }
+  return r.scripts.empty() ? 1 : 2;
 }
 
 }  // namespace
 
 Replay record(uint64_t seed, int64_t ticks, std::vector<Command> commands, int64_t checkpoint_every,
-              std::vector<ScriptFile> scripts) {
+              std::vector<ScriptFile> scripts, std::string map, const map::TerrainTable* terrain) {
   Replay r;
   r.seed = seed;
   r.ticks = ticks;
   r.checkpoint_every = checkpoint_every > 0 ? checkpoint_every : 30;
   r.commands = std::move(commands);
   r.scripts = std::move(scripts);
+  r.map = std::move(map);
   Sim s(seed);
-  run(s, r, r.checkpoints);
+  std::string error;
+  run(s, r, r.checkpoints, terrain, error);
   return r;
 }
 
-VerifyResult verify(const Replay& r) {
+VerifyResult verify(const Replay& r, const map::TerrainTable* terrain) {
   VerifyResult v;
   Sim s(r.seed);
   std::vector<Checkpoint> got;
-  run(s, r, got, &v.script_messages);
+  if (!run(s, r, got, terrain, v.error, &v.script_messages)) return v;
   if (got.size() != r.checkpoints.size()) {
     v.error = "eltérő számú ellenőrzőpont";
     return v;
@@ -92,17 +134,19 @@ VerifyResult verify(const Replay& r) {
 
 std::vector<uint8_t> encode(const Replay& r) {
   core::ByteWriter w;
+  const int format = format_of(r);
   w.str("totu-replay");
-  w.u32(r.scripts.empty() ? 1 : 2);
+  w.u32(static_cast<uint32_t>(format));
   w.u64(r.seed);
   w.i64(r.ticks);
   w.i64(r.checkpoint_every);
   w.u32(static_cast<uint32_t>(r.commands.size()));
-  for (const auto& c : r.commands) save_command(w, c);
-  if (!r.scripts.empty()) {
+  for (const auto& c : r.commands) save_command(w, c, format >= 3 ? 3 : 1);
+  if (format >= 2) {
     w.u32(static_cast<uint32_t>(r.scripts.size()));
     for (const auto& f : r.scripts) { w.str(f.mod); w.str(f.name); w.str(f.source); }
   }
+  if (format >= 3) w.str(r.map);
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -117,7 +161,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version != 1 && version != 2) return std::nullopt;
+  if (version < 1 || version > 3) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -125,13 +169,13 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   if (r.ticks < 0 || r.checkpoint_every <= 0) return std::nullopt;
   const uint32_t n = rd.u32();
   for (uint32_t i = 0; i < n && rd.ok(); ++i) {
-    auto c = load_command(rd);
+    auto c = load_command(rd, version >= 3 ? 3 : 1);
     if (!c) return std::nullopt;
     r.commands.push_back(std::move(*c));
   }
-  if (version == 2) {
+  if (version >= 2) {
     const uint32_t k = rd.u32();
-    if (k == 0 || k > 10000) return std::nullopt;
+    if ((version == 2 && k == 0) || k > 10000) return std::nullopt;
     for (uint32_t i = 0; i < k && rd.ok(); ++i) {
       ScriptFile f;
       f.mod = rd.str();
@@ -140,6 +184,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
       r.scripts.push_back(std::move(f));
     }
   }
+  if (version >= 3) r.map = rd.str();
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {
     Checkpoint c;

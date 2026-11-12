@@ -11,6 +11,10 @@
 
 #include "sim/sim.hpp"
 
+namespace totu::map {
+class TerrainTable;
+}
+
 namespace totu::sim {
 
 struct Checkpoint {
@@ -34,12 +38,14 @@ struct Replay {
   int64_t checkpoint_every = 30;
   std::vector<Command> commands;
   std::vector<ScriptFile> scripts;
+  std::string map;                 // M4: a pálya (map.json szövege); üres = pálya és navigáció nélkül
   std::vector<Checkpoint> checkpoints;
 };
 
 // Felvétel: a megadott parancsokkal végigfuttatja a szimulációt, és rögzíti az ellenőrzőpontokat.
+// Pályás visszajátszáshoz (map nem üres) a terepfajták és mozgásosztályok táblája kell (a tartalomból).
 Replay record(uint64_t seed, int64_t ticks, std::vector<Command> commands, int64_t checkpoint_every = 30,
-              std::vector<ScriptFile> scripts = {});
+              std::vector<ScriptFile> scripts = {}, std::string map = {}, const map::TerrainTable* terrain = nullptr);
 
 struct VerifyResult {
   bool ok = false;
@@ -49,9 +55,9 @@ struct VerifyResult {
   std::string error;
   std::vector<std::string> script_messages;   // a szkriptek naplója az ellenőrző futásból
 };
-VerifyResult verify(const Replay& r);
+VerifyResult verify(const Replay& r, const map::TerrainTable* terrain = nullptr);
 
-// Szkript nélkül az 1-es, szkripttel a 2-es változat (a szkriptek forrásával).
+// Szkript nélkül az 1-es, szkripttel a 2-es, pályával vagy M4-es parancsokkal a 3-as változat.
 std::vector<uint8_t> encode(const Replay& r);
 std::optional<Replay> decode(const std::vector<uint8_t>& data);
 

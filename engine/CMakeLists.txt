@@ -73,11 +73,15 @@ target_link_libraries(totu_tests PRIVATE totu_core totu_options)
 add_test(NAME core COMMAND totu_tests)
 
 # --- ablak nĂ©lkĂĽli szimulĂˇciĂłs futtatĂł Ă©s az M2 kapu: a golden visszajĂˇtszĂˇs minden rendszeren egyezik -----------
-add_executable(totu_sim src/tools/totu_sim.cpp)
+add_executable(totu_sim src/tools/totu_sim.cpp src/tools/nav_tools.cpp)
 target_link_libraries(totu_sim PRIVATE totu_core totu_options)
+target_compile_definitions(totu_sim PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
 add_test(NAME golden_replay COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m2.trep)
 # M3 kapu: a szkriptes golden visszajĂˇtszĂˇs (Lua-kĂĽldetĂ©s + csata) minden rendszeren egyezik
 add_test(NAME golden_replay_m3 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m3.trep)
+# M4 kapu: a pályás golden visszajátszás (alakzatok, csata, kapu, építés a NAV-BRIDGE pályán) minden rendszeren egyezik
+add_test(NAME golden_replay_m4 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m4.trep
+         --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
 
 # --- kliens (SDL3 + OpenGL 3.3 core) ------------------------------------------------------------------------------
 if(TOTU_CLIENT)

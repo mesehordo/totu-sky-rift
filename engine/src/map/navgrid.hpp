@@ -69,6 +69,12 @@ class NavGrid {
   // szirtek miatt egy csempényi környékük) navcelláinak járhatósága újraszámolódik.
   void terrain_changed(TileRect r);
 
+  // Kapu (ADR-006 8. pont): a navcellák járhatók (a szabad tér nyitott kapuval számolódik), de csak a `mask` bitjeinek
+  // csapatai léphetnek rá (csapat = 0..7); 0 = a kapu eltávolítása. Az útkereső a kapukat külön régióként kezeli.
+  void set_gate(TileRect r, uint8_t mask);
+  uint8_t gate(int nx, int ny) const { return gate_[index(nx, ny)]; }
+  const std::vector<std::pair<TileRect, uint8_t>>& gates() const { return gates_; }
+
   void rebuild_all();                // teljes újraszámolás (teszthez és betöltéshez)
   uint64_t hash() const;
 
@@ -86,6 +92,8 @@ class NavGrid {
   std::vector<std::vector<uint8_t>> base_;        // grid → 1, ha a terep szerint járható
   std::vector<std::vector<uint8_t>> clear_;       // grid → szabad tér
   std::vector<uint8_t> blocked_;                  // statikus akadályok száma navcellánként
+  std::vector<uint8_t> gate_;                     // kapu csapatmaszkja navcellánként (0 = nincs kapu)
+  std::vector<std::pair<TileRect, uint8_t>> gates_;
 };
 
 }  // namespace totu::map

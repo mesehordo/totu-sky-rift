@@ -235,7 +235,7 @@ TEST_CASE("útkereső: indulás akadályból, repülő, rögzített út-hash min
     }
   }
   std::printf("  út-hash: 0x%016llx\n", static_cast<unsigned long long>(h.value()));
-  CHECK(h.value() == 0x4804f5ff69098eaeull);
+  CHECK(h.value() == 0x0f4f54236284369aull);
 }
 
 TEST_CASE("útkereső: mérés nagy (256 × 256) pályán") {
@@ -276,4 +276,54 @@ TEST_CASE("útkereső: mérés nagy (256 × 256) pályán") {
               "legrosszabb %.2f ms, épület lerakása %.2f ms\n",
               ms(t0, t1), ms(t1, t2), pf.region_count(g, 0), total / 20, worst, upd);
   CHECK(found == 20);
+}
+
+TEST_CASE("útkereső: kapuk – csapatonkénti elérhetőség = teljes bejárás, véletlen kapukkal és falakkal") {
+  const map::Map m(40, 40, *terrain().terrain("grass"));
+  map::NavGrid nav(m, terrain());
+  map::Pathfinder pf(nav);
+  const int g = grid(nav, "land");
+  core::Pcg32 rng(77, 5);
+  bool same = true;
+  for (int step = 0; step < 25; ++step) {
+    if (rng.chance(1, 2)) {
+      map::TileRect r{rng.range(0, 37), rng.range(0, 37), rng.range(6, 30), 1};
+      if (rng.chance(1, 2)) std::swap(r.w, r.h);
+      pf.add_obstacle(r);
+    } else {
+      pf.set_gate({rng.range(0, 37), rng.range(0, 37), rng.range(1, 3), rng.range(1, 3)},
+                  static_cast<uint8_t>(rng.range(0, 255)));
+    }
+    for (int team = -1; team < 8; team += 3) {
+      // teljes bejárás a csapat szemével (4-szomszédság), a kis méretosztállyal
+      std::vector<int> comp(static_cast<size_t>(nav.width() * nav.height()), 0);
+      int id = 0;
+      for (int y = 0; y < nav.height(); ++y) {
+        for (int x = 0; x < nav.width(); ++x) {
+          if (comp[static_cast<size_t>(y * nav.width() + x)] || !pf.passable(g, 0, x, y, team)) continue;
+          ++id;
+          std::deque<NavCell> q{{x, y}};
+          comp[static_cast<size_t>(y * nav.width() + x)] = id;
+          while (!q.empty()) {
+            const NavCell c = q.front();
+            q.pop_front();
+            const int d[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+            for (const auto& v : d) {
+              const int nx = c.x + v[0], ny = c.y + v[1];
+              if (!pf.passable(g, 0, nx, ny, team)) continue;
+              int& cc = comp[static_cast<size_t>(ny * nav.width() + nx)];
+              if (!cc) { cc = id; q.push_back({nx, ny}); }
+            }
+          }
+        }
+      }
+      for (int k = 0; k < 40; ++k) {
+        const NavCell a{rng.range(0, 79), rng.range(0, 79)}, b{rng.range(0, 79), rng.range(0, 79)};
+        const int ca = comp[static_cast<size_t>(a.y * nav.width() + a.x)];
+        const bool truth = ca != 0 && ca == comp[static_cast<size_t>(b.y * nav.width() + b.x)];
+        same &= pf.reachable(g, 0, a, b, team) == truth;
+      }
+    }
+  }
+  CHECK(same);
 }

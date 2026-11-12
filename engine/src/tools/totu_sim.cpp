@@ -2,7 +2,10 @@
 // Ablak nélküli szimulációs futtató (M2).
 //   totu_sim scenario <ki.trep> [--seed S] [--units N] [--ticks T]   próbacsata rögzítése visszajátszásként
 //   totu_sim scripted <ki.trep> <szkript.lua> [--seed S] [--ticks T]   Lua-küldetés rögzítése (M3)
+//   totu_sim navgolden <ki.trep> <pálya.json> [--seed S] [--ticks T]  golden M4: pálya, alakzatok, kapu, építés
+//   totu_sim bench [--players 8] [--units 200] [--size 256] [--ticks 1800]   mozgásmérés (M4 kapu: p99 <= 40 ms)
 //   totu_sim verify <be.trep>                                         visszajátszás ellenőrzése (kilépési kód 0 = egyezik)
+// A pályás parancsok a tartalmat (terepfajták) a --content <mappa> helyről töltik (alapérték: a forrásfa tartalma).
 // A forgatókönyv két sereg csatája: mindkét fél N egysége a pálya két szélén jelenik meg, és rendszeres
 // mozgásparancsokat kap; a parancsokat a visszajátszás rögzíti, így az ellenőrzés a forgatókönyv nélkül is fut.
 #include <chrono>
@@ -16,7 +19,9 @@
 
 #include "core/platform_info.hpp"
 #include "core/rng.hpp"
+#include "map/terrain.hpp"
 #include "sim/replay.hpp"
+#include "tools/nav_tools.hpp"
 
 using namespace totu;
 using core::Fixed;
@@ -75,6 +80,13 @@ std::vector<uint8_t> read_file(const char* path) {
   return {std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
 }
 
+const char* arg_str(int argc, char** argv, const char* name, const char* def) {
+  for (int i = 0; i + 1 < argc; ++i) {
+    if (std::strcmp(argv[i], name) == 0) return argv[i + 1];
+  }
+  return def;
+}
+
 long long arg_ll(int argc, char** argv, const char* name, long long def) {
   for (int i = 0; i + 1 < argc; ++i) {
     if (std::strcmp(argv[i], name) == 0) return std::strtoll(argv[i + 1], nullptr, 10);
@@ -123,10 +135,49 @@ int main(int argc, char** argv) {
                 static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
     return 0;
   }
+  const char* content = arg_str(argc, argv, "--content", TOTU_CONTENT_DIR);
+  if (argc >= 4 && std::strcmp(argv[1], "navgolden") == 0) {
+    map::TerrainTable terrain;
+    if (!tools::load_terrain(content, terrain)) return 2;
+    const auto seed = static_cast<uint64_t>(arg_ll(argc, argv, "--seed", 20261112));
+    const int64_t ticks = arg_ll(argc, argv, "--ticks", 2400);
+    const auto mapbytes = read_file(argv[3]);
+    if (mapbytes.empty()) { std::fprintf(stderr, "nem olvasható: %s\n", argv[3]); return 2; }
+    const auto t0 = std::chrono::steady_clock::now();
+    sim::Replay r = sim::record(seed, ticks, tools::golden_m4_commands(seed), 30, {},
+                                std::string(mapbytes.begin(), mapbytes.end()), &terrain);
+    const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+    if (r.checkpoints.empty()) { std::fprintf(stderr, "a pálya nem tölthető be\n"); return 2; }
+    const auto v = sim::verify(r, &terrain);
+    if (!v.ok) { std::fprintf(stderr, "a felvétel önmagával sem egyezik: %s\n", v.error.c_str()); return 1; }
+    if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
+    std::printf("rögzítve: %s – %lld tick, %zu parancs, %zu ellenőrzőpont, végső hash 0x%016llx (%.1f ms)\n", argv[2],
+                static_cast<long long>(r.ticks), r.commands.size(), r.checkpoints.size(),
+                static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
+    return 0;
+  }
+  if (argc >= 2 && std::strcmp(argv[1], "bench") == 0) {
+    map::TerrainTable terrain;
+    if (!tools::load_terrain(content, terrain)) return 2;
+    const int players = static_cast<int>(arg_ll(argc, argv, "--players", 8));
+    const int units = static_cast<int>(arg_ll(argc, argv, "--units", 200));
+    const int size = static_cast<int>(arg_ll(argc, argv, "--size", 256));
+    const int ticks = static_cast<int>(arg_ll(argc, argv, "--ticks", 1800));
+    const auto b = tools::bench(terrain, players, units, size, ticks, 7);
+    std::printf("mérés: %d × %d egység, %d × %d pálya, %d tick – tick p50 %.2f ms, p99 %.2f ms, max %.2f ms, "
+                "átlag %.2f ms; %lld útkeresés; kapu (p99 <= 40 ms): %s\n", players, units, size, size, ticks, b.p50,
+                b.p99, b.max, b.avg, static_cast<long long>(b.paths), b.p99 <= 40.0 ? "TELJESÜL" : "NEM TELJESÜL");
+    std::printf("  útkeresés: %lld (közvetlen %lld, közös %lld), kibontva %lld; idő: útkeresés %.0f ms, mozgás %.0f ms\n",
+                static_cast<long long>(b.paths), static_cast<long long>(b.direct), static_cast<long long>(b.shared),
+                static_cast<long long>(b.expanded), b.path_ms, b.move_ms);
+    return b.p99 <= 40.0 ? 0 : 1;
+  }
   if (argc >= 3 && std::strcmp(argv[1], "verify") == 0) {
     auto r = sim::decode(read_file(argv[2]));
     if (!r) { std::fprintf(stderr, "hibás vagy hiányzó visszajátszás: %s\n", argv[2]); return 2; }
-    const auto v = sim::verify(*r);
+    map::TerrainTable terrain;
+    if (!r->map.empty() && !tools::load_terrain(content, terrain)) return 2;
+    const auto v = sim::verify(*r, r->map.empty() ? nullptr : &terrain);
     if (!v.script_messages.empty()) {
       std::printf("szkriptnapló: %zu sor, az utolsó: %s\n", v.script_messages.size(), v.script_messages.back().c_str());
     }
@@ -141,6 +192,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::fprintf(stderr, "használat: totu_sim scenario <ki.trep> [--seed S] [--units N] [--ticks T] | "
-                       "scripted <ki.trep> <szkript.lua> [--seed S] [--ticks T] | verify <be.trep>\n");
+                       "scripted <ki.trep> <szkript.lua> [--seed S] [--ticks T] | navgolden <ki.trep> <pálya.json> | "
+                       "bench [--players P] [--units N] [--size S] [--ticks T] | verify <be.trep> [--content mappa]\n");
   return 2;
 }

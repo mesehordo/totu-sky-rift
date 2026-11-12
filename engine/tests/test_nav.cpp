@@ -219,8 +219,34 @@ TEST_CASE("navigáció: útkérés-keret, determinizmus, mentés–betöltés–
   CHECK(c.sim.hash() == a.sim.hash());
   CHECK(c.sim.save() == a.sim.save());
   std::printf("  navigációs állapothash: 0x%016llx\n", static_cast<unsigned long long>(a.sim.hash()));
-  CHECK(a.sim.hash() == 0xe28045f47c51f3c1ull);   // minden rendszeren ugyanaz (mozgás, ütközés, kitérés)
+  CHECK(a.sim.hash() == 0x6daebed53e7984a7ull);   // minden rendszeren ugyanaz (mozgás, ütközés, kitérés)
   bool body = false;
   for (const auto& [n, h] : a.sim.component_hashes()) body |= n == "Path";
   CHECK(body);
+}
+
+TEST_CASE("navigáció: NAV-GATE – a kapu a saját csapatnak nyitott, az ellenfélnek fal") {
+  World w("NAV-GATE.json", 31);
+  const int g = w.nav.grid_of(*terrain().movement_class("land"));
+  const map::NavCell north = map::Pathfinder::cell_of(F(10), F(5)), south = map::Pathfinder::cell_of(F(10), F(25));
+  CHECK(w.pf.reachable(g, 0, north, south, 0) && w.pf.reachable(g, 0, north, south, 1));
+  w.sim.nav_gate(18, 14, 2, 2, 0b01);   // az 1. játékos (0. csapat) kapuja
+  CHECK(w.pf.reachable(g, 0, north, south, 0));
+  CHECK(!w.pf.reachable(g, 0, north, south, 1));
+  CHECK(w.pf.reachable(g, 0, north, south));   // csapat nélkül (minden kapu nyitva)
+  const auto own = w.unit(F(10), F(5), F(40, 100), 1), foe = w.unit(F(12), F(5), F(40, 100), 2);
+  w.sim.order_move(own, F(10), F(25));
+  w.sim.order_move(foe, F(12), F(25));
+  for (int t = 0; t < 600; ++t) w.sim.step();
+  CHECK(!w.moving(own) && w.dist(own, F(10), F(25)) <= F(1, 10));
+  CHECK(!w.moving(foe) && w.pos(foe).y < F(14));   // a falnál, a kapu előtt megáll
+  // a kapu megnyitása mindkét csapatnak: az ellenfél is átjut
+  w.sim.nav_gate(18, 14, 2, 2, 0b11);
+  CHECK(w.pf.reachable(g, 0, north, south, 1));
+  w.sim.order_move(foe, F(12), F(25));
+  for (int t = 0; t < 600; ++t) w.sim.step();
+  CHECK(w.dist(foe, F(12), F(25)) <= F(1, 10));
+  // eltávolítás: közönséges átjáró
+  w.sim.nav_gate(18, 14, 2, 2, 0);
+  CHECK(w.nav.gates().empty() && w.pf.reachable(g, 0, north, south, 5));
 }

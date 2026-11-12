@@ -16,6 +16,7 @@
 // olcsó). Minden számítás egész, a döntetlenek rögzített sorrendben dőlnek el – determinisztikus.
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <optional>
 #include <utility>
@@ -55,31 +56,41 @@ class Pathfinder {
   static NavCell cell_of(Fixed x, Fixed y);              // csempe-koordinátából navcella
   static std::pair<Fixed, Fixed> center_of(NavCell c);   // a navcella közepe csempe-koordinátában
 
-  // 0 = nem fér el / járhatatlan; különben a komponens azonosítója + 1
-  uint32_t component(int grid, int size, NavCell c) const;
-  bool reachable(int grid, int size, NavCell a, NavCell b) const;
+  // Csapat (0..7) a kapukhoz: a kapura csak a jogosult csapat léphet; -1 = a kapukat figyelmen kívül hagyja (nyitott).
+  static constexpr int kNoTeam = -1;
+  void set_gate(TileRect r, uint8_t mask);    // a navrácsra és a hierarchiára is
+
+  // 0 = nem fér el / járhatatlan (a csapatnak); különben a komponens azonosítója
+  uint32_t component(int grid, int size, NavCell c, int team = kNoTeam) const;
+  bool reachable(int grid, int size, NavCell a, NavCell b, int team = kNoTeam) const;
+  bool passable(int grid, int size, int x, int y, int team = kNoTeam) const;
   // A `target`-hez legközelebbi navcella, amely a `component` (component() értéke) komponensbe esik; 0 = bármely
   // elférő navcella. Euklideszi távolság, döntetlennél a kisebb (y, x).
-  std::optional<NavCell> nearest(int grid, int size, uint32_t component, NavCell target) const;
+  std::optional<NavCell> nearest(int grid, int size, uint32_t component, NavCell target, int team = kNoTeam) const;
 
   // Útkeresés csempe-koordinátákkal. grid < 0 (repülő): egyenes út.
-  PathResult find_path(int grid, int size, Fixed sx, Fixed sy, Fixed gx, Fixed gy);
+  PathResult find_path(int grid, int size, Fixed sx, Fixed sy, Fixed gx, Fixed gy, int team = kNoTeam);
   // Ugyanez hierarchia nélkül, a teljes rácson (összehasonlító referencia a tesztekhez és a méréshez).
-  PathResult find_path_flat(int grid, int size, Fixed sx, Fixed sy, Fixed gx, Fixed gy);
+  PathResult find_path_flat(int grid, int size, Fixed sx, Fixed sy, Fixed gx, Fixed gy, int team = kNoTeam);
 
   // Látóvonal két navcella között: minden érintett navcellában elfér-e az egység (sarkon mindkét szomszéd kell).
-  bool line_of_sight(int grid, int size, NavCell a, NavCell b) const;
+  bool line_of_sight(int grid, int size, NavCell a, NavCell b, int team = kNoTeam) const;
 
   size_t region_count(int grid, int size) const;
 
  private:
   struct Region {
     NavCell rep;               // a klaszter közepéhez legközelebbi navcella
-    uint32_t component = 0;
+    uint8_t gate = 0;          // kapurégió csapatmaszkja (0 = közönséges régió)
+    std::array<uint32_t, 9> comp{};   // [0]: minden kapu nyitva; [1 + t]: a t. csapat nézete
+  };
+  struct Seed {
+    NavCell rep;
+    uint8_t gate = 0;
   };
   struct Hier {
     std::vector<uint16_t> label;          // navcellánként a klaszteren belüli régió (1…), 0 = nem fér el
-    std::vector<std::vector<NavCell>> reps;   // klaszterenként a régiók képviselője
+    std::vector<std::vector<Seed>> reps;      // klaszterenként a régiók képviselője és kapumaszkja
     std::vector<uint32_t> offset;         // klaszterenként az első régió globális indexe
     std::vector<Region> regions;
     std::vector<uint32_t> adj_start;      // CSR szomszédság
@@ -96,11 +107,12 @@ class Pathfinder {
   void rebuild_graph(int grid, int size);
   void update_area(TileRect r);
 
-  std::vector<uint32_t> region_route(const Hier& h, uint32_t from, uint32_t to) const;
-  PathResult search(int grid, int size, Fixed sx, Fixed sy, Fixed gx, Fixed gy, bool hierarchical);
+  static bool gate_ok(uint8_t gate, int team) { return gate == 0 || team < 0 || ((gate >> team) & 1u) != 0; }
+  std::vector<uint32_t> region_route(const Hier& h, uint32_t from, uint32_t to, int team) const;
+  PathResult search(int grid, int size, Fixed sx, Fixed sy, Fixed gx, Fixed gy, bool hierarchical, int team);
   bool fine_astar(int grid, int size, NavCell s, NavCell g, const std::vector<uint8_t>* allowed, const Hier* h,
-                  std::vector<NavCell>& out, int64_t& cost, size_t& expanded);
-  std::vector<NavCell> smooth(int grid, int size, NavCell start, const std::vector<NavCell>& cells) const;
+                  std::vector<NavCell>& out, int64_t& cost, size_t& expanded, int team);
+  std::vector<NavCell> smooth(int grid, int size, NavCell start, const std::vector<NavCell>& cells, int team) const;
   int64_t step_cost(int grid, int x, int y, bool diagonal) const;
   int64_t heuristic(int grid, NavCell a, NavCell b) const;
   void compute_max_speed();

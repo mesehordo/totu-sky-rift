@@ -131,6 +131,7 @@ struct Path {
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
 struct NavParams {
   int path_budget = 32;                         // útkeresés tickenként (a többi a sorban vár)
+  int64_t node_budget = 40000;                  // kibontott navcella tickenként (a keresések idejének kerete)
   int stuck_ticks = 15;                         // ennyi tick haladás nélkül → kitérés / újratervezés
   int wait_ticks = 120;                         // ennyi várakozás egy mozgó egység mögött számít beragadásnak
   int max_repaths = 3;                          // utána megáll (dugóban előbb szünet és újrakezdés)
@@ -143,24 +144,36 @@ struct NavParams {
 
 struct NavStats {
   int paths_this_tick = 0;
+  int64_t expanded_this_tick = 0;
   int queued = 0;
   int64_t paths_total = 0;
   int64_t direct_total = 0;    // látóvonalas közvetlen utak (keresés nélkül)
   int64_t shared_total = 0;    // csoporttagok, akik a csoport közös útját kapták
+  int64_t expanded_total = 0;  // a finom keresések kibontott navcellái
+  double path_ms = 0, move_ms = 0;   // mérés (nem állapot): az útkeresés és a mozgás ideje összesen
 };
 
 // --- parancsok -----------------------------------------------------------------------------------------------------
 struct Command {
-  enum class Kind : uint8_t { Spawn = 1, Move = 2 };
+  // M4: GroupMove (alakzatban), Block (építés/bontás: csempés téglalap akadály), Gate (kapu csapatmaszkkal)
+  enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
-  Fixed x, y;                // Spawn: hely; Move: cél
+  Fixed x, y;                // Spawn: hely; Move, GroupMove: cél
   int32_t hp = 100;          // Spawn
   Fixed speed;               // Spawn
   int32_t damage = 10, spread = 4, cooldown = 30;   // Spawn
   Fixed range;               // Spawn
-  std::vector<EntityId> units;   // Move
+  std::vector<EntityId> units;   // Move, GroupMove
+  // M4 (a 3-as parancsformátumtól)
+  Fixed radius;              // Spawn: test sugara (0 = alapérték)
+  uint8_t move_class = 0xFF; // Spawn: mozgásosztály (TerrainTable sorszám; 0xFF = szárazföldi)
+  uint8_t formation = 1;     // GroupMove: Formation
+  int32_t rx = 0, ry = 0, rw = 0, rh = 0;   // Block, Gate: csempés téglalap
+  uint8_t flag = 0;          // Block: 1 = lerakás, 0 = bontás; Gate: csapatmaszk
+  // a parancs csak a 3-as formátumban írható le (M4-mezők vagy -fajták)
+  bool needs_v3() const;
 };
 
 class Sim;
@@ -199,6 +212,10 @@ class Sim {
   bool set_body(EntityId e, Fixed radius, uint8_t movement_class);
   // Akadály- vagy terepváltozás után: minden mozgó egység újratervez (a következő útkeresési körben).
   void navigation_changed();
+  // Építés / bontás (csempés téglalap akadály) és kapu (csapatmaszk, 0 = eltávolítás): a navrács és a hierarchia
+  // frissül, a mozgó egységek újraterveznek.
+  void nav_block(int x, int y, int w, int h, bool add);
+  void nav_gate(int x, int y, int w, int h, uint8_t mask);
   // Csoportos mozgás alakzatban (ADR-006 7. pont): minden tag a saját helyére megy (a csoport célpontja köré, a
   // haladási irány szerint forgatva); a WC3-szerű alakzatnál elöl a közelharcosok; együtt haladva a leglassabb tag
   // sebességével. Az azonos méretű és mozgásosztályú tagok egy közös utat kapnak (egy útkeresés a csoportnak).
@@ -247,7 +264,8 @@ class Sim {
   std::vector<std::vector<EntityId>> buckets_;  // vödrönként az egységek (nem állapot: tickenként újraépül)
 };
 
-void save_command(core::ByteWriter& w, const Command& c);
-std::optional<Command> load_command(core::ByteReader& r);
+// format: 1 = M2-es parancs (Spawn, Move), 3 = M4-es (a további mezőkkel és fajtákkal)
+void save_command(core::ByteWriter& w, const Command& c, int format = 3);
+std::optional<Command> load_command(core::ByteReader& r, int format = 3);
 
 }  // namespace totu::sim
