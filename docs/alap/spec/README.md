@@ -16,6 +16,7 @@ Cél: az új motor ([UJ_MOTOR_TERV.md](../UJ_MOTOR_TERV.md)) minden fajszabályt
 | [ELFOGLALAS_ES_ELOLEPTETES.md](ELFOGLALAS_ES_ELOLEPTETES.md) | új mechanikák: épületelfoglalás, megszállás, előléptetés (D30) | **terv** (M7) |
 | [KISFAJOK.md](KISFAJOK.md) | a szövetség, a beilleszkedés a gazda népbe, a 13 kisnép, kisnép-táborok és a Vadon; átvizsgálás és javaslat | **kész**; döntések: D26 |
 | [SZKRIPT_API.md](SZKRIPT_API.md) | a Lua-réteg (M3): homokozó, determinizmus, korlátok, Game felület, események, mentés, szkriptes visszajátszás | **kész** (első változat, M3) |
+| [NAPSZAK_ES_IDOJARAS.md](NAPSZAK_ES_IDOJARAS.md) | napszakok és időjárás (D35): meccsbeállítás, determinisztikus környezeti rendszer, általános és faji hatások, pályaváltozás, ütemezés | **javaslat** |
 
 ## Egy szabály leírása
 
