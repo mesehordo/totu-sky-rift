@@ -97,8 +97,15 @@ void World::step() {
   for (auto it = vis_.begin(); it != vis_.end();) {
     const auto* p = sim_->world().alive(it->first) ? sim_->world().get<sim::Position>(it->first) : nullptr;
     if (!p) {
+      if (fx_.size() < 4096) fx_.push_back({it->second.px, it->second.py, true});
       it = vis_.erase(it);
       continue;
+    }
+    if (const auto* hh = sim_->world().get<sim::Health>(it->first)) {
+      if (it->second.hp >= 0 && hh->hp < it->second.hp && fx_.size() < 4096) {
+        fx_.push_back({to_px(p->x), to_px(p->y) - 6.0f, false});
+      }
+      it->second.hp = hh->hp;
     }
     const float dx = to_px(p->x) - it->second.px, dy = to_px(p->y) - it->second.py;
     it->second.moving = dx * dx + dy * dy > 0.01f;

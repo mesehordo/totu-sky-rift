@@ -11,6 +11,9 @@
 //                                  alakzatban (1–6: alakzat); --content mappa: a tartalom helye
 //   totu --daytime T               rögzített napszak (0 = hajnal, 0,275 = dél, 0,75 = éjfél); különben 4 perces ciklus
 //   totu --nofog                   köd nélkül
+//   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
+//                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
+//   totu --nopost                  utófeldolgozás nélkül (a 4. lépés képe)
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
 #include <SDL3/SDL.h>
@@ -31,6 +34,9 @@
 #include "client/world.hpp"
 #include "render/atlas.hpp"
 #include "render/daylight.hpp"
+#include "render/effects.hpp"
+#include "render/particles.hpp"
+#include "render/weather_look.hpp"
 #include "render/lighting.hpp"
 #include "render/terrain_view.hpp"
 #include "render/rhi.hpp"
@@ -57,6 +63,9 @@ struct Options {
   std::string content = TOTU_CONTENT_DIR;
   double daytime = -1;
   bool fog = true;
+  bool post = true;
+  render::Weather weather = render::Weather::Clear;
+  float weather_power = 1.0f;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -216,6 +225,16 @@ int main(int argc, char** argv) {
     else if (a == "--content") o.content = next();
     else if (a == "--daytime") o.daytime = std::strtod(next(), nullptr);
     else if (a == "--nofog") o.fog = false;
+    else if (a == "--nopost") o.post = false;
+    else if (a == "--weather") {
+      const std::string v = next();
+      const size_t colon = v.find(':');
+      if (!render::weather_from_name(v.substr(0, colon), &o.weather)) {
+        std::fprintf(stderr, "ismeretlen időjárás: %s\n", v.c_str());
+        return 2;
+      }
+      if (colon != std::string::npos) o.weather_power = std::clamp(std::strtof(v.c_str() + colon + 1, nullptr), 0.0f, 1.0f);
+    }
     else if (a == "--size") {   // SZxM
       char* end = nullptr;
       const char* v = next();
@@ -273,6 +292,20 @@ int main(int argc, char** argv) {
     client::Camera cam;
     render::Lighting lighting;
     std::vector<render::Light> lights;
+    render::Effects effects;
+    render::ParticleSystem particles;
+    uint32_t fx_rng = 0x9e3779b9u;   // a látvány saját véletlenje (eső cseppjei, parázs)
+    auto fx_rand = [&fx_rng]() {
+      fx_rng ^= fx_rng << 13;
+      fx_rng ^= fx_rng >> 17;
+      fx_rng ^= fx_rng << 5;
+      return static_cast<float>(fx_rng >> 8) / 16777216.0f;
+    };
+    // időjárás: a jelenlegi és a cél, fokozatos átmenettel (V billentyű)
+    render::Weather weather_from = o.weather, weather_to = o.weather;
+    double weather_since = -100.0;
+    constexpr double kWeatherBlend = 4.0;   // másodperc
+    double prev_t = 0;
     bool have_world = false, world_atlas_ok = false;
     sim::Formation formation = sim::Formation::Auto;
     float drag_x = 0, drag_y = 0;
@@ -294,6 +327,7 @@ int main(int argc, char** argv) {
         } else {
           terrain.set_map(world.map(), world.terrain());
           if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
+          if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           world.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
@@ -343,6 +377,12 @@ int main(int argc, char** argv) {
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_RIGHT) {
           world.order_move(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom, formation);
         }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_V && have_world) {   // következő időjárás
+          weather_from = weather_to;
+          weather_to = static_cast<render::Weather>((static_cast<int>(weather_to) + 1) % static_cast<int>(render::Weather::Count));
+          weather_since = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+          std::printf("időjárás: %s\n", render::weather_name(weather_to));
+        }
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key >= SDLK_1 && ev.key.key <= SDLK_6) {
           formation = static_cast<sim::Formation>(ev.key.key - SDLK_1);   // 1 nincs, 2 WC3-szerű, 3 sor, 4 doboz …
         }
@@ -388,7 +428,28 @@ int main(int argc, char** argv) {
         const render::Mat4 proj = render::ortho(cam.x, vx1, vy1, cam.y);
         // napszak (D35): rögzített, vagy 4 perces ciklus a hajnaltól
         const double day_t = o.daytime >= 0 ? o.daytime : std::fmod(t / 240.0 + 0.10, 1.0);
-        const render::DayLight day = render::daylight(day_t);
+        render::DayLight day = render::daylight(day_t);
+        // időjárás (D35): átmenet a kettő között; a napszak fényét és árnyékát módosítja
+        const float wk = static_cast<float>(std::clamp((t - weather_since) / kWeatherBlend, 0.0, 1.0));
+        const render::WeatherLook wl = render::mix(render::weather_look(weather_from, o.weather_power),
+                                                   render::weather_look(weather_to, o.weather_power), wk);
+        for (int c = 0; c < 3; ++c) day.ambient[c] = std::min(1.2f, day.ambient[c] * wl.ambient[c]);
+        day.shadow_alpha *= wl.shadow;
+        day.lights = std::max(day.lights, wl.lights);
+        const float flash = render::lightning_flash(t, wl.lightning);
+        // részecskék: a szimuláció eseményeiből (találat, halál), a fáklyák parazsa, az eső cseppjei a talajon
+        const float dt = static_cast<float>(std::clamp(t - prev_t, 0.0, 0.1));
+        prev_t = t;
+        for (const auto& fe : world.fx_events()) particles.emit(fe.death ? render::Effect::Death : render::Effect::Hit, fe.x, fe.y);
+        world.fx_events().clear();
+        if (wl.splashes > 0 && wl.precip == render::Precip::Rain) {
+          const float area = (vx1 - cam.x) * (vy1 - cam.y) * cam.zoom * cam.zoom / (1280.0f * 720.0f);
+          const float want = wl.splashes * wl.density / 0.55f * area * dt;
+          for (int i = 0, n = static_cast<int>(want + fx_rand()); i < n; ++i) {
+            particles.emit(render::Effect::Splash, cam.x + fx_rand() * (vx1 - cam.x), cam.y + fx_rand() * (vy1 - cam.y));
+          }
+        }
+        particles.update(dt, wl.wind);
         lighting.resize(w, h);
         lighting.begin_scene(0.0f, 0.0f, 0.0f);
         terrain.draw(proj, cam.x, cam.y, vx1, vy1, t);
@@ -398,6 +459,9 @@ int main(int argc, char** argv) {
         batch.end();
         batch.begin(proj);
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
+        batch.end();
+        effects.draw_scene(batch, proj, particles);
+        batch.begin(proj);
         if (dragging) {   // kijelölő keret
           float mx = 0, my = 0;
           SDL_GetMouseState(&mx, &my);
@@ -416,12 +480,18 @@ int main(int argc, char** argv) {
         // fények (a napszak környezeti színe + fáklyák), köd, összetétel az ablakba
         lights.clear();
         world.lights(lights, alpha);
-        lighting.draw_lights(batch, proj, day.ambient, lights, day.lights);
+        if (day.lights > 0.05f) {   // a fáklyák parazsa (éjjel)
+          for (const auto& l : lights) {
+            if (fx_rand() < 2.5f * dt * day.lights) particles.emit(render::Effect::Ember, l.x, l.y + 20.0f);
+          }
+        }
+        lighting.draw_lights(batch, proj, day.ambient, lights, day.lights,
+                             [&] { effects.draw_glow(batch, proj, particles, 0.4f + 0.6f * day.lights); });
         bool fog_changed = false;
         const auto& fogv = world.fog(&fog_changed);
         if (!o.fog) lighting.set_fog(0, 0, {});
         else if (fog_changed) lighting.set_fog(world.map().width(), world.map().height(), fogv);
-        lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx);
+        lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
       } else if (demo.units > 0 || !adem.units.empty()) {
         // a bemutató determinisztikus időt használ, ha képernyőkép vagy mérés készül (azonos kép minden gépen)
         const double t = (o.bench || !o.screenshot.empty())
@@ -484,9 +554,12 @@ int main(int argc, char** argv) {
     if (o.bench && have_world) {
       std::printf("világ: %d egység látszott, %d terep-négyzet, %lld tick, élő egység %zu\n", world.drawn_units(),
                   terrain.last_quads(), static_cast<long long>(world.sim().tick()), world.sim().world().entity_count());
+      std::printf("részecskék: %zu él, %zu kibocsátva, %zu elmaradt (betelt készlet)\n", particles.particles().size(),
+                  particles.emitted(), particles.dropped());
     }
     world_atlas.release();
     lighting.shutdown();
+    effects.shutdown();
     terrain.shutdown();
     dev.destroy(fallback);
     dev.destroy(white);

@@ -24,27 +24,112 @@ uniform sampler2D u_scene;
 uniform sampler2D u_light;
 uniform sampler2D u_fog;
 uniform int u_use_fog;
+uniform int u_post;
 uniform vec4 u_cam;      // x, y, nagyítás, csempeméret (világ-képpont)
 uniform vec2 u_screen;
 uniform vec2 u_fogsize;  // a köd mérete csempében
+uniform vec4 u_grade;    // telítettség, kontraszt, vignetta, villám
+uniform vec4 u_haze;     // pára színe, fedése
+uniform vec4 u_fx;       // felhőárnyék, hőremegés, idő (s), szél
+uniform vec4 u_precip;   // fajta (0 nincs, 1 eső, 2 hó, 3 homok, 4 hamu), sűrűség, sebesség, csíkhossz
+uniform vec4 u_pcolor;   // a csapadék színe, fedése
+uniform vec4 u_pdir;     // esési irány (x, y), méret
 out vec4 o_color;
+
+float hash12(vec2 p) {
+  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
+float vnoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash12(i), hash12(i + vec2(1.0, 0.0)), u.x), mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+float fbm(vec2 p) { return vnoise(p) * 0.55 + vnoise(p * 2.03 + 7.1) * 0.3 + vnoise(p * 4.1 + 3.7) * 0.15; }
+
+// csapadék: három réteg, a kamerához rögzítve (a réteg mélysége szerint kissé eltérő elmozdulással)
+float precip(vec2 px, float time) {
+  vec2 dir = u_pdir.xy;
+  vec2 side = vec2(-dir.y, dir.x);
+  bool streak = u_precip.w > 0.5;
+  float acc = 0.0;
+  for (int i = 0; i < 3; ++i) {
+    float fi = float(i);
+    float depth = 0.6 + 0.3 * fi;
+    vec2 s = px + u_cam.xy * u_cam.z * (0.8 + 0.2 * fi);
+    float along = dot(s, dir) - time * u_precip.z * depth;
+    float across = dot(s, side);
+    vec2 cell = (streak ? vec2(14.0, 90.0) : vec2(34.0, 34.0)) * (0.8 + 0.25 * fi);
+    vec2 q = vec2(across, along) / cell + vec2(fi * 13.7, fi * 7.3);
+    vec2 id = floor(q);
+    vec2 f = fract(q);
+    float h = hash12(id + fi * 31.0);
+    if (h > u_precip.y) continue;
+    float h2 = hash12(id + 17.0 + fi), h3 = hash12(id + 53.0 + fi);
+    if (streak) {
+      float x0 = 0.2 + 0.6 * h2, y0 = 0.05 + 0.45 * h3;
+      float dx = abs(f.x - x0) * cell.x;
+      float t = (f.y - y0) * cell.y / (u_precip.w * depth);
+      float w = u_pdir.z * depth;
+      acc += (1.0 - smoothstep(w * 0.5, w * 0.5 + 0.9, dx)) * step(0.0, t) * step(t, 1.0) * t * (0.5 + 0.5 * depth);
+    } else {
+      vec2 d = (f - vec2(0.2 + 0.6 * h2, 0.2 + 0.6 * h3)) * cell;
+      d.x += sin(time * (1.1 + h3) + h * 6.28) * 3.5;
+      float r = u_pdir.z * (0.7 + 0.6 * h2) * depth;
+      acc += 1.0 - smoothstep(r * 0.6, r + 0.8, length(d));
+    }
+  }
+  return clamp(acc, 0.0, 1.0);
+}
+
 void main() {
-  vec3 scene = texture(u_scene, v_uv).rgb;
-  vec3 light = texture(u_light, v_uv).rgb;
+  vec2 px = vec2(v_uv.x, 1.0 - v_uv.y) * u_screen;   // a képernyő teteje y = 0
+  vec2 world = u_cam.xy + px / u_cam.z;
+  float time = u_fx.z;
+  vec2 uv = v_uv;
+  if (u_post != 0 && u_fx.y > 0.0) {   // hőremegés
+    uv += vec2(sin(world.y * 0.09 + time * 2.7), cos(world.x * 0.07 + time * 2.1)) * vec2(0.0012, 0.0008) * u_fx.y;
+  }
+  vec3 scene = texture(u_scene, uv).rgb;
+  vec3 light = texture(u_light, uv).rgb;
   vec3 c = scene * light;
+  if (u_post != 0) {
+    if (u_fx.x > 0.0) {   // vándorló felhőárnyék
+      float n = fbm(world * 0.0022 + vec2(time * 0.0016 * u_fx.w, time * 0.004));
+      c *= 1.0 - u_fx.x * smoothstep(0.45, 0.7, n);
+    }
+    if (u_haze.a > 0.0) {   // foltos pára: a világban vándorol, a fény színezi
+      float n = fbm(world * 0.004 + vec2(time * (0.02 + u_fx.w * 0.002), time * 0.006));
+      c = mix(c, u_haze.rgb * light, clamp(u_haze.a * (0.65 + 0.7 * n), 0.0, 1.0));
+    }
+  }
+  float f = 1.0;
   if (u_use_fog != 0) {
-    // a képpont világkoordinátája (a képernyő teteje y = 0)
-    vec2 px = vec2(v_uv.x, 1.0 - v_uv.y) * u_screen;
-    vec2 world = u_cam.xy + px / u_cam.z;
-    float f = texture(u_fog, world / (u_cam.w * u_fogsize)).r;
+    f = texture(u_fog, world / (u_cam.w * u_fogsize)).r;
     float lum = dot(c, vec3(0.299, 0.587, 0.114));
     vec3 explored = mix(vec3(lum), c, 0.45) * 0.5;               // felderített: fakó és sötétebb
     vec3 unknown = vec3(0.02, 0.025, 0.035);
     c = f < 0.5 ? mix(unknown, explored, smoothstep(0.0, 0.5, f)) : mix(explored, c, smoothstep(0.5, 1.0, f));
   }
-  o_color = vec4(c, 1.0);
+  if (u_post != 0) {
+    if (u_precip.x > 0.5 && u_precip.y > 0.0) {
+      float p = precip(px, time) * u_pcolor.a * (0.35 + 0.65 * f);
+      float lit = clamp(dot(light, vec3(0.333)) * 1.1 + 0.15, 0.0, 1.2);
+      c = mix(c, u_pcolor.rgb * lit, p);
+    }
+    c += vec3(0.8, 0.86, 1.0) * u_grade.w * 0.55;   // villám
+    float lum = dot(c, vec3(0.299, 0.587, 0.114));
+    c = mix(vec3(lum), c, u_grade.x);
+    c = (c - 0.5) * u_grade.y + 0.5;
+    vec2 d = v_uv - 0.5;
+    c *= 1.0 - u_grade.z * dot(d, d) * 2.0;
+  }
+  o_color = vec4(clamp(c, 0.0, 1.0), 1.0);
 }
 )";
+
+constexpr float kVignette = 0.22f;   // enyhe sötétedés a sarkokban
 
 Image glow_image(int n) {
   Image img;
@@ -79,6 +164,13 @@ bool Lighting::init(Device& dev, std::string* error) {
   loc_cam_ = gl.GetUniformLocation(prog_.id, "u_cam");
   loc_screen_ = gl.GetUniformLocation(prog_.id, "u_screen");
   loc_fogsize_ = gl.GetUniformLocation(prog_.id, "u_fogsize");
+  loc_post_ = gl.GetUniformLocation(prog_.id, "u_post");
+  loc_grade_ = gl.GetUniformLocation(prog_.id, "u_grade");
+  loc_haze_ = gl.GetUniformLocation(prog_.id, "u_haze");
+  loc_fx_ = gl.GetUniformLocation(prog_.id, "u_fx");
+  loc_precip_ = gl.GetUniformLocation(prog_.id, "u_precip");
+  loc_pcolor_ = gl.GetUniformLocation(prog_.id, "u_pcolor");
+  loc_pdir_ = gl.GetUniformLocation(prog_.id, "u_pdir");
   gl.GenVertexArrays(1, &vao_);
   glow_ = dev.create_array_from(glow_image(128), false);
   return dev.check("fényréteg", error);
@@ -112,26 +204,30 @@ void Lighting::begin_scene(float r, float g, float b) {
 }
 
 void Lighting::draw_lights(SpriteBatch& batch, const Mat4& projection, const float ambient[3],
-                           const std::vector<Light>& lights, float strength) {
+                           const std::vector<Light>& lights, float strength, const std::function<void()>& extra) {
   dev_->bind_target(&light_, std::max(1, w_ / 2), std::max(1, h_ / 2));
   dev_->clear(ambient[0], ambient[1], ambient[2], 1.0f);
-  if (lights.empty() || strength <= 0.01f) return;
+  const bool own = !lights.empty() && strength > 0.01f;
+  if (!own && !extra) return;
   const gl::Api& gl = dev_->api();
   gl.BlendFuncSeparate(gl::ONE, gl::ONE, gl::ONE, gl::ONE);   // a fények összeadódnak
-  batch.begin(projection);
-  for (const Light& l : lights) {
-    SpriteInstance in;
-    in.x = l.x - l.radius;
-    in.y = l.y - l.radius;
-    in.w = in.h = l.radius * 2;
-    const float k = std::clamp(l.intensity * strength, 0.0f, 1.0f);
-    in.tint[0] = static_cast<uint8_t>(static_cast<float>(l.r) * k);
-    in.tint[1] = static_cast<uint8_t>(static_cast<float>(l.g) * k);
-    in.tint[2] = static_cast<uint8_t>(static_cast<float>(l.b) * k);
-    in.tint[3] = 255;
-    batch.draw(glow_, nullptr, in);
+  if (extra) extra();
+  if (own) {
+    batch.begin(projection);
+    for (const Light& l : lights) {
+      SpriteInstance in;
+      in.x = l.x - l.radius;
+      in.y = l.y - l.radius;
+      in.w = in.h = l.radius * 2;
+      const float k = std::clamp(l.intensity * strength, 0.0f, 1.0f);
+      in.tint[0] = static_cast<uint8_t>(static_cast<float>(l.r) * k);
+      in.tint[1] = static_cast<uint8_t>(static_cast<float>(l.g) * k);
+      in.tint[2] = static_cast<uint8_t>(static_cast<float>(l.b) * k);
+      in.tint[3] = 255;
+      batch.draw(glow_, nullptr, in);
+    }
+    batch.end();
   }
-  batch.end();
   gl.BlendFuncSeparate(gl::ONE, gl::ONE_MINUS_SRC_ALPHA, gl::ONE, gl::ONE_MINUS_SRC_ALPHA);
 }
 
@@ -147,7 +243,8 @@ void Lighting::set_fog(int map_w, int map_h, const std::vector<uint8_t>& fog) {
   dev_->update_r8(fog_, fog.data());
 }
 
-void Lighting::composite(int sw, int sh, float cam_x, float cam_y, float zoom, float tile_px) {
+void Lighting::composite(int sw, int sh, float cam_x, float cam_y, float zoom, float tile_px, const WeatherLook& wl,
+                         double time, float flash, bool post) {
   dev_->bind_target(nullptr, sw, sh);
   const gl::Api& gl = dev_->api();
   gl.Disable(gl::BLEND);
@@ -159,6 +256,15 @@ void Lighting::composite(int sw, int sh, float cam_x, float cam_y, float zoom, f
   gl.Uniform4f(loc_cam_, cam_x, cam_y, zoom, tile_px);
   gl.Uniform2f(loc_screen_, static_cast<float>(sw), static_cast<float>(sh));
   gl.Uniform2f(loc_fogsize_, static_cast<float>(std::max(1, fog_w_)), static_cast<float>(std::max(1, fog_h_)));
+  gl.Uniform1i(loc_post_, post ? 1 : 0);
+  // az idő a shaderben float: a pontosság miatt egy órás körre vágva
+  const auto tf = static_cast<float>(std::fmod(time, 3600.0));
+  gl.Uniform4f(loc_grade_, wl.saturation, wl.contrast, kVignette, flash);
+  gl.Uniform4f(loc_haze_, wl.haze[0], wl.haze[1], wl.haze[2], wl.haze_amount);
+  gl.Uniform4f(loc_fx_, wl.clouds, wl.heat, tf, wl.wind);
+  gl.Uniform4f(loc_precip_, static_cast<float>(wl.precip), wl.density, wl.speed, wl.length);
+  gl.Uniform4f(loc_pcolor_, wl.color[0], wl.color[1], wl.color[2], wl.color[3]);
+  gl.Uniform4f(loc_pdir_, wl.fall_x, wl.fall_y, wl.size, 0.0f);
   gl.ActiveTexture(gl::TEXTURE0);
   gl.BindTexture(gl::TEXTURE_2D, scene_.color.id);
   gl.ActiveTexture(gl::TEXTURE0 + 1);

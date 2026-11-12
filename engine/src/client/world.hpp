@@ -52,6 +52,13 @@ class World {
   const std::vector<uint8_t>& fog(bool* changed);
   int drawn_units() const { return drawn_; }
 
+  // látványesemények a legutóbbi tickekből (a részecskéknek): találat (az életerő csökkent) és halál; a hívó üríti
+  struct FxEvent {
+    float x = 0, y = 0;   // világ-képpont (a talpvonal)
+    bool death = false;
+  };
+  std::vector<FxEvent>& fx_events() { return fx_; }
+
   static constexpr float kTilePx = render::TerrainView::kTilePx;
 
  private:
@@ -60,6 +67,7 @@ class World {
     int dir = 2;            // utolsó irány (0 = K, 2 = D …)
     bool moving = false;
     int sheet = -1;         // az atlaszlap sorszáma (-1 = tartalék alakzat)
+    int hp = -1;            // az előző tick életereje (-1 = még nem ismert)
   };
   int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
 
@@ -76,6 +84,7 @@ class World {
   bool fog_dirty_ = true;
   void update_fog();
   int drawn_ = 0;
+  std::vector<FxEvent> fx_;
 };
 
 }  // namespace totu::client
