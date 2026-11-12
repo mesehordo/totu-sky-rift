@@ -44,6 +44,8 @@ class NavGrid {
   int width() const { return nw_; }     // navcellában
   int height() const { return nh_; }
   const NavConfig& config() const { return config_; }
+  const TerrainTable& table() const { return table_; }
+  const Map& map() const { return map_; }
   int classes() const { return static_cast<int>(class_ids_.size()); }   // nem repülő mozgásosztályok
   bool in_bounds(int nx, int ny) const { return nx >= 0 && ny >= 0 && nx < nw_ && ny < nh_; }
 

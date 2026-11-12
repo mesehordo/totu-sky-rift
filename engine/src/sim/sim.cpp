@@ -31,6 +31,11 @@ EntityId Sim::spawn(const Command& c) {
   world_.add(e, Movement{c.speed, c.x, c.y, false});
   world_.add(e, Health{c.hp, c.hp, c.owner});
   world_.add(e, Attack{c.damage, c.spread, c.range, c.cooldown, 0});
+  if (nav_) {
+    world_.add(e, Body{});
+    world_.add(e, Path{});
+    set_body(e, Fixed::from_ratio(2, 5), 0xFF);   // alapérték: szárazföldi
+  }
   return e;
 }
 
@@ -39,6 +44,7 @@ bool Sim::order_move(EntityId e, Fixed x, Fixed y) {
   Movement* m = world_.get<Movement>(e);
   if (!m) return false;
   m->tx = x; m->ty = y; m->moving = true;
+  if (nav_) nav_request(e, x, y);
   return true;
 }
 
@@ -129,7 +135,12 @@ void Sim::step() {
   // 2. a csatlakozók (szkriptek) a csatlakoztatás sorrendjében
   for (SimHooks* h : hooks_) h->on_tick(*this);
   // 3. rendszerek rögzített sorrendben, majd a halál-események
-  movement_system();
+  if (nav_) {
+    nav_paths();
+    nav_movement();
+  } else {
+    movement_system();
+  }
   combat_system();
   report_deaths();
   // 4. a tick végén a törlések
