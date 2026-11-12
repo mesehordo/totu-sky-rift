@@ -4,12 +4,12 @@
 
 | Mező | Érték |
 |---|---|
-| Aktív szakasz | Új motor (D18–D20): M0 Alapozás (leltár kész) + M1 platform-váz (helyben zöld; CI mind az 5 rendszeren) |
+| Aktív szakasz | Új motor (D18–D20): M0 Alapozás (leltár kész) · **M1 platform-váz kész**: CI zöld mind az 5 rendszeren (6 feladat) |
 | Aktív feladat | S01-02: ablakos kézi próba (F-002) |
 | Kiindulópont | nyilvános GitHub-repó, új történet 2026-11-12; a régi történet helyi mentése a repó melletti `.bundle` fájlban; grafika és zene a repóban, a generáló anyagok a helyi `_privat/` mappában |
 | Utolsó ellenőrzött állapot | 2026-11-12: `test_dmath.py`, `test_hud.py`, `test_snapshot.py`, `golden_replays.py` 3/3 (újrarögzítve a `dmath` után), `snapshot_check.py --all-missions` 46/46 |
 | Környezet | Windows 10, i7-6700K, RX 550, 32 GB; Python 3.13.14, pygame-ce 2.5.8, numpy 2.5.4; .NET SDK 10.0.404, GCC 16.2 (WinLibs), CMake 4.4.4 – betöltés: `. tools/fejlesztoi_kornyezet.ps1` |
-| Következő konkrét lépés | a CI zöld mind az 5 rendszeren (M1 kapu); utána M0: fajonkénti viselkedési specifikáció, M2: determinisztikus mag |
+| Következő konkrét lépés | M0: fajonkénti viselkedési specifikáció a Python-kódból; ADR-003 (RHI), ADR-004 (számábrázolás); utána M2 determinisztikus mag |
 
 ## Nyitott döntések (felhasználó)
 
