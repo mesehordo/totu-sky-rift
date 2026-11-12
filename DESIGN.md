@@ -1,3 +1,6 @@
+> **Történeti dokumentum (2026-11-12):** a játék korai terve; sok része már nem érvényes. Az irányadó leírás:
+> [docs/alap/TOTU_ALAPDOKUMENTUM.md](docs/alap/TOTU_ALAPDOKUMENTUM.md) és [docs/alap/spec/](docs/alap/spec/).
+
 # TOTU: Sky Rift – játéktervezési dokumentum
 
 > A világ és a történet kánonja: [docs/EGSZAKADAS_vilag_es_tortenet_v01.md](docs/EGSZAKADAS_vilag_es_tortenet_v01.md); a megvalósított hadjárat: [docs/STORY_CAMPAIGN.md](docs/STORY_CAMPAIGN.md).
