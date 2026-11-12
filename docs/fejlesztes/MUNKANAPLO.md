@@ -302,3 +302,5 @@ Mindhárom tulajdonosi jóváhagyásra vár.
 ## 2026-11-12 – D30: épületelfoglalás, megszállás, előléptetés
 
 **Döntés (tulajdonos):** két épületre ható képesség – elfoglalás (tulajdonosváltás, az épület saját listája képezhető, a képességei nem) és megszállás (a tulajdonos ott nem képezhet és nem kutathat, a távolharcos megszálló kilő; férőhely méret szerint; kiűzés 50% alatt vagy visszafoglalással) –, valamint előléptetés (Veterán, Elit). Kiosztás: népenként 2–3 egység (az én javaslatom, a népek jelleméhez), Ghoblin és Daresh kisnépnél minden egység. Terv: `docs/alap/spec/ELFOGLALAS_ES_ELOLEPTETES.md`; a számok az M7 balanszmunkája.
+
+**D30 pontosítás (tulajdonos):** főnépenként 3 egység kap épületképességet, népenként variált kombinációban (2 E + 1 M, 1 E + 2 M, mindkettőre képes egységekkel) – a kiosztás a specifikációban átírva.

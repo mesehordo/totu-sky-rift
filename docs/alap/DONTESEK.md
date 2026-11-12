@@ -260,6 +260,8 @@ Alap: [spec/KISFAJOK.md](spec/KISFAJOK.md) E–F.
 2. **Megszállás** (képesség): a tulajdonos nem változik; ellenfél tulajdonosnál amíg bent van megszálló, a
    tulajdonos ott nem képezhet és nem kutathat (a kikutatott fejlesztései megmaradnak); a távolharcos megszálló
    kilő. Férőhely az épület méretétől (2 / 4 / 6); kiűzés 50% alatti életerővel vagy visszafoglalással.
-3. **Kiosztás:** népenként 2–3 egység (a tulajdonos rám bízta), és két kisnépnél (Ghoblin, Daresh) minden egység.
+3. **Kiosztás:** főnépenként 3 egység, változó kombinációban (pl. 2 elfoglaló + 1 megszálló, 1 + 2, vagy
+   egység, amely mindkettőre képes) – a tulajdonos pontosítása szerint, a kiosztást rám bízta; két kisnépnél
+   (Ghoblin, Daresh) minden egység.
 4. **Előléptetés:** a nem hős harci egységek két fokozatot léphetnek (Veterán, Elit).
 A számok balanszmunka (M7). Részletek: [spec/ELFOGLALAS_ES_ELOLEPTETES.md](spec/ELFOGLALAS_ES_ELOLEPTETES.md).

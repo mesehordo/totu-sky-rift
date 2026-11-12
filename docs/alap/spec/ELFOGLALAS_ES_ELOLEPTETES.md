@@ -30,20 +30,23 @@ Mindkettő a D22 képességmodell szerinti **egységre célzott** képesség (c�
   vagy megszállás-képességgel); ha az épület ledől, a megszállók a fél életerejükkel kijönnek.
 - Semleges és szövetséges épületre: semleges épület megszállható (őrhely), szövetségesé nem.
 
-### Kiosztás (a tulajdonos megbízásából – népenként 2–3 egység, két kisnépnél minden egység)
+### Kiosztás (a tulajdonos megbízásából)
 
-| Nép | Elfoglalás | Megszállás | Indok |
-|---|---|---|---|
-| Szürke elfek | Tollas harcos | Jaguár-orvlövész | a harcos-rend és a lesből lövő |
-| Ursanok | Telepes | Szigonyvető | a telepes birtokba vesz; a szigonyos a falakról lő |
-| Croftianok | Csápszolga | Tüskeköpő | a szolga „megfertőzi” az épületet; a köpő fészket rak belé |
-| Wullof | Lándzsás harcos | Bumerángvető | a harcos foglal, a vadász lesben ül |
-| Aurethi Birodalom | Fabrikátor, Légiós | Ballistarius | a gépész átalakítja, a légió birtokba veszi; a lövész bástyát csinál belőle |
-| Huk’ucha | Kampókardos | Csúzlis | |
-| Ooni | Oni harcos, Tanuki-bányász | Kitsu-mata | a tanuki a mesékben furfangos; a kitsu-mata nindzsa-múltú lövész |
-| Micéliák (mod) | Pöfeteg | Tüskegomba-lövész | |
-| **Ghoblin** (kisnép) | minden egység | minden egység | a vörössipkások portyázó, rajtaütő nép |
-| **Daresh** (kisnép) | – | minden egység | a darázsnép fészket rak az épületekbe |
+Főnépenként **3 egység** kap épületképességet, népenként változó kombinációban (E = elfoglalás, M = megszállás);
+a két kisnépnél minden egység.
+
+| Nép | 1. egység | 2. egység | 3. egység | Kombináció | Indok |
+|---|---|---|---|---|---|
+| Szürke elfek | Tollas harcos – E | Csillagdárdás – E | Jaguár-orvlövész – M | 2 E, 1 M | a harcos-rend foglal; az orvlövész lesből lő |
+| Ursanok | Telepes – E | Szigonyvető – M | Dárdaőr – M | 1 E, 2 M | a helyőrség népe: a falakat megszállják, a telepes birtokba vesz |
+| Croftianok | Csápszolga – E + M | Karmos – E | Tüskeköpő – M | 1 mindkettő, 2 egyik | a szolga „megfertőzi” vagy átveszi; a raj betör, a köpő fészket rak |
+| Wullof | Lándzsás harcos – E + M | Bumerángvető – E + M | Dárdavető portyázó – E | 2 mindkettő, 1 egyik | a falka rajtaüt és lesben ül |
+| Aurethi Birodalom | Fabrikátor – E | Légiós – E | Ballistarius – M | 2 E, 1 M | a gépész átalakítja, a légió birtokba veszi; a lövész bástyát csinál belőle |
+| Huk’ucha | Kampókardos – E | Csúzlis – M | Gyöngyvető – M | 1 E, 2 M | a parti harcos foglal, a lövészek beköltöznek |
+| Ooni | Oni harcos – E + M | Tanuki-bányász – E | Kitsu-mata – M | 1 mindkettő, 2 egyik | a tanuki a mesékben furfangos; a kitsu-mata nindzsa-múltú lövész |
+| Micéliák (mod) | Spóraszedő – E + M | Pöfeteg – E | Tüskegomba-lövész – M | 1 mindkettő, 2 egyik | a fonal átszövi az épületet |
+| **Ghoblin** (kisnép) | minden egység – E + M | | | | a vörössipkások portyázó, rajtaütő nép |
+| **Daresh** (kisnép) | minden egység – M | | | | a darázsnép fészket rak az épületekbe |
 
 ## 2. Előléptetés (veterán egységek)
 
