@@ -51,6 +51,6 @@ OpenGL-je elavult). Igény: atlaszos sprite-rajzolás nagy tételben (1600+ egys
 
 **Állapot (2026-11-12):** mind a hat lépés kész, a kapu teljesül – 2 × 800 egység éjszakai zivatarban, csatában, a
 fejlesztői gépen (RX 550, 1280 × 720): a rajzolás p99 7,3 ms (1,5-ös nagyításnál), 4,6 ms (1,0-snál); a CI Linux-
-feladata négy képpróbát vet össze a tárolt referenciaképekkel (, Mesa szoftveres OpenGL), és
-a motor mind az öt rendszeren (hat feladatban) fordul és tesztel. A referenciaképek frissítése: a CI 
-műtermékéből, szándékos látványváltozáskor (a változással együtt commitolva).
+feladata négy képpróbát vet össze a tárolt referenciaképekkel (`engine/tests/data/kepek/`, Mesa szoftveres OpenGL),
+és a motor mind az öt rendszeren (hat feladatban) fordul és tesztel. A referenciaképek frissítése: a CI
+`kepproba-linux` műtermékéből, szándékos látványváltozáskor (a változással együtt commitolva).
