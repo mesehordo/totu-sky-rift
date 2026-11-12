@@ -154,8 +154,8 @@ A rangsoroláshoz Glicko-2 vagy TrueSkill 2 – az internetes mód tervezésekor
 | 6 | Feltételrendszer a komponensekben (OpenRA) | M2/M7 | ADR-005 kiegészítés |
 | 7 | Lockstep: N+2 parancskésleltetés, alkalmazkodó forduló, kattintásszűrés, kettős ellenőrzés, hálózati szimulátor | M10 | ADR-006 |
 | 8 | Trigger-API az OpenRA mintájára, ismétlés-jelző, változók; párbeszédformátum-ADR | M11 | M11 ADR |
-| 9 | **Előléptetés (veterán egységek)** – 0 A.D. Promotion | M7 | **tulajdonos** |
-| 10 | **Épületfoglalás** – 0 A.D. Capturable | M7 | **tulajdonos** |
+| 9 | **Előléptetés (veterán egységek)** – 0 A.D. Promotion | M7 | **elfogadva (D30)** |
+| 10 | **Épületfoglalás** – kétféle képességként: elfoglalás és megszállás | M7 | **elfogadva (D30)** |
 
 ## 4. Olvasási lista (még feldolgozandó, mérföldkövenként)
 

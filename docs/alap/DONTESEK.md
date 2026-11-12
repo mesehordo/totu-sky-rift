@@ -27,6 +27,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D18 | ELDÖNTVE (2026-11-12): **új motor nulláról, C++20** – minden 0 A.D.-rendszeren; 0 A.D. + OpenRA szintű modolás, WC3-szintű küldetések; terv: [UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) |
 | D19 | ELDÖNTVE (2026-11-12): a játéklogika, a modok, az AI és a küldetések szkriptnyelve **Lua** (5.4, sandbox, determinisztikus) |
 | D20 | ELDÖNTVE (2026-11-12): **két Conquest-jellegű mód** – győzelmi feltételek és hadjárattérkép; a játékbeli nevüket a tulajdonos adja meg |
+| D30 | ELDÖNTVE (2026-11-12): **épületelfoglalás és megszállás** (két képesség) és **előléptetés** (veterán egységek) – [spec/ELFOGLALAS_ES_ELOLEPTETES.md](spec/ELFOGLALAS_ES_ELOLEPTETES.md) |
 | D29 | ELDÖNTVE (2026-11-12): **kitsu-mata** (CF-006) – az `oon_kitsune` lövész lesz: 80 életerő, 12 sebzés, 5,5 lőtáv, 1,4 s, 2,8 sebesség, 70 fa + 30 arany + 10 meteorit, 20 s; energia és képesség nélkül (saját képesség később) |
 | D28 | ELDÖNTVE (2026-11-12): a Micéliák csak szövetséges kisnép és mod-faj; a Micélia- és a novella-küldetések kikerülnek; a küldetések az új motorra nulláról készülnek (M11) |
 | D27 | ELDÖNTVE (2026-11-12): ADR-003 (megjelenítő), ADR-004 (fixpontos szimuláció), ADR-005 (JSON-sablonok öröklődéssel és komponensekkel) elfogadva – az M0 lezárva |
@@ -251,3 +252,14 @@ Alap: [spec/KISFAJOK.md](spec/KISFAJOK.md) E–F.
 2. **A Micélia-küldetések és a novella-küldetések kikerülnek** (a novellák maradnak).
 3. **A küldetések az új motorra nulláról készülnek** (M11, WC3-szintű küldetésrendszer és szerkesztő); a régi
    küldetések helyben referenciaként megmaradnak, a GitHubon nincsenek fent.
+
+### D30 – Épületelfoglalás, megszállás, előléptetés · ELDÖNTVE (2026-11-12)
+
+1. **Elfoglalás** (képesség): az épület a használóé lesz; az épület saját listáját képezheti és kutathatja (a másik
+   nép elemeit is), az épület képességeit nem.
+2. **Megszállás** (képesség): a tulajdonos nem változik; ellenfél tulajdonosnál amíg bent van megszálló, a
+   tulajdonos ott nem képezhet és nem kutathat (a kikutatott fejlesztései megmaradnak); a távolharcos megszálló
+   kilő. Férőhely az épület méretétől (2 / 4 / 6); kiűzés 50% alatti életerővel vagy visszafoglalással.
+3. **Kiosztás:** népenként 2–3 egység (a tulajdonos rám bízta), és két kisnépnél (Ghoblin, Daresh) minden egység.
+4. **Előléptetés:** a nem hős harci egységek két fokozatot léphetnek (Veterán, Elit).
+A számok balanszmunka (M7). Részletek: [spec/ELFOGLALAS_ES_ELOLEPTETES.md](spec/ELFOGLALAS_ES_ELOLEPTETES.md).
