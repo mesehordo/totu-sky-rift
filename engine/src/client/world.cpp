@@ -220,23 +220,27 @@ int World::sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner) {
   return list[e % list.size()];
 }
 
-void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
-                 int sw, int sh, float alpha, double time, bool shadow_pass) {
+void World::collect(const Camera& cam, int sw, int sh, float alpha) {
+  const ItemsKey key{static_cast<int64_t>(sim_->tick()), alpha, cam.x, cam.y, cam.zoom, sw, sh};
+  if (key == items_key_) return;   // ugyanaz a képkocka (árnyék, majd fő menet)
+  items_key_ = key;
   const float vx1 = cam.x + static_cast<float>(sw) / cam.zoom, vy1 = cam.y + static_cast<float>(sh) / cam.zoom;
-  struct Item {
-    float x, y;
-    sim::EntityId e;
-  };
-  std::vector<Item> items;
+  items_.clear();
   for (auto& [e, v] : vis_) {
     const auto* p = sim_->world().get<sim::Position>(e);
-    const auto* hh = sim_->world().get<sim::Health>(e);
-    if (!p || !hh || hh->hp <= 0) continue;
+    if (!p) continue;
     const float x = v.px + (to_px(p->x) - v.px) * alpha, y = v.py + (to_px(p->y) - v.py) * alpha;
     if (x < cam.x - 64 || y < cam.y - 64 || x > vx1 + 64 || y > vy1 + 96) continue;   // takarás
-    items.push_back({x, y, e});
+    const auto* hh = sim_->world().get<sim::Health>(e);
+    if (!hh || hh->hp <= 0) continue;
+    items_.push_back({x, y, e, &v, hh->owner});
   }
-  std::sort(items.begin(), items.end(), [](const Item& a, const Item& b) { return a.y != b.y ? a.y < b.y : a.e < b.e; });
+  std::sort(items_.begin(), items_.end(), [](const Item& a, const Item& b) { return a.y != b.y ? a.y < b.y : a.e < b.e; });
+}
+
+void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
+                 int sw, int sh, float alpha, double time, bool shadow_pass) {
+  collect(cam, sw, sh, alpha);
   // kijelölés jelzése (a sprite alatt; az árnyékmenetben nem)
   for (const sim::EntityId e : (shadow_pass ? std::vector<sim::EntityId>{} : selected_)) {
     const auto it = vis_.find(e);
@@ -252,15 +256,18 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     batch.draw(fallback, nullptr, in);
   }
   drawn_ = 0;
-  for (const auto& it : items) {
-    Visual& v = vis_[it.e];
-    const auto* hh = sim_->world().get<sim::Health>(it.e);
-    const uint8_t owner = hh ? hh->owner : 0;
+  for (const auto& it : items_) {
+    Visual& v = *it.v;
+    const uint8_t owner = it.owner;
     if (v.sheet == -1 && atlas) v.sheet = sheet_for(atlas, it.e, owner);
     const uint8_t* team = kTeams[(owner + 7) % 8];
     if (atlas && v.sheet >= 0) {
       const auto& s = atlas->data().sheets[static_cast<size_t>(v.sheet)];
-      const auto& a = s.anims.at(v.moving ? "walk" : "idle");
+      if (!v.walk) {
+        v.walk = &s.anims.at("walk");
+        v.idle = &s.anims.at("idle");
+      }
+      const auto& a = v.moving ? *v.walk : *v.idle;
       const int frame = static_cast<int>(time * a.fps + static_cast<double>(it.e)) % std::max(1, a.frames);
       atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team);
     } else if (!shadow_pass) {   // tartalék: csapatszínű kör

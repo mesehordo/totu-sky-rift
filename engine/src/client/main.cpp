@@ -13,6 +13,7 @@
 //   totu --nofog                   köd nélkül
 //   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
 //                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
+//   totu --zoom Z                  a kamera nagyítása (1,0–2,0; alap 1,5)
 //   totu --nopost                  utófeldolgozás nélkül (a 4. lépés képe)
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
@@ -66,6 +67,7 @@ struct Options {
   bool post = true;
   render::Weather weather = render::Weather::Clear;
   float weather_power = 1.0f;
+  float zoom = 0;   // 0: a régi játék alapja (1,5)
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -226,6 +228,7 @@ int main(int argc, char** argv) {
     else if (a == "--daytime") o.daytime = std::strtod(next(), nullptr);
     else if (a == "--nofog") o.fog = false;
     else if (a == "--nopost") o.post = false;
+    else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
     else if (a == "--weather") {
       const std::string v = next();
       const size_t colon = v.find(':');
@@ -338,6 +341,7 @@ int main(int argc, char** argv) {
           white = dev.create_array_from(px, false);
           const float mw = static_cast<float>(world.map().width()) * client::World::kTilePx;
           const float mh = static_cast<float>(world.map().height()) * client::World::kTilePx;
+          if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
           if (o.bench || !o.screenshot.empty()) world.order_demo_attack();

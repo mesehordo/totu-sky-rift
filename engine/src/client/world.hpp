@@ -68,7 +68,24 @@ class World {
     bool moving = false;
     int sheet = -1;         // az atlaszlap sorszáma (-1 = tartalék alakzat)
     int hp = -1;            // az előző tick életereje (-1 = még nem ismert)
+    const render::AtlasAnim* walk = nullptr;   // a lap animációi (egyszer feloldva)
+    const render::AtlasAnim* idle = nullptr;
   };
+  // a képkocka rajzolandó egységei (Y szerint rendezve): az árnyék- és a fő menet közösen használja
+  struct Item {
+    float x, y;
+    sim::EntityId e;
+    Visual* v;
+    uint8_t owner;
+  };
+  void collect(const Camera& cam, int sw, int sh, float alpha);
+  std::vector<Item> items_;
+  struct ItemsKey {
+    int64_t tick = -1;
+    float alpha = -1, x = 0, y = 0, zoom = 0;
+    int sw = 0, sh = 0;
+    bool operator==(const ItemsKey&) const = default;
+  } items_key_;
   int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
 
   map::TerrainTable terrain_;

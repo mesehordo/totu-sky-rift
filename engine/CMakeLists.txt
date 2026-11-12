@@ -79,6 +79,8 @@ add_library(totu_assets STATIC src/render/atlas_build.cpp src/render/daylight.cp
 target_link_libraries(totu_assets PUBLIC totu_core totu_image PRIVATE totu_options)
 add_executable(totu_atlas src/tools/totu_atlas.cpp)
 target_link_libraries(totu_atlas PRIVATE totu_assets totu_options)
+add_executable(totu_imgdiff src/tools/totu_imgdiff.cpp)
+target_link_libraries(totu_imgdiff PRIVATE totu_image totu_options)
 
 # --- tesztek -----------------------------------------------------------------------------------------------------
 enable_testing()

@@ -60,6 +60,17 @@ jobs:
             ./build/totu --world engine/tests/data/maps/DEMO-VILAG.json --atlas atlasz_ci --frames 60 --size 960x540 --screenshot kepproba_vilag.png --check
           LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1280x720x24" \
             ./build/totu --world engine/tests/data/maps/DEMO-VILAG.json --atlas atlasz_ci --frames 60 --size 960x540 --daytime 0.75 --weather zivatar --screenshot kepproba_vihar.png --check
+      - name: Képernyőkép-összevetés (referenciaképek – Mesa – az engine/tests/data/kepek/ mappában)
+        if: runner.os == 'Linux'
+        run: |
+          fail=0
+          for k in kepproba kepproba_atlasz kepproba_vilag kepproba_vihar; do
+            rc=0
+            ./build/totu_imgdiff engine/tests/data/kepek/$k.png $k.png --out ${k}_elteres.png || rc=$?
+            # 3: még nincs referencia (új próba) – csak jelzés
+            if [ $rc -ne 0 ] && [ $rc -ne 3 ]; then fail=1; fi
+          done
+          exit $fail
       - name: A képpróba képe
         if: runner.os == 'Linux' && always()
         uses: actions/upload-artifact@v4
