@@ -363,3 +363,25 @@ motorban a **lövedékfajta adja a viselkedést**, adatban (`game.json` → `pro
 
 A tulajdonságok szabadon kombinálhatók (követő / talajra érkező / egyenes vonalú, ív, hibamentesség, pattanás,
 visszatérés, becsapódási sugár, sebesség), egységenként a sebesség felülírható.
+
+**D40 kiegészítés (2026-11-13) – további lövedékfajták (felírva, a megvalósítás az M7-ben, a fajok egységeivel):**
+a tulajdonos kérése szerint legyen még több, logikusan eltérő fajta. Javaslat (mind a meglévő tulajdonságok és néhány
+új kombinációja, adatban):
+
+| Fajta | Viselkedés | Új tulajdonság |
+|---|---|---|
+| tűzgolyó (`fire`, van sprite) | követő, közepes ív; becsapódáskor kis terület és égés (a tűz elem) | elem a becsapódáskor |
+| jégszilánk (`frost`, van sprite) | gyors, követő; lassít (a jég elem), nem pattan | elem a becsapódáskor |
+| nyílzápor / sörét | egy lövés több lövedék szórással (kúpban); közelről sok talál, messziről kevés | `count`, `spread` |
+| ballisztanyíl (átütő) | egyenes vonalú, **átüt**: a vonal minden ellenségét eltalálja, egyre gyengébben | `pierce`, `pierce_falloff` |
+| villámcsapás (lánc) | azonnali (nincs repülési idő), láncban ugrik a közeli ellenségekre | `instant`, `chain` |
+| méregtüske | követő, kis sebzés, mérgezés idővel | elem / állapot |
+| háló | talajra érkező; nem sebez, megköti (gyökerezés) a becsapódás körül állókat | állapot a becsapódáskor |
+| bomba / gránát | talajra érkező, pattan egyet, késleltetve robban (a gyors egység kiléphet) | `fuse`, `bounce_ground` |
+| égből hulló (meteor) | a célpont fölül, késleltetve érkezik; előtte jelzés a földön | `from_sky`, `delay` |
+| szigony | követő; eltalálva a célpontot a lövő felé rántja | `pull` |
+| lassú, irányított rakéta / lélekgolyó | lassan kanyarodó követő (fordulási sebesség), kitérhető | `turn_rate` |
+| pattanó kő (kacsázó) | talajra érkező, a becsapódás után egyenesen továbbgurul, és a gurulás vonalában is sebez | `roll` |
+
+A fajták modokból is bővíthetők; az új tulajdonságok a képességrendszerrel (KEP-…, M7) együtt készülnek, az elemek
+és az állapotok a régi elemrendszerre (tűz, jég, villám, víz, méreg, gyökér) épülnek.
