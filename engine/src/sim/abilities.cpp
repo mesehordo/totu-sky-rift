@@ -110,7 +110,9 @@ AbilityMods Sim::unit_mods(EntityId e) {
   AbilityMods m;
   if (!rules_) return m;
   if (const Caster* c = world_.get<Caster>(e)) {
-    for (const uint16_t a : c->toggles) stack(m, rules_->abilities[a].mods);
+    for (const uint16_t a : c->toggles) {   // az ének csak auraként hat (a régiben a használójára kétszer – D43)
+      if (rules_->abilities[a].type != AbilityDef::Type::Chant) stack(m, rules_->abilities[a].mods);
+    }
     for (const auto& [a, until] : c->buffs) {
       if (until > tick_) stack(m, rules_->abilities[a].mods);
     }
@@ -123,6 +125,7 @@ Fixed Sim::unit_speed_mult(EntityId e) {
   Fixed s = unit_mods(e).speed_mult;
   if (const Afflict* af = world_.get<Afflict>(e)) {
     if (af->stunned(tick_)) return Fixed{};
+    if (af->root_until > tick_) return Fixed{};   // gyökér: nem mozdul (támadni tud)
     if (af->slow_until > tick_) s = s * af->slow_mult;
   }
   return s;
@@ -155,28 +158,107 @@ void Sim::ability_spend(Caster& c, uint16_t ability, const AbilityDef& a) {
   set_ready(c, ability, tick_ + a.cooldown);
 }
 
-void Sim::apply_element(EntityId src, EntityId t, Element el) {
+void Sim::apply_element(EntityId src, EntityId t, Element el, int64_t dmg) {
   Afflict* af = world_.get<Afflict>(t);
   if (!af || el == Element::None) return;
   const auto& fx = rules_->element_fx;
-  if (el == Element::Ice) {   // fagyás: lassítás (a meglévőnél erősebb marad)
-    const Fixed cur = af->slow_until > tick_ ? af->slow_mult : Fixed::from_int(1);
-    af->slow_mult = std::min(cur, fx.ice_slow);
-    af->slow_until = std::max(af->slow_until, tick_ + fx.ice_ticks);
-  } else if (el == Element::Fear) {   // félelem: menekülés az okozótól elfelé
-    const Position* sp = world_.alive(src) ? world_.get<Position>(src) : nullptr;
-    const Position* tp = world_.get<Position>(t);
-    if (!sp || !tp) return;
-    af->fear_until = std::max(af->fear_until, tick_ + fx.fear_ticks);
-    const Fixed dx = tp->x - sp->x, dy = tp->y - sp->y;
-    const Fixed d = std::max(core::length(dx, dy), Fixed::from_ratio(1, 64));
-    af->fx = tp->x + dx * fx.fear_flee / d;
-    af->fy = tp->y + dy * fx.fear_flee / d;
-    if (map_) {
-      af->fx = std::clamp(af->fx, Fixed::from_ratio(1, 2), Fixed::from_int(map_->width()) - Fixed::from_ratio(1, 2));
-      af->fy = std::clamp(af->fy, Fixed::from_ratio(1, 2), Fixed::from_int(map_->height()) - Fixed::from_ratio(1, 2));
+  const int64_t now = tick_;
+  if (el == Element::Sunder) {   // páncéltörés: egységen és épületen is
+    af->sunder_until = std::max(af->sunder_until, now + fx.sunder_ticks);
+    af->sunder_armor = fx.sunder_armor;
+    return;
+  }
+  const Unit* tu = world_.get<Unit>(t);
+  if (!tu) return;
+  const EntityDef& td = rules_->defs[tu->def];
+  const bool wet = af->wet_until > now;
+  auto dot = [&](Fixed ratio, Fixed lo, Fixed hi) {   // a találat sebzéséből, korlátok közt (ezred / s)
+    const int64_t v = (dmg * ratio.raw()) >> 16;
+    return static_cast<int32_t>(std::clamp<int64_t>(v, (int64_t{lo.raw()} * 1000) >> 16, (int64_t{hi.raw()} * 1000) >> 16));
+  };
+  switch (el) {
+    case Element::Fire: {
+      if (af->frozen_until > now) {   // a tűz felolvasztja a fagyást
+        af->frozen_until = 0;
+        af->slow_until = now;
+      }
+      if (wet) {   // vizes egység nem gyullad meg (a tűz felszárítja)
+        af->wet_until = now;
+        break;
+      }
+      const int32_t dps = dot(fx.fire_ratio, fx.fire_min, fx.fire_max);
+      if (af->burn_until <= now || af->burn_dps <= dps) {
+        af->burn_src = src;
+        af->burn_dps = dps;
+        af->burn_until = now + fx.fire_ticks;
+      }
+      break;
     }
-    af->fleeing = 0;
+    case Element::Ice: {   // fagyás: lassítás (a meglévőnél erősebb marad); kioltja az égést
+      af->burn_until = 0;
+      const Fixed cur = af->slow_until > now ? af->slow_mult : Fixed::from_int(1);
+      af->slow_mult = std::min(cur, fx.ice_slow);
+      af->slow_until = std::max(af->slow_until, now + fx.ice_ticks);
+      af->frozen_until = std::max(af->frozen_until, now + fx.ice_ticks);
+      break;
+    }
+    case Element::Lightning:   // sokk: rövid kábulás, célpontonként ritkán; vízben szünet nélkül és hosszabban
+      if (wet || now >= af->shock_ready) {
+        const int32_t d = wet ? (fx.shock_ticks * fx.shock_mult.raw()) >> 16 : fx.shock_ticks;
+        af->stun_until = std::max(af->stun_until, now + d);
+        af->shock_ready = now + fx.shock_cd;
+      }
+      break;
+    case Element::Water:   // vizes: eloltja a tüzet
+      af->burn_until = 0;
+      af->wet_until = std::max(af->wet_until, now + fx.wet_ticks);
+      break;
+    case Element::Root:
+      if (!td.flying) af->root_until = std::max(af->root_until, now + fx.root_ticks);
+      break;
+    case Element::Sleep:   // a hős nem alszik el, csak egy pillanatra kábul
+      if (!td.hero) af->sleep_until = std::max(af->sleep_until, now + fx.sleep_ticks);
+      else af->stun_until = std::max(af->stun_until, now + 30);
+      break;
+    case Element::Fear: {   // félelem: menekülés az okozótól elfelé
+      const Position* sp = world_.alive(src) ? world_.get<Position>(src) : nullptr;
+      const Position* tp = world_.get<Position>(t);
+      if (!sp || !tp) break;
+      af->fear_until = std::max(af->fear_until, now + fx.fear_ticks);
+      const Fixed dx = tp->x - sp->x, dy = tp->y - sp->y;
+      const Fixed d = std::max(core::length(dx, dy), Fixed::from_ratio(1, 64));
+      af->fx = tp->x + dx * fx.fear_flee / d;
+      af->fy = tp->y + dy * fx.fear_flee / d;
+      if (map_) {
+        af->fx = std::clamp(af->fx, Fixed::from_ratio(1, 2), Fixed::from_int(map_->width()) - Fixed::from_ratio(1, 2));
+        af->fy = std::clamp(af->fy, Fixed::from_ratio(1, 2), Fixed::from_int(map_->height()) - Fixed::from_ratio(1, 2));
+      }
+      af->fleeing = 0;
+      break;
+    }
+    case Element::Blind:
+      af->blind_until = std::max(af->blind_until, now + fx.blind_ticks);
+      break;
+    case Element::Silence:   // a bekapcsolt ének és kapcsoló is elhallgat
+      af->silence_until = std::max(af->silence_until, now + fx.silence_ticks);
+      if (Caster* c = world_.get<Caster>(t)) c->toggles.clear();
+      break;
+    case Element::Mark:
+      af->mark_until = std::max(af->mark_until, now + fx.mark_ticks);
+      if (const Health* sh = world_.alive(src) ? world_.get<Health>(src) : nullptr) af->mark_by = sh->owner;
+      break;
+    case Element::Poison: {   // gépen nem
+      if (td.has_tag("mech")) break;
+      const int32_t dps = dot(fx.poison_ratio, fx.poison_min, fx.poison_max);
+      if (af->poison_until <= now || af->poison_dps < dps) {
+        af->poison_src = src;
+        af->poison_dps = dps;
+        af->poison_until = now + fx.poison_ticks;
+      }
+      break;
+    }
+    default:
+      break;   // szél: a területi mező taszítja
   }
 }
 
@@ -331,6 +413,10 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
   for (const EntityId e : units) {
     if (!world_.alive(e) || !world_.get<Caster>(e) || !has_ability(e, ab)) continue;
     if (sheltered(e)) continue;
+    if (const Afflict* af = world_.get<Afflict>(e); af && af->silence_until > tick_ && a.type != AbilityDef::Type::Toggle &&
+                                                     a.type != AbilityDef::Type::Chant) {
+      continue;   // elnémítva csak a kapcsoló és az ének (a passzív, aura, gyógyítás amúgy is magától)
+    }
     us.push_back(e);
   }
   if (us.empty()) return false;
@@ -369,6 +455,36 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
         if (!incapacitated(e) && cast_nova(e, ab)) return true;
       }
       return false;
+    case T::Blink: {   // azonnali áthelyezés a pont felé, legfeljebb a hatótávig, szabad helyre (a régi E 1307)
+      EntityId best = kNoEntity;
+      int64_t best_d = 0;
+      for (const EntityId e : us) {
+        if (incapacitated(e) || !ability_ready(e, *world_.get<Caster>(e), a)) continue;
+        const Position& p = *world_.get<Position>(e);
+        const int64_t d = core::length_sq_raw(p.x - x, p.y - y);
+        if (best == kNoEntity || d < best_d) { best = e; best_d = d; }
+      }
+      if (best == kNoEntity) return false;
+      Position& p = *world_.get<Position>(best);
+      Fixed tx = x, ty = y;
+      const Fixed d = core::length(x - p.x, y - p.y);
+      if (d > a.range && d.raw() > 0) {
+        tx = p.x + (x - p.x) * a.range / d;
+        ty = p.y + (y - p.y) * a.range / d;
+      }
+      ability_spend(*world_.get<Caster>(best), ab, a);
+      interrupt(best);
+      halt(best);
+      place_at_free(best, tx, ty);
+      if (a.land_damage.raw() > 0) {   // landoláskor a közeli ellenség (nem varázs, szorzó nélkül)
+        const Health& h = *world_.get<Health>(best);
+        const Position& lp = *world_.get<Position>(best);
+        for (const EntityId t : enemy_units_in(h.owner, lp.x, lp.y, a.land_radius)) {
+          deal_damage(best, h.owner, kNoDef, t, milli_of(a.land_damage), false, false, a.element);
+        }
+      }
+      return true;
+    }
     case T::Summon:
       if (!a.target_placement) {
         for (const EntityId e : us) {
@@ -577,6 +693,32 @@ void Sim::field_system() {
           af->slow_mult = a.slow;
         }
       }
+      // irányító elemek sebzés nélkül is (gyökér, alvás, félelem, vakság, víz, némítás, jel, páncéltörés)
+      const Element el = a.element;
+      if (a.dps.raw() <= 0 && el != Element::None && el != Element::Wind && el != Element::Fire && el != Element::Ice &&
+          el != Element::Lightning && el != Element::Poison) {
+        apply_element(world_.alive(fd.src) ? fd.src : kNoEntity, t, el, 0);
+      }
+      if (el == Element::Wind && world_.alive(t)) {   // szél: kifelé taszít (a repülőt nem)
+        const Unit* tu = world_.get<Unit>(t);
+        if (tu && !rules_->defs[tu->def].flying) {
+          const Position tp = *world_.get<Position>(t);
+          const Fixed dx = tp.x - p.x, dy = tp.y - p.y;
+          const Fixed dd = std::max(core::length(dx, dy), Fixed::from_ratio(1, 64));
+          place_at_free(t, tp.x + dx * rules_->element_fx.wind_push / dd, tp.y + dy * rules_->element_fx.wind_push / dd);
+        }
+      }
+    }
+    if (a.hits_buildings && a.dps.raw() > 0) {   // épületeket is sújt (szorzó nélkül)
+      std::vector<EntityId> bs;
+      world_.pool<Building>().each([&](EntityId be, const Building& b) {
+        const Health* bh = world_.get<Health>(be);
+        if (!bh || bh->hp <= 0 || !hostile(fd.owner, bh->owner)) return;
+        const Fixed gx = std::max({Fixed::from_int(b.tx) - p.x, Fixed{}, p.x - Fixed::from_int(b.tx + b.w)});
+        const Fixed gy = std::max({Fixed::from_int(b.ty) - p.y, Fixed{}, p.y - Fixed::from_int(b.ty + b.h)});
+        if (core::length(gx, gy) <= a.radius) bs.push_back(be);
+      });
+      for (const EntityId be : bs) deal_damage(kNoEntity, fd.owner, kNoDef, be, milli_of(a.dps) / 2, false, true);
     }
   }
 }
@@ -670,6 +812,33 @@ void Sim::ability_system() {
         }
       }
     }
+  }
+  // égés és méreg: sebzés idővel, páncél és pajzs nélkül (a régi E 694–712)
+  std::vector<std::pair<EntityId, EntityId>> dot_dead;
+  world_.pool<Afflict>().each([&](EntityId e, Afflict& af) {
+    int64_t per = 0;
+    EntityId killer = 0;
+    if (af.burn_until > tick_) { per += af.burn_dps; killer = af.burn_src; }
+    if (af.poison_until > tick_) { per += af.poison_dps; if (!killer) killer = af.poison_src; }
+    if (per <= 0 || sheltered(e)) return;
+    Health* h = world_.get<Health>(e);
+    if (!h || h->hp <= 0) return;
+    af.dot_milli += static_cast<int32_t>(per);
+    const int64_t d = af.dot_milli / kTickHz;
+    af.dot_milli -= static_cast<int32_t>(d * kTickHz);
+    if (d <= 0) return;
+    Vital* vt = world_.get<Vital>(e);
+    const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0) - d;
+    if (eff <= 0) {
+      dot_dead.emplace_back(e, killer);
+    } else {
+      h->hp = static_cast<int32_t>((eff + 999) / 1000);
+      if (vt) vt->deficit = static_cast<int32_t>(int64_t{h->hp} * 1000 - eff);
+    }
+  });
+  for (const auto& [e, k] : dot_dead) {
+    (void)k;
+    if (std::find(dying_.begin(), dying_.end(), e) == dying_.end()) dying_.push_back(e);
   }
   // félelem: a menekülő egység az okozótól elfelé fut, utána megáll
   world_.pool<Afflict>().each([&](EntityId e, Afflict& af) {

@@ -406,3 +406,10 @@ A tulajdonos kérése: a végleges kezelőfelület **pontosan úgy nézzen ki, m
 színek, keretek, ikonok, betű (Rováskönyv / Rováskönyv Text), a régi `rts/hud.py` (alsó sáv, jellemzőlap, hatás- és
 számlálósorok) a minta. Az M6 ideiglenes HUD-ja (D37) csak a játszhatósághoz kell, már a régi betűvel; a régi HUD
 pontos átvétele az M8 (RmlUi) feladata, a régi játék képernyőképeivel összevetve.
+
+### D43 – Az M7 sorrendje és a régi hibák · ELDÖNTVE (2026-11-13)
+
+ADR-008 elfogadva. **Sorrend:** mechanika szerint – közös képességkeret, hősök/tárgyak/táborok/Vadon, majd Wullof és
+Aurethi Birodalom, Ooni, Croftianok, Huk’ucha, Szürke elfek, Micéliák, kisnépek és szövetség, elfoglalás és
+előléptetés. **A régi játék nyilvánvaló hibái** (pl. az ének kétszer hat a használójára) azonnal javulnak, naplózva;
+balanszszám az M7-ben nem változik.

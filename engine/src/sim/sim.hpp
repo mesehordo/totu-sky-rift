@@ -406,26 +406,47 @@ struct Caster {
   }
 };
 
-// átmeneti állapotok (a régi `stun_until`, `slow_until`/`slow_mult`, `feared_until`/`fear_from`)
+// átmeneti állapotok (a régi `stun_until`, `slow_until`/`slow_mult`, `feared_until`/`fear_from`) és a 13 elem
+// állapota (HOSOK_TARGYAK_TABOROK.md D; a régi `apply_element`): égés és méreg (sebzés idővel, páncélon át), vizes,
+// fagyott, sokk-szünet, gyökér, alvás, vakság, némítás, jel, páncéltörés
 struct Afflict {
   int64_t stun_until = 0, slow_until = 0, fear_until = 0;
   Fixed slow_mult = Fixed::from_int(1);
   Fixed fx, fy;                // a menekülés célja
   uint8_t fleeing = 0;         // a menekülő mozgás kiment
-  bool stunned(int64_t now) const { return stun_until > now; }
+  EntityId burn_src = 0, poison_src = 0;
+  int32_t burn_dps = 0, poison_dps = 0;   // ezred / s
+  int64_t burn_until = 0, poison_until = 0, wet_until = 0, frozen_until = 0, shock_ready = 0, root_until = 0,
+          sleep_until = 0, blind_until = 0, silence_until = 0, mark_until = 0, sunder_until = 0;
+  uint8_t mark_by = 0;
+  int32_t sunder_armor = 0;
+  int32_t dot_milli = 0;       // az égés és a méreg tört sebzése (ezred)
+  bool stunned(int64_t now) const { return stun_until > now || sleep_until > now; }
   bool feared(int64_t now) const { return fear_until > now; }
+  template <class F>
+  void fields(F&& f) {
+    f(stun_until); f(slow_until); f(fear_until); f(burn_until); f(poison_until); f(wet_until); f(frozen_until);
+    f(shock_ready); f(root_until); f(sleep_until); f(blind_until); f(silence_until); f(mark_until); f(sunder_until);
+  }
   void hash(core::StateHash& h) const {
-    h.add_i64(stun_until); h.add_i64(slow_until); h.add_i64(fear_until); h.add_i64(slow_mult.raw());
-    h.add_i64(fx.raw()); h.add_i64(fy.raw()); h.add_u64(fleeing);
+    const_cast<Afflict*>(this)->fields([&](int64_t& v) { h.add_i64(v); });
+    h.add_i64(slow_mult.raw()); h.add_i64(fx.raw()); h.add_i64(fy.raw()); h.add_u64(fleeing);
+    h.add_u64(burn_src); h.add_u64(poison_src); h.add_i64(burn_dps); h.add_i64(poison_dps); h.add_u64(mark_by);
+    h.add_i64(sunder_armor); h.add_i64(dot_milli);
   }
   void save(core::ByteWriter& w) const {
-    w.i64(stun_until); w.i64(slow_until); w.i64(fear_until); w.i32(slow_mult.raw()); w.i32(fx.raw()); w.i32(fy.raw());
-    w.u8(fleeing);
+    const_cast<Afflict*>(this)->fields([&](int64_t& v) { w.i64(v); });
+    w.i32(slow_mult.raw()); w.i32(fx.raw()); w.i32(fy.raw()); w.u8(fleeing);
+    w.u32(burn_src); w.u32(poison_src); w.i32(burn_dps); w.i32(poison_dps); w.u8(mark_by); w.i32(sunder_armor);
+    w.i32(dot_milli);
   }
   static Afflict load(core::ByteReader& r) {
     Afflict a;
-    a.stun_until = r.i64(); a.slow_until = r.i64(); a.fear_until = r.i64(); a.slow_mult = Fixed::from_raw(r.i32());
-    a.fx = Fixed::from_raw(r.i32()); a.fy = Fixed::from_raw(r.i32()); a.fleeing = r.u8();
+    a.fields([&](int64_t& v) { v = r.i64(); });
+    a.slow_mult = Fixed::from_raw(r.i32()); a.fx = Fixed::from_raw(r.i32()); a.fy = Fixed::from_raw(r.i32());
+    a.fleeing = r.u8();
+    a.burn_src = r.u32(); a.poison_src = r.u32(); a.burn_dps = r.i32(); a.poison_dps = r.i32(); a.mark_by = r.u8();
+    a.sunder_armor = r.i32(); a.dot_milli = r.i32();
     return a;
   }
 };
@@ -716,7 +737,7 @@ class Sim {
   // Felemelkedés és fejlődési irány (MECH-ASC): a választás csak felemelkedve, egyszer.
   bool choose_path(uint8_t owner, const std::string& path);
   // Főépület-képesség (`gpower`, pl. az ursan Eskü-riadó: minden munkás Fegyverbe!).
-  bool use_power(uint8_t owner, EntityId building, const std::string& ability);
+  bool use_power(uint8_t owner, EntityId building, const std::string& ability, Fixed x = {}, Fixed y = {});
   bool in_rift(EntityId e) const { return rift_.count(e) != 0; }
   // Győzelem és vereség (ADR-007 9. lépés): akinek minden épülete elpusztult, kiesik; a győztes az egyetlen megmaradt
   // játékos (0: még tart, vagy nincs meccs).
@@ -795,7 +816,7 @@ class Sim {
   bool summon(EntityId e, uint16_t ability, bool at_point, Fixed x, Fixed y);
   void fire_bolt(EntityId e, uint16_t ability, EntityId target);
   void apply_spell(EntityId src, uint8_t owner, const AbilityDef& a, EntityId target);   // lassítás vagy kábítás
-  void apply_element(EntityId src, EntityId target, Element el);
+  void apply_element(EntityId src, EntityId target, Element el, int64_t dmg_milli);
   std::vector<EntityId> enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed r);
   bool incapacitated(EntityId e);      // kábult vagy fél: nem támad, nem varázsol
   std::map<EntityId, AbilityMods> aura_;     // tickenként újraszámolt (nem állapot)

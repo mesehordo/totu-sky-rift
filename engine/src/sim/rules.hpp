@@ -28,6 +28,11 @@ constexpr uint16_t kNoDef = 0xFFFF;
 
 int seconds_to_ticks(Fixed seconds);       // kerekítve
 
+// a 13 elem (HOSOK_TARGYAK_TABOROK.md D; a régi `apply_element`)
+enum class Element : uint8_t { None = 0, Ice, Fear, Fire, Lightning, Poison, Water, Root, Sleep, Blind, Wind, Sunder,
+                               Silence, Mark, Count };
+Element element_of(const std::string& name);   // None, ha ismeretlen
+
 struct ResourceDef {
   Fixed gather_time;      // másodperc egy teljes rakományra (az alap `carry`-hez)
   int32_t carry = 0;      // alap rakomány
@@ -65,11 +70,15 @@ struct AttackDef {
   std::vector<std::pair<std::string, Fixed>> bonus;        // címke → +sebzés
   std::vector<std::pair<std::string, Fixed>> type_bonus;   // célosztály → szorzó (a mátrixnál erősebb)
   bool ranged() const { return projectile != 0; }
+  Element element = Element::None;            // a találat eleme (`statuses.json` hozzárendelés)
+  Fixed slow;                                 // lassító fegyver (0: nincs): a lassítás mértéke
+  int32_t slow_ticks = 45;
+  Fixed poison_dps;                           // mérgező fegyver (0: nincs)
+  int32_t poison_ticks = 0;
 };
 
 // Képesség (M6 8. lépés; KEPESSEGEK.md A. rész – a régi játék szerint). A hősképességnél az 1. szint (`levels[0]`)
 // már bele van fésülve (az M6-ban a hősnek nincs szintje, D37). Az idők tickben, a távok csempében.
-enum class Element : uint8_t { None = 0, Ice, Fear };
 struct AbilityMods {   // a `modifiers`: szorzók (1 = nincs) és összeadandók (0 = nincs)
   Fixed speed_mult = Fixed::from_int(1), damage_mult = Fixed::from_int(1), ranged_taken_mult = Fixed::from_int(1);
   Fixed armor_add, range_add, regen_add;
@@ -77,7 +86,7 @@ struct AbilityMods {   // a `modifiers`: szorzók (1 = nincs) és összeadandók
 };
 struct AbilityDef {
   enum class Type : uint8_t { Unknown = 0, Garrison, SelfBuff, Toggle, Nova, Chant, Aura, Autoheal, Bolt, Summon, Area,
-                              Passive, Power };
+                              Passive, Power, Blink };
   std::string id;
   Type type = Type::Unknown;
   int32_t cooldown = 0, duration = 0;   // tick
@@ -96,6 +105,12 @@ struct AbilityDef {
   std::string buff;                     // `gpower` (`levy`): a kapott önerősítés
   std::string effect;                   // `gpower`: `levy` (mozgósítás) …
   char hotkey = 0;                      // gyorsbillentyű (nagybetű; 0 = nincs)
+  // `gpower`: költség (a játékos nyersanyagából; az áhítat is), a főépület életereje, célzott, épületeket is sújt,
+  // felfedés (csempe); `blink`: landolási sebzés és sugár
+  std::array<int32_t, kResources> cost{};
+  int32_t hq_hp = 0, reveal = 0;
+  bool targeted = false, hits_buildings = false;
+  Fixed land_damage, land_radius = Fixed::from_ratio(6, 5);
 };
 
 // Szabálymódosítók (KUT-RULE, a régi `rules`): kulcsonként az utolsó felülír (a régi `merge_rules`).
@@ -287,7 +302,17 @@ struct Rules {
     Fixed ice_slow = Fixed::from_ratio(3, 5);
     int32_t fear_ticks = 48;                               // félelem: menekülés ideje
     Fixed fear_flee = Fixed::from_int(3);                  // csempe, az okozótól elfelé
-  } element_fx;                                            // `statuses.json` (status_ice, status_fear)
+    // `statuses.json` → `status_<elem>.Status` (a régi alapértékekkel)
+    int32_t fire_ticks = 90; Fixed fire_ratio = Fixed::from_ratio(1, 4), fire_min = Fixed::from_int(2), fire_max = Fixed::from_int(25);
+    int32_t poison_ticks = 120; Fixed poison_ratio = Fixed::from_ratio(3, 20), poison_min = Fixed::from_ratio(3, 2),
+        poison_max = Fixed::from_int(15);
+    int32_t shock_ticks = 12, shock_cd = 90;               // villám: rövid kábulás, célpontonként ritkán
+    int32_t wet_ticks = 150; Fixed shock_mult = Fixed::from_int(2);
+    int32_t root_ticks = 75, sleep_ticks = 180, blind_ticks = 120, silence_ticks = 90, mark_ticks = 240, sunder_ticks = 180;
+    int32_t blind_miss = 500;                              // ezrelék
+    Fixed mark_mult = Fixed::from_ratio(6, 5), wind_push = Fixed::from_ratio(45, 100);
+    int32_t sunder_armor = 2;
+  } element_fx;
   struct Rift {                                            // Égkő-fény (MECH-RIFT; `game.json` → `rift`)
     Fixed radius = Fixed::from_int(5), energy_mult = Fixed::from_ratio(3, 2), mage_range = Fixed::from_int(1);
     Fixed spell_mult = Fixed::from_int(1);

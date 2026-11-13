@@ -328,7 +328,7 @@ bool Sim::choose_path(uint8_t owner, const std::string& id) {
 }
 
 // --- főépület-képesség -----------------------------------------------------------------------------------------------
-bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id) {
+bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, Fixed y) {
   if (!rules_) return false;
   const int ai = rules_->ability_index(id);
   const Building* bd = world_.get<Building>(b);
@@ -339,10 +339,56 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id) {
   const auto& pw = rules_->defs[bd->def].powers;
   if (std::find(pw.begin(), pw.end(), ab) == pw.end()) return false;
   const AbilityDef& a = rules_->abilities[ab];
-  for (const auto& [x, t] : c->ready) {
-    if (x == ab && t > tick_) return false;
+  for (const auto& [rid, rt] : c->ready) {
+    if (rid == ab && rt > tick_) return false;
   }
-  if (a.effect == "levy") {   // mozgósítás: minden (nem bent lévő) munkás megkapja az önerősítést
+  if (a.targeted && map_) {   // csak látható pontra (a régi G 1677)
+    const int tx = x.floor_int(), ty = y.floor_int();
+    const auto& vis = players_[owner].visible;
+    if (tx < 0 || ty < 0 || tx >= map_->width() || ty >= map_->height() ||
+        (!vis.empty() && !vis[static_cast<size_t>(ty * map_->width() + tx)])) {
+      return false;
+    }
+  }
+  for (int r = 0; r < kResources; ++r) {
+    if (players_[owner].resource(r) < a.cost[static_cast<size_t>(r)]) return false;
+  }
+  Health* hh = world_.get<Health>(b);
+  if (a.hq_hp > 0 && hh->hp <= a.hq_hp + 50) return false;   // a főépület túl sebesült
+  pay(owner, a.cost);
+  if (a.hq_hp > 0) hh->hp -= a.hq_hp;
+  if (a.effect == "area") {   // területi mező a pontra (a főépület a forrás)
+    const EntityId f = world_.create();
+    world_.add(f, Position{x, y});
+    world_.add(f, Field{owner, b, ab, tick_ + a.duration, tick_ + 1});
+  } else if (a.effect == "summon" && a.unit != kNoDef) {   // idézés a pont köré
+    for (int k = 0; k < a.count; ++k) {
+      const core::Angle ang = core::Angle::from_units(k * 21900);   // 2,1 radián lépésenként
+      const Fixed sx = x + core::cos(ang) * Fixed::from_ratio(20, 32), sy = y + core::sin(ang) * Fixed::from_ratio(20, 32);
+      const EntityId u = spawn_unit(a.unit, owner, sx, sy);
+      if (u == kNoEntity) continue;
+      place_at_free(u, sx, sy);
+      world_.add(u, Lifetime{tick_ + a.lifetime});
+    }
+  } else if (a.effect == "wind") {   // szél: a saját egységek önerősítést kapnak, az ellenség lassul
+    const int bi = rules_->ability_index(a.buff);
+    std::vector<EntityId> own;
+    world_.pool<Unit>().each([&](EntityId e, const Unit&) {
+      const Health* h = world_.get<Health>(e);
+      const Position& p = *world_.get<Position>(e);
+      if (!h || h->hp <= 0 || core::length(p.x - x, p.y - y) > a.radius) return;
+      if (h->owner == owner) own.push_back(e);
+      else if (hostile(owner, h->owner)) {
+        if (Afflict* af = world_.get<Afflict>(e)) {
+          af->slow_until = tick_ + a.duration;
+          af->slow_mult = a.has_slow ? a.slow : Fixed::from_ratio(1, 2);
+        }
+      }
+    });
+    if (bi >= 0) {
+      for (const EntityId e : own) give_buff(e, static_cast<uint16_t>(bi), a.duration);
+    }
+  } else if (a.effect == "levy") {   // mozgósítás: minden (nem bent lévő) munkás megkapja az önerősítést
     const int bi = rules_->ability_index(a.buff);
     if (bi < 0) return false;
     std::vector<EntityId> ws;
@@ -352,12 +398,13 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id) {
     });
     for (const EntityId e : ws) give_buff(e, static_cast<uint16_t>(bi), a.duration);
   } else {
-    return false;   // a többi hatás (terület, idézés, szél) a fajokkal együtt, az M7-ben
+    refund(owner, a.cost, 1000);
+    return false;   // a népi hatások (áradás, bányagyorsítás, sietés) a népükkel együtt
   }
   bool found = false;
-  for (auto& [x, t] : c->ready) {
-    if (x == ab) {
-      t = tick_ + a.cooldown;
+  for (auto& [rid, rt] : c->ready) {
+    if (rid == ab) {
+      rt = tick_ + a.cooldown;
       found = true;
     }
   }

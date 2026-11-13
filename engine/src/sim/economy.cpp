@@ -100,6 +100,7 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   world_.add(e, vt);
   if (d.attack.has || d.garrison > 0) world_.add(e, Combat{});   // a helyőrség fegyvert ad
   if (d.garrison > 0) world_.add(e, Garrison{});
+  world_.add(e, Afflict{});   // páncéltörés (épületen is)
   if (!d.powers.empty()) world_.add(e, Caster{});                  // főépület-képességek újratöltése
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
   return e;

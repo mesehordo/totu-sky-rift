@@ -202,7 +202,33 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   const Building* tb = tu ? nullptr : world_.get<Building>(t);
   if (!tu && !tb) return;
   const EntityDef& td = rules_->defs[tu ? tu->def : tb->def];
-  if (tu && el != Element::None) apply_element(src, t, el);   // az elem a sebzés előtt (a régi G 1065)
+  Afflict* taf = world_.get<Afflict>(t);
+  if (taf && dmg > 0 && taf->sleep_until > tick_) taf->sleep_until = 0;   // az első sebzésre felébred
+  // elvakult lövész: a nem varázs lövése a `miss` eséllyel mellémegy
+  if (ranged && !magic && src && world_.alive(src)) {
+    if (const Afflict* saf = world_.get<Afflict>(src);
+        saf && saf->blind_until > tick_ &&
+        static_cast<int32_t>(combat_rng_.next() % 1000u) < rules_->element_fx.blind_miss) {
+      return;
+    }
+  }
+  // az elem (a képességé, különben a fegyveré) a sebzés előtt (a régi G 1065); a páncéltörés épületen is
+  const AttackDef* weapon = !magic && src_def < rules_->defs.size() ? &rules_->defs[src_def].attack : nullptr;
+  const Element hit_el = el != Element::None ? el : weapon ? weapon->element : Element::None;
+  if (hit_el != Element::None && (tu || hit_el == Element::Sunder)) apply_element(src, t, hit_el, dmg);
+  if (taf && taf->mark_until > tick_) dmg = mul_fixed(dmg, rules_->element_fx.mark_mult);   // megjelölt: többet kap
+  if (weapon && tu && taf) {   // mérgező és lassító fegyver (a régi G 1068–1092)
+    if (weapon->poison_dps.raw() > 0 && !td.has_tag("mech")) {
+      taf->poison_src = src;
+      taf->poison_dps = static_cast<int32_t>(milli_of(weapon->poison_dps));
+      taf->poison_until = tick_ + weapon->poison_ticks;
+    }
+    if (weapon->slow.raw() > 0) {
+      const Fixed cur = taf->slow_until > tick_ ? taf->slow_mult : Fixed::from_int(1);
+      taf->slow_mult = std::min(cur, weapon->slow);
+      taf->slow_until = tick_ + weapon->slow_ticks;
+    }
+  }
   if (!magic && src_def < rules_->defs.size()) {
     const EntityDef& sd = rules_->defs[src_def];
     // típusszorzó (Ö24): a támadó osztálya a célpont osztálya ellen; a `type_bonus` ennél erősebb lehet
@@ -245,7 +271,8 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   if (dmg > 0) {
     if (!magic) {   // a varázssebzés páncél nélkül hat
       const int32_t armor = research_stat(h->owner, "Health.armor", Fixed::from_int(td.armor), td).floor_int();
-      const int64_t add = tu ? milli_of(unit_mods(t).armor_add) : 0;   // képesség, aura
+      int64_t add = tu ? milli_of(unit_mods(t).armor_add) : 0;   // képesség, aura
+      if (taf && taf->sunder_until > tick_) add -= int64_t{taf->sunder_armor} * 1000;   // páncéltörés
       dmg = std::max<int64_t>(500, dmg - int64_t{armor} * 1000 - add);   // páncél; legalább 0,5
     }
     const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0) - dmg;

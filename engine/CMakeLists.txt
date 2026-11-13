@@ -87,7 +87,7 @@ enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
-  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp src/client/session.cpp)
+  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp tests/test_elements.cpp src/client/session.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")

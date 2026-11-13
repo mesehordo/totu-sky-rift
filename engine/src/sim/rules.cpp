@@ -251,28 +251,76 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
   }
 
-  // elemhatások és a képességek elemei (`statuses.json`)
-  std::map<std::string, Element> ability_element;
+  // elemhatások, a képességek és az egységek elemei (`statuses.json`; a `kezi` felülírja, a null törli)
+  std::map<std::string, Element> ability_element, unit_element;
   {
     auto& st = set["status"];
-    auto status_fx = [&](const char* id) -> const content::Value* {
+    auto fx = [&](const char* id) -> const content::Value* {
       const content::Value* v = st.get(id);
       return v ? v->find("Status") : nullptr;
     };
-    if (const content::Value* ice = status_fx("status_ice")) {
-      r.element_fx.ice_ticks = seconds_to_ticks(fixed_of(ice->find("dur"), Fixed::from_int(2)));
-      r.element_fx.ice_slow = fixed_of(ice->find("slow"), r.element_fx.ice_slow);
+    auto ticks = [&](const content::Value* v, const char* k, int32_t def) {
+      return v && v->find(k) ? seconds_to_ticks(fixed_of(v->find(k), Fixed{})) : def;
+    };
+    auto& e = r.element_fx;
+    if (const content::Value* v = fx("status_ice")) {
+      e.ice_ticks = ticks(v, "dur", e.ice_ticks);
+      e.ice_slow = fixed_of(v->find("slow"), e.ice_slow);
     }
-    if (const content::Value* fear = status_fx("status_fear")) {
-      r.element_fx.fear_ticks = seconds_to_ticks(fixed_of(fear->find("dur"), Fixed::from_ratio(8, 5)));
-      r.element_fx.fear_flee = fixed_of(fear->find("flee"), r.element_fx.fear_flee);
+    if (const content::Value* v = fx("status_fear")) {
+      e.fear_ticks = ticks(v, "dur", e.fear_ticks);
+      e.fear_flee = fixed_of(v->find("flee"), e.fear_flee);
     }
+    if (const content::Value* v = fx("status_fire")) {
+      e.fire_ticks = ticks(v, "dur", e.fire_ticks);
+      e.fire_ratio = fixed_of(v->find("ratio"), e.fire_ratio);
+      e.fire_min = fixed_of(v->find("min_dps"), e.fire_min);
+      e.fire_max = fixed_of(v->find("max_dps"), e.fire_max);
+    }
+    if (const content::Value* v = fx("status_poison")) {
+      e.poison_ticks = ticks(v, "dur", e.poison_ticks);
+      e.poison_ratio = fixed_of(v->find("ratio"), e.poison_ratio);
+      e.poison_min = fixed_of(v->find("min_dps"), e.poison_min);
+      e.poison_max = fixed_of(v->find("max_dps"), e.poison_max);
+    }
+    if (const content::Value* v = fx("status_lightning")) {
+      e.shock_ticks = ticks(v, "dur", e.shock_ticks);
+      e.shock_cd = ticks(v, "cooldown", e.shock_cd);
+    }
+    if (const content::Value* v = fx("status_water")) {
+      e.wet_ticks = ticks(v, "dur", e.wet_ticks);
+      e.shock_mult = fixed_of(v->find("shock_mult"), e.shock_mult);
+    }
+    if (const content::Value* v = fx("status_root")) e.root_ticks = ticks(v, "dur", e.root_ticks);
+    if (const content::Value* v = fx("status_sleep")) e.sleep_ticks = ticks(v, "dur", e.sleep_ticks);
+    if (const content::Value* v = fx("status_silence")) e.silence_ticks = ticks(v, "dur", e.silence_ticks);
+    if (const content::Value* v = fx("status_blind")) {
+      e.blind_ticks = ticks(v, "dur", e.blind_ticks);
+      e.blind_miss = static_cast<int32_t>((static_cast<int64_t>(fixed_of(v->find("miss"), Fixed::from_ratio(1, 2)).raw()) * 1000) >> 16);
+    }
+    if (const content::Value* v = fx("status_mark")) {
+      e.mark_ticks = ticks(v, "dur", e.mark_ticks);
+      e.mark_mult = fixed_of(v->find("dmg_mult"), e.mark_mult);
+    }
+    if (const content::Value* v = fx("status_sunder")) {
+      e.sunder_ticks = ticks(v, "dur", e.sunder_ticks);
+      e.sunder_armor = int_of(v->find("armor"), e.sunder_armor);
+    }
+    if (const content::Value* v = fx("status_wind")) e.wind_push = fixed_of(v->find("push"), e.wind_push);
     const content::Value* asg = st.meta("_hozzarendeles");
-    if (const content::Value* ab = asg ? asg->find("abilities") : nullptr; ab && ab->is_object()) {
-      for (const auto& [aid, el] : ab->members()) {
-        if (!el.is_string()) continue;
-        if (el.text() == "ice") ability_element[aid] = Element::Ice;
-        else if (el.text() == "fear") ability_element[aid] = Element::Fear;
+    auto read_map = [&](const content::Value* m, std::map<std::string, Element>& out) {
+      if (!m || !m->is_object()) return;
+      for (const auto& [id, el] : m->members()) {
+        if (el.is_string()) out[id] = element_of(el.text());
+        else out[id] = Element::None;   // null: nincs eleme
+      }
+    };
+    if (asg) {
+      read_map(asg->find("abilities"), ability_element);
+      read_map(asg->find("units"), unit_element);
+      if (const content::Value* k = asg->find("kezi")) {
+        read_map(k->find("abilities"), ability_element);
+        read_map(k->find("units"), unit_element);
       }
     }
   }
@@ -315,9 +363,10 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.type = type == "garrison" ? T::Garrison : type == "self_buff" ? T::SelfBuff : type == "toggle" ? T::Toggle
              : type == "nova" ? T::Nova : type == "chant" ? T::Chant : type == "aura" ? T::Aura
              : type == "autoheal" ? T::Autoheal : type == "bolt" ? T::Bolt : type == "summon" ? T::Summon
-             : type == "area" ? T::Area : type == "passive" ? T::Passive : type == "gpower" ? T::Power : T::Unknown;
+             : type == "area" ? T::Area : type == "passive" ? T::Passive : type == "gpower" ? T::Power
+             : type == "blink" ? T::Blink : T::Unknown;
       // alapértékek típusonként (KEPESSEGEK.md B-2)
-      const bool cd10 = a.type == T::Nova || a.type == T::SelfBuff;
+      const bool cd10 = a.type == T::Nova || a.type == T::SelfBuff || a.type == T::Blink;
       const Fixed cd_def = cd10 ? Fixed::from_int(10) : (a.type == T::Summon || a.type == T::Autoheal) ? Fixed::from_int(1) : Fixed{};
       a.cooldown = seconds_to_ticks(fixed_of(key("cooldown"), cd_def));
       const Fixed dur_def = a.type == T::Bolt ? Fixed::from_ratio(3, 2) : a.type == T::Nova ? Fixed::from_int(2) : Fixed::from_int(4);
@@ -345,6 +394,13 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.ultimate = flag("ultimate");
       if (const content::Value* b = key("buff"); b && b->is_string()) a.buff = b->text();
       if (const content::Value* ef = key("effect"); ef && ef->is_string()) a.effect = ef->text();
+      for (int ri = 0; ri < kResources; ++ri) a.cost[static_cast<size_t>(ri)] = int_of(key(resource_id(ri)), 0);
+      a.hq_hp = int_of(key("hq_hp"), 0);
+      a.reveal = int_of(key("reveal"), 0);
+      a.targeted = flag("target");
+      a.hits_buildings = flag("buildings");
+      a.land_damage = fixed_of(key("land_damage"), Fixed{});
+      a.land_radius = fixed_of(key("land_radius"), a.land_radius);
       if (const content::Value* hk = key("hotkey"); hk && hk->is_string() && hk->text().size() == 1) a.hotkey = hk->text()[0];
       if (const auto it = ability_element.find(id); it != ability_element.end()) a.element = it->second;
       auto mod = [&](const char* k, Fixed def) {
@@ -434,6 +490,13 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
         at.proj_speed = Fixed::from_raw(static_cast<int32_t>((static_cast<int64_t>(f.raw()) + kTickHz / 2) / kTickHz));
       }
       at.splash = fixed_of(a->find("splash"), Fixed{});
+      if (const auto it = unit_element.find(id); it != unit_element.end()) at.element = it->second;
+      at.slow = fixed_of(a->find("slow"), Fixed{});
+      at.slow_ticks = seconds_to_ticks(fixed_of(a->find("slow_dur"), Fixed::from_ratio(3, 2)));
+      if (const content::Value* pz = a->find("poison"); pz && pz->is_array() && pz->items().size() == 2) {
+        at.poison_dps = fixed_of(&pz->items()[0], Fixed{});
+        at.poison_ticks = seconds_to_ticks(fixed_of(&pz->items()[1], Fixed{}));
+      }
       for (const char* key : {"bonus", "type_bonus"}) {
         if (const content::Value* b = a->find(key); b && b->is_object()) {
           for (const auto& [k, val] : b->members()) {
@@ -672,6 +735,15 @@ int Rules::ability_index(const std::string& id) const {
   const auto it = std::lower_bound(abilities.begin(), abilities.end(), id,
                                    [](const AbilityDef& x, const std::string& v) { return x.id < v; });
   return it != abilities.end() && it->id == id ? static_cast<int>(it - abilities.begin()) : -1;
+}
+
+Element element_of(const std::string& n) {
+  static const char* kNames[] = {"", "ice", "fear", "fire", "lightning", "poison", "water", "root", "sleep", "blind", "wind",
+                                 "sunder", "silence", "mark"};
+  for (int i = 1; i < static_cast<int>(Element::Count); ++i) {
+    if (n == kNames[i]) return static_cast<Element>(i);
+  }
+  return Element::None;
 }
 
 const PathDef* FactionDef::path(const std::string& pid) const {

@@ -148,7 +148,7 @@ void Sim::apply(const Command& c) {
       choose_path(c.owner, c.def);
       break;
     case Command::Kind::Power:
-      use_power(c.owner, c.target, c.def);
+      use_power(c.owner, c.target, c.def, c.x, c.y);
       break;
   }
 }
