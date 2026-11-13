@@ -13,6 +13,7 @@
 //   totu --nofog                   köd nélkül
 //   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
 //                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
+//   totu --look X,Y                a kamera középpontja (csempe)
 //   totu --zoom Z                  a kamera nagyítása (1,0–2,0; alap 1,5)
 //   totu --sync                    a szimuláció a rajzolás szálán, két képkockánként egy tick (képernyőképnél mindig így;
 //                                  különben a szimuláció külön szálon fut, 30 Hz-en)
@@ -71,6 +72,7 @@ struct Options {
   float weather_power = 1.0f;
   float zoom = 0;   // 0: a régi játék alapja (1,5)
   bool sync = false;
+  float look_x = -1, look_y = -1;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -233,6 +235,12 @@ int main(int argc, char** argv) {
     else if (a == "--nopost") o.post = false;
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
     else if (a == "--sync") o.sync = true;
+    else if (a == "--look") {
+      char* end = nullptr;
+      const char* v = next();
+      o.look_x = std::strtof(v, &end);
+      if (end && *end == ',') o.look_y = std::strtof(end + 1, nullptr);
+    }
     else if (a == "--weather") {
       const std::string v = next();
       const size_t colon = v.find(':');
@@ -354,6 +362,10 @@ int main(int argc, char** argv) {
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
+          if (o.look_x >= 0 && o.look_y >= 0) {
+            cam.x = o.look_x * client::World::kTilePx - static_cast<float>(o.width) / 2 / cam.zoom;
+            cam.y = o.look_y * client::World::kTilePx - static_cast<float>(o.height) / 2 / cam.zoom;
+          }
           if ((o.bench || !o.screenshot.empty()) && !session.has_starts()) session.order_demo_attack();
           have_world = true;
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
@@ -465,9 +477,11 @@ int main(int argc, char** argv) {
         lighting.begin_scene(0.0f, 0.0f, 0.0f);
         terrain.draw(proj, cam.x, cam.y, vx1, vy1, t);
         render::Atlas* atl = world_atlas_ok ? &world_atlas : nullptr;
+        lighting.begin_shadow_mask();   // az árnyékok külön maszkba (maximum-keveréssel), majd egyszer a terepre
         batch.begin_shadows(proj, day.shadow_x, day.shadow_y, day.shadow_alpha);   // a napszakkal forgó árnyék
         world.draw(batch, atl, fallback, cam, w, h, alpha, t, true);
         batch.end();
+        lighting.apply_shadows();
         batch.begin(proj);
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         batch.end();

@@ -15,12 +15,16 @@
 
 namespace totu::render {
 
+enum SpriteFx : uint8_t { kFxInnerShadow = 1, kFxTreeShadow = 2 };
+
 struct SpriteInstance {
   float x = 0, y = 0, w = 0, h = 0;           // képernyő- vagy világkoordináta (a vetítés dönt)
   float u0 = 0, v0 = 0, u1 = 1, v1 = 1;       // textúrakoordináták
   uint8_t tint[4] = {255, 255, 255, 255};      // árnyalat és átlátszóság
   uint8_t team[4] = {0, 0, 0, 0};              // csapatszín; a negyedik bájt az erősség (0 = nincs)
-  uint8_t layer[4] = {0, 0, 0, 0};             // a tömbtextúra rétege (az első bájt); a többi tartalék
+  // [0]: a tömbtextúra rétege; [1]: hatásjelzők (1 = belső árnyék, 2 = fa: a talajfolt nem vet árnyékot);
+  // [2]: az árnyék hossza százalékban (0 = 100); [3]: tartalék
+  uint8_t layer[4] = {0, 0, 0, 0};
   float foot = 0;                              // a talpvonal y-ja (az árnyék innen vetül; 0 = a négyzet alja)
 };
 static_assert(sizeof(SpriteInstance) == 48, "a csúcsformátum 48 bájt");

@@ -35,7 +35,7 @@ constexpr GLenum TEXTURE0 = 0x84C0, ARRAY_BUFFER = 0x8892, STREAM_DRAW = 0x88E0,
 constexpr GLenum VERTEX_SHADER = 0x8B31, FRAGMENT_SHADER = 0x8B30, COMPILE_STATUS = 0x8B81, LINK_STATUS = 0x8B82;
 constexpr GLenum INFO_LOG_LENGTH = 0x8B84, TRIANGLES = 0x0004, BLEND = 0x0BE2, SRC_ALPHA = 0x0302, ONE = 1;
 constexpr GLenum ONE_MINUS_SRC_ALPHA = 0x0303, COLOR_BUFFER_BIT = 0x4000, DEPTH_TEST = 0x0B71, SCISSOR_TEST = 0x0C11;
-constexpr GLenum ZERO = 0;
+constexpr GLenum ZERO = 0, FUNC_ADD = 0x8006, MAX = 0x8008;
 constexpr GLenum FRAMEBUFFER = 0x8D40, COLOR_ATTACHMENT0 = 0x8CE0, FRAMEBUFFER_COMPLETE = 0x8CD5, READ_FRAMEBUFFER = 0x8CA8;
 constexpr GLenum PACK_ALIGNMENT = 0x0D05, UNPACK_ALIGNMENT = 0x0CF5, MAX_TEXTURE_SIZE = 0x0D33;
 constexpr GLenum VERSION = 0x1F02, RENDERER = 0x1F01, VENDOR = 0x1F00, CULL_FACE = 0x0B44;
@@ -53,6 +53,7 @@ constexpr GLenum TEXTURE_2D_ARRAY = 0x8C1A, R8 = 0x8229, RED = 0x1903, MAX_ARRAY
   X(void, Disable, (GLenum cap))                                                                                 \
   X(void, BlendFunc, (GLenum s, GLenum d))                                                                       \
   X(void, BlendFuncSeparate, (GLenum sc, GLenum dc, GLenum sa, GLenum da))                                       \
+  X(void, BlendEquation, (GLenum mode))                                                                          \
   X(void, Finish, (void))                                                                                        \
   X(void, PixelStorei, (GLenum pname, GLint param))                                                              \
   X(void, ReadPixels, (GLint x, GLint y, GLsizei w, GLsizei h, GLenum fmt, GLenum type, void* data))             \

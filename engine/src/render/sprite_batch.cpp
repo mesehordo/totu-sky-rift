@@ -18,6 +18,9 @@ uniform mat4 u_proj;
 out vec3 v_uv;
 out vec4 v_tint;
 out vec4 v_team;
+out vec2 v_local;       // a képkockán belül (0..1; y lefelé)
+flat out vec4 v_rect;   // a képkocka a lapon (u0, v0, u1, v1)
+flat out int v_fx;      // hatásjelzők (1: belső árnyék)
 const vec2 corners[6] = vec2[6](vec2(0, 0), vec2(1, 0), vec2(1, 1), vec2(0, 0), vec2(1, 1), vec2(0, 1));
 void main() {
   vec2 c = corners[gl_VertexID % 6];
@@ -25,6 +28,9 @@ void main() {
   v_uv = vec3(mix(a_uv.xy, a_uv.zw, c), a_layer.x);
   v_tint = a_tint;
   v_team = a_team;
+  v_local = c;
+  v_rect = a_uv;
+  v_fx = int(a_layer.y + 0.5);
 }
 )";
 
@@ -32,10 +38,27 @@ const char* kFragment = R"(#version 330 core
 in vec3 v_uv;
 in vec4 v_tint;
 in vec4 v_team;
+in vec2 v_local;
+flat in vec4 v_rect;
+flat in int v_fx;
 uniform sampler2DArray u_base;
 uniform sampler2DArray u_mask;
 uniform int u_use_mask;
 out vec4 o_color;
+// Belső árnyék (a régi játék szerint, rts/shadows.py): a fénytől elforduló (jobb alsó) belső szélek mentén
+// sötétedés, a talp felé erősebb, és az alsó rész lágy sötétedése – ettől a figura „ül” a talajon.
+float inner_shadow(float a) {
+  vec2 ts = vec2(textureSize(u_base, 0).xy);
+  vec2 frame = (v_rect.zw - v_rect.xy) * ts;                     // a képkocka mérete texelben
+  float off = max(4.0, 0.22 * min(frame.x, frame.y));            // a régi: a maszk bal-fel tolva
+  vec2 su = v_uv.xy + vec2(off) / ts;
+  float sh = 0.0;
+  if (su.x < v_rect.z && su.y < v_rect.w) sh = texture(u_base, vec3(su, v_uv.z), 2.6).a;   // erősen elmosva
+  float edge = pow(clamp(texture(u_base, v_uv, 1.2).a - sh, 0.0, 1.0), 1.4);
+  float ground = mix(0.45, 1.0, v_local.y);
+  float base = pow(clamp(mix(-0.5, 1.0, v_local.y), 0.0, 1.0), 1.6) * 0.4;
+  return clamp(edge * ground * 0.85 + base, 0.0, 1.0) * a * (190.0 / 255.0);
+}
 void main() {
   vec4 c = texture(u_base, v_uv);                 // előszorzott alfa
   if (c.a <= 0.002) discard;
@@ -45,6 +68,7 @@ void main() {
     // „shade” mód (a meglévő grafika szerint): a maszk alatti, szürkére festett részt szorozza a csapatszínnel
     c.rgb = mix(straight, straight * v_team.rgb, m) * c.a;
   }
+  if ((v_fx & 1) != 0) c.rgb = mix(c.rgb, vec3(10.0, 8.0, 14.0) / 255.0 * c.a, inner_shadow(1.0));
   o_color = c * vec4(v_tint.rgb * v_tint.a, v_tint.a);
 }
 )";
@@ -59,6 +83,7 @@ uniform mat4 u_proj;
 uniform vec4 u_sun;   // x, y: vetület magasság-képpontonként; z: erősség
 out vec3 v_uv;
 out float v_fade;
+flat out int v_fx;
 const vec2 corners[6] = vec2[6](vec2(0, 0), vec2(1, 0), vec2(1, 1), vec2(0, 0), vec2(1, 1), vec2(0, 1));
 void main() {
   vec2 c = corners[gl_VertexID % 6];
@@ -66,21 +91,25 @@ void main() {
   float foot = a_foot > 0.0 ? a_foot : a_rect.y + a_rect.w;
   float rel = max(foot - p.y, 0.0);                       // a talp feletti magasság
   float height = max(foot - a_rect.y, 1.0);
-  gl_Position = u_proj * vec4(p.x + rel * u_sun.x, foot + rel * u_sun.y, 0.0, 1.0);
+  float len = a_layer.z > 0.0 ? a_layer.z / 100.0 : 1.0;  // az épületek árnyéka rövidebb (a régi: 0,72)
+  gl_Position = u_proj * vec4(p.x + rel * u_sun.x * len, foot + rel * u_sun.y * len, 0.0, 1.0);
   v_uv = vec3(mix(a_uv.xy, a_uv.zw, c), a_layer.x);
   v_fade = rel / height;
+  v_fx = int(a_layer.y + 0.5);
 }
 )";
 
 const char* kShadowFragment = R"(#version 330 core
 in vec3 v_uv;
 in float v_fade;
+flat in int v_fx;
 uniform sampler2DArray u_base;
 uniform vec4 u_sun;
 out vec4 o_color;
 void main() {
   float a = texture(u_base, v_uv, 1.5).a;                  // elmosott mipmap-szint: puha szél
-  a = smoothstep(0.15, 0.6, a) * u_sun.z * mix(1.0, 0.55, v_fade);   // a végén halványabb
+  // fa (2): a festett, áttetsző talajfolt nem vet árnyékot (a régi: 160/255-ös küszöb)
+  a = ((v_fx & 2) != 0 ? smoothstep(0.55, 0.72, a) : smoothstep(0.15, 0.6, a)) * u_sun.z * mix(1.0, 0.55, v_fade);
   if (a <= 0.003) discard;
   o_color = vec4(vec3(8.0, 10.0, 14.0) / 255.0 * a, a);
 }

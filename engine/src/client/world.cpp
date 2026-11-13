@@ -238,7 +238,15 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
           col = a->second.start + static_cast<int>(time * a->second.fps) % std::max(1, a->second.frames);
         }
         const uint8_t no_team[4] = {0, 0, 0, 0};
-        atlas->draw(batch, s, 0, col, it.x, it.y, 1.0f / s.scale, u.kind == SnapUnit::kBuilding ? team : no_team, nullptr, foot);
+        const bool tree = u.kind == SnapUnit::kResource && u.res == sim::kWood;
+        if (shadow_pass && !tree) {   // épület és lelőhely: oszloponkénti talp, rövidebb árnyék (a régi játék szerint)
+          atlas->draw_shadow_columns(batch, s, 0, col, it.x, it.y, 1.0f / s.scale, 72);
+        } else if (shadow_pass) {     // fa: a kép aljáról, a festett talajfolt nélkül
+          atlas->draw(batch, s, 0, col, it.x, it.y, 1.0f / s.scale, no_team, nullptr, 0.0f, render::kFxTreeShadow);
+        } else {
+          atlas->draw(batch, s, 0, col, it.x, it.y, 1.0f / s.scale, u.kind == SnapUnit::kBuilding ? team : no_team,
+                      nullptr, foot, render::kFxInnerShadow);
+        }
       } else if (!shadow_pass) {   // tartalék: a lábnyom csapatszínű (lelőhelynél nyersanyagszínű) téglalapja
         render::SpriteInstance in;
         in.x = it.x + 2;
@@ -264,7 +272,8 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       }
       const auto& a = v.moving ? *v.walk : *v.idle;
       const int frame = static_cast<int>(time * a.fps + static_cast<double>(u.id)) % std::max(1, a.frames);
-      atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team);
+      atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team, nullptr,
+                  -1.0f, shadow_pass ? 0 : render::kFxInnerShadow);
     } else if (!shadow_pass) {   // tartalék: csapatszínű kör
       render::SpriteInstance in;
       in.x = it.x - 8;

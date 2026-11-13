@@ -131,6 +131,17 @@ void main() {
 
 constexpr float kVignette = 0.22f;   // enyhe sötétedés a sarkokban
 
+// az árnyékmaszk a terepre: előszorzott sötét szín a maszk erősségével
+const char* kShadowApply = R"(#version 330 core
+in vec2 v_uv;
+uniform sampler2D u_shadow;
+out vec4 o_color;
+void main() {
+  float a = texture(u_shadow, v_uv).a;
+  o_color = vec4(vec3(8.0, 10.0, 14.0) / 255.0 * a, a);
+}
+)";
+
 Image glow_image(int n) {
   Image img;
   img.width = img.height = n;
@@ -171,6 +182,9 @@ bool Lighting::init(Device& dev, std::string* error) {
   loc_precip_ = gl.GetUniformLocation(prog_.id, "u_precip");
   loc_pcolor_ = gl.GetUniformLocation(prog_.id, "u_pcolor");
   loc_pdir_ = gl.GetUniformLocation(prog_.id, "u_pdir");
+  shadow_prog_ = dev.create_program(kVertex, kShadowApply, error);
+  if (!shadow_prog_.id) return false;
+  loc_shadow_ = gl.GetUniformLocation(shadow_prog_.id, "u_shadow");
   gl.GenVertexArrays(1, &vao_);
   glow_ = dev.create_array_from(glow_image(128), false);
   return dev.check("fényréteg", error);
@@ -180,6 +194,8 @@ void Lighting::shutdown() {
   if (!dev_) return;
   dev_->destroy(scene_);
   dev_->destroy(light_);
+  dev_->destroy(shadow_);
+  dev_->destroy(shadow_prog_);
   dev_->destroy(glow_);
   dev_->destroy(fog_);
   dev_->destroy(prog_);
@@ -191,16 +207,40 @@ void Lighting::resize(int w, int h) {
   if (w == w_ && h == h_) return;
   dev_->destroy(scene_);
   dev_->destroy(light_);
+  dev_->destroy(shadow_);
   w_ = w;
   h_ = h;
   scene_ = dev_->create_target(w, h);
   light_ = dev_->create_target(std::max(1, w / 2), std::max(1, h / 2));
   dev_->set_linear(light_.color, true);
+  shadow_ = dev_->create_target(std::max(1, w / 2), std::max(1, h / 2));
+  dev_->set_linear(shadow_.color, true);
 }
 
 void Lighting::begin_scene(float r, float g, float b) {
   dev_->bind_target(&scene_, w_, h_);
   dev_->clear(r, g, b, 1.0f);
+}
+
+void Lighting::begin_shadow_mask() {
+  dev_->bind_target(&shadow_, std::max(1, w_ / 2), std::max(1, h_ / 2));
+  dev_->clear(0.0f, 0.0f, 0.0f, 0.0f);
+  const gl::Api& gl = dev_->api();
+  gl.BlendEquation(gl::MAX);
+  gl.BlendFuncSeparate(gl::ONE, gl::ONE, gl::ONE, gl::ONE);
+}
+
+void Lighting::apply_shadows() {
+  const gl::Api& gl = dev_->api();
+  gl.BlendEquation(gl::FUNC_ADD);
+  gl.BlendFuncSeparate(gl::ONE, gl::ONE_MINUS_SRC_ALPHA, gl::ONE, gl::ONE_MINUS_SRC_ALPHA);
+  dev_->bind_target(&scene_, w_, h_);
+  gl.UseProgram(shadow_prog_.id);
+  gl.Uniform1i(loc_shadow_, 0);
+  gl.ActiveTexture(gl::TEXTURE0);
+  gl.BindTexture(gl::TEXTURE_2D, shadow_.color.id);
+  gl.BindVertexArray(vao_);
+  gl.DrawArrays(gl::TRIANGLES, 0, 3);
 }
 
 void Lighting::draw_lights(SpriteBatch& batch, const Mat4& projection, const float ambient[3],

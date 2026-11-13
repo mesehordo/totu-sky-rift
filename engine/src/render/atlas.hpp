@@ -28,7 +28,13 @@ class Atlas {
   // A képkocka rajzolása: (ax, ay) a horgonypont helye, `scale` a rajzolási méretarány a lap képpontjaihoz képest; a
   // csapatszín negyedik bájtja az erősség (0 = nincs).
   void draw(SpriteBatch& batch, const AtlasSheet& s, int direction, int column, float ax, float ay, float scale,
-            const uint8_t team[4], const uint8_t tint[4] = nullptr, float foot = -1.0f);   // foot: az árnyék talpvonala (alap: ay)
+            const uint8_t team[4], const uint8_t tint[4] = nullptr, float foot = -1.0f,   // foot: az árnyék talpvonala (alap: ay; 0: a kép alja)
+            uint8_t fx = 0);                                                               // SpriteFx
+  // Épület- és lelőhely-árnyék oszloponkénti talppal (a régi játék szerint): a képkocka keskeny függőleges
+  // csíkokban vetül, mindegyik a saját legalsó (nem átlátszó) pontján áll a földön; `length` az árnyék hossza
+  // százalékban (a régi: 72). Az árnyékmenetben (begin_shadows után) hívandó.
+  void draw_shadow_columns(SpriteBatch& batch, const AtlasSheet& s, int direction, int column, float ax, float ay,
+                           float scale, uint8_t length);
 
  private:
   Device* dev_ = nullptr;
@@ -37,6 +43,11 @@ class Atlas {
   Texture base_, mask_;
   std::vector<int> loaded_;      // a tömb rétegeinek lapjai, növekvő sorrendben
   std::vector<int> layer_of_;    // lap → réteg (-1: nincs betöltve)
+  // képkockánként a csíkok talpa (a képkocka tetejétől, texelben; -1: üres csík) – épületnél és lelőhelynél,
+  // a lap betöltésekor számolva
+  std::vector<std::vector<int16_t>> col_base_;
+  std::vector<int16_t> solid_bottom_;   // lelőhely (fa): a legalsó, erősen nem átlátszó sor (a törzs töve; -1: nincs)
+  static constexpr int kStrip = 3;   // a csík szélessége texelben
 };
 
 }  // namespace totu::render

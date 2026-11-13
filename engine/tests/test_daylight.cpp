@@ -7,14 +7,17 @@
 
 namespace tr = totu::render;   // BSD/macOS: a <time.h> globális `daylight` változója miatt minősítve
 
-TEST_CASE("napszak: dél fehér fény és rövid, lefelé mutató árnyék; reggel balra, este jobbra dől") {
+TEST_CASE("napszak: dél fehér fény, az árnyék a régi játék irányában; reggel laposabb, este meredekebb, mindig jobbra le") {
   const auto noon = tr::daylight(0.29);
   CHECK(noon.ambient[0] > 0.99f && noon.ambient[1] > 0.97f && noon.ambient[2] > 0.94f);
   CHECK(noon.lights == 0.0f);
-  CHECK(std::fabs(noon.shadow_x) < 0.1f && noon.shadow_y > 0.2f && noon.shadow_y < 0.4f);
-  CHECK(noon.shadow_alpha > 0.55f);
+  // délben a régi játék vetülete: magasság-képpontonként 0,62 jobbra, 0,44 lefelé, 150/255 erős
+  CHECK(std::fabs(noon.shadow_x - 0.62f) < 0.03f && std::fabs(noon.shadow_y - 0.44f) < 0.03f);
+  CHECK(std::fabs(noon.shadow_alpha - 150.0f / 255.0f) < 0.01f);
   const auto morning = tr::daylight(0.10), evening = tr::daylight(0.48);
-  CHECK(morning.shadow_x < -0.3f && evening.shadow_x > 0.3f);   // a nap keletről nyugatra halad
+  for (const auto& d : {morning, noon, evening}) CHECK(d.shadow_x > 0.2f && d.shadow_y > 0.1f);   // a fény bal felülről
+  CHECK(morning.shadow_y / morning.shadow_x < noon.shadow_y / noon.shadow_x);   // reggel laposabb
+  CHECK(evening.shadow_y / evening.shadow_x > noon.shadow_y / noon.shadow_x);   // este meredekebb
   CHECK(std::hypot(morning.shadow_x, morning.shadow_y) > std::hypot(noon.shadow_x, noon.shadow_y));   // reggel hosszabb
   const auto night = tr::daylight(0.75);
   CHECK(night.lights == 1.0f && night.ambient[2] > night.ambient[0] && night.ambient[0] < 0.5f);   // kékes, sötét

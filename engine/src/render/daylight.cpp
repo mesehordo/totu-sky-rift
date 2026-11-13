@@ -42,19 +42,22 @@ DayLight daylight(double t) {
     d.lights = a.lights + (b.lights - a.lights) * f;
     break;
   }
-  // a nap: 0,02-től 0,56-ig az égen; délelőtt balra le, délben lefelé, délután jobbra le vet árnyékot
+  // A festett grafikán a fény bal felülről jön: az árnyék a régi játék szerint jobbra lefelé dől (magasság-
+  // képpontonként 0,62 oldalra és 0,44 lefelé, 150/255 erős – rts/shadows.py). A napszak csak e körül mozgat
+  // (D35): délelőtt laposabb szögben (jobbra), délután meredekebben (lefelé), reggel és este hosszabb.
+  const double base_angle = std::atan2(0.44, 0.62), base_len = std::hypot(0.62, 0.44);
   const double rise = 0.02, set = 0.56;
   if (t > rise && t < set) {
     const double p = (t - rise) / (set - rise);                   // 0 napkelte, 1 napnyugta
-    const double theta = (150.0 - 120.0 * p) * kPi / 180.0;       // 150° → 30° (a képernyőn, y lefelé)
-    const double len = 1.5 - 0.95 * std::sin(kPi * p);            // délben rövid, reggel és este hosszú
+    const double theta = base_angle + (p - 0.5) * 2.0 * 22.0 * kPi / 180.0;   // délben pontosan a régi irány
+    const double len = base_len * (1.0 + 0.6 * (1.0 - std::sin(kPi * p)));    // délben 1, a nap szélein 1,6
     d.shadow_x = static_cast<float>(std::cos(theta) * len);
-    d.shadow_y = static_cast<float>(std::sin(theta) * len * 0.6);
+    d.shadow_y = static_cast<float>(std::sin(theta) * len);
     const double edge = std::min(p, 1.0 - p);                     // napkeltekor és napnyugtakor halványuló
-    d.shadow_alpha = static_cast<float>(0.59 * std::min(1.0, edge / 0.08));
-  } else {   // holdfény: halvány, állandó irányú
-    d.shadow_x = 0.3f;
-    d.shadow_y = 0.25f;
+    d.shadow_alpha = static_cast<float>(150.0 / 255.0 * std::min(1.0, edge / 0.08));
+  } else {   // holdfény: halvány, a régi irányban
+    d.shadow_x = 0.62f;
+    d.shadow_y = 0.44f;
     d.shadow_alpha = 0.18f;
   }
   return d;

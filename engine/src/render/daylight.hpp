@@ -8,7 +8,7 @@ namespace totu::render {
 
 struct DayLight {
   float ambient[3] = {1, 1, 1};   // a jelenetet ezzel szorozzuk (a fényforrások ehhez adódnak)
-  float shadow_x = 0, shadow_y = 0.36f;   // az árnyék vetülete magasság-képpontonként (a képernyőn, y lefelé)
+  float shadow_x = 0.62f, shadow_y = 0.44f;   // az árnyék vetülete magasság-képpontonként (a képernyőn, y lefelé; a régi játék iránya)
   float shadow_alpha = 0.59f;     // az árnyék legsötétebb erőssége (0..1)
   float lights = 0;               // a fényforrások ereje (0 nappal, 1 éjjel)
 };
