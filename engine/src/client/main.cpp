@@ -14,6 +14,8 @@
 //   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
 //                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
 //   totu --zoom Z                  a kamera nagyítása (1,0–2,0; alap 1,5)
+//   totu --sync                    a szimuláció a rajzolás szálán, két képkockánként egy tick (képernyőképnél mindig így;
+//                                  különben a szimuláció külön szálon fut, 30 Hz-en)
 //   totu --nopost                  utófeldolgozás nélkül (a 4. lépés képe)
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
@@ -68,6 +70,7 @@ struct Options {
   render::Weather weather = render::Weather::Clear;
   float weather_power = 1.0f;
   float zoom = 0;   // 0: a régi játék alapja (1,5)
+  bool sync = false;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -229,6 +232,7 @@ int main(int argc, char** argv) {
     else if (a == "--nofog") o.fog = false;
     else if (a == "--nopost") o.post = false;
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
+    else if (a == "--sync") o.sync = true;
     else if (a == "--weather") {
       const std::string v = next();
       const size_t colon = v.find(':');
@@ -288,7 +292,9 @@ int main(int argc, char** argv) {
     Demo demo;
     demo.units = (o.atlas.empty() && o.world.empty()) ? o.demo : 0;
     AtlasDemo adem;
-    client::World world;
+    client::Session session;
+    client::SimRunner runner(session);
+    client::World world(session, runner);
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture fallback, white;
@@ -313,7 +319,6 @@ int main(int argc, char** argv) {
     sim::Formation formation = sim::Formation::Auto;
     float drag_x = 0, drag_y = 0;
     bool dragging = false;
-    double sim_accum = 0;
     std::vector<double> sim_times, draw_times;   // a mérésben külön: szimulációs tick és rajzolás
     if (rc == 0) {
       std::printf("grafika: %s (legnagyobb textúra %d)\n", dev.info().c_str(), dev.max_texture_size());
@@ -324,14 +329,14 @@ int main(int argc, char** argv) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
       } else if (!o.world.empty()) {
-        if (!world.load(o.content, o.world, 20261112, &err) || !terrain.init(dev, o.assets, &err)) {
+        if (!session.load(o.content, o.world, 20261112, &err) || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
           rc = 1;
         } else {
           terrain.set_map(world.map(), world.terrain());
           if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
-          world.spawn_demo(2, o.demo > 0 ? o.demo : 60);
+          session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
           fallback = dev.create_array_from(circle_image(32), false);
@@ -344,8 +349,10 @@ int main(int argc, char** argv) {
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
-          if (o.bench || !o.screenshot.empty()) world.order_demo_attack();
+          if (o.bench || !o.screenshot.empty()) session.order_demo_attack();
           have_world = true;
+          // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
+          if (!o.sync && o.screenshot.empty()) runner.start();
         }
       } else if (!o.atlas.empty() && o.demo > 0 && !adem.load(dev, o.atlas, o.demo, o.width, o.height, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
@@ -405,26 +412,21 @@ int main(int argc, char** argv) {
       dev.bind_target(nullptr, w, h);
       dev.clear(0.12f, 0.16f, 0.10f, 1.0f);
       if (have_world) {
-        // fix 30 Hz-es szimuláció; mérésnél és képernyőképnél determinisztikusan: két képkockánként egy tick
+        // a szimuláció: külön szálon 30 Hz-en (a kép a két legutóbbi pillanatkép között simít), vagy szinkron módban
+        // két képkockánként egy tick a rajzolás szálán (képernyőkép: determinisztikus kép)
         const bool fixed = o.bench || !o.screenshot.empty();
         float alpha = 0;
-        if (fixed) {
+        if (!runner.threaded()) {
           if (frame % 2 == 1) {
             const auto s0 = std::chrono::steady_clock::now();
-            world.step();
+            runner.step_sync();
             sim_times.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - s0).count());
           }
+          world.update();
           alpha = frame % 2 == 1 ? 0.0f : 0.5f;
         } else {
-          static auto last = std::chrono::steady_clock::now();
-          const auto now = std::chrono::steady_clock::now();
-          sim_accum += std::min(0.25, std::chrono::duration<double>(now - last).count());
-          last = now;
-          while (sim_accum >= 1.0 / 30.0) {
-            world.step();
-            sim_accum -= 1.0 / 30.0;
-          }
-          alpha = static_cast<float>(sim_accum * 30.0);
+          world.update();
+          alpha = world.live_alpha();
         }
         const double t = fixed ? static_cast<double>(frame) / 60.0
                                : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
@@ -532,7 +534,7 @@ int main(int argc, char** argv) {
       times.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - f0).count());
       if (have_world && o.bench) {
         double st = 0;
-        if (frame % 2 == 1 && !sim_times.empty()) st = sim_times.back();
+        if (!runner.threaded() && frame % 2 == 1 && !sim_times.empty()) st = sim_times.back();
         draw_times.push_back(times.back() - st);
       }
       if (!dev.check("képkocka", &err)) {
@@ -542,6 +544,8 @@ int main(int argc, char** argv) {
       }
       ++frame;
     }
+    runner.stop();
+    runner.take_tick_ms(sim_times);
     if (o.bench && times.size() > 10) {
       times.erase(times.begin(), times.begin() + 10);   // bemelegedés
       std::printf("mérés: %d egység, %ld képkocka, %d rajzoló hívás, %d sprite – p50 %.2f ms, p99 %.2f ms, max %.2f ms\n",
@@ -551,13 +555,15 @@ int main(int argc, char** argv) {
     if (o.bench && !adem.units.empty()) std::printf("atlasz: %d lap betöltve\n", adem.atlas.loaded_pages());
     if (o.bench && have_world && draw_times.size() > 10) {
       draw_times.erase(draw_times.begin(), draw_times.begin() + 10);
-      std::printf("  rajzolás (szimuláció nélkül): p50 %.2f ms, p99 %.2f ms; szimulációs tick: p50 %.2f ms, p99 %.2f ms\n",
+      std::printf("  rajzolás (szimuláció nélkül): p50 %.2f ms, p99 %.2f ms; szimulációs tick: p50 %.2f ms, p99 %.2f ms"
+                  " (%s, %zu tick)\n",
                   percentile(draw_times, 0.5), percentile(draw_times, 0.99), percentile(sim_times, 0.5),
-                  percentile(sim_times, 0.99));
+                  percentile(sim_times, 0.99), o.sync || !o.screenshot.empty() ? "szinkron" : "külön szálon",
+                  sim_times.size());
     }
     if (o.bench && have_world) {
       std::printf("világ: %d egység látszott, %d terep-négyzet, %lld tick, élő egység %zu\n", world.drawn_units(),
-                  terrain.last_quads(), static_cast<long long>(world.sim().tick()), world.sim().world().entity_count());
+                  terrain.last_quads(), static_cast<long long>(world.tick()), world.unit_count());
       std::printf("részecskék: %zu él, %zu kibocsátva, %zu elmaradt (betelt készlet)\n", particles.particles().size(),
                   particles.emitted(), particles.dropped());
     }

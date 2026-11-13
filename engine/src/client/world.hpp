@@ -1,20 +1,19 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// A kliens világnézete (M5, 3. lépés): munkamenet (pálya, navigáció, szimuláció fix tickkel) és a megjelenítés
-// (kamera, terep, egységek a szimulációból – irány a mozgásból, járó/álló animáció, simítás két tick között,
-// Y-rendezés, tartalék alakzat a sprite nélküli egységeknek), kijelölés és csoportos mozgatás alakzatban.
+// A kliens világnézete (M5, 3. lépés; M6 1. lépés óta a pillanatképekből): a szimuláció két legutóbbi pillanatképe
+// között simít, az egységek irányát a megtett útból, az animációt a mozgásból számolja; Y-rendezés, takarás, tartalék
+// alakzat a sprite nélküli egységeknek; kijelölés és csoportos mozgatás alakzatban (a parancs a futtató sorába megy).
+// A szimulációt közvetlenül nem olvassa – így az külön szálon futhat.
 #pragma once
 
 #include <map>
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
-#include "map/pathfinder.hpp"
+#include "client/session.hpp"
 #include "render/atlas.hpp"
 #include "render/lighting.hpp"
 #include "render/terrain_view.hpp"
-#include "sim/sim.hpp"
 
 namespace totu::client {
 
@@ -25,60 +24,67 @@ struct Camera {
 
 class World {
  public:
-  bool load(const std::string& content_dir, const std::string& map_path, uint64_t seed, std::string* error);
-  // Bemutató seregek: játékosonként `per_player` egység a pálya két oldalán.
-  void spawn_demo(int players, int per_player);
-  void order_demo_attack();   // mindkét sereg a másik felé indul (méréshez, képpróbához)
+  World(Session& session, SimRunner& runner) : session_(session), runner_(runner) {}
+
   // A résztvevő népek egységlapjainak előkészítése egyszerre (a meccs töltésekor; menet közben nincs akadás).
   bool prepare_atlas(render::Atlas& atlas, std::string* error);
 
-  void step();   // egy szimulációs tick (a simításhoz eltárolja az előző helyeket)
-  sim::Sim& sim() { return *sim_; }
-  const map::Map& map() const { return *map_; }
-  const map::TerrainTable& terrain() const { return terrain_; }
+  // Képkockánként egyszer: a két legutóbbi pillanatkép átvétele (új tick esetén az irányok és az animációk frissülnek).
+  void update();
+  // a simítás aránya a két pillanatkép között a futtató órája szerint (szálas módban)
+  float live_alpha() const;
+  int64_t tick() const { return cur_ ? cur_->tick : 0; }
+
+  const map::Map& map() const { return session_.map(); }
+  const map::TerrainTable& terrain() const { return session_.terrain(); }
 
   // kijelölés és parancs (az 1. játékos egységei)
   void select_box(float wx0, float wy0, float wx1, float wy1);
   void order_move(float wx, float wy, sim::Formation f);
   size_t selected() const { return selected_.size(); }
 
-  // rajzolás: `alpha` a két tick közötti arány (0..1), `time` másodperc
+  // rajzolás: `alpha` a két pillanatkép közötti arány (0..1), `time` másodperc
   void draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
             int screen_w, int screen_h, float alpha, double time, bool shadow_pass = false);
   // fényforrások: a fáklyavivők (minden hatodik egység) – a napszak fényrétege éjjel mutatja
   void lights(std::vector<render::Light>& out, float alpha) const;
-  // köd (ideiglenes, a kliensben: az 1. játékos egységei körül 8 csempe látható; a valódi látótér az M6-ban):
-  // csempénként 0 ismeretlen, 128 felderített, 255 látható; `changed` igaz, ha a legutóbbi lekérés óta változott
+  // köd (a pillanatképből); `changed` igaz, ha a legutóbbi lekérés óta változott
   const std::vector<uint8_t>& fog(bool* changed);
   int drawn_units() const { return drawn_; }
+  size_t unit_count() const { return cur_ ? cur_->units.size() : 0; }
 
-  // látványesemények a legutóbbi tickekből (a részecskéknek): találat (az életerő csökkent) és halál; a hívó üríti
-  struct FxEvent {
-    float x = 0, y = 0;   // világ-képpont (a talpvonal)
-    bool death = false;
-  };
+  // látványesemények a legutóbbi lekérés óta (a részecskéknek); a hívó üríti
   std::vector<FxEvent>& fx_events() { return fx_; }
 
   static constexpr float kTilePx = render::TerrainView::kTilePx;
 
  private:
-  struct Visual {
-    float px = 0, py = 0;   // az előző tick helye (világ-képpont)
+  struct Visual {   // a jelenlegi pillanatkép egységeivel párhuzamos (azonos sorrend)
+    sim::EntityId id = 0;
+    float px = 0, py = 0;   // az előző pillanatkép helye (új egységnél a mostani)
     int dir = 2;            // utolsó irány (0 = K, 2 = D …)
     bool moving = false;
-    int sheet = -1;         // az atlaszlap sorszáma (-1 = tartalék alakzat)
-    int hp = -1;            // az előző tick életereje (-1 = még nem ismert)
+    int sheet = -1;         // az atlaszlap sorszáma (-1 = tartalék alakzat, -2 = még nincs kiválasztva)
     const render::AtlasAnim* walk = nullptr;   // a lap animációi (egyszer feloldva)
     const render::AtlasAnim* idle = nullptr;
   };
-  // a képkocka rajzolandó egységei (Y szerint rendezve): az árnyék- és a fő menet közösen használja
   struct Item {
     float x, y;
-    sim::EntityId e;
-    Visual* v;
-    uint8_t owner;
+    size_t i;   // index a pillanatképben (és a vis_-ben)
   };
+  int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
   void collect(const Camera& cam, int sw, int sh, float alpha);
+
+  Session& session_;
+  SimRunner& runner_;
+  std::shared_ptr<const Snapshot> prev_, cur_;
+  std::vector<Visual> vis_;
+  std::vector<sim::EntityId> selected_;
+  std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai
+  bool sheets_ready_ = false;
+  std::shared_ptr<const std::vector<uint8_t>> fog_seen_;
+  std::vector<FxEvent> fx_;
+  int drawn_ = 0;
   std::vector<Item> items_;
   struct ItemsKey {
     int64_t tick = -1;
@@ -86,22 +92,6 @@ class World {
     int sw = 0, sh = 0;
     bool operator==(const ItemsKey&) const = default;
   } items_key_;
-  int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
-
-  map::TerrainTable terrain_;
-  std::optional<map::Map> map_;
-  std::unique_ptr<map::NavGrid> nav_;
-  std::unique_ptr<map::Pathfinder> pf_;
-  std::unique_ptr<sim::Sim> sim_;
-  std::map<sim::EntityId, Visual> vis_;
-  std::vector<sim::EntityId> selected_;
-  std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai
-  bool sheets_ready_ = false;
-  std::vector<uint8_t> fog_;
-  bool fog_dirty_ = true;
-  void update_fog();
-  int drawn_ = 0;
-  std::vector<FxEvent> fx_;
 };
 
 }  // namespace totu::client
