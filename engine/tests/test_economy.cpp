@@ -7,6 +7,7 @@
 #include <iterator>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "check.hpp"
 #include "content/loader.hpp"
@@ -199,7 +200,7 @@ TEST_CASE("gazdaság: aranyhordás a Hadtáppal és nélküle; Gather, Stop és 
     c.kind = sim::Command::Kind::Gather;
     c.units = m.workers(1);
     c.target = gold;
-    m.sim->queue(c);
+    m.sim->queue(std::move(c));
     m.run(30 * 60);
     const auto& p = m.sim->player(1);
     CHECK(p.gathered[sim::kStone] > 0);
@@ -212,13 +213,13 @@ TEST_CASE("gazdaság: aranyhordás a Hadtáppal és nélküle; Gather, Stop és 
   sim::Command stop;
   stop.kind = sim::Command::Kind::Stop;
   stop.units = {ws[0]};
-  m.sim->queue(stop);
+  m.sim->queue(std::move(stop));
   sim::Command mv;
   mv.kind = sim::Command::Kind::GroupMove;
   mv.units = {ws[1]};
   mv.x = Fixed::from_int(20);
   mv.y = Fixed::from_int(28);
-  m.sim->queue(mv);
+  m.sim->queue(std::move(mv));
   m.run(5);
   CHECK(m.sim->world().get<sim::Worker>(ws[0])->state == sim::Worker::Idle);
   CHECK(m.sim->world().get<sim::Worker>(ws[1])->state == sim::Worker::Idle);
