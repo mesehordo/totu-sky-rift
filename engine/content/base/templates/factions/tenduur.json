@@ -1,0 +1,78 @@
+{
+ "faction_tenduur": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.tenduur.name",
+   "desc": "faction.tenduur.desc",
+   "tagline": "faction.tenduur.tagline"
+  },
+  "Roster": {
+   "units": [
+    "ten_lampasor",
+    "ten_szelhimzo",
+    "ten_tovisvivo",
+    "ten_lombijasz",
+    "ten_tolgyor"
+   ],
+   "buildings": [
+    "ten_lampasfa",
+    "ten_tovisudvar",
+    "ten_fenyfeszek"
+   ],
+   "researches": [
+    "ten_lombsuhanas",
+    "ten_tetovalt_vedelem",
+    "ten_lampasfeny"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 109,
+   "style": "tribal",
+   "color": [
+    70,
+    110,
+    50
+   ],
+   "accent": [
+    240,
+    200,
+    90
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "ten_lampasfa",
+     "ten_tovisudvar",
+     "ten_fenyfeszek"
+    ],
+    "units": [
+     "ten_lampasor",
+     "ten_szelhimzo",
+     "ten_tovisvivo",
+     "ten_lombijasz",
+     "ten_tolgyor"
+    ]
+   },
+   "ai": {
+    "build": [
+     "ten_lampasfa",
+     "ten_tovisudvar",
+     "ten_fenyfeszek"
+    ],
+    "army": {
+     "ten_lampasor": 3,
+     "ten_szelhimzo": 3,
+     "ten_tovisvivo": 3,
+     "ten_lombijasz": 3,
+     "ten_tolgyor": 2
+    },
+    "research": [
+     "ten_lombsuhanas",
+     "ten_tetovalt_vedelem",
+     "ten_lampasfeny"
+    ]
+   }
+  }
+ }
+}

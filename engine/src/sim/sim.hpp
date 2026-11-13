@@ -646,6 +646,7 @@ struct PlayerState {
   bool active = false;
   std::vector<std::string> researched;       // a kész kutatások (rendezve; az 5. lépésben töltődik)
   std::string path;                          // a választott fejlődési irány (MECH-ASC; 8. lépés)
+  std::string ally;                          // a szövetséges kisnép (MECH-ALLY, D26; egyszer, véglegesen)
   bool ascended = false;
   bool defeated = false;                     // minden épülete elpusztult (M6 9. lépés)
   // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
@@ -715,7 +716,9 @@ struct Command {
                               Learn = 23, Pickup = 24, UseItem = 25, DropItem = 26,
                               // M7 3. lépés: Repair (`units` → `target` épület), Pack (`target` épület → szekér),
                               // Unpack (`units[0]` szekér → rx, ry csempe)
-                              Repair = 27, Pack = 28, Unpack = 29 };
+                              Repair = 27, Pack = 28, Unpack = 29,
+                              // M7 9. lépés: ChooseAlly (`owner`, `def` a kisnép)
+                              ChooseAlly = 30 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -870,6 +873,8 @@ class Sim {
   int garrison_count(EntityId building);          // a bent lévők száma (a jelzéshez; D39)
   // Felemelkedés és fejlődési irány (MECH-ASC): a választás csak felemelkedve, egyszer.
   bool choose_path(uint8_t owner, const std::string& path);
+  // Szövetség egy kisnéppel (MECH-ALLY, D26): kész Diplomácia csarnoka kell; egyszer, véglegesen, `ally_cost` áron.
+  bool choose_ally(uint8_t owner, const std::string& people, std::string* error = nullptr);
   // Főépület-képesség (`gpower`, pl. az ursan Eskü-riadó: minden munkás Fegyverbe!).
   bool use_power(uint8_t owner, EntityId building, const std::string& ability, Fixed x = {}, Fixed y = {});
   bool in_rift(EntityId e) const { return rift_.count(e) != 0; }

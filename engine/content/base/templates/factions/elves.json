@@ -1,0 +1,269 @@
+{
+ "faction_elves": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.elves.name",
+   "desc": "faction.elves.desc",
+   "tagline": "faction.elves.tagline"
+  },
+  "Roster": {
+   "units": [
+    "elf_kofarago",
+    "elf_tollas_harcos",
+    "elf_jade_ijasz",
+    "elf_raptor_lovas",
+    "elf_napszoro",
+    "elf_quetzal",
+    "elf_tollas_rex",
+    "elf_hos_szelai",
+    "elf_csillagdardas",
+    "elf_obszidian_veto",
+    "elf_jadeor",
+    "elf_hos_itzcoatl",
+    "elf_hos_xochi",
+    "elf_fopap",
+    "elf_jaguar",
+    "elf_csillagjos",
+    "elf_pancelos_raptor"
+   ],
+   "buildings": [
+    "elf_napszentely",
+    "elf_obeliszk",
+    "elf_harcos_csarnok",
+    "elf_obszidian_muhely",
+    "elf_raptor_karam",
+    "elf_csillagvizsgalo",
+    "elf_tollfeszek",
+    "elf_jade_oszlop",
+    "elf_napkapu",
+    "elf_naptemplom",
+    "elf_diplomacia",
+    "elf_napfuro",
+    "elf_egko"
+   ],
+   "researches": [
+    "elf_obszidian_penge",
+    "elf_jade_hegyek",
+    "elf_napegi_pajzs",
+    "elf_csillagfeny",
+    "elf_arany_fohasz",
+    "elf_napszemu_papok",
+    "elf_egi_kegy",
+    "elf_obszidian_vert",
+    "elf_obszidian_penge_2",
+    "elf_obszidian_penge_3",
+    "elf_jade_hegyek_2",
+    "elf_jade_hegyek_3",
+    "elf_obszidian_vert_2",
+    "elf_obszidian_vert_3",
+    "elf_rezonancia",
+    "elf_napfolt"
+   ]
+  },
+  "Paths": {
+   "nap": {
+    "name": "path.elves.nap.name",
+    "desc": "path.elves.nap.desc",
+    "tagline": "path.elves.nap.tagline",
+    "building": "elf_naptemplom",
+    "extra_buildings": [
+     "elf_tollfeszek"
+    ],
+    "units": [
+     "elf_fopap",
+     "elf_napszoro",
+     "elf_quetzal"
+    ],
+    "effects": [
+     {
+      "stat": "regen",
+      "tags": [
+       "organic"
+      ],
+      "add": 1
+     }
+    ]
+   },
+   "jaguar": {
+    "name": "path.elves.jaguar.name",
+    "desc": "path.elves.jaguar.desc",
+    "tagline": "path.elves.jaguar.tagline",
+    "building": "elf_raptor_karam",
+    "units": [
+     "elf_jaguar",
+     "elf_pancelos_raptor",
+     "elf_tollas_rex"
+    ],
+    "rules": {
+     "forest_stealth": {
+      "tags": [
+       "infantry"
+      ]
+     }
+    },
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "melee"
+      ],
+      "add": 2
+     }
+    ]
+   },
+   "csillag": {
+    "name": "path.elves.csillag.name",
+    "desc": "path.elves.csillag.desc",
+    "tagline": "path.elves.csillag.tagline",
+    "building": "elf_csillagvizsgalo",
+    "units": [
+     "elf_obszidian_veto",
+     "elf_csillagjos"
+    ],
+    "effects": [
+     {
+      "stat": "range",
+      "tags": [
+       "ranged",
+       "siege"
+      ],
+      "add": 1
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 1,
+   "mechanic": "power",
+   "style": "aztec",
+   "color": [
+    176,
+    168,
+    150
+   ],
+   "accent": [
+    40,
+    190,
+    150
+   ],
+   "hq": "elf_napszentely",
+   "worker": "elf_kofarago",
+   "supply_building": "elf_obeliszk",
+   "start_units": {
+    "elf_kofarago": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.62,
+     "stone": 0.26,
+     "meteor": 0.12
+    },
+    "build_order": [
+     "elf_obeliszk",
+     "elf_harcos_csarnok",
+     "elf_obeliszk",
+     "elf_napkapu",
+     "elf_harcos_csarnok",
+     "elf_obszidian_muhely",
+     "elf_diplomacia",
+     "elf_jade_oszlop",
+     "elf_egko"
+    ],
+    "army": {
+     "elf_tollas_harcos": 3,
+     "elf_jade_ijasz": 3,
+     "elf_csillagdardas": 2,
+     "elf_raptor_lovas": 2
+    },
+    "research_order": [
+     "elf_obszidian_penge",
+     "elf_jade_hegyek",
+     "elf_napegi_pajzs",
+     "elf_csillagfeny",
+     "elf_obszidian_vert",
+     "elf_obszidian_penge_2",
+     "elf_obszidian_penge_3",
+     "elf_jade_hegyek_2",
+     "elf_jade_hegyek_3",
+     "elf_obszidian_vert_2",
+     "elf_obszidian_vert_3",
+     "elf_rezonancia",
+     "elf_napfolt",
+     "elf_arany_fohasz",
+     "elf_egi_kegy",
+     "elf_napszemu_papok"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "nap",
+     "csillag",
+     "jaguar"
+    ],
+    "paths": {
+     "nap": {
+      "build": [
+       "elf_naptemplom",
+       "elf_tollfeszek"
+      ],
+      "army": {
+       "elf_fopap": 1,
+       "elf_napszoro": 1,
+       "elf_quetzal": 1
+      }
+     },
+     "jaguar": {
+      "build": [
+       "elf_raptor_karam"
+      ],
+      "army": {
+       "elf_jaguar": 3,
+       "elf_pancelos_raptor": 2,
+       "elf_tollas_rex": 1
+      }
+     },
+     "csillag": {
+      "build": [
+       "elf_csillagvizsgalo"
+      ],
+      "army": {
+       "elf_obszidian_veto": 2,
+       "elf_csillagjos": 1
+      }
+     }
+    },
+    "ally_pref": [
+     "niil_elf",
+     "tuz_elf",
+     "tenduur"
+    ],
+    "mine_building": "elf_napfuro",
+    "mine_max": 2
+   },
+   "self_build": true,
+   "start_gather": "wood",
+   "supply_desc": "Napobeliszkek",
+   "warp_in": true,
+   "spell_resource": "energy",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "rift": {
+    "energy_mult": 2.0,
+    "spell_mult": 1.25,
+    "shield_regen_mult": 2.0
+   },
+   "faith": {
+    "rate": 0.3,
+    "max": 8,
+    "name": "Áhítat",
+    "verb": "fohászkodik",
+    "desc": "A Napszentélyhez vagy Naptemplomhoz küldött Kőfaragók fohászkodnak (jobb klikk a szentélyre)."
+   }
+  }
+ }
+}

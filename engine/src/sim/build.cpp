@@ -55,6 +55,9 @@ bool Sim::missing_requirements(uint8_t owner, const EntityDef& d, std::string* w
       case EntityDef::Req::Ascended:
         ok = p.ascended;
         break;
+      case EntityDef::Req::Ally:   // szövetséges kisnép eleme: csak a megkötött szövetséggel (D26)
+        ok = p.ally == r.id;
+        break;
     }
     if (!ok) {
       if (what) *what = r.id.empty() ? "felemelkedés" : r.id;
@@ -126,7 +129,7 @@ bool Sim::order_build(EntityId e, uint16_t def, int tx, int ty, std::string* err
   if (!w || !hp || hp->hp <= 0 || w->inside) return fail("ez az egység nem épít");
   const PlayerState& p = players_[hp->owner];
   const EntityDef& d = rules_->defs[def];
-  if (!d.building || d.faction != p.faction) return fail("ezt a nép nem építheti");
+  if (!d.building || (d.faction != p.faction && (p.ally.empty() || d.faction != p.ally))) return fail("ezt a nép nem építheti");   // + a szövetséges kisnépé (D26)
   if (!can_place(hp->owner, def, tx, ty, error)) return false;
   if (w->state == Worker::Build) refund(hp->owner, rules_->defs[w->build_def].cost, 1000);   // az előző terv vissza
   if (!pay(hp->owner, d.cost)) return fail("nincs elég nyersanyag");

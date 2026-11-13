@@ -461,6 +461,7 @@ int main(int argc, char** argv) {
             case client::HudAction::Unload: c.kind = sim::Command::Kind::Unload; runner.post(c); break;
             case client::HudAction::Power: c.kind = sim::Command::Kind::Power; runner.post(c); break;
             case client::HudAction::ChoosePath: c.kind = sim::Command::Kind::ChoosePath; runner.post(c); break;
+            case client::HudAction::ChooseAlly: c.kind = sim::Command::Kind::ChooseAlly; runner.post(c); break;
             case client::HudAction::Ability:
               c.kind = sim::Command::Kind::Ability;
               c.units = world.selection();

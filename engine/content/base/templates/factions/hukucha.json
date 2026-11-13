@@ -1,0 +1,279 @@
+{
+ "faction_hukucha": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.hukucha.name",
+   "desc": "faction.hukucha.desc",
+   "tagline": "faction.hukucha.tagline"
+  },
+  "Roster": {
+   "units": [
+    "huk_toaso",
+    "huk_csuzlis",
+    "huk_kampokardos",
+    "huk_toidezo",
+    "huk_tavi_leny",
+    "huk_gotelovas",
+    "huk_szitakoto",
+    "huk_teknos_mozsar",
+    "huk_hos_kvarra",
+    "huk_hos_bulgok",
+    "huk_hos_iriss",
+    "huk_aradas_papja",
+    "huk_iszapbeka",
+    "huk_gyongyveto",
+    "huk_kagylopajzsos",
+    "huk_gyongyorias",
+    "huk_melysegi_hivo",
+    "huk_ikrarako",
+    "huk_ikra",
+    "huk_ebihal",
+    "huk_nagy_tavi_leny",
+    "huk_gyongyorias_idezett"
+   ],
+   "buildings": [
+    "huk_korallcsarnok",
+    "huk_tavacska",
+    "huk_gyongybuborek",
+    "huk_nadbarakk",
+    "huk_toteremto",
+    "huk_gyongymuhely",
+    "huk_goteistallo",
+    "huk_korallor",
+    "huk_arvizkapu",
+    "huk_gyongykert",
+    "huk_melyseg_kapuja",
+    "huk_egko",
+    "huk_diplomacia"
+   ],
+   "researches": [
+    "huk_gyongygolyo",
+    "huk_kagylohej",
+    "huk_tavirozsa",
+    "huk_ugrolabak",
+    "huk_toanya_korusa",
+    "huk_iszapos_bor",
+    "huk_mely_viz",
+    "huk_kampohegy",
+    "huk_gyongygolyo_2",
+    "huk_gyongygolyo_3",
+    "huk_kagylohej_2",
+    "huk_kagylohej_3",
+    "huk_kampohegy_2",
+    "huk_kampohegy_3",
+    "huk_hejba",
+    "huk_tavak_utja"
+   ]
+  },
+  "Paths": {
+   "arviz": {
+    "name": "path.hukucha.arviz.name",
+    "desc": "path.hukucha.arviz.desc",
+    "tagline": "path.hukucha.arviz.tagline",
+    "building": "huk_arvizkapu",
+    "units": [
+     "huk_aradas_papja",
+     "huk_iszapbeka"
+    ],
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "all"
+      ],
+      "add": 10
+     }
+    ],
+    "rules": {
+     "pond_size": 3
+    }
+   },
+   "gyongy": {
+    "name": "path.hukucha.gyongy.name",
+    "desc": "path.hukucha.gyongy.desc",
+    "tagline": "path.hukucha.gyongy.tagline",
+    "building": "huk_gyongykert",
+    "units": [
+     "huk_gyongyveto",
+     "huk_kagylopajzsos"
+    ],
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "ranged"
+      ],
+      "add": 3
+     },
+     {
+      "stat": "range",
+      "tags": [
+       "ranged"
+      ],
+      "add": 1
+     }
+    ]
+   },
+   "melyseg": {
+    "name": "path.hukucha.melyseg.name",
+    "desc": "path.hukucha.melyseg.desc",
+    "tagline": "path.hukucha.melyseg.tagline",
+    "building": "huk_melyseg_kapuja",
+    "units": [
+     "huk_gyongyorias",
+     "huk_melysegi_hivo"
+    ],
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "large"
+      ],
+      "add": 80
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "order": 7,
+   "mechanic": "pond",
+   "style": "tribal",
+   "color": [
+    70,
+    150,
+    80
+   ],
+   "accent": [
+    120,
+    230,
+    210
+   ],
+   "hq": "huk_korallcsarnok",
+   "worker": "huk_toaso",
+   "supply_building": "huk_gyongybuborek",
+   "start_units": {
+    "huk_toaso": 5
+   },
+   "start_gather": "wood",
+   "supply_desc": "Gyöngybuborék-otthonokkal",
+   "pond": {
+    "size": 2,
+    "cost": {
+     "wood": 15
+    }
+   },
+   "ascension": {
+    "buildings": 3
+   },
+   "ai": {
+    "workers": 18,
+    "gather_ratio": {
+     "wood": 0.6,
+     "stone": 0.27,
+     "meteor": 0.13
+    },
+    "pond": true,
+    "build_order": [
+     "huk_gyongybuborek",
+     "huk_nadbarakk",
+     "huk_gyongybuborek",
+     "huk_toteremto",
+     "huk_nadbarakk",
+     "huk_gyongymuhely",
+     "huk_diplomacia",
+     "huk_korallor",
+     "huk_goteistallo",
+     "huk_gyongybuborek"
+    ],
+    "army": {
+     "huk_csuzlis": 4,
+     "huk_kampokardos": 3,
+     "huk_toidezo": 1,
+     "huk_gotelovas": 2,
+     "huk_teknos_mozsar": 1,
+     "huk_ikrarako": 1
+    },
+    "research_order": [
+     "huk_gyongygolyo",
+     "huk_kagylohej",
+     "huk_ugrolabak",
+     "huk_tavirozsa",
+     "huk_toanya_korusa",
+     "huk_iszapos_bor",
+     "huk_mely_viz",
+     "huk_kampohegy",
+     "huk_gyongygolyo_2",
+     "huk_gyongygolyo_3",
+     "huk_kagylohej_2",
+     "huk_kagylohej_3",
+     "huk_kampohegy_2",
+     "huk_kampohegy_3",
+     "huk_hejba",
+     "huk_tavak_utja"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "arviz",
+     "gyongy",
+     "melyseg"
+    ],
+    "paths": {
+     "arviz": {
+      "build": [
+       "huk_arvizkapu"
+      ],
+      "army": {
+       "huk_aradas_papja": 1,
+       "huk_iszapbeka": 2
+      }
+     },
+     "gyongy": {
+      "build": [
+       "huk_gyongykert"
+      ],
+      "army": {
+       "huk_gyongyveto": 3,
+       "huk_kagylopajzsos": 3
+      }
+     },
+     "melyseg": {
+      "build": [
+       "huk_melyseg_kapuja"
+      ],
+      "army": {
+       "huk_gyongyorias": 1,
+       "huk_melysegi_hivo": 1
+      }
+     }
+    },
+    "heroes": [
+     "huk_hos_kvarra",
+     "huk_hos_bulgok",
+     "huk_hos_iriss"
+    ],
+    "ally_pref": [
+     "niil_elf",
+     "nila_uchana",
+     "pinguu"
+    ]
+   },
+   "builder": "leave",
+   "pond_build_bonus": 0.6,
+   "pond_affinity": true,
+   "faith": {
+    "rate": 0.3,
+    "max": 8,
+    "name": "Tóének",
+    "verb": "énekel",
+    "desc": "A Tóteremtő szentélyhez küldött Tóásók a Tóanyának énekelnek (jobb klikk a szentélyre)."
+   },
+   "resource_names": {
+    "faith": "Tóének"
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   }
+  }
+ }
+}

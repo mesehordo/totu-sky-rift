@@ -1,0 +1,313 @@
+{
+ "faction_imperium": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.imperium.name",
+   "desc": "faction.imperium.desc",
+   "tagline": "faction.imperium.tagline"
+  },
+  "Roster": {
+   "units": [
+    "imp_fabrikator",
+    "imp_legios",
+    "imp_ballistarius",
+    "imp_szellemidezo",
+    "imp_centurio",
+    "imp_aquila",
+    "imp_kolosszus",
+    "imp_szellemlegios",
+    "imp_szellemkolosszus",
+    "imp_hos_livia",
+    "imp_hos_nera",
+    "imp_onager",
+    "imp_hos_cassius",
+    "imp_lelekhorgony",
+    "imp_praetorianus",
+    "imp_arato"
+   ],
+   "buildings": [
+    "imp_forum",
+    "imp_reaktor",
+    "imp_legiogyar",
+    "imp_ontode",
+    "imp_gepisten_templom",
+    "imp_hangar",
+    "imp_aquila_torony",
+    "imp_panteon",
+    "imp_praetorium",
+    "imp_lelekkut",
+    "imp_diplomacia",
+    "imp_alapozas",
+    "imp_finomito",
+    "imp_szobor_ferrox",
+    "imp_szobor_arcanor",
+    "imp_szobor_umbrax",
+    "imp_szoborpark",
+    "imp_egko",
+    "imp_nagy_alapozas"
+   ],
+   "researches": [
+    "imp_lelekhorgony_mentes",
+    "imp_legiopengek",
+    "imp_gyorstoltes",
+    "imp_edzett_acel",
+    "imp_megerositett_vaz",
+    "imp_hajtomu",
+    "imp_tartaly",
+    "imp_ferrox_kalapacsa",
+    "imp_ontottvas_burok",
+    "imp_arcanor_csillagai",
+    "imp_csillagterkep",
+    "imp_umbrax_fatyla",
+    "imp_lelekkapu",
+    "imp_reaktorpajzs",
+    "imp_nagy_alapozas",
+    "imp_legiopengek_2",
+    "imp_legiopengek_3",
+    "imp_gyorstoltes_2",
+    "imp_gyorstoltes_3",
+    "imp_edzett_acel_2",
+    "imp_edzett_acel_3",
+    "imp_ferrox_kalapacsa_2",
+    "imp_ferrox_kalapacsa_3",
+    "imp_goztulnyomas",
+    "imp_szikrafogo"
+   ]
+  },
+  "Paths": {
+   "legio": {
+    "name": "path.imperium.legio.name",
+    "desc": "path.imperium.legio.desc",
+    "tagline": "path.imperium.legio.tagline",
+    "building": "imp_praetorium",
+    "units": [
+     "imp_praetorianus",
+     "imp_centurio"
+    ],
+    "rules": {
+     "pack_bonus": {
+      "radius": 4,
+      "per": 0.06,
+      "max": 0.3,
+      "tags": [
+       "infantry"
+      ]
+     }
+    },
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "infantry"
+      ],
+      "add": 1
+     }
+    ]
+   },
+   "gepisten": {
+    "name": "path.imperium.gepisten.name",
+    "desc": "path.imperium.gepisten.desc",
+    "tagline": "path.imperium.gepisten.tagline",
+    "building": "imp_ontode",
+    "units": [
+     "imp_onager",
+     "imp_kolosszus"
+    ],
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "imp_onager",
+       "imp_kolosszus"
+      ],
+      "add": 150
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "siege",
+       "imp_kolosszus"
+      ],
+      "add": 4
+     }
+    ]
+   },
+   "lelek": {
+    "name": "path.imperium.lelek.name",
+    "desc": "path.imperium.lelek.desc",
+    "tagline": "path.imperium.lelek.tagline",
+    "building": "imp_lelekkut",
+    "units": [
+     "imp_szellemlegios",
+     "imp_szellemkolosszus"
+    ],
+    "rules": {
+     "raise_from_kills": {
+      "unit": "imp_szellemlegios",
+      "chance": 0.2,
+      "lifetime": 40,
+      "color": [
+       120,
+       255,
+       190
+      ]
+     }
+    }
+   }
+  },
+  "Faction": {
+   "order": 6,
+   "mechanic": "standard",
+   "style": "imperial",
+   "color": [
+    176,
+    136,
+    78
+   ],
+   "accent": [
+    120,
+    255,
+    190
+   ],
+   "repair": true,
+   "hq": "imp_forum",
+   "worker": "imp_fabrikator",
+   "supply_building": "imp_reaktor",
+   "start_units": {
+    "imp_fabrikator": 4,
+    "imp_arato": 1
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.36,
+     "stone": 0.5,
+     "meteor": 0.14
+    },
+    "build_order": [
+     "imp_reaktor",
+     "imp_legiogyar",
+     "imp_finomito",
+     "imp_reaktor",
+     "imp_panteon",
+     "imp_legiogyar",
+     "imp_diplomacia",
+     "imp_szoborpark",
+     "imp_szobor_ferrox",
+     "imp_szobor_umbrax",
+     "imp_gepisten_templom",
+     "imp_aquila_torony",
+     "imp_hangar",
+     "imp_egko"
+    ],
+    "army": {
+     "imp_legios": 4,
+     "imp_ballistarius": 3,
+     "imp_szellemidezo": 1,
+     "imp_aquila": 1
+    },
+    "research_order": [
+     "imp_tartaly",
+     "imp_legiopengek",
+     "imp_gyorstoltes",
+     "imp_edzett_acel",
+     "imp_megerositett_vaz",
+     "imp_legiopengek_2",
+     "imp_legiopengek_3",
+     "imp_gyorstoltes_2",
+     "imp_gyorstoltes_3",
+     "imp_edzett_acel_2",
+     "imp_edzett_acel_3",
+     "imp_ferrox_kalapacsa_2",
+     "imp_ferrox_kalapacsa_3",
+     "imp_goztulnyomas",
+     "imp_szikrafogo",
+     "imp_ferrox_kalapacsa",
+     "imp_ontottvas_burok",
+     "imp_reaktorpajzs"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "legio",
+     "gepisten",
+     "lelek"
+    ],
+    "paths": {
+     "legio": {
+      "build": [
+       "imp_praetorium"
+      ],
+      "army": {
+       "imp_praetorianus": 3,
+       "imp_centurio": 1
+      }
+     },
+     "gepisten": {
+      "build": [
+       "imp_ontode"
+      ],
+      "army": {
+       "imp_onager": 1,
+       "imp_kolosszus": 1
+      }
+     },
+     "lelek": {
+      "build": [
+       "imp_lelekkut"
+      ],
+      "army": {
+       "imp_szellemlegios": 4,
+       "imp_szellemkolosszus": 1
+      }
+     }
+    },
+    "ally_pref": [
+     "mhonyo",
+     "ghoblin",
+     "tuz_elf"
+    ],
+    "foundation": true,
+    "gatherer_share": {
+     "imp_arato": 3
+    }
+   },
+   "regen": 0.25,
+   "start_gather": "wood",
+   "supply_desc": "Lélekreaktorok",
+   "spell_resource": "energy",
+   "soul_anchor": "imp_lelekhorgony",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "foundation": {
+    "size": 2,
+    "cost": {
+     "stone": 10
+    },
+    "unfounded_hp": 0.5,
+    "decay": {
+     "pct_per_s": 0.002,
+     "min": 0.5
+    }
+   },
+   "builder": "stay_single",
+   "gatherers": {
+    "stone": "imp_arato",
+    "meteor": "imp_arato"
+   },
+   "rift": {
+    "regen": {
+     "tags": [
+      "mech"
+     ],
+     "add": 1
+    }
+   },
+   "shield_zone": "reactor"
+  }
+ }
+}

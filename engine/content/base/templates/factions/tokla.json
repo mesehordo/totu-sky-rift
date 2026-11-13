@@ -1,0 +1,78 @@
+{
+ "faction_tokla": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.tokla.name",
+   "desc": "faction.tokla.desc",
+   "tagline": "faction.tokla.tagline"
+  },
+  "Roster": {
+   "units": [
+    "tok_fagyorias",
+    "tok_harangjaro",
+    "tok_hovihar_buso",
+    "tok_zuzmaraturpe",
+    "tok_jegveto_turpe"
+   ],
+   "buildings": [
+    "tok_maszkcsur",
+    "tok_harangkapu",
+    "tok_zuzmaramuhely"
+   ],
+   "researches": [
+    "tok_busomaszk",
+    "tok_fagyos_fegyver",
+    "tok_hagoorseg"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 105,
+   "style": "nordic",
+   "color": [
+    226,
+    218,
+    200
+   ],
+   "accent": [
+    180,
+    40,
+    40
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "tok_maszkcsur",
+     "tok_harangkapu",
+     "tok_zuzmaramuhely"
+    ],
+    "units": [
+     "tok_fagyorias",
+     "tok_harangjaro",
+     "tok_hovihar_buso",
+     "tok_zuzmaraturpe",
+     "tok_jegveto_turpe"
+    ]
+   },
+   "ai": {
+    "build": [
+     "tok_maszkcsur",
+     "tok_harangkapu",
+     "tok_zuzmaramuhely"
+    ],
+    "army": {
+     "tok_fagyorias": 2,
+     "tok_harangjaro": 3,
+     "tok_hovihar_buso": 3,
+     "tok_zuzmaraturpe": 3,
+     "tok_jegveto_turpe": 3
+    },
+    "research": [
+     "tok_busomaszk",
+     "tok_fagyos_fegyver",
+     "tok_hagoorseg"
+    ]
+   }
+  }
+ }
+}

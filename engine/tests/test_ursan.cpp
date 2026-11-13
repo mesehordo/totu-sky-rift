@@ -96,6 +96,11 @@ struct Setup {
         case sim::EntityDef::Req::Ascended:
           ascend();
           break;
+        case sim::EntityDef::Req::Ally:   // kisnép: Diplomácia csarnoka és szövetség
+          if (!has_building("urs_diplomacia")) place("urs_diplomacia");
+          rich();
+          s().choose_ally(1, q.id);
+          break;
       }
     }
   }

@@ -298,7 +298,8 @@ std::vector<uint16_t> World::buildable_defs(const std::string& faction) const {
   const sim::Rules* r = session_.rules();
   if (!r) return out;
   for (size_t i = 0; i < r->defs.size(); ++i) {
-    if (r->defs[i].building && r->defs[i].faction == faction && r->defs[i].fw > 0) out.push_back(static_cast<uint16_t>(i));
+    const bool ally = cur_ && !cur_->players[1].ally.empty() && r->defs[i].faction == cur_->players[1].ally;   // D26
+    if (r->defs[i].building && (r->defs[i].faction == faction || ally) && r->defs[i].fw > 0) out.push_back(static_cast<uint16_t>(i));
   }
   return out;
 }

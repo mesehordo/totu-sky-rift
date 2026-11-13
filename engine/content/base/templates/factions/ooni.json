@@ -1,0 +1,319 @@
+{
+ "faction_ooni": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.ooni.name",
+   "desc": "faction.ooni.desc",
+   "tagline": "faction.ooni.tagline"
+  },
+  "Roster": {
+   "units": [
+    "oon_lampasvivo",
+    "oon_oni_harcos",
+    "oon_kohajito",
+    "oon_nian_or",
+    "oon_tengu",
+    "oon_kitsune",
+    "oon_illuzio_mas",
+    "oon_kapudongeto",
+    "oon_o_oni",
+    "oon_hos_akahana",
+    "oon_hos_shiro",
+    "oon_hos_karasu",
+    "oon_berserker_oni",
+    "oon_dobos",
+    "oon_kokutya",
+    "oon_lampaspap",
+    "oon_holloharcos",
+    "oon_viharhivo",
+    "oon_favago",
+    "oon_tanuki"
+   ],
+   "buildings": [
+    "oon_nian_csarnok",
+    "oon_papirlampas",
+    "oon_lakohaz",
+    "oon_edzoudvar",
+    "oon_meselenyek",
+    "oon_tengu_feszek",
+    "oon_lampaskert",
+    "oon_kapuorzo_torony",
+    "oon_voros_dojo",
+    "oon_kapuszentely",
+    "oon_szelcsucs",
+    "oon_torii",
+    "oon_egko",
+    "oon_diplomacia"
+   ],
+   "researches": [
+    "oon_vasbuzogany",
+    "oon_lakkozott_vert",
+    "oon_lampasolaj",
+    "oon_szelparna",
+    "oon_kettos_kapu",
+    "oon_kotel",
+    "oon_messzefeny",
+    "oon_harci_dobok",
+    "oon_verszomj",
+    "oon_tengu_tollak",
+    "oon_vasbuzogany_2",
+    "oon_vasbuzogany_3",
+    "oon_lakkozott_vert_2",
+    "oon_lakkozott_vert_3",
+    "oon_kotel_2",
+    "oon_kotel_3",
+    "oon_kokutya_huseg",
+    "oon_lampas_magia"
+   ]
+  },
+  "Paths": {
+   "voros": {
+    "name": "path.ooni.voros.name",
+    "desc": "path.ooni.voros.desc",
+    "tagline": "path.ooni.voros.tagline",
+    "building": "oon_voros_dojo",
+    "units": [
+     "oon_berserker_oni"
+    ],
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "melee"
+      ],
+      "add": 3
+     },
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "infantry"
+      ],
+      "add": 10
+     },
+     {
+      "stat": "hp",
+      "tags": [
+       "oon_dobos"
+      ],
+      "add": 60
+     }
+    ],
+    "rules": {
+     "build_boost_mult": 1.75
+    }
+   },
+   "kapu": {
+    "name": "path.ooni.kapu.name",
+    "desc": "path.ooni.kapu.desc",
+    "tagline": "path.ooni.kapu.tagline",
+    "building": "oon_kapuszentely",
+    "units": [
+     "oon_kokutya",
+     "oon_lampaspap"
+    ],
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "building"
+      ],
+      "add": 2
+     },
+     {
+      "stat": "hp",
+      "tags": [
+       "beast"
+      ],
+      "add": 80
+     }
+    ]
+   },
+   "tengu": {
+    "name": "path.ooni.tengu.name",
+    "desc": "path.ooni.tengu.desc",
+    "tagline": "path.ooni.tengu.tagline",
+    "building": "oon_szelcsucs",
+    "units": [
+     "oon_holloharcos",
+     "oon_viharhivo"
+    ],
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "flyer"
+      ],
+      "add": 15
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "flyer"
+      ],
+      "add": 2
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "demolish": true,
+   "order": 8,
+   "mechanic": "lantern",
+   "style": "imperial",
+   "color": [
+    170,
+    40,
+    40
+   ],
+   "accent": [
+    80,
+    200,
+    140
+   ],
+   "hq": "oon_nian_csarnok",
+   "worker": "oon_lampasvivo",
+   "supply_building": "oon_lakohaz",
+   "start_units": {
+    "oon_lampasvivo": 2,
+    "oon_favago": 2,
+    "oon_tanuki": 1
+   },
+   "start_gather": "wood",
+   "supply_desc": "Oni lakóházakkal",
+   "ascension": {
+    "buildings": 3
+   },
+   "ai": {
+    "workers": 18,
+    "gather_ratio": {
+     "wood": 0.64,
+     "stone": 0.23,
+     "meteor": 0.13
+    },
+    "lantern": "oon_papirlampas",
+    "build_order": [
+     "oon_lakohaz",
+     "oon_papirlampas",
+     "oon_edzoudvar",
+     "oon_papirlampas",
+     "oon_lakohaz",
+     "oon_meselenyek",
+     "oon_diplomacia",
+     "oon_edzoudvar",
+     "oon_lampaskert",
+     "oon_papirlampas",
+     "oon_tengu_feszek",
+     "oon_kapuorzo_torony",
+     "oon_lakohaz"
+    ],
+    "army": {
+     "oon_oni_harcos": 4,
+     "oon_kohajito": 3,
+     "oon_nian_or": 1,
+     "oon_kitsune": 1,
+     "oon_tengu": 1,
+     "oon_kapudongeto": 1
+    },
+    "research_order": [
+     "oon_vasbuzogany",
+     "oon_lakkozott_vert",
+     "oon_lampasolaj",
+     "oon_szelparna",
+     "oon_kotel",
+     "oon_messzefeny",
+     "oon_harci_dobok",
+     "oon_verszomj",
+     "oon_tengu_tollak",
+     "oon_vasbuzogany_2",
+     "oon_vasbuzogany_3",
+     "oon_lakkozott_vert_2",
+     "oon_lakkozott_vert_3",
+     "oon_kotel_2",
+     "oon_kotel_3",
+     "oon_kokutya_huseg",
+     "oon_lampas_magia"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "voros",
+     "kapu",
+     "tengu"
+    ],
+    "paths": {
+     "voros": {
+      "build": [
+       "oon_voros_dojo"
+      ],
+      "army": {
+       "oon_berserker_oni": 3,
+       "oon_dobos": 1
+      }
+     },
+     "kapu": {
+      "build": [
+       "oon_kapuszentely"
+      ],
+      "army": {
+       "oon_kokutya": 1,
+       "oon_lampaspap": 1
+      }
+     },
+     "tengu": {
+      "build": [
+       "oon_szelcsucs"
+      ],
+      "army": {
+       "oon_holloharcos": 3,
+       "oon_viharhivo": 1
+      }
+     }
+    },
+    "heroes": [
+     "oon_hos_akahana",
+     "oon_hos_shiro",
+     "oon_hos_karasu"
+    ],
+    "builders": 3,
+    "ally_pref": [
+     "tokla",
+     "mhonyo",
+     "nila_uchana"
+    ]
+   },
+   "builder": "stay_single",
+   "build_boost": {
+    "unit": "oon_dobos",
+    "radius": 4,
+    "mult": 1.5
+   },
+   "gatherers": {
+    "wood": "oon_favago",
+    "stone": "oon_tanuki",
+    "meteor": "oon_tanuki"
+   },
+   "morale": {
+    "max": 100,
+    "hurt": 60,
+    "ally_death": 10,
+    "hero_death": 25,
+    "hero_death_breaks": true,
+    "regen": 2,
+    "drum": {
+     "unit": "oon_dobos",
+     "radius": 4,
+     "regen": 8
+    },
+    "light_min": 30,
+    "break_until": 50,
+    "broken": {
+     "damage_mult": 0.7,
+     "speed_mult": 1.2
+    }
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   }
+  }
+ }
+}

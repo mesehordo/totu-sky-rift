@@ -58,6 +58,7 @@ struct SnapPlayer {
   std::array<int32_t, sim::kResources> res{};
   int32_t supply_cap = 0, supply_used = 0;
   bool defeated = false, ascended = false;
+  std::string ally;
   std::string path;
   std::vector<std::string> researched;
 };

@@ -1,0 +1,78 @@
+{
+ "faction_niil_elf": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.niil_elf.name",
+   "desc": "faction.niil_elf.desc",
+   "tagline": "faction.niil_elf.tagline"
+  },
+  "Roster": {
+   "units": [
+    "nii_papiruszlandzsas",
+    "nii_nadhajos_ijasz",
+    "nii_lotuszpajzsos",
+    "nii_arapalypap",
+    "nii_krokodilor"
+   ],
+   "buildings": [
+    "nii_lotuszkikoto",
+    "nii_arvizszentely",
+    "nii_nadpalota"
+   ],
+   "researches": [
+    "nii_csatornarend",
+    "nii_lotuszaldas",
+    "nii_aradas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 107,
+   "style": "aztec",
+   "color": [
+    40,
+    150,
+    140
+   ],
+   "accent": [
+    230,
+    190,
+    70
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "nii_lotuszkikoto",
+     "nii_arvizszentely",
+     "nii_nadpalota"
+    ],
+    "units": [
+     "nii_papiruszlandzsas",
+     "nii_nadhajos_ijasz",
+     "nii_lotuszpajzsos",
+     "nii_arapalypap",
+     "nii_krokodilor"
+    ]
+   },
+   "ai": {
+    "build": [
+     "nii_lotuszkikoto",
+     "nii_arvizszentely",
+     "nii_nadpalota"
+    ],
+    "army": {
+     "nii_papiruszlandzsas": 3,
+     "nii_nadhajos_ijasz": 3,
+     "nii_lotuszpajzsos": 3,
+     "nii_arapalypap": 3,
+     "nii_krokodilor": 2
+    },
+    "research": [
+     "nii_csatornarend",
+     "nii_lotuszaldas",
+     "nii_aradas"
+    ]
+   }
+  }
+ }
+}

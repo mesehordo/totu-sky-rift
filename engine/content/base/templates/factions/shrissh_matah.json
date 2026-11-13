@@ -1,0 +1,78 @@
+{
+ "faction_shrissh_matah": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.shrissh_matah.name",
+   "desc": "faction.shrissh_matah.desc",
+   "tagline": "faction.shrissh_matah.tagline"
+  },
+  "Roster": {
+   "units": [
+    "shr_runaszovo",
+    "shr_sziklafuto",
+    "shr_pajzsbogar",
+    "shr_tuszunyog",
+    "shr_tuskelovo"
+   ],
+   "buildings": [
+    "shr_tollvar",
+    "shr_tuskekelteto",
+    "shr_runaszellozo"
+   ],
+   "researches": [
+    "shr_runavesest",
+    "shr_tollas_pancel",
+    "shr_szikla_kapaszkodas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 112,
+   "style": "organic",
+   "color": [
+    170,
+    110,
+    50
+   ],
+   "accent": [
+    120,
+    230,
+    180
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "shr_tollvar",
+     "shr_tuskekelteto",
+     "shr_runaszellozo"
+    ],
+    "units": [
+     "shr_runaszovo",
+     "shr_sziklafuto",
+     "shr_pajzsbogar",
+     "shr_tuszunyog",
+     "shr_tuskelovo"
+    ]
+   },
+   "ai": {
+    "build": [
+     "shr_tollvar",
+     "shr_tuskekelteto",
+     "shr_runaszellozo"
+    ],
+    "army": {
+     "shr_runaszovo": 3,
+     "shr_sziklafuto": 3,
+     "shr_pajzsbogar": 3,
+     "shr_tuszunyog": 3,
+     "shr_tuskelovo": 3
+    },
+    "research": [
+     "shr_runavesest",
+     "shr_tollas_pancel",
+     "shr_szikla_kapaszkodas"
+    ]
+   }
+  }
+ }
+}

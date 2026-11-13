@@ -14,7 +14,7 @@
 namespace totu::client {
 
 struct HudAction {
-  enum Kind { None, Train, Research, Build, Ability, TargetAbility, Unload, Power, ChoosePath, Learn, UseItem } kind = None;
+  enum Kind { None, Train, Research, Build, Ability, TargetAbility, Unload, Power, ChoosePath, Learn, UseItem, ChooseAlly } kind = None;
   std::string id;        // sablon, kutatás, képesség vagy irány
   uint16_t def = sim::kNoDef;
   sim::EntityId building = 0;

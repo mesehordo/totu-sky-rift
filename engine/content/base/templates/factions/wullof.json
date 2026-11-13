@@ -1,0 +1,297 @@
+{
+ "faction_wullof": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.wullof.name",
+   "desc": "faction.wullof.desc",
+   "tagline": "faction.wullof.tagline"
+  },
+  "Roster": {
+   "units": [
+    "wul_gyujtogeto",
+    "wul_landzsas",
+    "wul_ijas_vadasz",
+    "wul_holdsaman",
+    "wul_szellemfarkas",
+    "wul_bolenylovas",
+    "wul_mennydorgesmadar",
+    "wul_totemorias",
+    "wul_vandorszeker",
+    "wul_hos_tava",
+    "wul_tomahawkos",
+    "wul_hos_varnu",
+    "wul_hos_kurrin",
+    "wul_emu",
+    "wul_boleny",
+    "wul_groomi",
+    "wul_csordavezer",
+    "wul_groomi_fioka",
+    "wul_groomi_anya",
+    "wul_totemfarago",
+    "wul_alomjaro",
+    "wul_ijas_vadasz_falka",
+    "wul_landzsas_falka"
+   ],
+   "buildings": [
+    "wul_tanacssator",
+    "wul_tipi",
+    "wul_harcosok_tuze",
+    "wul_bolenykaram",
+    "wul_samansator",
+    "wul_mennydorges_szikla",
+    "wul_szellemtotem",
+    "wul_osok_kore",
+    "wul_bolenyakol",
+    "wul_groomi_feszek",
+    "wul_totemkert",
+    "wul_diplomacia",
+    "wul_egko"
+   ],
+   "researches": [
+    "wul_obszidian_landzsa",
+    "wul_holdfeny_ijak",
+    "wul_bolenybor",
+    "wul_falkaszellem",
+    "wul_savkopes",
+    "wul_tuzkopes",
+    "wul_fagykopes",
+    "wul_zsakmanyszerzes",
+    "wul_falkaharc",
+    "wul_bolenylovaglas",
+    "wul_obszidian_landzsa_2",
+    "wul_obszidian_landzsa_3",
+    "wul_holdfeny_ijak_2",
+    "wul_holdfeny_ijak_3",
+    "wul_bolenybor_2",
+    "wul_bolenybor_3",
+    "wul_nyomolvasas",
+    "wul_holdtolte"
+   ]
+  },
+  "Paths": {
+   "boleny": {
+    "name": "path.wullof.boleny.name",
+    "desc": "path.wullof.boleny.desc",
+    "tagline": "path.wullof.boleny.tagline",
+    "building": "wul_bolenyakol",
+    "units": [
+     "wul_boleny",
+     "wul_bolenylovas",
+     "wul_csordavezer"
+    ],
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "cavalry",
+       "beast"
+      ],
+      "add": 15
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "cavalry"
+      ],
+      "add": 3
+     }
+    ]
+   },
+   "groomi": {
+    "name": "path.wullof.groomi.name",
+    "desc": "path.wullof.groomi.desc",
+    "tagline": "path.wullof.groomi.tagline",
+    "building": "wul_groomi_feszek",
+    "units": [
+     "wul_groomi",
+     "wul_groomi_fioka",
+     "wul_groomi_anya"
+    ],
+    "rules": {
+     "heal_on_kill": {
+      "tags": [
+       "beast"
+      ],
+      "amount": 35
+     }
+    },
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "beast"
+      ],
+      "add": 10
+     }
+    ]
+   },
+   "osok": {
+    "name": "path.wullof.osok.name",
+    "desc": "path.wullof.osok.desc",
+    "tagline": "path.wullof.osok.tagline",
+    "building": "wul_totemkert",
+    "units": [
+     "wul_totemfarago",
+     "wul_alomjaro",
+     "wul_totemorias"
+    ],
+    "effects": [
+     {
+      "stat": "damage",
+      "tags": [
+       "tower"
+      ],
+      "add": 6
+     },
+     {
+      "stat": "armor",
+      "tags": [
+       "building"
+      ],
+      "add": 2
+     },
+     {
+      "stat": "sight",
+      "tags": [
+       "tower"
+      ],
+      "add": 3
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "demolish": true,
+   "order": 4,
+   "mechanic": "standard",
+   "style": "tribal",
+   "color": [
+    196,
+    150,
+    92
+   ],
+   "accent": [
+    215,
+    60,
+    40
+   ],
+   "repair": true,
+   "pack_bonus": {
+    "radius": 4,
+    "per": 0.1,
+    "max": 0.4,
+    "speed_per": 0.02
+   },
+   "bounty": 0.2,
+   "wagon": "wul_vandorszeker",
+   "unpack_time": 8,
+   "hq": "wul_tanacssator",
+   "worker": "wul_gyujtogeto",
+   "supply_building": "wul_bolenykaram",
+   "start_units": {
+    "wul_gyujtogeto": 5,
+    "wul_emu": 2
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.58,
+     "stone": 0.2,
+     "meteor": 0.22
+    },
+    "build_order": [
+     "wul_bolenykaram",
+     "wul_tipi",
+     "wul_harcosok_tuze",
+     "wul_tipi",
+     "wul_osok_kore",
+     "wul_samansator",
+     "wul_diplomacia",
+     "wul_szellemtotem",
+     "wul_mennydorges_szikla"
+    ],
+    "army": {
+     "wul_landzsas": 6,
+     "wul_ijas_vadasz": 3,
+     "wul_holdsaman": 1,
+     "wul_mennydorgesmadar": 1
+    },
+    "research_order": [
+     "wul_falkaharc",
+     "wul_obszidian_landzsa",
+     "wul_holdfeny_ijak",
+     "wul_bolenybor",
+     "wul_falkaszellem",
+     "wul_bolenylovaglas",
+     "wul_obszidian_landzsa_2",
+     "wul_obszidian_landzsa_3",
+     "wul_holdfeny_ijak_2",
+     "wul_holdfeny_ijak_3",
+     "wul_bolenybor_2",
+     "wul_bolenybor_3",
+     "wul_nyomolvasas",
+     "wul_holdtolte"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "groomi",
+     "boleny",
+     "osok"
+    ],
+    "paths": {
+     "boleny": {
+      "build": [
+       "wul_bolenyakol"
+      ],
+      "army": {
+       "wul_boleny": 3,
+       "wul_csordavezer": 1
+      }
+     },
+     "groomi": {
+      "build": [
+       "wul_groomi_feszek"
+      ],
+      "army": {
+       "wul_groomi": 4,
+       "wul_groomi_anya": 1
+      },
+      "research": [
+       "wul_tuzkopes"
+      ]
+     },
+     "osok": {
+      "build": [
+       "wul_totemkert",
+       "wul_szellemtotem"
+      ],
+      "army": {
+       "wul_totemfarago": 1,
+       "wul_alomjaro": 1,
+       "wul_totemorias": 2
+      }
+     }
+    },
+    "ally_pref": [
+     "zhan_zhama",
+     "daresh",
+     "tenduur"
+    ]
+   },
+   "start_gather": "wood",
+   "supply_desc": "Emuk (Emukarámban tenyészthetők, karámonként legfeljebb 5)",
+   "bounty_res": "wood",
+   "spell_resource": "song",
+   "forest_stealth": true,
+   "supply_unit": "wul_emu",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "builder": "stay"
+  }
+ }
+}

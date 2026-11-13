@@ -1,0 +1,79 @@
+{
+ "faction_nila_uchana": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.nila_uchana.name",
+   "desc": "faction.nila_uchana.desc",
+   "tagline": "faction.nila_uchana.tagline"
+  },
+  "Roster": {
+   "units": [
+    "nil_szornykoto",
+    "nil_rakshasa",
+    "nil_makara_idezo",
+    "nil_naga",
+    "nil_makara",
+    "nil_rakshasa_kotott"
+   ],
+   "buildings": [
+    "nil_szornyek_csarnoka",
+    "nil_makara_medence",
+    "nil_lotuszudvar"
+   ],
+   "researches": [
+    "nil_kotes_ereje",
+    "nil_naga_pikkely",
+    "nil_lotuszszentseg"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 110,
+   "style": "aztec",
+   "color": [
+    60,
+    70,
+    160
+   ],
+   "accent": [
+    240,
+    160,
+    40
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "nil_szornyek_csarnoka",
+     "nil_makara_medence",
+     "nil_lotuszudvar"
+    ],
+    "units": [
+     "nil_szornykoto",
+     "nil_rakshasa",
+     "nil_makara_idezo",
+     "nil_naga",
+     "nil_makara"
+    ]
+   },
+   "ai": {
+    "build": [
+     "nil_szornyek_csarnoka",
+     "nil_makara_medence",
+     "nil_lotuszudvar"
+    ],
+    "army": {
+     "nil_szornykoto": 3,
+     "nil_rakshasa": 2,
+     "nil_makara_idezo": 3,
+     "nil_naga": 3,
+     "nil_makara": 2
+    },
+    "research": [
+     "nil_kotes_ereje",
+     "nil_naga_pikkely",
+     "nil_lotuszszentseg"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,273 @@
+{
+ "faction_ursan": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.ursan.name",
+   "desc": "faction.ursan.desc",
+   "tagline": "faction.ursan.tagline"
+  },
+  "Roster": {
+   "units": [
+    "urs_telepes",
+    "urs_pajzshordozo",
+    "urs_szigonyvezo",
+    "urs_berserker",
+    "urs_runapap",
+    "urs_kardfogu",
+    "urs_viharhollo",
+    "urs_mammut",
+    "urs_hos_ragna",
+    "urs_dardaor",
+    "urs_ostromszan",
+    "urs_kardfogu_tigris",
+    "urs_hos_hjalmar",
+    "urs_hos_bjarka",
+    "urs_runako",
+    "urs_medvealak",
+    "urs_kurtos",
+    "urs_runaorias"
+   ],
+   "buildings": [
+    "urs_nagyterem",
+    "urs_hosszuhaz",
+    "urs_fatelep",
+    "urs_harcosok_haza",
+    "urs_runakovacs",
+    "urs_vadak_karama",
+    "urs_sasszirt",
+    "urs_ortorony",
+    "urs_eskufa",
+    "urs_tanya",
+    "urs_colopfal",
+    "urs_verfogadalom",
+    "urs_runaszentely",
+    "urs_diplomacia",
+    "urs_egko"
+   ],
+   "researches": [
+    "urs_runapengek",
+    "urs_vasszigony",
+    "urs_medvebunda",
+    "urs_telegi_edzes",
+    "urs_nepfelkeles",
+    "urs_runapajzs",
+    "urs_kiados_tanya",
+    "urs_medve_osztön",
+    "urs_gyors_helyorseg",
+    "urs_runapengek_2",
+    "urs_runapengek_3",
+    "urs_vasszigony_2",
+    "urs_vasszigony_3",
+    "urs_medvebunda_2",
+    "urs_medvebunda_3",
+    "urs_tuskes_pajzsfal"
+   ]
+  },
+  "Paths": {
+   "berserker": {
+    "name": "path.ursan.berserker.name",
+    "desc": "path.ursan.berserker.desc",
+    "tagline": "path.ursan.berserker.tagline",
+    "building": "urs_verfogadalom",
+    "units": [
+     "urs_berserker",
+     "urs_medvealak",
+     "urs_kurtos"
+    ],
+    "rules": {
+     "rage": {
+      "tags": [
+       "melee"
+      ],
+      "max": 0.6
+     }
+    }
+   },
+   "runa": {
+    "name": "path.ursan.runa.name",
+    "desc": "path.ursan.runa.desc",
+    "tagline": "path.ursan.runa.tagline",
+    "building": "urs_runaszentely",
+    "units": [
+     "urs_runaorias",
+     "urs_ostromszan"
+    ],
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "building"
+      ],
+      "add": 3
+     },
+     {
+      "stat": "damage",
+      "tags": [
+       "tower"
+      ],
+      "add": 6
+     }
+    ]
+   },
+   "tundra": {
+    "name": "path.ursan.tundra.name",
+    "desc": "path.ursan.tundra.desc",
+    "tagline": "path.ursan.tundra.tagline",
+    "building": "urs_vadak_karama",
+    "extra_buildings": [
+     "urs_sasszirt"
+    ],
+    "units": [
+     "urs_kardfogu",
+     "urs_mammut",
+     "urs_viharhollo"
+    ],
+    "effects": [
+     {
+      "stat": "hp",
+      "tags": [
+       "beast",
+       "cavalry"
+      ],
+      "add": 60
+     },
+     {
+      "stat": "regen",
+      "tags": [
+       "beast",
+       "cavalry"
+      ],
+      "add": 1
+     }
+    ]
+   }
+  },
+  "Faction": {
+   "demolish": true,
+   "environment": {
+    "weather": {
+     "hoseg": {
+      "speed_mult": 0.9
+     }
+    }
+   },
+   "order": 2,
+   "mechanic": "standard",
+   "builder": "enter",
+   "style": "nordic",
+   "color": [
+    150,
+    108,
+    72
+   ],
+   "accent": [
+    200,
+    220,
+    240
+   ],
+   "hq": "urs_nagyterem",
+   "worker": "urs_telepes",
+   "supply_building": "urs_tanya",
+   "start_units": {
+    "urs_telepes": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.55,
+     "stone": 0.32,
+     "meteor": 0.13
+    },
+    "build_order": [
+     "urs_hosszuhaz",
+     "urs_harcosok_haza",
+     "urs_tanya",
+     "urs_hosszuhaz",
+     "urs_eskufa",
+     "urs_harcosok_haza",
+     "urs_diplomacia",
+     "urs_runakovacs",
+     "urs_ortorony",
+     "urs_tanya"
+    ],
+    "army": {
+     "urs_pajzshordozo": 4,
+     "urs_szigonyvezo": 3,
+     "urs_runapap": 1,
+     "urs_dardaor": 2
+    },
+    "research_order": [
+     "urs_runapengek",
+     "urs_medvebunda",
+     "urs_vasszigony",
+     "urs_telegi_edzes",
+     "urs_runapajzs",
+     "urs_kiados_tanya",
+     "urs_medve_osztön",
+     "urs_gyors_helyorseg",
+     "urs_runapengek_2",
+     "urs_runapengek_3",
+     "urs_vasszigony_2",
+     "urs_vasszigony_3",
+     "urs_medvebunda_2",
+     "urs_medvebunda_3",
+     "urs_tuskes_pajzsfal"
+    ],
+    "attack_supply": 18,
+    "path_pref": [
+     "berserker",
+     "tundra",
+     "runa"
+    ],
+    "paths": {
+     "berserker": {
+      "build": [
+       "urs_verfogadalom"
+      ],
+      "army": {
+       "urs_berserker": 4,
+       "urs_medvealak": 1,
+       "urs_kurtos": 1
+      }
+     },
+     "runa": {
+      "build": [
+       "urs_runaszentely",
+       "urs_ortorony"
+      ],
+      "army": {
+       "urs_runaorias": 2,
+       "urs_ostromszan": 1
+      }
+     },
+     "tundra": {
+      "build": [
+       "urs_vadak_karama",
+       "urs_sasszirt"
+      ],
+      "army": {
+       "urs_kardfogu": 2,
+       "urs_mammut": 1,
+       "urs_viharhollo": 1
+      }
+     }
+    },
+    "ally_pref": [
+     "pinguu",
+     "tokla",
+     "ghoblin"
+    ]
+   },
+   "start_gather": "wood",
+   "supply_desc": "Tanyák",
+   "spell_resource": "cooldown",
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   }
+  }
+ }
+}

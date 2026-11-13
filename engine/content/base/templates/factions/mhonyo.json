@@ -1,0 +1,78 @@
+{
+ "faction_mhonyo": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.mhonyo.name",
+   "desc": "faction.mhonyo.desc",
+   "tagline": "faction.mhonyo.tagline"
+  },
+  "Roster": {
+   "units": [
+    "mho_hajnalpenge",
+    "mho_szerkezet_ijasz",
+    "mho_szikraor",
+    "mho_kardkovacs",
+    "mho_fogaskerek_golem"
+   ],
+   "buildings": [
+    "mho_szelpenge_udvar",
+    "mho_parazsszentely",
+    "mho_harompenge_kovacsda"
+   ],
+   "researches": [
+    "mho_kiegyensulyozott_penge",
+    "mho_szikrapancel",
+    "mho_gepjavitas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 103,
+   "style": "imperial",
+   "color": [
+    40,
+    44,
+    70
+   ],
+   "accent": [
+    220,
+    60,
+    40
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "mho_szelpenge_udvar",
+     "mho_parazsszentely",
+     "mho_harompenge_kovacsda"
+    ],
+    "units": [
+     "mho_hajnalpenge",
+     "mho_szerkezet_ijasz",
+     "mho_szikraor",
+     "mho_kardkovacs",
+     "mho_fogaskerek_golem"
+    ]
+   },
+   "ai": {
+    "build": [
+     "mho_szelpenge_udvar",
+     "mho_parazsszentely",
+     "mho_harompenge_kovacsda"
+    ],
+    "army": {
+     "mho_hajnalpenge": 3,
+     "mho_szerkezet_ijasz": 3,
+     "mho_szikraor": 3,
+     "mho_kardkovacs": 3,
+     "mho_fogaskerek_golem": 2
+    },
+    "research": [
+     "mho_kiegyensulyozott_penge",
+     "mho_szikrapancel",
+     "mho_gepjavitas"
+    ]
+   }
+  }
+ }
+}

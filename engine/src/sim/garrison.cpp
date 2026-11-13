@@ -327,6 +327,28 @@ bool Sim::choose_path(uint8_t owner, const std::string& id) {
   return true;
 }
 
+bool Sim::choose_ally(uint8_t owner, const std::string& people, std::string* error) {
+  auto fail = [&](const char* msg) {
+    if (error) *error = msg;
+    return false;
+  };
+  if (!rules_ || owner < 1 || owner > kMaxPlayers) return fail("érvénytelen játékos");
+  PlayerState& p = players_[owner];
+  const FactionDef* ally = rules_->faction(people);
+  const FactionDef* mine = rules_->faction(p.faction);
+  if (!ally || !ally->ally || !mine) return fail("nem szövetséges kisnép");
+  if (!p.ally.empty()) return fail("már van szövetséged");
+  bool hall = false;
+  world_.pool<Building>().each([&](EntityId e, const Building& b) {
+    const Health* h = world_.get<Health>(e);
+    hall = hall || (b.complete && h && h->owner == owner && h->hp > 0 && rules_->defs[b.def].diplomacy);
+  });
+  if (!hall) return fail("ehhez kész Diplomácia csarnoka kell");
+  if (!pay(owner, mine->ally_cost)) return fail("nincs elég nyersanyag");
+  p.ally = people;
+  return true;
+}
+
 // --- főépület-képesség -----------------------------------------------------------------------------------------------
 bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, Fixed y) {
   if (!rules_) return false;

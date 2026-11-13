@@ -546,6 +546,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
           else if (k == "research") req.kind = EntityDef::Req::Research;
           else if (k == "path") req.kind = EntityDef::Req::Path;
           else if (k == "ascended") req.kind = EntityDef::Req::Ascended;
+          else if (k == "ally") req.kind = EntityDef::Req::Ally;
           else continue;
           if (val.is_string()) req.id = val.text();
           d.reqs.push_back(req);
@@ -594,6 +595,8 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     const content::Value* pk = path(*v, "Placement", "packable");
     d.packable = pk && pk->is_bool() && pk->as_bool();
+    const content::Value* dip = path(*v, "Mechanics", "diplomacy");
+    d.diplomacy = dip && dip->is_bool() && dip->as_bool();
     const content::Value* rsrc = path(*v, "Mechanics", "rift_source");
     d.rift_source = rsrc && rsrc->is_bool() && rsrc->as_bool();
     if (const content::Value* pw = path(*v, "Powers", "list"); pw && pw->is_array()) {
@@ -659,6 +662,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
           else if (k == "research") req.kind = EntityDef::Req::Research;
           else if (k == "path") req.kind = EntityDef::Req::Path;
           else if (k == "ascended") req.kind = EntityDef::Req::Ascended;
+          else if (k == "ally") req.kind = EntityDef::Req::Ally;
           else continue;
           if (val.is_string()) req.id = val.text();
           rd.reqs.push_back(req);
@@ -778,6 +782,9 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     fd.regen = fixed_of(f->find("regen"), Fixed{});
     fd.raw = std::make_shared<const content::Value>(*v);
+    const content::Value* al = f->find("ally");
+    fd.ally = al && al->is_bool() && al->as_bool();
+    read_res_map(f->find("ally_cost"), fd.ally_cost);
     if (const content::Value* pb = f->find("pack_bonus"); pb && pb->is_object()) {
       fd.pack = true;
       fd.pack_radius = fixed_of(pb->find("radius"), fd.pack_radius);

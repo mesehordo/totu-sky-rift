@@ -341,6 +341,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       o.supply_used = p.supply_used;
       o.defeated = p.defeated;
       o.ascended = p.ascended;
+      o.ally = p.ally;
       o.path = p.path;
       if (i == 1) o.researched = p.researched;
     }

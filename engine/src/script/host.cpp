@@ -923,6 +923,12 @@ int g_choose_path(lua_State* L) {
   return 1;
 }
 
+int g_choose_ally(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  lua_pushboolean(L, s.choose_ally(check_owner(L, 1), luaL_checkstring(L, 2)));
+  return 1;
+}
+
 int g_winner(lua_State* L) {
   lua_pushinteger(L, need_sim(L).winner());
   return 1;
@@ -933,7 +939,7 @@ void open_game(lua_State* L) {
                                    {"unit", g_unit},   {"units", g_units}, {"count", g_count}, {"after", g_after},
                                    {"cancel", g_cancel}, {"player", g_player}, {"kind", g_kind}, {"train", g_train},
                                    {"research", g_research}, {"build", g_build}, {"attack", g_attack},
-                                   {"choose_path", g_choose_path}, {"gather", g_gather}, {"winner", g_winner}, {nullptr, nullptr}};
+                                   {"choose_path", g_choose_path}, {"gather", g_gather}, {"choose_ally", g_choose_ally}, {"winner", g_winner}, {nullptr, nullptr}};
   luaL_newlib(L, funcs);
   wrap_readonly(L);
   lua_setglobal(L, "Game");

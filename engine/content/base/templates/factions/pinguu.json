@@ -1,0 +1,78 @@
+{
+ "faction_pinguu": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.pinguu.name",
+   "desc": "faction.pinguu.desc",
+   "tagline": "faction.pinguu.tagline"
+  },
+  "Roster": {
+   "units": [
+    "pin_jegdardas",
+    "pin_hopajzsos",
+    "pin_rozmarlovas",
+    "pin_arapaly_saman",
+    "pin_kajakos"
+   ],
+   "buildings": [
+    "pin_jegcsarnok",
+    "pin_arapalymuhely",
+    "pin_orlangszentely"
+   ],
+   "researches": [
+    "pin_osvenyvezetok",
+    "pin_jegpancel",
+    "pin_hidegtures"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 101,
+   "style": "nordic",
+   "color": [
+    40,
+    44,
+    56
+   ],
+   "accent": [
+    120,
+    200,
+    230
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "pin_jegcsarnok",
+     "pin_arapalymuhely",
+     "pin_orlangszentely"
+    ],
+    "units": [
+     "pin_jegdardas",
+     "pin_hopajzsos",
+     "pin_rozmarlovas",
+     "pin_arapaly_saman",
+     "pin_kajakos"
+    ]
+   },
+   "ai": {
+    "build": [
+     "pin_jegcsarnok",
+     "pin_arapalymuhely",
+     "pin_orlangszentely"
+    ],
+    "army": {
+     "pin_jegdardas": 3,
+     "pin_hopajzsos": 3,
+     "pin_rozmarlovas": 2,
+     "pin_arapaly_saman": 3,
+     "pin_kajakos": 3
+    },
+    "research": [
+     "pin_osvenyvezetok",
+     "pin_jegpancel",
+     "pin_hidegtures"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "faction_micelia": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.micelia.name",
+   "desc": "faction.micelia.desc",
+   "tagline": "faction.micelia.tagline"
+  },
+  "Roster": {
+   "units": [
+    "mic_sporaszedo",
+    "mic_pofeteg",
+    "mic_fonalhalos",
+    "mic_tuskegomba_lovesz",
+    "mic_emlekor"
+   ],
+   "buildings": [
+    "mic_termotest",
+    "mic_szivgomba",
+    "mic_emlekfa"
+   ],
+   "researches": [
+    "mic_osok_emleke",
+    "mic_sporafonal",
+    "mic_szivdobbanas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 100,
+   "style": "fungal",
+   "color": [
+    150,
+    120,
+    80
+   ],
+   "accent": [
+    80,
+    230,
+    205
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "mic_termotest",
+     "mic_szivgomba",
+     "mic_emlekfa"
+    ],
+    "units": [
+     "mic_sporaszedo",
+     "mic_pofeteg",
+     "mic_fonalhalos",
+     "mic_tuskegomba_lovesz",
+     "mic_emlekor"
+    ]
+   },
+   "ai": {
+    "build": [
+     "mic_termotest",
+     "mic_szivgomba",
+     "mic_emlekfa"
+    ],
+    "army": {
+     "mic_pofeteg": 3,
+     "mic_tuskegomba_lovesz": 3,
+     "mic_emlekor": 2,
+     "mic_fonalhalos": 1
+    },
+    "research": [
+     "mic_osok_emleke",
+     "mic_sporafonal",
+     "mic_szivdobbanas"
+    ]
+   }
+  }
+ }
+}

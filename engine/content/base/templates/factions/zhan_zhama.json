@@ -1,0 +1,78 @@
+{
+ "faction_zhan_zhama": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.zhan_zhama.name",
+   "desc": "faction.zhan_zhama.desc",
+   "tagline": "faction.zhan_zhama.tagline"
+  },
+  "Roster": {
+   "units": [
+    "zha_csirkepasztor",
+    "zha_tojasdobalo",
+    "zha_kakaslovas",
+    "zha_tolljos",
+    "zha_madarszellem"
+   ],
+   "buildings": [
+    "zha_feszekhaz",
+    "zha_kakasudvar",
+    "zha_keltetoszentely"
+   ],
+   "researches": [
+    "zha_gyors_keltetes",
+    "zha_kakaskukorekolas",
+    "zha_tollszellem"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 111,
+   "style": "tribal",
+   "color": [
+    190,
+    60,
+    40
+   ],
+   "accent": [
+    240,
+    200,
+    80
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "zha_feszekhaz",
+     "zha_kakasudvar",
+     "zha_keltetoszentely"
+    ],
+    "units": [
+     "zha_csirkepasztor",
+     "zha_tojasdobalo",
+     "zha_kakaslovas",
+     "zha_tolljos",
+     "zha_madarszellem"
+    ]
+   },
+   "ai": {
+    "build": [
+     "zha_feszekhaz",
+     "zha_kakasudvar",
+     "zha_keltetoszentely"
+    ],
+    "army": {
+     "zha_csirkepasztor": 3,
+     "zha_tojasdobalo": 3,
+     "zha_kakaslovas": 2,
+     "zha_tolljos": 3,
+     "zha_madarszellem": 3
+    },
+    "research": [
+     "zha_gyors_keltetes",
+     "zha_kakaskukorekolas",
+     "zha_tollszellem"
+    ]
+   }
+  }
+ }
+}

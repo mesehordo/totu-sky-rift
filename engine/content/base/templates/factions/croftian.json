@@ -1,0 +1,269 @@
+{
+ "faction_croftian": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.croftian.name",
+   "desc": "faction.croftian.desc",
+   "tagline": "faction.croftian.tagline"
+  },
+  "Roster": {
+   "units": [
+    "cro_csapszolga",
+    "cro_karmos",
+    "cro_tuskekopo",
+    "cro_savkopo",
+    "cro_agyfalo",
+    "cro_szarnyas_rem",
+    "cro_csapos_horror",
+    "cro_hos_keth",
+    "cro_pancelbogar",
+    "cro_guboj",
+    "cro_szemhordozo",
+    "cro_hos_vor",
+    "cro_hos_ssarha",
+    "cro_robbanoatka",
+    "cro_vadaszkarmos",
+    "cro_ostromtaraj",
+    "cro_asoferegg"
+   ],
+   "buildings": [
+    "cro_kaptar",
+    "cro_tapgomba",
+    "cro_emeszto",
+    "cro_ikrafeszek",
+    "cro_tuskeverem",
+    "cro_agyszentely",
+    "cro_csontcsucs",
+    "cro_tuskes_gyoker",
+    "kethri_tojaskamra",
+    "cro_korus_kut",
+    "cro_rajkamra",
+    "cro_kitinkamra",
+    "cro_diplomacia",
+    "cro_tarna",
+    "cro_egko",
+    "cro_merges_tuskek"
+   ],
+   "researches": [
+    "cro_inas_labak",
+    "cro_savas_tuskek",
+    "cro_kitinpancel",
+    "cro_eletnedv",
+    "cro_tuskemezo",
+    "cro_eles_karmok",
+    "cro_gyors_larva",
+    "cro_melyebb_rothasztas",
+    "cro_benito_mereg",
+    "cro_melysegi_gyogyulas",
+    "cro_savas_tuskek_2",
+    "cro_savas_tuskek_3",
+    "cro_kitinpancel_2",
+    "cro_kitinpancel_3",
+    "cro_eles_karmok_2",
+    "cro_eles_karmok_3"
+   ]
+  },
+  "Paths": {
+   "raj": {
+    "name": "path.croftian.raj.name",
+    "desc": "path.croftian.raj.desc",
+    "tagline": "path.croftian.raj.tagline",
+    "building": "cro_rajkamra",
+    "units": [
+     "cro_robbanoatka",
+     "cro_vadaszkarmos"
+    ],
+    "rules": {
+     "train_time_mult": {
+      "mult": 0.7
+     }
+    },
+    "effects": [
+     {
+      "stat": "speed_pct",
+      "tags": [
+       "swarm",
+       "light"
+      ],
+      "add": 12
+     }
+    ]
+   },
+   "pancel": {
+    "name": "path.croftian.pancel.name",
+    "desc": "path.croftian.pancel.desc",
+    "tagline": "path.croftian.pancel.tagline",
+    "building": "cro_kitinkamra",
+    "units": [
+     "cro_pancelbogar",
+     "cro_ostromtaraj",
+     "cro_asoferegg"
+    ],
+    "effects": [
+     {
+      "stat": "armor",
+      "tags": [
+       "organic"
+      ],
+      "add": 2
+     }
+    ]
+   },
+   "korus": {
+    "name": "path.croftian.korus.name",
+    "desc": "path.croftian.korus.desc",
+    "tagline": "path.croftian.korus.tagline",
+    "building": "cro_agyszentely",
+    "units": [
+     "cro_agyfalo",
+     "cro_csapos_horror"
+    ],
+    "rules": {
+     "convert_kills": {
+      "chance": 0.15,
+      "hp": 0.35
+     }
+    }
+   }
+  },
+  "Faction": {
+   "order": 3,
+   "mechanic": "creep",
+   "style": "organic",
+   "color": [
+    118,
+    74,
+    140
+   ],
+   "accent": [
+    150,
+    255,
+    120
+   ],
+   "regen": 0.6,
+   "hq": "cro_kaptar",
+   "worker": "cro_csapszolga",
+   "supply_building": "cro_tapgomba",
+   "start_units": {
+    "cro_csapszolga": 5
+   },
+   "ai": {
+    "workers": 20,
+    "gather_ratio": {
+     "wood": 0.48,
+     "stone": 0.33,
+     "meteor": 0.19
+    },
+    "build_order": [
+     "cro_tapgomba",
+     "cro_ikrafeszek",
+     "cro_tuskeverem",
+     "cro_tapgomba",
+     "cro_kaptar",
+     "cro_korus_kut",
+     "cro_diplomacia",
+     "cro_tuskes_gyoker",
+     "cro_csontcsucs"
+    ],
+    "army": {
+     "cro_karmos": 3,
+     "cro_tuskekopo": 4,
+     "cro_savkopo": 1,
+     "cro_szarnyas_rem": 1
+    },
+    "research_order": [
+     "cro_inas_labak",
+     "cro_savas_tuskek",
+     "cro_kitinpancel",
+     "cro_eletnedv",
+     "cro_eles_karmok",
+     "cro_gyors_larva",
+     "cro_melyebb_rothasztas",
+     "cro_benito_mereg",
+     "cro_melysegi_gyogyulas",
+     "cro_savas_tuskek_2",
+     "cro_savas_tuskek_3",
+     "cro_kitinpancel_2",
+     "cro_kitinpancel_3",
+     "cro_eles_karmok_2",
+     "cro_eles_karmok_3"
+    ],
+    "attack_supply": 16,
+    "path_pref": [
+     "raj",
+     "korus",
+     "pancel"
+    ],
+    "paths": {
+     "raj": {
+      "build": [
+       "cro_rajkamra"
+      ],
+      "army": {
+       "cro_robbanoatka": 3,
+       "cro_vadaszkarmos": 4
+      }
+     },
+     "pancel": {
+      "build": [
+       "cro_kitinkamra"
+      ],
+      "army": {
+       "cro_ostromtaraj": 1,
+       "cro_asoferegg": 2
+      }
+     },
+     "korus": {
+      "build": [
+       "cro_agyszentely"
+      ],
+      "army": {
+       "cro_agyfalo": 1,
+       "cro_csapos_horror": 2
+      }
+     }
+    },
+    "ally_pref": [
+     "daresh",
+     "shrissh_matah",
+     "galoca"
+    ],
+    "mine_building": "cro_tarna",
+    "mine_max": 3,
+    "spikes": true
+   },
+   "infest": {
+    "unit": "cro_karmos",
+    "chance": 0.3,
+    "delay": 6
+   },
+   "start_gather": "wood",
+   "supply_unit": "cro_szemhordozo",
+   "supply_desc": "Szemhordozók (egységek)",
+   "spell_resource": "hp",
+   "spike_immune": true,
+   "summons_permanent": true,
+   "ascension": {
+    "buildings": 3
+   },
+   "ally_cost": {
+    "stone": 150,
+    "meteor": 50
+   },
+   "creep_rot": {
+    "rate": 0.06,
+    "hq_mult": 2.5,
+    "hq_radius": 9
+   },
+   "rift": {
+    "regen": {
+     "units": [
+      "cro_agyfalo",
+      "cro_csapos_horror"
+     ],
+     "add": 2
+    }
+   }
+  }
+ }
+}

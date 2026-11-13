@@ -171,6 +171,9 @@ void Sim::apply(const Command& c) {
     case Command::Kind::Unpack:
       if (!c.units.empty()) order_unpack(c.units.front(), c.rx, c.ry);
       break;
+    case Command::Kind::ChooseAlly:
+      choose_ally(c.owner, c.def);
+      break;
   }
 }
 
@@ -307,6 +310,7 @@ uint64_t Sim::hash() const {
       h.add_u64(p.researched.size());
       for (const auto& r : p.researched) h.add_bytes(r);
       h.add_bytes(p.path);
+      h.add_bytes(p.ally);
       h.add_u64(p.ascended);
       h.add_u64(p.defeated);
       h.add_u64(p.fallen.size());
@@ -350,7 +354,8 @@ bool Command::needs_v4() const {
          kind == Kind::Rally || kind == Kind::Attack || kind == Kind::AttackMove || kind == Kind::Hold ||
          kind == Kind::Ability || kind == Kind::Garrison || kind == Kind::Unload || kind == Kind::ChoosePath ||
          kind == Kind::Power || kind == Kind::Learn || kind == Kind::Pickup || kind == Kind::UseItem ||
-         kind == Kind::DropItem || kind == Kind::Repair || kind == Kind::Pack || kind == Kind::Unpack || target != 0 ||
+         kind == Kind::DropItem || kind == Kind::Repair || kind == Kind::Pack || kind == Kind::Unpack ||
+         kind == Kind::ChooseAlly || target != 0 ||
          !def.empty();
 }
 
@@ -378,7 +383,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 29 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 30 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -407,7 +412,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(9);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök)
+  w.u32(10);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -429,6 +434,7 @@ std::vector<uint8_t> Sim::save() const {
       w.u32(static_cast<uint32_t>(p.researched.size()));
       for (const auto& r : p.researched) w.str(r);
       w.str(p.path);
+      w.str(p.ally);
       w.u8(p.ascended ? 1 : 0);
       w.u8(p.defeated ? 1 : 0);
       w.u32(static_cast<uint32_t>(p.fallen.size()));
@@ -458,7 +464,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 9) return false;
+  if (schema < 3 || schema > 10) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -490,6 +496,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       const uint32_t nr = r.u32();
       for (uint32_t i = 0; i < nr && i < 4096 && r.ok(); ++i) p.researched.push_back(r.str());
       p.path = r.str();
+      p.ally = schema >= 10 ? r.str() : std::string();
       p.ascended = r.u8() != 0;
       p.defeated = schema >= 8 && r.u8() != 0;
       p.fallen.clear();

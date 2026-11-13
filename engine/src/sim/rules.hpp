@@ -161,7 +161,7 @@ struct EntityDef {
   uint8_t dropoff = 0;                        // bitmaszk (Res)
   // előfeltételek (`Requirements.all`): kész épület, kutatás, fejlődési irány, felemelkedés
   struct Req {
-    enum Kind : uint8_t { Building, Research, Path, Ascended } kind = Building;
+    enum Kind : uint8_t { Building, Research, Path, Ascended, Ally } kind = Building;
     std::string id;
   };
   std::vector<Req> reqs;
@@ -197,6 +197,7 @@ struct EntityDef {
   uint16_t spawn_unit = kNoDef;
   int32_t spawn_count = 1;
   bool packable = false;
+  bool diplomacy = false;                     // Diplomácia csarnoka (`Mechanics.diplomacy`; MECH-ALLY)
   std::shared_ptr<const content::Value> raw;   // a teljes sablon (a népmodulok saját kulcsaihoz)
   bool rift_source = false;                   // Égkő (`Mechanics.rift_source`)
   std::vector<uint16_t> powers;               // főépület-képességek (`Powers.list`, Rules::abilities)
@@ -279,6 +280,8 @@ struct FactionDef {
   std::string id;
   Fixed regen;                                // faji életerő-visszatöltés / s (`Faction.regen`)
   bool neutral = false;                       // a Vadon: a semleges (0.) játékos
+  bool ally = false;                          // szövetséges kisnép (D26)
+  std::array<int32_t, kResources> ally_cost{};   // a szövetség ára (a főnépé)
   // Wullof (MECH-WUL-1–4)
   bool pack = false;
   Fixed pack_radius = Fixed::from_int(4), pack_per = Fixed::from_ratio(1, 10), pack_max = Fixed::from_ratio(2, 5),

@@ -1,0 +1,78 @@
+{
+ "faction_daresh": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.daresh.name",
+   "desc": "faction.daresh.desc",
+   "tagline": "faction.daresh.tagline"
+  },
+  "Roster": {
+   "units": [
+    "dar_fullanclandzsas",
+    "dar_gyantapajzsos",
+    "dar_rajenekes",
+    "dar_darazsraj",
+    "dar_szarnyas_ijasz"
+   ],
+   "buildings": [
+    "dar_agyagkaptar",
+    "dar_szarnyudvar",
+    "dar_gyantamuhely"
+   ],
+   "researches": [
+    "dar_gyantapancel",
+    "dar_meregfullank",
+    "dar_rajzas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 104,
+   "style": "tribal",
+   "color": [
+    190,
+    120,
+    40
+   ],
+   "accent": [
+    40,
+    110,
+    110
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "dar_agyagkaptar",
+     "dar_szarnyudvar",
+     "dar_gyantamuhely"
+    ],
+    "units": [
+     "dar_fullanclandzsas",
+     "dar_gyantapajzsos",
+     "dar_rajenekes",
+     "dar_darazsraj",
+     "dar_szarnyas_ijasz"
+    ]
+   },
+   "ai": {
+    "build": [
+     "dar_agyagkaptar",
+     "dar_szarnyudvar",
+     "dar_gyantamuhely"
+    ],
+    "army": {
+     "dar_fullanclandzsas": 3,
+     "dar_gyantapajzsos": 3,
+     "dar_rajenekes": 3,
+     "dar_darazsraj": 3,
+     "dar_szarnyas_ijasz": 3
+    },
+    "research": [
+     "dar_gyantapancel",
+     "dar_meregfullank",
+     "dar_rajzas"
+    ]
+   }
+  }
+ }
+}

@@ -50,6 +50,7 @@ add_library(totu_core
   src/content/schema.cpp
   src/content/loader.cpp
   src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp src/sim/build.cpp src/sim/production.cpp src/sim/combat.cpp src/sim/vision.cpp src/sim/environment.cpp src/sim/abilities.cpp src/sim/garrison.cpp src/sim/heroes.cpp src/sim/wullof.cpp src/sim/modules.cpp src/sim/factions/registry.cpp src/sim/factions/imperium.cpp src/sim/factions/ooni.cpp src/sim/factions/croftian.cpp src/sim/factions/hukucha.cpp src/sim/factions/elves.cpp src/sim/factions/micelia.cpp
+  src/sim/factions/minor/daresh.cpp src/sim/factions/minor/galoca.cpp src/sim/factions/minor/ghoblin.cpp src/sim/factions/minor/mhonyo.cpp src/sim/factions/minor/niil_elf.cpp src/sim/factions/minor/nila_uchana.cpp src/sim/factions/minor/pinguu.cpp src/sim/factions/minor/shrissh_matah.cpp src/sim/factions/minor/tenduur.cpp src/sim/factions/minor/tokla.cpp src/sim/factions/minor/tuz_elf.cpp src/sim/factions/minor/zhan_zhama.cpp
   src/sim/replay.cpp
   src/sim/navmove.cpp
   src/sim/formation.cpp
@@ -87,7 +88,7 @@ enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
-  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp tests/test_elements.cpp tests/test_heroes.cpp tests/test_wullof.cpp tests/factions/test_imperium.cpp tests/factions/test_ooni.cpp tests/factions/test_croftian.cpp tests/factions/test_hukucha.cpp tests/factions/test_elves.cpp tests/factions/test_micelia.cpp src/client/session.cpp)
+  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp tests/test_elements.cpp tests/test_heroes.cpp tests/test_wullof.cpp tests/test_allies.cpp tests/factions/test_imperium.cpp tests/factions/test_ooni.cpp tests/factions/test_croftian.cpp tests/factions/test_hukucha.cpp tests/factions/test_elves.cpp tests/factions/test_micelia.cpp src/client/session.cpp)
 target_include_directories(totu_tests PRIVATE tests)   # a népmodulok próbái (tests/factions) a közös segédekhez
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"

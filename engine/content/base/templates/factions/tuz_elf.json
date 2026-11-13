@@ -1,0 +1,79 @@
+{
+ "faction_tuz_elf": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.tuz_elf.name",
+   "desc": "faction.tuz_elf.desc",
+   "tagline": "faction.tuz_elf.tagline"
+  },
+  "Roster": {
+   "units": [
+    "tuz_homokszablyas",
+    "tuz_parazsijasz",
+    "tuz_homokvihartancos",
+    "tuz_hoszovo",
+    "tuz_delibab_csalo",
+    "tuz_delibab_mas"
+   ],
+   "buildings": [
+    "tuz_dunepavilon",
+    "tuz_delibabtorony",
+    "tuz_parazskemence"
+   ],
+   "researches": [
+    "tuz_izzo_nyilhegy",
+    "tuz_homokvihar",
+    "tuz_tuzallo_pancel"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 108,
+   "style": "imperial",
+   "color": [
+    170,
+    60,
+    40
+   ],
+   "accent": [
+    240,
+    170,
+    60
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "tuz_dunepavilon",
+     "tuz_delibabtorony",
+     "tuz_parazskemence"
+    ],
+    "units": [
+     "tuz_homokszablyas",
+     "tuz_parazsijasz",
+     "tuz_homokvihartancos",
+     "tuz_hoszovo",
+     "tuz_delibab_csalo"
+    ]
+   },
+   "ai": {
+    "build": [
+     "tuz_dunepavilon",
+     "tuz_delibabtorony",
+     "tuz_parazskemence"
+    ],
+    "army": {
+     "tuz_homokszablyas": 3,
+     "tuz_parazsijasz": 3,
+     "tuz_homokvihartancos": 3,
+     "tuz_hoszovo": 3,
+     "tuz_delibab_csalo": 3
+    },
+    "research": [
+     "tuz_izzo_nyilhegy",
+     "tuz_homokvihar",
+     "tuz_tuzallo_pancel"
+    ]
+   }
+  }
+ }
+}

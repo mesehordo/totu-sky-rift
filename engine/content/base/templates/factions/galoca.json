@@ -1,0 +1,78 @@
+{
+ "faction_galoca": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.galoca.name",
+   "desc": "faction.galoca.desc",
+   "tagline": "faction.galoca.tagline"
+  },
+  "Roster": {
+   "units": [
+    "gal_fogaskalap",
+    "gal_tuskebunkos",
+    "gal_oriasgaloca",
+    "gal_sporakopo",
+    "gal_gyokergancsolo"
+   ],
+   "buildings": [
+    "gal_harapofeszek",
+    "gal_sporakurt",
+    "gal_tuskekert"
+   ],
+   "researches": [
+    "gal_tuskes_talaj",
+    "gal_merges_spora",
+    "gal_gyors_burjanzas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 106,
+   "style": "fungal",
+   "color": [
+    190,
+    40,
+    40
+   ],
+   "accent": [
+    240,
+    220,
+    120
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "gal_harapofeszek",
+     "gal_sporakurt",
+     "gal_tuskekert"
+    ],
+    "units": [
+     "gal_fogaskalap",
+     "gal_tuskebunkos",
+     "gal_oriasgaloca",
+     "gal_sporakopo",
+     "gal_gyokergancsolo"
+    ]
+   },
+   "ai": {
+    "build": [
+     "gal_harapofeszek",
+     "gal_sporakurt",
+     "gal_tuskekert"
+    ],
+    "army": {
+     "gal_fogaskalap": 3,
+     "gal_tuskebunkos": 3,
+     "gal_oriasgaloca": 2,
+     "gal_sporakopo": 3,
+     "gal_gyokergancsolo": 3
+    },
+    "research": [
+     "gal_tuskes_talaj",
+     "gal_merges_spora",
+     "gal_gyors_burjanzas"
+    ]
+   }
+  }
+ }
+}

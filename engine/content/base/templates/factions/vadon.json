@@ -1,0 +1,91 @@
+{
+ "faction_vadon": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.vadon.name",
+   "desc": "faction.vadon.desc",
+   "tagline": "faction.vadon.tagline"
+  },
+  "Roster": {
+   "units": [
+    "vad_kristalybogar",
+    "vad_hamufarkas",
+    "vad_eterliderc",
+    "vad_kotroll",
+    "vad_ercgolem"
+   ],
+   "buildings": [],
+   "researches": []
+  },
+  "Faction": {
+   "order": 99,
+   "neutral": true,
+   "mechanic": "standard",
+   "style": "nordic",
+   "color": [
+    150,
+    140,
+    120
+   ],
+   "accent": [
+    120,
+    220,
+    255
+   ],
+   "regen": 1.0,
+   "hq": "vad_kristalybogar",
+   "worker": "vad_kristalybogar",
+   "supply_building": "vad_kristalybogar",
+   "start_units": {},
+   "camps": {
+    "1": {
+     "units": {
+      "vad_kristalybogar": 3
+     },
+     "loot": [
+      "common"
+     ]
+    },
+    "2": {
+     "units": {
+      "vad_hamufarkas": 2,
+      "vad_kristalybogar": 2
+     },
+     "loot": [
+      "common"
+     ]
+    },
+    "3": {
+     "units": {
+      "vad_eterliderc": 2,
+      "vad_hamufarkas": 2
+     },
+     "loot": [
+      "common",
+      "rare"
+     ]
+    },
+    "4": {
+     "units": {
+      "vad_kotroll": 1,
+      "vad_eterliderc": 2
+     },
+     "loot": [
+      "rare"
+     ]
+    },
+    "5": {
+     "units": {
+      "vad_ercgolem": 1,
+      "vad_kotroll": 1,
+      "vad_eterliderc": 2
+     },
+     "loot": [
+      "artifact"
+     ]
+    }
+   },
+   "start_gather": "wood"
+  }
+ }
+}

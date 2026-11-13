@@ -150,6 +150,11 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, World& 
                       {HudAction::Power, rules->abilities[pw].id, sim::kNoDef, bsel});
         }
         if (b->garrison > 0) next_button("Kiszállás (U)", {HudAction::Unload, "", sim::kNoDef, bsel});
+        if (d.diplomacy && me.ally.empty()) {   // szövetség egy kisnéppel (D26)
+          for (const sim::FactionDef& f : rules->factions) {
+            if (f.ally) next_button("Szövetség: " + session.display_name("faction." + f.id + ".name"), {HudAction::ChooseAlly, f.id, sim::kNoDef, bsel});
+          }
+        }
       }
     }
   } else if (!sel.empty()) {   // kijelölt egységek

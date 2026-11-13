@@ -1,0 +1,81 @@
+{
+ "faction_ghoblin": {
+  "Identity": {
+   "kind": "faction",
+   "name": "faction.ghoblin.name",
+   "desc": "faction.ghoblin.desc",
+   "tagline": "faction.ghoblin.tagline"
+  },
+  "Roster": {
+   "units": [
+    "gho_koharapo",
+    "gho_sziklagorgeto",
+    "gho_pajzskoves",
+    "gho_meszkopo",
+    "gho_koheju_oreg",
+    "gho_meszbomba"
+   ],
+   "buildings": [
+    "gho_ragoko_banya",
+    "gho_kocipo_malom",
+    "gho_fogadalomharang"
+   ],
+   "researches": [
+    "gho_kobor",
+    "gho_repedesismeret",
+    "gho_meszvakitas"
+   ]
+  },
+  "Faction": {
+   "ally": true,
+   "order": 102,
+   "style": "nordic",
+   "color": [
+    110,
+    120,
+    104
+   ],
+   "accent": [
+    200,
+    60,
+    50
+   ],
+   "mechanic": "standard",
+   "ally_pack": {
+    "buildings": [
+     "gho_ragoko_banya",
+     "gho_kocipo_malom",
+     "gho_fogadalomharang"
+    ],
+    "units": [
+     "gho_koharapo",
+     "gho_sziklagorgeto",
+     "gho_pajzskoves",
+     "gho_meszkopo",
+     "gho_koheju_oreg",
+     "gho_meszbomba"
+    ]
+   },
+   "ai": {
+    "build": [
+     "gho_ragoko_banya",
+     "gho_kocipo_malom",
+     "gho_fogadalomharang"
+    ],
+    "army": {
+     "gho_koharapo": 3,
+     "gho_sziklagorgeto": 2,
+     "gho_pajzskoves": 3,
+     "gho_meszkopo": 3,
+     "gho_koheju_oreg": 2,
+     "gho_meszbomba": 3
+    },
+    "research": [
+     "gho_kobor",
+     "gho_repedesismeret",
+     "gho_meszvakitas"
+    ]
+   }
+  }
+ }
+}
