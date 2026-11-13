@@ -174,6 +174,9 @@ void Sim::apply(const Command& c) {
     case Command::Kind::ChooseAlly:
       choose_ally(c.owner, c.def);
       break;
+    case Command::Kind::Module:
+      mod_command(c);
+      break;
   }
 }
 
@@ -355,7 +358,7 @@ bool Command::needs_v4() const {
          kind == Kind::Ability || kind == Kind::Garrison || kind == Kind::Unload || kind == Kind::ChoosePath ||
          kind == Kind::Power || kind == Kind::Learn || kind == Kind::Pickup || kind == Kind::UseItem ||
          kind == Kind::DropItem || kind == Kind::Repair || kind == Kind::Pack || kind == Kind::Unpack ||
-         kind == Kind::ChooseAlly || target != 0 ||
+         kind == Kind::ChooseAlly || kind == Kind::Module || target != 0 ||
          !def.empty();
 }
 
@@ -383,7 +386,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 30 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 31 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();

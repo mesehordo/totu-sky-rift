@@ -156,6 +156,7 @@ bool EntityDef::has_tag(const std::string& t) const { return std::find(tags.begi
 std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet& set, std::vector<std::string>& errors) {
   const size_t before = errors.size();
   Rules r;
+  r.game_raw = std::make_shared<const content::Value>(game);
   // nyersanyagok
   const content::Value* res = game.find("resources");
   if (!res || !res->is_object()) {
@@ -671,6 +672,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     parse_modifiers(v->find("Modifiers"), rd.modifiers);
     parse_rules(v->find("Rules"), r, rd.rules);
+    rd.raw = std::make_shared<const content::Value>(*v);
     r.researches.push_back(std::move(rd));
   }
   std::sort(r.researches.begin(), r.researches.end(), [](const ResearchDef& a, const ResearchDef& b) { return a.id < b.id; });

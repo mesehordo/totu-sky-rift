@@ -15,6 +15,7 @@
 namespace totu::sim {
 
 class Sim;
+struct Command;
 using core::Fixed;
 
 class FactionModule {
@@ -37,6 +38,9 @@ class FactionModule {
   virtual bool can_gather(Sim&, EntityId /*worker*/, int /*kind*/) { return true; }
   virtual bool shield_regen_allowed(Sim&, EntityId) { return true; }
   virtual bool hidden(Sim&, EntityId) { return false; }   // rejtett (a felfedés a közös szabály szerint)
+  // sérülés: a célpont kapott sebzésének szorzója (a pajzs és a páncél előtt) és páncélbónusza (egész)
+  virtual Fixed damage_taken_mult(Sim&, EntityId /*src*/, EntityId /*target*/, bool /*ranged*/, bool /*magic*/) { return Fixed::from_int(1); }
+  virtual int32_t armor_add(Sim&, EntityId /*target*/) { return 0; }
   // események
   virtual void on_unit_spawned(Sim&, EntityId) {}
   virtual void on_building_placed(Sim&, EntityId) {}
@@ -47,6 +51,10 @@ class FactionModule {
                            EntityId /*target*/) {
     return false;
   }
+  // a keret által nem ismert épületképesség-hatás (`AbilityDef::effect`, pl. bpower); a költség és az újratöltés közös; true: kezelte
+  virtual bool use_power(Sim&, uint8_t /*owner*/, EntityId /*building*/, uint16_t /*ability*/, Fixed /*x*/, Fixed /*y*/) { return false; }
+  // népi parancs (`Command::Kind::Module`; `def` a parancs neve, pl. `ooni.torii`); true: kezelte
+  virtual bool on_command(Sim&, const Command&) { return false; }
 };
 
 // a modulok rögzített sorrendben (src/sim/factions/registry.cpp)

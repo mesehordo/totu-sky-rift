@@ -69,4 +69,30 @@ bool Sim::mod_hidden(EntityId e) {
   return false;
 }
 
+Fixed Sim::mod_damage_taken(EntityId src, EntityId t, bool ranged, bool magic) {
+  Fixed m = Fixed::from_int(1);
+  for (auto& x : modules_) m = m * x->damage_taken_mult(*this, src, t, ranged, magic);
+  return m;
+}
+
+int32_t Sim::mod_armor(EntityId t) {
+  int32_t a = 0;
+  for (auto& x : modules_) a += x->armor_add(*this, t);
+  return a;
+}
+
+bool Sim::mod_use_power(uint8_t owner, EntityId b, uint16_t ability, Fixed x, Fixed y) {
+  for (auto& m : modules_) {
+    if (m->use_power(*this, owner, b, ability, x, y)) return true;
+  }
+  return false;
+}
+
+bool Sim::mod_command(const Command& c) {
+  for (auto& m : modules_) {
+    if (m->on_command(*this, c)) return true;
+  }
+  return false;
+}
+
 }  // namespace totu::sim

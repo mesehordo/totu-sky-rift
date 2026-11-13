@@ -227,6 +227,7 @@ struct ResearchDef {
   std::vector<EntityDef::Req> reqs;
   std::vector<Modifier> modifiers;   // állandó statváltozás kész kutatáskor (D24)
   RuleSet rules;                     // szabálymódosítók (KUT-RULE)
+  std::shared_ptr<const content::Value> raw;   // a teljes sablon (a népmodulok saját kulcsaihoz)
 };
 
 // fejlődési irány (MECH-ASC): az irány hatásai kutatásként (`effects`), a szabályai a kutatásokéi mellé
@@ -319,6 +320,7 @@ struct Rules {
   // a pajzs visszatöltése, a magaslat-szabályok (D33)
   std::map<std::string, std::map<std::string, Fixed>> type_matrix;
   std::vector<ProjectileKind> projectiles;                 // a `game.json` sorrendjében
+  std::shared_ptr<const content::Value> game_raw;          // a teljes `game.json` (a népmodulok saját kulcsaihoz)
   int projectile_index(const std::string& id) const;       // -1, ha nincs
   int32_t shield_regen_delay = 300;                        // tick
   Fixed shield_regen_per_tick;

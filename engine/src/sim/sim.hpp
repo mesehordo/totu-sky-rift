@@ -718,7 +718,9 @@ struct Command {
                               // Unpack (`units[0]` szekér → rx, ry csempe)
                               Repair = 27, Pack = 28, Unpack = 29,
                               // M7 9. lépés: ChooseAlly (`owner`, `def` a kisnép)
-                              ChooseAlly = 30 };
+                              ChooseAlly = 30,
+                              // népi parancs (`def` a neve; a népmodul kezeli)
+                              Module = 31 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -912,6 +914,10 @@ class Sim {
   bool mod_can_gather(EntityId w, int kind);
   bool mod_shield_ok(EntityId e);
   bool mod_hidden(EntityId e);
+  Fixed mod_damage_taken(EntityId src, EntityId t, bool ranged, bool magic);
+  int32_t mod_armor(EntityId t);
+  bool mod_use_power(uint8_t owner, EntityId b, uint16_t ability, Fixed x, Fixed y);
+  bool mod_command(const Command& c);
   std::vector<std::unique_ptr<FactionModule>> modules_;
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 

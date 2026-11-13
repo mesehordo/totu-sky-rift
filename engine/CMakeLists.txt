@@ -49,7 +49,7 @@ add_library(totu_core
   src/content/templates.cpp
   src/content/schema.cpp
   src/content/loader.cpp
-  src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp src/sim/build.cpp src/sim/production.cpp src/sim/combat.cpp src/sim/vision.cpp src/sim/environment.cpp src/sim/abilities.cpp src/sim/garrison.cpp src/sim/heroes.cpp src/sim/wullof.cpp src/sim/modules.cpp src/sim/factions/registry.cpp src/sim/factions/imperium.cpp src/sim/factions/ooni.cpp src/sim/factions/croftian.cpp src/sim/factions/hukucha.cpp src/sim/factions/elves.cpp src/sim/factions/micelia.cpp
+  src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp src/sim/build.cpp src/sim/production.cpp src/sim/combat.cpp src/sim/vision.cpp src/sim/environment.cpp src/sim/abilities.cpp src/sim/garrison.cpp src/sim/heroes.cpp src/sim/wullof.cpp src/sim/modules.cpp src/sim/factions/registry.cpp src/sim/factions/imperium.cpp src/sim/factions/ooni.cpp src/sim/factions/croftian.cpp src/sim/factions/hukucha.cpp src/sim/factions/elves.cpp src/sim/factions/minor/micelia.cpp
   src/sim/factions/minor/daresh.cpp src/sim/factions/minor/galoca.cpp src/sim/factions/minor/ghoblin.cpp src/sim/factions/minor/mhonyo.cpp src/sim/factions/minor/niil_elf.cpp src/sim/factions/minor/nila_uchana.cpp src/sim/factions/minor/pinguu.cpp src/sim/factions/minor/shrissh_matah.cpp src/sim/factions/minor/tenduur.cpp src/sim/factions/minor/tokla.cpp src/sim/factions/minor/tuz_elf.cpp src/sim/factions/minor/zhan_zhama.cpp
   src/sim/replay.cpp
   src/sim/navmove.cpp

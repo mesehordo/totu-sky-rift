@@ -258,7 +258,8 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
       dmg = mul_fixed(dmg, rs.lhr_mult);
     }
   }
-  if (tu && ranged) dmg = mul_fixed(dmg, unit_mods(t).ranged_taken_mult);   // pajzsfal: kevesebb a távolsági sebzés
+  if (tu && ranged) dmg = mul_fixed(dmg, unit_mods(t).ranged_taken_mult);
+  if (!modules_.empty()) dmg = mul_fixed(dmg, mod_damage_taken(src, t, ranged, magic));   // népi sérüléshorog   // pajzsfal: kevesebb a távolsági sebzés
   Vital* vt = world_.get<Vital>(t);
   if (vt) {
     vt->last_hit = tick_;
@@ -270,7 +271,7 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   }
   if (dmg > 0) {
     if (!magic) {   // a varázssebzés páncél nélkül hat
-      const int32_t armor = stat(t, "Health.armor", Fixed::from_int(td.armor)).floor_int();
+      const int32_t armor = stat(t, "Health.armor", Fixed::from_int(td.armor)).floor_int() + mod_armor(t);
       int64_t add = tu ? milli_of(unit_mods(t).armor_add) : 0;   // képesség, aura
       if (taf && taf->sunder_until > tick_) add -= int64_t{taf->sunder_armor} * 1000;   // páncéltörés
       dmg = std::max<int64_t>(500, dmg - int64_t{armor} * 1000 - add);   // páncél; legalább 0,5

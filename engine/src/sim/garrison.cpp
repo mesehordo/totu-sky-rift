@@ -419,9 +419,10 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, F
       if (h && h->owner == owner && h->hp > 0 && !sheltered(e) && world_.get<Caster>(e)) ws.push_back(e);
     });
     for (const EntityId e : ws) give_buff(e, static_cast<uint16_t>(bi), a.duration);
-  } else {
+  } else if (!mod_use_power(owner, b, ab, x, y)) {   // a népi hatások (áradás, bányagyorsítás, sietés) a népmodulban
     refund(owner, a.cost, 1000);
-    return false;   // a népi hatások (áradás, bányagyorsítás, sietés) a népükkel együtt
+    if (a.hq_hp > 0) hh->hp += a.hq_hp;
+    return false;
   }
   bool found = false;
   for (auto& [rid, rt] : c->ready) {
