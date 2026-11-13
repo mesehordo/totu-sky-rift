@@ -314,6 +314,7 @@ void Sim::construction_system() {
     if (style == "stay") rate = b.builders == 0 ? 0 : 1000 + 500 * (std::min<int>(b.builders, 4) - 1);
     else if (style == "stay_single") rate = b.builders ? 1000 : 0;
     else if (style == "enter") rate = b.builder_in && world_.alive(b.builder_in) ? 1000 : 0;
+    if (world_.get<SelfBuild>(e)) rate = 1000;   // letelepített Wullof-épület: munkás nélkül
     b.builders = 0;
     if (!rate) return;
     rate = static_cast<int32_t>((Fixed::from_int(rate) * env_build_mult(h->owner)).floor_int());   // éjjel/időjárás (D35)
@@ -352,6 +353,8 @@ bool Sim::interrupt(EntityId e) {
   if (!rules_ || !world_.alive(e)) return true;
   world_.pool<Enter>().remove(e);              // a beszállás is elmarad
   world_.pool<Fetch>().remove(e);              // a tárgyért menés is
+  world_.pool<RepairOrder>().remove(e);        // a javítás is
+  if (Wagon* wg = world_.get<Wagon>(e)) wg->unpacking = 0;
   if (world_.get<Sheltered>(e)) return false;  // a helyőrségben lévő nem kap parancsot (előbb ki kell szállnia)
   if (Caster* cs = world_.get<Caster>(e)) {   // a folyamatban lévő célzott képesség és a munkába visszatérés elmarad
     cs->cast = kNoAbility;

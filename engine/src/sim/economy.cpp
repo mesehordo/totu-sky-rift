@@ -46,6 +46,12 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Fetch>("Fetch");
   world_.register_component<Camp>("Camp");
   world_.register_component<CampMember>("CampMember");
+  world_.register_component<Pack>("Pack");   // Wullof (M7 3. lépés)
+  world_.register_component<Wagon>("Wagon");
+  world_.register_component<SelfBuild>("SelfBuild");
+  world_.register_component<RepairOrder>("RepairOrder");
+  world_.register_component<Mounted>("Mounted");
+  world_.register_component<Tapped>("Tapped");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
@@ -73,6 +79,11 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
   if (d.attack.has) world_.add(e, Combat{});
   world_.add(e, Stealth{});
   world_.add(e, Afflict{});
+  if (owner >= 1 && owner <= kMaxPlayers) {   // falkaszellem (Wullof)
+    if (const FactionDef* f = rules_->faction(players_[owner].faction); f && f->pack && !d.worker && !d.has_tag("livestock")) {
+      world_.add(e, Pack{});
+    }
+  }
   if (d.hero) {   // hős: az elesett állapota (újraélesztés) vagy új, 1. szinten egy ponttal
     HeroState hs;
     if (owner <= kMaxPlayers) {
@@ -383,6 +394,7 @@ void Sim::economy_system() {
           const Fixed gm = env_gather_mult(hp->owner);
           const int64_t t2 = gm.raw() > 0 ? (t << 16) / gm.raw() : t;
           w.timer = std::max(1, seconds_to_ticks(Fixed::from_raw(static_cast<int32_t>(t2))));
+          if (n->kind == kWood && d.tap_amount > 0) w.timer = std::max(1, d.tap_ticks);   // kéregcsapolás (Wullof)
           w.state = Worker::Work;
           w.move_to = 0;
           const uint8_t keep = w.state;
@@ -414,6 +426,37 @@ void Sim::economy_system() {
         if (!n) {
           w.state = Worker::Go;
           w.move_to = 0;
+          return;
+        }
+        if (n->kind == kWood && d.tap_amount > 0) {   // kéregcsapolás: fánként egy csapoló, a fa lassan fogy, hordás nélkül
+          Tapped* tp = world_.get<Tapped>(w.res);
+          if (tp && tp->by != e && world_.alive(tp->by)) {
+            const Worker* other = world_.get<Worker>(tp->by);
+            if (other && other->res == w.res && other->state == Worker::Work) {   // foglalt: a közelben másik fa
+              const EntityId nr = nearest_resource(kWood, pos->x, pos->y, Fixed::from_int(10), w.res);
+              const Tapped* nt = nr != kNoEntity ? world_.get<Tapped>(nr) : nullptr;
+              if (nr != kNoEntity && !(nt && nt->by != e && world_.alive(nt->by))) {
+                w.res = nr;
+                w.state = Worker::Go;
+                w.move_to = 0;
+              } else {
+                stop(e);
+              }
+              return;
+            }
+          }
+          if (!tp) world_.add(w.res, Tapped{e});
+          else tp->by = e;
+          if (--w.timer > 0) return;
+          income(hp->owner, kWood, d.tap_amount);
+          n = world_.get<ResourceNode>(w.res);
+          n->amount -= std::max(1, (Fixed::from_int(d.tap_amount) * d.tap_drain).floor_int());
+          w.timer = std::max(1, d.tap_ticks);
+          if (n->amount <= 0) {
+            remove_resource(w.res);
+            w.state = Worker::Go;
+            w.move_to = 0;
+          }
           return;
         }
         if (--w.timer > 0) return;
@@ -486,7 +529,7 @@ void Sim::supply_system() {
   world_.pool<Building>().each([&](EntityId e, const Building& b) {
     const Health* h = hp.get(e);
     if (!b.complete || !h || h->hp <= 0 || h->owner > kMaxPlayers) return;
-    cap[h->owner] += rules_->defs[b.def].supply_provides;
+    cap[h->owner] += rules_->defs[b.def].supply_provides;   // (az egységeké lent: emu)
     for (const auto& [bd, add] : rules_of(h->owner).supply_add) {   // Kiadós tanya
       if (bd == b.def) cap[h->owner] += add;
     }
@@ -495,6 +538,7 @@ void Sim::supply_system() {
     const Health* h = hp.get(e);
     if (!h || h->hp <= 0 || h->owner > kMaxPlayers) return;
     used[h->owner] += rules_->defs[u.def].supply;
+    cap[h->owner] += rules_->defs[u.def].supply_provides;   // létszámot adó egység (Wullof emu)
   });
   world_.pool<Producer>().each([&](EntityId e, const Producer& pr) {   // a sorban lévő egységek is (MECH-SUPPLY)
     const Health* h = hp.get(e);

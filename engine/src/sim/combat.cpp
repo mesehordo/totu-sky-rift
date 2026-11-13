@@ -326,6 +326,8 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   c.cooldown = a.cooldown;
   int64_t dmg = milli_of(stat(e, "Attack.damage", a.damage));
   if (u) dmg = mul_fixed(dmg, unit_mods(e).damage_mult);   // képesség (önerősítés, kapcsoló, aura)
+  if (u) dmg = mul_fixed(dmg, pack_damage_mult(e));         // falkaszellem (Wullof)
+  if (Stealth* sst = world_.get<Stealth>(e)) sst->last_attack = tick_;
   if (u && rules_of(owner).has_rage) {   // vérszomj-irány: minél sebesültebb, annál erősebb (a régi E 131)
     const RuleSet& rs = rules_of(owner);
     bool tagged = rs.rage_tags.empty();
@@ -534,7 +536,25 @@ void Sim::shot_system() {
 
 void Sim::die(EntityId e) {
   if (!world_.alive(e)) return;
-  if (const auto it = killer_.find(e); it != killer_.end()) grant_kill_xp(e, it->second.second, it->second.first);
+  if (const auto it = killer_.find(e); it != killer_.end()) {
+    grant_kill_xp(e, it->second.second, it->second.first);
+    const uint8_t ko = it->second.second;   // Wullof vadászzsákmány: a költség / darab × 0,2 × 0,5
+    const Health* vh = world_.get<Health>(e);
+    const FactionDef* kf = ko >= 1 && ko <= kMaxPlayers ? rules_->faction(players_[ko].faction) : nullptr;
+    if (kf && kf->bounty.raw() > 0 && vh && hostile(ko, vh->owner)) {
+      const Unit* vu = world_.get<Unit>(e);
+      const Building* vb = vu ? nullptr : world_.get<Building>(e);
+      if (vu || vb) {
+        const EntityDef& vd = rules_->defs[vu ? vu->def : vb->def];
+        int64_t cost = 0;
+        for (const int32_t c : vd.cost) cost += c;
+        const int64_t gain = (cost * 1000 * kf->bounty.raw() >> 16) / 2 / vd.count;   // ezred
+        players_[ko].res[kf->bounty_res] += gain;
+        const Fixed bg = rules_of(ko).bounty_gold;
+        if (bg.raw() > 0) income(ko, kStone, static_cast<int32_t>((gain * bg.raw() >> 16) / 1000));
+      }
+    }
+  }
   if (const HeroState* hs = world_.get<HeroState>(e)) {   // az elesett hős állapota megmarad (újraélesztés)
     const Health* h = world_.get<Health>(e);
     const Unit* u = world_.get<Unit>(e);

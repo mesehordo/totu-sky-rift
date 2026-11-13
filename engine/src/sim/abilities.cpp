@@ -498,6 +498,16 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
       }
       return true;
     }
+    case T::Mount:   // felültetés: a bölény mellé álló harcos (a hatótávon belül)
+      for (const EntityId e : us) {
+        if (!incapacitated(e) && mount_up(e, ab)) return true;
+      }
+      return false;
+    case T::Dismount: {
+      bool any = false;
+      for (const EntityId e : us) any = dismount(e, ab) || any;
+      return any;
+    }
     case T::Summon:
       if (!a.target_placement) {
         for (const EntityId e : us) {
@@ -772,6 +782,7 @@ void Sim::ability_system() {
   garrison_system();
   item_system();
   camp_system();
+  wullof_system();
   if (tick_ % 15 == 0) ascension_system();   // a régi: 0,5 s-onként
   std::vector<EntityId> ids;
   world_.pool<Caster>().each([&](EntityId e, const Caster&) { ids.push_back(e); });

@@ -86,7 +86,7 @@ struct AbilityMods {   // a `modifiers`: szorzók (1 = nincs) és összeadandók
 };
 struct AbilityDef {
   enum class Type : uint8_t { Unknown = 0, Garrison, SelfBuff, Toggle, Nova, Chant, Aura, Autoheal, Bolt, Summon, Area,
-                              Passive, Power, Blink };
+                              Passive, Power, Blink, Mount, Dismount };
   std::string id;
   Type type = Type::Unknown;
   int32_t cooldown = 0, duration = 0;   // tick
@@ -107,6 +107,11 @@ struct AbilityDef {
   char hotkey = 0;                      // gyorsbillentyű (nagybetű; 0 = nincs)
   uint8_t level = 1, max_level = 1;     // a hős képességének szintje (a változat) és a szintek száma
   uint16_t base = 0;                    // az 1. szintű változat sorszáma (Rules::abilities)
+  // felültetés / leszállás (Wullof): a felültetett egység (`into`), a lovasok, a hátas és a lovas sablonja
+  std::string into_id, mount_id, rider_id;
+  std::vector<std::string> rider_ids;
+  uint16_t into = kNoDef, mount = kNoDef, rider = kNoDef;
+  std::vector<uint16_t> riders;
   // `gpower`: költség (a játékos nyersanyagából; az áhítat is), a főépület életereje, célzott, épületeket is sújt,
   // felfedés (csempe); `blink`: landolási sebzés és sugár
   std::array<int32_t, kResources> cost{};
@@ -127,6 +132,7 @@ struct RuleSet {
   bool has_rage = false;                                       // vérszomj-irány: × (1 + max × hiányzó életerő-arány)
   std::vector<std::string> rage_tags;
   Fixed rage_max;
+  Fixed bounty_gold;                                           // Zsákmányszerzés: a zsákmány ennyiszerese aranyban is
   void merge(const RuleSet& o);
 };
 
@@ -180,6 +186,15 @@ struct EntityDef {
   Fixed grow_hp, grow_damage, grow_armor, grow_energy, grow_shield;
   int32_t xp_value = -1;
   int32_t count = 1;                          // `Cost.count`: ennyi egység jön egy képzésből
+  // Wullof (M7 3. lépés): kéregcsapolás (`Worker.tap_wood`), darabkorlát épületenként, falka (egy képzés több
+  // egység), összecsomagolható épület
+  int32_t tap_amount = 0, tap_ticks = 0;
+  Fixed tap_drain;
+  uint16_t per_building = kNoDef;
+  int32_t per_building_max = 0;
+  uint16_t spawn_unit = kNoDef;
+  int32_t spawn_count = 1;
+  bool packable = false;
   bool rift_source = false;                   // Égkő (`Mechanics.rift_source`)
   std::vector<uint16_t> powers;               // főépület-képességek (`Powers.list`, Rules::abilities)
   bool has_tag(const std::string& t) const;
@@ -261,6 +276,15 @@ struct FactionDef {
   std::string id;
   Fixed regen;                                // faji életerő-visszatöltés / s (`Faction.regen`)
   bool neutral = false;                       // a Vadon: a semleges (0.) játékos
+  // Wullof (MECH-WUL-1–4)
+  bool pack = false;
+  Fixed pack_radius = Fixed::from_int(4), pack_per = Fixed::from_ratio(1, 10), pack_max = Fixed::from_ratio(2, 5),
+        pack_speed_per = Fixed::from_ratio(1, 50);
+  Fixed bounty;                               // zsákmány: a megölt költségének ennyiszerese × 0,5
+  uint8_t bounty_res = 0;
+  bool forest_stealth = false, repair = false;
+  uint16_t wagon = kNoDef;
+  int32_t unpack_ticks = 240;
   std::vector<CampDef> camps;                             // pl. `ursan` (a sablon `faction_ursan`)
   uint16_t hq = kNoDef, worker = kNoDef;
   std::vector<std::pair<uint16_t, int>> start_units;

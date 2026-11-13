@@ -371,9 +371,11 @@ void Sim::camp_system() {
         for (const FactionDef& f : rules_->factions) {
           if (f.neutral) vadon = &f;
         }
-        const CampDef* cd = nullptr;
-        for (const CampDef& c : vadon ? vadon->camps : std::vector<CampDef>{}) {
-          if (c.level == cp.level) cd = &c;
+        const CampDef* cd = nullptr;   // (a Vadon adatára mutat – nem ideiglenes másolatra)
+        if (vadon) {
+          for (const CampDef& c : vadon->camps) {
+            if (c.level == cp.level) cd = &c;
+          }
         }
         if (cd && !cd->loot.empty()) {
           const uint8_t rarity = cd->loot[combat_rng_.next() % cd->loot.size()];

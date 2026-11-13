@@ -341,6 +341,7 @@ void Sim::nav_movement() {
         const EntityDef& d = rules_->defs[u->def];
         const Fixed pct = stat(e, "Movement.speed_pct", Fixed{});
         speed = speed * (Fixed::from_int(1) + pct / Fixed::from_int(100)) * env_speed_mult(h->owner, d);
+        speed = speed * pack_speed_mult(e);   // falkaszellem (Wullof)
         const Fixed am = unit_speed_mult(e);   // képesség, lassítás; kábulva (és dárdafalban) 0: áll, az útja marad
         if (am.raw() <= 0) return;
         speed = speed * am;

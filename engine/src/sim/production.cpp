@@ -62,6 +62,23 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
     if (p.res[static_cast<size_t>(r)] < int64_t{d.cost[static_cast<size_t>(r)]} * 1000) return fail("nincs elég nyersanyag");
   }
   if (p.supply_used + d.supply > p.supply_cap) return fail("elérted a létszámkorlátot");
+  if (d.per_building != kNoDef) {   // épületenkénti darabkorlát (pl. Emukarámonként 5 emu)
+    int nb = 0, have = 0;
+    world_.pool<Building>().each([&](EntityId be, const Building& bb) {
+      const Health* bh2 = world_.get<Health>(be);
+      if (bb.def == d.per_building && bb.complete && bh2 && bh2->owner == owner && bh2->hp > 0) ++nb;
+    });
+    world_.pool<Unit>().each([&](EntityId ue, const Unit& uu) {
+      const Health* uh = world_.get<Health>(ue);
+      if (uu.def == def && uh && uh->owner == owner && uh->hp > 0) ++have;
+    });
+    world_.pool<Producer>().each([&](EntityId pe, const Producer& pr) {
+      const Health* ph = world_.get<Health>(pe);
+      if (!ph || ph->owner != owner) return;
+      for (const QueueItem& qi : pr.queue) have += !qi.research && qi.def == def ? 1 : 0;
+    });
+    if (have >= nb * d.per_building_max) return fail("elérted az épületenkénti darabkorlátot");
+  }
   if (cands.empty()) return fail("a gyártósor megtelt");
   std::sort(cands.begin(), cands.end());   // a legrövidebb sor; egyenlőnél a kisebb azonosító
   pay(owner, d.cost);
@@ -150,6 +167,25 @@ void Sim::set_rally(EntityId e, Fixed x, Fixed y, EntityId target) {
   pr->rally_target = target;
 }
 
+// a kész egység (a falka több egység: `spawn_group`), a gyülekezőpontra küldve; az első azonosítója
+EntityId Sim::spawn_group(uint16_t def, uint8_t owner, Fixed x, Fixed y, Producer* pr) {
+  const EntityDef& d = rules_->defs[def];
+  const uint16_t sdef = d.spawn_unit != kNoDef ? d.spawn_unit : def;
+  const int count = d.spawn_unit != kNoDef ? d.spawn_count : 1;
+  const bool rally = pr->has_rally;
+  const Fixed rx = pr->rx, ry = pr->ry;
+  const EntityId rt = pr->rally_target;
+  EntityId first = kNoEntity;
+  for (int k = 0; k < count; ++k) {
+    const EntityId u = spawn_unit(sdef, owner, x, y);
+    if (u == kNoEntity) continue;
+    if (k > 0) place_at_free(u, x, y);
+    if (first == kNoEntity) first = u;
+    if (rally && !(rt && order_gather(u, rt))) order_move(u, rx, ry);
+  }
+  return first;
+}
+
 bool Sim::finish_item(EntityId be, const QueueItem& item) {
   const Health* bh = world_.get<Health>(be);
   const Building* b = world_.get<Building>(be);
@@ -211,11 +247,8 @@ bool Sim::finish_item(EntityId be, const QueueItem& item) {
       if (op && core::length_sq_raw(op->x - x, op->y - y) < int64_t{rr.raw()} * rr.raw()) taken = true;
     });
     if (taken) continue;
-    const EntityId u = spawn_unit(item.def, owner, x, y);
+    const EntityId u = spawn_group(item.def, owner, x, y, pr);
     if (u == kNoEntity) return false;
-    if (pr->has_rally) {
-      if (!(pr->rally_target && order_gather(u, pr->rally_target))) order_move(u, pr->rx, pr->ry);
-    }
     return true;
   }
   // a nagy egységnek (mamut) a lábnyom melletti hely túl szűk lehet: a legközelebbi, a méretének járható cella (a régi
@@ -231,11 +264,8 @@ bool Sim::finish_item(EntityId be, const QueueItem& item) {
         if (op && core::length_sq_raw(op->x - x, op->y - y) < int64_t{rr.raw()} * rr.raw()) taken = true;
       });
       if (!taken) {
-        const EntityId u = spawn_unit(item.def, owner, x, y);
+        const EntityId u = spawn_group(item.def, owner, x, y, pr);
         if (u == kNoEntity) return false;
-        if (pr->has_rally) {
-          if (!(pr->rally_target && order_gather(u, pr->rally_target))) order_move(u, pr->rx, pr->ry);
-        }
         return true;
       }
     }

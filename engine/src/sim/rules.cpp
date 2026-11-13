@@ -127,6 +127,7 @@ void parse_rules(const content::Value* obj, const Rules& r, RuleSet& out) {
       out.no_weak.emplace_back(who, std::move(classes));
     }
   }
+  out.bounty_gold = fixed_of(obj->find("bounty_gold"), out.bounty_gold);
   if (const content::Value* rg = obj->find("rage"); rg && rg->is_object()) {
     out.has_rage = true;
     read_tags(rg->find("tags"), out.rage_tags);
@@ -371,7 +372,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
              : type == "nova" ? T::Nova : type == "chant" ? T::Chant : type == "aura" ? T::Aura
              : type == "autoheal" ? T::Autoheal : type == "bolt" ? T::Bolt : type == "summon" ? T::Summon
              : type == "area" ? T::Area : type == "passive" ? T::Passive : type == "gpower" ? T::Power
-             : type == "blink" ? T::Blink : T::Unknown;
+             : type == "blink" ? T::Blink : type == "mount" ? T::Mount : type == "dismount" ? T::Dismount : T::Unknown;
       // alapértékek típusonként (KEPESSEGEK.md B-2)
       const bool cd10 = a.type == T::Nova || a.type == T::SelfBuff || a.type == T::Blink;
       const Fixed cd_def = cd10 ? Fixed::from_int(10) : (a.type == T::Summon || a.type == T::Autoheal) ? Fixed::from_int(1) : Fixed{};
@@ -423,6 +424,11 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.mods.range_add = mod("range_add", Fixed{});
       a.mods.regen_add = mod("regen_add", Fixed{});
       if (const content::Value* u = key("unit"); u && u->is_string()) summon_units.emplace_back(id, u->text());
+      for (auto [k, dst] : {std::pair<const char*, std::string*>{"into", &a.into_id}, {"mount", &a.mount_id}, {"rider", &a.rider_id}}) {
+        if (const content::Value* x = key(k); x && x->is_string()) *dst = x->text();
+      }
+      read_tags(key("riders"), a.rider_ids);
+      if (a.type == T::Mount && !key("range")) a.range = Fixed::from_int(3);
       r.abilities.push_back(std::move(a));
       }
     }
@@ -579,6 +585,13 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     d.xp_value = int_of(path(*v, "Hero", "xp"), -1);
     d.count = std::max(1, int_of(path(*v, "Cost", "count"), 1));
+    if (const content::Value* tw = path(*v, "Worker", "tap_wood"); tw && tw->is_object()) {
+      d.tap_amount = int_of(tw->find("amount"), 8);
+      d.tap_ticks = seconds_to_ticks(fixed_of(tw->find("time"), Fixed::from_int(10)));
+      d.tap_drain = fixed_of(tw->find("drain"), Fixed::from_ratio(1, 2));
+    }
+    const content::Value* pk = path(*v, "Placement", "packable");
+    d.packable = pk && pk->is_bool() && pk->as_bool();
     const content::Value* rsrc = path(*v, "Mechanics", "rift_source");
     d.rift_source = rsrc && rsrc->is_bool() && rsrc->as_bool();
     if (const content::Value* pw = path(*v, "Powers", "list"); pw && pw->is_array()) {
@@ -599,6 +612,25 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
         const uint16_t u = r.def(x.text());
         if (u != kNoDef) d.produces.push_back(u);
       }
+    }
+  }
+  for (EntityDef& d : r.defs) {   // a régi (`Legacy`) darabkorlát és falka: a rendezés után (sorszámmal)
+    const content::Value* v = ents.get(d.id);
+    if (const content::Value* pb = v ? path(*v, "Legacy", "per_building") : nullptr; pb && pb->is_object()) {
+      if (const content::Value* b = pb->find("building"); b && b->is_string()) d.per_building = r.def(b->text());
+      d.per_building_max = int_of(pb->find("max"), 0);
+    }
+    if (const content::Value* sg = v ? path(*v, "Legacy", "spawn_group") : nullptr; sg && sg->is_object()) {
+      if (const content::Value* u = sg->find("unit"); u && u->is_string()) d.spawn_unit = r.def(u->text());
+      d.spawn_count = std::max(1, int_of(sg->find("count"), 3));
+    }
+  }
+  for (AbilityDef& a : r.abilities) {   // felültetés / leszállás: a sablonok sorszáma
+    if (!a.into_id.empty()) a.into = r.def(a.into_id);
+    if (!a.mount_id.empty()) a.mount = r.def(a.mount_id);
+    if (!a.rider_id.empty()) a.rider = r.def(a.rider_id);
+    for (const auto& rid : a.rider_ids) {
+      if (r.def(rid) != kNoDef) a.riders.push_back(r.def(rid));
     }
   }
   for (const auto& [aid, uid] : summon_units) {
@@ -743,6 +775,25 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       parse_env_map(fe->find("weather"), fd.env_weather);
     }
     fd.regen = fixed_of(f->find("regen"), Fixed{});
+    if (const content::Value* pb = f->find("pack_bonus"); pb && pb->is_object()) {
+      fd.pack = true;
+      fd.pack_radius = fixed_of(pb->find("radius"), fd.pack_radius);
+      fd.pack_per = fixed_of(pb->find("per"), fd.pack_per);
+      fd.pack_max = fixed_of(pb->find("max"), fd.pack_max);
+      fd.pack_speed_per = fixed_of(pb->find("speed_per"), Fixed{});
+    }
+    fd.bounty = fixed_of(f->find("bounty"), Fixed{});
+    if (const content::Value* br = f->find("bounty_res"); br && br->is_string() && resource_index(br->text()) >= 0) {
+      fd.bounty_res = static_cast<uint8_t>(resource_index(br->text()));
+    }
+    auto fflag = [&](const char* k) {
+      const content::Value* x = f->find(k);
+      return x && x->is_bool() && x->as_bool();
+    };
+    fd.forest_stealth = fflag("forest_stealth");
+    fd.repair = fflag("repair");
+    if (const content::Value* wg = f->find("wagon"); wg && wg->is_string()) fd.wagon = r.def(wg->text());
+    fd.unpack_ticks = seconds_to_ticks(fixed_of(f->find("unpack_time"), Fixed::from_int(8)));
     const content::Value* neu = f->find("neutral");
     fd.neutral = neu && neu->is_bool() && neu->as_bool();
     if (const content::Value* cm = f->find("camps"); cm && cm->is_object()) {
@@ -866,6 +917,7 @@ void RuleSet::merge(const RuleSet& o) {
     has_no_weak = true;
     no_weak = o.no_weak;
   }
+  if (o.bounty_gold.raw() > 0) bounty_gold = o.bounty_gold;
   if (o.has_rage) {
     has_rage = true;
     rage_tags = o.rage_tags;

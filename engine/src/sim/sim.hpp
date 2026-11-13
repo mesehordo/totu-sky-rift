@@ -211,9 +211,14 @@ struct Stealth {
   uint8_t hidden = 0;
   uint16_t detected = 0;
   int64_t revealed_until = 0;   // a magaslatról lövő eddig látható mindenkinek (D33)
-  void hash(core::StateHash& h) const { h.add_u64(hidden); h.add_u64(detected); h.add_i64(revealed_until); }
-  void save(core::ByteWriter& w) const { w.u8(hidden); w.u32(detected); w.i64(revealed_until); }
-  static Stealth load(core::ByteReader& r) { Stealth s; s.hidden = r.u8(); s.detected = static_cast<uint16_t>(r.u32()); s.revealed_until = r.i64(); return s; }
+  int64_t last_attack = -100000; // az utolsó támadás (az erdei rejtőzéshez: 3 s óta nem támadott)
+  void hash(core::StateHash& h) const { h.add_u64(hidden); h.add_u64(detected); h.add_i64(revealed_until); h.add_i64(last_attack); }
+  void save(core::ByteWriter& w) const { w.u8(hidden); w.u32(detected); w.i64(revealed_until); w.i64(last_attack); }
+  static Stealth load(core::ByteReader& r) {
+    Stealth s;
+    s.hidden = r.u8(); s.detected = static_cast<uint16_t>(r.u32()); s.revealed_until = r.i64(); s.last_attack = r.i64();
+    return s;
+  }
 };
 
 // lövedék (D40: a fajta adja a viselkedést); a helye a Position
@@ -546,6 +551,58 @@ struct CampMember {   // a tábor egysége: a tábora és a helye (ide tér viss
   }
 };
 
+// --- Wullof (M7 3. lépés; MECH-WUL-1–4) ----------------------------------------------------------------------------
+struct Pack {   // falkaszellem: a közeli harcostársak száma (0,5 s-onként)
+  uint8_t n = 0;
+  void hash(core::StateHash& h) const { h.add_u64(n); }
+  void save(core::ByteWriter& w) const { w.u8(n); }
+  static Pack load(core::ByteReader& r) { Pack p; p.n = r.u8(); return p; }
+};
+
+struct Wagon {   // vándorszekér: az összecsomagolt épület sablonja; letelepítési parancs (tx, ty)
+  uint16_t building = kNoDef;
+  uint8_t unpacking = 0;
+  int16_t tx = 0, ty = 0;
+  int32_t repath = 0;
+  void hash(core::StateHash& h) const { h.add_u64(building); h.add_u64(unpacking); h.add_i64(tx); h.add_i64(ty); h.add_i64(repath); }
+  void save(core::ByteWriter& w) const { w.u32(building); w.u8(unpacking); w.i32(tx); w.i32(ty); w.i32(repath); }
+  static Wagon load(core::ByteReader& r) {
+    Wagon g;
+    g.building = static_cast<uint16_t>(r.u32()); g.unpacking = r.u8();
+    g.tx = static_cast<int16_t>(r.i32()); g.ty = static_cast<int16_t>(r.i32()); g.repath = r.i32();
+    return g;
+  }
+};
+
+struct SelfBuild {   // letelepített épület: munkás nélkül épül
+  uint8_t on = 1;
+  void hash(core::StateHash& h) const { h.add_u64(on); }
+  void save(core::ByteWriter& w) const { w.u8(on); }
+  static SelfBuild load(core::ByteReader& r) { SelfBuild s; s.on = r.u8(); return s; }
+};
+
+struct RepairOrder {   // javítás (a `repair` népeknél): a munkás odamegy és javítja az épületet
+  EntityId building = 0;
+  int32_t repath = 0;
+  void hash(core::StateHash& h) const { h.add_u64(building); h.add_i64(repath); }
+  void save(core::ByteWriter& w) const { w.u32(building); w.i32(repath); }
+  static RepairOrder load(core::ByteReader& r) { RepairOrder o; o.building = r.u32(); o.repath = r.i32(); return o; }
+};
+
+struct Mounted {   // felültetett egység: a lovas sablonja (leszálláskor ez lesz)
+  uint16_t rider = kNoDef;
+  void hash(core::StateHash& h) const { h.add_u64(rider); }
+  void save(core::ByteWriter& w) const { w.u32(rider); }
+  static Mounted load(core::ByteReader& r) { Mounted m; m.rider = static_cast<uint16_t>(r.u32()); return m; }
+};
+
+struct Tapped {   // kéregcsapolás: a fát csapoló munkás (fánként egy)
+  EntityId by = 0;
+  void hash(core::StateHash& h) const { h.add_u64(by); }
+  void save(core::ByteWriter& w) const { w.u32(by); }
+  static Tapped load(core::ByteReader& r) { Tapped t; t.by = r.u32(); return t; }
+};
+
 // --- helyőrség (M6 8. lépés; D39) ----------------------------------------------------------------------------------
 struct Garrison {   // az épületben lévő egységek (a beszállás sorrendjében)
   std::vector<EntityId> units;
@@ -654,7 +711,10 @@ struct Command {
                               Ability = 18, Garrison = 19, Unload = 20, ChoosePath = 21, Power = 22,
                               // M7 2. lépés: Learn (`units[0]` hős, `def` képesség), Pickup (`units` → `target` tárgy),
                               // UseItem / DropItem (`units[0]`, `rx` a leltárhely)
-                              Learn = 23, Pickup = 24, UseItem = 25, DropItem = 26 };
+                              Learn = 23, Pickup = 24, UseItem = 25, DropItem = 26,
+                              // M7 3. lépés: Repair (`units` → `target` épület), Pack (`target` épület → szekér),
+                              // Unpack (`units[0]` szekér → rx, ry csempe)
+                              Repair = 27, Pack = 28, Unpack = 29 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -824,6 +884,12 @@ class Sim {
   EntityId drop_ground_item(uint16_t item, Fixed x, Fixed y);
   bool give_item(EntityId hero, uint16_t item);              // a leltárba (tele: false)
   Fixed stat(EntityId e, const char* path, Fixed base);      // a kutatással és a hős bónuszaival (D24)
+  // Wullof (M7 3. lépés): javítás, összecsomagolás vándorszekérré és letelepítés
+  bool order_repair(const std::vector<EntityId>& units, EntityId building);
+  EntityId pack_building(EntityId building);                 // a szekér (vagy kNoEntity)
+  bool order_unpack(EntityId wagon, int tx, int ty);
+  Fixed pack_damage_mult(EntityId e);                        // falkaszellem: 1 + 0,1 n
+  Fixed pack_speed_mult(EntityId e);                         // 1 + 0,02 n
   // A szkriptelt ellenfélnek (Lua): építési hely a (x, y) csempe körül, és egy szabad munkás építeni (false: nincs).
   bool build_near(uint8_t owner, uint16_t def, int x, int y);
   bool gather_nearest(EntityId worker, int kind);   // a munkás a legközelebbi ilyen lelőhelyre (szkript, gép)   // Égkő-fényben áll (MECH-RIFT)
@@ -912,6 +978,9 @@ class Sim {
   uint16_t ability_for(EntityId e, uint16_t base);
   void item_system();
   void camp_system();
+  void wullof_system();
+  bool mount_up(EntityId bison, uint16_t ability);
+  bool dismount(EntityId rider, uint16_t ability);
   void spawn_camps(map::Map& m);
   std::map<EntityId, std::pair<EntityId, uint8_t>> killer_;   // a tick haldoklóinak gyilkosa (nem állapot)
   int64_t spell_milli(EntityId e, Fixed dmg);
@@ -938,6 +1007,7 @@ class Sim {
   void die(EntityId e);
   std::vector<EntityId> dying_;
   bool finish_item(EntityId building, const QueueItem& item);
+  EntityId spawn_group(uint16_t def, uint8_t owner, Fixed x, Fixed y, Producer* pr);
   void supply_system();
   void enter_construction(EntityId worker, EntityId building);
   void leave_construction(EntityId building, bool hurt);

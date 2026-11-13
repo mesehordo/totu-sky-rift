@@ -7,6 +7,7 @@
 // a felfedő (egység vagy kész épület `Vision.detect` sugárral) és a 2,2 csempén belüli ellenség fedi fel. A
 // napszak hatása (éjjel −25%, D35) a 7. lépésben.
 #include <algorithm>
+#include <cstdlib>
 
 #include "map/map.hpp"
 #include "sim/sim.hpp"
@@ -79,6 +80,20 @@ void Sim::stealth_system() {
   world_.pool<Stealth>().each([&](EntityId e, Stealth& s) {
     const Unit* u = world_.get<Unit>(e);
     s.hidden = u && rules_->defs[u->def].always_hidden ? 1 : 0;
+    if (!s.hidden && u) {   // erdei rejtőzés (Wullof): 3 s óta nem támadott, földi, áll, és fa van a 3 × 3-as körzetben
+      const Health* h = world_.get<Health>(e);
+      const FactionDef* f = h && h->owner >= 1 && h->owner <= kMaxPlayers ? rules_->faction(players_[h->owner].faction) : nullptr;
+      const int fr = rules_->ability_index("erdei_rejtozes");
+      const Movement* mv = world_.get<Movement>(e);
+      if (f && f->forest_stealth && fr >= 0 && has_ability(e, static_cast<uint16_t>(fr)) && tick_ - s.last_attack > 90 &&
+          !rules_->defs[u->def].flying && !(mv && mv->moving)) {
+        const Position& p = *world_.get<Position>(e);
+        const int tx = p.x.floor_int(), ty = p.y.floor_int();
+        world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) {
+          if (n.kind == kWood && n.amount > 0 && std::abs(n.tx - tx) <= 1 && std::abs(n.ty - ty) <= 1) s.hidden = 1;
+        });
+      }
+    }
     s.detected = 0;
     if (s.hidden) hidden.push_back(e);
   });
