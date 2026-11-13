@@ -115,7 +115,7 @@ EntityId Sim::find_enemy(EntityId e, Fixed radius) {
       for (int xx = std::max(0, bx - reach); xx <= std::min(nav_bw_ - 1, bx + reach); ++xx) {
         for (const EntityId o : buckets_[static_cast<size_t>(yy * nav_bw_ + xx)]) {
           const Health* oh = world_.get<Health>(o);
-          if (!oh || !hostile(me->owner, oh->owner) || !can_hit(e, o)) continue;
+          if (!oh || !hostile(me->owner, oh->owner) || !can_hit(e, o) || !is_visible(me->owner, o)) continue;
           bool armed = false;
           if (const Unit* ou = world_.get<Unit>(o)) armed = rules_->defs[ou->def].attack.has;
           else armed = world_.get<Attack>(o) != nullptr;
@@ -130,7 +130,7 @@ EntityId Sim::find_enemy(EntityId e, Fixed radius) {
     if (!oh || !hostile(me->owner, oh->owner)) return;
     const Position* op = world_.get<Position>(o);
     if (!op || core::length(op->x - p->x, op->y - p->y) > radius + Fixed::from_int(4)) return;
-    if (!can_hit(e, o)) return;
+    if (!can_hit(e, o) || !is_visible(me->owner, o)) return;
     consider(o, gap(e, o), rules_->defs[b.def].attack.has ? Fixed::from_int(-3) : Fixed{});
   });
   return best;
@@ -154,7 +154,7 @@ bool Sim::order_attack(EntityId e, EntityId target) {
   Combat* c = world_.get<Combat>(e);
   const Health* h = world_.get<Health>(e);
   const Health* th = world_.get<Health>(target);
-  if (!c || !h || !th || !can_hit(e, target)) return false;
+  if (!c || !h || !th || !can_hit(e, target) || !is_visible(h->owner, target)) return false;
   c->order = Combat::Attack;
   c->autonomous = 0;
   c->target = target;
@@ -273,6 +273,9 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   c.cooldown = a.cooldown;
   int64_t dmg = milli_of(a.damage);
   const int delta = level_at(e) - level_at(t);
+  if (delta > 0) {   // a magaslatról lövő rövid időre mindenkinek látható (D33, SC1)
+    if (Stealth* st = world_.get<Stealth>(e)) st->revealed_until = tick_ + rules_->elevation.reveal_shooter_ticks;
+  }
   dmg = dmg * std::max<int64_t>(0, 1000 + int64_t{delta} * rules_->elevation.damage_per_level) / 1000;   // D33
   const Position& tp = *world_.get<Position>(t);
   if (!a.ranged()) {   // közelharc: azonnal
@@ -513,7 +516,7 @@ void Sim::match_combat_system() {
       }
       case Combat::Attack: {
         const Health* th = world_.get<Health>(c.target);
-        if (!can_hit(e, c.target) || !th || !hostile(h->owner, th->owner)) {
+        if (!can_hit(e, c.target) || !th || !hostile(h->owner, th->owner) || !is_visible(h->owner, c.target)) {
           c.order = Combat::None;
           c.target = 0;
           halt(e);
@@ -529,7 +532,7 @@ void Sim::match_combat_system() {
         break;
       }
       case Combat::AttackMove: {
-        if (c.target && (!can_hit(e, c.target) || gap(e, c.target) > sight * Fixed::from_ratio(8, 5))) {
+        if (c.target && (!can_hit(e, c.target) || !is_visible(h->owner, c.target) || gap(e, c.target) > sight * Fixed::from_ratio(8, 5))) {
           c.target = 0;
           c.moving = 0;
         }
@@ -552,7 +555,10 @@ void Sim::match_combat_system() {
       }
       case Combat::Hold: {
         halt(e);
-        if (c.target && (!can_hit(e, c.target) || gap(e, c.target) > attack_range(e, c.target) + kRangeSlack)) c.target = 0;
+        if (c.target && (!can_hit(e, c.target) || !is_visible(h->owner, c.target) ||
+                         gap(e, c.target) > attack_range(e, c.target) + kRangeSlack)) {
+          c.target = 0;
+        }
         if (!c.target && --c.scan <= 0) {
           c.scan = kScanTicks;
           const Fixed r = d.attack.range + d.radius + Fixed::from_int(2);

@@ -164,6 +164,8 @@ TEST_CASE("magaslat (D33): lefelé +10% sebzés és nagyobb lőtáv; felfelé a 
     Arena b;
     const auto sh = b.spawn(shooter, 1, 175, 155);
     const auto tgt = b.s.place_building(def_of("urs_hosszuhaz"), 2, 21, 15, true);   // a magaslaton; nem lő vissza
+    b.spawn("urs_telepes", 1, 245, 145);   // figyelő a magaslaton: lentről csak így látni fel (D33)
+    b.m.run(6);
     CHECK(b.s.level_at(tgt) == 1 && b.s.level_at(sh) == 0);
     b.s.order_attack(sh, tgt);
     int fired = 0, landed = 0, last_hp = b.hp(tgt), last_cd = 0;
@@ -255,5 +257,5 @@ TEST_CASE("harc: determinisztikus csata (rögzített hash) és mentésből folyt
   c.run(450);
   CHECK(c.sim->hash() == a.sim->hash());
   std::printf("  harci állapothash (900 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0xa96c84e19c52438eULL);   // minden rendszeren ugyanez
+  CHECK(a.sim->hash() == 0x6a66de40a533bf5dULL);   // minden rendszeren ugyanez
 }

@@ -223,6 +223,8 @@ void Sim::step() {
     economy_system();
     construction_system();
     production_system();
+    if (tick_ % 15 == 0) stealth_system();   // a régi: 0,5 s
+    if (tick_ % 6 == 0) vision_system();     // a régi: 0,2 s
   }
   if (nav_) {
     const auto t0 = std::chrono::steady_clock::now();
@@ -253,6 +255,7 @@ uint64_t Sim::hash() const {
   for (const SimHooks* k : hooks_) h.add_u64(k->hash());   // csatlakozó nélkül a hash az M2-es marad
   if (rules_) {   // M6: a játékosállapot (szabályok nélkül a hash a korábbi marad)
     h.add_u64(upkeep_);
+    h.add_u64(static_cast<uint8_t>(fog_));
     for (const PlayerState& p : players_) {
       h.add_u64(p.active);
       for (int r = 0; r < kResources; ++r) { h.add_i64(p.res[static_cast<size_t>(r)]); h.add_i64(p.gathered[static_cast<size_t>(r)]); }
@@ -262,6 +265,8 @@ uint64_t Sim::hash() const {
       for (const auto& r : p.researched) h.add_bytes(r);
       h.add_bytes(p.path);
       h.add_u64(p.ascended);
+      h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
+      h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
     }
   }
   return h.value();
@@ -349,6 +354,7 @@ std::vector<uint8_t> Sim::save() const {
   w.u8(rules_ ? 1 : 0);
   if (rules_) {
     w.u8(upkeep_ ? 1 : 0);
+    w.u8(static_cast<uint8_t>(fog_));
     for (const PlayerState& p : players_) {
       w.u8(p.active ? 1 : 0);
       w.str(p.faction);
@@ -359,6 +365,8 @@ std::vector<uint8_t> Sim::save() const {
       for (const auto& r : p.researched) w.str(r);
       w.str(p.path);
       w.u8(p.ascended ? 1 : 0);
+      w.str(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
+      w.str(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
     }
   }
   return w.data();
@@ -389,6 +397,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   if (with_rules != (rules_ != nullptr)) return false;   // a szabályokat a mentés előtt ugyanúgy csatolni kell
   if (with_rules) {
     upkeep_ = r.u8() != 0;
+    fog_ = static_cast<MatchSetup::Fog>(std::min<uint8_t>(r.u8(), 2));
     for (PlayerState& p : players_) {
       p.active = r.u8() != 0;
       p.faction = r.str();
@@ -400,6 +409,9 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       for (uint32_t i = 0; i < nr && i < 4096 && r.ok(); ++i) p.researched.push_back(r.str());
       p.path = r.str();
       p.ascended = r.u8() != 0;
+      const std::string vis = r.str(), exp = r.str();
+      p.visible.assign(vis.begin(), vis.end());
+      p.explored.assign(exp.begin(), exp.end());
     }
   }
   return r.ok() && r.at_end();

@@ -204,6 +204,16 @@ struct Vital {
   static Vital load(core::ByteReader& r) { Vital v; v.deficit = r.i32(); v.shield = r.i32(); v.last_hit = r.i64(); return v; }
 };
 
+// rejtőzés (M6 6. lépés): rejtett-e, és mely játékosok fedték fel (bitmaszk: 1 << játékos)
+struct Stealth {
+  uint8_t hidden = 0;
+  uint16_t detected = 0;
+  int64_t revealed_until = 0;   // a magaslatról lövő eddig látható mindenkinek (D33)
+  void hash(core::StateHash& h) const { h.add_u64(hidden); h.add_u64(detected); h.add_i64(revealed_until); }
+  void save(core::ByteWriter& w) const { w.u8(hidden); w.u32(detected); w.i64(revealed_until); }
+  static Stealth load(core::ByteReader& r) { Stealth s; s.hidden = r.u8(); s.detected = static_cast<uint16_t>(r.u32()); s.revealed_until = r.i64(); return s; }
+};
+
 // lövedék (D40: a fajta adja a viselkedést); a helye a Position
 struct Shot {
   uint8_t kind = 0;            // Rules::projectiles sorszáma
@@ -347,12 +357,15 @@ struct PlayerState {
   std::vector<std::string> researched;       // a kész kutatások (rendezve; az 5. lépésben töltődik)
   std::string path;                          // a választott fejlődési irány (MECH-ASC; 8. lépés)
   bool ascended = false;
+  // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
+  std::vector<uint8_t> visible, explored;
   int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
 };
 
 struct MatchSetup {
   std::vector<std::string> factions;   // játékosonként (1. játékos = [0]); üres szöveg = nem játszik
   bool upkeep = true;                  // Hadtáp (a régi játék alapja: be)
+  enum class Fog : uint8_t { Normal = 0, Explored = 1, None = 2 } fog = Fog::Normal;   // a régi `fog` beállítás
 };
 
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
@@ -493,6 +506,9 @@ class Sim {
   // Sebzés a régi `apply_damage` szerint: típusszorzó, címkebónusz, pajzs, páncél (legalább 0,5); ezred egységben.
   void deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId target, int64_t milli, bool ranged);
   int level_at(EntityId e);   // a szint (D33): az egység csempéje, az épület lábnyomának bal felső csempéje
+  // Látótér (ADR-007 6. lépés): a játékos látja-e az entitást (saját: mindig; épületben lévő: soha; rejtett: csak
+  // felfedve; különben a csempéje látható-e – a mélységben álló fentről csak közelről, D33)
+  bool is_visible(uint8_t player, EntityId e);
   // Nyersanyag jóváírása vagy levonása (küldetés, szkript, teszt; a Hadtáp nélkül); a készlet nem mehet 0 alá.
   void add_resources(uint8_t owner, int kind, int32_t amount);
   bool missing_requirements(uint8_t owner, const EntityDef& d, std::string* what = nullptr);
@@ -531,6 +547,10 @@ class Sim {
   void construction_system();
   void production_system();
   void match_combat_system();
+  void vision_system();
+  void stealth_system();
+  void update_vision(uint8_t player);
+  MatchSetup::Fog fog_ = MatchSetup::Fog::Normal;
   void shot_system();
   void attack_now(EntityId e, Combat& c, EntityId target);
   void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);

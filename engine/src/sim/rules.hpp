@@ -98,6 +98,8 @@ struct EntityDef {
   AttackDef attack;
   std::string utype;                          // egységosztály (`Identity.class`): a típusszorzó-mátrixhoz
   int32_t shield = 0;                         // pajzs
+  int32_t detect = 0;                         // felfedés sugara (csempe; `Vision.detect`)
+  bool always_hidden = false;                 // `Vision.always_hidden`
   int32_t shield_delay = 0;                   // tick (0: a játék alapja)
   // termelés (M6 4. lépés)
   bool hero = false;
@@ -144,6 +146,10 @@ struct Rules {
     Fixed building_range_per_level = Fixed::from_int(1);
     int32_t uphill_miss_per_level = 250, uphill_miss_max = 400;   // ezrelék
     int32_t damage_per_level = 100;                                // ezrelék
+    int32_t vision_per_level = 1, depression_vision = -1;          // látótáv szintenként (csempe)
+    int32_t uphill_presence = 2;                                   // magasabb szintre csak ennyi csempéről lát
+    int32_t reveal_shooter_ticks = 60;                             // a fentről lövő ennyi ideig látható
+    int32_t depression_hidden_beyond = 6;                          // a mélységben állót fentről ennyin túl nem látja
   } elevation;
   Fixed type_mult(const std::string& attacker, const std::string& target) const;
   static constexpr int kMaxHeroes = 3;

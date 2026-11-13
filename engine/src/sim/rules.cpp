@@ -111,6 +111,11 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     r.elevation.uphill_miss_per_level = permille("uphill_miss_per_level", 250);
     r.elevation.uphill_miss_max = permille("uphill_miss_max", 400);
     r.elevation.damage_per_level = permille("damage_per_level", 100);
+    r.elevation.vision_per_level = int_of(el->find("vision_per_level"), 1);
+    r.elevation.depression_vision = int_of(el->find("depression_vision"), -1);
+    r.elevation.uphill_presence = int_of(el->find("uphill_vision_needs_presence"), 2);
+    r.elevation.reveal_shooter_ticks = seconds_to_ticks(fixed_of(el->find("reveal_shooter_seconds"), Fixed::from_int(2)));
+    r.elevation.depression_hidden_beyond = int_of(el->find("depression_hidden_beyond"), 6);
   }
   if (const content::Value* dr = game.find("demolish_refund")) {
     const Fixed f = fixed_of(dr, Fixed::from_ratio(7, 10));
@@ -236,6 +241,9 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     if (const content::Value* cl = path(*v, "Identity", "class"); cl && cl->is_string()) d.utype = cl->text();
     d.shield = int_of(path(*v, "Health", "shield"), 0);
+    d.detect = int_of(path(*v, "Vision", "detect"), 0);
+    const content::Value* ah = path(*v, "Vision", "always_hidden");
+    d.always_hidden = ah && ah->is_bool() && ah->as_bool();
     d.shield_delay = seconds_to_ticks(fixed_of(path(*v, "Health", "shield_delay"), Fixed{}));
     const content::Value* hero = path(*v, "Identity", "hero");
     d.hero = hero && hero->is_bool() && hero->as_bool();

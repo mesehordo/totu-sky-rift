@@ -32,6 +32,7 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Combat>("Combat");
   world_.register_component<Vital>("Vital");
   world_.register_component<Shot>("Shot");
+  world_.register_component<Stealth>("Stealth");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind) const {
@@ -53,6 +54,7 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
   vt.shield = d.shield * 1000;
   world_.add(e, vt);
   if (d.attack.has) world_.add(e, Combat{});
+  world_.add(e, Stealth{});
   if (nav_) {
     world_.add(e, Body{});
     world_.add(e, Path{});
@@ -87,6 +89,7 @@ bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* e
   };
   if (!rules_) return fail("nincsenek szabályadatok (attach_rules)");
   upkeep_ = setup.upkeep;
+  fog_ = setup.fog;
   map_ = &m;
   const auto& starts = m.objects().starts;
   std::vector<uint8_t> playing;
@@ -148,6 +151,8 @@ bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* e
   }
   navigation_changed();
   supply_system();
+  stealth_system();
+  vision_system();
   return true;
 }
 

@@ -156,7 +156,16 @@ void Session::update_fog() {
 
 std::shared_ptr<const Snapshot> Session::snapshot() {
   if (last_ && last_->tick == sim_->tick()) return last_;
-  if (!fog_) update_fog();
+  if (sim_->rules()) {   // meccs: a köd az 1. játékos látóteréből (a szimulációé)
+    const sim::PlayerState& p1 = sim_->player(1);
+    if (!fog_ || sim_->tick() % 6 == 0) {
+      auto f = std::make_shared<std::vector<uint8_t>>(p1.visible.size(), 0);
+      for (size_t i = 0; i < f->size(); ++i) (*f)[i] = p1.visible[i] ? 255 : (p1.explored[i] ? 128 : 0);
+      if (!fog_ || *fog_ != *f) fog_ = std::move(f);
+    }
+  } else if (!fog_) {
+    update_fog();
+  }
   auto s = std::make_shared<Snapshot>();
   s->tick = sim_->tick();
   const bool match = sim_->rules() != nullptr;
@@ -209,6 +218,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         }
       }
     }
+    if (match && u.owner != 1 && u.owner != 0 && u.kind == SnapUnit::kUnit && !sim_->is_visible(1, e)) return;   // ködben
     s->units.push_back(u);
   });
   if (match) {
@@ -234,7 +244,7 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
     sim_->queue(c);   // a parancssoron át (mint a hálózati játékban és a visszajátszásban)
   }
   sim_->step();
-  if (sim_->tick() % 5 == 0) update_fog();
+  if (!sim_->rules() && sim_->tick() % 5 == 0) update_fog();
   const auto after = snapshot();
   // látványesemények azonosító szerinti sorrendben: eltűnt egység → halál (az előző helyén), csökkent életerő → találat
   size_t j = 0;
