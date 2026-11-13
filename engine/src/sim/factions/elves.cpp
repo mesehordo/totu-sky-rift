@@ -9,11 +9,14 @@
 //     sorrendben aktív, amíg szentélyenként ≤ hely és összesen ≤ `faith.max`; bevétel aktívonként `rate` × 0,5 s;
 //   - Napfúró (MECH-MINE): a lelőhelyre épült bánya `passive` + a mellette álló munkások (≤ `slots`) szerint termel
 //     (`carry / (gather_time + 7,4)` / s fejenként), Napáldással (`bpower` mine_boost) gyorsabban;
-//   - Égkő-fény: a faji `rift.energy_mult` (2,0) és `shield_regen_mult` (2,0) a közös szabály fölött.
+//   - Áhítat-parancs (`elves.pray`, népi parancs): a kijelölt munkások a szentélyhez (`target`, 0: a legközelebbi) mennek;
+//   - Rezonancia (`Rules.power_add`) a mezőadók sugarát, Arany fohász (`Rules.faith_rate`) a fohász ütemét állítja;
+//   - Égkő-fény: a faji `rift.energy_mult` (2,0), `shield_regen_mult` (2,0) és `spell_mult` (1,25) a közös szabály fölött.
 #include <algorithm>
 #include <string>
 
 #include "content/json.hpp"
+#include "sim/rules.hpp"
 #include "sim/faction_module.hpp"
 #include "sim/sim.hpp"
 
@@ -80,6 +83,21 @@ class Module final : public FactionModule {
     return m && m->is_string() && m->text() == "power";
   }
   static Fixed power_radius(const EntityDef& d) { return num(sub(d.raw, "Mechanics", "power_radius"), Fixed{}); }
+  // a kész kutatások `Rules.<key>` értékei: összeg (`sum`) vagy a legnagyobb
+  static Fixed research_rule(Sim& s, uint8_t owner, const char* key, bool sum, Fixed def) {
+    Fixed out = def;
+    bool any = false;
+    for (const std::string& id : s.players_[owner].researched) {
+      const ResearchDef* r = s.rules_->research(id);
+      const content::Value* v = r ? sub(r->raw, "Rules", key) : nullptr;
+      if (!v) continue;
+      const Fixed x = num(v, Fixed{});
+      if (sum) out = out + x;
+      else if (!any || x > out) out = x;
+      any = true;
+    }
+    return out;
+  }
   static bool no_power(const EntityDef& d) { return flag(sub(d.raw, "Placement", "no_power")); }
   static int pray_slots(const EntityDef& d) {
     const content::Value* v = sub(d.raw, "Mechanics", "pray_slots");
@@ -90,11 +108,13 @@ class Module final : public FactionModule {
   static bool in_field(Sim& s, uint8_t owner, Fixed x, Fixed y, EntityId* source = nullptr, EntityId skip = kNoEntity) {
     bool in = false;
     int64_t best = 0;
+    const Fixed extra = research_rule(s, owner, "power_add", true, Fixed{});   // Rezonancia
     s.world_.pool<Building>().each([&](EntityId e, const Building& b) {
       const Health* h = s.world_.get<Health>(e);
       if (e == skip || !b.complete || !h || h->owner != owner || h->hp <= 0) return;
-      const Fixed r = power_radius(s.rules_->defs[b.def]);
+      Fixed r = power_radius(s.rules_->defs[b.def]);
       if (r.raw() <= 0) return;
+      r = r + extra;
       const Position& p = *s.world_.get<Position>(e);
       const Fixed d = core::length(p.x - x, p.y - y);
       if (d > r) return;
@@ -158,6 +178,63 @@ class Module final : public FactionModule {
     s.place_at_free(u, sp.x, sp.y + Fixed::from_ratio(sb.h, 2) + Fixed::from_int(1));
   }
 
+  // Napáldás (`bpower` mine_boost): a költséget, az újratöltést és a jogosultságot a közös `Sim::use_power` intézi
+  bool use_power(Sim& s, uint8_t, EntityId b, uint16_t ability, Fixed, Fixed) override {
+    const AbilityDef& a = s.rules_->abilities[ability];
+    if (a.effect != "mine_boost") return false;
+    ElfMine* m = s.world_.get<ElfMine>(b);
+    if (!m) return false;
+    m->boost_until = s.tick_ + a.duration;
+    m->boost = static_cast<int32_t>(int64_t{num(a.spec ? a.spec->find("mult") : nullptr, Fixed::from_ratio(3, 2)).raw()} * 1000 >> 16);
+    return true;
+  }
+
+  // `elves.pray`: a `units` saját munkásai a `target` szentélyhez (0: a legközelebbi kész, saját szentélyhez) mennek, és
+  // ott – megérkezve, tétlenül – fohászkodnak; a szentély köré, egymás mellé állnak
+  bool on_command(Sim& s, const Command& c) override {
+    if (c.def != "elves.pray") return false;
+    int k = 0;
+    for (const EntityId u : c.units) {
+      const Health* h = s.world_.get<Health>(u);
+      if (!h || h->owner != c.owner || h->hp <= 0 || !s.world_.get<Worker>(u)) continue;
+      const Position up = *s.world_.get<Position>(u);
+      EntityId sh = c.target;
+      if (!shrine_of(s, c.owner, sh)) {
+        sh = kNoEntity;
+        Fixed best;
+        s.world_.pool<Building>().each([&](EntityId e, const Building& b) {
+          if (!shrine_of(s, c.owner, e)) return;
+          const Fixed d = rect_gap(up.x, up.y, b);
+          if (!sh || d < best) { sh = e; best = d; }
+        });
+      }
+      if (!sh) return true;
+      if (!s.interrupt(u)) continue;
+      s.stop(u);
+      // a szentély alsó és felső sora mellé, a munkások sorrendjében (a hely a lábnyomtól 0,6 csempére)
+      const Building& b = *s.world_.get<Building>(sh);
+      const int side = std::max(1, static_cast<int>(b.w));
+      const int col = k % side, row = (k / side) % 2;
+      const Fixed x = Fixed::from_int(b.tx + col) + Fixed::from_ratio(1, 2);
+      const Fixed y = row == 0 ? Fixed::from_int(b.ty + b.h) + Fixed::from_ratio(3, 5) : Fixed::from_int(b.ty) - Fixed::from_ratio(3, 5);
+      s.order_move(u, x, y);
+      ++k;
+    }
+    return true;
+  }
+
+  // Égkő-fény: a faj varázssebzése × `rift.spell_mult` (a közös szorzó helyett; a támadó a `src`)
+  Fixed damage_taken_mult(Sim& s, EntityId src, EntityId, bool, bool magic) override {
+    if (!magic || !src || !s.world_.alive(src) || !s.in_rift(src)) return Fixed::from_int(1);
+    const Health* h = s.world_.get<Health>(src);
+    const FactionDef* f = h ? faction(s, h->owner) : nullptr;
+    const content::Value* rf = f ? sub(f->raw, "Faction", "rift") : nullptr;
+    const Fixed mine = num(rf && rf->is_object() ? rf->find("spell_mult") : nullptr, Fixed{});
+    const Fixed common = s.rules_->rift.spell_mult;
+    if (mine.raw() <= 0 || common.raw() <= 0 || mine == common) return Fixed::from_int(1);
+    return mine / common;
+  }
+
   void tick(Sim& s) override {
     if (s.tick_ % 30 == 0) refresh_power(s);
     // ellátatlan épület: a sora áll, nem lő
@@ -174,6 +251,12 @@ class Module final : public FactionModule {
   }
 
  private:
+  static bool shrine_of(Sim& s, uint8_t owner, EntityId e) {
+    const Building* b = e ? s.world_.get<Building>(e) : nullptr;
+    const Health* h = e ? s.world_.get<Health>(e) : nullptr;
+    return b && h && b->complete && h->owner == owner && h->hp > 0 && pray_slots(s.rules_->defs[b->def]) > 0;
+  }
+
   static void refresh_power(Sim& s, EntityId skip = kNoEntity) {
     s.world_.pool<ElfPower>().each([&](EntityId e, ElfPower& p) {
       const Health* h = s.world_.get<Health>(e);
@@ -189,7 +272,8 @@ class Module final : public FactionModule {
       const FactionDef* f = faction(s, owner);
       const content::Value* fa = f ? sub(f->raw, "Faction", "faith") : nullptr;
       if (!fa || !fa->is_object()) continue;
-      const Fixed rate = num(fa->find("rate"), Fixed::from_ratio(3, 10));
+      const Fixed base = num(fa->find("rate"), Fixed::from_ratio(3, 10));
+      const Fixed rate = std::max(base, research_rule(s, owner, "faith_rate", false, base));   // Arany fohász
       const int maxn = num(fa->find("max"), Fixed::from_int(8)).floor_int();
       std::vector<std::pair<EntityId, int>> shrines;   // szentély, szabad hely
       s.world_.pool<Building>().each([&](EntityId e, const Building& b) {
@@ -304,41 +388,5 @@ class Module final : public FactionModule {
 }  // namespace
 
 std::unique_ptr<FactionModule> make_elves_module() { return std::make_unique<Module>(); }
-
-// Épületképesség (`bpower`, pl. a Napfúró Napáldása – mine_boost): a keret parancsa nem jut el ide (a képesség az épület
-// `Powers` listájában van, nem az egységében), ezért közvetlen hívással – a parancs bekötése a közös részben hiányzik.
-bool elves_building_power(Sim& s, EntityId b, const std::string& id) {
-  const int ai = s.rules_ ? s.rules_->ability_index(id) : -1;
-  const Building* bd = s.world_.get<Building>(b);
-  const Health* bh = s.world_.get<Health>(b);
-  Caster* c = s.world_.get<Caster>(b);
-  if (ai < 0 || !bd || !bh || !c || !bd->complete || bh->hp <= 0) return false;
-  const auto ab = static_cast<uint16_t>(ai);
-  const auto& pw = s.rules_->defs[bd->def].powers;
-  if (std::find(pw.begin(), pw.end(), ab) == pw.end()) return false;
-  const AbilityDef& a = s.rules_->abilities[ab];
-  const content::Value* ef = a.spec ? a.spec->find("effect") : nullptr;
-  if (!ef || !ef->is_string() || ef->text() != "mine_boost") return false;
-  ElfMine* m = s.world_.get<ElfMine>(b);
-  if (!m) return false;
-  for (const auto& [rid, rt] : c->ready) {
-    if (rid == ab && rt > s.tick_) return false;   // újratöltés
-  }
-  if (!s.pay(bh->owner, a.cost)) return false;
-  m->boost_until = s.tick_ + a.duration;
-  m->boost = static_cast<int32_t>(int64_t{num(a.spec->find("mult"), Fixed::from_ratio(3, 2)).raw()} * 1000 >> 16);
-  bool found = false;
-  for (auto& [rid, rt] : c->ready) {
-    if (rid == ab) {
-      rt = s.tick_ + a.cooldown;
-      found = true;
-    }
-  }
-  if (!found) {
-    c->ready.emplace_back(ab, s.tick_ + a.cooldown);
-    std::sort(c->ready.begin(), c->ready.end());
-  }
-  return true;
-}
 
 }  // namespace totu::sim

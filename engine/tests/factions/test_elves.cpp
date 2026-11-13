@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Szürke elfek (M7, ADR-008): a népmodul viselkedési próbái (src/sim/factions/elves.cpp) – energiamező és ellátás,
-// behívás, Áhítat, Napfúró és Napáldás, Égkő-fény; determinizmus és folytatás mentésből.
+// behívás, Áhítat (fohász-parancs, Arany fohász), Napfúró és Napáldás, Rezonancia, Égkő-fény (energia, varázssebzés);
+// determinizmus és folytatás mentésből.
+#include <algorithm>
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -11,10 +13,6 @@
 using namespace totu;
 using namespace totu::testing;
 using core::Fixed;
-
-namespace totu::sim {
-bool elves_building_power(Sim& s, EntityId b, const std::string& id);   // elves.cpp
-}
 
 namespace {
 
@@ -61,6 +59,22 @@ sim::EntityId stone_node(sim::Sim& s) {
     if (!out && n.kind == sim::kStone) out = e;
   });
   return out;
+}
+
+void pray(sim::Sim& s, const std::vector<sim::EntityId>& units, sim::EntityId shrine) {
+  sim::Command c;
+  c.kind = sim::Command::Kind::Module;
+  c.tick = s.tick();
+  c.owner = 1;
+  c.def = "elves.pray";
+  c.units = units;
+  c.target = shrine;
+  s.queue(std::move(c));
+}
+
+void finish(sim::Sim& s, const char* research) {
+  auto& r = s.player_mut(1).researched;
+  r.insert(std::lower_bound(r.begin(), r.end(), std::string(research)), research);
 }
 
 }  // namespace
@@ -206,18 +220,18 @@ TEST_CASE("Szürke elfek Napfúró: 0,4 passzív + mellette álló munkások, ca
   std::printf("  Napfúró 2 munkással (10 s): %d egység, várt %.2f\n", a0 - amount(), want2);
   CHECK(a0 - amount() >= static_cast<int>(want2) - 1 && a0 - amount() <= static_cast<int>(want2) + 1);
   // Napáldás: 25 Áhítat, 30 s ×1,5; újratöltés alatt nem ismételhető, Áhítat nélkül nem megy
-  CHECK(!sim::elves_building_power(s, mine, "napaldas"));
+  CHECK(!s.use_power(1, mine, "napaldas"));
   s.add_resources(1, sim::kFaith, 60);
-  CHECK(sim::elves_building_power(s, mine, "napaldas"));
+  CHECK(s.use_power(1, mine, "napaldas"));
   CHECK(s.player(1).resource(sim::kFaith) == 35);
-  CHECK(!sim::elves_building_power(s, mine, "napaldas"));
+  CHECK(!s.use_power(1, mine, "napaldas"));
   a0 = amount();
   m.run(300);
   const double want3 = want2 * 1.5;
   std::printf("  Napfúró Napáldással (10 s): %d egység, várt %.2f\n", a0 - amount(), want3);
   CHECK(a0 - amount() >= static_cast<int>(want3) - 1 && a0 - amount() <= static_cast<int>(want3) + 1);
   // a nem bánya épület nem kapja
-  CHECK(!sim::elves_building_power(s, building_of(s, "elf_napszentely", 1), "napaldas"));
+  CHECK(!s.use_power(1, building_of(s, "elf_napszentely", 1), "napaldas"));
 }
 
 TEST_CASE("Szürke elfek Égkő-fény: az energiatöltés ×2,0 (a közös ×1,5 helyett) az Égkő 5 csempés körében") {
@@ -248,10 +262,12 @@ TEST_CASE("Szürke elfek: determinizmus és folytatás mentésből") {
     s.train(1, def_of("elf_tollas_harcos"), hall);
     const sim::ResourceNode n = *s.world().get<sim::ResourceNode>(stone_node(s));
     const auto mine = s.place_building(def_of("elf_napfuro"), 1, n.tx, n.ty, true);
-    sim::elves_building_power(s, mine, "napaldas");
+    s.use_power(1, mine, "napaldas");
     const auto hq = building_of(s, "elf_napszentely", 1);
     const sim::Building b = *s.world().get<sim::Building>(hq);
     for (int i = 0; i < 3; ++i) put(s, "elf_kofarago", 1, b.tx * 10 - 5, b.ty * 10 + 5 + i * 8);
+    pray(s, {put(s, "elf_kofarago", 1, (b.tx + b.w + 5) * 10, b.ty * 10 + 5)}, hq);
+    finish(s, "elf_rezonancia");
     s.place_building(def_of("elf_egko"), 1, 18, 12, true);
     put(s, "elf_tollas_harcos", 1, 190, 140);
     s.kill(far);   // a mezőadó halála: a következő egység már nem hívódik be
@@ -269,4 +285,83 @@ TEST_CASE("Szürke elfek: determinizmus és folytatás mentésből") {
   c.sim->restore_obstacles(*c.map);
   c.run(750);
   CHECK(c.sim->hash() == a.sim->hash());
+}
+
+TEST_CASE("Szürke elfek fohász-parancs (`elves.pray`): a munkások a szentélyhez mennek és fohászkodnak; Arany fohász 0,4 / s") {
+  Match m = elves();
+  sim::Sim& s = *m.sim;
+  const auto hq = building_of(s, "elf_napszentely", 1);
+  CHECK(hq != sim::kNoEntity);
+  if (!hq) return;
+  const sim::Building b = *s.world().get<sim::Building>(hq);
+  std::vector<sim::EntityId> ws;
+  for (int i = 0; i < 3; ++i) ws.push_back(put(s, "elf_kofarago", 1, (b.tx + b.w + 5) * 10, b.ty * 10 + 5 + i * 10));
+  m.run(5);
+  const int64_t f0 = s.player(1).res[sim::kFaith];
+  m.run(150);
+  CHECK(s.player(1).res[sim::kFaith] == f0);   // távol: nem fohászkodnak
+  pray(s, ws, sim::kNoEntity);   // 0: a legközelebbi szentély
+  m.run(300);
+  const int64_t f1 = s.player(1).res[sim::kFaith];
+  m.run(300);   // 20 ciklus × 3 × 0,3 × 0,5 = 9 Áhítat
+  const int64_t gain = s.player(1).res[sim::kFaith] - f1;
+  std::printf("  fohász-parancs, 3 munkás, 10 s: %lld ezred\n", static_cast<long long>(gain));
+  CHECK(gain >= 8900 && gain <= 9000);
+  finish(s, "elf_arany_fohasz");
+  const int64_t f2 = s.player(1).res[sim::kFaith];
+  m.run(300);   // 20 × 3 × 0,4 × 0,5 = 12
+  const int64_t gain2 = s.player(1).res[sim::kFaith] - f2;
+  std::printf("  Arany fohásszal, 10 s: %lld ezred\n", static_cast<long long>(gain2));
+  CHECK(gain2 >= 11900 && gain2 <= 12000);
+  // más nép parancsa nem ide tartozik; az idegen munkás nem mozdul
+  const auto foe = put(s, "urs_pajzshordozo", 2, 50, 150);
+  const sim::Position fp = *s.world().get<sim::Position>(foe);
+  pray(s, {foe}, hq);
+  m.run(30);
+  CHECK(s.world().get<sim::Position>(foe)->x == fp.x);
+}
+
+TEST_CASE("Szürke elfek Rezonancia: a mezőadók köre +2 csempe (`Rules.power_add`)") {
+  Match m = elves();
+  sim::Sim& s = *m.sim;
+  rich(s);
+  s.place_building(def_of("elf_obeliszk"), 1, 12, 9, true);   // közepe (13; 10), 6,5 csempe
+  std::string err;
+  // a csarnok közepe (20,5; 10,5): ~7,5 csempe – a körön kívül
+  CHECK(!s.can_place(1, def_of("elf_harcos_csarnok"), 19, 9, &err));
+  CHECK(err.find("energiamező") != std::string::npos);
+  finish(s, "elf_rezonancia");
+  err.clear();
+  s.can_place(1, def_of("elf_harcos_csarnok"), 19, 9, &err);
+  CHECK(err.find("energiamező") == std::string::npos);
+  // 12,8 csempe: így is kívül
+  err.clear();
+  CHECK(!s.can_place(1, def_of("elf_harcos_csarnok"), 2, 17, &err));
+  CHECK(err.find("energiamező") != std::string::npos);
+}
+
+TEST_CASE("Szürke elfek Égkő-fény: a varázssebzés × 1,25 (a közös × 1 helyett) a támadó Égkő melletti helyén") {
+  Match m = elves();
+  sim::Sim& s = *m.sim;
+  s.place_building(def_of("elf_egko"), 1, 18, 12, true);
+  const auto near = put(s, "elf_tollas_harcos", 1, 190, 140);
+  const auto far = put(s, "elf_tollas_harcos", 1, 25, 100);
+  const auto t1 = put(s, "urs_pajzshordozo", 2, 60, 160);
+  const auto t2 = put(s, "urs_pajzshordozo", 2, 80, 160);
+  m.run(1);
+  CHECK(s.in_rift(near) && !s.in_rift(far));
+  const int32_t h1 = s.world().get<sim::Health>(t1)->hp, h2 = s.world().get<sim::Health>(t2)->hp;
+  const uint16_t d = def_of("elf_tollas_harcos");
+  s.deal_damage(near, 1, d, t1, 20000, false, true);
+  s.deal_damage(far, 1, d, t2, 20000, false, true);
+  const int32_t l1 = h1 - s.world().get<sim::Health>(t1)->hp, l2 = h2 - s.world().get<sim::Health>(t2)->hp;
+  std::printf("  varázssebzés: Égkő mellől %d, távolról %d\n", l1, l2);
+  CHECK(l1 == 25);
+  CHECK(l2 == 20);
+  // a nem varázs sebzés nem változik
+  const int32_t h3 = s.world().get<sim::Health>(t1)->hp;
+  s.deal_damage(near, 1, d, t1, 20000, false, false);
+  const int32_t h4 = s.world().get<sim::Health>(t2)->hp;
+  s.deal_damage(far, 1, d, t2, 20000, false, false);
+  CHECK(h3 - s.world().get<sim::Health>(t1)->hp == h4 - s.world().get<sim::Health>(t2)->hp);
 }
