@@ -313,3 +313,9 @@ alkalmazkodó, népe szerinti) –, a személyiség adat; Lua-AI keretrendszer m
 küldetés-AI (építési lista, hullámok); AI-modok három szinten. Részletek: [spec/GEPI_ELLENFEL.md](spec/GEPI_ELLENFEL.md);
 megvalósítás M9, M11, M13. **Döntések:** 6 nehézségi szint (csalás csak a jelölt „Őrült” szinten); a hadjáratban
 népe szerinti személyiség; **tanuló AI** is legyen – a meccsen belül alkalmazkodik, a végén felejt (determinizmus).
+### D37 – Az M6 kerete · ELDÖNTVE (2026-11-13)
+
+Az M6 (játékmag, függőleges szelet) négy kérdésére a tulajdonos válasza: (1) **ideiglenes HUD** az M6-ban, a végleges
+RmlUi-felület az M8-ban; (2) a szabályok **a régi játék képletei és számai** szerint, próbákkal rögzítve – eltérés csak
+döntéssel; (3) a három ursan hős az M6-ban **egységként** (képességekkel, szint és tárgy nélkül), a hősrendszer az M7-ben;
+(4) a kapumeccs **ursan tükörmeccs** szkriptelt (Lua) ellenféllel. A terv: [ADR-007](dontesek/ADR-007-jatekmag.md).
