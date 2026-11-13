@@ -369,6 +369,7 @@ int main(int argc, char** argv) {
           } else {
             session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           }
+          session.set_reveal_all(!o.fog);
           if (o.battle_demo > 0 && session.has_starts()) session.battle_demo(o.battle_demo);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());

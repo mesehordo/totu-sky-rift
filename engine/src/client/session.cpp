@@ -156,7 +156,7 @@ void Session::update_fog() {
 }
 
 bool Session::tile_visible(int x, int y) const {
-  if (!fog_ || fog_->empty()) return true;
+  if (reveal_all_ || !fog_ || fog_->empty()) return true;
   const int w = map_->width(), h = map_->height();
   x = std::clamp(x, 0, w - 1);
   y = std::clamp(y, 0, h - 1);
@@ -241,7 +241,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     // látott állapotában
     const auto tile_of = [](float px) { return static_cast<int>(std::floor(px / 32.0f)); };
     if (u.kind == SnapUnit::kUnit && u.owner != 1) {
-      if (match ? !sim_->is_visible(1, e) : !tile_visible(tile_of(u.x), tile_of(u.y))) return;
+      if (!reveal_all_ && (match ? !sim_->is_visible(1, e) : !tile_visible(tile_of(u.x), tile_of(u.y)))) return;
     } else if (u.kind == SnapUnit::kShot) {
       if (!tile_visible(tile_of(u.x), tile_of(u.y))) return;
     } else if (u.kind == SnapUnit::kBuilding || u.kind == SnapUnit::kResource) {

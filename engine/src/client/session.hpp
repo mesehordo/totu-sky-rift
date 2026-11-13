@@ -77,6 +77,8 @@ class Session {
   bool has_starts() const { return map_ && !map_->objects().starts.empty(); }
   bool start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error);
   const sim::Rules* rules() const { return rules_ ? &*rules_ : nullptr; }
+  // köd nélkül (--nofog): minden látszik, a pillanatkép nem szűr (D41)
+  void set_reveal_all(bool on) { reveal_all_ = on; }
   // képpróba (M6 5. lépés): két vegyes ursan sereg a pálya közepe két oldalán, támadó mozgással egymásnak
   void battle_demo(int per_side);
 
@@ -102,6 +104,7 @@ class Session {
   // D41: a ködben az 1. játékos a nem saját épületeket és a lelőhelyeket abban az állapotban látja, ahogy utoljára
   // látta (a lerombolt is ott marad, amíg újra oda nem lát)
   std::map<sim::EntityId, SnapUnit> remembered_;
+  bool reveal_all_ = false;
   bool tile_visible(int x, int y) const;
   bool rect_visible(int x, int y, int w, int h) const;
 };
