@@ -37,6 +37,7 @@ struct SnapUnit {
   uint8_t res = 0;                      // lelőhely: a nyersanyag
   int32_t amount = 0;                   // lelőhely: a maradék; munkás: a rakomány
   bool complete = true;
+  uint16_t progress = 1000;             // épület: az építés haladása ezrelékben
 };
 
 // a játékos állapota a felületnek

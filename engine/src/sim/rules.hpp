@@ -56,6 +56,12 @@ struct EntityDef {
   int32_t fw = 0, fh = 0;                     // lábnyom (csempe)
   int32_t supply_provides = 0;
   uint8_t dropoff = 0;                        // bitmaszk (Res)
+  // előfeltételek (`Requirements.all`): kész épület, kutatás, fejlődési irány, felemelkedés
+  struct Req {
+    enum Kind : uint8_t { Building, Research, Path, Ascended } kind = Building;
+    std::string id;
+  };
+  std::vector<Req> reqs;
   bool has_tag(const std::string& t) const;
 };
 
@@ -81,6 +87,9 @@ struct Rules {
   uint16_t def(const std::string& id) const;               // kNoDef, ha nincs
   const FactionDef* faction(const std::string& id) const;
   int32_t upkeep_permille(int32_t supply_used) const;      // MECH-UPKEEP
+  // A félkész épület megszakításakor visszajáró költség ezreléke (a régi játékban nem volt megszakítás – ADR-007;
+  // alapérték a WC3-é: 75%; `game.json` → `build_cancel_refund`).
+  int32_t cancel_refund_permille = 750;
 };
 
 }  // namespace totu::sim

@@ -155,6 +155,8 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         u.def = b->def;
         u.tx = b->tx; u.ty = b->ty; u.w = b->w; u.h = b->h;
         u.complete = b->complete != 0;
+        const int64_t total = int64_t{std::max(1, sim_->rules()->defs[b->def].time_ticks)} * 1000;
+        u.progress = static_cast<uint16_t>(std::min<int64_t>(1000, int64_t{b->progress} * 1000 / total));
       } else if (const auto* n = w.get<sim::ResourceNode>(e)) {
         u.kind = SnapUnit::kResource;
         u.tx = n->tx; u.ty = n->ty; u.w = u.h = n->size;
@@ -163,6 +165,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       } else if (const auto* un = w.get<sim::Unit>(e)) {
         u.def = un->def;
         if (const auto* k = w.get<sim::Worker>(e)) {
+          if (k->inside) return;   // bent épít: nem látszik
           u.amount = k->carry;
           u.res = k->carry_kind;
         }

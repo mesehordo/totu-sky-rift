@@ -111,6 +111,29 @@ void World::order_move(float wx, float wy, sim::Formation f) {
   runner_.post(c);   // a futtató során át a következő tickben (mint a hálózati játékban és a visszajátszásban)
 }
 
+bool World::order_build(uint16_t def, int tx, int ty) {
+  const sim::Rules* r = session_.rules();
+  if (selected_.empty() || !r || def >= r->defs.size()) return false;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Build;
+  c.units = {selected_.front()};
+  c.def = r->defs[def].id;
+  c.rx = tx;
+  c.ry = ty;
+  runner_.post(c);
+  return true;
+}
+
+std::vector<uint16_t> World::buildable_defs(const std::string& faction) const {
+  std::vector<uint16_t> out;
+  const sim::Rules* r = session_.rules();
+  if (!r) return out;
+  for (size_t i = 0; i < r->defs.size(); ++i) {
+    if (r->defs[i].building && r->defs[i].faction == faction && r->defs[i].fw > 0) out.push_back(static_cast<uint16_t>(i));
+  }
+  return out;
+}
+
 bool World::prepare_atlas(render::Atlas& atlas, std::string* error) {
   update();
   std::vector<uint8_t> owners;
@@ -234,6 +257,8 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
         int col = 0;
         if (u.kind == SnapUnit::kResource) {   // fa: a csempéből számolt változat
           col = static_cast<int>((static_cast<unsigned>(u.tx) * 7u + static_cast<unsigned>(u.ty) * 13u) % static_cast<unsigned>(std::max(1, s.columns)));
+        } else if (const auto b = s.anims.find("build"); !u.complete && b != s.anims.end()) {   // építési fázis
+          col = b->second.start + std::min(b->second.frames - 1, u.progress * b->second.frames / 1000);
         } else if (const auto a = s.anims.find("idle"); a != s.anims.end()) {
           col = a->second.start + static_cast<int>(time * a->second.fps) % std::max(1, a->second.frames);
         }
@@ -284,6 +309,18 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       batch.draw(fallback, nullptr, in);
     }
     ++drawn_;
+  }
+  // az építés kísértetképe (áttetsző; az érvényességet a szimuláció dönti el)
+  const sim::Rules* r = session_.rules();
+  if (!shadow_pass && atlas && r && ghost_def_ < r->defs.size()) {
+    const int s = sheet_by_id(atlas, r->defs[ghost_def_].id);
+    if (s >= 0) {
+      const auto& gs = atlas->data().sheets[static_cast<size_t>(s)];
+      const uint8_t tint[4] = {190, 255, 190, 150};
+      const uint8_t no_team[4] = {0, 0, 0, 0};
+      atlas->draw(batch, gs, 0, 0, static_cast<float>(ghost_tx_) * kTilePx, static_cast<float>(ghost_ty_) * kTilePx,
+                  1.0f / gs.scale, no_team, tint);
+    }
   }
 }
 

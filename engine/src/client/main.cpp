@@ -13,6 +13,9 @@
 //   totu --nofog                   köd nélkül
 //   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
 //                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
+//   (meccsben: B – építési mód, az ursan épületek léptetése; bal gomb: lerakás az első kijelölt munkással;
+//    jobb gomb: kilépés az építési módból)
+//   totu --build-demo              meccsben: az 1. játékos egy telepese tanyát kezd a főépület mellé (képpróba)
 //   totu --look X,Y                a kamera középpontja (csempe)
 //   totu --zoom Z                  a kamera nagyítása (1,0–2,0; alap 1,5)
 //   totu --sync                    a szimuláció a rajzolás szálán, két képkockánként egy tick (képernyőképnél mindig így;
@@ -73,6 +76,7 @@ struct Options {
   float zoom = 0;   // 0: a régi játék alapja (1,5)
   bool sync = false;
   float look_x = -1, look_y = -1;
+  bool build_demo = false;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -235,6 +239,7 @@ int main(int argc, char** argv) {
     else if (a == "--nopost") o.post = false;
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
     else if (a == "--sync") o.sync = true;
+    else if (a == "--build-demo") o.build_demo = true;
     else if (a == "--look") {
       char* end = nullptr;
       const char* v = next();
@@ -327,6 +332,16 @@ int main(int argc, char** argv) {
     sim::Formation formation = sim::Formation::Auto;
     float drag_x = 0, drag_y = 0;
     bool dragging = false;
+    // építés (ideiglenes, a HUD-ig): B lépteti az épületeket, bal gomb lerak, jobb gomb kilép
+    std::vector<uint16_t> build_list;
+    int build_idx = -1;
+    auto ghost_at = [&](float mx, float my) {
+      if (build_idx < 0 || !session.rules()) return;
+      const auto& d = session.rules()->defs[build_list[static_cast<size_t>(build_idx)]];
+      const int tx = static_cast<int>(std::floor((cam.x + mx / cam.zoom) / client::World::kTilePx - static_cast<float>(d.fw) / 2.0f + 0.5f));
+      const int ty = static_cast<int>(std::floor((cam.y + my / cam.zoom) / client::World::kTilePx - static_cast<float>(d.fh) / 2.0f + 0.5f));
+      world.set_ghost(build_list[static_cast<size_t>(build_idx)], tx, ty);
+    };
     std::vector<double> sim_times, draw_times;   // a mérésben külön: szimulációs tick és rajzolás
     if (rc == 0) {
       std::printf("grafika: %s (legnagyobb textúra %d)\n", dev.info().c_str(), dev.max_texture_size());
@@ -368,6 +383,13 @@ int main(int argc, char** argv) {
           }
           if ((o.bench || !o.screenshot.empty()) && !session.has_starts()) session.order_demo_attack();
           have_world = true;
+          if (o.build_demo && session.has_starts() && session.rules()) {
+            world.update();
+            const auto [sx, sy] = session.map().objects().starts.front();
+            world.select_box(static_cast<float>(sx - 6) * client::World::kTilePx, static_cast<float>(sy - 6) * client::World::kTilePx,
+                             static_cast<float>(sx + 6) * client::World::kTilePx, static_cast<float>(sy + 6) * client::World::kTilePx);
+            world.order_build(session.rules()->def("urs_tanya"), sx + 4, sy - 5);
+          }
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
           if (!o.sync && o.screenshot.empty()) runner.start();
         }
@@ -392,6 +414,27 @@ int main(int argc, char** argv) {
           SDL_GetMouseState(&mx, &my);
           cam.x += mx / old - mx / cam.zoom;   // a kurzor alatti pont marad
           cam.y += my / old - my / cam.zoom;
+        }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_B && session.rules()) {   // építési mód
+          if (build_list.empty()) build_list = world.buildable_defs("ursan");
+          build_idx = build_idx + 1 < static_cast<int>(build_list.size()) ? build_idx + 1 : -1;
+          if (build_idx < 0) world.set_ghost(sim::kNoDef, 0, 0);
+          else std::printf("építés: %s\n", session.rules()->defs[build_list[static_cast<size_t>(build_idx)]].id.c_str());
+          float mx = 0, my = 0;
+          SDL_GetMouseState(&mx, &my);
+          ghost_at(mx, my);
+        }
+        if (ev.type == SDL_EVENT_MOUSE_MOTION && build_idx >= 0) ghost_at(ev.motion.x, ev.motion.y);
+        if (build_idx >= 0 && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+          if (ev.button.button == SDL_BUTTON_LEFT) {
+            const auto& d = session.rules()->defs[build_list[static_cast<size_t>(build_idx)]];
+            const int tx = static_cast<int>(std::floor((cam.x + ev.button.x / cam.zoom) / client::World::kTilePx - static_cast<float>(d.fw) / 2.0f + 0.5f));
+            const int ty = static_cast<int>(std::floor((cam.y + ev.button.y / cam.zoom) / client::World::kTilePx - static_cast<float>(d.fh) / 2.0f + 0.5f));
+            world.order_build(build_list[static_cast<size_t>(build_idx)], tx, ty);
+          }
+          build_idx = -1;
+          world.set_ghost(sim::kNoDef, 0, 0);
+          continue;
         }
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
           dragging = true;

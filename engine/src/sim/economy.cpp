@@ -60,9 +60,11 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   const int w = std::max(1, d.fw), h = std::max(1, d.fh);
   const EntityId e = world_.create();
   world_.add(e, Position{Fixed::from_int(tx) + half(w), Fixed::from_int(ty) + half(h)});
-  world_.add(e, Health{d.hp, d.hp, owner});
-  world_.add(e, Building{def, static_cast<int16_t>(tx), static_cast<int16_t>(ty), static_cast<int16_t>(w),
-                         static_cast<int16_t>(h), static_cast<uint8_t>(complete ? 1 : 0)});
+  world_.add(e, Health{complete ? d.hp : std::max(1, d.hp / 10), d.hp, owner});   // félkészen 10% (a régi szerint)
+  Building b{def, static_cast<int16_t>(tx), static_cast<int16_t>(ty), static_cast<int16_t>(w), static_cast<int16_t>(h),
+             static_cast<uint8_t>(complete ? 1 : 0)};
+  b.progress = complete ? std::max(1, d.time_ticks) * 1000 : 0;
+  world_.add(e, b);
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
   return e;
 }
@@ -74,6 +76,7 @@ bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* e
   };
   if (!rules_) return fail("nincsenek szabályadatok (attach_rules)");
   upkeep_ = setup.upkeep;
+  map_ = &m;
   const auto& starts = m.objects().starts;
   std::vector<uint8_t> playing;
   for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
@@ -137,7 +140,8 @@ bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* e
   return true;
 }
 
-void Sim::restore_obstacles() {
+void Sim::restore_obstacles(const map::Map& m) {
+  map_ = &m;
   if (!nav_ || !rules_) return;
   world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { nav_->add_obstacle({n.tx, n.ty, n.size, n.size}); });
   world_.pool<Building>().each([&](EntityId, const Building& b) { nav_->add_obstacle({b.tx, b.ty, b.w, b.h}); });
@@ -374,6 +378,7 @@ void Sim::economy_system() {
         return;
       }
       default:
+        build_order_step(e, w);   // Build, Construct (build.cpp)
         return;
     }
   });

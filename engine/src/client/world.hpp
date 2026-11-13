@@ -41,6 +41,11 @@ class World {
   // kijelölés és parancs (az 1. játékos egységei)
   void select_box(float wx0, float wy0, float wx1, float wy1);
   void order_move(float wx, float wy, sim::Formation f);
+  // építés (ideiglenes kezelés a HUD-ig): a kísértetkép (sablon, bal felső csempe; kNoDef = nincs), és a parancs az
+  // első kijelölt munkással
+  void set_ghost(uint16_t def, int tx, int ty) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; }
+  bool order_build(uint16_t def, int tx, int ty);
+  std::vector<uint16_t> buildable_defs(const std::string& faction) const;
   size_t selected() const { return selected_.size(); }
 
   // rajzolás: `alpha` a két pillanatkép közötti arány (0..1), `time` másodperc
@@ -89,6 +94,8 @@ class World {
   bool sheets_ready_ = false;
   std::shared_ptr<const std::vector<uint8_t>> fog_seen_;
   std::vector<FxEvent> fx_;
+  uint16_t ghost_def_ = sim::kNoDef;
+  int ghost_tx_ = 0, ghost_ty_ = 0;
   int drawn_ = 0;
   std::vector<Item> items_;
   struct ItemsKey {

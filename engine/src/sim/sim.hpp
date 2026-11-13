@@ -143,14 +143,24 @@ struct Building {
   uint16_t def = kNoDef;
   int16_t tx = 0, ty = 0, w = 1, h = 1;   // lábnyom (csempe)
   uint8_t complete = 1;
-  void hash(core::StateHash& hh) const { hh.add_u64(def); hh.add_i64(tx); hh.add_i64(ty); hh.add_i64(w); hh.add_i64(h); hh.add_u64(complete); }
-  void save(core::ByteWriter& wr) const { wr.u32(def); wr.i32(tx); wr.i32(ty); wr.i32(w); wr.i32(h); wr.u8(complete); }
+  int32_t progress = 0;        // építés: eltelt (súlyozott) tick
+  EntityId builder_in = 0;     // MECH-BUILD `enter`: a bent építő munkás
+  uint8_t builders = 0;        // MECH-BUILD `stay`: az e tickben mellette dolgozók (nem állapot: tickenként újra)
+  void hash(core::StateHash& hh) const {
+    hh.add_u64(def); hh.add_i64(tx); hh.add_i64(ty); hh.add_i64(w); hh.add_i64(h); hh.add_u64(complete);
+    hh.add_i64(progress); hh.add_u64(builder_in);
+  }
+  void save(core::ByteWriter& wr) const {
+    wr.u32(def); wr.i32(tx); wr.i32(ty); wr.i32(w); wr.i32(h); wr.u8(complete); wr.i32(progress); wr.u32(builder_in);
+  }
   static Building load(core::ByteReader& r) {
     Building b;
     b.def = static_cast<uint16_t>(r.u32());
     b.tx = static_cast<int16_t>(r.i32()); b.ty = static_cast<int16_t>(r.i32());
     b.w = static_cast<int16_t>(r.i32()); b.h = static_cast<int16_t>(r.i32());
     b.complete = r.u8();
+    b.progress = r.i32();
+    b.builder_in = r.u32();
     return b;
   }
 };
@@ -171,7 +181,8 @@ struct ResourceNode {   // fa (1 × 1) vagy lelőhely (pl. 2 × 2); a középpon
 };
 
 struct Worker {   // a gyűjtés állapota (a régi játék `_o_gather`-je szerint)
-  enum State : uint8_t { Idle = 0, Go = 1, Work = 2, Return = 3 };
+  // Build: az építési helyre megy (a költség már levonva); Construct: az épülő épületen dolgozik (vagy bent van)
+  enum State : uint8_t { Idle = 0, Go = 1, Work = 2, Return = 3, Build = 4, Construct = 5 };
   uint8_t state = Idle;
   EntityId res = 0;            // a célzott lelőhely (0 = nincs)
   EntityId move_to = 0;        // amelyik célhoz a legutóbbi mozgásparancs ment (0 = nincs)
@@ -183,19 +194,29 @@ struct Worker {   // a gyűjtés állapota (a régi játék `_o_gather`-je szeri
   uint8_t fails = 0;
   EntityId bad_drop = 0;       // elérhetetlen leadóhely (ideiglenesen kihagyva)
   int64_t retry_tick = 0;
+  // építés
+  uint16_t build_def = kNoDef;
+  int16_t btx = 0, bty = 0;
+  EntityId site = 0;           // Construct: az épülő épület
+  EntityId inside = 0;         // MECH-BUILD `enter`: ebben az épületben van (nem látszik, nem akadály, nem célpont)
+  EntityId resume = 0;         // az építés után ide megy vissza gyűjteni (0 = nem)
   void hash(core::StateHash& h) const {
     h.add_u64(state); h.add_u64(res); h.add_u64(move_to); h.add_u64(last_kind); h.add_i64(lx.raw()); h.add_i64(ly.raw());
     h.add_u64(carry_kind); h.add_i64(carry); h.add_i64(timer); h.add_u64(fails); h.add_u64(bad_drop); h.add_i64(retry_tick);
+    h.add_u64(build_def); h.add_i64(btx); h.add_i64(bty); h.add_u64(site); h.add_u64(inside); h.add_u64(resume);
   }
   void save(core::ByteWriter& w) const {
     w.u8(state); w.u32(res); w.u32(move_to); w.u8(last_kind); w.i32(lx.raw()); w.i32(ly.raw());
     w.u8(carry_kind); w.i32(carry); w.i32(timer); w.u8(fails); w.u32(bad_drop); w.i64(retry_tick);
+    w.u32(build_def); w.i32(btx); w.i32(bty); w.u32(site); w.u32(inside); w.u32(resume);
   }
   static Worker load(core::ByteReader& r) {
     Worker k;
     k.state = r.u8(); k.res = r.u32(); k.move_to = r.u32(); k.last_kind = r.u8();
     k.lx = Fixed::from_raw(r.i32()); k.ly = Fixed::from_raw(r.i32());
     k.carry_kind = r.u8(); k.carry = r.i32(); k.timer = r.i32(); k.fails = r.u8(); k.bad_drop = r.u32(); k.retry_tick = r.i64();
+    k.build_def = static_cast<uint16_t>(r.u32()); k.btx = static_cast<int16_t>(r.i32()); k.bty = static_cast<int16_t>(r.i32());
+    k.site = r.u32(); k.inside = r.u32(); k.resume = r.u32();
     return k;
   }
 };
@@ -207,6 +228,9 @@ struct PlayerState {
   std::array<int64_t, kResources> gathered{};
   int32_t supply_cap = 0, supply_used = 0;
   bool active = false;
+  std::vector<std::string> researched;       // a kész kutatások (rendezve; az 5. lépésben töltődik)
+  std::string path;                          // a választott fejlődési irány (MECH-ASC; 8. lépés)
+  bool ascended = false;
   int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
 };
 
@@ -243,8 +267,11 @@ struct NavStats {
 // --- parancsok -----------------------------------------------------------------------------------------------------
 struct Command {
   // M4: GroupMove (alakzatban), Block (építés/bontás: csempés téglalap akadály), Gate (kapu csapatmaszkkal)
-  // M6 (a 4-es formátumtól): Gather (munkások egy lelőhelyre), Stop (a parancs és a munka abbahagyása)
-  enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7 };
+  // M6 (a 4-es formátumtól): Gather (munkások egy lelőhelyre), Stop (a parancs és a munka abbahagyása),
+  // Build (az első munkás a `def` épületet a (rx, ry) csempére építi), CancelBuild (a `target` félkész épület
+  // megszakítása visszatérítéssel)
+  enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7, Build = 8,
+                              CancelBuild = 9 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -326,8 +353,15 @@ class Sim {
   EntityId spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y);   // sablonból, azonnal
   EntityId place_building(uint16_t def, uint8_t owner, int tx, int ty, bool complete);
   bool order_gather(EntityId worker, EntityId resource);
+  // Építés (ADR-007 3. lépés): hibánál a hiba oka (magyarul) az `error`-ba; a költség a parancskor levonódik.
+  bool order_build(EntityId worker, uint16_t def, int tx, int ty, std::string* error = nullptr);
+  // Lerakható-e: a pályán belül, építhető terepen, szirt nélkül, egy szinten, szabad helyen (épület, lelőhely
+  // nélkül), az előfeltételekkel; `owner` 0: az előfeltételek nélkül.
+  bool can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* error = nullptr);
+  bool cancel_build(EntityId building);   // félkész épület: megszakítás, a költség `cancel_refund` része vissza
+  bool missing_requirements(uint8_t owner, const EntityDef& d, std::string* what = nullptr);
   // Mentés betöltése után: az épületek és a lelőhelyek akadályai a (meccsindítás nélküli) navrácsba.
-  void restore_obstacles();
+  void restore_obstacles(const map::Map& m);
   void stop(EntityId e);                 // a mozgás és a munka abbahagyása
   const PlayerState& player(int i) const { return players_[static_cast<size_t>(i)]; }
   static constexpr int kMaxPlayers = 8;
@@ -358,7 +392,18 @@ class Sim {
   void movement_system();
   void combat_system();
   void economy_system();
+  void construction_system();
   void supply_system();
+  void enter_construction(EntityId worker, EntityId building);
+  void leave_construction(EntityId building, bool hurt);
+  void place_at_free(EntityId unit, Fixed x, Fixed y);   // a legközelebbi szabad helyre (épület alól, kilépéskor)
+  void build_order_step(EntityId e, Worker& w);
+  // Új parancs előtt: a tervezett (még le nem rakott) építés költsége vissza; false, ha a munkás bent épít (a bent
+  // lévő nem kap parancsot – a régi játék szerint)
+  bool interrupt(EntityId e);
+  bool pay(uint8_t owner, const std::array<int32_t, kResources>& cost);
+  void refund(uint8_t owner, const std::array<int32_t, kResources>& cost, int32_t permille);
+  const map::Map* map_ = nullptr;
   void income(uint8_t owner, int kind, int32_t amount);
   EntityId nearest_resource(int kind, Fixed x, Fixed y, Fixed max_dist, EntityId exclude);
   EntityId nearest_dropoff(uint8_t owner, int kind, Fixed x, Fixed y, EntityId exclude);

@@ -87,6 +87,10 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
   }
   read_res_map(game.find("start_resources"), r.start_resources);
   r.max_supply = int_of(game.find("max_supply"), 200);
+  if (const content::Value* cr = game.find("build_cancel_refund")) {
+    const Fixed f = fixed_of(cr, Fixed::from_ratio(3, 4));
+    r.cancel_refund_permille = static_cast<int32_t>((static_cast<int64_t>(f.raw()) * 1000 + (1 << 15)) >> 16);
+  }
   if (const content::Value* tiers = path(game, "upkeep", "tiers"); tiers && tiers->is_array()) {
     for (const auto& t : tiers->items()) {
       if (!t.is_array() || t.items().size() != 2) continue;
@@ -136,6 +140,21 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       d.fh = int_of(&fp->items()[1], 0);
     }
     d.supply_provides = int_of(path(*v, "Supply", "provides"), 0);
+    if (const content::Value* all = path(*v, "Requirements", "all"); all && all->is_array()) {
+      for (const auto& q : all->items()) {
+        if (!q.is_object()) continue;
+        for (const auto& [k, val] : q.members()) {
+          EntityDef::Req req;
+          if (k == "building") req.kind = EntityDef::Req::Building;
+          else if (k == "research") req.kind = EntityDef::Req::Research;
+          else if (k == "path") req.kind = EntityDef::Req::Path;
+          else if (k == "ascended") req.kind = EntityDef::Req::Ascended;
+          else continue;
+          if (val.is_string()) req.id = val.text();
+          d.reqs.push_back(req);
+        }
+      }
+    }
     d.dropoff = res_mask(path(*v, "Dropoff", "resources"));
     r.defs.push_back(std::move(d));
   }

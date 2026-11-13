@@ -68,17 +68,30 @@ void Sim::apply(const Command& c) {
       }
       break;
     }
-    case Command::Kind::GroupMove:
-      for (const EntityId e : c.units) {   // a munka abbahagyása (a rakomány marad)
-        if (Worker* w = rules_ && world_.alive(e) ? world_.get<Worker>(e) : nullptr) w->state = Worker::Idle;
+    case Command::Kind::GroupMove: {
+      // a munka abbahagyása (a rakomány marad; a tervezett építés költsége vissza); a bent építő nem mozdul
+      std::vector<EntityId> units;
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) units.push_back(e);
       }
-      order_group_move(c.units, c.x, c.y, static_cast<Formation>(c.formation));
+      order_group_move(units, c.x, c.y, static_cast<Formation>(c.formation));
       break;
+    }
     case Command::Kind::Gather:
-      for (const EntityId e : c.units) order_gather(e, c.target);
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) order_gather(e, c.target);
+      }
       break;
     case Command::Kind::Stop:
-      for (const EntityId e : c.units) stop(e);
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) stop(e);
+      }
+      break;
+    case Command::Kind::Build:
+      if (rules_ && !c.units.empty()) order_build(c.units.front(), rules_->def(c.def), c.rx, c.ry);
+      break;
+    case Command::Kind::CancelBuild:
+      cancel_build(c.target);
       break;
     case Command::Kind::Block:
       nav_block(c.rx, c.ry, c.rw, c.rh, c.flag != 0);
@@ -88,8 +101,7 @@ void Sim::apply(const Command& c) {
       break;
     case Command::Kind::Move:
       for (const EntityId e : c.units) {
-        if (Worker* w = rules_ && world_.alive(e) ? world_.get<Worker>(e) : nullptr) w->state = Worker::Idle;
-        order_move(e, c.x, c.y);
+        if (interrupt(e)) order_move(e, c.x, c.y);
       }
       break;
   }
@@ -177,7 +189,10 @@ void Sim::step() {
   // 2. a csatlakozók (szkriptek) a csatlakoztatás sorrendjében
   for (SimHooks* h : hooks_) h->on_tick(*this);
   // 3. rendszerek rögzített sorrendben, majd a halál-események
-  if (rules_) economy_system();   // M6: a munkások döntései (mozgásparancsok) a mozgás előtt
+  if (rules_) {   // M6: a munkások döntései (mozgásparancsok) a mozgás előtt, majd az építés haladása
+    economy_system();
+    construction_system();
+  }
   if (nav_) {
     const auto t0 = std::chrono::steady_clock::now();
     nav_paths();
@@ -211,6 +226,10 @@ uint64_t Sim::hash() const {
       for (int r = 0; r < kResources; ++r) { h.add_i64(p.res[static_cast<size_t>(r)]); h.add_i64(p.gathered[static_cast<size_t>(r)]); }
       h.add_i64(p.supply_cap);
       h.add_i64(p.supply_used);
+      h.add_u64(p.researched.size());
+      for (const auto& r : p.researched) h.add_bytes(r);
+      h.add_bytes(p.path);
+      h.add_u64(p.ascended);
     }
   }
   return h.value();
@@ -226,7 +245,10 @@ bool Command::needs_v3() const {
   return kind != Kind::Spawn && kind != Kind::Move ? true : (radius.raw() != 0 || move_class != 0xFF);
 }
 
-bool Command::needs_v4() const { return kind == Kind::Gather || kind == Kind::Stop || target != 0 || !def.empty(); }
+bool Command::needs_v4() const {
+  return kind == Kind::Gather || kind == Kind::Stop || kind == Kind::Build || kind == Kind::CancelBuild || target != 0 ||
+         !def.empty();
+}
 
 void save_command(core::ByteWriter& w, const Command& c, int format) {
   w.u8(static_cast<uint8_t>(c.kind));
@@ -252,7 +274,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 7 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 9 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -299,6 +321,10 @@ std::vector<uint8_t> Sim::save() const {
       for (int r = 0; r < kResources; ++r) { w.i64(p.res[static_cast<size_t>(r)]); w.i64(p.gathered[static_cast<size_t>(r)]); }
       w.i32(p.supply_cap);
       w.i32(p.supply_used);
+      w.u32(static_cast<uint32_t>(p.researched.size()));
+      for (const auto& r : p.researched) w.str(r);
+      w.str(p.path);
+      w.u8(p.ascended ? 1 : 0);
     }
   }
   return w.data();
@@ -335,6 +361,11 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       for (int i = 0; i < kResources; ++i) { p.res[static_cast<size_t>(i)] = r.i64(); p.gathered[static_cast<size_t>(i)] = r.i64(); }
       p.supply_cap = r.i32();
       p.supply_used = r.i32();
+      p.researched.clear();
+      const uint32_t nr = r.u32();
+      for (uint32_t i = 0; i < nr && i < 4096 && r.ok(); ++i) p.researched.push_back(r.str());
+      p.path = r.str();
+      p.ascended = r.u8() != 0;
     }
   }
   return r.ok() && r.at_end();

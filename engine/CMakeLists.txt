@@ -1,5 +1,5 @@
 ﻿# SPDX-License-Identifier: GPL-3.0-or-later
-# TOTU: Sky Rift â€“ az Ăşj motor (docs/alap/UJ_MOTOR_TERV.md, M1 platform-vĂˇz).
+# TOTU: Sky Rift – az új motor (docs/alap/UJ_MOTOR_TERV.md, M1 platform-váz).
 cmake_minimum_required(VERSION 3.24)
 project(totu VERSION 0.1.0 LANGUAGES C CXX)
 
@@ -10,11 +10,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-option(TOTU_CLIENT "A grafikus kliens fordĂ­tĂˇsa (SDL3)" ON)
-option(TOTU_SYSTEM_SDL "A rendszer SDL3-jĂˇt hasznĂˇlja, ha van" ON)
-option(TOTU_WERROR "FordĂ­tĂłi figyelmeztetĂ©s = hiba" ON)
+option(TOTU_CLIENT "A grafikus kliens fordítása (SDL3)" ON)
+option(TOTU_SYSTEM_SDL "A rendszer SDL3-ját használja, ha van" ON)
+option(TOTU_WERROR "Fordítói figyelmeztetés = hiba" ON)
 
-# KĂ¶zĂ¶s fordĂ­tĂłi beĂˇllĂ­tĂˇsok: szigorĂş figyelmeztetĂ©sek, Ă©s a determinizmus miatt nincs lebegĹ‘pontos Ă¶sszevonĂˇs (FMA).
+# Közös fordítói beállítások: szigorú figyelmeztetések, és a determinizmus miatt nincs lebegőpontos összevonás (FMA).
 add_library(totu_options INTERFACE)
 if(MSVC)
   target_compile_options(totu_options INTERFACE /W4 /permissive- /utf-8 /fp:precise)
@@ -28,7 +28,7 @@ else()
   endif()
 endif()
 
-# --- Lua 5.4.8 (MIT, vĂˇltozatlan forrĂˇs) egy C++ fordĂ­tĂˇsi egysĂ©gkĂ©nt; a determinizmus-makrĂłk a lua_build.cpp-ben ---
+# --- Lua 5.4.8 (MIT, változatlan forrás) egy C++ fordítási egységként; a determinizmus-makrók a lua_build.cpp-ben ---
 add_library(totu_lua STATIC src/script/lua_build.cpp)
 target_include_directories(totu_lua PUBLIC third_party/lua)
 if(MSVC)
@@ -37,7 +37,7 @@ else()
   target_compile_options(totu_lua PRIVATE -w -ffp-contract=off)
 endif()
 
-# --- mag: grafika nĂ©lkĂĽli, minden rendszeren tesztelt kĂ¶nyvtĂˇr --------------------------------------------------
+# --- mag: grafika nélküli, minden rendszeren tesztelt könyvtár --------------------------------------------------
 add_library(totu_core
   src/core/platform_info.cpp
   src/core/hash.cpp
@@ -49,7 +49,7 @@ add_library(totu_core
   src/content/templates.cpp
   src/content/schema.cpp
   src/content/loader.cpp
-  src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp
+  src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp src/sim/build.cpp
   src/sim/replay.cpp
   src/sim/navmove.cpp
   src/sim/formation.cpp
@@ -87,7 +87,7 @@ enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
-  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp src/client/session.cpp)
+  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp src/client/session.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
@@ -95,12 +95,12 @@ find_package(Threads REQUIRED)   # a szimulációs szál (M6) – a kliens és a
 target_link_libraries(totu_tests PRIVATE totu_core totu_image totu_assets totu_options Threads::Threads)
 add_test(NAME core COMMAND totu_tests)
 
-# --- ablak nĂ©lkĂĽli szimulĂˇciĂłs futtatĂł Ă©s az M2 kapu: a golden visszajĂˇtszĂˇs minden rendszeren egyezik -----------
+# --- ablak nélküli szimulációs futtató és az M2 kapu: a golden visszajátszás minden rendszeren egyezik -----------
 add_executable(totu_sim src/tools/totu_sim.cpp src/tools/nav_tools.cpp)
 target_link_libraries(totu_sim PRIVATE totu_core totu_options)
 target_compile_definitions(totu_sim PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
 add_test(NAME golden_replay COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m2.trep)
-# M3 kapu: a szkriptes golden visszajĂˇtszĂˇs (Lua-kĂĽldetĂ©s + csata) minden rendszeren egyezik
+# M3 kapu: a szkriptes golden visszajátszás (Lua-küldetés + csata) minden rendszeren egyezik
 add_test(NAME golden_replay_m3 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m3.trep)
 # M4 kapu: a pályás golden visszajátszás (alakzatok, csata, kapu, építés a NAV-BRIDGE pályán) minden rendszeren egyezik
 add_test(NAME golden_replay_m4 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m4.trep
@@ -112,7 +112,7 @@ if(TOTU_CLIENT)
     find_package(SDL3 CONFIG QUIET)
   endif()
   if(NOT SDL3_FOUND)
-    # RĂ¶gzĂ­tett SDL3-kiadĂˇs forrĂˇsbĂłl (zlib-licenc). A kiadĂˇsi csomag a forrĂˇst a repĂłba vendorolja majd (ADR-003).
+    # Rögzített SDL3-kiadás forrásból (zlib-licenc). A kiadási csomag a forrást a repóba vendorolja majd (ADR-003).
     include(FetchContent)
     set(SDL_SHARED OFF CACHE BOOL "" FORCE)
     set(SDL_STATIC ON CACHE BOOL "" FORCE)
