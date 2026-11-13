@@ -202,3 +202,32 @@ TEST_CASE("építés: determinisztikus (rögzített hash), és mentésből folyt
   std::printf("  építési állapothash (1800 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
   CHECK(a.sim->hash() == 0x1f70ee5542492113ULL);   // minden rendszeren ugyanez
 }
+
+TEST_CASE("lebontás (D38): a kész épület 70%-kal bontható az Ursanoknál, az Aurethi Birodalomnál nem") {
+  Match m("BUILD-ALAP", true, true, {"ursan", "imperium"});
+  CHECK(m.ok);
+  if (!m.ok) return;
+  sim::Sim& s = *m.sim;
+  const auto& r = *content_once().rules;
+  CHECK(r.faction("ursan")->demolish && r.faction("ooni")->demolish && r.faction("wullof")->demolish);
+  CHECK(!r.faction("imperium")->demolish && !r.faction("elves")->demolish);
+  CHECK(r.demolish_refund_permille == 700 && r.cancel_refund_permille == 750);
+  const sim::EntityId house = s.place_building(def_of("urs_hosszuhaz"), 1, 12, 14, true);
+  const int64_t wood = s.player(1).res[sim::kWood];
+  sim::Command d;
+  d.kind = sim::Command::Kind::Demolish;
+  d.target = house;
+  s.queue(std::move(d));
+  m.run(1);
+  CHECK(!s.world().alive(house));
+  CHECK(s.player(1).res[sim::kWood] - wood >= 70000 && s.player(1).res[sim::kWood] - wood < 70000 + 9000);
+  CHECK(m.nav->passable(0, 2 * 12 + 1, 2 * 14 + 1));
+  // a félkész nem bontható (azt megszakítani kell), és a másik nép kész épülete sem
+  const sim::EntityId half = s.place_building(def_of("urs_hosszuhaz"), 1, 12, 14, false);
+  CHECK(!s.demolish(half));
+  sim::EntityId imp_hq = sim::kNoEntity;
+  s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building&) {
+    if (s.world().get<sim::Health>(e)->owner == 2) imp_hq = e;
+  });
+  CHECK(imp_hq != sim::kNoEntity && !s.demolish(imp_hq) && s.world().alive(imp_hq));
+}

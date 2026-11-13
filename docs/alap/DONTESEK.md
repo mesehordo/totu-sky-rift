@@ -324,4 +324,7 @@ döntéssel; (3) a három ursan hős az M6-ban **egységként** (képességekkel
 
 A régi játékban nem lehetett épületet megszakítani vagy lebontani; az ADR-007 a megszakítást kérte. A tulajdonos
 döntése: a **félkész épület megszakítása a költség 75%-át adja vissza** (a WC3 szerint; `game.json` →
-`build_cancel_refund`), **kész épület lebontása nincs**.
+`build_cancel_refund`). **Kiegészítés (ugyanaznap):** kész épület **bizonyos népeknél** lebontható, a költség **70%-a** jár
+vissza (`game.json` → `demolish_refund`); a nép adatában `demolish: true` – most az **Ursanoknál, az Ooniknál és a
+Wullofoknál**. A Wullof összecsomagolása (szekérré alakul, odébb vihető, közben nem működik – MECH-WUL-4) ettől
+független faji mechanika, az M7-ben.

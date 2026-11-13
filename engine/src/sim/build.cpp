@@ -330,6 +330,19 @@ void Sim::construction_system() {
   });
 }
 
+bool Sim::demolish(EntityId e) {
+  if (!rules_ || !world_.alive(e)) return false;
+  const Building* b = world_.get<Building>(e);
+  const Health* h = world_.get<Health>(e);
+  if (!b || !h || !b->complete || h->hp <= 0 || h->owner == 0 || h->owner > kMaxPlayers) return false;
+  const FactionDef* f = rules_->faction(players_[h->owner].faction);
+  if (!f || !f->demolish) return false;   // ennél a népnél nem bontható (D38)
+  refund(h->owner, rules_->defs[b->def].cost, rules_->demolish_refund_permille);
+  if (nav_) nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
+  world_.destroy(e);
+  return true;
+}
+
 bool Sim::interrupt(EntityId e) {
   if (!rules_ || !world_.alive(e)) return true;
   Worker* w = world_.get<Worker>(e);

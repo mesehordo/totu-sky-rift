@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "content/loader.hpp"
@@ -53,7 +54,8 @@ struct Match {
   std::unique_ptr<map::Pathfinder> pf;
   std::unique_ptr<sim::Sim> sim;
   bool ok = false;
-  explicit Match(const std::string& name = "ECO-ALAP", bool upkeep = true, bool start = true) {
+  explicit Match(const std::string& name = "ECO-ALAP", bool upkeep = true, bool start = true,
+                 std::vector<std::string> factions = {"ursan", "ursan"}) {
     Content& c = content_once();
     std::vector<std::string> errors;
     const auto doc = content::parse(read_file(std::filesystem::path(TOTU_TEST_DATA) / "maps" / (name + ".json")));
@@ -66,7 +68,7 @@ struct Match {
     sim->attach_navigation(pf.get());
     sim->attach_rules(&*c.rules);
     sim::MatchSetup setup;
-    setup.factions = {"ursan", "ursan"};
+    setup.factions = std::move(factions);
     setup.upkeep = upkeep;
     std::string err;
     ok = !start || sim->setup_match(*map, setup, &err);

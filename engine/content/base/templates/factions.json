@@ -2270,6 +2270,7 @@
    }
   },
   "Faction": {
+    "demolish": true,
    "order": 8,
    "mechanic": "lantern",
    "style": "imperial",
@@ -2573,6 +2574,7 @@
    }
   },
   "Faction": {
+    "demolish": true,
    "order": 2,
    "mechanic": "standard",
    "builder": "enter",
@@ -2943,6 +2945,7 @@
    }
   },
   "Faction": {
+    "demolish": true,
    "order": 4,
    "mechanic": "standard",
    "style": "tribal",

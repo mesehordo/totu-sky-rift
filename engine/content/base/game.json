@@ -11,6 +11,7 @@
  },
  "max_supply": 200,
  "build_cancel_refund": 0.75,
+ "demolish_refund": 0.7,
  "summon_research": {
   "summon_duration": {
    "name": "Idézés tartósítása I.",

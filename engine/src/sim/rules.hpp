@@ -70,6 +70,7 @@ struct FactionDef {
   uint16_t hq = kNoDef, worker = kNoDef;
   std::vector<std::pair<uint16_t, int>> start_units;
   std::string builder;                        // MECH-BUILD: stay, stay_single, enter, consume, leave
+  bool demolish = false;                      // kész épület lebontható-e (D38: Ursanok, Ooni, Wullof)
   uint8_t start_gather = kWood;
   std::array<int32_t, kResources> start_resources{};
 };
@@ -90,6 +91,9 @@ struct Rules {
   // A félkész épület megszakításakor visszajáró költség ezreléke (a régi játékban nem volt megszakítás – ADR-007;
   // alapérték a WC3-é: 75%; `game.json` → `build_cancel_refund`).
   int32_t cancel_refund_permille = 750;
+  // Kész épület lebontásakor visszajáró költség ezreléke (D38: 70%; `game.json` → `demolish_refund`); csak annál a
+  // népnél, amelynek adatában `demolish: true` áll.
+  int32_t demolish_refund_permille = 700;
 };
 
 }  // namespace totu::sim

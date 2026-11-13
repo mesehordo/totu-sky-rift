@@ -85,7 +85,7 @@ Az adat a meglévő sablonokból jön (ADR-005; `templates/units`, `buildings`, 
    - lerakás a lábnyom szerint (terep, magaslat, foglaltság; a navrács frissül);
    - építési stílusok (MECH-BUILD; az Ursanoknál `enter`: a Kalapácshordozó bemegy és bentről épít);
    - előfeltételek;
-   - a félkész épület megszakítása 75%-os visszatérítéssel; kész épület lebontása nincs (D38);
+   - a félkész épület megszakítása 75%-os visszatérítéssel; kész épület lebontása 70%-kal, csak egyes népeknél (D38);
    - az épülő épület életereje a haladással nő.
 4. **Termelés:**
    - termelési sor (költség, létszám, idő), gyülekezőpont;

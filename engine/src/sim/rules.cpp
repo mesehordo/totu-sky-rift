@@ -87,6 +87,10 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
   }
   read_res_map(game.find("start_resources"), r.start_resources);
   r.max_supply = int_of(game.find("max_supply"), 200);
+  if (const content::Value* dr = game.find("demolish_refund")) {
+    const Fixed f = fixed_of(dr, Fixed::from_ratio(7, 10));
+    r.demolish_refund_permille = static_cast<int32_t>((static_cast<int64_t>(f.raw()) * 1000 + (1 << 15)) >> 16);
+  }
   if (const content::Value* cr = game.find("build_cancel_refund")) {
     const Fixed f = fixed_of(cr, Fixed::from_ratio(3, 4));
     r.cancel_refund_permille = static_cast<int32_t>((static_cast<int64_t>(f.raw()) * 1000 + (1 << 15)) >> 16);
@@ -182,6 +186,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       }
     }
     if (const content::Value* b = f->find("builder"); b && b->is_string()) fd.builder = b->text();
+    if (const content::Value* dm = f->find("demolish"); dm && dm->is_bool()) fd.demolish = dm->as_bool();
     if (const content::Value* g = f->find("start_gather"); g && g->is_string() && resource_index(g->text()) >= 0) {
       fd.start_gather = static_cast<uint8_t>(resource_index(g->text()));
     }

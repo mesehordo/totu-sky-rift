@@ -270,8 +270,9 @@ struct Command {
   // M6 (a 4-es formátumtól): Gather (munkások egy lelőhelyre), Stop (a parancs és a munka abbahagyása),
   // Build (az első munkás a `def` épületet a (rx, ry) csempére építi), CancelBuild (a `target` félkész épület
   // megszakítása visszatérítéssel)
+  // Demolish (a `target` kész épület lebontása, ha a népe lebonthat – D38)
   enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7, Build = 8,
-                              CancelBuild = 9 };
+                              CancelBuild = 9, Demolish = 10 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -359,6 +360,7 @@ class Sim {
   // nélkül), az előfeltételekkel; `owner` 0: az előfeltételek nélkül.
   bool can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* error = nullptr);
   bool cancel_build(EntityId building);   // félkész épület: megszakítás, a költség `cancel_refund` része vissza
+  bool demolish(EntityId building);       // kész épület lebontása (D38): csak a `demolish` népnél, 70% vissza
   bool missing_requirements(uint8_t owner, const EntityDef& d, std::string* what = nullptr);
   // Mentés betöltése után: az épületek és a lelőhelyek akadályai a (meccsindítás nélküli) navrácsba.
   void restore_obstacles(const map::Map& m);

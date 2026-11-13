@@ -93,6 +93,9 @@ void Sim::apply(const Command& c) {
     case Command::Kind::CancelBuild:
       cancel_build(c.target);
       break;
+    case Command::Kind::Demolish:
+      demolish(c.target);
+      break;
     case Command::Kind::Block:
       nav_block(c.rx, c.ry, c.rw, c.rh, c.flag != 0);
       break;
@@ -246,8 +249,8 @@ bool Command::needs_v3() const {
 }
 
 bool Command::needs_v4() const {
-  return kind == Kind::Gather || kind == Kind::Stop || kind == Kind::Build || kind == Kind::CancelBuild || target != 0 ||
-         !def.empty();
+  return kind == Kind::Gather || kind == Kind::Stop || kind == Kind::Build || kind == Kind::CancelBuild ||
+         kind == Kind::Demolish || target != 0 || !def.empty();
 }
 
 void save_command(core::ByteWriter& w, const Command& c, int format) {
@@ -274,7 +277,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 9 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 10 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
