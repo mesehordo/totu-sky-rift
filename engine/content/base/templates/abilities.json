@@ -5918,5 +5918,32 @@
    "icon": "rage",
    "ally": "shrissh_matah"
   }
+ },
+ "elfoglalas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.elfoglalas.name",
+   "desc": "ability.elfoglalas.desc"
+  },
+  "Spec": {
+   "type": "capture",
+   "hotkey": "C",
+   "cast": 8,
+   "below": 0.5,
+   "icon": "flag"
+  }
+ },
+ "megszallas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.megszallas.name",
+   "desc": "ability.megszallas.desc"
+  },
+  "Spec": {
+   "type": "occupy",
+   "hotkey": "O",
+   "cast": 2,
+   "icon": "house"
+  }
  }
 }

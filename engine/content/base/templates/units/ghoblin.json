@@ -55,6 +55,12 @@
      "ally": "ghoblin"
     }
    ]
+  },
+  "Abilities": {
+   "list": [
+    "elfoglalas",
+    "megszallas"
+   ]
   }
  },
  "gho_sziklagorgeto": {
@@ -122,6 +128,12 @@
     "pack": 1,
     "range_add": 1
    }
+  },
+  "Abilities": {
+   "list": [
+    "elfoglalas",
+    "megszallas"
+   ]
   }
  },
  "gho_pajzskoves": {
@@ -171,7 +183,9 @@
   },
   "Abilities": {
    "list": [
-    "gho_kofal"
+    "gho_kofal",
+    "elfoglalas",
+    "megszallas"
    ]
   },
   "Requirements": {
@@ -235,6 +249,12 @@
      "ally": "ghoblin"
     }
    ]
+  },
+  "Abilities": {
+   "list": [
+    "elfoglalas",
+    "megszallas"
+   ]
   }
  },
  "gho_koheju_oreg": {
@@ -284,7 +304,9 @@
   },
   "Abilities": {
    "list": [
-    "gho_kodobbantas"
+    "gho_kodobbantas",
+    "elfoglalas",
+    "megszallas"
    ]
   },
   "Requirements": {
@@ -344,7 +366,9 @@
   },
   "Abilities": {
    "list": [
-    "gho_meszrobbanas"
+    "gho_meszrobbanas",
+    "elfoglalas",
+    "megszallas"
    ]
   },
   "Requirements": {

@@ -403,6 +403,18 @@
    "together": false
   }
  },
+ "capture": {
+  "_leiras": "Elfoglalás és megszállás (D30; kiinduló értékek a spec szerint): férőhely az épület nagyobbik oldala szerint (legfeljebb 2 – 2, 3 – 4, 4-től – 6), kiűzés a tulajdonos 50% alatti életerejénél.",
+  "occupy_slots": [[2, 2], [3, 4], [99, 6]],
+  "evict_below": 0.5
+ },
+ "promotion": {
+  "_leiras": "Előléptetés (D30): a nem hős harci egységek tapasztalata az ölésekből (a hősök képletével); a küszöb az egység költségének szorzója; a fokozat módosítói (életerő és sebzés aránya, páncél).",
+  "ranks": [
+   {"id": "veteran", "cost_mult": 2, "hp": 0.1, "damage": 0.1, "armor": 0},
+   {"id": "elite", "cost_mult": 5, "hp": 0.2, "damage": 0.2, "armor": 1}
+  ]
+ },
  "heroes": {
   "_leiras": "Hősök (D25; a régi játék állandói, HOS-1–4): szinthatárok, a tapasztalat elosztása, leltár, újraélesztés, szintlépés.",
   "levels": [0, 200, 500, 900, 1400, 2000, 2700, 3500, 4400, 5400],

@@ -48,7 +48,7 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
   world_.pool<Producer>().each([&](EntityId e, const Producer& pr) {
     const Building* b = world_.get<Building>(e);
     const Health* h = world_.get<Health>(e);
-    if (!b || !h || h->owner != owner || h->hp <= 0 || !b->complete) return;
+    if (!b || !h || h->owner != owner || h->hp <= 0 || !b->complete || occupied_against(e, owner)) return;
     const auto& pu = rules_->defs[b->def].produces;
     if (std::find(pu.begin(), pu.end(), def) == pu.end()) return;
     if (building && e != building) return;
@@ -116,7 +116,7 @@ bool Sim::research(uint8_t owner, const std::string& id, std::string* error) {
     const Health* h = world_.get<Health>(e);
     if (!b || !h || h->owner != owner) return;
     for (const QueueItem& q : pr.queue) running = running || (q.research && q.def == ri);
-    if (h->hp <= 0 || !b->complete) return;
+    if (h->hp <= 0 || !b->complete || occupied_against(e, owner)) return;   // megszállva nem (D30)
     const auto& rl = rules_->defs[b->def].researches;
     if (std::find(rl.begin(), rl.end(), id) != rl.end()) cands.emplace_back(pr.queue.size(), e);
   });

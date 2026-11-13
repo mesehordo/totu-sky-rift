@@ -48,7 +48,9 @@
   },
   "Abilities": {
    "list": [
-    "p_halozati_gyujtes"
+    "p_halozati_gyujtes",
+    "elfoglalas",
+    "megszallas"
    ]
   },
   "Requirements": {
@@ -112,7 +114,8 @@
   "Abilities": {
    "list": [
     "osszeolvadas",
-    "osztodas3"
+    "osztodas3",
+    "elfoglalas"
    ]
   },
   "Requirements": {
@@ -240,7 +243,8 @@
   },
   "Abilities": {
    "list": [
-    "osztodas4"
+    "osztodas4",
+    "megszallas"
    ]
   },
   "Requirements": {

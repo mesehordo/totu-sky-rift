@@ -7250,3 +7250,19 @@ msgctxt "status.mark.status"
 msgid "Megjelölt"
 msgstr ""
 
+
+msgctxt "ability.elfoglalas.name"
+msgid "Elfoglalás"
+msgstr ""
+
+msgctxt "ability.elfoglalas.desc"
+msgid "Az egység 8 másodpercig átveszi a félig lerombolt (50% alatti) ellenséges vagy semleges épületet, majd beköltözik: az épület a tiéd lesz, a saját listáját képezheted és kutathatod, a képességeit nem. Sebzés megszakítja; a főépület nem foglalható el."
+msgstr ""
+
+msgctxt "ability.megszallas.name"
+msgid "Megszállás"
+msgstr ""
+
+msgctxt "ability.megszallas.desc"
+msgid "Az egységek beköltöznek az ellenséges vagy semleges épületbe; amíg bent vannak, a tulajdonos ott nem képezhet és nem kutathat, a távolharcos megszállók kilőnek. Férőhely: kicsi épület 2, közepes 4, nagy 6. 50% alatti életerőnél vagy visszafoglaláskor kiűzik őket."
+msgstr ""

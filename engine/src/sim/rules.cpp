@@ -374,7 +374,8 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
              : type == "nova" ? T::Nova : type == "chant" ? T::Chant : type == "aura" ? T::Aura
              : type == "autoheal" ? T::Autoheal : type == "bolt" ? T::Bolt : type == "summon" ? T::Summon
              : type == "area" ? T::Area : type == "passive" ? T::Passive : type == "gpower" ? T::Power
-             : type == "blink" ? T::Blink : type == "mount" ? T::Mount : type == "dismount" ? T::Dismount : T::Unknown;
+             : type == "blink" ? T::Blink : type == "mount" ? T::Mount : type == "dismount" ? T::Dismount
+             : type == "capture" ? T::Capture : type == "occupy" ? T::Occupy : T::Unknown;
       // alapértékek típusonként (KEPESSEGEK.md B-2)
       const bool cd10 = a.type == T::Nova || a.type == T::SelfBuff || a.type == T::Blink;
       const Fixed cd_def = cd10 ? Fixed::from_int(10) : (a.type == T::Summon || a.type == T::Autoheal) ? Fixed::from_int(1) : Fixed{};
@@ -406,6 +407,8 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       if (const content::Value* ef = key("effect"); ef && ef->is_string()) a.effect = ef->text();
       for (int ri = 0; ri < kResources; ++ri) a.cost[static_cast<size_t>(ri)] = int_of(key(resource_id(ri)), 0);
       a.hq_hp = int_of(key("hq_hp"), 0);
+      a.cast = seconds_to_ticks(fixed_of(key("cast"), Fixed{}));
+      a.below = fixed_of(key("below"), Fixed::from_int(1));
       a.reveal = int_of(key("reveal"), 0);
       a.targeted = flag("target");
       a.hits_buildings = flag("buildings");
@@ -699,6 +702,28 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     r.items.push_back(std::move(d));
   }
   std::sort(r.items.begin(), r.items.end(), [](const ItemDef& a, const ItemDef& b) { return a.id < b.id; });
+  if (const content::Value* cp = game.find("capture"); cp && cp->is_object()) {   // D30
+    if (const content::Value* sl = cp->find("occupy_slots"); sl && sl->is_array()) {
+      r.capture.slots.clear();
+      for (const auto& x : sl->items()) {
+        if (x.is_array() && x.items().size() == 2) r.capture.slots.emplace_back(int_of(&x.items()[0], 0), int_of(&x.items()[1], 0));
+      }
+    }
+    r.capture.evict_below = fixed_of(cp->find("evict_below"), r.capture.evict_below);
+  }
+  if (const content::Value* pm = game.find("promotion"); pm && pm->is_object()) {
+    if (const content::Value* rk = pm->find("ranks"); rk && rk->is_array()) {
+      for (const auto& x : rk->items()) {
+        Rules::Rank k;
+        if (const content::Value* id = x.find("id"); id && id->is_string()) k.id = id->text();
+        k.cost_mult = fixed_of(x.find("cost_mult"), Fixed::from_int(2));
+        k.hp = fixed_of(x.find("hp"), Fixed{});
+        k.damage = fixed_of(x.find("damage"), Fixed{});
+        k.armor = int_of(x.find("armor"), 0);
+        r.ranks.push_back(k);
+      }
+    }
+  }
   if (const content::Value* he = game.find("heroes"); he && he->is_object()) {
     if (const content::Value* lv = he->find("levels"); lv && lv->is_array()) {
       r.heroes.levels.clear();

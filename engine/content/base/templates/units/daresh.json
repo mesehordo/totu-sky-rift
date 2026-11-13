@@ -53,6 +53,11 @@
      "ally": "daresh"
     }
    ]
+  },
+  "Abilities": {
+   "list": [
+    "megszallas"
+   ]
   }
  },
  "dar_gyantapajzsos": {
@@ -102,7 +107,8 @@
   },
   "Abilities": {
    "list": [
-    "dar_gyantafal"
+    "dar_gyantafal",
+    "megszallas"
    ]
   },
   "Requirements": {
@@ -166,7 +172,8 @@
   "Abilities": {
    "list": [
     "dar_rajenek",
-    "dar_mezgyogyitas"
+    "dar_mezgyogyitas",
+    "megszallas"
    ]
   },
   "Requirements": {
@@ -229,6 +236,11 @@
      "ally": "daresh"
     }
    ]
+  },
+  "Abilities": {
+   "list": [
+    "megszallas"
+   ]
   }
  },
  "dar_szarnyas_ijasz": {
@@ -282,6 +294,11 @@
     {
      "ally": "daresh"
     }
+   ]
+  },
+  "Abilities": {
+   "list": [
+    "megszallas"
    ]
   }
  }

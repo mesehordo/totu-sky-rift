@@ -637,6 +637,60 @@ struct Enter {   // beszállás-parancs: odamegy, és ha van hely, bemegy
   static Enter load(core::ByteReader& r) { Enter e; e.building = r.u32(); e.repath = r.i32(); return e; }
 };
 
+// --- elfoglalás, megszállás, előléptetés (M7 10. lépés; D30) -----------------------------------------------------------
+struct Seize {   // elfoglalás/megszállás-parancs: odamegy, varázsol (sebzés megszakítja), aztán átveszi vagy beköltözik
+  EntityId building = 0;
+  uint16_t ability = 0;
+  uint8_t occupy = 0;
+  int64_t start = -1;     // a varázslás kezdete (tick; -1: még úton)
+  int32_t start_hp = 0;
+  int32_t repath = 0;
+  void hash(core::StateHash& h) const {
+    h.add_u64(building); h.add_u64(ability); h.add_u64(occupy); h.add_i64(start); h.add_i64(start_hp); h.add_i64(repath);
+  }
+  void save(core::ByteWriter& w) const { w.u32(building); w.u32(ability); w.u32(occupy); w.i64(start); w.i32(start_hp); w.i32(repath); }
+  static Seize load(core::ByteReader& r) {
+    Seize s;
+    s.building = r.u32(); s.ability = static_cast<uint16_t>(r.u32()); s.occupy = static_cast<uint8_t>(r.u32());
+    s.start = r.i64(); s.start_hp = r.i32(); s.repath = r.i32();
+    return s;
+  }
+};
+
+struct Occupants {   // a megszállók (a bekerülés sorrendjében), a gazdájuk és a lövésük újratöltése
+  uint8_t owner = 0;
+  std::vector<EntityId> units;
+  std::vector<int32_t> cd;
+  void hash(core::StateHash& h) const {
+    h.add_u64(owner); h.add_u64(units.size());
+    for (size_t i = 0; i < units.size(); ++i) { h.add_u64(units[i]); h.add_i64(cd[i]); }
+  }
+  void save(core::ByteWriter& w) const {
+    w.u32(owner); w.u32(static_cast<uint32_t>(units.size()));
+    for (size_t i = 0; i < units.size(); ++i) { w.u32(units[i]); w.i32(cd[i]); }
+  }
+  static Occupants load(core::ByteReader& r) {
+    Occupants o;
+    o.owner = static_cast<uint8_t>(r.u32());
+    for (uint32_t i = 0, n = r.u32(); i < n && i < 64 && r.ok(); ++i) { o.units.push_back(r.u32()); o.cd.push_back(r.i32()); }
+    return o;
+  }
+};
+
+struct Captured {   // elfoglalt épület: a képességei nem használhatók (D30)
+  void hash(core::StateHash&) const {}
+  void save(core::ByteWriter&) const {}
+  static Captured load(core::ByteReader&) { return {}; }
+};
+
+struct Veteran {   // előléptetés: ezred tapasztalat és fokozat (0: újonc, 1: veterán, 2: elit)
+  int32_t xp = 0;
+  uint8_t rank = 0;
+  void hash(core::StateHash& h) const { h.add_i64(xp); h.add_u64(rank); }
+  void save(core::ByteWriter& w) const { w.i32(xp); w.u32(rank); }
+  static Veteran load(core::ByteReader& r) { Veteran v; v.xp = r.i32(); v.rank = static_cast<uint8_t>(r.u32()); return v; }
+};
+
 // játékosállapot (1–8. játékos; a 0. a semleges)
 struct PlayerState {
   std::string faction;                       // pl. `ursan`
@@ -879,6 +933,9 @@ class Sim {
   bool choose_ally(uint8_t owner, const std::string& people, std::string* error = nullptr);
   // Főépület-képesség (`gpower`, pl. az ursan Eskü-riadó: minden munkás Fegyverbe!).
   bool use_power(uint8_t owner, EntityId building, const std::string& ability, Fixed x = {}, Fixed y = {});
+  // megszállás (D30): a megszállók kiűzése (`half`: az épület ledőlt – fél életerővel jönnek ki); idegen megszálló van-e bent
+  bool evict(EntityId building, bool half = false);
+  bool occupied_against(EntityId building, uint8_t owner);
   bool in_rift(EntityId e) const { return rift_.count(e) != 0; }
   // Győzelem és vereség (ADR-007 9. lépés): akinek minden épülete elpusztult, kiesik; a győztes az egyetlen megmaradt
   // játékos (0: még tart, vagy nincs meccs).
@@ -1012,6 +1069,16 @@ class Sim {
   std::map<EntityId, std::pair<EntityId, uint8_t>> killer_;   // a tick haldoklóinak gyilkosa (nem állapot)
   int64_t spell_milli(EntityId e, Fixed dmg);
   void garrison_system();
+  // elfoglalás, megszállás, előléptetés (D30)
+  int occupy_capacity(const Building& b) const;
+  bool seize_valid(EntityId e, const Seize& s);
+  void release_units(const Building& bd, const std::vector<EntityId>& out, bool half);
+  void capture_building(EntityId unit, EntityId building);
+  void occupy_enter(EntityId unit, EntityId building);
+  void seize_system();
+  void occupation_system();
+  std::vector<Modifier> rank_mods(uint8_t rank) const;
+  void promote(EntityId e, int64_t value);
   void tower_system();
   void ascension_system();
   void enter_garrison(EntityId unit, EntityId building);

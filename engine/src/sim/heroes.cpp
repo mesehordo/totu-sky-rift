@@ -60,7 +60,12 @@ Fixed Sim::stat(EntityId e, const char* path, Fixed base) {
   const Building* b = u ? nullptr : world_.get<Building>(e);
   if (!h || (!u && !b) || !rules_) return base;
   const EntityDef& d = rules_->defs[u ? u->def : b->def];
-  if (!world_.get<HeroState>(e)) return research_stat(h->owner, path, base, d);
+  if (!world_.get<HeroState>(e)) {
+    const Veteran* v = world_.get<Veteran>(e);
+    if (!v || v->rank == 0) return research_stat(h->owner, path, base, d);
+    const std::vector<Modifier> rm = rank_mods(v->rank);   // előléptetés (D30)
+    return apply_modifiers({&players_[h->owner].research_mods, &rm}, path, base, d);
+  }
   const std::vector<Modifier> hm = hero_mods(e);
   return apply_modifiers({&players_[h->owner].research_mods, &hm}, path, base, d);
 }
@@ -161,6 +166,7 @@ void Sim::grant_kill_xp(EntityId victim, uint8_t owner, EntityId killer) {
     value = (int64_t{v.raw()} * 1000) >> 16;
     if (vb) value /= 2;
   }
+  promote(killer, value);   // a nem hős harci egység előléptetése (D30)
   std::vector<EntityId> heroes;
   const int maxl = static_cast<int>(rules_->heroes.levels.size());
   world_.pool<HeroState>().each([&](EntityId e, const HeroState& hs) {

@@ -43,7 +43,9 @@
   },
   "Abilities": {
    "list": [
-    "beasas"
+    "beasas",
+    "elfoglalas",
+    "megszallas"
    ]
   },
   "Worker": {
@@ -97,7 +99,8 @@
   "Abilities": {
    "list": [
     "atvaltozas",
-    "beasas"
+    "beasas",
+    "elfoglalas"
    ],
    "path": {
     "atvaltozas": "pancel"
@@ -160,7 +163,8 @@
   "Abilities": {
    "list": [
     "tuskezapor",
-    "beasas"
+    "beasas",
+    "megszallas"
    ]
   },
   "Requirements": {

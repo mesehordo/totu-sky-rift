@@ -503,6 +503,22 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
         if (!incapacitated(e) && mount_up(e, ab)) return true;
       }
       return false;
+    case T::Capture:   // elfoglalás, megszállás (D30): célzott épület
+    case T::Occupy: {
+      if (!target || !world_.get<Building>(target)) return false;
+      bool any = false;
+      for (const EntityId e : us) {
+        Seize s;
+        s.building = target;
+        s.ability = ab;
+        s.occupy = a.type == T::Occupy ? 1 : 0;
+        if (incapacitated(e) || !seize_valid(e, s)) continue;
+        interrupt(e);
+        world_.add(e, s);
+        any = true;
+      }
+      return any;
+    }
     case T::Dismount: {
       bool any = false;
       for (const EntityId e : us) any = dismount(e, ab) || any;
@@ -783,6 +799,8 @@ void Sim::ability_system() {
     if (b.complete) regen(e, b.def);
   });
   garrison_system();
+  seize_system();
+  occupation_system();
   item_system();
   camp_system();
   wullof_system();

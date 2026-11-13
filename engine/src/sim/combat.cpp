@@ -435,6 +435,7 @@ void Sim::shot_system() {
       int64_t best = 0;
       world_.pool<Health>().each([&](EntityId o, const Health& oh) {
         if (oh.hp <= 0 || !hostile(s.owner, oh.owner) || !target_ok(o)) return;
+        if (const Sheltered* sh = world_.alive(s.src) ? world_.get<Sheltered>(s.src) : nullptr; sh && sh->building == o) return;   // a megszálló a saját épületét nem
         const Position* op = world_.get<Position>(o);
         if (!op) return;
         Fixed d;
@@ -575,6 +576,7 @@ void Sim::die(EntityId e) {
   if (const Building* b = world_.get<Building>(e)) {
     if (b->builder_in) leave_construction(e, true);   // a lerombolt épületből sérülten ugrik ki
     if (world_.get<Garrison>(e)) unload(e);            // a helyőrség kiszáll
+    if (world_.get<Occupants>(e)) evict(e, true);      // a megszállók fél életerővel (D30)
     if (nav_) nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
   }
   kill(e);

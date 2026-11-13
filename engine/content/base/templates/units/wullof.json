@@ -101,7 +101,9 @@
    "list": [
     "harci_enek",
     "erdei_rejtozes",
-    "tomahawk"
+    "tomahawk",
+    "elfoglalas",
+    "megszallas"
    ]
   }
  },
@@ -156,7 +158,9 @@
    "list": [
     "bumerang",
     "vadaszles",
-    "erdei_rejtozes"
+    "erdei_rejtozes",
+    "elfoglalas",
+    "megszallas"
    ]
   }
  },
@@ -602,7 +606,8 @@
    "list": [
     "tomahawk",
     "vandor_enek",
-    "erdei_rejtozes"
+    "erdei_rejtozes",
+    "elfoglalas"
    ]
   }
  },
@@ -1269,6 +1274,12 @@
     "unit": "wul_ijas_vadasz",
     "count": 3
    }
+  },
+  "Abilities": {
+   "list": [
+    "elfoglalas",
+    "megszallas"
+   ]
   }
  },
  "wul_landzsas_falka": {
@@ -1327,6 +1338,12 @@
     "unit": "wul_landzsas",
     "count": 3
    }
+  },
+  "Abilities": {
+   "list": [
+    "elfoglalas",
+    "megszallas"
+   ]
   }
  }
 }

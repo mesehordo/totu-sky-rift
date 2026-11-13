@@ -92,7 +92,8 @@
   },
   "Abilities": {
    "list": [
-    "bekaugras"
+    "bekaugras",
+    "megszallas"
    ]
   }
  },
@@ -141,7 +142,8 @@
   "Abilities": {
    "list": [
     "huk_horog",
-    "bekaugras"
+    "bekaugras",
+    "elfoglalas"
    ]
   }
  },
@@ -799,7 +801,8 @@
   },
   "Abilities": {
    "list": [
-    "bekaugras"
+    "bekaugras",
+    "megszallas"
    ]
   },
   "Requirements": {

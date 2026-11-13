@@ -45,7 +45,8 @@
   "Abilities": {
    "list": [
     "beszallas",
-    "fegyverbe"
+    "fegyverbe",
+    "elfoglalas"
    ],
    "research": {
     "fegyverbe": "urs_nepfelkeles"
@@ -155,7 +156,8 @@
   "Abilities": {
    "list": [
     "beszallas",
-    "horgonyszigony"
+    "horgonyszigony",
+    "megszallas"
    ]
   }
  },
@@ -570,7 +572,8 @@
   "Abilities": {
    "list": [
     "beszallas",
-    "dardafal"
+    "dardafal",
+    "megszallas"
    ]
   }
  },

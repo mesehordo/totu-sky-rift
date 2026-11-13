@@ -46,7 +46,8 @@
   "Abilities": {
    "list": [
     "p_gepjavitas",
-    "tulhajtas"
+    "tulhajtas",
+    "elfoglalas"
    ]
   },
   "Worker": {
@@ -106,7 +107,8 @@
     "testudo",
     "lelekhorgony",
     "goztulnyomas",
-    "lelekhorgony_mentes"
+    "lelekhorgony_mentes",
+    "elfoglalas"
    ],
    "research": {
     "goztulnyomas": "imp_goztulnyomas",
@@ -163,7 +165,8 @@
    "list": [
     "gyorstoltes_u",
     "lelekhorgony",
-    "goztulnyomas"
+    "goztulnyomas",
+    "megszallas"
    ],
    "research": {
     "goztulnyomas": "imp_goztulnyomas"

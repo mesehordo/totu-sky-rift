@@ -36,7 +36,7 @@ TEST_CASE("tartalom: az alaptartalom (21 faj) betölthető és érvényes") {
   CHECK(n("unit") == 206);
   CHECK(n("building") == 142);
   CHECK(n("research") == 164);
-  CHECK(n("ability") == 269);
+  CHECK(n("ability") == 271);
   CHECK(n("item") == 15);
   CHECK(n("status") == 13);
   CHECK(n("faction") == 21);  // a Micélia főnép modként (D28)

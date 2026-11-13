@@ -164,24 +164,7 @@ bool Sim::unload(EntityId b) {
   if (!g || !bd || g->units.empty()) return false;
   const std::vector<EntityId> out = g->units;
   g->units.clear();
-  const Fixed cx = Fixed::from_int(bd->tx) + Fixed::from_ratio(bd->w, 2);
-  const Fixed cy = Fixed::from_int(bd->ty) + Fixed::from_ratio(bd->h, 2);
-  for (size_t k = 0; k < out.size(); ++k) {
-    const EntityId e = out[k];
-    if (!world_.alive(e)) continue;
-    world_.pool<Sheltered>().remove(e);
-    if (nav_) {
-      world_.add(e, Body{});
-      world_.add(e, Path{});
-      const auto air = nav_->nav().table().movement_class("air");
-      const EntityDef& d = rules_->defs[world_.get<Unit>(e)->def];
-      set_body(e, d.radius, d.flying && air ? *air : 0xFF);
-    }
-    // a régi: k × 0,9 radiánnal körbe, a lábnyom alsó részénél (a 60%-ánál), a legközelebbi szabad helyre
-    const core::Angle a = core::Angle::from_units(static_cast<int32_t>(k) * 9387);
-    place_at_free(e, cx + core::cos(a) * Fixed::from_ratio(bd->w * 7, 10),
-                  cy + Fixed::from_ratio(bd->h, 10) + core::sin(a) * Fixed::from_ratio(10, 32));
-  }
+  release_units(*bd, out, false);
   return true;
 }
 
@@ -360,6 +343,7 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, F
   const auto ab = static_cast<uint16_t>(ai);
   const auto& pw = rules_->defs[bd->def].powers;
   if (std::find(pw.begin(), pw.end(), ab) == pw.end()) return false;
+  if (world_.get<Captured>(b)) return false;   // elfoglalt épület képessége nem (D30)
   const AbilityDef& a = rules_->abilities[ab];
   for (const auto& [rid, rt] : c->ready) {
     if (rid == ab && rt > tick_) return false;
@@ -436,6 +420,257 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, F
     std::sort(c->ready.begin(), c->ready.end());
   }
   return true;
+}
+
+// --- elfoglalás, megszállás (M7 10. lépés; D30) ----------------------------------------------------------------------
+int Sim::occupy_capacity(const Building& b) const {
+  const int side = std::max(b.w, b.h);
+  for (const auto& [s, n] : rules_->capture.slots) {
+    if (side <= s) return n;
+  }
+  return 0;
+}
+
+bool Sim::occupied_against(EntityId b, uint8_t owner) {
+  const Occupants* o = world_.get<Occupants>(b);
+  return o && !o->units.empty() && o->owner != owner;
+}
+
+bool Sim::seize_valid(EntityId e, const Seize& s) {
+  const Health* h = world_.get<Health>(e);
+  const Building* bd = world_.get<Building>(s.building);
+  const Health* bh = world_.get<Health>(s.building);
+  if (!rules_ || !h || h->hp <= 0 || !bd || !bh || bh->hp <= 0 || !bd->complete || s.ability >= rules_->abilities.size()) return false;
+  const uint8_t uo = h->owner, bo = bh->owner;
+  const Occupants* oc = world_.get<Occupants>(s.building);
+  const bool hostile_occ = oc && !oc->units.empty() && oc->owner != uo;
+  if (bo == uo) return hostile_occ;          // visszafoglalás: a saját épületből kiűzi a megszállókat
+  if (!hostile(uo, bo)) return false;        // csak ellenséges vagy semleges épület
+  if (s.occupy) return !hostile_occ && static_cast<int>(oc ? oc->units.size() : 0) < occupy_capacity(*bd);
+  for (const FactionDef& f : rules_->factions) {
+    if (f.hq == bd->def) return false;       // a főépület nem foglalható el
+  }
+  return int64_t{bh->hp} * 65536 < int64_t{bh->max} * rules_->abilities[s.ability].below.raw();
+}
+
+void Sim::release_units(const Building& bd, const std::vector<EntityId>& out, bool half) {
+  const Fixed cx = Fixed::from_int(bd.tx) + Fixed::from_ratio(bd.w, 2);
+  const Fixed cy = Fixed::from_int(bd.ty) + Fixed::from_ratio(bd.h, 2);
+  for (size_t k = 0; k < out.size(); ++k) {
+    const EntityId e = out[k];
+    if (!world_.alive(e)) continue;
+    world_.pool<Sheltered>().remove(e);
+    if (half) {
+      if (Health* h = world_.get<Health>(e)) h->hp = std::max(1, h->hp / 2);
+    }
+    if (nav_) {
+      world_.add(e, Body{});
+      world_.add(e, Path{});
+      const auto air = nav_->nav().table().movement_class("air");
+      const EntityDef& d = rules_->defs[world_.get<Unit>(e)->def];
+      set_body(e, d.radius, d.flying && air ? *air : 0xFF);
+    }
+    // a régi: k × 0,9 radiánnal körbe, a lábnyom alsó részénél (a 60%-ánál), a legközelebbi szabad helyre
+    const core::Angle a = core::Angle::from_units(static_cast<int32_t>(k) * 9387);
+    place_at_free(e, cx + core::cos(a) * Fixed::from_ratio(bd.w * 7, 10),
+                  cy + Fixed::from_ratio(bd.h, 10) + core::sin(a) * Fixed::from_ratio(10, 32));
+  }
+}
+
+bool Sim::evict(EntityId b, bool half) {
+  const Occupants* o = world_.get<Occupants>(b);
+  const Building* bd = world_.get<Building>(b);
+  if (!o || !bd) return false;
+  const std::vector<EntityId> out = o->units;
+  const Building copy = *bd;
+  world_.pool<Occupants>().remove(b);
+  release_units(copy, out, half);
+  return !out.empty();
+}
+
+void Sim::capture_building(EntityId e, EntityId b) {
+  const uint8_t uo = world_.get<Health>(e)->owner;
+  if (Producer* pr = world_.get<Producer>(b)) {   // a folyamatban lévő képzés és kutatás ára az előző gazdáé
+    while (!pr->queue.empty()) {
+      if (!cancel_queue_item(b, static_cast<int>(pr->queue.size()) - 1)) break;
+      pr = world_.get<Producer>(b);
+    }
+  }
+  if (world_.get<Garrison>(b)) unload(b);
+  evict(b, false);
+  world_.get<Health>(b)->owner = uo;
+  if (!world_.get<Captured>(b)) world_.add(b, Captured{});
+  if (Combat* c = world_.get<Combat>(b)) c->target = 0;
+  world_.destroy(e);   // az elfoglaló beköltözik
+}
+
+void Sim::occupy_enter(EntityId e, EntityId b) {
+  if (!world_.get<Occupants>(b)) world_.add(b, Occupants{});
+  Position* p = world_.get<Position>(e);
+  const Position* bp = world_.get<Position>(b);
+  if (!p || !bp) return;
+  stop(e);
+  if (Combat* c = world_.get<Combat>(e)) {
+    c->order = Combat::None;
+    c->target = 0;
+  }
+  world_.pool<Body>().remove(e);
+  world_.pool<Path>().remove(e);
+  p->x = bp->x;
+  p->y = bp->y;
+  world_.add(e, Sheltered{b});
+  Occupants* o = world_.get<Occupants>(b);
+  o->owner = world_.get<Health>(e)->owner;
+  o->units.push_back(e);
+  o->cd.push_back(0);
+}
+
+void Sim::seize_system() {
+  std::vector<EntityId> ids;
+  world_.pool<Seize>().each([&](EntityId e, const Seize&) { ids.push_back(e); });
+  for (const EntityId e : ids) {
+    Seize* s = world_.get<Seize>(e);
+    if (!s) continue;
+    if (!seize_valid(e, *s)) {
+      world_.pool<Seize>().remove(e);
+      halt(e);
+      continue;
+    }
+    const EntityId b = s->building;
+    const Building& bd = *world_.get<Building>(b);
+    const int32_t hp = world_.get<Health>(e)->hp;
+    const uint8_t uo = world_.get<Health>(e)->owner;
+    const Position& p = *world_.get<Position>(e);
+    if (rect_gap(p.x, p.y, bd) > rules_->defs[world_.get<Unit>(e)->def].radius + kReach) {
+      s->start = -1;
+      if (incapacitated(e)) continue;
+      const Movement* mv = world_.get<Movement>(e);
+      if (--s->repath <= 0 || !(mv && mv->moving)) {
+        s->repath = kRepath;
+        const Position bp = *world_.get<Position>(b);
+        order_move(e, bp.x, bp.y);
+      }
+      continue;
+    }
+    if (s->start < 0) {   // a varázslás kezdete
+      s->start = tick_;
+      s->start_hp = hp;
+      halt(e);
+      if (Combat* c = world_.get<Combat>(e)) {
+        c->order = Combat::None;
+        c->target = 0;
+      }
+      continue;
+    }
+    if (hp < s->start_hp || incapacitated(e)) {   // sebzés (vagy kábulás) megszakítja
+      world_.pool<Seize>().remove(e);
+      continue;
+    }
+    if (tick_ - s->start < rules_->abilities[s->ability].cast) continue;
+    const bool occ = s->occupy != 0;
+    world_.pool<Seize>().remove(e);
+    if (world_.get<Health>(b)->owner == uo) evict(b, false);   // visszafoglalás
+    else if (occ) occupy_enter(e, b);
+    else capture_building(e, b);
+  }
+}
+
+void Sim::occupation_system() {
+  std::vector<EntityId> ids;
+  world_.pool<Occupants>().each([&](EntityId b, const Occupants&) { ids.push_back(b); });
+  for (const EntityId b : ids) {
+    Occupants* o = world_.get<Occupants>(b);
+    const Health* bh = world_.get<Health>(b);
+    const Building* bd = world_.get<Building>(b);
+    if (!o || !bh || !bd || bh->hp <= 0) continue;   // a ledőlőből a halálkor jönnek ki (fél életerővel)
+    for (size_t i = o->units.size(); i-- > 0;) {
+      if (!world_.alive(o->units[i])) {
+        o->units.erase(o->units.begin() + static_cast<std::ptrdiff_t>(i));
+        o->cd.erase(o->cd.begin() + static_cast<std::ptrdiff_t>(i));
+      }
+    }
+    if (o->units.empty()) {
+      world_.pool<Occupants>().remove(b);
+      continue;
+    }
+    if (bh->owner != o->owner && int64_t{bh->hp} * 65536 < int64_t{bh->max} * rules_->capture.evict_below.raw()) {
+      evict(b, false);   // 50% alatti életerőnél kiűzik őket
+      continue;
+    }
+    const uint8_t owner = o->owner;
+    const Building box = *bd;
+    for (size_t i = 0;; ++i) {   // a távolharcos megszállók kilőnek
+      o = world_.get<Occupants>(b);
+      if (!o || i >= o->units.size()) break;
+      if (o->cd[i] > 0) {
+        --o->cd[i];
+        continue;
+      }
+      const EntityId u = o->units[i];
+      const Unit* uu = world_.get<Unit>(u);
+      if (!uu) continue;
+      const uint16_t udef = uu->def;
+      const AttackDef& a = rules_->defs[udef].attack;
+      if (!a.has || !a.ranged()) continue;
+      const Fixed range = stat(u, "Attack.range", a.range);
+      EntityId best = kNoEntity;
+      int64_t best_d = 0;
+      world_.pool<Unit>().each([&](EntityId t, const Unit& tu) {
+        const Health* th = world_.get<Health>(t);
+        if (!th || th->hp <= 0 || !hostile(owner, th->owner) || sheltered(t)) return;   // a megszálló az épületből lát
+        if (rules_->defs[tu.def].flying ? !a.air : !a.ground) return;
+        const Position& tp = *world_.get<Position>(t);
+        const Fixed g = rect_gap(tp.x, tp.y, box) - rules_->defs[tu.def].radius;
+        if (g > range + kRangeSlack) return;
+        if (best == kNoEntity || g.raw() < best_d || (g.raw() == best_d && t < best)) {
+          best = t;
+          best_d = g.raw();
+        }
+      });
+      if (best == kNoEntity) continue;
+      o->cd[i] = a.cooldown;
+      const int64_t dmg = milli_of(stat(u, "Attack.damage", a.damage));
+      launch_shot(u, owner, udef, best, dmg, a.projectile, a.splash, range);
+    }
+  }
+}
+
+// --- előléptetés (D30) -----------------------------------------------------------------------------------------------
+std::vector<Modifier> Sim::rank_mods(uint8_t rank) const {
+  std::vector<Modifier> out;
+  if (!rules_ || rank == 0 || rank > rules_->ranks.size()) return out;
+  const Rules::Rank& r = rules_->ranks[rank - 1];
+  auto mk = [&](Modifier::Op op, const char* path, Fixed v) {
+    Modifier m;
+    m.op = op;
+    m.path = path;
+    m.value = v;
+    out.push_back(m);
+  };
+  mk(Modifier::Mul, "Health.max", Fixed::from_int(1) + r.hp);
+  mk(Modifier::Mul, "Attack.damage", Fixed::from_int(1) + r.damage);
+  if (r.armor) mk(Modifier::Add, "Health.armor", Fixed::from_int(r.armor));
+  return out;
+}
+
+void Sim::promote(EntityId e, int64_t value) {
+  if (!rules_ || rules_->ranks.empty() || !e || !world_.alive(e) || value <= 0) return;
+  const Unit* u = world_.get<Unit>(e);
+  if (!u || world_.get<HeroState>(e) || world_.get<Worker>(e) || world_.get<Lifetime>(e) || !world_.get<Combat>(e)) return;
+  const EntityDef& d = rules_->defs[u->def];
+  int64_t cost = 0;
+  for (const int32_t c : d.cost) cost += c;
+  if (!world_.get<Veteran>(e)) world_.add(e, Veteran{});
+  Veteran* v = world_.get<Veteran>(e);
+  v->xp = static_cast<int32_t>(std::min<int64_t>(int64_t{v->xp} + value, 2000000000));
+  bool up = false;
+  while (v->rank < rules_->ranks.size()) {
+    const int64_t thr = (cost * 1000 * rules_->ranks[v->rank].cost_mult.raw()) >> 16;   // ezred tapasztalat
+    if (v->xp < thr) break;
+    ++v->rank;
+    up = true;
+  }
+  if (up) hero_recalc(e, false);
 }
 
 }  // namespace totu::sim

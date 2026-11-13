@@ -87,7 +87,7 @@ struct AbilityMods {   // a `modifiers`: szorzók (1 = nincs) és összeadandók
 };
 struct AbilityDef {
   enum class Type : uint8_t { Unknown = 0, Garrison, SelfBuff, Toggle, Nova, Chant, Aura, Autoheal, Bolt, Summon, Area,
-                              Passive, Power, Blink, Mount, Dismount };
+                              Passive, Power, Blink, Mount, Dismount, Capture, Occupy };
   std::string id;
   Type type = Type::Unknown;
   int32_t cooldown = 0, duration = 0;   // tick
@@ -118,6 +118,8 @@ struct AbilityDef {
   // felfedés (csempe); `blink`: landolási sebzés és sugár
   std::array<int32_t, kResources> cost{};
   int32_t hq_hp = 0, reveal = 0;
+  int32_t cast = 0;                     // varázslási idő (tick; elfoglalás, megszállás – D30)
+  Fixed below = Fixed::from_int(1);     // az elfoglalható épület életerő-aránya ez alatt
   bool targeted = false, hits_buildings = false;
   Fixed land_damage, land_radius = Fixed::from_ratio(6, 5);
 };
@@ -387,6 +389,16 @@ struct Rules {
     int32_t xp_hero_base = 100, xp_hero_per_level = 60;
     Fixed xp_unit_base = Fixed::from_int(8), xp_cost_mult = Fixed::from_ratio(18, 100);
   } heroes;
+  struct Capture {   // elfoglalás, megszállás (D30; `game.json` → `capture`)
+    std::vector<std::pair<int, int>> slots{{2, 2}, {3, 4}, {99, 6}};   // nagyobbik oldal → férőhely
+    Fixed evict_below = Fixed::from_ratio(1, 2);
+  } capture;
+  struct Rank {      // előléptetés (D30; `game.json` → `promotion.ranks`)
+    std::string id;
+    Fixed cost_mult, hp, damage;
+    int32_t armor = 0;
+  };
+  std::vector<Rank> ranks;
   struct Camps {
     Fixed home = Fixed::from_ratio(3, 2), search = Fixed::from_int(5), leash = Fixed::from_int(7);
     Fixed regen_pct = Fixed::from_ratio(1, 10);           // a visszatérő tábor-egység gyógyulása / s (max életerő arányában)

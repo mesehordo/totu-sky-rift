@@ -98,7 +98,8 @@
   "Abilities": {
    "list": [
     "fenylepes",
-    "napfolt"
+    "napfolt",
+    "elfoglalas"
    ],
    "research": {
     "napfolt": "elf_napfolt"
@@ -548,7 +549,8 @@
   },
   "Abilities": {
    "list": [
-    "csillagdarda"
+    "csillagdarda",
+    "elfoglalas"
    ]
   },
   "Energy": {
@@ -929,7 +931,8 @@
   },
   "Abilities": {
    "list": [
-    "lesallas"
+    "lesallas",
+    "megszallas"
    ]
   },
   "Attack": {

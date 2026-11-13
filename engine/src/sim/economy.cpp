@@ -52,6 +52,10 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<RepairOrder>("RepairOrder");
   world_.register_component<Mounted>("Mounted");
   world_.register_component<Tapped>("Tapped");
+  world_.register_component<Seize>("Seize");   // elfoglalás, megszállás, előléptetés (D30)
+  world_.register_component<Occupants>("Occupants");
+  world_.register_component<Veteran>("Veteran");
+  world_.register_component<Captured>("Captured");
   modules_ = make_faction_modules();   // népmodulok (M7): a saját komponenseik rögzített sorrendben
   for (auto& m : modules_) m->register_components(world_);
 }
