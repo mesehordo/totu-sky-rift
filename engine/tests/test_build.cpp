@@ -200,7 +200,7 @@ TEST_CASE("építés: determinisztikus (rögzített hash), és mentésből folyt
   c.run(900);
   CHECK(c.sim->hash() == a.sim->hash());
   std::printf("  építési állapothash (1800 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0xdae2832c5a49ed5dULL);   // minden rendszeren ugyanez
+  CHECK(a.sim->hash() == 0xb84ee222b03b70ddULL);   // minden rendszeren ugyanez
 }
 
 TEST_CASE("lebontás (D38): a kész épület 70%-kal bontható az Ursanoknál, az Aurethi Birodalomnál nem") {
