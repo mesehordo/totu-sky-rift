@@ -102,6 +102,37 @@ void parse_env_map(const content::Value* obj, std::map<std::string, EnvEffect>& 
   }
 }
 
+// `Rules` (KUT-RULE): a ma használt kulcsok – az ismeretlen kulcs a régi játékban is csak adat volt
+void parse_rules(const content::Value* obj, const Rules& r, RuleSet& out) {
+  if (!obj || !obj->is_object()) return;
+  if (const content::Value* g = obj->find("garrison_dmg")) out.garrison_dmg = int_of(g, -1);
+  if (const content::Value* sa = obj->find("supply_add"); sa && sa->is_object()) {
+    out.has_supply_add = true;
+    for (const auto& [bid, n] : sa->members()) {
+      const uint16_t d = r.def(bid);
+      if (d != kNoDef) out.supply_add.emplace_back(d, int_of(&n, 0));
+    }
+  }
+  if (const content::Value* lr = obj->find("low_hp_rage"); lr && lr->is_object()) {
+    out.has_low_hp_rage = true;
+    out.lhr_below = fixed_of(lr->find("below"), Fixed::from_ratio(2, 5));
+    out.lhr_mult = fixed_of(lr->find("mult"), Fixed::from_ratio(6, 5));
+  }
+  if (const content::Value* nw = obj->find("no_weak"); nw && nw->is_object()) {
+    out.has_no_weak = true;
+    for (const auto& [who, list] : nw->members()) {
+      std::vector<std::string> classes;
+      read_tags(&list, classes);
+      out.no_weak.emplace_back(who, std::move(classes));
+    }
+  }
+  if (const content::Value* rg = obj->find("rage"); rg && rg->is_object()) {
+    out.has_rage = true;
+    read_tags(rg->find("tags"), out.rage_tags);
+    out.rage_max = fixed_of(rg->find("max"), Fixed{});
+  }
+}
+
 }  // namespace
 
 const char* resource_id(int r) { return r >= 0 && r < kResources ? kResIds[r] : "?"; }
@@ -246,6 +277,12 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
   }
   r.energy_regen_per_tick = per_tick(fixed_of(game.find("energy_regen"), Fixed::from_ratio(4, 5)));
+  if (const content::Value* rf = game.find("rift"); rf && rf->is_object()) {
+    r.rift.radius = fixed_of(rf->find("radius"), r.rift.radius);
+    r.rift.energy_mult = fixed_of(rf->find("energy_mult"), r.rift.energy_mult);
+    r.rift.mage_range = fixed_of(rf->find("mage_range"), r.rift.mage_range);
+    r.rift.spell_mult = fixed_of(rf->find("spell_mult"), r.rift.spell_mult);
+  }
 
   // képességek (a sablonok előtt: az egységek a sorszámukra hivatkoznak; az idézett egység a sablonok után)
   std::vector<std::pair<std::string, std::string>> summon_units;   // képesség → idézett sablon
@@ -307,6 +344,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.drop_work = flag("drop_work");
       a.ultimate = flag("ultimate");
       if (const content::Value* b = key("buff"); b && b->is_string()) a.buff = b->text();
+      if (const content::Value* ef = key("effect"); ef && ef->is_string()) a.effect = ef->text();
       if (const auto it = ability_element.find(id); it != ability_element.end()) a.element = it->second;
       auto mod = [&](const char* k, Fixed def) {
         for (const content::Value* src : {lv0 ? lv0->find("modifiers") : nullptr, spec->find("modifiers")}) {
@@ -455,6 +493,15 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     d.energy_max = int_of(path(*v, "Energy", "max"), 0);
     d.regen = fixed_of(path(*v, "Health", "regen"), Fixed{});
     d.garrison = int_of(path(*v, "Garrison", "slots"), 0);
+    if (const content::Value* sh = path(*v, "Identity", "shape"); sh && sh->is_string()) d.shape = sh->text();
+    const content::Value* rsrc = path(*v, "Mechanics", "rift_source");
+    d.rift_source = rsrc && rsrc->is_bool() && rsrc->as_bool();
+    if (const content::Value* pw = path(*v, "Powers", "list"); pw && pw->is_array()) {
+      for (const auto& x : pw->items()) {
+        const int ai = x.is_string() ? r.ability_index(x.text()) : -1;
+        if (ai >= 0) d.powers.push_back(static_cast<uint16_t>(ai));
+      }
+    }
     r.defs.push_back(std::move(d));
   }
   std::sort(r.defs.begin(), r.defs.end(), [](const EntityDef& a, const EntityDef& b) { return a.id < b.id; });
@@ -500,6 +547,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       }
     }
     parse_modifiers(v->find("Modifiers"), rd.modifiers);
+    parse_rules(v->find("Rules"), r, rd.rules);
     r.researches.push_back(std::move(rd));
   }
   std::sort(r.researches.begin(), r.researches.end(), [](const ResearchDef& a, const ResearchDef& b) { return a.id < b.id; });
@@ -561,6 +609,35 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       parse_env_map(fe->find("daytime"), fd.env_daytime);
       parse_env_map(fe->find("weather"), fd.env_weather);
     }
+    if (const content::Value* asc = f->find("ascension"); asc && asc->is_object()) {
+      fd.ascension_buildings = int_of(asc->find("buildings"), 3);
+    }
+    if (const content::Value* ps = v->find("Paths"); ps && ps->is_object()) {
+      // a régi KUT-EFF hatás ({stat, tags, add}) D24 módosítóként
+      static const std::map<std::string, std::string> kStat = {
+          {"hp", "Health.max"}, {"armor", "Health.armor"}, {"damage", "Attack.damage"}, {"regen", "Health.regen"},
+          {"range", "Attack.range"}, {"sight", "Vision.sight"}, {"speed_pct", "Movement.speed_pct"},
+          {"shield", "Health.shield"}, {"carry_pct", "Worker.carry_pct"}};
+      for (const auto& [pid, pv] : ps->members()) {
+        if (!pv.is_object()) continue;
+        PathDef pd;
+        pd.id = pid;
+        parse_rules(pv.find("rules"), r, pd.rules);
+        if (const content::Value* ef = pv.find("effects"); ef && ef->is_array()) {
+          for (const auto& e : ef->items()) {
+            const content::Value* st = e.find("stat");
+            const auto it = st && st->is_string() ? kStat.find(st->text()) : kStat.end();
+            if (it == kStat.end()) continue;
+            Modifier m;
+            m.path = it->second;
+            m.value = fixed_of(e.find("add"), Fixed{});
+            read_tags(e.find("tags"), m.filter_tags);
+            pd.effects.push_back(std::move(m));
+          }
+        }
+        fd.paths.push_back(std::move(pd));
+      }
+    }
     r.factions.push_back(std::move(fd));
   }
   std::sort(r.factions.begin(), r.factions.end(), [](const FactionDef& a, const FactionDef& b) { return a.id < b.id; });
@@ -596,6 +673,35 @@ int Rules::ability_index(const std::string& id) const {
   return it != abilities.end() && it->id == id ? static_cast<int>(it - abilities.begin()) : -1;
 }
 
+const PathDef* FactionDef::path(const std::string& pid) const {
+  for (const PathDef& p : paths) {
+    if (p.id == pid) return &p;
+  }
+  return nullptr;
+}
+
+void RuleSet::merge(const RuleSet& o) {
+  if (o.garrison_dmg >= 0) garrison_dmg = o.garrison_dmg;
+  if (o.has_supply_add) {
+    has_supply_add = true;
+    supply_add = o.supply_add;
+  }
+  if (o.has_low_hp_rage) {
+    has_low_hp_rage = true;
+    lhr_below = o.lhr_below;
+    lhr_mult = o.lhr_mult;
+  }
+  if (o.has_no_weak) {
+    has_no_weak = true;
+    no_weak = o.no_weak;
+  }
+  if (o.has_rage) {
+    has_rage = true;
+    rage_tags = o.rage_tags;
+    rage_max = o.rage_max;
+  }
+}
+
 bool AbilityMods::empty() const {
   const Fixed one = Fixed::from_int(1);
   return speed_mult == one && damage_mult == one && ranged_taken_mult == one && armor_add.raw() == 0 &&
@@ -617,11 +723,15 @@ Fixed Rules::type_mult(const std::string& attacker, const std::string& target) c
 }
 
 namespace {
+// a régi `stat()` szűrője: címke, a sablon azonosítója, `all`, `building` (minden épület), `tower` (támadó épület)
 bool modifier_matches(const Modifier& m, const EntityDef& d) {
   if (!m.filter_id.empty()) return m.filter_id == d.id;
   if (m.filter_tags.empty()) return true;
   for (const std::string& t : m.filter_tags) {
-    if (d.has_tag(t) || (d.building && t == "building")) return true;
+    if (d.has_tag(t) || t == d.id || t == "all" || (d.building && t == "building") ||
+        (d.building && d.attack.has && t == "tower")) {
+      return true;
+    }
   }
   return false;
 }

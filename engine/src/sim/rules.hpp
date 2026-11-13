@@ -94,6 +94,22 @@ struct AbilityDef {
   Element element = Element::None;
   AbilityMods mods;
   std::string buff;                     // `gpower` (`levy`): a kapott önerősítés
+  std::string effect;                   // `gpower`: `levy` (mozgósítás) …
+};
+
+// Szabálymódosítók (KUT-RULE, a régi `rules`): kulcsonként az utolsó felülír (a régi `merge_rules`).
+struct RuleSet {
+  int32_t garrison_dmg = -1;                                   // helyőrség sebzése fejenként (-1: a játék alapja)
+  bool has_supply_add = false;
+  std::vector<std::pair<uint16_t, int32_t>> supply_add;        // épület → + létszám
+  bool has_low_hp_rage = false;                                // Medve-ösztön: `below` életerő-arány alatt × `mult`
+  Fixed lhr_below, lhr_mult = Fixed::from_int(1);
+  bool has_no_weak = false;                                    // a sablon / címke nem gyenge ezek ellen
+  std::vector<std::pair<std::string, std::vector<std::string>>> no_weak;
+  bool has_rage = false;                                       // vérszomj-irány: × (1 + max × hiányzó életerő-arány)
+  std::vector<std::string> rage_tags;
+  Fixed rage_max;
+  void merge(const RuleSet& o);
 };
 
 struct EntityDef {
@@ -141,6 +157,9 @@ struct EntityDef {
   int32_t energy_max = 0;                     // `Energy.max`
   Fixed regen;                                // életerő / s (`Health.regen`)
   int32_t garrison = 0;                       // helyőrség-helyek (`Garrison.slots`)
+  std::string shape;                          // `Identity.shape` (a felemelkedés nem számolja: wall, node, dropoff)
+  bool rift_source = false;                   // Égkő (`Mechanics.rift_source`)
+  std::vector<uint16_t> powers;               // főépület-képességek (`Powers.list`, Rules::abilities)
   bool has_tag(const std::string& t) const;
 };
 
@@ -166,6 +185,14 @@ struct ResearchDef {
   int32_t time_ticks = 0;
   std::vector<EntityDef::Req> reqs;
   std::vector<Modifier> modifiers;   // állandó statváltozás kész kutatáskor (D24)
+  RuleSet rules;                     // szabálymódosítók (KUT-RULE)
+};
+
+// fejlődési irány (MECH-ASC): az irány hatásai kutatásként (`effects`), a szabályai a kutatásokéi mellé
+struct PathDef {
+  std::string id;
+  std::vector<Modifier> effects;
+  RuleSet rules;
 };
 
 // Napszak és időjárás (M6, ADR-007 7. lépés; D35): egyszerű, egymással szorzódó hatásszorzók – nem az állandó
@@ -202,6 +229,9 @@ struct FactionDef {
   std::array<int32_t, kResources> start_resources{};
   // faji napszak/időjárás-hatás (D35, 4a. pont): azonosító ("ejszaka", "hoseg", …) → az általánoshoz szorzódó extra
   std::map<std::string, EnvEffect> env_daytime, env_weather;
+  int32_t ascension_buildings = 3;            // MECH-ASC: ennyi különböző fajta kész épület
+  std::vector<PathDef> paths;
+  const PathDef* path(const std::string& id) const;
 };
 
 struct Rules {
@@ -257,6 +287,11 @@ struct Rules {
     int32_t fear_ticks = 48;                               // félelem: menekülés ideje
     Fixed fear_flee = Fixed::from_int(3);                  // csempe, az okozótól elfelé
   } element_fx;                                            // `statuses.json` (status_ice, status_fear)
+  struct Rift {                                            // Égkő-fény (MECH-RIFT; `game.json` → `rift`)
+    Fixed radius = Fixed::from_int(5), energy_mult = Fixed::from_ratio(3, 2), mage_range = Fixed::from_int(1);
+    Fixed spell_mult = Fixed::from_int(1);
+  } rift;
+  int32_t garrison_dmg = 4;                                // helyőrség sebzése fejenként (a régi alapja)
 };
 
 }  // namespace totu::sim

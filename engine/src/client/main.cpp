@@ -78,6 +78,7 @@ struct Options {
   bool sync = false;
   float look_x = -1, look_y = -1;
   bool build_demo = false;
+  bool garrison_demo = false;   // képpróba (D39): helyőrséges Hosszúház, a kurzor fölötte
   int battle_demo = 0;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
@@ -242,6 +243,7 @@ int main(int argc, char** argv) {
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
     else if (a == "--sync") o.sync = true;
     else if (a == "--build-demo") o.build_demo = true;
+    else if (a == "--garrison-demo") o.garrison_demo = true;
     else if (a == "--battle-demo") o.battle_demo = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--look") {
       char* end = nullptr;
@@ -332,6 +334,7 @@ int main(int argc, char** argv) {
     constexpr double kWeatherBlend = 4.0;   // másodperc
     double prev_t = 0;
     bool have_world = false, world_atlas_ok = false;
+    float demo_hover_x = -1, demo_hover_y = -1;   // képpróba: a kurzor helye (világ-képpont)
     sim::Formation formation = sim::Formation::Auto;
     float drag_x = 0, drag_y = 0;
     bool dragging = false;
@@ -395,6 +398,20 @@ int main(int argc, char** argv) {
             world.select_box(static_cast<float>(sx - 6) * client::World::kTilePx, static_cast<float>(sy - 6) * client::World::kTilePx,
                              static_cast<float>(sx + 6) * client::World::kTilePx, static_cast<float>(sy + 6) * client::World::kTilePx);
             world.order_build(session.rules()->def("urs_tanya"), sx + 4, sy - 5);
+          }
+          if (o.garrison_demo && session.has_starts() && session.rules()) {   // D39: 2 a 4 helyből foglalt
+            const auto [sx, sy] = session.map().objects().starts.front();
+            sim::Sim& gs = session.sim();
+            const sim::Rules& gr = *session.rules();
+            const sim::EntityId house = gs.place_building(gr.def("urs_hosszuhaz"), 1, sx + 5, sy, true);
+            std::vector<sim::EntityId> gu;
+            for (int k = 0; k < 2; ++k) {
+              gu.push_back(gs.spawn_unit(gr.def("urs_pajzshordozo"), 1, core::Fixed::from_int(sx + 4),
+                                         core::Fixed::from_ratio((sy + k) * 10 + 5, 10)));
+            }
+            gs.order_garrison(gu, house);
+            demo_hover_x = static_cast<float>(sx + 6) * client::World::kTilePx;
+            demo_hover_y = static_cast<float>(sy + 1) * client::World::kTilePx;
           }
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
           if (!o.sync && o.screenshot.empty()) runner.start();
@@ -466,9 +483,15 @@ int main(int argc, char** argv) {
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_RIGHT) {
           const float wx = cam.x + ev.button.x / cam.zoom, wy = cam.y + ev.button.y / cam.zoom;
           if (const sim::EntityId enemy = world.enemy_at(wx, wy)) world.order_attack(enemy);   // ellenségre: támadás
+          else if (const sim::EntityId gb = world.garrison_at(wx, wy)) world.order_garrison(gb);   // saját helyőrségbe
           else world.order_move(wx, wy, formation);
         }
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_A) attack_move = true;   // A + bal gomb: támadó mozgás
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_U && have_world) {   // U: a kurzor alatti épületből ki
+          float umx = 0, umy = 0;
+          SDL_GetMouseState(&umx, &umy);
+          world.order_unload(cam.x + umx / cam.zoom, cam.y + umy / cam.zoom);
+        }
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_V && have_world) {   // következő időjárás
           weather_from = weather_to;
           weather_to = static_cast<render::Weather>((static_cast<int>(weather_to) + 1) % static_cast<int>(render::Weather::Count));
@@ -549,6 +572,12 @@ int main(int argc, char** argv) {
         batch.begin(proj);
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_bars(batch, white, alpha);
+        {
+          float hmx = 0, hmy = 0;
+          SDL_GetMouseState(&hmx, &hmy);
+          if (demo_hover_x >= 0) world.draw_garrison(batch, white, demo_hover_x, demo_hover_y);
+          else world.draw_garrison(batch, white, cam.x + hmx / cam.zoom, cam.y + hmy / cam.zoom);
+        }
         batch.end();
         effects.draw_scene(batch, proj, particles);
         batch.begin(proj);

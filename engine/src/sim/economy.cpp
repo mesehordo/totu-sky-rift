@@ -38,6 +38,9 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Lifetime>("Lifetime");
   world_.register_component<Field>("Field");
   world_.register_component<Spell>("Spell");
+  world_.register_component<Garrison>("Garrison");   // helyőrség (D39)
+  world_.register_component<Sheltered>("Sheltered");
+  world_.register_component<Enter>("Enter");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
@@ -95,7 +98,9 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   Vital vt;
   vt.shield = std::max(0, research_stat(owner, "Health.shield", Fixed::from_int(d.shield), d).floor_int()) * 1000;
   world_.add(e, vt);
-  if (d.attack.has) world_.add(e, Combat{});
+  if (d.attack.has || d.garrison > 0) world_.add(e, Combat{});   // a helyőrség fegyvert ad
+  if (d.garrison > 0) world_.add(e, Garrison{});
+  if (!d.powers.empty()) world_.add(e, Caster{});                  // főépület-képességek újratöltése
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
   return e;
 }
@@ -176,6 +181,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   stealth_system();
   vision_system();
   build_terrain_patches();
+  for (int i = 0; i <= kMaxPlayers; ++i) rebuild_rules(static_cast<uint8_t>(i));
   return true;
 }
 
@@ -445,6 +451,9 @@ void Sim::supply_system() {
     const Health* h = hp.get(e);
     if (!b.complete || !h || h->hp <= 0 || h->owner > kMaxPlayers) return;
     cap[h->owner] += rules_->defs[b.def].supply_provides;
+    for (const auto& [bd, add] : rules_of(h->owner).supply_add) {   // Kiadós tanya
+      if (bd == b.def) cap[h->owner] += add;
+    }
   });
   world_.pool<Unit>().each([&](EntityId e, const Unit& u) {
     const Health* h = hp.get(e);

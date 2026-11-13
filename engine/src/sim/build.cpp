@@ -341,6 +341,7 @@ bool Sim::demolish(EntityId e) {
   const FactionDef* f = rules_->faction(players_[h->owner].faction);
   if (!f || !f->demolish) return false;   // ennél a népnél nem bontható (D38)
   refund(h->owner, rules_->defs[b->def].cost, rules_->demolish_refund_permille);
+  if (world_.get<Garrison>(e)) unload(e);   // a helyőrség kiszáll
   if (nav_) nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
   world_.destroy(e);
   return true;
@@ -348,6 +349,8 @@ bool Sim::demolish(EntityId e) {
 
 bool Sim::interrupt(EntityId e) {
   if (!rules_ || !world_.alive(e)) return true;
+  world_.pool<Enter>().remove(e);              // a beszállás is elmarad
+  if (world_.get<Sheltered>(e)) return false;  // a helyőrségben lévő nem kap parancsot (előbb ki kell szállnia)
   if (Caster* cs = world_.get<Caster>(e)) {   // a folyamatban lévő célzott képesség és a munkába visszatérés elmarad
     cs->cast = kNoAbility;
     cs->ctarget = 0;

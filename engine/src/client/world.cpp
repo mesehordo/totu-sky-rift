@@ -135,6 +135,35 @@ sim::EntityId World::enemy_at(float wx, float wy) const {
   return best;
 }
 
+sim::EntityId World::garrison_at(float wx, float wy) const {
+  if (!cur_) return 0;
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kBuilding || u.owner != 1 || u.slots == 0 || !u.complete || u.hp <= 0) continue;
+    const float x0 = static_cast<float>(u.tx) * kTilePx, y0 = static_cast<float>(u.ty) * kTilePx;
+    const float x1 = x0 + static_cast<float>(u.w) * kTilePx, y1 = y0 + static_cast<float>(u.h) * kTilePx;
+    if (wx >= x0 && wx < x1 && wy >= y0 && wy < y1) return u.id;
+  }
+  return 0;
+}
+
+void World::order_garrison(sim::EntityId building) {
+  if (selected_.empty() || !building) return;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Garrison;
+  c.units = selected_;
+  c.target = building;
+  runner_.post(c);
+}
+
+void World::order_unload(float wx, float wy) {
+  const sim::EntityId b = garrison_at(wx, wy);
+  if (!b) return;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Unload;
+  c.target = b;
+  runner_.post(c);
+}
+
 void World::order_attack(sim::EntityId target) {
   if (selected_.empty() || !target) return;
   sim::Command c;
@@ -184,6 +213,38 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
     fg.tint[1] = static_cast<uint8_t>(f > 0.5f ? 210.0f : f * 2.0f * 210.0f);
     fg.tint[2] = 40;
     batch.draw(white, nullptr, fg);
+  }
+}
+
+void World::draw_garrison(render::SpriteBatch& batch, const render::Texture& white, float hover_wx, float hover_wy) const {
+  if (!cur_) return;
+  auto rect = [&](float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
+    render::SpriteInstance in;
+    in.x = x; in.y = y; in.w = w; in.h = h;
+    in.tint[0] = r; in.tint[1] = g; in.tint[2] = b; in.tint[3] = a;
+    batch.draw(white, nullptr, in);
+  };
+  // egy fej: kerek fej (két egymásra tett téglalap) és váll, sötét körvonallal
+  auto head = [&](float cx, float by, bool filled) {
+    const uint8_t r = filled ? 235 : 120, g = filled ? 205 : 120, b = filled ? 120 : 125;
+    rect(cx - 3.5f, by - 11.0f, 7.0f, 6.0f, 20, 16, 12, 220);
+    rect(cx - 2.5f, by - 10.0f, 5.0f, 4.0f, r, g, b);
+    rect(cx - 5.0f, by - 5.0f, 10.0f, 5.0f, 20, 16, 12, 220);
+    rect(cx - 4.0f, by - 4.0f, 8.0f, 4.0f, r, g, b);
+  };
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kBuilding || u.owner != 1 || u.slots == 0 || !u.complete) continue;
+    const float x0 = static_cast<float>(u.tx) * kTilePx, y0 = static_cast<float>(u.ty) * kTilePx;
+    const float bw = static_cast<float>(u.w) * kTilePx, bh = static_cast<float>(u.h) * kTilePx;
+    if (u.garrison > 0) {   // jel az épületen: kis zászló a bal felső sarokban
+      rect(x0 + 3.0f, y0 + 2.0f, 2.0f, 12.0f, 40, 30, 20);
+      rect(x0 + 5.0f, y0 + 2.0f, 8.0f, 6.0f, 235, 205, 120);
+    }
+    const bool hover = hover_wx >= x0 && hover_wx < x0 + bw && hover_wy >= y0 && hover_wy < y0 + bh;
+    if (!hover) continue;
+    const float step = 11.0f, total = step * static_cast<float>(u.slots);
+    const float sx = x0 + bw / 2 - total / 2 + step / 2;
+    for (int k = 0; k < u.slots; ++k) head(sx + step * static_cast<float>(k), y0 - 12.0f, k < u.garrison);
   }
 }
 

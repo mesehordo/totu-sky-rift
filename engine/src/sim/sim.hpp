@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <map>
 #include <optional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -457,6 +458,39 @@ struct Spell {   // a lövedék varázslat (`bolt`): varázssebzés, lassítás 
   static Spell load(core::ByteReader& r) { Spell s; s.ability = static_cast<uint16_t>(r.u32()); return s; }
 };
 
+// --- helyőrség (M6 8. lépés; D39) ----------------------------------------------------------------------------------
+struct Garrison {   // az épületben lévő egységek (a beszállás sorrendjében)
+  std::vector<EntityId> units;
+  void hash(core::StateHash& h) const {
+    h.add_u64(units.size());
+    for (const EntityId e : units) h.add_u64(e);
+  }
+  void save(core::ByteWriter& w) const {
+    w.u32(static_cast<uint32_t>(units.size()));
+    for (const EntityId e : units) w.u32(e);
+  }
+  static Garrison load(core::ByteReader& r) {
+    Garrison g;
+    for (uint32_t i = 0, n = r.u32(); i < n && i < 64 && r.ok(); ++i) g.units.push_back(r.u32());
+    return g;
+  }
+};
+
+struct Sheltered {   // helyőrségben lévő egység: nem látszik, nem célpont, nem akadály; csak gyógyul
+  EntityId building = 0;
+  void hash(core::StateHash& h) const { h.add_u64(building); }
+  void save(core::ByteWriter& w) const { w.u32(building); }
+  static Sheltered load(core::ByteReader& r) { Sheltered s; s.building = r.u32(); return s; }
+};
+
+struct Enter {   // beszállás-parancs: odamegy, és ha van hely, bemegy
+  EntityId building = 0;
+  int32_t repath = 0;
+  void hash(core::StateHash& h) const { h.add_u64(building); h.add_i64(repath); }
+  void save(core::ByteWriter& w) const { w.u32(building); w.i32(repath); }
+  static Enter load(core::ByteReader& r) { Enter e; e.building = r.u32(); e.repath = r.i32(); return e; }
+};
+
 // játékosállapot (1–8. játékos; a 0. a semleges)
 struct PlayerState {
   std::string faction;                       // pl. `ursan`
@@ -522,8 +556,10 @@ struct Command {
                               CancelBuild = 9, Demolish = 10, Train = 11, Research = 12, CancelQueue = 13, Rally = 14,
                               // M6 5. lépés: Attack (`units` → `target`), AttackMove (`units` → x, y), Hold (`units`)
                               Attack = 15, AttackMove = 16, Hold = 17,
-                              // M6 8. lépés: Ability (`units`, `def` a képesség, x, y, `target`)
-                              Ability = 18 };
+                              // M6 8. lépés: Ability (`units`, `def` a képesség, x, y, `target`); Garrison (`units` →
+                              // `target` épület, 0 = a legközelebbi szabad helyű); Unload (`target` épület);
+                              // ChoosePath (`owner`, `def` az irány); Power (`owner`, `target` épület, `def` a képesség)
+                              Ability = 18, Garrison = 19, Unload = 20, ChoosePath = 21, Power = 22 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -670,6 +706,17 @@ class Sim {
   AbilityMods unit_mods(EntityId e);
   Fixed unit_speed_mult(EntityId e);   // képesség, lassítás; kábulva 0
   bool toggled(EntityId e, uint16_t ability);
+  // Helyőrség (D39): beszállás a `building`-be (0: a legközelebbi saját, szabad helyű helyőrség-épületbe); a bent
+  // lévők nem látszanak, nem célpontok, csak gyógyulnak; fejenként erősítik (vagy fegyverrel látják el) az épületet.
+  bool order_garrison(const std::vector<EntityId>& units, EntityId building);
+  bool unload(EntityId building);                 // mindenki ki, az épület köré
+  bool sheltered(EntityId e);                     // épületben van (helyőrség vagy bentről építő)
+  int garrison_count(EntityId building);          // a bent lévők száma (a jelzéshez; D39)
+  // Felemelkedés és fejlődési irány (MECH-ASC): a választás csak felemelkedve, egyszer.
+  bool choose_path(uint8_t owner, const std::string& path);
+  // Főépület-képesség (`gpower`, pl. az ursan Eskü-riadó: minden munkás Fegyverbe!).
+  bool use_power(uint8_t owner, EntityId building, const std::string& ability);
+  bool in_rift(EntityId e) const { return rift_.count(e) != 0; }   // Égkő-fényben áll (MECH-RIFT)
   bool buffed(EntityId e, uint16_t ability);
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
@@ -745,6 +792,19 @@ class Sim {
   std::vector<EntityId> enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed r);
   bool incapacitated(EntityId e);      // kábult vagy fél: nem támad, nem varázsol
   std::map<EntityId, AbilityMods> aura_;     // tickenként újraszámolt (nem állapot)
+  std::set<EntityId> rift_;                  // Égkő-fényben állók (tickenként újraszámolt)
+  void give_buff(EntityId e, uint16_t ability, int32_t ticks);
+  int64_t spell_milli(EntityId e, Fixed dmg);
+  void garrison_system();
+  void tower_system();
+  void ascension_system();
+  void enter_garrison(EntityId unit, EntityId building);
+  void grant_modifiers(uint8_t owner, const std::vector<Modifier>& mods);
+  void rebuild_rules(uint8_t owner);
+  const RuleSet& rules_of(uint8_t owner) const { return prules_[owner]; }
+  std::array<RuleSet, kMaxPlayers + 1> prules_{};   // a kész kutatások és az irány szabályai (származtatott)
+  void launch_shot(EntityId e, uint8_t owner, uint16_t def, EntityId t, int64_t dmg, uint8_t projectile, Fixed splash,
+                   Fixed range);
   void shot_system();
   void attack_now(EntityId e, Combat& c, EntityId target);
   void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);

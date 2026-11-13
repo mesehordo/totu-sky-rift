@@ -111,7 +111,7 @@ bool Sim::is_visible(uint8_t player, EntityId e) {
   if (!world_.alive(e)) return false;
   const Health* h = world_.get<Health>(e);
   if (h && h->owner == player) return true;
-  if (const Worker* w = world_.get<Worker>(e); w && w->inside) return false;   // épületben: nem látszik
+  if (sheltered(e)) return false;   // épületben: nem látszik
   if (!rules_ || !map_ || fog_ == MatchSetup::Fog::None || player == 0 || player > kMaxPlayers) return true;
   const Stealth* st = world_.get<Stealth>(e);
   if (st && st->revealed_until > tick_) return true;   // a fentről lövő (D33)

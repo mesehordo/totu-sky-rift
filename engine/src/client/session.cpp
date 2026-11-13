@@ -223,12 +223,15 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         u.complete = b->complete != 0;
         const int64_t total = int64_t{std::max(1, sim_->rules()->defs[b->def].time_ticks)} * 1000;
         u.progress = static_cast<uint16_t>(std::min<int64_t>(1000, int64_t{b->progress} * 1000 / total));
+        u.slots = static_cast<uint8_t>(std::clamp(sim_->rules()->defs[b->def].garrison, 0, 255));
+        if (const auto* g = w.get<sim::Garrison>(e)) u.garrison = static_cast<uint8_t>(std::min<size_t>(g->units.size(), 255));
       } else if (const auto* n = w.get<sim::ResourceNode>(e)) {
         u.kind = SnapUnit::kResource;
         u.tx = n->tx; u.ty = n->ty; u.w = u.h = n->size;
         u.res = n->kind;
         u.amount = n->amount;
       } else if (const auto* un = w.get<sim::Unit>(e)) {
+        if (w.get<sim::Sheltered>(e)) return;   // helyőrségben: nem látszik
         u.def = un->def;
         if (const auto* k = w.get<sim::Worker>(e)) {
           if (k->inside) return;   // bent épít: nem látszik

@@ -71,6 +71,12 @@ void aura_merge(AbilityMods& m, const AbilityMods& x) {
 
 }  // namespace
 
+// varázssebzés ezredben: Égkő-fényben × `spell_mult` (MECH-RIFT; a régi `spell_mult`)
+int64_t Sim::spell_milli(EntityId e, Fixed dmg) {
+  const Fixed m = world_.alive(e) && in_rift(e) ? rules_->rift.spell_mult : Fixed::from_int(1);
+  return milli_of(dmg * m);
+}
+
 bool Sim::has_ability(EntityId e, uint16_t ability) {
   const Unit* u = world_.get<Unit>(e);
   const Building* b = u ? nullptr : world_.get<Building>(e);
@@ -132,7 +138,7 @@ std::vector<EntityId> Sim::enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed
   world_.pool<Unit>().each([&](EntityId o, const Unit& u) {
     const Health* h = world_.get<Health>(o);
     if (!h || h->hp <= 0 || !hostile(owner, h->owner)) return;
-    if (const Worker* w = world_.get<Worker>(o); w && w->inside) return;
+    if (sheltered(o)) return;
     const Position* p = world_.get<Position>(o);
     if (core::length(p->x - x, p->y - y) - rules_->defs[u.def].radius <= r) out.push_back(o);
   });
@@ -187,21 +193,19 @@ void Sim::apply_spell(EntityId src, uint8_t owner, const AbilityDef& a, EntityId
   }
 }
 
-bool Sim::activate_buff(EntityId e, uint16_t ab) {
+void Sim::give_buff(EntityId e, uint16_t ab, int32_t ticks) {
   Caster* c = world_.get<Caster>(e);
-  if (!c) return false;
+  if (!c) return;
   const AbilityDef& a = rules_->abilities[ab];
-  if (!ability_ready(e, *c, a)) return false;
-  ability_spend(*c, ab, a);
   bool found = false;
   for (auto& [id, until] : c->buffs) {
     if (id == ab) {
-      until = tick_ + a.duration;
+      until = tick_ + ticks;
       found = true;
     }
   }
   if (!found) {
-    c->buffs.emplace_back(ab, tick_ + a.duration);
+    c->buffs.emplace_back(ab, tick_ + ticks);
     std::sort(c->buffs.begin(), c->buffs.end());
   }
   if (a.drop_work) {   // Fegyverbe!: a gyűjtést abbahagyja, a riadó után visszamegy
@@ -213,6 +217,15 @@ bool Sim::activate_buff(EntityId e, uint16_t ab) {
       halt(e);
     }
   }
+}
+
+bool Sim::activate_buff(EntityId e, uint16_t ab) {
+  Caster* c = world_.get<Caster>(e);
+  if (!c) return false;
+  const AbilityDef& a = rules_->abilities[ab];
+  if (!ability_ready(e, *c, a)) return false;
+  ability_spend(*c, ab, a);
+  give_buff(e, ab, a.duration);
   return true;
 }
 
@@ -234,7 +247,7 @@ bool Sim::cast_nova(EntityId e, uint16_t ab) {
   }
   if (a.damage.raw() > 0) {
     for (const EntityId t : enemy_units_in(h->owner, p->x, p->y, a.radius)) {
-      deal_damage(e, h->owner, kNoDef, t, milli_of(a.damage), false, true, a.element);
+      deal_damage(e, h->owner, kNoDef, t, spell_milli(e, a.damage), false, true, a.element);
       Afflict* af = world_.get<Afflict>(t);
       if (!af) continue;
       if (a.stun > 0 && a.element != Element::Fear) {
@@ -278,7 +291,7 @@ void Sim::fire_bolt(EntityId e, uint16_t ab, EntityId t) {
   const Health* h = world_.get<Health>(e);
   const Position& sp = *world_.get<Position>(e);
   const Position& tp = *world_.get<Position>(t);
-  const int64_t dmg = milli_of(a.damage);
+  const int64_t dmg = spell_milli(e, a.damage);
   if (!a.projectile) {   // azonnal (roham, zuhanó csapás)
     deal_damage(e, h->owner, kNoDef, t, dmg, false, true, a.element);
     apply_spell(e, h->owner, a, t);
@@ -317,7 +330,7 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
   std::vector<EntityId> us;
   for (const EntityId e : units) {
     if (!world_.alive(e) || !world_.get<Caster>(e) || !has_ability(e, ab)) continue;
-    if (const Worker* w = world_.get<Worker>(e); w && w->inside) continue;
+    if (sheltered(e)) continue;
     us.push_back(e);
   }
   if (us.empty()) return false;
@@ -478,7 +491,7 @@ void Sim::aura_system() {
     const Unit* u = world_.get<Unit>(e);
     const Health* h = world_.get<Health>(e);
     if (!u || !h || h->hp <= 0) return;
-    if (const Worker* w = world_.get<Worker>(e); w && w->inside) return;
+    if (sheltered(e)) return;
     for (const uint16_t ab : rules_->defs[u->def].abilities) {
       const AbilityDef& a = rules_->abilities[ab];
       if (a.type == AbilityDef::Type::Aura ||
@@ -487,6 +500,34 @@ void Sim::aura_system() {
       }
     }
   });
+  // Égkő-fény (MECH-RIFT): az élő meteorit-lelőhely és a kész Égkő körül; a varázsló (`caster`, támadó) +1 lőtávot kap
+  rift_.clear();
+  std::vector<std::pair<Fixed, Fixed>> rift_src;
+  world_.pool<ResourceNode>().each([&](EntityId e, const ResourceNode& n) {
+    if (n.kind == kMeteor && n.amount > 0) rift_src.emplace_back(world_.get<Position>(e)->x, world_.get<Position>(e)->y);
+  });
+  world_.pool<Building>().each([&](EntityId e, const Building& b) {
+    const Health* h = world_.get<Health>(e);
+    if (b.complete && h && h->hp > 0 && rules_->defs[b.def].rift_source) {
+      rift_src.emplace_back(world_.get<Position>(e)->x, world_.get<Position>(e)->y);
+    }
+  });
+  if (!rift_src.empty()) {
+    world_.pool<Unit>().each([&](EntityId o, const Unit& u) {
+      const Position& op = *world_.get<Position>(o);
+      for (const auto& [sx, sy] : rift_src) {
+        if (core::length(op.x - sx, op.y - sy) > rules_->rift.radius) continue;
+        rift_.insert(o);
+        const EntityDef& d = rules_->defs[u.def];
+        if (d.has_tag("caster") && d.attack.has) {
+          AbilityMods m;
+          m.range_add = rules_->rift.mage_range;
+          aura_merge(aura_[o], m);
+        }
+        break;
+      }
+    });
+  }
   for (const auto& [src, ab] : srcs) {
     const AbilityDef& a = rules_->abilities[ab];
     const Position& sp = *world_.get<Position>(src);
@@ -528,7 +569,7 @@ void Sim::field_system() {
       });
     }
     for (const EntityId t : enemy_units_in(fd.owner, p.x, p.y, a.radius)) {
-      if (a.dps.raw() > 0) deal_damage(world_.alive(fd.src) ? fd.src : kNoEntity, fd.owner, kNoDef, t, milli_of(a.dps) / 2,
+      if (a.dps.raw() > 0) deal_damage(world_.alive(fd.src) ? fd.src : kNoEntity, fd.owner, kNoDef, t, spell_milli(fd.src, a.dps) / 2,
                                        false, true, a.element);
       if (a.has_slow && a.slow.raw() > 0) {
         if (Afflict* af = world_.get<Afflict>(t)) {
@@ -548,11 +589,11 @@ void Sim::ability_system() {
   });
   for (const EntityId e : expired) kill(e);
   // életerő-visszatöltés (`Health.regen` + aura `regen_add`) és energia
-  world_.pool<Unit>().each([&](EntityId e, const Unit& u) {
+  auto regen = [&](EntityId e, uint16_t def) {
     Health* h = world_.get<Health>(e);
     if (!h || h->hp <= 0) return;
-    const EntityDef& d = rules_->defs[u.def];
-    Fixed r = d.regen;
+    const EntityDef& d = rules_->defs[def];
+    Fixed r = research_stat(h->owner, "Health.regen", d.regen, d);   // + kutatás és irány (Rúnapajzs, tundra)
     if (const auto it = aura_.find(e); it != aura_.end()) r = r + it->second.regen_add;
     if (r.raw() > 0 && h->hp < h->max) {
       Vital* vt = world_.get<Vital>(e);
@@ -561,7 +602,13 @@ void Sim::ability_system() {
       h->hp = static_cast<int32_t>((eff + 999) / 1000);
       if (vt) vt->deficit = static_cast<int32_t>(int64_t{h->hp} * 1000 - eff);
     }
+  };
+  world_.pool<Unit>().each([&](EntityId e, const Unit& u) { regen(e, u.def); });
+  world_.pool<Building>().each([&](EntityId e, const Building& b) {
+    if (b.complete) regen(e, b.def);
   });
+  garrison_system();
+  if (tick_ % 15 == 0) ascension_system();   // a régi: 0,5 s-onként
   std::vector<EntityId> ids;
   world_.pool<Caster>().each([&](EntityId e, const Caster&) { ids.push_back(e); });
   for (const EntityId e : ids) {
@@ -572,7 +619,8 @@ void Sim::ability_system() {
     Caster& c = *cp;
     const EntityDef& d = rules_->defs[u->def];
     if (d.energy_max > 0 && c.energy < d.energy_max * 1000) {
-      c.energy = static_cast<int32_t>(std::min<int64_t>(int64_t{d.energy_max} * 1000, c.energy + milli_of(rules_->energy_regen_per_tick)));
+      const Fixed er = in_rift(e) ? rules_->energy_regen_per_tick * rules_->rift.energy_mult : rules_->energy_regen_per_tick;
+      c.energy = static_cast<int32_t>(std::min<int64_t>(int64_t{d.energy_max} * 1000, c.energy + milli_of(er)));
     }
     // lejárt önerősítések; a Fegyverbe! után a munkás visszamegy dolgozni
     c.buffs.erase(std::remove_if(c.buffs.begin(), c.buffs.end(), [&](const auto& b) { return b.second <= tick_; }), c.buffs.end());
@@ -586,22 +634,27 @@ void Sim::ability_system() {
         if (alt != kNoEntity) order_gather(e, alt);
       }
     }
-    if (const Worker* w = world_.get<Worker>(e); w && w->inside) continue;
+    if (sheltered(e)) continue;
     if (incapacitated(e)) continue;
     if (c.cast != kNoAbility) cast_step(e, c);
+    // az idézés új egységet hozhat létre: a komponenstárak átrendeződhetnek, a mutatók újra kellenek
+    Caster* cp2 = world_.get<Caster>(e);
+    h = world_.get<Health>(e);
+    if (!cp2 || !h) continue;
+    Caster& cc = *cp2;
     // önműködő gyógyítás (0,5 s-onként): a körzet legsebesültebb saját élőlénye
-    if (--c.heal_timer <= 0) {
-      c.heal_timer = kPulseTicks;
+    if (--cc.heal_timer <= 0) {
+      cc.heal_timer = kPulseTicks;
       for (const uint16_t ab : d.abilities) {
         const AbilityDef& a = rules_->abilities[ab];
-        if (a.type != AbilityDef::Type::Autoheal || !ability_ready(e, c, a)) continue;
+        if (a.type != AbilityDef::Type::Autoheal || !ability_ready(e, cc, a)) continue;
         const Position& p = *world_.get<Position>(e);
         EntityId best = kNoEntity;
         int64_t best_v = 980;   // ezrelék: csak 98% alatt
         world_.pool<Unit>().each([&](EntityId o, const Unit& ou) {
           const Health* oh = world_.get<Health>(o);
           if (!oh || oh->owner != h->owner || oh->hp <= 0 || !rules_->defs[ou.def].has_tag("organic")) return;
-          if (const Worker* ow = world_.get<Worker>(o); ow && ow->inside) return;
+          if (sheltered(o)) return;
           const Position& op = *world_.get<Position>(o);
           if (core::length(op.x - p.x, op.y - p.y) > a.range) return;
           const int64_t v = int64_t{oh->hp} * 1000 / std::max(1, oh->max);
@@ -613,7 +666,7 @@ void Sim::ability_system() {
         if (best != kNoEntity) {
           Health& bh = *world_.get<Health>(best);
           bh.hp = std::min(bh.max, bh.hp + a.heal.floor_int());
-          ability_spend(c, ab, a);
+          ability_spend(cc, ab, a);
         }
       }
     }

@@ -138,6 +138,18 @@ void Sim::apply(const Command& c) {
     case Command::Kind::Ability:
       use_ability(c.units, c.def, c.x, c.y, c.target);
       break;
+    case Command::Kind::Garrison:
+      order_garrison(c.units, c.target);
+      break;
+    case Command::Kind::Unload:
+      unload(c.target);
+      break;
+    case Command::Kind::ChoosePath:
+      choose_path(c.owner, c.def);
+      break;
+    case Command::Kind::Power:
+      use_power(c.owner, c.target, c.def);
+      break;
   }
 }
 
@@ -312,7 +324,8 @@ bool Command::needs_v4() const {
   return kind == Kind::Gather || kind == Kind::Stop || kind == Kind::Build || kind == Kind::CancelBuild ||
          kind == Kind::Demolish || kind == Kind::Train || kind == Kind::Research || kind == Kind::CancelQueue ||
          kind == Kind::Rally || kind == Kind::Attack || kind == Kind::AttackMove || kind == Kind::Hold ||
-         kind == Kind::Ability || target != 0 ||
+         kind == Kind::Ability || kind == Kind::Garrison || kind == Kind::Unload || kind == Kind::ChoosePath ||
+         kind == Kind::Power || target != 0 ||
          !def.empty();
 }
 
@@ -340,7 +353,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 18 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 22 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -369,7 +382,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(6);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek)
+  w.u32(7);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -417,7 +430,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 6) return false;
+  if (schema < 3 || schema > 7) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -468,6 +481,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
         }
       }
     }
+    for (int i = 0; i <= kMaxPlayers; ++i) rebuild_rules(static_cast<uint8_t>(i));   // származtatott (KUT-RULE)
     if (schema >= 5) {
       daytime_mode_ = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.u8(), 2));
       weather_mode_ = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.u8(), 3));

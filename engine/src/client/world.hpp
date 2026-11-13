@@ -45,8 +45,15 @@ class World {
   sim::EntityId enemy_at(float wx, float wy) const;
   void order_attack(sim::EntityId target);
   void order_attack_move(float wx, float wy);
+  // helyőrség (D39): a pont alatti saját, kész helyőrség-épület (0 = nincs); a kijelöltek beszállnak; U: kiszállás
+  sim::EntityId garrison_at(float wx, float wy) const;
+  void order_garrison(sim::EntityId building);
+  void order_unload(float wx, float wy);
   // életerőcsíkok (a sérült és a kijelölt egységek és épületek fölött); a fő menet után
   void draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha) const;
+  // helyőrség-jelzés (D39) a saját épületeken: jel, ha bent van valaki; a kurzor alatti épület fölött annyi fej, ahány
+  // hely van (a foglaltak a játékos színével, a szabadok szürkén); az építő bentléte nem jelölendő
+  void draw_garrison(render::SpriteBatch& batch, const render::Texture& white, float hover_wx, float hover_wy) const;
   // építés (ideiglenes kezelés a HUD-ig): a kísértetkép (sablon, bal felső csempe; kNoDef = nincs), és a parancs az
   // első kijelölt munkással
   void set_ghost(uint16_t def, int tx, int ty) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; }

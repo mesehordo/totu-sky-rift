@@ -41,6 +41,7 @@ struct SnapUnit {
   uint16_t progress = 1000;             // épület: az építés haladása ezrelékben; lövedék: az út aránya
   float sx = 0, sy = 0;                 // lövedék: a kiindulás (az ívhez és az irányhoz)
   float lift = 0;                       // lövedék: az ív magassága most (képpont)
+  uint8_t garrison = 0, slots = 0;      // épület: a helyőrség (bent lévők, helyek; D39)
 };
 
 // a játékos állapota a felületnek
