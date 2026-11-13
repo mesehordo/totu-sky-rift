@@ -315,16 +315,19 @@ void Sim::construction_system() {
     else if (style == "enter") rate = b.builder_in && world_.alive(b.builder_in) ? 1000 : 0;
     b.builders = 0;
     if (!rate) return;
+    rate = static_cast<int32_t>((Fixed::from_int(rate) * env_build_mult(h->owner)).floor_int());   // éjjel/időjárás (D35)
+    if (!rate) return;
     const EntityDef& d = rules_->defs[b.def];
     const int64_t total = int64_t{std::max(1, d.time_ticks)} * 1000;
-    // az életerő a haladással nő: 10% + 90% × haladás (pontos egész lépésekben)
-    auto target = [&](int64_t p) { return int64_t{d.hp} / 10 + int64_t{d.hp} * 9 * std::min(p, total) / (10 * total); };
+    // az életerő a haladással nő: 10% + 90% × haladás (pontos egész lépésekben); a cél a tényleges (kutatással
+    // módosított) maximum, nem a sablon alapértéke
+    auto target = [&](int64_t p) { return int64_t{h->max} / 10 + int64_t{h->max} * 9 * std::min(p, total) / (10 * total); };
     const int64_t before = b.progress;
     b.progress = static_cast<int32_t>(std::min<int64_t>(total, before + rate));
-    h->hp = static_cast<int32_t>(std::min<int64_t>(d.hp, h->hp + target(b.progress) - target(before)));
+    h->hp = static_cast<int32_t>(std::min<int64_t>(h->max, h->hp + target(b.progress) - target(before)));
     if (b.progress >= total) {
       b.complete = 1;
-      h->hp = std::min(d.hp, h->hp + d.hp - static_cast<int32_t>(target(total)));   // a kerekítési maradék
+      h->hp = std::min(h->max, h->hp + h->max - static_cast<int32_t>(target(total)));   // a kerekítési maradék
       if (b.builder_in) leave_construction(e, false);
     }
   });

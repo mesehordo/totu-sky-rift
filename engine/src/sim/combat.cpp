@@ -65,8 +65,10 @@ Fixed Sim::attack_range(EntityId e, EntityId target) {
   const Building* bu = u ? nullptr : world_.get<Building>(e);
   const uint16_t def = u ? u->def : bu ? bu->def : kNoDef;
   if (def == kNoDef) return Fixed{};
-  const AttackDef& a = rules_->defs[def].attack;
-  Fixed r = a.range;
+  const EntityDef& d = rules_->defs[def];
+  const AttackDef& a = d.attack;
+  const Health* h = world_.get<Health>(e);
+  Fixed r = research_stat(h ? h->owner : 0, "Attack.range", a.range, d);
   const int delta = level_at(e) - level_at(target);
   if (delta > 0 && (a.ranged() || bu)) {   // magaslatról messzebb (D33)
     const auto& el = rules_->elevation;
@@ -74,6 +76,7 @@ Fixed Sim::attack_range(EntityId e, EntityId target) {
                          : std::min(el.ranged_range_max, el.ranged_range_per_level * Fixed::from_int(delta));
     r = r + add;
   }
+  if (a.ranged() && h) r = r * env_range_mult(h->owner, d);   // eső/zivatar/homokvihar (D35)
   return r;
 }
 
@@ -223,7 +226,8 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
     }
   }
   if (dmg > 0) {
-    dmg = std::max<int64_t>(500, dmg - int64_t{td.armor} * 1000);   // páncél; legalább 0,5
+    const int32_t armor = research_stat(h->owner, "Health.armor", Fixed::from_int(td.armor), td).floor_int();
+    dmg = std::max<int64_t>(500, dmg - int64_t{armor} * 1000);   // páncél; legalább 0,5
     const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0) - dmg;
     if (eff <= 0) {
       if (std::find(dying_.begin(), dying_.end(), t) == dying_.end()) dying_.push_back(t);
@@ -268,10 +272,11 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   const Unit* u = world_.get<Unit>(e);
   const Building* bu = u ? nullptr : world_.get<Building>(e);
   const uint16_t def = u ? u->def : bu->def;
-  const AttackDef& a = rules_->defs[def].attack;
+  const EntityDef& ed = rules_->defs[def];
+  const AttackDef& a = ed.attack;
   const uint8_t owner = world_.get<Health>(e)->owner;
   c.cooldown = a.cooldown;
-  int64_t dmg = milli_of(a.damage);
+  int64_t dmg = milli_of(research_stat(owner, "Attack.damage", a.damage, ed));
   const int delta = level_at(e) - level_at(t);
   if (delta > 0) {   // a magaslatról lövő rövid időre mindenkinek látható (D33, SC1)
     if (Stealth* st = world_.get<Stealth>(e)) st->revealed_until = tick_ + rules_->elevation.reveal_shooter_ticks;
@@ -464,10 +469,12 @@ void Sim::match_combat_system() {
     const Unit* u = world_.get<Unit>(e);
     if (!u) return;
     const EntityDef& d = rules_->defs[u->def];
-    if (d.shield <= 0 || v.shield >= d.shield * 1000) return;
+    const Health* h = world_.get<Health>(e);
+    const int64_t cap = int64_t{std::max(0, research_stat(h ? h->owner : 0, "Health.shield", Fixed::from_int(d.shield), d).floor_int())} * 1000;
+    if (cap <= 0 || v.shield >= cap) return;
     const int64_t delay = d.shield_delay > 0 ? d.shield_delay : rules_->shield_regen_delay;
     if (tick_ - v.last_hit <= delay) return;
-    v.shield = static_cast<int32_t>(std::min<int64_t>(int64_t{d.shield} * 1000, v.shield + milli_of(rules_->shield_regen_per_tick)));
+    v.shield = static_cast<int32_t>(std::min<int64_t>(cap, v.shield + milli_of(rules_->shield_regen_per_tick)));
   });
   std::vector<EntityId> ids;
   world_.pool<Combat>().each([&](EntityId e, const Combat&) { ids.push_back(e); });
@@ -484,7 +491,8 @@ void Sim::match_combat_system() {
     const Unit* u = world_.get<Unit>(e);
     if (!u) continue;   // a tornyok a helyőrséggel (8. lépés)
     const EntityDef& d = rules_->defs[u->def];
-    const Fixed sight = Fixed::from_int(std::max(1, d.sight));
+    const Fixed sight = research_stat(h->owner, "Vision.sight", Fixed::from_int(std::max(1, d.sight)), d) *
+                        env_sight_mult(h->owner, d);
     const Movement* mv = world_.get<Movement>(e);
     auto engage = [&](EntityId t) {
       if (gap(e, t) <= attack_range(e, t) + kRangeSlack) {

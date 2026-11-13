@@ -173,6 +173,9 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
   const content::Value* ac = doc.find("auto_cliffs");
   if (!ac || !ac->is_bool() || ac->as_bool()) m.compute_cliffs(table);
 
+  // éghajlat (D35): "climate": "temperate" | "snowy" | "desert" | "swampy" | "volcanic" (üres = "temperate")
+  if (const content::Value* cl = doc.find("climate"); cl && cl->is_string()) m.climate_ = cl->text();
+
   // pályaobjektumok (M6): "objects": {"starts": [[x, y], …], "trees": {"rows": [...]} (`T` = fa),
   // "resources": [{"kind": "stone", "x": …, "y": …, "size": 2, "amount": …}, …]}
   if (const content::Value* ob = doc.find("objects"); ob && ob->is_object()) {

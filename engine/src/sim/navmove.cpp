@@ -336,6 +336,13 @@ void Sim::nav_movement() {
       const Fixed mult = nav.speed(b->grid, c.x, c.y);
       if (mult.raw() > 0) speed = speed * mult;   // akadályba szorult egység az alapsebességgel jut ki
     }
+    if (rules_ && h) {   // M6 7. lépés: kutatás (Movement.speed_pct) és napszak/időjárás (D35) – csak meccsben
+      if (const Unit* u = world_.get<Unit>(e)) {
+        const EntityDef& d = rules_->defs[u->def];
+        const Fixed pct = research_stat(h->owner, "Movement.speed_pct", Fixed{}, d);
+        speed = speed * (Fixed::from_int(1) + pct / Fixed::from_int(100)) * env_speed_mult(h->owner, d);
+      }
+    }
     if (dist.raw() == 0) {
       ++p->idx;
       p->best = Fixed::max();

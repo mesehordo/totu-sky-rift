@@ -72,7 +72,7 @@ TEST_CASE("terep: terepfajták, járhatósági és mozgásosztályok a tartalomb
   const auto& t = table();
   CHECK(t.terrains().size() == 24);
   CHECK(t.movement_classes().size() == 4);
-  CHECK(t.pass_classes().size() == 7);   // blocked, bridge, cliff, deep, land, ramp, shallow
+  CHECK(t.pass_classes().size() == 8);   // blocked, bridge, cliff, deep, ice, land, ramp, shallow (D35: jég)
   const uint8_t land = *t.movement_class("land"), amph = *t.movement_class("amphibious");
   const uint8_t water = *t.movement_class("water"), fly = *t.movement_class("flying");
   CHECK(t.speed(land, *t.terrain("grass")) == Fixed::from_int(1));

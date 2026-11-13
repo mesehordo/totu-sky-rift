@@ -150,9 +150,30 @@ bool Sim::finish_item(EntityId be, const QueueItem& item) {
   if (!bh || !b || !pr) return false;
   const uint8_t owner = bh->owner;
   if (item.research) {
-    auto& done = players_[owner].researched;
-    const std::string& id = rules_->researches[item.def].id;
-    done.insert(std::lower_bound(done.begin(), done.end(), id), id);   // a hatások a 7. lépésben
+    PlayerState& p = players_[owner];
+    const ResearchDef& rd = rules_->researches[item.def];
+    p.researched.insert(std::lower_bound(p.researched.begin(), p.researched.end(), rd.id), rd.id);
+    // állandó hatás (D24): a már élő egységeken/épületeken azonnal érvényesül a Health.max/shield növekmény (a
+    // régi `apply_research` szerint); a többi (páncél, sebzés, lőtáv, látótáv, rakomány) élőben, a használat
+    // helyén kérdeződik le (research_stat), ezért ott nincs teendő.
+    world_.pool<Health>().each([&](EntityId e, Health& h) {
+      if (h.owner != owner || h.hp <= 0) return;
+      const Unit* u = world_.get<Unit>(e);
+      const Building* eb = u ? nullptr : world_.get<Building>(e);
+      if (!u && !eb) return;
+      const EntityDef& d = rules_->defs[u ? u->def : eb->def];
+      const Fixed old_hp = apply_modifiers({&p.research_mods}, "Health.max", Fixed::from_int(d.hp), d);
+      const Fixed new_hp = apply_modifiers({&p.research_mods, &rd.modifiers}, "Health.max", Fixed::from_int(d.hp), d);
+      const int32_t dhp = new_hp.floor_int() - old_hp.floor_int();
+      if (dhp) { h.max += dhp; h.hp = std::min(h.max, h.hp + dhp); }
+      if (Vital* v = world_.get<Vital>(e)) {
+        const Fixed old_sh = apply_modifiers({&p.research_mods}, "Health.shield", Fixed::from_int(d.shield), d);
+        const Fixed new_sh = apply_modifiers({&p.research_mods, &rd.modifiers}, "Health.shield", Fixed::from_int(d.shield), d);
+        const int32_t dsh = new_sh.floor_int() - old_sh.floor_int();
+        if (dsh) v->shield = std::max(0, v->shield + dsh * 1000);
+      }
+    });
+    p.research_mods.insert(p.research_mods.end(), rd.modifiers.begin(), rd.modifiers.end());
     return true;
   }
   const EntityDef& d = rules_->defs[item.def];

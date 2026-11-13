@@ -360,12 +360,18 @@ struct PlayerState {
   // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
   std::vector<uint8_t> visible, explored;
   int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
+  // kutatással kapott, állandó statmódosítók (D24, M6 7. lépés): a sorrend a kutatás befejezésének sorrendje
+  std::vector<Modifier> research_mods;
 };
 
 struct MatchSetup {
   std::vector<std::string> factions;   // játékosonként (1. játékos = [0]); üres szöveg = nem játszik
   bool upkeep = true;                  // Hadtáp (a régi játék alapja: be)
   enum class Fog : uint8_t { Normal = 0, Explored = 1, None = 2 } fog = Fog::Normal;   // a régi `fog` beállítás
+  // napszak/időjárás (D35): ki | hangulat (csak a megjelenítő) | hatással (+ pályaváltozás az időjárásnál is).
+  // Alapbeállítás a tulajdonos döntése szerint: napszak hatással, időjárás hangulat.
+  enum class Daytime : uint8_t { Off = 0, Mood = 1, Effect = 2 } daytime = Daytime::Effect;
+  enum class WeatherMode : uint8_t { Off = 0, Mood = 1, Effect = 2, EffectTerrain = 3 } weather = WeatherMode::Mood;
 };
 
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
@@ -431,6 +437,14 @@ struct Command {
 
 class Sim;
 
+// Az időjárás állapota (M6 7. lépés; D35): a szimuláció része (hash, mentés); a `Sim::weather_` tárolja.
+struct WeatherState {
+  std::string kind, prev_kind;              // "" = derült/nincs időjárás
+  int64_t change_at = 0;                    // a jelenlegi (vagy átmeneti) állapot vége
+  int64_t blend_start = 0, blend_end = 0;   // blend_end > blend_start: prev_kind → kind közben
+  Fixed intensity = Fixed::from_int(1);     // enyhe 0,5 / erős 1,0
+};
+
 // Eseménycsatlakozó (M3): a szkriptréteg (script/host) ezen át kapcsolódik a szimulációhoz. A csatlakozó állapota
 // a szimuláció állapotának része: benne van a hashben és a mentésben (a csatlakoztatás sorrendjében).
 class SimHooks {
@@ -483,7 +497,7 @@ class Sim {
   const Rules* rules() const { return rules_; }
   // A meccs indítása a pályából: lelőhelyek és fák (akadályok a navrácsban), játékosonként a főépület a kezdőhelyen és
   // a kezdő egységek, a munkások a régi játék szerint azonnal gyűjteni indulnak. Hibánál false (az ok az `error`-ban).
-  bool setup_match(const map::Map& m, const MatchSetup& setup, std::string* error);
+  bool setup_match(map::Map& m, const MatchSetup& setup, std::string* error);
   EntityId spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y);   // sablonból, azonnal
   EntityId place_building(uint16_t def, uint8_t owner, int tx, int ty, bool complete);
   bool order_gather(EntityId worker, EntityId resource);
@@ -513,10 +527,25 @@ class Sim {
   void add_resources(uint8_t owner, int kind, int32_t amount);
   bool missing_requirements(uint8_t owner, const EntityDef& d, std::string* what = nullptr);
   // Mentés betöltése után: az épületek és a lelőhelyek akadályai a (meccsindítás nélküli) navrácsba.
-  void restore_obstacles(const map::Map& m);
+  void restore_obstacles(map::Map& m);
   void stop(EntityId e);                 // a mozgás és a munka abbahagyása
   const PlayerState& player(int i) const { return players_[static_cast<size_t>(i)]; }
   static constexpr int kMaxPlayers = 8;
+  // Napszak és időjárás lekérdezése (a kliensnek – a HUD-nak és a megjelenítő napszak/időjárás-adatának – és a
+  // teszteknek; M6 7. lépés, D35). `night_permille`: 0 teljes nappal .. 1000 teljes éjjel (folytonos).
+  int32_t night_permille() const;
+  struct WeatherInfo {
+    std::string kind, prev_kind;   // "" = derült
+    Fixed intensity{Fixed::from_int(1)};
+    Fixed blend{Fixed::from_int(1)};   // 0 = még a prev_kind, 1 = már teljesen a kind
+  };
+  WeatherInfo weather_info() const;
+  // Azonnali időjárás-váltás (átmenet nélkül); "" = derült. Fejlesztői/teszt célra, és a későbbi Lua
+  // `Game.set_weather()` (M11, küldetésszkript) csírája.
+  void set_weather(const std::string& kind, Fixed intensity = Fixed::from_int(1));
+  // Napszak/időjárás mód felülírása a meccsindítás (`MatchSetup`) után. Fejlesztői/teszt célra, és a `Game.set_weather()`
+  // melletti jövőbeli küldetésszkript-kapcsoló (M11) csírája – ugyanúgy, mint `set_weather()`.
+  void set_weather_mode(MatchSetup::WeatherMode mode) { weather_mode_ = mode; }
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
   void step();                           // egy tick (1/30 s)
@@ -551,6 +580,29 @@ class Sim {
   void stealth_system();
   void update_vision(uint8_t player);
   MatchSetup::Fog fog_ = MatchSetup::Fog::Normal;
+  // napszak és időjárás (M6 7. lépés; D35)
+  void environment_system();
+  const EnvEffect* weather_effect() const;   // nullptr, ha "ki" vagy nincs aktív (vagy "derult")
+  Fixed env_speed_mult(uint8_t owner, const EntityDef& d) const;
+  Fixed env_sight_mult(uint8_t owner, const EntityDef& d) const;
+  Fixed env_range_mult(uint8_t owner, const EntityDef& d) const;
+  Fixed env_gather_mult(uint8_t owner) const;
+  Fixed env_build_mult(uint8_t owner) const;
+  Fixed research_stat(uint8_t owner, const char* path, Fixed base, const EntityDef& d) const;
+  void weather_pick_next();
+  void weather_terrain_tick();
+  void env_damage_ticks();
+  MatchSetup::Daytime daytime_mode_ = MatchSetup::Daytime::Effect;
+  MatchSetup::WeatherMode weather_mode_ = MatchSetup::WeatherMode::Mood;
+  WeatherState weather_;
+  core::Pcg32 weather_rng_;
+  struct TerrainPatch {
+    int16_t x = 0, y = 0;
+    uint16_t orig_terrain = 0;
+    uint8_t converted = 0;
+  };
+  std::vector<TerrainPatch> mud_patches_, ice_patches_;
+  void build_terrain_patches();   // a jelöltlisták egyszeri felépítése (setup_match)
   void shot_system();
   void attack_now(EntityId e, Combat& c, EntityId target);
   void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);
@@ -573,13 +625,13 @@ class Sim {
   bool interrupt(EntityId e);
   bool pay(uint8_t owner, const std::array<int32_t, kResources>& cost);
   void refund(uint8_t owner, const std::array<int32_t, kResources>& cost, int32_t permille);
-  const map::Map* map_ = nullptr;
+  map::Map* map_ = nullptr;
   void income(uint8_t owner, int kind, int32_t amount);
   EntityId nearest_resource(int kind, Fixed x, Fixed y, Fixed max_dist, EntityId exclude);
   EntityId nearest_dropoff(uint8_t owner, int kind, Fixed x, Fixed y, EntityId exclude);
   bool in_reach(EntityId unit, EntityId target);
   void remove_resource(EntityId e);
-  int32_t carry_cap(const EntityDef& d, int kind) const;
+  int32_t carry_cap(const EntityDef& d, int kind, uint8_t owner) const;
   void register_components();
 
   World world_;

@@ -19,7 +19,8 @@
     "land": 1,
     "shallow": 0.7,
     "ramp": 1,
-    "bridge": 1
+    "bridge": 1,
+    "ice": 0.9
    }
   }
  },
@@ -34,7 +35,8 @@
     "shallow": 1,
     "deep": 0.8,
     "ramp": 1,
-    "bridge": 1
+    "bridge": 1,
+    "ice": 0.9
    }
   }
  },

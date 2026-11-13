@@ -67,6 +67,8 @@ class Map {
 
   const MapObjects& objects() const { return objects_; }
   MapObjects& objects() { return objects_; }
+  // éghajlat (D35: az időjárás ezen a pályán ebből válogat); üres = alapértelmezett ("temperate")
+  const std::string& climate() const { return climate_; }
 
  private:
   size_t index(int x, int y) const { return static_cast<size_t>(y) * static_cast<size_t>(w_) + static_cast<size_t>(x); }
@@ -76,6 +78,7 @@ class Map {
   std::vector<int8_t> level_;
   std::vector<uint8_t> cliff_;
   MapObjects objects_;
+  std::string climate_;
 };
 
 }  // namespace totu::map

@@ -8,9 +8,10 @@ namespace totu::sim {
 
 namespace {
 constexpr uint64_t kCombatStream = 1;   // véletlenszám-folyamok rendszerenként (ADR-004)
+constexpr uint64_t kWeatherStream = 2;
 }
 
-Sim::Sim(uint64_t seed) : combat_rng_(seed, kCombatStream) { register_components(); }
+Sim::Sim(uint64_t seed) : weather_rng_(seed, kWeatherStream), combat_rng_(seed, kCombatStream) { register_components(); }
 
 void Sim::register_components() {
   world_.register_component<Position>("Position");
@@ -220,6 +221,7 @@ void Sim::step() {
   for (SimHooks* h : hooks_) h->on_tick(*this);
   // 3. rendszerek rögzített sorrendben, majd a halál-események
   if (rules_) {   // M6: a munkások döntései (mozgásparancsok) a mozgás előtt, majd az építés haladása
+    environment_system();   // napszak/időjárás (D35) – a többi rendszer ezt már frissen látja
     economy_system();
     construction_system();
     production_system();
@@ -267,7 +269,23 @@ uint64_t Sim::hash() const {
       h.add_u64(p.ascended);
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
+      h.add_u64(p.research_mods.size());
+      for (const Modifier& m : p.research_mods) {
+        h.add_bytes(m.path); h.add_u64(static_cast<uint8_t>(m.op)); h.add_i64(m.value.raw()); h.add_bytes(m.filter_id);
+        h.add_u64(m.filter_tags.size());
+        for (const auto& t : m.filter_tags) h.add_bytes(t);
+      }
     }
+    // napszak/időjárás (M6 7. lépés)
+    h.add_u64(static_cast<uint8_t>(daytime_mode_)); h.add_u64(static_cast<uint8_t>(weather_mode_));
+    h.add_bytes(weather_.kind); h.add_bytes(weather_.prev_kind);
+    h.add_i64(weather_.change_at); h.add_i64(weather_.blend_start); h.add_i64(weather_.blend_end);
+    h.add_i64(weather_.intensity.raw());
+    h.add_u64(weather_rng_.state()); h.add_u64(weather_rng_.increment());
+    h.add_u64(mud_patches_.size());
+    for (const auto& t : mud_patches_) h.add_u64(t.converted);
+    h.add_u64(ice_patches_.size());
+    for (const auto& t : ice_patches_) h.add_u64(t.converted);
   }
   return h.value();
 }
@@ -342,7 +360,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(4);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok)
+  w.u32(5);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -367,7 +385,21 @@ std::vector<uint8_t> Sim::save() const {
       w.u8(p.ascended ? 1 : 0);
       w.str(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
       w.str(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
+      w.u32(static_cast<uint32_t>(p.research_mods.size()));
+      for (const Modifier& m : p.research_mods) {
+        w.str(m.path); w.u8(static_cast<uint8_t>(m.op)); w.i32(m.value.raw()); w.str(m.filter_id);
+        w.u32(static_cast<uint32_t>(m.filter_tags.size()));
+        for (const auto& t : m.filter_tags) w.str(t);
+      }
     }
+    w.u8(static_cast<uint8_t>(daytime_mode_)); w.u8(static_cast<uint8_t>(weather_mode_));
+    w.str(weather_.kind); w.str(weather_.prev_kind);
+    w.i64(weather_.change_at); w.i64(weather_.blend_start); w.i64(weather_.blend_end); w.i32(weather_.intensity.raw());
+    w.u64(weather_rng_.state()); w.u64(weather_rng_.increment());
+    w.u32(static_cast<uint32_t>(mud_patches_.size()));
+    for (const auto& t : mud_patches_) { w.i32(t.x); w.i32(t.y); w.u32(t.orig_terrain); w.u8(t.converted); }
+    w.u32(static_cast<uint32_t>(ice_patches_.size()));
+    for (const auto& t : ice_patches_) { w.i32(t.x); w.i32(t.y); w.u32(t.orig_terrain); w.u8(t.converted); }
   }
   return w.data();
 }
@@ -376,7 +408,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema != 3 && schema != 4) return false;
+  if (schema < 3 || schema > 5) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -412,6 +444,48 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       const std::string vis = r.str(), exp = r.str();
       p.visible.assign(vis.begin(), vis.end());
       p.explored.assign(exp.begin(), exp.end());
+      p.research_mods.clear();
+      if (schema >= 5) {
+        const uint32_t nm = r.u32();
+        for (uint32_t i = 0; i < nm && i < 4096 && r.ok(); ++i) {
+          Modifier m;
+          m.path = r.str();
+          m.op = static_cast<Modifier::Op>(std::min<uint8_t>(r.u8(), 2));
+          m.value = Fixed::from_raw(r.i32());
+          m.filter_id = r.str();
+          const uint32_t nt = r.u32();
+          for (uint32_t t = 0; t < nt && t < 256 && r.ok(); ++t) m.filter_tags.push_back(r.str());
+          p.research_mods.push_back(std::move(m));
+        }
+      }
+    }
+    if (schema >= 5) {
+      daytime_mode_ = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.u8(), 2));
+      weather_mode_ = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.u8(), 3));
+      weather_.kind = r.str();
+      weather_.prev_kind = r.str();
+      weather_.change_at = r.i64();
+      weather_.blend_start = r.i64();
+      weather_.blend_end = r.i64();
+      weather_.intensity = Fixed::from_raw(r.i32());
+      const uint64_t wst = r.u64(), winc = r.u64();
+      weather_rng_.restore(wst, winc);
+      mud_patches_.clear();
+      const uint32_t nmud = r.u32();
+      for (uint32_t i = 0; i < nmud && r.ok(); ++i) {
+        TerrainPatch t;
+        t.x = static_cast<int16_t>(r.i32()); t.y = static_cast<int16_t>(r.i32());
+        t.orig_terrain = static_cast<uint16_t>(r.u32()); t.converted = r.u8();
+        mud_patches_.push_back(t);
+      }
+      ice_patches_.clear();
+      const uint32_t nice = r.u32();
+      for (uint32_t i = 0; i < nice && r.ok(); ++i) {
+        TerrainPatch t;
+        t.x = static_cast<int16_t>(r.i32()); t.y = static_cast<int16_t>(r.i32());
+        t.orig_terrain = static_cast<uint16_t>(r.u32()); t.converted = r.u8();
+        ice_patches_.push_back(t);
+      }
     }
   }
   return r.ok() && r.at_end();

@@ -2575,6 +2575,11 @@
   },
   "Faction": {
     "demolish": true,
+    "environment": {
+     "weather": {
+      "hoseg": {"speed_mult": 0.9}
+     }
+    },
    "order": 2,
    "mechanic": "standard",
    "builder": "enter",

@@ -227,6 +227,7 @@
   },
   "Terrain": {
    "char": "i",
+   "pass": "ice",
    "buildable": false,
    "art": {
     "set": "winter",

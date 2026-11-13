@@ -45,6 +45,58 @@ uint8_t res_mask(const content::Value* arr) {
   return m;
 }
 
+void read_tags(const content::Value* arr, std::vector<std::string>& out) {
+  if (!arr || !arr->is_array()) return;
+  for (const auto& v : arr->items()) {
+    if (v.is_string()) out.push_back(v.text());
+  }
+}
+
+// `Modifiers`: [{"path", "op": add|mul|replace, "value", "filter": {"tags": [...], "id": "..."}}]
+void parse_modifiers(const content::Value* arr, std::vector<Modifier>& out) {
+  if (!arr || !arr->is_array()) return;
+  for (const auto& m : arr->items()) {
+    if (!m.is_object()) continue;
+    Modifier mod;
+    if (const content::Value* p = m.find("path"); p && p->is_string()) mod.path = p->text();
+    if (const content::Value* o = m.find("op"); o && o->is_string()) {
+      mod.op = o->text() == "mul" ? Modifier::Mul : o->text() == "replace" ? Modifier::Replace : Modifier::Add;
+    }
+    mod.value = fixed_of(m.find("value"), Fixed{});
+    if (const content::Value* f = m.find("filter"); f && f->is_object()) {
+      read_tags(f->find("tags"), mod.filter_tags);
+      if (const content::Value* id = f->find("id"); id && id->is_string()) mod.filter_id = id->text();
+    }
+    if (!mod.path.empty()) out.push_back(std::move(mod));
+  }
+}
+
+// egy napszak/időjárás hatásblokk (`game.json` → `environment.weather.<id>`, vagy a faji `environment.*.<id>`)
+EnvEffect parse_env_effect(const content::Value& v) {
+  EnvEffect e;
+  e.speed_mult = fixed_of(v.find("speed_mult"), e.speed_mult);
+  e.sight_mult = fixed_of(v.find("sight_mult"), e.sight_mult);
+  e.range_mult = fixed_of(v.find("range_mult"), e.range_mult);
+  e.gather_mult = fixed_of(v.find("gather_mult"), e.gather_mult);
+  e.build_mult = fixed_of(v.find("build_mult"), e.build_mult);
+  read_tags(v.find("range_tags"), e.range_tags);
+  read_tags(v.find("sight_tags"), e.sight_tags);
+  e.lightning_per_min = int_of(v.find("lightning_per_min"), 0);
+  e.lightning_dmg = int_of(v.find("lightning_dmg"), 0);
+  e.open_dmg_per_min = int_of(v.find("open_dmg_per_min"), 0);
+  e.open_dmg = int_of(v.find("open_dmg"), 0);
+  e.organic_dmg_per_min = int_of(v.find("organic_dmg_per_min"), 0);
+  e.organic_dmg = int_of(v.find("organic_dmg"), 0);
+  return e;
+}
+
+void parse_env_map(const content::Value* obj, std::map<std::string, EnvEffect>& out) {
+  if (!obj || !obj->is_object()) return;
+  for (const auto& [k, v] : obj->members()) {
+    if (v.is_object()) out[k] = parse_env_effect(v);
+  }
+}
+
 }  // namespace
 
 const char* resource_id(int r) { return r >= 0 && r < kResources ? kResIds[r] : "?"; }
@@ -308,9 +360,35 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
         }
       }
     }
+    parse_modifiers(v->find("Modifiers"), rd.modifiers);
     r.researches.push_back(std::move(rd));
   }
   std::sort(r.researches.begin(), r.researches.end(), [](const ResearchDef& a, const ResearchDef& b) { return a.id < b.id; });
+
+  // napszak és időjárás (D35, M6 7. lépés)
+  if (const content::Value* env = game.find("environment"); env && env->is_object()) {
+    r.env.day_cycle_ticks = std::max(1, int_of(env->find("day_cycle_ticks"), r.env.day_cycle_ticks));
+    r.env.hold_min_ticks = int_of(env->find("hold_min_ticks"), r.env.hold_min_ticks);
+    r.env.hold_max_ticks = int_of(env->find("hold_max_ticks"), r.env.hold_max_ticks);
+    if (const content::Value* ht = env->find("hold_ticks"); ht && ht->is_array() && ht->items().size() == 2) {
+      r.env.hold_min_ticks = int_of(&ht->items()[0], r.env.hold_min_ticks);
+      r.env.hold_max_ticks = int_of(&ht->items()[1], r.env.hold_max_ticks);
+    }
+    r.env.transition_ticks = int_of(env->find("transition_ticks"), r.env.transition_ticks);
+    r.env.night_build_mult = fixed_of(env->find("night_build_mult"), r.env.night_build_mult);
+    r.env.night_sight_mult = fixed_of(env->find("night_sight_mult"), r.env.night_sight_mult);
+    if (const content::Value* cl = env->find("climates"); cl && cl->is_object()) {
+      for (const auto& [name, list] : cl->members()) {
+        if (!list.is_array()) continue;
+        std::vector<std::string> kinds;
+        for (const auto& k : list.items()) {
+          if (k.is_string()) kinds.push_back(k.text());
+        }
+        r.env.climates[name] = std::move(kinds);
+      }
+    }
+    parse_env_map(env->find("weather_effects"), r.env.weather);
+  }
 
   // népek
   auto& facs = set["faction"];
@@ -340,6 +418,10 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     fd.start_resources = r.start_resources;
     if (const content::Value* sr = f->find("start_resources")) read_res_map(sr, fd.start_resources);
+    if (const content::Value* fe = f->find("environment"); fe && fe->is_object()) {
+      parse_env_map(fe->find("daytime"), fd.env_daytime);
+      parse_env_map(fe->find("weather"), fd.env_weather);
+    }
     r.factions.push_back(std::move(fd));
   }
   std::sort(r.factions.begin(), r.factions.end(), [](const FactionDef& a, const FactionDef& b) { return a.id < b.id; });
@@ -381,6 +463,35 @@ Fixed Rules::type_mult(const std::string& attacker, const std::string& target) c
   if (a == type_matrix.end()) return Fixed::from_int(1);
   const auto t = a->second.find(target);
   return t == a->second.end() ? Fixed::from_int(1) : t->second;
+}
+
+namespace {
+bool modifier_matches(const Modifier& m, const EntityDef& d) {
+  if (!m.filter_id.empty()) return m.filter_id == d.id;
+  if (m.filter_tags.empty()) return true;
+  for (const std::string& t : m.filter_tags) {
+    if (d.has_tag(t) || (d.building && t == "building")) return true;
+  }
+  return false;
+}
+}  // namespace
+
+Fixed apply_modifiers(const std::vector<const std::vector<Modifier>*>& lists, const std::string& path, Fixed base,
+                      const EntityDef& d) {
+  Fixed add{}, mul = Fixed::from_int(1);
+  bool has_replace = false;
+  Fixed replace{};
+  for (const std::vector<Modifier>* list : lists) {
+    if (!list) continue;
+    for (const Modifier& m : *list) {
+      if (m.path != path || !modifier_matches(m, d)) continue;
+      if (m.op == Modifier::Add) add = add + m.value;
+      else if (m.op == Modifier::Mul) mul = mul * m.value;
+      else { has_replace = true; replace = m.value; }
+    }
+  }
+  if (has_replace) return replace;
+  return (base + add) * mul;
 }
 
 int32_t Rules::upkeep_permille(int32_t used) const {

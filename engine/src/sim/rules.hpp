@@ -108,11 +108,52 @@ struct EntityDef {
   bool has_tag(const std::string& t) const;
 };
 
+// Statmódosító (D24, egységes módosítórendszer): `path` a 0 A.D.-szerű útvonal (a mai tartalom e nyolcat használja:
+// Attack.damage, Attack.range, Health.armor, Health.max, Health.shield, Movement.speed_pct, Vision.sight,
+// Worker.carry_pct); `op` add | mul | replace; `filter`: üres = mindenki, különben címke vagy pontos azonosító.
+// Halmozás (rögzített sorrend): minden `add` összegződik, utána minden `mul` szorzódik, végül az utolsó `replace`
+// felülír. Csak a kutatások (állandó) használják; a napszak/időjárás saját, egyszerű szorzókat ad (lásd lejjebb).
+struct Modifier {
+  enum Op : uint8_t { Add, Mul, Replace } op = Add;
+  std::string path;
+  Fixed value;
+  std::vector<std::string> filter_tags;   // üres = szűrés nélkül
+  std::string filter_id;                  // ha nem üres, csak ez a sablon (a címkék mellett/helyett)
+};
+
+Fixed apply_modifiers(const std::vector<const std::vector<Modifier>*>& lists, const std::string& path, Fixed base,
+                      const EntityDef& d);
+
 struct ResearchDef {
   std::string id, faction;
   std::array<int32_t, kResources> cost{};
   int32_t time_ticks = 0;
   std::vector<EntityDef::Req> reqs;
+  std::vector<Modifier> modifiers;   // állandó statváltozás kész kutatáskor (D24)
+};
+
+// Napszak és időjárás (M6, ADR-007 7. lépés; D35): egyszerű, egymással szorzódó hatásszorzók – nem az állandó
+// Modifier-rendszer (az a kutatásoké), mert a hatás ideiglenes és a napszak/időjárás erőssége szerint lépcsőzött.
+struct EnvEffect {
+  Fixed speed_mult = Fixed::from_int(1);
+  Fixed sight_mult = Fixed::from_int(1);
+  Fixed range_mult = Fixed::from_int(1);     // csak a `range_tags` címkéjű (üres = mindenki) támadóknak
+  Fixed gather_mult = Fixed::from_int(1);    // a gyűjtés sebessége (munkás)
+  Fixed build_mult = Fixed::from_int(1);     // az építés haladása
+  std::vector<std::string> range_tags, sight_tags;
+  int32_t lightning_per_min = 0, lightning_dmg = 0;     // zivatar: ritkán a magaslaton állóba csap
+  int32_t open_dmg_per_min = 0, open_dmg = 0;           // homokvihar: a nyílt terepen állók
+  int32_t organic_dmg_per_min = 0, organic_dmg = 0;     // hamueső: az élő (`organic`) egységek
+};
+
+struct Environment {
+  int32_t day_cycle_ticks = 7200;                        // egy teljes napszak-kör hossza
+  int32_t hold_min_ticks = 3600, hold_max_ticks = 10800;  // 2–6 perc (D35)
+  int32_t transition_ticks = 900;                         // fokozatos átmenet
+  Fixed night_build_mult = Fixed::from_ratio(9, 10);
+  Fixed night_sight_mult = Fixed::from_ratio(3, 4);
+  std::map<std::string, std::vector<std::string>> climates;   // éghajlat → a rajta előforduló időjárások
+  std::map<std::string, EnvEffect> weather;                    // időjárás-azonosító → általános hatás
 };
 
 struct FactionDef {
@@ -123,6 +164,8 @@ struct FactionDef {
   bool demolish = false;                      // kész épület lebontható-e (D38: Ursanok, Ooni, Wullof)
   uint8_t start_gather = kWood;
   std::array<int32_t, kResources> start_resources{};
+  // faji napszak/időjárás-hatás (D35, 4a. pont): azonosító ("ejszaka", "hoseg", …) → az általánoshoz szorzódó extra
+  std::map<std::string, EnvEffect> env_daytime, env_weather;
 };
 
 struct Rules {
@@ -167,6 +210,7 @@ struct Rules {
   // Kész épület lebontásakor visszajáró költség ezreléke (D38: 70%; `game.json` → `demolish_refund`); csak annál a
   // népnél, amelynek adatában `demolish: true` áll.
   int32_t demolish_refund_permille = 700;
+  Environment env;   // `game.json` → `environment` (M6 7. lépés)
 };
 
 }  // namespace totu::sim

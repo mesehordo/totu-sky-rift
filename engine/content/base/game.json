@@ -325,6 +325,31 @@
   "depression_hidden_beyond": 6,
   "ignore_tag": "ignore_elevation"
  },
+ "environment": {
+  "_leiras": "Napszak és időjárás (D35, M6 7. lépés): a napszak a tickből jön (day_cycle_ticks hosszú kör); az időjárás saját véletlenszám-folyamból, a pálya éghajlata szerint (map.json → climate; a listában egy fajta annyiszor eshet, ahányszor szerepel – a \"derult\" ezért gyakoribb), 2–6 percig tart (hold_ticks), majd transition_ticks alatt fokozatosan vált a következőre. A hatások csak \"hatással\" módban élnek (MatchSetup); a hangulat-mód csak a megjelenítőt (M5) érinti.",
+  "day_cycle_ticks": 7200,
+  "hold_ticks": [3600, 10800],
+  "transition_ticks": 900,
+  "night_build_mult": 0.9,
+  "night_sight_mult": 0.75,
+  "climates": {
+   "temperate": ["derult", "derult", "felhos", "eso", "zivatar", "kod", "hoseg"],
+   "snowy": ["derult", "derult", "felhos", "ho", "hovihar", "kod"],
+   "desert": ["derult", "derult", "felhos", "homokvihar", "hoseg"],
+   "swampy": ["derult", "derult", "felhos", "eso", "zivatar", "kod"],
+   "volcanic": ["derult", "derult", "felhos", "hamueso", "hoseg"]
+  },
+  "weather_effects": {
+   "eso": {"range_mult": 0.9, "range_tags": ["ranged"]},
+   "zivatar": {"range_mult": 0.9, "range_tags": ["ranged"], "lightning_per_min": 2, "lightning_dmg": 6},
+   "kod": {"sight_mult": 0.5},
+   "ho": {"speed_mult": 0.9},
+   "hovihar": {"speed_mult": 0.75, "sight_mult": 0.6},
+   "homokvihar": {"sight_mult": 0.6, "sight_tags": ["ranged"], "range_mult": 0.6, "range_tags": ["ranged"], "open_dmg_per_min": 4, "open_dmg": 2},
+   "hoseg": {"gather_mult": 0.9},
+   "hamueso": {"sight_mult": 0.8, "organic_dmg_per_min": 4, "organic_dmg": 2}
+  }
+ },
  "map_sizes": {
   "_leiras": "D34: pályaméretek csempében (a navrács ennek kétszerese). A javasolt játékosszám csak ajánlás; egyedi méret a szerkesztőben legfeljebb 512.",
   "small": {

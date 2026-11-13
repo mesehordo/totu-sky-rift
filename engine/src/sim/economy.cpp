@@ -35,23 +35,27 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Stealth>("Stealth");
 }
 
-int32_t Sim::carry_cap(const EntityDef& d, int kind) const {
+int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
   const int32_t base = d.carry[static_cast<size_t>(kind)] > 0 ? d.carry[static_cast<size_t>(kind)]
                                                               : rules_->resources[static_cast<size_t>(kind)].carry;
-  return std::max(1, base);
+  // Worker.carry_pct (D24): a régi `stat()` szerint százalékpont-akkumulátor (0 = nincs kutatás)
+  const Fixed pct = research_stat(owner, "Worker.carry_pct", Fixed{}, d);
+  const Fixed v = Fixed::from_int(base) * (Fixed::from_int(1) + pct / Fixed::from_int(100));
+  return std::max(1, v.floor_int());
 }
 
 EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
   if (!rules_ || def >= rules_->defs.size()) return kNoEntity;
   const EntityDef& d = rules_->defs[def];
   const EntityId e = world_.create();
+  const int32_t hp = std::max(1, research_stat(owner, "Health.max", Fixed::from_int(d.hp), d).floor_int());
   world_.add(e, Position{x, y});
   world_.add(e, Movement{d.speed, x, y, false});
-  world_.add(e, Health{d.hp, d.hp, owner});
+  world_.add(e, Health{hp, hp, owner});
   world_.add(e, Unit{def});
   if (d.worker) world_.add(e, Worker{});
   Vital vt;
-  vt.shield = d.shield * 1000;
+  vt.shield = std::max(0, research_stat(owner, "Health.shield", Fixed::from_int(d.shield), d).floor_int()) * 1000;
   world_.add(e, vt);
   if (d.attack.has) world_.add(e, Combat{});
   world_.add(e, Stealth{});
@@ -69,20 +73,23 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   const EntityDef& d = rules_->defs[def];
   const int w = std::max(1, d.fw), h = std::max(1, d.fh);
   const EntityId e = world_.create();
+  const int32_t hp = std::max(1, research_stat(owner, "Health.max", Fixed::from_int(d.hp), d).floor_int());
   world_.add(e, Position{Fixed::from_int(tx) + half(w), Fixed::from_int(ty) + half(h)});
-  world_.add(e, Health{complete ? d.hp : std::max(1, d.hp / 10), d.hp, owner});   // félkészen 10% (a régi szerint)
+  world_.add(e, Health{complete ? hp : std::max(1, hp / 10), hp, owner});   // félkészen 10% (a régi szerint)
   Building b{def, static_cast<int16_t>(tx), static_cast<int16_t>(ty), static_cast<int16_t>(w), static_cast<int16_t>(h),
              static_cast<uint8_t>(complete ? 1 : 0)};
   b.progress = complete ? std::max(1, d.time_ticks) * 1000 : 0;
   world_.add(e, b);
   if (!d.produces.empty() || !d.researches.empty()) world_.add(e, Producer{});
-  world_.add(e, Vital{});
+  Vital vt;
+  vt.shield = std::max(0, research_stat(owner, "Health.shield", Fixed::from_int(d.shield), d).floor_int()) * 1000;
+  world_.add(e, vt);
   if (d.attack.has) world_.add(e, Combat{});
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
   return e;
 }
 
-bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* error) {
+bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) {
   auto fail = [&](const std::string& msg) {
     if (error) *error = msg;
     return false;
@@ -91,6 +98,10 @@ bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* e
   upkeep_ = setup.upkeep;
   fog_ = setup.fog;
   map_ = &m;
+  daytime_mode_ = setup.daytime;
+  weather_mode_ = setup.weather;
+  weather_ = WeatherState{};
+  weather_.change_at = tick_;   // az első időjárás az első environment_system()-ben eldől
   const auto& starts = m.objects().starts;
   std::vector<uint8_t> playing;
   for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
@@ -153,15 +164,29 @@ bool Sim::setup_match(const map::Map& m, const MatchSetup& setup, std::string* e
   supply_system();
   stealth_system();
   vision_system();
+  build_terrain_patches();
   return true;
 }
 
-void Sim::restore_obstacles(const map::Map& m) {
+void Sim::restore_obstacles(map::Map& m) {
   map_ = &m;
   if (!nav_ || !rules_) return;
   world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { nav_->add_obstacle({n.tx, n.ty, n.size, n.size}); });
   world_.pool<Building>().each([&](EntityId, const Building& b) { nav_->add_obstacle({b.tx, b.ty, b.w, b.h}); });
   // nincs újratervezés: a mentett utak a mentés pillanatának akadályaival készültek, érvényesek (ugyanúgy folytatódik)
+  // a mentett pályaváltozások (D35: eső → sár, hó → jég) újraalkalmazása a friss (még változatlan) pályán; a
+  // jelöltlistát (`mud_patches_`/`ice_patches_`) a betöltés már feltöltötte ugyanabban a sorrendben
+  const auto& table = nav_->nav().table();
+  const auto mud_id = table.terrain("mud");
+  const auto ice_id = table.terrain("ice");
+  bool any = false;
+  for (const auto& t : mud_patches_) {
+    if (t.converted && mud_id) { m.set_terrain(t.x, t.y, *mud_id); any = true; }
+  }
+  for (const auto& t : ice_patches_) {
+    if (t.converted && ice_id) { m.set_terrain(t.x, t.y, *ice_id); any = true; }
+  }
+  if (any) nav_->terrain_changed({0, 0, m.width(), m.height()});
 }
 
 bool Sim::order_gather(EntityId e, EntityId res) {
@@ -313,10 +338,12 @@ void Sim::economy_system() {
         w.lx = rp.x;
         w.ly = rp.y;
         if (in_reach(e, w.res)) {
-          // nagyobb rakomány: arányosan tovább rakodik
+          // nagyobb rakomány: arányosan tovább rakodik; az időjárás (hőség, D35) lassíthatja
           const ResourceDef& rd = rules_->resources[n->kind];
-          const int64_t t = int64_t{rd.gather_time.raw()} * carry_cap(d, n->kind) / std::max(1, rd.carry);
-          w.timer = std::max(1, seconds_to_ticks(Fixed::from_raw(static_cast<int32_t>(t))));
+          const int64_t t = int64_t{rd.gather_time.raw()} * carry_cap(d, n->kind, hp->owner) / std::max(1, rd.carry);
+          const Fixed gm = env_gather_mult(hp->owner);
+          const int64_t t2 = gm.raw() > 0 ? (t << 16) / gm.raw() : t;
+          w.timer = std::max(1, seconds_to_ticks(Fixed::from_raw(static_cast<int32_t>(t2))));
           w.state = Worker::Work;
           w.move_to = 0;
           const uint8_t keep = w.state;
@@ -351,7 +378,7 @@ void Sim::economy_system() {
           return;
         }
         if (--w.timer > 0) return;
-        const int32_t take = std::min(carry_cap(d, n->kind), n->amount);
+        const int32_t take = std::min(carry_cap(d, n->kind, hp->owner), n->amount);
         n->amount -= take;
         w.carry_kind = n->kind;
         w.carry = take;
