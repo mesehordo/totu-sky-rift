@@ -211,6 +211,28 @@ bool Sim::finish_item(EntityId be, const QueueItem& item) {
     }
     return true;
   }
+  // a nagy egységnek (mamut) a lábnyom melletti hely túl szűk lehet: a legközelebbi, a méretének járható cella (a régi
+  // `landing_position` szerint)
+  if (grid >= 0 && !cand.empty()) {
+    if (const auto cell = nav_->nearest(grid, size, 0, map::Pathfinder::cell_of(cand.front().first, cand.front().second))) {
+      const auto [x, y] = map::Pathfinder::center_of(*cell);
+      bool taken = false;
+      world_.pool<Body>().each([&](EntityId o, const Body& ob) {
+        if (taken) return;
+        const Position* op = world_.get<Position>(o);
+        const Fixed rr = d.radius + ob.radius;
+        if (op && core::length_sq_raw(op->x - x, op->y - y) < int64_t{rr.raw()} * rr.raw()) taken = true;
+      });
+      if (!taken) {
+        const EntityId u = spawn_unit(item.def, owner, x, y);
+        if (u == kNoEntity) return false;
+        if (pr->has_rally) {
+          if (!(pr->rally_target && order_gather(u, pr->rally_target))) order_move(u, pr->rx, pr->ry);
+        }
+        return true;
+      }
+    }
+  }
   return false;   // nincs szabad hely: a következő tickben újra próbálja
 }
 
