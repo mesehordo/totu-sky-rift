@@ -41,6 +41,7 @@ jobs:
             /assets/sprites/buildings/urs_nagyterem_team.png
             /assets/sprites/resources/
             /assets/sprites/tiles/
+            /assets/fonts/egszakadas_rovaskonyv_text.ttf
           sparse-checkout-cone-mode: false
       - name: Linux-függőségek (SDL3 videó- és hangfejlécek)
         if: runner.os == 'Linux'
@@ -95,7 +96,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: engine
+          sparse-checkout: |
+            /engine/
+            /assets/fonts/egszakadas_rovaskonyv_text.ttf
+          sparse-checkout-cone-mode: false
       - uses: vmactions/freebsd-vm@v1
         with:
           usesh: true
@@ -111,7 +115,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: engine
+          sparse-checkout: |
+            /engine/
+            /assets/fonts/egszakadas_rovaskonyv_text.ttf
+          sparse-checkout-cone-mode: false
       - uses: vmactions/openbsd-vm@v1
         with:
           usesh: true
