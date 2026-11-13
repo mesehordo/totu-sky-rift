@@ -348,6 +348,12 @@ bool Sim::demolish(EntityId e) {
 
 bool Sim::interrupt(EntityId e) {
   if (!rules_ || !world_.alive(e)) return true;
+  if (Caster* cs = world_.get<Caster>(e)) {   // a folyamatban lévő célzott képesség és a munkába visszatérés elmarad
+    cs->cast = kNoAbility;
+    cs->ctarget = 0;
+    cs->resume = 0;
+    cs->resume_buff = kNoAbility;
+  }
   if (Combat* c = world_.get<Combat>(e)) {   // a harci parancs is véget ér (az új parancs dönt)
     c->order = Combat::None;
     c->target = 0;

@@ -67,6 +67,35 @@ struct AttackDef {
   bool ranged() const { return projectile != 0; }
 };
 
+// Képesség (M6 8. lépés; KEPESSEGEK.md A. rész – a régi játék szerint). A hősképességnél az 1. szint (`levels[0]`)
+// már bele van fésülve (az M6-ban a hősnek nincs szintje, D37). Az idők tickben, a távok csempében.
+enum class Element : uint8_t { None = 0, Ice, Fear };
+struct AbilityMods {   // a `modifiers`: szorzók (1 = nincs) és összeadandók (0 = nincs)
+  Fixed speed_mult = Fixed::from_int(1), damage_mult = Fixed::from_int(1), ranged_taken_mult = Fixed::from_int(1);
+  Fixed armor_add, range_add, regen_add;
+  bool empty() const;
+};
+struct AbilityDef {
+  enum class Type : uint8_t { Unknown = 0, Garrison, SelfBuff, Toggle, Nova, Chant, Aura, Autoheal, Bolt, Summon, Area,
+                              Passive, Power };
+  std::string id;
+  Type type = Type::Unknown;
+  int32_t cooldown = 0, duration = 0;   // tick
+  Fixed radius, range;
+  int32_t energy = 0;                   // költség (az egység energiájából)
+  Fixed damage, dps, heal;              // varázssebzés (páncél nélkül), területi sebzés / s, gyógyítás
+  int32_t stun = 0;                     // tick
+  bool has_slow = false;                // `slow` megadva (bolt: 0 = kábítás `duration` ideig; különben lassítás)
+  Fixed slow;
+  uint8_t projectile = 0;               // 0: azonnal; különben Rules::projectiles sorszáma + 1
+  uint16_t unit = kNoDef;               // idézés: a sablon
+  int32_t count = 1, lifetime = 0;      // idézés; a `lifetime` tick
+  bool target_placement = false, drop_work = false, ultimate = false;
+  Element element = Element::None;
+  AbilityMods mods;
+  std::string buff;                     // `gpower` (`levy`): a kapott önerősítés
+};
+
 struct EntityDef {
   std::string id;
   bool building = false;
@@ -105,6 +134,13 @@ struct EntityDef {
   bool hero = false;
   std::vector<uint16_t> produces;             // épület: a képezhető egységek (`Producer.units`)
   std::vector<std::string> researches;        // épület: a kutatások (`Researcher.list`)
+  // képességek (M6 8. lépés): az `Abilities.list` és a hős `Hero.abilities` (Rules::abilities sorszámai); a
+  // kutatáshoz kötöttek (`Abilities.research`) csak a kész kutatással használhatók
+  std::vector<uint16_t> abilities;
+  std::vector<std::pair<uint16_t, std::string>> ability_research;
+  int32_t energy_max = 0;                     // `Energy.max`
+  Fixed regen;                                // életerő / s (`Health.regen`)
+  int32_t garrison = 0;                       // helyőrség-helyek (`Garrison.slots`)
   bool has_tag(const std::string& t) const;
 };
 
@@ -211,6 +247,16 @@ struct Rules {
   // népnél, amelynek adatában `demolish: true` áll.
   int32_t demolish_refund_permille = 700;
   Environment env;   // `game.json` → `environment` (M6 7. lépés)
+  // képességek és elemek (M6 8. lépés)
+  std::vector<AbilityDef> abilities;                       // azonosító szerint rendezve
+  int ability_index(const std::string& id) const;          // -1, ha nincs
+  Fixed energy_regen_per_tick;                             // `game.json` → `energy_regen` (/ s)
+  struct ElementFx {
+    int32_t ice_ticks = 60;                                // fagyás: lassítás ideje
+    Fixed ice_slow = Fixed::from_ratio(3, 5);
+    int32_t fear_ticks = 48;                               // félelem: menekülés ideje
+    Fixed fear_flee = Fixed::from_int(3);                  // csempe, az okozótól elfelé
+  } element_fx;                                            // `statuses.json` (status_ice, status_fear)
 };
 
 }  // namespace totu::sim

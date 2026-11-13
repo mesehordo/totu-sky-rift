@@ -77,6 +77,7 @@ Fixed Sim::attack_range(EntityId e, EntityId target) {
     r = r + add;
   }
   if (a.ranged() && h) r = r * env_range_mult(h->owner, d);   // eső/zivatar/homokvihar (D35)
+  if (u) r = r + unit_mods(e).range_add;                         // képesség (telepítés: +3)
   return r;
 }
 
@@ -191,8 +192,8 @@ bool Sim::order_hold(EntityId e) {
   return true;
 }
 
-void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t, int64_t dmg, bool ranged) {
-  (void)ranged;
+void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t, int64_t dmg, bool ranged, bool magic,
+                      Element el) {
   if (!world_.alive(t)) return;
   Health* h = world_.get<Health>(t);
   if (!h || h->hp <= 0) return;
@@ -201,7 +202,8 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   const Building* tb = tu ? nullptr : world_.get<Building>(t);
   if (!tu && !tb) return;
   const EntityDef& td = rules_->defs[tu ? tu->def : tb->def];
-  if (src_def < rules_->defs.size()) {
+  if (tu && el != Element::None) apply_element(src, t, el);   // az elem a sebzés előtt (a régi G 1065)
+  if (!magic && src_def < rules_->defs.size()) {
     const EntityDef& sd = rules_->defs[src_def];
     // típusszorzó (Ö24): a támadó osztálya a célpont osztálya ellen; a `type_bonus` ennél erősebb lehet
     const std::string tt = tb ? std::string("epulet") : td.utype;
@@ -216,6 +218,7 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
       if (td.has_tag(tag) || (tb && tag == "building")) dmg += milli_of(v);
     }
   }
+  if (tu && ranged) dmg = mul_fixed(dmg, unit_mods(t).ranged_taken_mult);   // pajzsfal: kevesebb a távolsági sebzés
   Vital* vt = world_.get<Vital>(t);
   if (vt) {
     vt->last_hit = tick_;
@@ -226,8 +229,11 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
     }
   }
   if (dmg > 0) {
-    const int32_t armor = research_stat(h->owner, "Health.armor", Fixed::from_int(td.armor), td).floor_int();
-    dmg = std::max<int64_t>(500, dmg - int64_t{armor} * 1000);   // páncél; legalább 0,5
+    if (!magic) {   // a varázssebzés páncél nélkül hat
+      const int32_t armor = research_stat(h->owner, "Health.armor", Fixed::from_int(td.armor), td).floor_int();
+      const int64_t add = tu ? milli_of(unit_mods(t).armor_add) : 0;   // képesség, aura
+      dmg = std::max<int64_t>(500, dmg - int64_t{armor} * 1000 - add);   // páncél; legalább 0,5
+    }
     const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0) - dmg;
     if (eff <= 0) {
       if (std::find(dying_.begin(), dying_.end(), t) == dying_.end()) dying_.push_back(t);
@@ -277,6 +283,7 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   const uint8_t owner = world_.get<Health>(e)->owner;
   c.cooldown = a.cooldown;
   int64_t dmg = milli_of(research_stat(owner, "Attack.damage", a.damage, ed));
+  if (u) dmg = mul_fixed(dmg, unit_mods(e).damage_mult);   // képesség (önerősítés, kapcsoló, aura)
   const int delta = level_at(e) - level_at(t);
   if (delta > 0) {   // a magaslatról lövő rövid időre mindenkinek látható (D33, SC1)
     if (Stealth* st = world_.get<Stealth>(e)) st->revealed_until = tick_ + rules_->elevation.reveal_shooter_ticks;
@@ -333,6 +340,18 @@ void Sim::shot_system() {
   for (const EntityId se : ids) {
     Shot s = *world_.get<Shot>(se);
     Position& pos = *world_.get<Position>(se);
+    const Spell* spell = world_.get<Spell>(se);
+    const uint16_t spell_ab = spell ? spell->ability : kNoAbility;
+    auto shot_hit = [&](EntityId t) {
+      if (spell_ab == kNoAbility) {
+        deal_damage(s.src, s.owner, s.src_def, t, s.damage, true);
+        return;
+      }
+      if (!world_.get<Unit>(t)) return;   // a varázslövés csak egységet sebez
+      const AbilityDef& sa = rules_->abilities[spell_ab];
+      deal_damage(world_.alive(s.src) ? s.src : kNoEntity, s.owner, kNoDef, t, s.damage, true, true, sa.element);
+      apply_spell(s.src, s.owner, sa, t);
+    };
     const ProjectileKind& pk = rules_->projectiles[s.kind];
     Fixed speed = pk.speed;
     if (s.src_def < rules_->defs.size() && rules_->defs[s.src_def].attack.proj_speed.raw() > 0) {
@@ -371,7 +390,7 @@ void Sim::shot_system() {
         }
       });
       if (hit != kNoEntity && !s.missed) {
-        deal_damage(s.src, s.owner, s.src_def, hit, s.damage, true);
+        shot_hit(hit);
         if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, pos.x, pos.y, s.splash, s.damage, hit);
         done = true;
       } else if (s.travelled >= s.max_travel) {
@@ -407,12 +426,12 @@ void Sim::shot_system() {
             else if (const Unit* u = world_.get<Unit>(s.target)) g = core::length(tp.x - s.ax, tp.y - s.ay) - rules_->defs[u->def].radius;
             if (g <= pk.impact) primary = s.target;
           }
-          if (primary != kNoEntity) deal_damage(s.src, s.owner, s.src_def, primary, s.damage, true);
+          if (primary != kNoEntity) shot_hit(primary);
           if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, s.ax, s.ay, s.splash, s.damage, primary);
           done = true;
         } else {   // követő
           const bool hit = !s.missed && target_ok(s.target);
-          if (hit) deal_damage(s.src, s.owner, s.src_def, s.target, s.damage, true);
+          if (hit) shot_hit(s.target);
           if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, s.ax, s.ay, s.splash, s.damage, hit ? s.target : kNoEntity);
           done = true;
           if (hit && s.bounces > 0) {   // továbbpattan a legközelebbi másik ellenséges egységre
@@ -490,6 +509,8 @@ void Sim::match_combat_system() {
     if (c.cooldown > 0) --c.cooldown;
     const Unit* u = world_.get<Unit>(e);
     if (!u) continue;   // a tornyok a helyőrséggel (8. lépés)
+    if (incapacitated(e)) continue;   // kábult vagy fél (az újratöltés közben is telik)
+    if (const Caster* cs = world_.get<Caster>(e); cs && cs->cast != kNoAbility) continue;   // képességet használ
     const EntityDef& d = rules_->defs[u->def];
     const Fixed sight = research_stat(h->owner, "Vision.sight", Fixed::from_int(std::max(1, d.sight)), d) *
                         env_sight_mult(h->owner, d);
@@ -509,6 +530,7 @@ void Sim::match_combat_system() {
     switch (c.order) {
       case Combat::None: {
         if (world_.get<Worker>(e)) break;   // a munkás magától nem támad
+        if (mv && mv->moving) break;        // csak a tétlen keres célpontot (a mozgásparancs alatt nem; a régi E 747)
         if (--c.scan > 0) break;
         c.scan = kScanTicks;
         const EntityId t = find_enemy(e, sight);
@@ -592,7 +614,11 @@ void Sim::match_combat_system() {
     }
   }
   shot_system();
+}
+
+void Sim::death_system() {
   std::sort(dying_.begin(), dying_.end());
+  dying_.erase(std::unique(dying_.begin(), dying_.end()), dying_.end());
   for (const EntityId e : dying_) die(e);
   dying_.clear();
 }

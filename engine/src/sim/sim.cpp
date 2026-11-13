@@ -135,6 +135,9 @@ void Sim::apply(const Command& c) {
         if (interrupt(e)) order_move(e, c.x, c.y);
       }
       break;
+    case Command::Kind::Ability:
+      use_ability(c.units, c.def, c.x, c.y, c.target);
+      break;
   }
 }
 
@@ -222,6 +225,7 @@ void Sim::step() {
   // 3. rendszerek rögzített sorrendben, majd a halál-események
   if (rules_) {   // M6: a munkások döntései (mozgásparancsok) a mozgás előtt, majd az építés haladása
     environment_system();   // napszak/időjárás (D35) – a többi rendszer ezt már frissen látja
+    aura_system();          // módosítók: az aurák (a kapcsolók és az önerősítések a Caster-ben)
     economy_system();
     construction_system();
     production_system();
@@ -240,7 +244,11 @@ void Sim::step() {
     movement_system();
   }
   combat_system();
-  if (rules_) match_combat_system();   // M6: a sablon-egységek harca, lövedékek, halál
+  if (rules_) {   // M6: a sablon-egységek harca és lövedékei, a képességek, majd a halál
+    match_combat_system();
+    ability_system();
+    death_system();
+  }
   report_deaths();
   // 4. a tick végén a törlések
   world_.flush();
@@ -303,7 +311,8 @@ bool Command::needs_v3() const {
 bool Command::needs_v4() const {
   return kind == Kind::Gather || kind == Kind::Stop || kind == Kind::Build || kind == Kind::CancelBuild ||
          kind == Kind::Demolish || kind == Kind::Train || kind == Kind::Research || kind == Kind::CancelQueue ||
-         kind == Kind::Rally || kind == Kind::Attack || kind == Kind::AttackMove || kind == Kind::Hold || target != 0 ||
+         kind == Kind::Rally || kind == Kind::Attack || kind == Kind::AttackMove || kind == Kind::Hold ||
+         kind == Kind::Ability || target != 0 ||
          !def.empty();
 }
 
@@ -331,7 +340,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 17 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 18 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -360,7 +369,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(5);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás)
+  w.u32(6);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -408,7 +417,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 5) return false;
+  if (schema < 3 || schema > 6) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);

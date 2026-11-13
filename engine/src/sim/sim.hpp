@@ -7,6 +7,7 @@
 
 #include <array>
 #include <cstdint>
+#include <map>
 #include <optional>
 #include <string>
 #include <vector>
@@ -347,6 +348,115 @@ struct Worker {   // a gyűjtés állapota (a régi játék `_o_gather`-je szeri
   }
 };
 
+// --- képességek (M6 8. lépés; KEPESSEGEK.md A. rész) ---------------------------------------------------------------
+constexpr uint16_t kNoAbility = 0xFFFF;
+
+// képességhasználó: energia, újratöltések, kapcsolók, önerősítések és a folyamatban lévő célzott használat
+struct Caster {
+  int32_t energy = 0;                                    // ezred energia
+  std::vector<std::pair<uint16_t, int64_t>> ready;       // képesség → ettől a ticktől használható (rendezve)
+  std::vector<uint16_t> toggles;                         // bekapcsolt kapcsolók és énekek (rendezve)
+  std::vector<std::pair<uint16_t, int64_t>> buffs;       // önerősítés → eddig a tickig (rendezve)
+  uint16_t cast = kNoAbility;                            // célzott használat: odamegy, majd használja
+  Fixed cx, cy;
+  EntityId ctarget = 0;
+  int32_t crepath = 0;
+  int32_t heal_timer = 0;                                // önműködő gyógyítás: 0,5 s-onként
+  EntityId resume = 0;                                   // `drop_work`: az önerősítés után ide megy vissza gyűjteni
+  uint16_t resume_buff = kNoAbility;
+  void hash(core::StateHash& h) const {
+    h.add_i64(energy);
+    h.add_u64(ready.size());
+    for (const auto& [a, t] : ready) { h.add_u64(a); h.add_i64(t); }
+    h.add_u64(toggles.size());
+    for (const uint16_t a : toggles) h.add_u64(a);
+    h.add_u64(buffs.size());
+    for (const auto& [a, t] : buffs) { h.add_u64(a); h.add_i64(t); }
+    h.add_u64(cast); h.add_i64(cx.raw()); h.add_i64(cy.raw()); h.add_u64(ctarget); h.add_i64(crepath);
+    h.add_i64(heal_timer); h.add_u64(resume); h.add_u64(resume_buff);
+  }
+  void save(core::ByteWriter& w) const {
+    w.i32(energy);
+    w.u32(static_cast<uint32_t>(ready.size()));
+    for (const auto& [a, t] : ready) { w.u32(a); w.i64(t); }
+    w.u32(static_cast<uint32_t>(toggles.size()));
+    for (const uint16_t a : toggles) w.u32(a);
+    w.u32(static_cast<uint32_t>(buffs.size()));
+    for (const auto& [a, t] : buffs) { w.u32(a); w.i64(t); }
+    w.u32(cast); w.i32(cx.raw()); w.i32(cy.raw()); w.u32(ctarget); w.i32(crepath);
+    w.i32(heal_timer); w.u32(resume); w.u32(resume_buff);
+  }
+  static Caster load(core::ByteReader& r) {
+    Caster c;
+    c.energy = r.i32();
+    for (uint32_t i = 0, n = r.u32(); i < n && i < 256 && r.ok(); ++i) {
+      const auto a = static_cast<uint16_t>(r.u32());
+      c.ready.emplace_back(a, r.i64());
+    }
+    for (uint32_t i = 0, n = r.u32(); i < n && i < 256 && r.ok(); ++i) c.toggles.push_back(static_cast<uint16_t>(r.u32()));
+    for (uint32_t i = 0, n = r.u32(); i < n && i < 256 && r.ok(); ++i) {
+      const auto a = static_cast<uint16_t>(r.u32());
+      c.buffs.emplace_back(a, r.i64());
+    }
+    c.cast = static_cast<uint16_t>(r.u32()); c.cx = Fixed::from_raw(r.i32()); c.cy = Fixed::from_raw(r.i32());
+    c.ctarget = r.u32(); c.crepath = r.i32();
+    c.heal_timer = r.i32(); c.resume = r.u32(); c.resume_buff = static_cast<uint16_t>(r.u32());
+    return c;
+  }
+};
+
+// átmeneti állapotok (a régi `stun_until`, `slow_until`/`slow_mult`, `feared_until`/`fear_from`)
+struct Afflict {
+  int64_t stun_until = 0, slow_until = 0, fear_until = 0;
+  Fixed slow_mult = Fixed::from_int(1);
+  Fixed fx, fy;                // a menekülés célja
+  uint8_t fleeing = 0;         // a menekülő mozgás kiment
+  bool stunned(int64_t now) const { return stun_until > now; }
+  bool feared(int64_t now) const { return fear_until > now; }
+  void hash(core::StateHash& h) const {
+    h.add_i64(stun_until); h.add_i64(slow_until); h.add_i64(fear_until); h.add_i64(slow_mult.raw());
+    h.add_i64(fx.raw()); h.add_i64(fy.raw()); h.add_u64(fleeing);
+  }
+  void save(core::ByteWriter& w) const {
+    w.i64(stun_until); w.i64(slow_until); w.i64(fear_until); w.i32(slow_mult.raw()); w.i32(fx.raw()); w.i32(fy.raw());
+    w.u8(fleeing);
+  }
+  static Afflict load(core::ByteReader& r) {
+    Afflict a;
+    a.stun_until = r.i64(); a.slow_until = r.i64(); a.fear_until = r.i64(); a.slow_mult = Fixed::from_raw(r.i32());
+    a.fx = Fixed::from_raw(r.i32()); a.fy = Fixed::from_raw(r.i32()); a.fleeing = r.u8();
+    return a;
+  }
+};
+
+struct Lifetime {   // idézett egység: eddig a tickig él, utána tetem nélkül eltűnik
+  int64_t until = 0;
+  void hash(core::StateHash& h) const { h.add_i64(until); }
+  void save(core::ByteWriter& w) const { w.i64(until); }
+  static Lifetime load(core::ByteReader& r) { Lifetime l; l.until = r.i64(); return l; }
+};
+
+struct Field {   // területi mező (`area`): a helye a Position; 0,5 s-onként hat
+  uint8_t owner = 0;
+  EntityId src = 0;
+  uint16_t ability = kNoAbility;
+  int64_t until = 0, next = 0;
+  void hash(core::StateHash& h) const { h.add_u64(owner); h.add_u64(src); h.add_u64(ability); h.add_i64(until); h.add_i64(next); }
+  void save(core::ByteWriter& w) const { w.u8(owner); w.u32(src); w.u32(ability); w.i64(until); w.i64(next); }
+  static Field load(core::ByteReader& r) {
+    Field f;
+    f.owner = r.u8(); f.src = r.u32(); f.ability = static_cast<uint16_t>(r.u32()); f.until = r.i64(); f.next = r.i64();
+    return f;
+  }
+};
+
+struct Spell {   // a lövedék varázslat (`bolt`): varázssebzés, lassítás vagy kábítás, elem
+  uint16_t ability = kNoAbility;
+  void hash(core::StateHash& h) const { h.add_u64(ability); }
+  void save(core::ByteWriter& w) const { w.u32(ability); }
+  static Spell load(core::ByteReader& r) { Spell s; s.ability = static_cast<uint16_t>(r.u32()); return s; }
+};
+
 // játékosállapot (1–8. játékos; a 0. a semleges)
 struct PlayerState {
   std::string faction;                       // pl. `ursan`
@@ -411,7 +521,9 @@ struct Command {
   enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7, Build = 8,
                               CancelBuild = 9, Demolish = 10, Train = 11, Research = 12, CancelQueue = 13, Rally = 14,
                               // M6 5. lépés: Attack (`units` → `target`), AttackMove (`units` → x, y), Hold (`units`)
-                              Attack = 15, AttackMove = 16, Hold = 17 };
+                              Attack = 15, AttackMove = 16, Hold = 17,
+                              // M6 8. lépés: Ability (`units`, `def` a képesség, x, y, `target`)
+                              Ability = 18 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -518,7 +630,9 @@ class Sim {
   bool order_attack_move(EntityId unit, Fixed x, Fixed y);
   bool order_hold(EntityId unit);
   // Sebzés a régi `apply_damage` szerint: típusszorzó, címkebónusz, pajzs, páncél (legalább 0,5); ezred egységben.
-  void deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId target, int64_t milli, bool ranged);
+  // `magic`: varázssebzés (típusszorzó és páncél nélkül); `el`: a találat eleme (jég, félelem).
+  void deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId target, int64_t milli, bool ranged,
+                   bool magic = false, Element el = Element::None);
   int level_at(EntityId e);   // a szint (D33): az egység csempéje, az épület lábnyomának bal felső csempéje
   // Látótér (ADR-007 6. lépés): a játékos látja-e az entitást (saját: mindig; épületben lévő: soha; rejtett: csak
   // felfedve; különben a csempéje látható-e – a mélységben álló fentről csak közelről, D33)
@@ -546,6 +660,17 @@ class Sim {
   // Napszak/időjárás mód felülírása a meccsindítás (`MatchSetup`) után. Fejlesztői/teszt célra, és a `Game.set_weather()`
   // melletti jövőbeli küldetésszkript-kapcsoló (M11) csírája – ugyanúgy, mint `set_weather()`.
   void set_weather_mode(MatchSetup::WeatherMode mode) { weather_mode_ = mode; }
+
+  // Képességek (ADR-007 8. lépés; KEPESSEGEK.md): a régi játék szerint. Kapcsoló és ének: be/ki (a csoportban: be,
+  // ha valamelyik ki van kapcsolva); önerősítés: minden kijelölt; csapás körben és idézés: az első, akinek sikerül;
+  // célzott (lövés, terület, pontra idézés): a ponthoz legközelebbi kész egység odamegy és használja.
+  bool use_ability(const std::vector<EntityId>& units, const std::string& ability, Fixed x, Fixed y, EntityId target);
+  bool has_ability(EntityId e, uint16_t ability);   // a sablonjában van, és a kutatási feltétele teljesül
+  // Az egység pillanatnyi képességmódosítói (kapcsolók, önerősítések, aurák – a régi `mod()` szerint).
+  AbilityMods unit_mods(EntityId e);
+  Fixed unit_speed_mult(EntityId e);   // képesség, lassítás; kábulva 0
+  bool toggled(EntityId e, uint16_t ability);
+  bool buffed(EntityId e, uint16_t ability);
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
   void step();                           // egy tick (1/30 s)
@@ -576,6 +701,7 @@ class Sim {
   void construction_system();
   void production_system();
   void match_combat_system();
+  void death_system();
   void vision_system();
   void stealth_system();
   void update_vision(uint8_t player);
@@ -603,6 +729,22 @@ class Sim {
   };
   std::vector<TerrainPatch> mud_patches_, ice_patches_;
   void build_terrain_patches();   // a jelöltlisták egyszeri felépítése (setup_match)
+  // képességek (M6 8. lépés; abilities.cpp)
+  void ability_system();
+  void aura_system();
+  void field_system();
+  void cast_step(EntityId e, Caster& c);
+  bool ability_ready(EntityId e, const Caster& c, const AbilityDef& a) const;
+  void ability_spend(Caster& c, uint16_t ability, const AbilityDef& a);
+  bool activate_buff(EntityId e, uint16_t ability);
+  bool cast_nova(EntityId e, uint16_t ability);
+  bool summon(EntityId e, uint16_t ability, bool at_point, Fixed x, Fixed y);
+  void fire_bolt(EntityId e, uint16_t ability, EntityId target);
+  void apply_spell(EntityId src, uint8_t owner, const AbilityDef& a, EntityId target);   // lassítás vagy kábítás
+  void apply_element(EntityId src, EntityId target, Element el);
+  std::vector<EntityId> enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed r);
+  bool incapacitated(EntityId e);      // kábult vagy fél: nem támad, nem varázsol
+  std::map<EntityId, AbilityMods> aura_;     // tickenként újraszámolt (nem állapot)
   void shot_system();
   void attack_now(EntityId e, Combat& c, EntityId target);
   void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);

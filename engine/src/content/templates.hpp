@@ -32,6 +32,8 @@ class TemplateStore {
   const Value* get(const std::string& id);
   std::vector<std::string> ids() const;          // ábécérendben
   const std::vector<std::string>& errors() const { return errors_; }
+  // A `_` kezdetű, nem sablon kulcsok (pl. `_hozzarendeles`): a rétegek sorrendjében összefésülve; nullptr, ha nincs.
+  const Value* meta(const std::string& key) const;
 
  private:
   struct Entry {
@@ -41,6 +43,7 @@ class TemplateStore {
   };
   bool resolve(const std::string& id, std::vector<std::string>& stack);
   std::map<std::string, Entry> raw_;
+  std::map<std::string, Value> meta_;
   std::map<std::string, Value> resolved_;
   std::map<std::string, bool> failed_;
   std::vector<std::string> errors_;

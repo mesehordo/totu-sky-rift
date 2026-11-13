@@ -33,6 +33,11 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Vital>("Vital");
   world_.register_component<Shot>("Shot");
   world_.register_component<Stealth>("Stealth");
+  world_.register_component<Caster>("Caster");     // M6 8. lépés: képességek
+  world_.register_component<Afflict>("Afflict");
+  world_.register_component<Lifetime>("Lifetime");
+  world_.register_component<Field>("Field");
+  world_.register_component<Spell>("Spell");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
@@ -59,6 +64,12 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
   world_.add(e, vt);
   if (d.attack.has) world_.add(e, Combat{});
   world_.add(e, Stealth{});
+  world_.add(e, Afflict{});
+  if (!d.abilities.empty() || d.energy_max > 0) {
+    Caster cs;
+    cs.energy = std::min(50, d.energy_max) * 1000;   // a régi: legfeljebb 50 energiával indul
+    world_.add(e, cs);
+  }
   if (nav_) {
     world_.add(e, Body{});
     world_.add(e, Path{});

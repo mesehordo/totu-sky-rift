@@ -103,7 +103,12 @@ void TemplateStore::add_file(const std::string& layer, const std::string& origin
     return;
   }
   for (const auto& m : doc.members()) {
-    if (!m.first.empty() && m.first[0] == '_') continue;
+    if (!m.first.empty() && m.first[0] == '_') {   // metaadat (leírás, hozzárendelés): nem sablon
+      auto mt = meta_.find(m.first);
+      if (mt == meta_.end() || !mt->second.is_object() || !m.second.is_object()) meta_[m.first] = m.second;
+      else merge_patch(mt->second, m.second);
+      continue;
+    }
     if (!m.second.is_object()) {
       errors_.push_back(origin + ": a(z) \"" + m.first + "\" sablon nem objektum");
       continue;
@@ -119,6 +124,11 @@ void TemplateStore::add_file(const std::string& layer, const std::string& origin
       it->second.layers.push_back(layer);
     }
   }
+}
+
+const Value* TemplateStore::meta(const std::string& key) const {
+  const auto it = meta_.find(key);
+  return it == meta_.end() ? nullptr : &it->second;
 }
 
 bool TemplateStore::resolve(const std::string& id, std::vector<std::string>& stack) {
