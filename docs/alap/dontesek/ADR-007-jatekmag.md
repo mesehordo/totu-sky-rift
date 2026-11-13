@@ -111,7 +111,7 @@ Az adat a meglévő sablonokból jön (ADR-005; `templates/units`, `buildings`, 
    - pályaváltozás az esőre (sár, pocsolya) és a hóra (befagyó tó és gázló); a többi az M7-ben.
 8. **Az Ursanok teljesen:**
    - 18 egység, 15 épület, 16 kutatás;
-   - helyőrség () a D39 szerinti jelzéssel: jel az épületen, rámutatáskor színes és szürke fejek
+   - helyőrség (`Garrison.slots`) a D39 szerinti jelzéssel: jel az épületen, rámutatáskor színes és szürke fejek
      (foglalt és szabad helyek), és ugyanez a HUD-ban; az építő bentléte nem jelölendő;
    - 16 képesség: beszállás, fegyverbe, pajzsfal, dárdafal, roham, taposás, harci kürt, medveüvöltés, vérszomj, szellemtest, gyógyítás, horgonyszigony, zuhanó csapás, rúnakő és rúnakő-aura, település;
    - a három hős egységként;
