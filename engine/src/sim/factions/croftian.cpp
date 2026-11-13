@@ -135,7 +135,7 @@ class Module final : public FactionModule {
       const Health* h = s.world().get<Health>(e);
       if (!b || !h || h->hp <= 0 || !creep_faction(s, h->owner)) return;
       auto& f = fields_[h->owner];
-      if (f.empty()) f.assign(static_cast<size_t>(W) * H, 0);
+      if (f.empty()) f.assign(static_cast<size_t>(W * H), 0);
       const Fixed half = Fixed::from_ratio(std::max(b->w, b->h), 2);
       const Fixed r = b->complete ? cc.r + half : Fixed::from_int(1) + half;
       const Fixed cx = Fixed::from_int(b->tx) + Fixed::from_ratio(b->w, 2), cy = Fixed::from_int(b->ty) + Fixed::from_ratio(b->h, 2);
@@ -146,7 +146,7 @@ class Module final : public FactionModule {
           if (core::length(dx, dy) > r) continue;
           const uint16_t t = m->terrain(x, y);
           if (t >= terrains.size() || !terrains[t].buildable) continue;
-          f[static_cast<size_t>(y) * W + x] = 1;
+          f[static_cast<size_t>(y * W + x)] = 1;
         }
       }
     });
@@ -157,7 +157,7 @@ class Module final : public FactionModule {
     const auto it = fields_.find(owner);
     if (it == fields_.end() || !s.map_) return false;
     if (x < 0 || y < 0 || x >= s.map_->width() || y >= s.map_->height()) return false;
-    return it->second[static_cast<size_t>(y) * s.map_->width() + x] != 0;
+    return it->second[static_cast<size_t>(y * s.map_->width() + x)] != 0;
   }
 
   bool unit_on_own_creep(Sim& s, EntityId e) {

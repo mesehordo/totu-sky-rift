@@ -77,7 +77,7 @@ class Module final : public FactionModule {
     PondMap pm;
     pm.w = s.map_->width();
     pm.h = s.map_->height();
-    pm.owner.assign(static_cast<size_t>(pm.w) * pm.h, 0);
+    pm.owner.assign(static_cast<size_t>(pm.w * pm.h), 0);
     const EntityId e = s.world().create();
     s.world().add(e, pm);
     // a főépület tavon áll, 2 csempés peremmel
@@ -100,7 +100,7 @@ class Module final : public FactionModule {
   static uint8_t pond_at(Sim& s, int x, int y) {
     const PondMap* p = pond(s);
     if (!p || x < 0 || y < 0 || x >= p->w || y >= p->h) return 0;
-    return p->owner[static_cast<size_t>(y) * p->w + x];
+    return p->owner[static_cast<size_t>(y * p->w + x)];
   }
 
   static void mark(Sim& s, uint8_t owner, int x0, int y0, int w, int h) {
@@ -112,7 +112,7 @@ class Module final : public FactionModule {
         if (x < 0 || y < 0 || x >= p->w || y >= p->h) continue;
         const uint16_t tr = s.map_->terrain(x, y);
         if (tr < tt.terrains().size() && !tt.terrains()[tr].buildable) continue;   // csak építhető terepre
-        p->owner[static_cast<size_t>(y) * p->w + x] = owner;
+        p->owner[static_cast<size_t>(y * p->w + x)] = owner;
       }
     }
   }
