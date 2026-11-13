@@ -463,5 +463,5 @@ TEST_CASE("képességek: determinisztikus, és mentésből folytatva ugyanaz (ka
   c.run(450);
   CHECK(c.sim->hash() == a.sim->hash());
   std::printf("  képesség-állapothash (600 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0xa933264baacc7c2aULL);   // minden rendszeren ugyanez
+  CHECK(a.sim->hash() == 0x5cf3546149d04c7aULL);   // minden rendszeren ugyanez
 }

@@ -1,5 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Croftianok (MECH-CREEP-1–8: a mélység terjedése, építés csak mélységre, mozgás és gyógyulás, rothadás, fertőzés, lárvák, tüskék; átváltozás) – M7, ADR-008; a régi játék és a spec/FAJMECHANIKAK.md szerint.
+// Croftianok (MECH-CREEP-1–8: a mélység terjedése, építés csak mélységre, mozgás és gyógyulás, rothadás, fertőzés,
+// tüskék; átváltozás) – M7, ADR-008; a régi játék (G 754, 797, 1235–1240, 1781–1815, 2294, 2470–2580, 3003–3032;
+// E 191–197, 387, 1674) és a spec/FAJMECHANIKAK.md 2. része szerint.
+//   - a mélység: minden saját épület `Mechanics.creep_radius` körében; kész épületnél a sugár másodpercenként 0,7-del
+//     nő a teljesig (épülőnél 1 + fél méret), csak építhető terepen; játékosonként külön mező (a komponensekből
+//     származtatva – a hash és a mentés a sugarakat tartalmazza, a mező újraszámolható);
+//   - építés csak saját mélységre (a `no_creep` épület kivétel); a mélységen a földi egység × 1,3 gyors, a gyógyulás × 3;
+//   - a mélységen álló fák a főépülettől mért távolság szerint rothadnak (fa-bevétel, másodpercenként legfeljebb 6,5);
+//   - fertőzés: a croftian ölés után a mélységen 30%-kal 6 s múlva Karmos kel ki;
+//   - mérgező tüske: nem akadály; a rajta álló, nem tüske-immunis földi egység lassul és mérgeződik;
+//   - átváltozás (`morph`): a költségért gubó lesz, `time` s múlva az új egység.
+#include <algorithm>
+#include <array>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "map/map.hpp"
+#include "map/pathfinder.hpp"
 #include "sim/faction_module.hpp"
 #include "sim/sim.hpp"
 
@@ -7,13 +25,504 @@ namespace totu::sim {
 
 namespace {
 
+// --- komponensek (a hash és a mentés része) ---------------------------------------------------------------------------
+struct CroCreep {   // a croftian épület mélységének sugara
+  Fixed r;
+  void hash(core::StateHash& h) const { h.add_i64(r.raw()); }
+  void save(core::ByteWriter& w) const { w.i32(r.raw()); }
+  static CroCreep load(core::ByteReader& rd) { CroCreep c; c.r = Fixed::from_raw(rd.i32()); return c; }
+};
+
+struct CroRot {   // a rothadó fa tört vesztesége (ezred)
+  int32_t milli = 0;
+  void hash(core::StateHash& h) const { h.add_i64(milli); }
+  void save(core::ByteWriter& w) const { w.i32(milli); }
+  static CroRot load(core::ByteReader& rd) { CroRot c; c.milli = rd.i32(); return c; }
+};
+
+struct CroPlayer {   // játékosonként (egy saját entitáson): a rothadás tört bevétele (ezred)
+  uint8_t owner = 0;
+  int32_t rot_milli = 0;
+  void hash(core::StateHash& h) const { h.add_u64(owner); h.add_i64(rot_milli); }
+  void save(core::ByteWriter& w) const { w.u8(owner); w.i32(rot_milli); }
+  static CroPlayer load(core::ByteReader& rd) { CroPlayer c; c.owner = rd.u8(); c.rot_milli = rd.i32(); return c; }
+};
+
+struct CroHatch {   // kikelő fertőzés (a helye a Position)
+  uint8_t owner = 0;
+  uint16_t def = kNoDef;
+  int64_t at = 0;
+  void hash(core::StateHash& h) const { h.add_u64(owner); h.add_u64(def); h.add_i64(at); }
+  void save(core::ByteWriter& w) const { w.u8(owner); w.u32(def); w.i64(at); }
+  static CroHatch load(core::ByteReader& rd) {
+    CroHatch c;
+    c.owner = rd.u8(); c.def = static_cast<uint16_t>(rd.u32()); c.at = rd.i64();
+    return c;
+  }
+};
+
+struct CroCocoon {   // átváltozó gubó: ebből lesz, ekkor
+  uint16_t into = kNoDef;
+  int64_t until = 0;
+  void hash(core::StateHash& h) const { h.add_u64(into); h.add_i64(until); }
+  void save(core::ByteWriter& w) const { w.u32(into); w.i64(until); }
+  static CroCocoon load(core::ByteReader& rd) {
+    CroCocoon c;
+    c.into = static_cast<uint16_t>(rd.u32()); c.until = rd.i64();
+    return c;
+  }
+};
+
+// --- adat ---------------------------------------------------------------------------------------------------------------
+const content::Value* faction_obj(const FactionDef& f) { return f.raw ? f.raw->find("Faction") : nullptr; }
+
+Fixed num(const content::Value* v, Fixed def) {
+  if (!v) return def;
+  const auto f = v->as_fixed();
+  return f ? *f : def;
+}
+
+bool flag(const content::Value* v) { return v && v->is_bool() && v->as_bool(); }
+
+const content::Value* path2(const content::Value* v, const char* a, const char* b) {
+  const content::Value* x = v ? v->find(a) : nullptr;
+  return x && b ? x->find(b) : x;
+}
+
+// a mélység állandói (a `game.json` a modulok számára nem érhető el: a régi értékek – FAJMECHANIKAK MECH-CREEP-3)
+const Fixed kCreepSpeed = Fixed::from_ratio(13, 10);
+const Fixed kCreepRegen = Fixed::from_int(3);
+const Fixed kGrow = Fixed::from_ratio(7, 10);
+const Fixed kRotCap = Fixed::from_ratio(13, 2);   // 6,5 fa / s
+constexpr int32_t kInfestDelayDefault = 6;
+
 class Module final : public FactionModule {
  public:
   const char* name() const override { return "croftian"; }
+
+  void register_components(World& w) override {
+    w.register_component<CroCreep>("CroCreep");
+    w.register_component<CroRot>("CroRot");
+    w.register_component<CroPlayer>("CroPlayer");
+    w.register_component<CroHatch>("CroHatch");
+    w.register_component<CroCocoon>("CroCocoon");
+  }
+
+  // --- a mező -----------------------------------------------------------------------------------------------------
+  bool creep_faction(Sim& s, uint8_t owner) {
+    if (owner < 1 || owner > Sim::kMaxPlayers || !s.rules()) return false;
+    const FactionDef* f = s.rules()->faction(s.player(owner).faction);
+    const content::Value* fo = f ? faction_obj(*f) : nullptr;
+    const content::Value* m = fo ? fo->find("mechanic") : nullptr;
+    return m && m->is_string() && m->text() == "creep";
+  }
+
+  int creep_radius_of(Sim& s, uint16_t def) {
+    const EntityDef& d = s.rules()->defs[def];
+    const content::Value* v = d.raw ? path2(d.raw.get(), "Mechanics", "creep_radius") : nullptr;
+    return v ? static_cast<int>(v->as_int().value_or(0)) : 0;
+  }
+
+  void rebuild(Sim& s) {
+    fields_.clear();
+    dirty_ = false;
+    map::Map* m = s.map_;
+    if (!m || !s.nav_) return;
+    const auto& terrains = s.nav_->nav().table().terrains();
+    const int W = m->width(), H = m->height();
+    s.world().pool<CroCreep>().each([&](EntityId e, const CroCreep& cc) {
+      const Building* b = s.world().get<Building>(e);
+      const Health* h = s.world().get<Health>(e);
+      if (!b || !h || h->hp <= 0 || !creep_faction(s, h->owner)) return;
+      auto& f = fields_[h->owner];
+      if (f.empty()) f.assign(static_cast<size_t>(W) * H, 0);
+      const Fixed half = Fixed::from_ratio(std::max(b->w, b->h), 2);
+      const Fixed r = b->complete ? cc.r + half : Fixed::from_int(1) + half;
+      const Fixed cx = Fixed::from_int(b->tx) + Fixed::from_ratio(b->w, 2), cy = Fixed::from_int(b->ty) + Fixed::from_ratio(b->h, 2);
+      const int ri = r.floor_int() + 1;
+      for (int y = std::max(0, cy.floor_int() - ri); y <= std::min(H - 1, cy.floor_int() + ri); ++y) {
+        for (int x = std::max(0, cx.floor_int() - ri); x <= std::min(W - 1, cx.floor_int() + ri); ++x) {
+          const Fixed dx = Fixed::from_int(x) + Fixed::from_ratio(1, 2) - cx, dy = Fixed::from_int(y) + Fixed::from_ratio(1, 2) - cy;
+          if (core::length(dx, dy) > r) continue;
+          const uint16_t t = m->terrain(x, y);
+          if (t >= terrains.size() || !terrains[t].buildable) continue;
+          f[static_cast<size_t>(y) * W + x] = 1;
+        }
+      }
+    });
+  }
+
+  bool on_creep(Sim& s, uint8_t owner, int x, int y) {
+    if (dirty_) rebuild(s);
+    const auto it = fields_.find(owner);
+    if (it == fields_.end() || !s.map_) return false;
+    if (x < 0 || y < 0 || x >= s.map_->width() || y >= s.map_->height()) return false;
+    return it->second[static_cast<size_t>(y) * s.map_->width() + x] != 0;
+  }
+
+  bool unit_on_own_creep(Sim& s, EntityId e) {
+    const Health* h = s.world().get<Health>(e);
+    const Position* p = s.world().get<Position>(e);
+    if (!h || !p || !creep_faction(s, h->owner)) return false;
+    return on_creep(s, h->owner, p->x.floor_int(), p->y.floor_int());
+  }
+
+ public:
+  // a próbáknak: a játékos mélységcsempéinek száma, és egy csempe
+  int creep_tiles(Sim& s, uint8_t owner) {
+    if (dirty_) rebuild(s);
+    const auto it = fields_.find(owner);
+    if (it == fields_.end()) return 0;
+    int n = 0;
+    for (const uint8_t c : it->second) n += c;
+    return n;
+  }
+
+  bool creep_at(Sim& s, uint8_t owner, int x, int y) { return on_creep(s, owner, x, y); }
+
+  // --- horgok -------------------------------------------------------------------------------------------------------
+  void on_building_placed(Sim& s, EntityId e) override {
+    const Building* b = s.world().get<Building>(e);
+    const Health* h = s.world().get<Health>(e);
+    if (!b || !h) return;
+    const EntityDef& d = s.rules()->defs[b->def];
+    // mérgező tüske: nem akadály (a régi `spike_tile`)
+    if (d.raw && flag(path2(d.raw.get(), "Legacy", "spike_tile")) && s.nav_) s.nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
+    const int cr = creep_radius_of(s, b->def);
+    if (cr <= 0 || !creep_faction(s, h->owner)) return;
+    s.world().add(e, CroCreep{b->complete ? Fixed::from_int(cr) : Fixed::from_int(2)});
+    dirty_ = true;
+  }
+
+  void on_building_complete(Sim&, EntityId) override { dirty_ = true; }
+  void on_match_start(Sim& s) override {
+    for (int i = 1; i <= Sim::kMaxPlayers; ++i) {
+      if (!s.player(i).active || !creep_faction(s, static_cast<uint8_t>(i))) continue;
+      const EntityId pe = s.world().create();
+      s.world().add(pe, CroPlayer{static_cast<uint8_t>(i), 0});
+    }
+    dirty_ = true;
+  }
+
+  bool can_place(Sim& s, uint8_t owner, uint16_t def, int tx, int ty, std::string* error) override {
+    if (owner == 0 || !creep_faction(s, owner)) return true;
+    const EntityDef& d = s.rules()->defs[def];
+    if (d.faction != s.player(owner).faction) return true;   // más nép (szövetséges kisnép) épülete
+    if (d.raw && flag(path2(d.raw.get(), "Placement", "no_creep"))) return true;
+    const int w = std::max(1, d.fw), h = std::max(1, d.fh);
+    for (int y = ty; y < ty + h; ++y) {
+      for (int x = tx; x < tx + w; ++x) {
+        if (!on_creep(s, owner, x, y)) {
+          if (error) *error = "csak saját mélységre építhető";
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  Fixed speed_mult(Sim& s, EntityId e) override {
+    const Unit* u = s.world().get<Unit>(e);
+    if (!u || s.rules()->defs[u->def].flying) return Fixed::from_int(1);
+    return unit_on_own_creep(s, e) ? kCreepSpeed : Fixed::from_int(1);
+  }
+
+  Fixed regen_add(Sim& s, EntityId e) override {
+    const Health* h = s.world().get<Health>(e);
+    if (!h) return Fixed{};
+    const Unit* u = s.world().get<Unit>(e);
+    const Building* b = u ? nullptr : s.world().get<Building>(e);
+    if (!u && !b) return Fixed{};
+    bool on = false;
+    if (u) {
+      on = unit_on_own_creep(s, e);
+    } else if (creep_faction(s, h->owner)) {
+      on = on_creep(s, h->owner, b->tx, b->ty);
+    }
+    if (!on) return Fixed{};
+    // a régi: (faji + stat) gyógyulás × 3 – a közös számítás az alapot adja, a modul a különbözetet
+    const FactionDef* f = s.rules()->faction(s.player(h->owner).faction);
+    const EntityDef& d = s.rules()->defs[u ? u->def : b->def];
+    const Fixed base = (f ? f->regen : Fixed{}) + d.regen;
+    return base * (kCreepRegen - Fixed::from_int(1));
+  }
+
+  void on_death(Sim& s, EntityId victim, EntityId /*killer*/, uint8_t ko) override {
+    if (s.world().get<CroCreep>(victim)) dirty_ = true;
+    if (!creep_faction(s, ko)) return;
+    const FactionDef* f = s.rules()->faction(s.player(ko).faction);
+    const content::Value* inf = f ? path2(faction_obj(*f), "infest", nullptr) : nullptr;
+    if (!inf || !inf->is_object()) return;
+    const Unit* vu = s.world().get<Unit>(victim);
+    const Health* vh = s.world().get<Health>(victim);
+    const Position* vp = s.world().get<Position>(victim);
+    if (!vu || !vh || !vp || vh->owner == 0 || !s.hostile(ko, vh->owner)) return;
+    const EntityDef& vd = s.rules()->defs[vu->def];
+    if (!vd.has_tag("organic") || vd.hero || s.world().get<Lifetime>(victim)) return;
+    if (!on_creep(s, ko, vp->x.floor_int(), vp->y.floor_int())) return;
+    const content::Value* un = inf->find("unit");
+    const uint16_t def = un && un->is_string() ? s.rules()->def(un->text()) : kNoDef;
+    if (def == kNoDef) return;
+    const int64_t chance = (int64_t{num(inf->find("chance"), Fixed::from_ratio(3, 10)).raw()} * 1000) >> 16;
+    if (static_cast<int64_t>(s.combat_rng_.next() % 1000u) >= chance) return;
+    const int32_t delay = seconds_to_ticks(num(inf->find("delay"), Fixed::from_int(kInfestDelayDefault)));
+    const EntityId he = s.world().create();
+    s.world().add(he, Position{vp->x, vp->y});
+    s.world().add(he, CroHatch{ko, def, s.tick() + delay});
+  }
+
+  bool use_ability(Sim& s, const std::vector<EntityId>& units, uint16_t ability, Fixed, Fixed, EntityId) override {
+    const AbilityDef& a = s.rules()->abilities[ability];
+    const content::Value* sp = a.spec.get();
+    const content::Value* t = sp ? sp->find("type") : nullptr;
+    if (!t || !t->is_string() || t->text() != "morph") return false;
+    const content::Value* into = sp->find("into");
+    const content::Value* via = sp->find("via");
+    const uint16_t into_def = into && into->is_string() ? s.rules()->def(into->text()) : kNoDef;
+    const uint16_t via_def = via && via->is_string() ? s.rules()->def(via->text()) : kNoDef;
+    if (into_def == kNoDef || via_def == kNoDef) return false;
+    std::array<int32_t, kResources> cost{};
+    if (const content::Value* c = sp->find("cost"); c && c->is_object()) {
+      for (int r = 0; r < kResources; ++r) {
+        if (const content::Value* x = c->find(resource_id(r))) cost[static_cast<size_t>(r)] = static_cast<int32_t>(x->as_int().value_or(0));
+      }
+    }
+    const int32_t time = seconds_to_ticks(num(sp->find("time"), Fixed::from_int(15)));
+    bool any = false;
+    for (const EntityId e : units) {
+      const Unit* u = s.world().get<Unit>(e);
+      const Health* h = s.world().get<Health>(e);
+      if (!u || !h || h->hp <= 0 || s.incapacitated(e) || s.sheltered(e)) continue;
+      const EntityDef& d = s.rules()->defs[u->def];
+      // fejlődési irányhoz kötött (`Abilities.path`)
+      if (const content::Value* ap = d.raw ? path2(d.raw.get(), "Abilities", "path") : nullptr; ap && ap->is_object()) {
+        if (const content::Value* need = ap->find(a.id); need && need->is_string() && s.player(h->owner).path != need->text()) continue;
+      }
+      const PlayerState& p = s.player(h->owner);
+      bool afford = true;
+      for (int r = 0; r < kResources; ++r) afford = afford && p.resource(r) >= cost[static_cast<size_t>(r)];
+      if (!afford) continue;
+      const int32_t need = s.rules()->defs[into_def].supply;
+      if (p.supply_used - d.supply + need > p.supply_cap) continue;
+      s.pay(h->owner, cost);
+      const Position pos = *s.world().get<Position>(e);
+      const uint8_t owner = h->owner;
+      s.kill(e);
+      const EntityId cocoon = s.spawn_unit(via_def, owner, pos.x, pos.y);
+      if (cocoon == kNoEntity) continue;
+      s.world().add(cocoon, CroCocoon{into_def, s.tick() + time});
+      any = true;
+    }
+    return any;
+  }
+
+  void tick(Sim& s) override {
+    if (!s.rules() || !s.map_) return;
+    const int64_t now = s.tick();
+    // betöltés után a közös `restore_obstacles` a tüskét is akadállyá teszi: az első tickben ismét levesszük
+    // (épületek nem fedik egymást, így a csempe akadálya csak a tüskéé; a levétel 0-nál nem csökken tovább)
+    if (!spikes_freed_ && s.nav_) {
+      spikes_freed_ = true;
+      s.world().pool<Building>().each([&](EntityId, const Building& b) {
+        const EntityDef& d = s.rules()->defs[b.def];
+        if (d.raw && flag(path2(d.raw.get(), "Legacy", "spike_tile"))) s.nav_->remove_obstacle({b.tx, b.ty, b.w, b.h});
+      });
+    }
+    // a mező forrásainak lenyomata (épület eltűnése, elkészülte, pusztulása): eltérésnél újraszámolás
+    uint64_t sig = 0;
+    s.world().pool<CroCreep>().each([&](EntityId e, const CroCreep&) {
+      const Building* b = s.world().get<Building>(e);
+      const Health* h = s.world().get<Health>(e);
+      const uint64_t st = (h && h->hp > 0 ? 1u : 2u) + (b && b->complete ? 4u : 0u);
+      sig = sig * 1000003u + uint64_t{e} * 8u + st;
+    });
+    if (sig != sig_) {
+      sig_ = sig;
+      dirty_ = true;
+    }
+    // a sugár növekedése (1 s)
+    if (now % 30 == 0) {
+      s.world().pool<CroCreep>().each([&](EntityId e, CroCreep& cc) {
+        const Building* b = s.world().get<Building>(e);
+        if (!b || !b->complete) return;
+        const Fixed full = Fixed::from_int(creep_radius_of(s, b->def));
+        if (cc.r < full) {
+          cc.r = std::min(full, cc.r + kGrow);
+          dirty_ = true;
+        }
+      });
+      rot(s);
+    }
+    // kikelő fertőzés
+    std::vector<EntityId> hatch;
+    s.world().pool<CroHatch>().each([&](EntityId e, const CroHatch& c) {
+      if (c.at <= now) hatch.push_back(e);
+    });
+    for (const EntityId e : hatch) {
+      const CroHatch c = *s.world().get<CroHatch>(e);
+      const Position p = *s.world().get<Position>(e);
+      s.world().destroy(e);
+      const EntityId u = s.spawn_unit(c.def, c.owner, p.x, p.y);
+      if (u != kNoEntity) s.place_at_free(u, p.x, p.y);
+    }
+    // gubó → új egység
+    std::vector<EntityId> done;
+    s.world().pool<CroCocoon>().each([&](EntityId e, const CroCocoon& c) {
+      const Health* h = s.world().get<Health>(e);
+      if (c.until <= now && h && h->hp > 0) done.push_back(e);
+    });
+    for (const EntityId e : done) {
+      const CroCocoon c = *s.world().get<CroCocoon>(e);
+      const Position p = *s.world().get<Position>(e);
+      const uint8_t owner = s.world().get<Health>(e)->owner;
+      s.kill(e);
+      const EntityId u = s.spawn_unit(c.into, owner, p.x, p.y);
+      if (u != kNoEntity) s.place_at_free(u, p.x, p.y);
+    }
+    // mérgező tüskék (0,5 s): lassítás és méreg a rajtuk álló földi, nem tüske-immunis egységnek
+    if (now % 15 == 0) spikes(s);
+  }
+
+ private:
+  void rot(Sim& s) {
+    const int W = s.map_->width();
+    std::vector<EntityId> pls;
+    s.world().pool<CroPlayer>().each([&](EntityId e, const CroPlayer&) { pls.push_back(e); });
+    for (const EntityId pe : pls) {
+      const uint8_t owner = s.world().get<CroPlayer>(pe)->owner;
+      const FactionDef* f = s.rules()->faction(s.player(owner).faction);
+      const content::Value* cr = f ? path2(faction_obj(*f), "creep_rot", nullptr) : nullptr;
+      if (!cr || !cr->is_object()) continue;
+      const Fixed rate = num(cr->find("rate"), Fixed::from_ratio(3, 50));
+      const Fixed hq_mult = num(cr->find("hq_mult"), Fixed::from_ratio(5, 2));
+      const Fixed hq_radius = num(cr->find("hq_radius"), Fixed::from_int(9));
+      const Fixed cap = num(cr->find("cap"), kRotCap);
+      // a saját főépületek
+      std::vector<std::pair<Fixed, Fixed>> hqs;
+      s.world().pool<Building>().each([&](EntityId e, const Building& b) {
+        const Health* h = s.world().get<Health>(e);
+        if (h && h->owner == owner && h->hp > 0 && b.def == f->hq) {
+          hqs.emplace_back(Fixed::from_int(b.tx) + Fixed::from_ratio(b.w, 2), Fixed::from_int(b.ty) + Fixed::from_ratio(b.h, 2));
+        }
+      });
+      // a saját mélységen álló fák a főépülettől mért távolság szerint (D21), majd sor, oszlop
+      struct T { int64_t d; int16_t y, x; EntityId e; Fixed dist; };
+      std::vector<T> trees;
+      s.world().pool<ResourceNode>().each([&](EntityId e, const ResourceNode& n) {
+        if (n.kind != kWood || n.amount <= 0 || !on_creep(s, owner, n.tx, n.ty)) return;
+        const Fixed px = Fixed::from_int(n.tx) + Fixed::from_ratio(1, 2), py = Fixed::from_int(n.ty) + Fixed::from_ratio(1, 2);
+        int64_t best = 0;
+        Fixed bd = Fixed::from_int(10000);
+        for (const auto& [hx, hy] : hqs) {
+          const int64_t d2 = core::length_sq_raw(px - hx, py - hy);
+          if (bd == Fixed::from_int(10000) || d2 < best) {
+            best = d2;
+            bd = core::length(px - hx, py - hy);
+          }
+        }
+        trees.push_back({best, n.ty, n.tx, e, bd});
+      });
+      std::sort(trees.begin(), trees.end(), [](const T& a, const T& b) {
+        if (a.d != b.d) return a.d < b.d;
+        if (a.y != b.y) return a.y < b.y;
+        return a.x < b.x;
+      });
+      int64_t budget = (int64_t{cap.raw()} * 1000) >> 16;   // ezred / s
+      int64_t gained = 0;
+      for (const T& t : trees) {
+        if (budget <= 0) break;
+        ResourceNode& n = *s.world().get<ResourceNode>(t.e);
+        Fixed r = rate;
+        if (!hqs.empty() && t.dist <= hq_radius) r = r * hq_mult;
+        CroRot* cr2 = s.world().get<CroRot>(t.e);
+        if (!cr2) {
+          s.world().add(t.e, CroRot{});
+          cr2 = s.world().get<CroRot>(t.e);
+        }
+        const int64_t left = int64_t{n.amount} * 1000 - cr2->milli;
+        const int64_t take = std::min({left, (int64_t{r.raw()} * 1000) >> 16, budget});
+        budget -= take;
+        gained += take;
+        cr2->milli += static_cast<int32_t>(take);
+        while (cr2->milli >= 1000 && n.amount > 0) {
+          cr2->milli -= 1000;
+          --n.amount;
+        }
+        if (n.amount <= 0) s.remove_resource(t.e);
+      }
+      CroPlayer& cp = *s.world().get<CroPlayer>(pe);
+      cp.rot_milli += static_cast<int32_t>(gained);
+      if (cp.rot_milli >= 1000) {
+        const int32_t whole = cp.rot_milli / 1000;
+        cp.rot_milli -= whole * 1000;
+        s.income(owner, kWood, whole);
+      }
+      (void)W;
+    }
+  }
+
+  void spikes(Sim& s) {
+    std::vector<std::pair<EntityId, std::pair<int, int>>> sp;
+    s.world().pool<Building>().each([&](EntityId e, const Building& b) {
+      const EntityDef& d = s.rules()->defs[b.def];
+      const Health* h = s.world().get<Health>(e);
+      if (!b.complete || !h || h->hp <= 0 || !d.raw || !flag(path2(d.raw.get(), "Legacy", "spike_tile"))) return;
+      sp.push_back({e, {b.tx, b.ty}});
+    });
+    if (sp.empty()) return;
+    s.world().pool<Unit>().each([&](EntityId e, const Unit& u) {
+      const Health* h = s.world().get<Health>(e);
+      if (!h || h->hp <= 0 || s.rules()->defs[u.def].flying || s.sheltered(e)) return;
+      if (h->owner >= 1 && h->owner <= Sim::kMaxPlayers) {   // a tüske-immunis faj (Croftianok) nem sérül
+        const FactionDef* f = s.rules()->faction(s.player(h->owner).faction);
+        if (f && flag(path2(faction_obj(*f), "spike_immune", nullptr))) return;
+      }
+      const Position& p = *s.world().get<Position>(e);
+      const int tx = p.x.floor_int(), ty = p.y.floor_int();
+      for (const auto& [se, xy] : sp) {
+        if (xy.first != tx || xy.second != ty) continue;
+        const Health* sh = s.world().get<Health>(se);
+        if (!sh || !s.hostile(sh->owner, h->owner)) continue;
+        Afflict* af = s.world().get<Afflict>(e);
+        if (!af) break;
+        const Fixed cur = af->slow_until > s.tick() ? af->slow_mult : Fixed::from_int(1);
+        af->slow_mult = std::min(cur, Fixed::from_ratio(3, 5));   // max(0,2, 1 − 0,4)
+        af->slow_until = s.tick() + 21;                           // 0,7 s
+        af->poison_src = se;
+        af->poison_dps = std::max(af->poison_until > s.tick() ? af->poison_dps : 0, 4000);   // 4 / s
+        af->poison_until = s.tick() + 60;                         // 2 s
+        break;
+      }
+    });
+  }
+
+  std::map<uint8_t, std::vector<uint8_t>> fields_;   // a mező (származtatott, nem állapot)
+  bool dirty_ = true;
+  uint64_t sig_ = 0;
+  bool spikes_freed_ = false;
 };
 
 }  // namespace
 
 std::unique_ptr<FactionModule> make_croftian_module() { return std::make_unique<Module>(); }
+
+int croftian_creep_tiles(Sim& s, uint8_t owner);
+bool croftian_on_creep(Sim& s, uint8_t owner, int x, int y);
+
+// a próbáknak: a játékos mélységcsempéinek száma
+int croftian_creep_tiles(Sim& s, uint8_t owner) {
+  for (auto& m : s.modules_) {
+    if (std::string(m->name()) == "croftian") return static_cast<Module*>(m.get())->creep_tiles(s, owner);
+  }
+  return 0;
+}
+
+// a próbáknak: saját mélység-e a csempe
+bool croftian_on_creep(Sim& s, uint8_t owner, int x, int y) {
+  for (auto& m : s.modules_) {
+    if (std::string(m->name()) == "croftian") return static_cast<Module*>(m.get())->creep_at(s, owner, x, y);
+  }
+  return false;
+}
 
 }  // namespace totu::sim
