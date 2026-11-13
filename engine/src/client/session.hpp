@@ -10,6 +10,7 @@
 
 #include <array>
 #include <atomic>
+#include <map>
 #include <condition_variable>
 #include <cstdint>
 #include <memory>
@@ -98,6 +99,11 @@ class Session {
   std::unique_ptr<sim::Sim> sim_;
   std::shared_ptr<const Snapshot> last_;
   std::shared_ptr<const std::vector<uint8_t>> fog_;
+  // D41: a ködben az 1. játékos a nem saját épületeket és a lelőhelyeket abban az állapotban látja, ahogy utoljára
+  // látta (a lerombolt is ott marad, amíg újra oda nem lát)
+  std::map<sim::EntityId, SnapUnit> remembered_;
+  bool tile_visible(int x, int y) const;
+  bool rect_visible(int x, int y, int w, int h) const;
 };
 
 class SimRunner {

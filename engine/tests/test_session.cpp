@@ -64,7 +64,10 @@ TEST_CASE("pillanatkép: rendezett, a két legutóbbi a simításhoz, találat- 
   client::SimRunner r(s);
   std::shared_ptr<const client::Snapshot> p, c;
   r.latest(&p, &c);
-  CHECK(c->tick == 0 && p == c && c->units.size() == 60);
+  // a saját 30 egység mind benne van; a ködben álló ellenség nem (D41)
+  size_t own = 0;
+  for (const auto& u : c->units) own += u.owner == 1 ? 1u : 0u;
+  CHECK(c->tick == 0 && p == c && own == 30 && c->units.size() < 60);
   CHECK(c->fog && !c->fog->empty());
   for (size_t i = 1; i < c->units.size(); ++i) CHECK(c->units[i - 1].id < c->units[i].id);
   CHECK(c->find(c->units[7].id) == &c->units[7]);

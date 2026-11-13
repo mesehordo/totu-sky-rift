@@ -97,6 +97,7 @@ bool Session::start_match(const std::vector<std::string>& factions, bool upkeep,
   if (!sim_->setup_match(*map_, setup, error)) return false;
   last_.reset();
   fog_.reset();
+  remembered_.clear();
   return true;
 }
 
@@ -154,6 +155,23 @@ void Session::update_fog() {
   fog_ = std::move(fog);
 }
 
+bool Session::tile_visible(int x, int y) const {
+  if (!fog_ || fog_->empty()) return true;
+  const int w = map_->width(), h = map_->height();
+  x = std::clamp(x, 0, w - 1);
+  y = std::clamp(y, 0, h - 1);
+  return (*fog_)[static_cast<size_t>(y) * static_cast<size_t>(w) + static_cast<size_t>(x)] == 255;
+}
+
+bool Session::rect_visible(int x, int y, int w, int h) const {
+  for (int yy = y; yy < y + h; ++yy) {
+    for (int xx = x; xx < x + w; ++xx) {
+      if (tile_visible(xx, yy)) return true;
+    }
+  }
+  return false;
+}
+
 std::shared_ptr<const Snapshot> Session::snapshot() {
   if (last_ && last_->tick == sim_->tick()) return last_;
   if (sim_->rules()) {   // meccs: a köd az 1. játékos látóteréből (a szimulációé)
@@ -169,6 +187,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
   auto s = std::make_shared<Snapshot>();
   s->tick = sim_->tick();
   const bool match = sim_->rules() != nullptr;
+  std::vector<sim::EntityId> seen_now;
   auto& w = sim_->world();
   w.pool<sim::Position>().each([&](sim::EntityId e, const sim::Position& p) {
     const auto* hh = w.get<sim::Health>(e);
@@ -218,9 +237,44 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         }
       }
     }
-    if (match && u.owner != 1 && u.owner != 0 && u.kind == SnapUnit::kUnit && !sim_->is_visible(1, e)) return;   // ködben
+    // D41: ami nem az 1. játékosé, az a ködben nem látszik (egység, lövedék); az épület és a lelőhely a legutóbb
+    // látott állapotában
+    const auto tile_of = [](float px) { return static_cast<int>(std::floor(px / 32.0f)); };
+    if (u.kind == SnapUnit::kUnit && u.owner != 1) {
+      if (match ? !sim_->is_visible(1, e) : !tile_visible(tile_of(u.x), tile_of(u.y))) return;
+    } else if (u.kind == SnapUnit::kShot) {
+      if (!tile_visible(tile_of(u.x), tile_of(u.y))) return;
+    } else if (u.kind == SnapUnit::kBuilding || u.kind == SnapUnit::kResource) {
+      if (u.kind == SnapUnit::kResource || u.owner != 1) {
+        if (rect_visible(u.tx, u.ty, u.w, u.h)) {
+          remembered_[e] = u;
+        } else {
+          const auto it = remembered_.find(e);
+          if (it == remembered_.end()) return;   // még sosem látta
+          seen_now.push_back(e);
+          s->units.push_back(it->second);
+          return;
+        }
+      }
+    }
+    seen_now.push_back(e);
     s->units.push_back(u);
   });
+  // a ködben elpusztult (vagy kimerült) épület és lelőhely a legutóbb látott állapotában marad, amíg újra oda nem lát
+  std::sort(seen_now.begin(), seen_now.end());
+  for (auto it = remembered_.begin(); it != remembered_.end();) {
+    if (std::binary_search(seen_now.begin(), seen_now.end(), it->first)) {
+      ++it;
+      continue;
+    }
+    const SnapUnit& r = it->second;
+    if (rect_visible(r.tx, r.ty, r.w, r.h)) {
+      it = remembered_.erase(it);
+      continue;
+    }
+    s->units.push_back(r);
+    ++it;
+  }
   if (match) {
     for (int i = 0; i <= sim::Sim::kMaxPlayers; ++i) {
       const sim::PlayerState& p = sim_->player(i);
@@ -252,7 +306,7 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
     if (a.kind != SnapUnit::kUnit) continue;   // a kivágott fa és a kimerült lelőhely nem „hal meg”
     while (j < after->units.size() && after->units[j].id < a.id) ++j;
     if (j >= after->units.size() || after->units[j].id != a.id) {
-      fx.push_back({a.x, a.y, true});
+      if (!sim_->world().alive(a.id)) fx.push_back({a.x, a.y, true});   // a ködbe lépő nem hal meg (D41)
       continue;
     }
     const SnapUnit& b = after->units[j];

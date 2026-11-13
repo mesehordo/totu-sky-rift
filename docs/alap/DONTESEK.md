@@ -393,3 +393,9 @@ A tulajdonos kérése (a régi játékban nem így volt): a köd **csak a felfed
 látszik), ha ez nem eszik fölösleges erőforrást. Megvalósítás: a fényréteg összetételi shaderében (a fényesség amúgy
 is megvan, így plusz költség nincs): felderített = a kép fényessége × 0,8 szürkén; felfedezetlen = fekete; a
 határok puhák.
+
+**Kiegészítés (ugyanaznap, a tulajdonos):** a felderített, de éppen nem látott részen **ne látszódjanak az egységek**
+(és semmi, ami épp ott történik – lövedék sem), **csak az akkor látott épületek**, mint más RTS-ekben: az épületek
+és a lelőhelyek a **legutóbb látott állapotukban** maradnak (a ködben lerombolt is, amíg újra oda nem lát); a
+**felfedezetlen ↔ felderített átmenet háromszor szélesebb** (a köd e határa 3 × 3 csempés átlagból; a látható határ
+éles marad).

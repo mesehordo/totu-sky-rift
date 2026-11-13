@@ -106,13 +106,22 @@ void main() {
   }
   float f = 1.0;
   if (u_use_fog != 0) {
-    f = texture(u_fog, world / (u_cam.w * u_fogsize)).r;
+    vec2 fuv = world / (u_cam.w * u_fogsize);
+    f = texture(u_fog, fuv).r;
+    // a felfedezetlen ↔ felderített határ háromszor szélesebb (D41): 3 × 3 csempés átlagból; a látható határ éles marad
+    vec2 t = 1.0 / u_fogsize;
+    float fw = 0.0;
+    for (int j = -1; j <= 1; ++j) {
+      for (int i = -1; i <= 1; ++i) fw += texture(u_fog, fuv + vec2(float(i), float(j)) * t).r;
+    }
+    fw /= 9.0;
     float lum = dot(c, vec3(0.299, 0.587, 0.114));
     // felderített, de most nem látott (D41): szürkeárnyalatos és világos (jól látszik a táj); csak a felfedezetlen
     // teljesen fekete. A fényesség amúgy is megvan: plusz költség nincs.
     vec3 explored = vec3(lum * 0.8);
     vec3 unknown = vec3(0.02, 0.025, 0.035);
-    c = f < 0.5 ? mix(unknown, explored, smoothstep(0.0, 0.5, f)) : mix(explored, c, smoothstep(0.5, 1.0, f));
+    vec3 known = mix(explored, c, smoothstep(0.5, 1.0, f));
+    c = mix(unknown, known, smoothstep(0.0, 0.5, fw));
   }
   if (u_post != 0) {
     if (u_precip.x > 0.5 && u_precip.y > 0.0) {
