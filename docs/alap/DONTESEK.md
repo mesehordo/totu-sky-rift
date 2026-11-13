@@ -345,3 +345,21 @@ Megvalósítás: a pályás jelzés és a rámutatás a helyőrséggel együtt (
 Hosszúház, Őrtorony, és a `Garrison.slots` adat), a HUD-elem az ideiglenes HUD-ban (M6 9. lépés) és a végleges
 felületben (M8); a bánya és az elfoglalás az M7-ben (MECH-MINE, D30). A fej-ikonok a meglévő portrékból vagy a sprite-ok
 kicsinyített fejéből; ha nincs, csapatszínű kör.
+
+### D40 – Többféle, eltérően működő lövedék · ELDÖNTVE (2026-11-13)
+
+A tulajdonos kérése: „előre gondolkodva mindenképpen legyen többféle lövedéktípus, amik másképpen működnek,
+logikusan”. A régi játékban minden lövedék egyformán követte a célt (csak a sebesség és a látvány tért el); az új
+motorban a **lövedékfajta adja a viselkedést**, adatban (`game.json` → `projectiles`, modolható):
+
+| Fajta | Viselkedés |
+|---|---|
+| nyíl (`arrow`) | gyors (15 cs/s), követi a célt, alacsony ív; felfelé lőve hibázhat (D33) |
+| dárda (`spear`) | egyenes vonalú, nem követ: az útjába kerülő **első** ellenséget találja el; a pálya végén leesik |
+| szikla (`boulder`) | lassú (11 cs/s), magas ív, a **kilövéskori** célponthelyre esik – a mozgó célt elhibázhatja; a becsapódás területre sebez |
+| mágia (`magic`) | követi a célt, **sosem hibáz** (a magaslat sem zavarja) |
+| sav (`acid`) | követi a célt, közepes ív; a fröccsenést az egység adata adja |
+| bumeráng (`boomerang`) | eltalálja a célt, **továbbpattan** egy közeli ellenségre (75%), majd **visszarepül** a dobóhoz |
+
+A tulajdonságok szabadon kombinálhatók (követő / talajra érkező / egyenes vonalú, ív, hibamentesség, pattanás,
+visszatérés, becsapódási sugár, sebesség), egységenként a sebesség felülírható.

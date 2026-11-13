@@ -29,6 +29,9 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<ResourceNode>("ResourceNode");
   world_.register_component<Worker>("Worker");
   world_.register_component<Producer>("Producer");
+  world_.register_component<Combat>("Combat");
+  world_.register_component<Vital>("Vital");
+  world_.register_component<Shot>("Shot");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind) const {
@@ -46,6 +49,10 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
   world_.add(e, Health{d.hp, d.hp, owner});
   world_.add(e, Unit{def});
   if (d.worker) world_.add(e, Worker{});
+  Vital vt;
+  vt.shield = d.shield * 1000;
+  world_.add(e, vt);
+  if (d.attack.has) world_.add(e, Combat{});
   if (nav_) {
     world_.add(e, Body{});
     world_.add(e, Path{});
@@ -67,6 +74,8 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   b.progress = complete ? std::max(1, d.time_ticks) * 1000 : 0;
   world_.add(e, b);
   if (!d.produces.empty() || !d.researches.empty()) world_.add(e, Producer{});
+  world_.add(e, Vital{});
+  if (d.attack.has) world_.add(e, Combat{});
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
   return e;
 }
@@ -147,7 +156,7 @@ void Sim::restore_obstacles(const map::Map& m) {
   if (!nav_ || !rules_) return;
   world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { nav_->add_obstacle({n.tx, n.ty, n.size, n.size}); });
   world_.pool<Building>().each([&](EntityId, const Building& b) { nav_->add_obstacle({b.tx, b.ty, b.w, b.h}); });
-  navigation_changed();
+  // nincs újratervezés: a mentett utak a mentés pillanatának akadályaival készültek, érvényesek (ugyanúgy folytatódik)
 }
 
 bool Sim::order_gather(EntityId e, EntityId res) {

@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -99,6 +100,28 @@ bool Session::start_match(const std::vector<std::string>& factions, bool upkeep,
   return true;
 }
 
+void Session::battle_demo(int per_side) {
+  if (!rules_ || !sim_->rules()) return;
+  const char* kinds[] = {"urs_pajzshordozo", "urs_berserker", "urs_szigonyvezo", "urs_dardaor", "urs_kardfogu",
+                         "urs_mammut", "urs_szigonyvezo", "urs_berserker"};
+  const int cx = map_->width() / 2, cy = map_->height() / 2;
+  for (int side = 0; side < 2; ++side) {
+    std::vector<sim::EntityId> army;
+    for (int i = 0; i < per_side; ++i) {
+      const int col = i / 6, row = i % 6;
+      const int x = side == 0 ? cx - 7 - col : cx + 7 + col;
+      const sim::EntityId e = sim_->spawn_unit(rules_->def(kinds[i % 8]), static_cast<uint8_t>(side + 1),
+                                               Fixed::from_int(x) + Fixed::from_ratio(1, 2),
+                                               Fixed::from_int(cy - 3 + row) + Fixed::from_ratio(1, 2));
+      if (e != sim::kNoEntity) army.push_back(e);
+    }
+    for (const sim::EntityId e : army) {
+      sim_->order_attack_move(e, Fixed::from_int(side == 0 ? cx + 10 : cx - 10), Fixed::from_int(cy));
+    }
+  }
+  last_.reset();
+}
+
 void Session::order_demo_attack() {
   std::map<uint8_t, std::vector<sim::EntityId>> armies;
   sim_->world().pool<sim::Health>().each([&](sim::EntityId e, const sim::Health& hh) { armies[hh.owner].push_back(e); });
@@ -150,7 +173,22 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       u.owner = hh->owner;
     }
     if (match) {
-      if (const auto* b = w.get<sim::Building>(e)) {
+      if (const auto* sh = w.get<sim::Shot>(e)) {   // lövedék
+        u.kind = SnapUnit::kShot;
+        u.res = sh->kind;
+        u.owner = sh->owner;
+        u.hp = 1;
+        u.sx = to_px(sh->sx);
+        u.sy = to_px(sh->sy);
+        const float tot = std::hypot(to_px(sh->ax) - u.sx, to_px(sh->ay) - u.sy);
+        const float done = std::hypot(u.x - u.sx, u.y - u.sy);
+        u.progress = static_cast<uint16_t>(tot > 0.5f ? std::clamp(done / tot, 0.0f, 1.0f) * 1000.0f : 1000.0f);
+        if (sh->kind < sim_->rules()->projectiles.size()) {   // parabola: a félúton a legmagasabb
+          const float arc = static_cast<float>(sim_->rules()->projectiles[sh->kind].arc.raw()) / 65536.0f;
+          const float t = static_cast<float>(u.progress) / 1000.0f;
+          u.lift = arc * tot * 4.0f * t * (1.0f - t);
+        }
+      } else if (const auto* b = w.get<sim::Building>(e)) {
         u.kind = SnapUnit::kBuilding;
         u.def = b->def;
         u.tx = b->tx; u.ty = b->ty; u.w = b->w; u.h = b->h;

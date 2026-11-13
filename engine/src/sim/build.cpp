@@ -345,6 +345,12 @@ bool Sim::demolish(EntityId e) {
 
 bool Sim::interrupt(EntityId e) {
   if (!rules_ || !world_.alive(e)) return true;
+  if (Combat* c = world_.get<Combat>(e)) {   // a harci parancs is véget ér (az új parancs dönt)
+    c->order = Combat::None;
+    c->target = 0;
+    c->moving = 0;
+    c->autonomous = 0;
+  }
   Worker* w = world_.get<Worker>(e);
   if (!w) return true;
   if (w->inside) return false;

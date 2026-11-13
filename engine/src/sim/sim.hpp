@@ -165,6 +165,77 @@ struct Building {
   }
 };
 
+// harci állapot (M6 5. lépés; a régi játék szerint): parancs, célpont, póráz, újratöltés
+struct Combat {
+  enum Order : uint8_t { None = 0, Attack = 1, AttackMove = 2, Hold = 3, Leash = 4 };
+  uint8_t order = None;
+  uint8_t autonomous = 0;      // magától kezdett (felfedezés, visszaütés): pórázon (9 csempe a kiindulóponttól)
+  uint8_t moving = 0;          // támadó mozgás / póráz: a mozgásparancs kiment
+  EntityId target = 0;
+  Fixed hx, hy;                // a póráz közepe
+  Fixed gx, gy;                // a támadó mozgás célja
+  int32_t cooldown = 0;        // tick a következő támadásig
+  int32_t scan = 0;            // tick a következő keresésig (a régi: 0,4 s)
+  int32_t repath = 0;          // tick a következő üldöző útkérésig (a régi: 0,8 s)
+  void hash(core::StateHash& h) const {
+    h.add_u64(order); h.add_u64(autonomous); h.add_u64(moving); h.add_u64(target); h.add_i64(hx.raw()); h.add_i64(hy.raw());
+    h.add_i64(gx.raw()); h.add_i64(gy.raw()); h.add_i64(cooldown); h.add_i64(scan); h.add_i64(repath);
+  }
+  void save(core::ByteWriter& w) const {
+    w.u8(order); w.u8(autonomous); w.u8(moving); w.u32(target); w.i32(hx.raw()); w.i32(hy.raw()); w.i32(gx.raw()); w.i32(gy.raw());
+    w.i32(cooldown); w.i32(scan); w.i32(repath);
+  }
+  static Combat load(core::ByteReader& r) {
+    Combat c;
+    c.order = r.u8(); c.autonomous = r.u8(); c.moving = r.u8(); c.target = r.u32();
+    c.hx = Fixed::from_raw(r.i32()); c.hy = Fixed::from_raw(r.i32()); c.gx = Fixed::from_raw(r.i32()); c.gy = Fixed::from_raw(r.i32());
+    c.cooldown = r.i32(); c.scan = r.i32(); c.repath = r.i32();
+    return c;
+  }
+};
+
+// életerő-tört és pajzs (a régi játék tört sebzései miatt: a Health.hp egész, a hiány ezredekben itt)
+struct Vital {
+  int32_t deficit = 0;         // ezred életerő, ami a Health.hp-ből már hiányzik (0..999)
+  int32_t shield = 0;          // ezred pajzs
+  int64_t last_hit = -1000000; // tick
+  void hash(core::StateHash& h) const { h.add_i64(deficit); h.add_i64(shield); h.add_i64(last_hit); }
+  void save(core::ByteWriter& w) const { w.i32(deficit); w.i32(shield); w.i64(last_hit); }
+  static Vital load(core::ByteReader& r) { Vital v; v.deficit = r.i32(); v.shield = r.i32(); v.last_hit = r.i64(); return v; }
+};
+
+// lövedék (D40: a fajta adja a viselkedést); a helye a Position
+struct Shot {
+  uint8_t kind = 0;            // Rules::projectiles sorszáma
+  uint8_t owner = 0;
+  uint16_t src_def = kNoDef;   // a lövő sablonja (a típusszorzóhoz és a bónuszokhoz a becsapódáskor)
+  EntityId src = 0, target = 0;
+  Fixed sx, sy;                // kiindulás (az ívhez és a pálya hosszához)
+  Fixed ax, ay;                // célzott pont
+  Fixed dx, dy;                // egyenes vonalú: irány (egységvektor)
+  Fixed travelled, max_travel;
+  int32_t damage = 0;          // ezred sebzés (a magaslat már benne)
+  Fixed splash;
+  uint8_t missed = 0, bounces = 0, returning = 0;
+  void hash(core::StateHash& h) const {
+    h.add_u64(kind); h.add_u64(owner); h.add_u64(src_def); h.add_u64(src); h.add_u64(target);
+    for (const Fixed f : {sx, sy, ax, ay, dx, dy, travelled, max_travel, splash}) h.add_i64(f.raw());
+    h.add_i64(damage); h.add_u64(missed); h.add_u64(bounces); h.add_u64(returning);
+  }
+  void save(core::ByteWriter& w) const {
+    w.u8(kind); w.u8(owner); w.u32(src_def); w.u32(src); w.u32(target);
+    for (const Fixed f : {sx, sy, ax, ay, dx, dy, travelled, max_travel, splash}) w.i32(f.raw());
+    w.i32(damage); w.u8(missed); w.u8(bounces); w.u8(returning);
+  }
+  static Shot load(core::ByteReader& r) {
+    Shot s;
+    s.kind = r.u8(); s.owner = r.u8(); s.src_def = static_cast<uint16_t>(r.u32()); s.src = r.u32(); s.target = r.u32();
+    for (Fixed* f : {&s.sx, &s.sy, &s.ax, &s.ay, &s.dx, &s.dy, &s.travelled, &s.max_travel, &s.splash}) *f = Fixed::from_raw(r.i32());
+    s.damage = r.i32(); s.missed = r.u8(); s.bounces = r.u8(); s.returning = r.u8();
+    return s;
+  }
+};
+
 // termelési sor (M6 4. lépés; a régi játék szerint legfeljebb 5 elem, mindig az első halad) és gyülekezőpont
 struct QueueItem {
   uint8_t research = 0;      // 0: egység (`def` a sablon), 1: kutatás (`def` a kutatás sorszáma)
@@ -319,7 +390,9 @@ struct Command {
   // `target` épület vagy 0 = a legrövidebb sorú), Research (`def` kutatás, `owner`), CancelQueue (`target` épület,
   // `rx` a sor indexe), Rally (`units` épületek, `x`, `y`, `target` lelőhely vagy 0)
   enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7, Build = 8,
-                              CancelBuild = 9, Demolish = 10, Train = 11, Research = 12, CancelQueue = 13, Rally = 14 };
+                              CancelBuild = 9, Demolish = 10, Train = 11, Research = 12, CancelQueue = 13, Rally = 14,
+                              // M6 5. lépés: Attack (`units` → `target`), AttackMove (`units` → x, y), Hold (`units`)
+                              Attack = 15, AttackMove = 16, Hold = 17 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -413,6 +486,13 @@ class Sim {
   bool research(uint8_t owner, const std::string& id, std::string* error = nullptr);
   bool cancel_queue_item(EntityId building, int index);   // a teljes költség vissza
   void set_rally(EntityId building, Fixed x, Fixed y, EntityId target);
+  // Harc (ADR-007 5. lépés; D33, D40)
+  bool order_attack(EntityId unit, EntityId target);
+  bool order_attack_move(EntityId unit, Fixed x, Fixed y);
+  bool order_hold(EntityId unit);
+  // Sebzés a régi `apply_damage` szerint: típusszorzó, címkebónusz, pajzs, páncél (legalább 0,5); ezred egységben.
+  void deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId target, int64_t milli, bool ranged);
+  int level_at(EntityId e);   // a szint (D33): az egység csempéje, az épület lábnyomának bal felső csempéje
   // Nyersanyag jóváírása vagy levonása (küldetés, szkript, teszt; a Hadtáp nélkül); a készlet nem mehet 0 alá.
   void add_resources(uint8_t owner, int kind, int32_t amount);
   bool missing_requirements(uint8_t owner, const EntityDef& d, std::string* what = nullptr);
@@ -450,6 +530,18 @@ class Sim {
   void economy_system();
   void construction_system();
   void production_system();
+  void match_combat_system();
+  void shot_system();
+  void attack_now(EntityId e, Combat& c, EntityId target);
+  void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);
+  EntityId find_enemy(EntityId e, Fixed radius);
+  bool can_hit(EntityId e, EntityId target);
+  bool hostile(uint8_t a, uint8_t b) const { return a != b && a >= 1 && b >= 1 && a <= kMaxPlayers && b <= kMaxPlayers; }
+  Fixed gap(EntityId a, EntityId b);
+  Fixed attack_range(EntityId e, EntityId target);
+  void halt(EntityId e);      // a mozgás leállítása (a munka és a harci parancs marad)
+  void die(EntityId e);
+  std::vector<EntityId> dying_;
   bool finish_item(EntityId building, const QueueItem& item);
   void supply_system();
   void enter_construction(EntityId worker, EntityId building);

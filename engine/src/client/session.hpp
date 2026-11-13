@@ -26,7 +26,7 @@ namespace totu::client {
 
 // egy entitás a pillanatképben (világ-képpontban; 1 csempe = 32 képpont)
 struct SnapUnit {
-  enum Kind : uint8_t { kUnit = 0, kBuilding = 1, kResource = 2 };
+  enum Kind : uint8_t { kUnit = 0, kBuilding = 1, kResource = 2, kShot = 3 };
   sim::EntityId id = 0;
   float x = 0, y = 0;
   int32_t hp = 0, max_hp = 0;
@@ -37,7 +37,9 @@ struct SnapUnit {
   uint8_t res = 0;                      // lelőhely: a nyersanyag
   int32_t amount = 0;                   // lelőhely: a maradék; munkás: a rakomány
   bool complete = true;
-  uint16_t progress = 1000;             // épület: az építés haladása ezrelékben
+  uint16_t progress = 1000;             // épület: az építés haladása ezrelékben; lövedék: az út aránya
+  float sx = 0, sy = 0;                 // lövedék: a kiindulás (az ívhez és az irányhoz)
+  float lift = 0;                       // lövedék: az ív magassága most (képpont)
 };
 
 // a játékos állapota a felületnek
@@ -74,6 +76,8 @@ class Session {
   bool has_starts() const { return map_ && !map_->objects().starts.empty(); }
   bool start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error);
   const sim::Rules* rules() const { return rules_ ? &*rules_ : nullptr; }
+  // képpróba (M6 5. lépés): két vegyes ursan sereg a pálya közepe két oldalán, támadó mozgással egymásnak
+  void battle_demo(int per_side);
 
   // egy tick: a parancsok, a szimuláció lépése, majd az új pillanatkép és a tick látványeseményei
   std::shared_ptr<const Snapshot> step(const std::vector<sim::Command>& commands, std::vector<FxEvent>& fx);

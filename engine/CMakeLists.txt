@@ -49,7 +49,7 @@ add_library(totu_core
   src/content/templates.cpp
   src/content/schema.cpp
   src/content/loader.cpp
-  src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp src/sim/build.cpp src/sim/production.cpp
+  src/sim/sim.cpp src/sim/rules.cpp src/sim/economy.cpp src/sim/build.cpp src/sim/production.cpp src/sim/combat.cpp
   src/sim/replay.cpp
   src/sim/navmove.cpp
   src/sim/formation.cpp
@@ -87,7 +87,7 @@ enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
-  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp src/client/session.cpp)
+  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp src/client/session.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")

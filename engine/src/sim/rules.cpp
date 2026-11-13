@@ -87,6 +87,31 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
   }
   read_res_map(game.find("start_resources"), r.start_resources);
   r.max_supply = int_of(game.find("max_supply"), 200);
+  if (const content::Value* m = path(game, "unit_types", "matrix"); m && m->is_object()) {
+    for (const auto& [att, row] : m->members()) {
+      if (!row.is_object()) continue;
+      for (const auto& [tgt, val] : row.members()) r.type_matrix[att][tgt] = fixed_of(&val, Fixed::from_int(1));
+    }
+  }
+  r.shield_regen_delay = seconds_to_ticks(fixed_of(game.find("shield_regen_delay"), Fixed::from_int(10)));
+  {
+    const Fixed rate = fixed_of(game.find("shield_regen_rate"), Fixed::from_int(2));   // pajzs / s
+    r.shield_regen_per_tick = Fixed::from_raw(static_cast<int32_t>((static_cast<int64_t>(rate.raw()) + kTickHz / 2) / kTickHz));
+  }
+  if (const content::Value* el = game.find("elevation_rules"); el && el->is_object()) {
+    auto permille = [&](const char* k, int32_t def) {
+      const content::Value* x = el->find(k);
+      if (!x) return def;
+      const Fixed f = fixed_of(x, Fixed{});
+      return static_cast<int32_t>((static_cast<int64_t>(f.raw()) * 1000 + (1 << 15)) >> 16);
+    };
+    r.elevation.ranged_range_per_level = fixed_of(el->find("ranged_range_per_level"), r.elevation.ranged_range_per_level);
+    r.elevation.ranged_range_max = fixed_of(el->find("ranged_range_max"), r.elevation.ranged_range_max);
+    r.elevation.building_range_per_level = fixed_of(el->find("building_range_per_level"), r.elevation.building_range_per_level);
+    r.elevation.uphill_miss_per_level = permille("uphill_miss_per_level", 250);
+    r.elevation.uphill_miss_max = permille("uphill_miss_max", 400);
+    r.elevation.damage_per_level = permille("damage_per_level", 100);
+  }
   if (const content::Value* dr = game.find("demolish_refund")) {
     const Fixed f = fixed_of(dr, Fixed::from_ratio(7, 10));
     r.demolish_refund_permille = static_cast<int32_t>((static_cast<int64_t>(f.raw()) * 1000 + (1 << 15)) >> 16);
@@ -101,6 +126,35 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       const Fixed f = fixed_of(&t.items()[1], Fixed::from_int(1));
       r.upkeep_tiers.emplace_back(int_of(&t.items()[0], 0),
                                   static_cast<int32_t>((static_cast<int64_t>(f.raw()) * 1000 + (1 << 15)) >> 16));
+    }
+  }
+
+  // lövedékfajták (D40) – a sablonok előtt, mert a támadások ezekre hivatkoznak
+  if (const content::Value* pr = game.find("projectiles"); pr && pr->is_object()) {
+    for (const auto& [k, v] : pr->members()) {
+      if (!v.is_object()) continue;   // a leírás és más nem objektum mezők
+      ProjectileKind pk;
+      pk.id = k;
+      const Fixed sp = fixed_of(v.find("speed"), Fixed::from_int(15));
+      pk.speed = Fixed::from_raw(static_cast<int32_t>((static_cast<int64_t>(sp.raw()) + kTickHz / 2) / kTickHz));
+      auto flag = [&](const char* key) {
+        const content::Value* x = v.find(key);
+        return x && x->is_bool() && x->as_bool();
+      };
+      pk.homing = flag("homing");
+      pk.ground = flag("ground");
+      pk.line = flag("line");
+      pk.never_miss = flag("never_miss");
+      pk.returns = flag("returns");
+      pk.arc = fixed_of(v.find("arc"), Fixed{});
+      pk.bounces = int_of(v.find("bounces"), 0);
+      pk.bounce_range = fixed_of(v.find("bounce_range"), pk.bounce_range);
+      const Fixed bf = fixed_of(v.find("bounce_falloff"), Fixed::from_ratio(3, 4));
+      pk.bounce_falloff = static_cast<int32_t>((static_cast<int64_t>(bf.raw()) * 1000 + (1 << 15)) >> 16);
+      pk.impact = fixed_of(v.find("impact"), pk.impact);
+      pk.range_mult = fixed_of(v.find("range_mult"), pk.range_mult);
+      if (!pk.homing && !pk.ground && !pk.line) pk.homing = true;
+      r.projectiles.push_back(pk);
     }
   }
 
@@ -144,6 +198,45 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       d.fh = int_of(&fp->items()[1], 0);
     }
     d.supply_provides = int_of(path(*v, "Supply", "provides"), 0);
+    if (const content::Value* a = v->find("Attack"); a && a->is_object()) {
+      AttackDef& at = d.attack;
+      at.has = true;
+      at.damage = fixed_of(a->find("damage"), Fixed{});
+      at.range = fixed_of(a->find("range"), Fixed::from_ratio(3, 10));
+      at.cooldown = std::max(1, seconds_to_ticks(fixed_of(a->find("cooldown"), Fixed::from_int(1))));
+      if (const content::Value* tg = a->find("targets"); tg && tg->is_array()) {
+        at.ground = at.air = false;
+        for (const auto& t : tg->items()) {
+          if (t.is_string() && t.text() == "ground") at.ground = true;
+          if (t.is_string() && t.text() == "air") at.air = true;
+        }
+      }
+      if (const content::Value* pj = a->find("projectile"); pj && pj->is_string()) {
+        int pi = r.projectile_index(pj->text());
+        if (pi < 0) {   // ismeretlen fajta: követő lövedék (a régi játék minden lövedéke ilyen volt)
+          ProjectileKind pk;
+          pk.id = pj->text();
+          r.projectiles.push_back(pk);
+          pi = static_cast<int>(r.projectiles.size()) - 1;
+        }
+        at.projectile = static_cast<uint8_t>(pi + 1);
+      }
+      if (const content::Value* ps = a->find("proj_speed")) {   // egységenként felülírható
+        const Fixed f = fixed_of(ps, Fixed::from_int(15));
+        at.proj_speed = Fixed::from_raw(static_cast<int32_t>((static_cast<int64_t>(f.raw()) + kTickHz / 2) / kTickHz));
+      }
+      at.splash = fixed_of(a->find("splash"), Fixed{});
+      for (const char* key : {"bonus", "type_bonus"}) {
+        if (const content::Value* b = a->find(key); b && b->is_object()) {
+          for (const auto& [k, val] : b->members()) {
+            (key[0] == 'b' ? at.bonus : at.type_bonus).emplace_back(k, fixed_of(&val, Fixed{}));
+          }
+        }
+      }
+    }
+    if (const content::Value* cl = path(*v, "Identity", "class"); cl && cl->is_string()) d.utype = cl->text();
+    d.shield = int_of(path(*v, "Health", "shield"), 0);
+    d.shield_delay = seconds_to_ticks(fixed_of(path(*v, "Health", "shield_delay"), Fixed{}));
     const content::Value* hero = path(*v, "Identity", "hero");
     d.hero = hero && hero->is_bool() && hero->as_bool();
     if (const content::Value* rl = path(*v, "Researcher", "list"); rl && rl->is_array()) {
@@ -266,6 +359,20 @@ int Rules::research_index(const std::string& id) const {
   const auto it = std::lower_bound(researches.begin(), researches.end(), id,
                                    [](const ResearchDef& x, const std::string& v) { return x.id < v; });
   return it != researches.end() && it->id == id ? static_cast<int>(it - researches.begin()) : -1;
+}
+
+int Rules::projectile_index(const std::string& id) const {
+  for (size_t i = 0; i < projectiles.size(); ++i) {
+    if (projectiles[i].id == id) return static_cast<int>(i);
+  }
+  return -1;
+}
+
+Fixed Rules::type_mult(const std::string& attacker, const std::string& target) const {
+  const auto a = type_matrix.find(attacker);
+  if (a == type_matrix.end()) return Fixed::from_int(1);
+  const auto t = a->second.find(target);
+  return t == a->second.end() ? Fixed::from_int(1) : t->second;
 }
 
 int32_t Rules::upkeep_permille(int32_t used) const {

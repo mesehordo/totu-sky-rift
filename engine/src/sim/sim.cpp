@@ -108,6 +108,21 @@ void Sim::apply(const Command& c) {
     case Command::Kind::Rally:
       for (const EntityId e : c.units) set_rally(e, c.x, c.y, c.target);
       break;
+    case Command::Kind::Attack:
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) order_attack(e, c.target);
+      }
+      break;
+    case Command::Kind::AttackMove:
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) order_attack_move(e, c.x, c.y);
+      }
+      break;
+    case Command::Kind::Hold:
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) order_hold(e);
+      }
+      break;
     case Command::Kind::Block:
       nav_block(c.rx, c.ry, c.rw, c.rh, c.flag != 0);
       break;
@@ -221,6 +236,7 @@ void Sim::step() {
     movement_system();
   }
   combat_system();
+  if (rules_) match_combat_system();   // M6: a sablon-egységek harca, lövedékek, halál
   report_deaths();
   // 4. a tick végén a törlések
   world_.flush();
@@ -264,7 +280,8 @@ bool Command::needs_v3() const {
 bool Command::needs_v4() const {
   return kind == Kind::Gather || kind == Kind::Stop || kind == Kind::Build || kind == Kind::CancelBuild ||
          kind == Kind::Demolish || kind == Kind::Train || kind == Kind::Research || kind == Kind::CancelQueue ||
-         kind == Kind::Rally || target != 0 || !def.empty();
+         kind == Kind::Rally || kind == Kind::Attack || kind == Kind::AttackMove || kind == Kind::Hold || target != 0 ||
+         !def.empty();
 }
 
 void save_command(core::ByteWriter& w, const Command& c, int format) {
@@ -291,7 +308,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 14 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 17 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();

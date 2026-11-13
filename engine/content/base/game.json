@@ -12,6 +12,15 @@
  "max_supply": 200,
  "build_cancel_refund": 0.75,
  "demolish_refund": 0.7,
+ "projectiles": {
+  "_leiras": "Lövedékfajták (D40): a fajta adja a viselkedést. speed: csempe/s; homing: követi a célt; ground: a kilövéskori célponthelyre érkezik (a mozgó célt elhibázhatja); line: egyenes vonalú, az útjába kerülő első ellenséget találja el, a pálya végén leesik; arc: az ív magassága a táv arányában (csak látvány); never_miss: a magaslat nem zavarja; bounces: továbbpattanások száma (bounce_range csempén belül, bounce_falloff sebzésszorzóval); returns: a végén visszarepül a dobóhoz (látvány); impact: a becsapódás sugara (csempe) a talajra érkezőnél.",
+  "arrow": {"speed": 15, "homing": true, "arc": 0.12},
+  "spear": {"speed": 13, "line": true, "arc": 0.06, "range_mult": 1.4},
+  "boulder": {"speed": 11, "ground": true, "arc": 0.45, "impact": 0.45},
+  "magic": {"speed": 13, "homing": true, "never_miss": true},
+  "acid": {"speed": 12, "homing": true, "arc": 0.25},
+  "boomerang": {"speed": 13, "homing": true, "arc": 0.08, "bounces": 1, "bounce_range": 3.5, "bounce_falloff": 0.75, "returns": true}
+ },
  "summon_research": {
   "summon_duration": {
    "name": "Idézés tartósítása I.",

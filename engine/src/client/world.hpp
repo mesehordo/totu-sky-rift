@@ -41,6 +41,12 @@ class World {
   // kijelölés és parancs (az 1. játékos egységei)
   void select_box(float wx0, float wy0, float wx1, float wy1);
   void order_move(float wx, float wy, sim::Formation f);
+  // harc (M6 5. lépés): az ellenség a pont alatt (0 = nincs), támadás, támadó mozgás
+  sim::EntityId enemy_at(float wx, float wy) const;
+  void order_attack(sim::EntityId target);
+  void order_attack_move(float wx, float wy);
+  // életerőcsíkok (a sérült és a kijelölt egységek és épületek fölött); a fő menet után
+  void draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha) const;
   // építés (ideiglenes kezelés a HUD-ig): a kísértetkép (sablon, bal felső csempe; kNoDef = nincs), és a parancs az
   // első kijelölt munkással
   void set_ghost(uint16_t def, int tx, int ty) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; }

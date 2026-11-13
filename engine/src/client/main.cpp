@@ -13,8 +13,9 @@
 //   totu --nofog                   köd nélkül
 //   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
 //                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
-//   (meccsben: Q – telepes képzése; B – építési mód, az ursan épületek léptetése; bal gomb: lerakás az első kijelölt munkással;
+//   (meccsben: jobb gomb ellenségre – támadás; A + bal gomb – támadó mozgás; Q – telepes képzése; B – építési mód, az ursan épületek léptetése; bal gomb: lerakás az első kijelölt munkással;
 //    jobb gomb: kilépés az építési módból)
+//   totu --battle-demo N           meccsben: két N fős vegyes ursan sereg a pálya közepén egymásnak megy (képpróba)
 //   totu --build-demo              meccsben: az 1. játékos egy telepese tanyát kezd a főépület mellé (képpróba)
 //   totu --look X,Y                a kamera középpontja (csempe)
 //   totu --zoom Z                  a kamera nagyítása (1,0–2,0; alap 1,5)
@@ -77,6 +78,7 @@ struct Options {
   bool sync = false;
   float look_x = -1, look_y = -1;
   bool build_demo = false;
+  int battle_demo = 0;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
 };
@@ -240,6 +242,7 @@ int main(int argc, char** argv) {
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
     else if (a == "--sync") o.sync = true;
     else if (a == "--build-demo") o.build_demo = true;
+    else if (a == "--battle-demo") o.battle_demo = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--look") {
       char* end = nullptr;
       const char* v = next();
@@ -332,6 +335,7 @@ int main(int argc, char** argv) {
     sim::Formation formation = sim::Formation::Auto;
     float drag_x = 0, drag_y = 0;
     bool dragging = false;
+    bool attack_move = false;
     // építés (ideiglenes, a HUD-ig): B lépteti az épületeket, bal gomb lerak, jobb gomb kilép
     std::vector<uint16_t> build_list;
     int build_idx = -1;
@@ -365,6 +369,7 @@ int main(int argc, char** argv) {
           } else {
             session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           }
+          if (o.battle_demo > 0 && session.has_starts()) session.battle_demo(o.battle_demo);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
           fallback = dev.create_array_from(circle_image(32), false);
@@ -443,6 +448,11 @@ int main(int argc, char** argv) {
           world.set_ghost(sim::kNoDef, 0, 0);
           continue;
         }
+        if (attack_move && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
+          world.order_attack_move(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom);
+          attack_move = false;
+          continue;
+        }
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
           dragging = true;
           drag_x = cam.x + ev.button.x / cam.zoom;
@@ -453,8 +463,11 @@ int main(int argc, char** argv) {
           world.select_box(drag_x, drag_y, cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom);
         }
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_RIGHT) {
-          world.order_move(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom, formation);
+          const float wx = cam.x + ev.button.x / cam.zoom, wy = cam.y + ev.button.y / cam.zoom;
+          if (const sim::EntityId enemy = world.enemy_at(wx, wy)) world.order_attack(enemy);   // ellenségre: támadás
+          else world.order_move(wx, wy, formation);
         }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_A) attack_move = true;   // A + bal gomb: támadó mozgás
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_V && have_world) {   // következő időjárás
           weather_from = weather_to;
           weather_to = static_cast<render::Weather>((static_cast<int>(weather_to) + 1) % static_cast<int>(render::Weather::Count));
@@ -534,6 +547,7 @@ int main(int argc, char** argv) {
         lighting.apply_shadows();
         batch.begin(proj);
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
+        world.draw_bars(batch, white, alpha);
         batch.end();
         effects.draw_scene(batch, proj, particles);
         batch.begin(proj);

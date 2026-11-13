@@ -35,6 +35,38 @@ struct ResourceDef {
   bool special = false;   // nem gyűjthető lelőhelyről (áhítat)
 };
 
+// lövedékfajta (D40; `game.json` → `projectiles`): a fajta adja a viselkedést
+struct ProjectileKind {
+  std::string id;
+  Fixed speed = Fixed::from_ratio(1, 2);      // csempe / tick
+  bool homing = true;                         // követi a célt
+  bool ground = false;                        // a kilövéskori célponthelyre érkezik
+  bool line = false;                          // egyenes vonalú, az útjába kerülő első ellenség
+  Fixed arc;                                  // az ív magassága a táv arányában (látvány)
+  bool never_miss = false;                    // a magaslat nem zavarja
+  int32_t bounces = 0;                        // továbbpattanások
+  Fixed bounce_range = Fixed::from_ratio(7, 2);
+  int32_t bounce_falloff = 750;               // ezrelék
+  bool returns = false;                       // a végén visszarepül a dobóhoz (látvány)
+  Fixed impact = Fixed::from_ratio(2, 5);     // a talajra érkező becsapódási sugara (csempe)
+  Fixed range_mult = Fixed::from_int(1);      // egyenes vonalú: a pálya hossza a lőtáv arányában
+};
+
+// támadás (`Attack`), a régi játék adatai szerint
+struct AttackDef {
+  bool has = false;
+  Fixed damage;                               // alap sebzés
+  Fixed range;                                // csempe (a test szélétől)
+  int32_t cooldown = 30;                      // tick
+  bool ground = true, air = false;            // `targets`
+  uint8_t projectile = 0;                     // 0: közelharc; különben a lövedékfajta sorszáma + 1 (Rules::projectiles)
+  Fixed proj_speed;                           // csempe / tick (0: a fajtáé)
+  Fixed splash;                               // csempe (0: nincs)
+  std::vector<std::pair<std::string, Fixed>> bonus;        // címke → +sebzés
+  std::vector<std::pair<std::string, Fixed>> type_bonus;   // célosztály → szorzó (a mátrixnál erősebb)
+  bool ranged() const { return projectile != 0; }
+};
+
 struct EntityDef {
   std::string id;
   bool building = false;
@@ -62,6 +94,11 @@ struct EntityDef {
     std::string id;
   };
   std::vector<Req> reqs;
+  // harc (M6 5. lépés)
+  AttackDef attack;
+  std::string utype;                          // egységosztály (`Identity.class`): a típusszorzó-mátrixhoz
+  int32_t shield = 0;                         // pajzs
+  int32_t shield_delay = 0;                   // tick (0: a játék alapja)
   // termelés (M6 4. lépés)
   bool hero = false;
   std::vector<uint16_t> produces;             // épület: a képezhető egységek (`Producer.units`)
@@ -95,6 +132,20 @@ struct Rules {
   std::vector<FactionDef> factions;                        // azonosító szerint rendezve
   std::vector<ResearchDef> researches;                     // azonosító szerint rendezve
   static constexpr int kQueueMax = 5;                      // a termelési sor hossza (a régi játék szerint)
+  // harc (`game.json`): a típusszorzó-mátrix (támadó osztály → célosztály → szorzó; az épület osztálya `epulet`),
+  // a pajzs visszatöltése, a magaslat-szabályok (D33)
+  std::map<std::string, std::map<std::string, Fixed>> type_matrix;
+  std::vector<ProjectileKind> projectiles;                 // a `game.json` sorrendjében
+  int projectile_index(const std::string& id) const;       // -1, ha nincs
+  int32_t shield_regen_delay = 300;                        // tick
+  Fixed shield_regen_per_tick;
+  struct Elevation {
+    Fixed ranged_range_per_level = Fixed::from_ratio(1, 2), ranged_range_max = Fixed::from_int(1);
+    Fixed building_range_per_level = Fixed::from_int(1);
+    int32_t uphill_miss_per_level = 250, uphill_miss_max = 400;   // ezrelék
+    int32_t damage_per_level = 100;                                // ezrelék
+  } elevation;
+  Fixed type_mult(const std::string& attacker, const std::string& target) const;
   static constexpr int kMaxHeroes = 3;
 
   // A `game` a `game.json` tartalma; a sablonok a `set`-ből. Hiányzó kötelező adatnál nullopt (az ok az errors-ban).
