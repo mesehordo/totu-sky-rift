@@ -1,6 +1,6 @@
 # ADR-007: Játékmag – függőleges szelet (M6)
 
-**Státusz:** JAVASLAT – a tulajdonos jóváhagyására vár (D37)
+**Státusz:** ELFOGADOTT – a tulajdonos jóváhagyta 2026-11-13 (D37)
 **Érintett:** M6 (játékmag), M7 (minden faj – erre a keretre épül), M8 (felület), M9 (gépi ellenfél: a látott
 információ), M10 (hálózat: a parancssor és a hash), M11 (küldetések).
 Alap: ADR-004 (fixpontos számábrázolás), ADR-005 (adatformátum), ADR-006 (térkép és mozgás), D35 (napszak és
