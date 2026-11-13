@@ -107,14 +107,19 @@ void main() {
   float f = 1.0;
   if (u_use_fog != 0) {
     vec2 fuv = world / (u_cam.w * u_fogsize);
-    f = texture(u_fog, fuv).r;
-    // a felfedezetlen ↔ felderített határ háromszor szélesebb (D41): 3 × 3 csempés átlagból; a látható határ éles marad
-    vec2 t = 1.0 / u_fogsize;
-    float fw = 0.0;
-    for (int j = -1; j <= 1; ++j) {
-      for (int i = -1; i <= 1; ++i) fw += texture(u_fog, fuv + vec2(float(i), float(j)) * t).r;
+    // lágy átmenet (D41): mindhárom zóna (felfedezetlen, felderített, látott) között kb. 3 csempés, fokozatos határ –
+    // a köd 5 × 5 mintás, ±1,5 csempés súlyozott átlagából
+    vec2 t = 0.75 / u_fogsize;
+    float fsum = 0.0, wsum = 0.0;
+    for (int j = -2; j <= 2; ++j) {
+      for (int i = -2; i <= 2; ++i) {
+        float wgt = exp(-0.5 * float(i * i + j * j) / 1.6);
+        fsum += texture(u_fog, fuv + vec2(float(i), float(j)) * t).r * wgt;
+        wsum += wgt;
+      }
     }
-    fw /= 9.0;
+    f = fsum / wsum;
+    float fw = f;
     float lum = dot(c, vec3(0.299, 0.587, 0.114));
     // felderített, de most nem látott (D41): szürkeárnyalatos és világos (jól látszik a táj); csak a felfedezetlen
     // teljesen fekete. A fényesség amúgy is megvan: plusz költség nincs.

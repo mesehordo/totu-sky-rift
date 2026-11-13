@@ -397,5 +397,5 @@ határok puhák.
 **Kiegészítés (ugyanaznap, a tulajdonos):** a felderített, de éppen nem látott részen **ne látszódjanak az egységek**
 (és semmi, ami épp ott történik – lövedék sem), **csak az akkor látott épületek**, mint más RTS-ekben: az épületek
 és a lelőhelyek a **legutóbb látott állapotukban** maradnak (a ködben lerombolt is, amíg újra oda nem lát); a
-**felfedezetlen ↔ felderített átmenet háromszor szélesebb** (a köd e határa 3 × 3 csempés átlagból; a látható határ
-éles marad).
+**átmenetek sokkal kevésbé hirtelenek**: mindhárom zóna (felfedezetlen, felderített, látott) között kb. háromszor
+szélesebb, fokozatos határ (a köd 5 × 5 mintás, ±1,5 csempés súlyozott átlagából).
