@@ -328,3 +328,20 @@ döntése: a **félkész épület megszakítása a költség 75%-át adja vissza
 vissza (`game.json` → `demolish_refund`); a nép adatában `demolish: true` – most az **Ursanoknál, az Ooniknál és a
 Wullofoknál**. A Wullof összecsomagolása (szekérré alakul, odébb vihető, közben nem működik – MECH-WUL-4) ettől
 független faji mechanika, az M7-ben.
+
+### D39 – Az épületben lévő egységek jelzése · ELDÖNTVE (2026-11-13)
+
+A tulajdonos kérése: ahol logikus, hogy látni kell, hányan vannak bent egy épületben – **elfoglalás / megszállás,
+bánya (Napfúró, Fertőzött tárna), helyőrség** és hasonlók; **az építésnél nem** (az Ursan építő bentléte nem
+jelölendő) –, ott:
+
+1. **Jelölés az épületen (grafikával):** egy kis jel mutatja a pályán, hogy az épületben egységek vannak.
+2. **Rámutatáskor (egérrel):** az épület fölött annyi **fej** (kis portré-ikon) jelenik meg, ahány hely van: a
+   foglalt helyek **színesek** (a bent lévő egység fejével / csapatszínnel), a szabadok **szürkék**.
+3. **Az épület HUD-jában** is ugyanez látszik (helyek és foglaltságuk), a kijelöléskor.
+4. **Elfoglalható épületnél** a jelzés csak akkor jelenik meg, amikor **legalább egy saját egységünk** már bent van.
+
+Megvalósítás: a pályás jelzés és a rámutatás a helyőrséggel együtt (M6 – az ursan helyőrség-épületek: Nagyterem,
+Hosszúház, Őrtorony, és a `Garrison.slots` adat), a HUD-elem az ideiglenes HUD-ban (M6 9. lépés) és a végleges
+felületben (M8); a bánya és az elfoglalás az M7-ben (MECH-MINE, D30). A fej-ikonok a meglévő portrékból vagy a sprite-ok
+kicsinyített fejéből; ha nincs, csapatszínű kör.
