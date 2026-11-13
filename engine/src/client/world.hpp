@@ -52,6 +52,7 @@ class World {
   const std::vector<uint8_t>& fog(bool* changed);
   int drawn_units() const { return drawn_; }
   size_t unit_count() const { return cur_ ? cur_->units.size() : 0; }
+  const SnapPlayer* player(int i) const { return cur_ && i >= 0 && i <= sim::Sim::kMaxPlayers ? &cur_->players[static_cast<size_t>(i)] : nullptr; }
 
   // látványesemények a legutóbbi lekérés óta (a részecskéknek); a hívó üríti
   std::vector<FxEvent>& fx_events() { return fx_; }
@@ -69,10 +70,14 @@ class World {
     const render::AtlasAnim* idle = nullptr;
   };
   struct Item {
-    float x, y;
-    size_t i;   // index a pillanatképben (és a vis_-ben)
+    float x, y;   // a rajzolás helye (egységnél a talp, épületnél és lelőhelynél a lábnyom bal felső sarka)
+    float key;    // Y-rendezés kulcsa (a talpvonal)
+    size_t i;     // index a pillanatképben (és a vis_-ben)
   };
   int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
+  int sheet_by_id(render::Atlas* atlas, const std::string& id);   // -1, ha nincs ilyen lap
+  int sheet_of(render::Atlas* atlas, const SnapUnit& u);          // a sablon vagy a nyersanyag lapja
+  std::map<std::string, int> sheet_ids_;
   void collect(const Camera& cam, int sw, int sh, float alpha);
 
   Session& session_;

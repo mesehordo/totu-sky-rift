@@ -38,6 +38,13 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
     if (error) *error = errors.empty() ? "terepadat" : errors.front();
     return false;
   }
+  {   // játékszabályok (M6): a game.json és a sablonok
+    std::ifstream gin(std::filesystem::path(content_dir) / "base" / "game.json", std::ios::binary);
+    const std::string gtext{std::istreambuf_iterator<char>(gin), std::istreambuf_iterator<char>()};
+    const auto game = content::parse(gtext);
+    std::vector<std::string> rerr;
+    if (game) rules_ = sim::Rules::load(*game, set, rerr);
+  }
   std::ifstream in(map_path, std::ios::binary);
   const std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
   const auto doc = content::parse(text);
@@ -77,6 +84,21 @@ void Session::spawn_demo(int players, int per_player) {
   last_.reset();   // a következő pillanatkép már az új egységekkel
 }
 
+bool Session::start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error) {
+  if (!rules_) {
+    if (error) *error = "a játékszabályok nem tölthetők be";
+    return false;
+  }
+  sim_->attach_rules(&*rules_);
+  sim::MatchSetup setup;
+  setup.factions = factions;
+  setup.upkeep = upkeep;
+  if (!sim_->setup_match(*map_, setup, error)) return false;
+  last_.reset();
+  fog_.reset();
+  return true;
+}
+
 void Session::order_demo_attack() {
   std::map<uint8_t, std::vector<sim::EntityId>> armies;
   sim_->world().pool<sim::Health>().each([&](sim::EntityId e, const sim::Health& hh) { armies[hh.owner].push_back(e); });
@@ -114,8 +136,10 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
   if (!fog_) update_fog();
   auto s = std::make_shared<Snapshot>();
   s->tick = sim_->tick();
-  sim_->world().pool<sim::Position>().each([&](sim::EntityId e, const sim::Position& p) {
-    const auto* hh = sim_->world().get<sim::Health>(e);
+  const bool match = sim_->rules() != nullptr;
+  auto& w = sim_->world();
+  w.pool<sim::Position>().each([&](sim::EntityId e, const sim::Position& p) {
+    const auto* hh = w.get<sim::Health>(e);
     SnapUnit u;
     u.id = e;
     u.x = to_px(p.x);
@@ -125,8 +149,37 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       u.max_hp = hh->max;
       u.owner = hh->owner;
     }
+    if (match) {
+      if (const auto* b = w.get<sim::Building>(e)) {
+        u.kind = SnapUnit::kBuilding;
+        u.def = b->def;
+        u.tx = b->tx; u.ty = b->ty; u.w = b->w; u.h = b->h;
+        u.complete = b->complete != 0;
+      } else if (const auto* n = w.get<sim::ResourceNode>(e)) {
+        u.kind = SnapUnit::kResource;
+        u.tx = n->tx; u.ty = n->ty; u.w = u.h = n->size;
+        u.res = n->kind;
+        u.amount = n->amount;
+      } else if (const auto* un = w.get<sim::Unit>(e)) {
+        u.def = un->def;
+        if (const auto* k = w.get<sim::Worker>(e)) {
+          u.amount = k->carry;
+          u.res = k->carry_kind;
+        }
+      }
+    }
     s->units.push_back(u);
   });
+  if (match) {
+    for (int i = 0; i <= sim::Sim::kMaxPlayers; ++i) {
+      const sim::PlayerState& p = sim_->player(i);
+      SnapPlayer& o = s->players[static_cast<size_t>(i)];
+      o.active = p.active;
+      for (int r = 0; r < sim::kResources; ++r) o.res[static_cast<size_t>(r)] = p.resource(r);
+      o.supply_cap = p.supply_cap;
+      o.supply_used = p.supply_used;
+    }
+  }
   std::sort(s->units.begin(), s->units.end(), [](const SnapUnit& a, const SnapUnit& b) { return a.id < b.id; });
   s->fog = fog_;
   last_ = s;
@@ -145,6 +198,7 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
   // látványesemények azonosító szerinti sorrendben: eltűnt egység → halál (az előző helyén), csökkent életerő → találat
   size_t j = 0;
   for (const SnapUnit& a : before->units) {
+    if (a.kind != SnapUnit::kUnit) continue;   // a kivágott fa és a kimerült lelőhely nem „hal meg”
     while (j < after->units.size() && after->units[j].id < a.id) ++j;
     if (j >= after->units.size() || after->units[j].id != a.id) {
       fx.push_back({a.x, a.y, true});

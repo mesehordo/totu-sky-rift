@@ -172,6 +172,60 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
 
   const content::Value* ac = doc.find("auto_cliffs");
   if (!ac || !ac->is_bool() || ac->as_bool()) m.compute_cliffs(table);
+
+  // pályaobjektumok (M6): "objects": {"starts": [[x, y], …], "trees": {"rows": [...]} (`T` = fa),
+  // "resources": [{"kind": "stone", "x": …, "y": …, "size": 2, "amount": …}, …]}
+  if (const content::Value* ob = doc.find("objects"); ob && ob->is_object()) {
+    auto int_of = [](const content::Value* v, long long def) { return (v ? v->as_int() : std::nullopt).value_or(def); };
+    if (const content::Value* st = ob->find("starts"); st && st->is_array()) {
+      for (const auto& p : st->items()) {
+        if (!p.is_array() || p.items().size() != 2) {
+          errors.push_back("objects.starts: [x, y] párok kellenek");
+          continue;
+        }
+        const long long x = int_of(&p.items()[0], -1), y = int_of(&p.items()[1], -1);
+        if (x < 0 || y < 0 || x >= W || y >= H) errors.push_back("objects.starts: a pályán kívül");
+        else m.objects_.starts.emplace_back(static_cast<int>(x), static_cast<int>(y));
+      }
+    }
+    if (const content::Value* tr = ob->find("trees"); tr && tr->is_object()) {
+      const content::Value* rv = tr->find("rows");
+      if (!rv || !rv->is_array() || rv->items().size() != static_cast<size_t>(H)) {
+        errors.push_back("objects.trees.rows: pontosan `height` sor kell");
+      } else {
+        for (int y = 0; y < H; ++y) {
+          const content::Value& row = rv->items()[static_cast<size_t>(y)];
+          if (!row.is_string() || row.text().size() != static_cast<size_t>(W)) {
+            errors.push_back("objects.trees.rows: a " + std::to_string(y + 1) + ". sor nem `width` hosszú");
+            break;
+          }
+          for (int x = 0; x < W; ++x) {
+            if (row.text()[static_cast<size_t>(x)] == 'T') m.objects_.trees.emplace_back(x, y);
+          }
+        }
+      }
+    }
+    if (const content::Value* rs = ob->find("resources"); rs && rs->is_array()) {
+      for (const auto& r : rs->items()) {
+        const content::Value* kind = r.is_object() ? r.find("kind") : nullptr;
+        if (!kind || !kind->is_string()) {
+          errors.push_back("objects.resources: minden lelőhelynek kell `kind`");
+          continue;
+        }
+        MapResource mr;
+        mr.kind = kind->text();
+        mr.x = static_cast<int>(int_of(r.find("x"), -1));
+        mr.y = static_cast<int>(int_of(r.find("y"), -1));
+        mr.size = static_cast<int>(int_of(r.find("size"), 2));
+        mr.amount = static_cast<int>(int_of(r.find("amount"), -1));
+        if (mr.size < 1 || mr.size > 8 || mr.x < 0 || mr.y < 0 || mr.x + mr.size > W || mr.y + mr.size > H) {
+          errors.push_back("objects.resources: `" + mr.kind + "` a pályán kívül vagy hibás méretű");
+          continue;
+        }
+        m.objects_.resources.push_back(mr);
+      }
+    }
+  }
   if (errors.size() != before) return std::nullopt;
   return m;
 }

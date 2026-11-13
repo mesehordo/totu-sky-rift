@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "content/json.hpp"
@@ -21,6 +22,20 @@ namespace totu::map {
 constexpr int kMaxMapSize = 512;
 constexpr int kMinLevel = -1;
 constexpr int kMaxLevel = 2;
+
+// Pályaobjektumok (M6, ADR-007 3. pont): kezdőhelyek, fák, nyersanyag-lelőhelyek. A pálya csak leírja őket; a
+// szimuláció a meccs indításakor hozza létre belőlük az entitásokat (a fák és a lelőhelyek akadályok a navrácsban).
+struct MapResource {
+  std::string kind;           // a nyersanyag azonosítója (`game.json` → `resources`), pl. `stone`, `meteor`
+  int x = 0, y = 0;           // a bal felső csempe
+  int size = 2;               // négyzetes, csempében
+  int amount = -1;            // -1: a nyersanyag `node_amount` értéke
+};
+struct MapObjects {
+  std::vector<std::pair<int, int>> starts;   // játékosonként a főépület közepe (csempe)
+  std::vector<std::pair<int, int>> trees;    // fák csempénként (a sorrend a pálya sorrendje: fentről le, balról jobbra)
+  std::vector<MapResource> resources;
+};
 
 class Map {
  public:
@@ -48,7 +63,10 @@ class Map {
   // Járható-e a csempe a mozgásosztálynak (terep + szirt; az épületek és erőforrások a navrácsban).
   bool passable(const TerrainTable& table, uint8_t movement_class, int x, int y) const;
 
-  uint64_t hash() const;
+  uint64_t hash() const;   // a terep és a szintek (az objektumok nélkül)
+
+  const MapObjects& objects() const { return objects_; }
+  MapObjects& objects() { return objects_; }
 
  private:
   size_t index(int x, int y) const { return static_cast<size_t>(y) * static_cast<size_t>(w_) + static_cast<size_t>(x); }
@@ -57,6 +75,7 @@ class Map {
   std::vector<uint16_t> terrain_;
   std::vector<int8_t> level_;
   std::vector<uint8_t> cliff_;
+  MapObjects objects_;
 };
 
 }  // namespace totu::map

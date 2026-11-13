@@ -69,7 +69,16 @@ void Sim::apply(const Command& c) {
       break;
     }
     case Command::Kind::GroupMove:
+      for (const EntityId e : c.units) {   // a munka abbahagyása (a rakomány marad)
+        if (Worker* w = rules_ && world_.alive(e) ? world_.get<Worker>(e) : nullptr) w->state = Worker::Idle;
+      }
       order_group_move(c.units, c.x, c.y, static_cast<Formation>(c.formation));
+      break;
+    case Command::Kind::Gather:
+      for (const EntityId e : c.units) order_gather(e, c.target);
+      break;
+    case Command::Kind::Stop:
+      for (const EntityId e : c.units) stop(e);
       break;
     case Command::Kind::Block:
       nav_block(c.rx, c.ry, c.rw, c.rh, c.flag != 0);
@@ -78,7 +87,10 @@ void Sim::apply(const Command& c) {
       nav_gate(c.rx, c.ry, c.rw, c.rh, c.flag);
       break;
     case Command::Kind::Move:
-      for (const EntityId e : c.units) order_move(e, c.x, c.y);
+      for (const EntityId e : c.units) {
+        if (Worker* w = rules_ && world_.alive(e) ? world_.get<Worker>(e) : nullptr) w->state = Worker::Idle;
+        order_move(e, c.x, c.y);
+      }
       break;
   }
 }
@@ -165,6 +177,7 @@ void Sim::step() {
   // 2. a csatlakozók (szkriptek) a csatlakoztatás sorrendjében
   for (SimHooks* h : hooks_) h->on_tick(*this);
   // 3. rendszerek rögzített sorrendben, majd a halál-események
+  if (rules_) economy_system();   // M6: a munkások döntései (mozgásparancsok) a mozgás előtt
   if (nav_) {
     const auto t0 = std::chrono::steady_clock::now();
     nav_paths();
@@ -180,6 +193,7 @@ void Sim::step() {
   report_deaths();
   // 4. a tick végén a törlések
   world_.flush();
+  if (rules_) supply_system();
   ++tick_;
 }
 
@@ -190,6 +204,15 @@ uint64_t Sim::hash() const {
   h.add_u64(combat_rng_.state());
   h.add_u64(combat_rng_.increment());
   for (const SimHooks* k : hooks_) h.add_u64(k->hash());   // csatlakozó nélkül a hash az M2-es marad
+  if (rules_) {   // M6: a játékosállapot (szabályok nélkül a hash a korábbi marad)
+    h.add_u64(upkeep_);
+    for (const PlayerState& p : players_) {
+      h.add_u64(p.active);
+      for (int r = 0; r < kResources; ++r) { h.add_i64(p.res[static_cast<size_t>(r)]); h.add_i64(p.gathered[static_cast<size_t>(r)]); }
+      h.add_i64(p.supply_cap);
+      h.add_i64(p.supply_used);
+    }
+  }
   return h.value();
 }
 
@@ -202,6 +225,8 @@ std::vector<std::pair<std::string, uint64_t>> Sim::component_hashes() const {
 bool Command::needs_v3() const {
   return kind != Kind::Spawn && kind != Kind::Move ? true : (radius.raw() != 0 || move_class != 0xFF);
 }
+
+bool Command::needs_v4() const { return kind == Kind::Gather || kind == Kind::Stop || target != 0 || !def.empty(); }
 
 void save_command(core::ByteWriter& w, const Command& c, int format) {
   w.u8(static_cast<uint8_t>(c.kind));
@@ -218,12 +243,16 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
     w.i32(c.rx); w.i32(c.ry); w.i32(c.rw); w.i32(c.rh);
     w.u8(c.flag);
   }
+  if (format >= 4) {
+    w.u32(c.target);
+    w.str(c.def);
+  }
 }
 
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 7 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -241,6 +270,10 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
     c.flag = r.u8();
     if (c.formation >= kFormationCount) return std::nullopt;
   }
+  if (format >= 4) {
+    c.target = r.u32();
+    c.def = r.str();
+  }
   if (!r.ok()) return std::nullopt;
   return c;
 }
@@ -248,21 +281,34 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(3);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum)
+  w.u32(4);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
   world_.save(w);
   w.u32(static_cast<uint32_t>(pending_.size()));
-  for (const auto& c : pending_) save_command(w, c);
+  for (const auto& c : pending_) save_command(w, c, 4);
   w.u32(static_cast<uint32_t>(hooks_.size()));
   for (const SimHooks* k : hooks_) k->save(w);
+  w.u8(rules_ ? 1 : 0);
+  if (rules_) {
+    w.u8(upkeep_ ? 1 : 0);
+    for (const PlayerState& p : players_) {
+      w.u8(p.active ? 1 : 0);
+      w.str(p.faction);
+      for (int r = 0; r < kResources; ++r) { w.i64(p.res[static_cast<size_t>(r)]); w.i64(p.gathered[static_cast<size_t>(r)]); }
+      w.i32(p.supply_cap);
+      w.i32(p.supply_used);
+    }
+  }
   return w.data();
 }
 
 bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
-  if (r.str() != "totu-sim" || r.u32() != 3) return false;
+  if (r.str() != "totu-sim") return false;
+  const uint32_t schema = r.u32();
+  if (schema != 3 && schema != 4) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -270,7 +316,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   pending_.clear();
   const uint32_t n = r.u32();
   for (uint32_t i = 0; i < n; ++i) {
-    auto c = load_command(r);
+    auto c = load_command(r, schema >= 4 ? 4 : 3);
     if (!c) return false;
     pending_.push_back(std::move(*c));
   }
@@ -278,6 +324,18 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   if (r.u32() != hooks_.size()) return false;   // ugyanazok a csatlakozók kellenek, mint mentéskor
   for (SimHooks* k : hooks_) {
     if (!k->load(r)) return false;
+  }
+  const bool with_rules = schema >= 4 && r.u8() != 0;
+  if (with_rules != (rules_ != nullptr)) return false;   // a szabályokat a mentés előtt ugyanúgy csatolni kell
+  if (with_rules) {
+    upkeep_ = r.u8() != 0;
+    for (PlayerState& p : players_) {
+      p.active = r.u8() != 0;
+      p.faction = r.str();
+      for (int i = 0; i < kResources; ++i) { p.res[static_cast<size_t>(i)] = r.i64(); p.gathered[static_cast<size_t>(i)] = r.i64(); }
+      p.supply_cap = r.i32();
+      p.supply_used = r.i32();
+    }
   }
   return r.ok() && r.at_end();
 }

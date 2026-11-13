@@ -28,7 +28,7 @@ class Atlas {
   // A képkocka rajzolása: (ax, ay) a horgonypont helye, `scale` a rajzolási méretarány a lap képpontjaihoz képest; a
   // csapatszín negyedik bájtja az erősség (0 = nincs).
   void draw(SpriteBatch& batch, const AtlasSheet& s, int direction, int column, float ax, float ay, float scale,
-            const uint8_t team[4], const uint8_t tint[4] = nullptr);
+            const uint8_t team[4], const uint8_t tint[4] = nullptr, float foot = -1.0f);   // foot: az árnyék talpvonala (alap: ay)
 
  private:
   Device* dev_ = nullptr;

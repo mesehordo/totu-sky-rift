@@ -58,6 +58,10 @@ std::optional<SpriteSheet> load_sprite_sheet(Device& dev, const std::string& jso
   if (const content::Value* a = doc->find("anchor"); a && a->is_array() && a->items().size() == 2) {
     s.anchor_x = static_cast<float>(a->items()[0].as_int().value_or(0));
     s.anchor_y = static_cast<float>(a->items()[1].as_int().value_or(0));
+  } else if (const content::Value* fo = doc->find("footprint_offset"); fo && fo->is_array() && fo->items().size() == 2) {
+    // épület és lelőhely (a régi játék szerint): a horgony a lábnyom bal felső sarka a képen
+    s.anchor_x = static_cast<float>(fo->items()[0].as_int().value_or(0));
+    s.anchor_y = static_cast<float>(fo->items()[1].as_int().value_or(0));
   } else {
     s.anchor_x = static_cast<float>(s.frame_w) / 2.0f;
     s.anchor_y = static_cast<float>(s.frame_h);

@@ -5,6 +5,7 @@
 // az M4–M7-ben erre épül.
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -15,9 +16,11 @@
 #include "core/hash.hpp"
 #include "core/rng.hpp"
 #include "sim/formation.hpp"
+#include "sim/rules.hpp"
 #include "sim/world.hpp"
 
 namespace totu::map {
+class Map;
 class Pathfinder;
 struct TileRect;
 }
@@ -128,6 +131,90 @@ struct Path {
   }
 };
 
+// --- M6: meccs (ADR-007) – csak `attach_rules` után regisztrálva (a régi visszajátszások hashe így változatlan) ---
+struct Unit {   // sablonból létrehozott egység
+  uint16_t def = kNoDef;
+  void hash(core::StateHash& h) const { h.add_u64(def); }
+  void save(core::ByteWriter& w) const { w.u32(def); }
+  static Unit load(core::ByteReader& r) { Unit u; u.def = static_cast<uint16_t>(r.u32()); return u; }
+};
+
+struct Building {
+  uint16_t def = kNoDef;
+  int16_t tx = 0, ty = 0, w = 1, h = 1;   // lábnyom (csempe)
+  uint8_t complete = 1;
+  void hash(core::StateHash& hh) const { hh.add_u64(def); hh.add_i64(tx); hh.add_i64(ty); hh.add_i64(w); hh.add_i64(h); hh.add_u64(complete); }
+  void save(core::ByteWriter& wr) const { wr.u32(def); wr.i32(tx); wr.i32(ty); wr.i32(w); wr.i32(h); wr.u8(complete); }
+  static Building load(core::ByteReader& r) {
+    Building b;
+    b.def = static_cast<uint16_t>(r.u32());
+    b.tx = static_cast<int16_t>(r.i32()); b.ty = static_cast<int16_t>(r.i32());
+    b.w = static_cast<int16_t>(r.i32()); b.h = static_cast<int16_t>(r.i32());
+    b.complete = r.u8();
+    return b;
+  }
+};
+
+struct ResourceNode {   // fa (1 × 1) vagy lelőhely (pl. 2 × 2); a középpontja a Position
+  uint8_t kind = 0;       // Res
+  int16_t tx = 0, ty = 0, size = 1;
+  int32_t amount = 0;
+  void hash(core::StateHash& h) const { h.add_u64(kind); h.add_i64(tx); h.add_i64(ty); h.add_i64(size); h.add_i64(amount); }
+  void save(core::ByteWriter& w) const { w.u8(kind); w.i32(tx); w.i32(ty); w.i32(size); w.i32(amount); }
+  static ResourceNode load(core::ByteReader& r) {
+    ResourceNode n;
+    n.kind = r.u8();
+    n.tx = static_cast<int16_t>(r.i32()); n.ty = static_cast<int16_t>(r.i32()); n.size = static_cast<int16_t>(r.i32());
+    n.amount = r.i32();
+    return n;
+  }
+};
+
+struct Worker {   // a gyűjtés állapota (a régi játék `_o_gather`-je szerint)
+  enum State : uint8_t { Idle = 0, Go = 1, Work = 2, Return = 3 };
+  uint8_t state = Idle;
+  EntityId res = 0;            // a célzott lelőhely (0 = nincs)
+  EntityId move_to = 0;        // amelyik célhoz a legutóbbi mozgásparancs ment (0 = nincs)
+  uint8_t last_kind = 0;       // a legutóbb gyűjtött nyersanyag (a kimerült lelőhely utáni kereséshez)
+  Fixed lx, ly;                // a legutóbbi lelőhely helye
+  uint8_t carry_kind = 0;
+  int32_t carry = 0;
+  int32_t timer = 0;           // tick
+  uint8_t fails = 0;
+  EntityId bad_drop = 0;       // elérhetetlen leadóhely (ideiglenesen kihagyva)
+  int64_t retry_tick = 0;
+  void hash(core::StateHash& h) const {
+    h.add_u64(state); h.add_u64(res); h.add_u64(move_to); h.add_u64(last_kind); h.add_i64(lx.raw()); h.add_i64(ly.raw());
+    h.add_u64(carry_kind); h.add_i64(carry); h.add_i64(timer); h.add_u64(fails); h.add_u64(bad_drop); h.add_i64(retry_tick);
+  }
+  void save(core::ByteWriter& w) const {
+    w.u8(state); w.u32(res); w.u32(move_to); w.u8(last_kind); w.i32(lx.raw()); w.i32(ly.raw());
+    w.u8(carry_kind); w.i32(carry); w.i32(timer); w.u8(fails); w.u32(bad_drop); w.i64(retry_tick);
+  }
+  static Worker load(core::ByteReader& r) {
+    Worker k;
+    k.state = r.u8(); k.res = r.u32(); k.move_to = r.u32(); k.last_kind = r.u8();
+    k.lx = Fixed::from_raw(r.i32()); k.ly = Fixed::from_raw(r.i32());
+    k.carry_kind = r.u8(); k.carry = r.i32(); k.timer = r.i32(); k.fails = r.u8(); k.bad_drop = r.u32(); k.retry_tick = r.i64();
+    return k;
+  }
+};
+
+// játékosállapot (1–8. játékos; a 0. a semleges)
+struct PlayerState {
+  std::string faction;                       // pl. `ursan`
+  std::array<int64_t, kResources> res{};     // ezredegységben (a Hadtáp tört bevétele miatt)
+  std::array<int64_t, kResources> gathered{};
+  int32_t supply_cap = 0, supply_used = 0;
+  bool active = false;
+  int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
+};
+
+struct MatchSetup {
+  std::vector<std::string> factions;   // játékosonként (1. játékos = [0]); üres szöveg = nem játszik
+  bool upkeep = true;                  // Hadtáp (a régi játék alapja: be)
+};
+
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
 struct NavParams {
   int path_budget = 32;                         // útkeresés tickenként (a többi a sorban vár)
@@ -156,7 +243,8 @@ struct NavStats {
 // --- parancsok -----------------------------------------------------------------------------------------------------
 struct Command {
   // M4: GroupMove (alakzatban), Block (építés/bontás: csempés téglalap akadály), Gate (kapu csapatmaszkkal)
-  enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5 };
+  // M6 (a 4-es formátumtól): Gather (munkások egy lelőhelyre), Stop (a parancs és a munka abbahagyása)
+  enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -172,8 +260,12 @@ struct Command {
   uint8_t formation = 1;     // GroupMove: Formation
   int32_t rx = 0, ry = 0, rw = 0, rh = 0;   // Block, Gate: csempés téglalap
   uint8_t flag = 0;          // Block: 1 = lerakás, 0 = bontás; Gate: csapatmaszk
+  // M6 (a 4-es formátumtól)
+  EntityId target = 0;       // Gather: a lelőhely
+  std::string def;           // a sablon azonosítója (a későbbi Build, Train parancsokhoz)
   // a parancs csak a 3-as formátumban írható le (M4-mezők vagy -fajták)
   bool needs_v3() const;
+  bool needs_v4() const;
 };
 
 class Sim;
@@ -223,6 +315,23 @@ class Sim {
   void set_formations(const FormationSet& f) { formations_ = f; }
   const NavStats& nav_stats() const { return nav_stats_; }
 
+  // --- M6: meccs (ADR-007) ---
+  // A szabályadatok csatolása (a navigáció után, a meccs előtt): regisztrálja a meccs komponenseit. A szabályok a
+  // hívóé, és túl kell élniük a szimulációt. Mentés betöltése előtt ugyanígy csatolni kell.
+  void attach_rules(const Rules* rules);
+  const Rules* rules() const { return rules_; }
+  // A meccs indítása a pályából: lelőhelyek és fák (akadályok a navrácsban), játékosonként a főépület a kezdőhelyen és
+  // a kezdő egységek, a munkások a régi játék szerint azonnal gyűjteni indulnak. Hibánál false (az ok az `error`-ban).
+  bool setup_match(const map::Map& m, const MatchSetup& setup, std::string* error);
+  EntityId spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y);   // sablonból, azonnal
+  EntityId place_building(uint16_t def, uint8_t owner, int tx, int ty, bool complete);
+  bool order_gather(EntityId worker, EntityId resource);
+  // Mentés betöltése után: az épületek és a lelőhelyek akadályai a (meccsindítás nélküli) navrácsba.
+  void restore_obstacles();
+  void stop(EntityId e);                 // a mozgás és a munka abbahagyása
+  const PlayerState& player(int i) const { return players_[static_cast<size_t>(i)]; }
+  static constexpr int kMaxPlayers = 8;
+
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
   void step();                           // egy tick (1/30 s)
   int64_t tick() const { return tick_; }
@@ -248,6 +357,14 @@ class Sim {
   void nav_arrive(EntityId e, Movement& m, Path& p, const Position& pos);
   void movement_system();
   void combat_system();
+  void economy_system();
+  void supply_system();
+  void income(uint8_t owner, int kind, int32_t amount);
+  EntityId nearest_resource(int kind, Fixed x, Fixed y, Fixed max_dist, EntityId exclude);
+  EntityId nearest_dropoff(uint8_t owner, int kind, Fixed x, Fixed y, EntityId exclude);
+  bool in_reach(EntityId unit, EntityId target);
+  void remove_resource(EntityId e);
+  int32_t carry_cap(const EntityDef& d, int kind) const;
   void register_components();
 
   World world_;
@@ -262,9 +379,13 @@ class Sim {
   NavStats nav_stats_;
   int nav_bw_ = 0, nav_bh_ = 0;                  // a térbeli rács (2 × 2 csempés vödrök) mérete
   std::vector<std::vector<EntityId>> buckets_;  // vödrönként az egységek (nem állapot: tickenként újraépül)
+  // M6
+  const Rules* rules_ = nullptr;
+  std::array<PlayerState, kMaxPlayers + 1> players_{};
+  bool upkeep_ = true;
 };
 
-// format: 1 = M2-es parancs (Spawn, Move), 3 = M4-es (a további mezőkkel és fajtákkal)
+// format: 1 = M2-es parancs (Spawn, Move), 3 = M4-es (a további mezőkkel és fajtákkal), 4 = M6-os (cél, sablon)
 void save_command(core::ByteWriter& w, const Command& c, int format = 3);
 std::optional<Command> load_command(core::ByteReader& r, int format = 3);
 

@@ -336,7 +336,12 @@ int main(int argc, char** argv) {
           terrain.set_map(world.map(), world.terrain());
           if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
-          session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
+          // meccs (M6), ha a pályán vannak kezdőhelyek; különben a bemutató seregei
+          if (session.has_starts()) {
+            if (!session.start_match({"ursan", "ursan"}, true, &err)) std::fprintf(stderr, "meccs: %s\n", err.c_str());
+          } else {
+            session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
+          }
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
           fallback = dev.create_array_from(circle_image(32), false);
@@ -349,7 +354,7 @@ int main(int argc, char** argv) {
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
-          if (o.bench || !o.screenshot.empty()) session.order_demo_attack();
+          if ((o.bench || !o.screenshot.empty()) && !session.has_starts()) session.order_demo_attack();
           have_world = true;
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
           if (!o.sync && o.screenshot.empty()) runner.start();
@@ -498,6 +503,15 @@ int main(int argc, char** argv) {
         if (!o.fog) lighting.set_fog(0, 0, {});
         else if (fog_changed) lighting.set_fog(world.map().width(), world.map().height(), fogv);
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
+        // ideiglenes kijelzés (a HUD az M6 9. lépésében): az 1. játékos nyersanyagai és létszáma a címsorban
+        if (frame % 15 == 0 && session.has_starts()) {
+          if (const client::SnapPlayer* pl = world.player(1); pl && pl->active) {
+            char title[160];
+            std::snprintf(title, sizeof title, "TOTU: Sky Rift – fa %d · arany %d · meteorit %d · létszám %d/%d",
+                          pl->res[0], pl->res[1], pl->res[2], pl->supply_used, pl->supply_cap);
+            SDL_SetWindowTitle(win, title);
+          }
+        }
       } else if (demo.units > 0 || !adem.units.empty()) {
         // a bemutató determinisztikus időt használ, ha képernyőkép vagy mérés készül (azonos kép minden gépen)
         const double t = (o.bench || !o.screenshot.empty())

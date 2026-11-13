@@ -8,6 +8,7 @@
 // mint a hálózati játékban. A determinizmust a szál nem érinti: a szimuláció bemenete csak a parancssor.
 #pragma once
 
+#include <array>
 #include <atomic>
 #include <condition_variable>
 #include <cstdint>
@@ -23,12 +24,26 @@
 
 namespace totu::client {
 
-// egy egység a pillanatképben (világ-képpontban; 1 csempe = 32 képpont)
+// egy entitás a pillanatképben (világ-képpontban; 1 csempe = 32 képpont)
 struct SnapUnit {
+  enum Kind : uint8_t { kUnit = 0, kBuilding = 1, kResource = 2 };
   sim::EntityId id = 0;
   float x = 0, y = 0;
   int32_t hp = 0, max_hp = 0;
   uint8_t owner = 0;
+  uint8_t kind = kUnit;
+  uint16_t def = sim::kNoDef;           // a sablon (M6; a bemutató egységeinél nincs)
+  int16_t tx = 0, ty = 0, w = 0, h = 0;   // épület és lelőhely: a lábnyom (csempe)
+  uint8_t res = 0;                      // lelőhely: a nyersanyag
+  int32_t amount = 0;                   // lelőhely: a maradék; munkás: a rakomány
+  bool complete = true;
+};
+
+// a játékos állapota a felületnek
+struct SnapPlayer {
+  bool active = false;
+  std::array<int32_t, sim::kResources> res{};
+  int32_t supply_cap = 0, supply_used = 0;
 };
 
 // látványesemény (a részecskéknek): találat (az életerő csökkent) vagy halál
@@ -44,6 +59,7 @@ struct Snapshot {
   // köd (ideiglenes, az M6 6. lépéséig: az 1. játékos egységei körül 8 csempe): 0 ismeretlen, 128 felderített,
   // 255 látható; csak változáskor új (a régit a korábbi pillanatképek megosztva tartják)
   std::shared_ptr<const std::vector<uint8_t>> fog;
+  std::array<SnapPlayer, sim::Sim::kMaxPlayers + 1> players{};
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
 };
 
@@ -53,6 +69,10 @@ class Session {
   // bemutató seregek: játékosonként `per_player` egység a pálya két oldalán
   void spawn_demo(int players, int per_player);
   void order_demo_attack();   // mindkét sereg a másik felé indul (méréshez, képpróbához)
+  // meccs (M6): ha a pályán vannak kezdőhelyek; játékosonként a nép (pl. {"ursan", "ursan"})
+  bool has_starts() const { return map_ && !map_->objects().starts.empty(); }
+  bool start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error);
+  const sim::Rules* rules() const { return rules_ ? &*rules_ : nullptr; }
 
   // egy tick: a parancsok, a szimuláció lépése, majd az új pillanatkép és a tick látványeseményei
   std::shared_ptr<const Snapshot> step(const std::vector<sim::Command>& commands, std::vector<FxEvent>& fx);
@@ -66,6 +86,7 @@ class Session {
  private:
   void update_fog();
   map::TerrainTable terrain_;
+  std::optional<sim::Rules> rules_;   // a szimuláció előtt jön létre, utána szűnik meg
   std::optional<map::Map> map_;
   std::unique_ptr<map::NavGrid> nav_;
   std::unique_ptr<map::Pathfinder> pf_;

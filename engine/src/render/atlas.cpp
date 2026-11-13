@@ -75,7 +75,7 @@ bool Atlas::prepare(const std::vector<const AtlasSheet*>& sheets, std::string* e
 }
 
 void Atlas::draw(SpriteBatch& batch, const AtlasSheet& s, int direction, int column, float ax, float ay, float scale,
-                 const uint8_t team[4], const uint8_t tint[4]) {
+                 const uint8_t team[4], const uint8_t tint[4], float foot) {
   if (direction < 0 || direction >= s.directions || column < 0 || column >= s.columns) return;
   const AtlasFrame& f = data_.frame(s, direction, column);
   if (!f.w) return;
@@ -91,7 +91,7 @@ void Atlas::draw(SpriteBatch& batch, const AtlasSheet& s, int direction, int col
   in.u1 = static_cast<float>(f.x + f.w) / ps;
   in.v1 = static_cast<float>(f.y + f.h) / ps;
   in.layer[0] = static_cast<uint8_t>(layer_of_[f.page]);
-  in.foot = ay;   // a horgony a talpvonal
+  in.foot = foot >= 0 ? foot : ay;   // a horgony a talpvonal (az épületnél a lábnyom alja)
   for (int k = 0; k < 4; ++k) {
     in.team[k] = team ? team[k] : 0;
     if (tint) in.tint[k] = tint[k];

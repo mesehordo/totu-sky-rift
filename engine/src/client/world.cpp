@@ -78,7 +78,7 @@ void World::lights(std::vector<render::Light>& out, float alpha) const {
   if (!cur_) return;
   for (size_t i = 0; i < cur_->units.size(); ++i) {
     const SnapUnit& u = cur_->units[i];
-    if (u.id % 6 != 0) continue;
+    if (u.id % 6 != 0 || u.kind != SnapUnit::kUnit) continue;
     const Visual& v = vis_[i];
     render::Light l;
     l.x = v.px + (u.x - v.px) * alpha;
@@ -95,7 +95,7 @@ void World::select_box(float x0, float y0, float x1, float y1) {
   selected_.clear();
   if (!cur_) return;
   for (const SnapUnit& u : cur_->units) {
-    if (u.owner != 1 || u.hp <= 0) continue;
+    if (u.owner != 1 || u.hp <= 0 || u.kind != SnapUnit::kUnit) continue;
     if (u.x >= x0 - 8 && u.x <= x1 + 8 && u.y >= y0 - 8 && u.y <= y1 + 8) selected_.push_back(u.id);
   }
 }
@@ -114,17 +114,41 @@ void World::order_move(float wx, float wy, sim::Formation f) {
 bool World::prepare_atlas(render::Atlas& atlas, std::string* error) {
   update();
   std::vector<uint8_t> owners;
+  std::vector<int> sheets;
   if (cur_) {
     for (const SnapUnit& u : cur_->units) {
-      if (std::find(owners.begin(), owners.end(), u.owner) == owners.end()) owners.push_back(u.owner);
+      if (u.def != sim::kNoDef || u.kind != SnapUnit::kUnit) {   // meccs: a sablon vagy a nyersanyag lapja
+        const int s = sheet_of(&atlas, u);
+        if (s >= 0 && std::find(sheets.begin(), sheets.end(), s) == sheets.end()) sheets.push_back(s);
+      } else if (std::find(owners.begin(), owners.end(), u.owner) == owners.end()) {
+        owners.push_back(u.owner);
+      }
     }
   }
-  sheet_for(&atlas, 0, 1);   // a tulajdonosonkénti lista feltöltése
+  sheet_for(&atlas, 0, 1);   // a tulajdonosonkénti lista feltöltése (bemutató)
   std::vector<const render::AtlasSheet*> need;
   for (const uint8_t o : owners) {
     for (const int i : owner_sheets_[o]) need.push_back(&atlas.data().sheets[static_cast<size_t>(i)]);
   }
+  for (const int i : sheets) need.push_back(&atlas.data().sheets[static_cast<size_t>(i)]);
   return atlas.prepare(need, error);
+}
+
+int World::sheet_by_id(render::Atlas* atlas, const std::string& id) {
+  if (!atlas) return -1;
+  if (sheet_ids_.empty()) {
+    const auto& sheets = atlas->data().sheets;
+    for (size_t i = 0; i < sheets.size(); ++i) sheet_ids_.emplace(sheets[i].id, static_cast<int>(i));
+  }
+  const auto it = sheet_ids_.find(id);
+  return it == sheet_ids_.end() ? -1 : it->second;
+}
+
+int World::sheet_of(render::Atlas* atlas, const SnapUnit& u) {
+  if (u.kind == SnapUnit::kResource) return sheet_by_id(atlas, sim::resource_id(u.res));
+  const sim::Rules* r = session_.rules();
+  if (u.def == sim::kNoDef || !r || u.def >= r->defs.size()) return -1;
+  return sheet_by_id(atlas, r->defs[u.def].id);
 }
 
 int World::sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner) {
@@ -156,15 +180,23 @@ void World::collect(const Camera& cam, int sw, int sh, float alpha) {
   const float vx1 = cam.x + static_cast<float>(sw) / cam.zoom, vy1 = cam.y + static_cast<float>(sh) / cam.zoom;
   for (size_t i = 0; i < cur_->units.size(); ++i) {
     const SnapUnit& u = cur_->units[i];
+    if (u.kind != SnapUnit::kUnit) {   // épület és lelőhely: a lábnyom szerint (a kép fölé nyúlik)
+      const float x = static_cast<float>(u.tx) * kTilePx, y = static_cast<float>(u.ty) * kTilePx;
+      const float x1 = static_cast<float>(u.tx + u.w) * kTilePx, y1 = static_cast<float>(u.ty + u.h) * kTilePx;
+      if (x1 < cam.x - 96 || x > vx1 + 96 || y1 < cam.y - 32 || y > vy1 + 256) continue;
+      if (u.kind == SnapUnit::kBuilding && u.hp <= 0) continue;
+      items_.push_back({x, y, y1 - 0.5f, i});
+      continue;
+    }
     const Visual& v = vis_[i];
     const float x = v.px + (u.x - v.px) * alpha, y = v.py + (u.y - v.py) * alpha;
     if (x < cam.x - 64 || y < cam.y - 64 || x > vx1 + 64 || y > vy1 + 96) continue;   // takarás
     if (u.hp <= 0) continue;
-    items_.push_back({x, y, i});
+    items_.push_back({x, y, y, i});
   }
   const auto& units = cur_->units;
   std::sort(items_.begin(), items_.end(),
-            [&](const Item& a, const Item& b) { return a.y != b.y ? a.y < b.y : units[a.i].id < units[b.i].id; });
+            [&](const Item& a, const Item& b) { return a.key != b.key ? a.key < b.key : units[a.i].id < units[b.i].id; });
 }
 
 void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
@@ -192,8 +224,38 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     const SnapUnit& u = cur_->units[it.i];
     Visual& v = vis_[it.i];
     const uint8_t owner = u.owner;
-    if (v.sheet == -2) v.sheet = atlas ? sheet_for(atlas, u.id, owner) : -1;
+    const bool match = u.def != sim::kNoDef || u.kind != SnapUnit::kUnit;
+    if (v.sheet == -2) v.sheet = !atlas ? -1 : match ? sheet_of(atlas, u) : sheet_for(atlas, u.id, owner);
     const uint8_t* team = kTeams[(owner + 7) % 8];
+    if (u.kind != SnapUnit::kUnit) {   // épület és lelőhely
+      const float foot = static_cast<float>(u.ty + u.h) * kTilePx;
+      if (atlas && v.sheet >= 0) {
+        const auto& s = atlas->data().sheets[static_cast<size_t>(v.sheet)];
+        int col = 0;
+        if (u.kind == SnapUnit::kResource) {   // fa: a csempéből számolt változat
+          col = static_cast<int>((static_cast<unsigned>(u.tx) * 7u + static_cast<unsigned>(u.ty) * 13u) % static_cast<unsigned>(std::max(1, s.columns)));
+        } else if (const auto a = s.anims.find("idle"); a != s.anims.end()) {
+          col = a->second.start + static_cast<int>(time * a->second.fps) % std::max(1, a->second.frames);
+        }
+        const uint8_t no_team[4] = {0, 0, 0, 0};
+        atlas->draw(batch, s, 0, col, it.x, it.y, 1.0f / s.scale, u.kind == SnapUnit::kBuilding ? team : no_team, nullptr, foot);
+      } else if (!shadow_pass) {   // tartalék: a lábnyom csapatszínű (lelőhelynél nyersanyagszínű) téglalapja
+        render::SpriteInstance in;
+        in.x = it.x + 2;
+        in.y = it.y + 2;
+        in.w = static_cast<float>(u.w) * kTilePx - 4;
+        in.h = static_cast<float>(u.h) * kTilePx - 4;
+        if (u.kind == SnapUnit::kBuilding) {
+          in.tint[0] = team[0]; in.tint[1] = team[1]; in.tint[2] = team[2];
+        } else {
+          static const uint8_t kRes[4][3] = {{70, 160, 70}, {236, 190, 60}, {176, 70, 255}, {255, 214, 120}};
+          in.tint[0] = kRes[u.res % 4][0]; in.tint[1] = kRes[u.res % 4][1]; in.tint[2] = kRes[u.res % 4][2];
+        }
+        batch.draw(fallback, nullptr, in);
+      }
+      ++drawn_;
+      continue;
+    }
     if (atlas && v.sheet >= 0) {
       const auto& s = atlas->data().sheets[static_cast<size_t>(v.sheet)];
       if (!v.walk) {
