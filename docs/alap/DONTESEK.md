@@ -385,3 +385,11 @@ a tulajdonos kérése szerint legyen még több, logikusan eltérő fajta. Javas
 
 A fajták modokból is bővíthetők; az új tulajdonságok a képességrendszerrel (KEP-…, M7) együtt készülnek, az elemek
 és az állapotok a régi elemrendszerre (tűz, jég, villám, víz, méreg, gyökér) épülnek.
+
+### D41 – A köd két fokozata · ELDÖNTVE (2026-11-13)
+
+A tulajdonos kérése (a régi játékban nem így volt): a köd **csak a felfedezetlen részen legyen teljesen fekete**; a
+**felfedezett, de éppen nem látott** rész legyen „átlátszóbb” – **szürkeárnyalatos** (és világos, a táj jól
+látszik), ha ez nem eszik fölösleges erőforrást. Megvalósítás: a fényréteg összetételi shaderében (a fényesség amúgy
+is megvan, így plusz költség nincs): felderített = a kép fényessége × 0,8 szürkén; felfedezetlen = fekete; a
+határok puhák.

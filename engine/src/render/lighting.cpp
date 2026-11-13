@@ -108,7 +108,9 @@ void main() {
   if (u_use_fog != 0) {
     f = texture(u_fog, world / (u_cam.w * u_fogsize)).r;
     float lum = dot(c, vec3(0.299, 0.587, 0.114));
-    vec3 explored = mix(vec3(lum), c, 0.45) * 0.5;               // felderített: fakó és sötétebb
+    // felderített, de most nem látott (D41): szürkeárnyalatos és világos (jól látszik a táj); csak a felfedezetlen
+    // teljesen fekete. A fényesség amúgy is megvan: plusz költség nincs.
+    vec3 explored = vec3(lum * 0.8);
     vec3 unknown = vec3(0.02, 0.025, 0.035);
     c = f < 0.5 ? mix(unknown, explored, smoothstep(0.0, 0.5, f)) : mix(explored, c, smoothstep(0.5, 1.0, f));
   }
