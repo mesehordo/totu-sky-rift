@@ -28,6 +28,7 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Building>("Building");
   world_.register_component<ResourceNode>("ResourceNode");
   world_.register_component<Worker>("Worker");
+  world_.register_component<Producer>("Producer");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind) const {
@@ -65,6 +66,7 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
              static_cast<uint8_t>(complete ? 1 : 0)};
   b.progress = complete ? std::max(1, d.time_ticks) * 1000 : 0;
   world_.add(e, b);
+  if (!d.produces.empty() || !d.researches.empty()) world_.add(e, Producer{});
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
   return e;
 }
@@ -396,6 +398,11 @@ void Sim::supply_system() {
     const Health* h = hp.get(e);
     if (!h || h->hp <= 0 || h->owner > kMaxPlayers) return;
     used[h->owner] += rules_->defs[u.def].supply;
+  });
+  world_.pool<Producer>().each([&](EntityId e, const Producer& pr) {   // a sorban lévő egységek is (MECH-SUPPLY)
+    const Health* h = hp.get(e);
+    if (!h || h->owner > kMaxPlayers) return;
+    for (const QueueItem& q : pr.queue) used[h->owner] += q.supply;
   });
   for (int i = 0; i <= kMaxPlayers; ++i) {
     players_[static_cast<size_t>(i)].supply_cap = std::min(cap[static_cast<size_t>(i)], rules_->max_supply);

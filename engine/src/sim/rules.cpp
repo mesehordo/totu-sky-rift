@@ -144,6 +144,13 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       d.fh = int_of(&fp->items()[1], 0);
     }
     d.supply_provides = int_of(path(*v, "Supply", "provides"), 0);
+    const content::Value* hero = path(*v, "Identity", "hero");
+    d.hero = hero && hero->is_bool() && hero->as_bool();
+    if (const content::Value* rl = path(*v, "Researcher", "list"); rl && rl->is_array()) {
+      for (const auto& x : rl->items()) {
+        if (x.is_string()) d.researches.push_back(x.text());
+      }
+    }
     if (const content::Value* all = path(*v, "Requirements", "all"); all && all->is_array()) {
       for (const auto& q : all->items()) {
         if (!q.is_object()) continue;
@@ -163,6 +170,46 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     r.defs.push_back(std::move(d));
   }
   std::sort(r.defs.begin(), r.defs.end(), [](const EntityDef& a, const EntityDef& b) { return a.id < b.id; });
+  // a képezhető egységek (a rendezés után, sorszámmal)
+  for (EntityDef& d : r.defs) {
+    const content::Value* v = ents.get(d.id);
+    if (const content::Value* pu = v ? path(*v, "Producer", "units") : nullptr; pu && pu->is_array()) {
+      for (const auto& x : pu->items()) {
+        if (!x.is_string()) continue;
+        const uint16_t u = r.def(x.text());
+        if (u != kNoDef) d.produces.push_back(u);
+      }
+    }
+  }
+  // kutatások
+  auto& rs = set["research"];
+  for (const std::string& id : rs.ids()) {
+    if (id.rfind("template_", 0) == 0) continue;
+    const content::Value* v = rs.get(id);
+    if (!v) continue;
+    ResearchDef rd;
+    rd.id = id;
+    if (const content::Value* f = path(*v, "Identity", "faction"); f && f->is_string()) rd.faction = f->text();
+    read_res_map(path(*v, "Cost", "resources"), rd.cost);
+    rd.time_ticks = seconds_to_ticks(fixed_of(path(*v, "Cost", "time"), Fixed{}));
+    if (const content::Value* all = path(*v, "Requirements", "all"); all && all->is_array()) {
+      for (const auto& q : all->items()) {
+        if (!q.is_object()) continue;
+        for (const auto& [k, val] : q.members()) {
+          EntityDef::Req req;
+          if (k == "building") req.kind = EntityDef::Req::Building;
+          else if (k == "research") req.kind = EntityDef::Req::Research;
+          else if (k == "path") req.kind = EntityDef::Req::Path;
+          else if (k == "ascended") req.kind = EntityDef::Req::Ascended;
+          else continue;
+          if (val.is_string()) req.id = val.text();
+          rd.reqs.push_back(req);
+        }
+      }
+    }
+    r.researches.push_back(std::move(rd));
+  }
+  std::sort(r.researches.begin(), r.researches.end(), [](const ResearchDef& a, const ResearchDef& b) { return a.id < b.id; });
 
   // népek
   auto& facs = set["faction"];
@@ -208,6 +255,17 @@ const FactionDef* Rules::faction(const std::string& id) const {
   const auto it = std::lower_bound(factions.begin(), factions.end(), id,
                                    [](const FactionDef& f, const std::string& v) { return f.id < v; });
   return it != factions.end() && it->id == id ? &*it : nullptr;
+}
+
+const ResearchDef* Rules::research(const std::string& id) const {
+  const int i = research_index(id);
+  return i < 0 ? nullptr : &researches[static_cast<size_t>(i)];
+}
+
+int Rules::research_index(const std::string& id) const {
+  const auto it = std::lower_bound(researches.begin(), researches.end(), id,
+                                   [](const ResearchDef& x, const std::string& v) { return x.id < v; });
+  return it != researches.end() && it->id == id ? static_cast<int>(it - researches.begin()) : -1;
 }
 
 int32_t Rules::upkeep_permille(int32_t used) const {

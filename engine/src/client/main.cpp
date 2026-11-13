@@ -13,7 +13,7 @@
 //   totu --nofog                   köd nélkül
 //   totu --weather NÉV[:ERŐSSÉG]   időjárás (derult, felhos, eso, zivatar, kod, ho, hovihar, homokvihar, hoseg,
 //                                  hamueso; erősség 0..1, alapból 1); a V billentyű fokozatos átmenettel vált
-//   (meccsben: B – építési mód, az ursan épületek léptetése; bal gomb: lerakás az első kijelölt munkással;
+//   (meccsben: Q – telepes képzése; B – építési mód, az ursan épületek léptetése; bal gomb: lerakás az első kijelölt munkással;
 //    jobb gomb: kilépés az építési módból)
 //   totu --build-demo              meccsben: az 1. játékos egy telepese tanyát kezd a főépület mellé (képpróba)
 //   totu --look X,Y                a kamera középpontja (csempe)
@@ -423,6 +423,13 @@ int main(int argc, char** argv) {
           float mx = 0, my = 0;
           SDL_GetMouseState(&mx, &my);
           ghost_at(mx, my);
+        }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_Q && session.rules()) {   // telepes képzése (ideiglenes)
+          sim::Command c;
+          c.kind = sim::Command::Kind::Train;
+          c.owner = 1;
+          c.def = "urs_telepes";
+          runner.post(c);
         }
         if (ev.type == SDL_EVENT_MOUSE_MOTION && build_idx >= 0) ghost_at(ev.motion.x, ev.motion.y);
         if (build_idx >= 0 && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {

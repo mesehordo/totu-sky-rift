@@ -62,7 +62,18 @@ struct EntityDef {
     std::string id;
   };
   std::vector<Req> reqs;
+  // termelés (M6 4. lépés)
+  bool hero = false;
+  std::vector<uint16_t> produces;             // épület: a képezhető egységek (`Producer.units`)
+  std::vector<std::string> researches;        // épület: a kutatások (`Researcher.list`)
   bool has_tag(const std::string& t) const;
+};
+
+struct ResearchDef {
+  std::string id, faction;
+  std::array<int32_t, kResources> cost{};
+  int32_t time_ticks = 0;
+  std::vector<EntityDef::Req> reqs;
 };
 
 struct FactionDef {
@@ -82,11 +93,16 @@ struct Rules {
   std::vector<std::pair<int32_t, int32_t>> upkeep_tiers;   // (felhasznált létszám felső határa, ezrelék)
   std::vector<EntityDef> defs;                             // azonosító szerint rendezve
   std::vector<FactionDef> factions;                        // azonosító szerint rendezve
+  std::vector<ResearchDef> researches;                     // azonosító szerint rendezve
+  static constexpr int kQueueMax = 5;                      // a termelési sor hossza (a régi játék szerint)
+  static constexpr int kMaxHeroes = 3;
 
   // A `game` a `game.json` tartalma; a sablonok a `set`-ből. Hiányzó kötelező adatnál nullopt (az ok az errors-ban).
   static std::optional<Rules> load(const content::Value& game, content::ContentSet& set, std::vector<std::string>& errors);
   uint16_t def(const std::string& id) const;               // kNoDef, ha nincs
   const FactionDef* faction(const std::string& id) const;
+  const ResearchDef* research(const std::string& id) const;
+  int research_index(const std::string& id) const;         // -1, ha nincs
   int32_t upkeep_permille(int32_t supply_used) const;      // MECH-UPKEEP
   // A félkész épület megszakításakor visszajáró költség ezreléke (a régi játékban nem volt megszakítás – ADR-007;
   // alapérték a WC3-é: 75%; `game.json` → `build_cancel_refund`).

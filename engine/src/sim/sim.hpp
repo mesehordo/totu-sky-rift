@@ -165,6 +165,51 @@ struct Building {
   }
 };
 
+// termelési sor (M6 4. lépés; a régi játék szerint legfeljebb 5 elem, mindig az első halad) és gyülekezőpont
+struct QueueItem {
+  uint8_t research = 0;      // 0: egység (`def` a sablon), 1: kutatás (`def` a kutatás sorszáma)
+  uint16_t def = kNoDef;
+  int32_t time = 0;          // tick
+  int32_t progress = 0;      // tick
+  std::array<int32_t, kResources> cost{};
+  int32_t supply = 0;
+};
+
+struct Producer {
+  std::vector<QueueItem> queue;
+  uint8_t has_rally = 0;
+  Fixed rx, ry;
+  EntityId rally_target = 0;   // lelőhely: az új munkás gyűjteni megy
+  void hash(core::StateHash& h) const {
+    h.add_u64(queue.size());
+    for (const QueueItem& q : queue) {
+      h.add_u64(q.research); h.add_u64(q.def); h.add_i64(q.time); h.add_i64(q.progress); h.add_i64(q.supply);
+      for (const int32_t c : q.cost) h.add_i64(c);
+    }
+    h.add_u64(has_rally); h.add_i64(rx.raw()); h.add_i64(ry.raw()); h.add_u64(rally_target);
+  }
+  void save(core::ByteWriter& w) const {
+    w.u32(static_cast<uint32_t>(queue.size()));
+    for (const QueueItem& q : queue) {
+      w.u8(q.research); w.u32(q.def); w.i32(q.time); w.i32(q.progress); w.i32(q.supply);
+      for (const int32_t c : q.cost) w.i32(c);
+    }
+    w.u8(has_rally); w.i32(rx.raw()); w.i32(ry.raw()); w.u32(rally_target);
+  }
+  static Producer load(core::ByteReader& r) {
+    Producer p;
+    const uint32_t n = r.u32();
+    for (uint32_t i = 0; i < n && i < 64 && r.ok(); ++i) {
+      QueueItem q;
+      q.research = r.u8(); q.def = static_cast<uint16_t>(r.u32()); q.time = r.i32(); q.progress = r.i32(); q.supply = r.i32();
+      for (int32_t& c : q.cost) c = r.i32();
+      p.queue.push_back(q);
+    }
+    p.has_rally = r.u8(); p.rx = Fixed::from_raw(r.i32()); p.ry = Fixed::from_raw(r.i32()); p.rally_target = r.u32();
+    return p;
+  }
+};
+
 struct ResourceNode {   // fa (1 × 1) vagy lelőhely (pl. 2 × 2); a középpontja a Position
   uint8_t kind = 0;       // Res
   int16_t tx = 0, ty = 0, size = 1;
@@ -270,9 +315,11 @@ struct Command {
   // M6 (a 4-es formátumtól): Gather (munkások egy lelőhelyre), Stop (a parancs és a munka abbahagyása),
   // Build (az első munkás a `def` épületet a (rx, ry) csempére építi), CancelBuild (a `target` félkész épület
   // megszakítása visszatérítéssel)
-  // Demolish (a `target` kész épület lebontása, ha a népe lebonthat – D38)
+  // Demolish (a `target` kész épület lebontása, ha a népe lebonthat – D38); Train (`def` egység, `owner` játékos,
+  // `target` épület vagy 0 = a legrövidebb sorú), Research (`def` kutatás, `owner`), CancelQueue (`target` épület,
+  // `rx` a sor indexe), Rally (`units` épületek, `x`, `y`, `target` lelőhely vagy 0)
   enum class Kind : uint8_t { Spawn = 1, Move = 2, GroupMove = 3, Block = 4, Gate = 5, Gather = 6, Stop = 7, Build = 8,
-                              CancelBuild = 9, Demolish = 10 };
+                              CancelBuild = 9, Demolish = 10, Train = 11, Research = 12, CancelQueue = 13, Rally = 14 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -361,6 +408,13 @@ class Sim {
   bool can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* error = nullptr);
   bool cancel_build(EntityId building);   // félkész épület: megszakítás, a költség `cancel_refund` része vissza
   bool demolish(EntityId building);       // kész épület lebontása (D38): csak a `demolish` népnél, 70% vissza
+  // Termelés (ADR-007 4. lépés): hibánál az ok az `error`-ba. A költség és a létszám a parancskor foglalódik.
+  bool train(uint8_t owner, uint16_t def, EntityId building = 0, std::string* error = nullptr);
+  bool research(uint8_t owner, const std::string& id, std::string* error = nullptr);
+  bool cancel_queue_item(EntityId building, int index);   // a teljes költség vissza
+  void set_rally(EntityId building, Fixed x, Fixed y, EntityId target);
+  // Nyersanyag jóváírása vagy levonása (küldetés, szkript, teszt; a Hadtáp nélkül); a készlet nem mehet 0 alá.
+  void add_resources(uint8_t owner, int kind, int32_t amount);
   bool missing_requirements(uint8_t owner, const EntityDef& d, std::string* what = nullptr);
   // Mentés betöltése után: az épületek és a lelőhelyek akadályai a (meccsindítás nélküli) navrácsba.
   void restore_obstacles(const map::Map& m);
@@ -395,6 +449,8 @@ class Sim {
   void combat_system();
   void economy_system();
   void construction_system();
+  void production_system();
+  bool finish_item(EntityId building, const QueueItem& item);
   void supply_system();
   void enter_construction(EntityId worker, EntityId building);
   void leave_construction(EntityId building, bool hurt);
