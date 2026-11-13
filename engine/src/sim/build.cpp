@@ -98,7 +98,7 @@ bool Sim::can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* er
       return false;
     }
   }
-  return true;
+  return mod_can_place(owner, def, tx, ty, error);   // népmodul (mélység, tó, energiamező …)
 }
 
 bool Sim::pay(uint8_t owner, const std::array<int32_t, kResources>& cost) {
@@ -300,6 +300,7 @@ void Sim::build_order_step(EntityId e, Worker& w) {
 }
 
 void Sim::construction_system() {
+  std::vector<EntityId> completed;   // az e tickben elkészültek (a népmodulok eseményéhez)
   world_.pool<Building>().each([&](EntityId e, Building& b) {
     if (b.complete) {
       b.builders = 0;
@@ -315,6 +316,7 @@ void Sim::construction_system() {
     else if (style == "stay_single") rate = b.builders ? 1000 : 0;
     else if (style == "enter") rate = b.builder_in && world_.alive(b.builder_in) ? 1000 : 0;
     if (world_.get<SelfBuild>(e)) rate = 1000;   // letelepített Wullof-épület: munkás nélkül
+    rate = static_cast<int32_t>((Fixed::from_int(rate) * mod_build(e)).floor_int());   // népmodul
     b.builders = 0;
     if (!rate) return;
     rate = static_cast<int32_t>((Fixed::from_int(rate) * env_build_mult(h->owner)).floor_int());   // éjjel/időjárás (D35)
@@ -331,8 +333,12 @@ void Sim::construction_system() {
       b.complete = 1;
       h->hp = std::min(h->max, h->hp + h->max - static_cast<int32_t>(target(total)));   // a kerekítési maradék
       if (b.builder_in) leave_construction(e, false);
+      completed.push_back(e);
     }
   });
+  for (const EntityId c : completed) {
+    for (auto& m : modules_) m->on_building_complete(*this, c);
+  }
 }
 
 bool Sim::demolish(EntityId e) {

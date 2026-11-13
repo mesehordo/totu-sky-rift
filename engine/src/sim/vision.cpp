@@ -80,6 +80,7 @@ void Sim::stealth_system() {
   world_.pool<Stealth>().each([&](EntityId e, Stealth& s) {
     const Unit* u = world_.get<Unit>(e);
     s.hidden = u && rules_->defs[u->def].always_hidden ? 1 : 0;
+    if (!s.hidden && mod_hidden(e)) s.hidden = 1;   // népmodul (beásás, éjjeli rejtőzés …)
     if (!s.hidden && u) {   // erdei rejtőzés (Wullof): 3 s óta nem támadott, földi, áll, és fa van a 3 × 3-as körzetben
       const Health* h = world_.get<Health>(e);
       const FactionDef* f = h && h->owner >= 1 && h->owner <= kMaxPlayers ? rules_->faction(players_[h->owner].faction) : nullptr;

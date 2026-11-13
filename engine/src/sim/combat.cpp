@@ -327,6 +327,7 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   int64_t dmg = milli_of(stat(e, "Attack.damage", a.damage));
   if (u) dmg = mul_fixed(dmg, unit_mods(e).damage_mult);   // képesség (önerősítés, kapcsoló, aura)
   if (u) dmg = mul_fixed(dmg, pack_damage_mult(e));         // falkaszellem (Wullof)
+  dmg = mul_fixed(dmg, mod_damage(e, t));                   // népmodul
   if (Stealth* sst = world_.get<Stealth>(e)) sst->last_attack = tick_;
   if (u && rules_of(owner).has_rage) {   // vérszomj-irány: minél sebesültebb, annál erősebb (a régi E 131)
     const RuleSet& rs = rules_of(owner);
@@ -536,6 +537,12 @@ void Sim::shot_system() {
 
 void Sim::die(EntityId e) {
   if (!world_.alive(e)) return;
+  {
+    const auto kit = killer_.find(e);
+    for (auto& m : modules_) {
+      m->on_death(*this, e, kit != killer_.end() ? kit->second.first : 0, kit != killer_.end() ? kit->second.second : 0);
+    }
+  }
   if (const auto it = killer_.find(e); it != killer_.end()) {
     grant_kill_xp(e, it->second.second, it->second.first);
     const uint8_t ko = it->second.second;   // Wullof vadászzsákmány: a költség / darab × 0,2 × 0,5
@@ -582,6 +589,7 @@ void Sim::match_combat_system() {
     if (cap <= 0 || v.shield >= cap) return;
     const int64_t delay = d.shield_delay > 0 ? d.shield_delay : rules_->shield_regen_delay;
     if (tick_ - v.last_hit <= delay) return;
+    if (!mod_shield_ok(e)) return;   // népmodul (Reaktorpajzs …)
     v.shield = static_cast<int32_t>(std::min<int64_t>(cap, v.shield + milli_of(rules_->shield_regen_per_tick)));
   });
   std::vector<EntityId> ids;

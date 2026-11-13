@@ -7,6 +7,7 @@
 #include <array>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -112,6 +113,7 @@ struct AbilityDef {
   std::vector<std::string> rider_ids;
   uint16_t into = kNoDef, mount = kNoDef, rider = kNoDef;
   std::vector<uint16_t> riders;
+  std::shared_ptr<const content::Value> spec;   // a `Spec` (a népmodulok saját típusaihoz és kulcsaihoz)
   // `gpower`: költség (a játékos nyersanyagából; az áhítat is), a főépület életereje, célzott, épületeket is sújt,
   // felfedés (csempe); `blink`: landolási sebzés és sugár
   std::array<int32_t, kResources> cost{};
@@ -195,6 +197,7 @@ struct EntityDef {
   uint16_t spawn_unit = kNoDef;
   int32_t spawn_count = 1;
   bool packable = false;
+  std::shared_ptr<const content::Value> raw;   // a teljes sablon (a népmodulok saját kulcsaihoz)
   bool rift_source = false;                   // Égkő (`Mechanics.rift_source`)
   std::vector<uint16_t> powers;               // főépület-képességek (`Powers.list`, Rules::abilities)
   bool has_tag(const std::string& t) const;
@@ -285,7 +288,8 @@ struct FactionDef {
   bool forest_stealth = false, repair = false;
   uint16_t wagon = kNoDef;
   int32_t unpack_ticks = 240;
-  std::vector<CampDef> camps;                             // pl. `ursan` (a sablon `faction_ursan`)
+  std::vector<CampDef> camps;
+  std::shared_ptr<const content::Value> raw;   // a nép teljes sablonja (a népmodulok saját kulcsaihoz)                             // pl. `ursan` (a sablon `faction_ursan`)
   uint16_t hq = kNoDef, worker = kNoDef;
   std::vector<std::pair<uint16_t, int>> start_units;
   std::string builder;                        // MECH-BUILD: stay, stay_single, enter, consume, leave

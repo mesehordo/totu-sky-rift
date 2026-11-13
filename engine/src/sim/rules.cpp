@@ -364,6 +364,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       AbilityDef a;
       a.id = id;
       a.level = static_cast<uint8_t>(level);
+      a.spec = std::make_shared<const content::Value>(*spec);
       a.max_level = static_cast<uint8_t>(nlev);
       const content::Value* t = spec->find("type");
       const std::string type = t && t->is_string() ? t->text() : "";
@@ -552,6 +553,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       }
     }
     d.dropoff = res_mask(path(*v, "Dropoff", "resources"));
+    d.raw = std::make_shared<const content::Value>(*v);
     // képességek (M6 8. lépés): az egység listája, majd a hősé
     auto add_ability = [&](const content::Value& x) {
       if (!x.is_string()) return;
@@ -775,6 +777,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       parse_env_map(fe->find("weather"), fd.env_weather);
     }
     fd.regen = fixed_of(f->find("regen"), Fixed{});
+    fd.raw = std::make_shared<const content::Value>(*v);
     if (const content::Value* pb = f->find("pack_bonus"); pb && pb->is_object()) {
       fd.pack = true;
       fd.pack_radius = fixed_of(pb->find("radius"), fd.pack_radius);

@@ -558,7 +558,10 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
       c.crepath = 0;
       return true;
     }
-    default:
+    default:   // a keret által nem ismert típus: a népmodulok
+      for (auto& m : modules_) {
+        if (m->use_ability(*this, us, ab, x, y, target)) return true;
+      }
       return false;
   }
 }
@@ -758,7 +761,7 @@ void Sim::ability_system() {
     Health* h = world_.get<Health>(e);
     if (!h || h->hp <= 0) return;
     const EntityDef& d = rules_->defs[def];
-    Fixed r = stat(e, "Health.regen", d.regen);   // + kutatás, irány és hős-tárgy (Rúnapajzs, tundra, gyűrű)
+    Fixed r = stat(e, "Health.regen", d.regen) + mod_regen(e);   // + kutatás, irány, hős-tárgy, népmodul
     if (h->owner == 0 || h->owner > kMaxPlayers) {   // a Vadon faji gyógyulása
       for (const FactionDef& f : rules_->factions) {
         if (f.neutral) r = r + f.regen;
@@ -783,6 +786,7 @@ void Sim::ability_system() {
   item_system();
   camp_system();
   wullof_system();
+  for (auto& m : modules_) m->tick(*this);   // népmodulok
   if (tick_ % 15 == 0) ascension_system();   // a régi: 0,5 s-onként
   std::vector<EntityId> ids;
   world_.pool<Caster>().each([&](EntityId e, const Caster&) { ids.push_back(e); });

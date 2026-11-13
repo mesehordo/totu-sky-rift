@@ -52,6 +52,8 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<RepairOrder>("RepairOrder");
   world_.register_component<Mounted>("Mounted");
   world_.register_component<Tapped>("Tapped");
+  modules_ = make_faction_modules();   // népmodulok (M7): a saját komponenseik rögzített sorrendben
+  for (auto& m : modules_) m->register_components(world_);
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
@@ -110,6 +112,7 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
     const auto air = nav_->nav().table().movement_class("air");
     set_body(e, d.radius, d.flying && air ? *air : 0xFF);
   }
+  for (auto& m : modules_) m->on_unit_spawned(*this, e);
   return e;
 }
 
@@ -134,6 +137,7 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   world_.add(e, Afflict{});   // páncéltörés (épületen is)
   if (!d.powers.empty()) world_.add(e, Caster{});                  // főépület-képességek újratöltése
   if (nav_) nav_->add_obstacle({tx, ty, w, h});
+  for (auto& m : modules_) m->on_building_placed(*this, e);
   return e;
 }
 
@@ -215,6 +219,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   build_terrain_patches();
   for (int i = 0; i <= kMaxPlayers; ++i) rebuild_rules(static_cast<uint8_t>(i));
   if (setup.camps) spawn_camps(m);   // a Vadon táborai (D25)
+  for (auto& mod : modules_) mod->on_match_start(*this);
   return true;
 }
 
@@ -241,6 +246,7 @@ void Sim::restore_obstacles(map::Map& m) {
 
 bool Sim::order_gather(EntityId e, EntityId res) {
   if (!rules_ || !world_.alive(e) || !world_.alive(res)) return false;
+  if (const ResourceNode* rn = world_.get<ResourceNode>(res); rn && !mod_can_gather(e, rn->kind)) return false;
   Worker* w = world_.get<Worker>(e);
   const Unit* u = world_.get<Unit>(e);
   const ResourceNode* n = world_.get<ResourceNode>(res);
@@ -395,6 +401,9 @@ void Sim::economy_system() {
           const int64_t t2 = gm.raw() > 0 ? (t << 16) / gm.raw() : t;
           w.timer = std::max(1, seconds_to_ticks(Fixed::from_raw(static_cast<int32_t>(t2))));
           if (n->kind == kWood && d.tap_amount > 0) w.timer = std::max(1, d.tap_ticks);   // kéregcsapolás (Wullof)
+          if (const Fixed mg = mod_gather(e); mg != Fixed::from_int(1) && mg.raw() > 0) {   // népmodul
+            w.timer = std::max(1, (Fixed::from_int(w.timer) / mg).floor_int());
+          }
           w.state = Worker::Work;
           w.move_to = 0;
           const uint8_t keep = w.state;
@@ -555,6 +564,7 @@ void Sim::supply_system() {
     PlayerState& p = players_[static_cast<size_t>(i)];
     if (p.active && !p.defeated && buildings[static_cast<size_t>(i)] == 0) p.defeated = true;
   }
+  for (int i = 1; i <= kMaxPlayers; ++i) cap[static_cast<size_t>(i)] += mod_supply(static_cast<uint8_t>(i));
   for (int i = 0; i <= kMaxPlayers; ++i) {
     players_[static_cast<size_t>(i)].supply_cap = std::min(cap[static_cast<size_t>(i)], rules_->max_supply);
     players_[static_cast<size_t>(i)].supply_used = used[static_cast<size_t>(i)];

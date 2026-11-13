@@ -17,6 +17,7 @@
 #include "core/fixed.hpp"
 #include "core/hash.hpp"
 #include "core/rng.hpp"
+#include "sim/faction_module.hpp"
 #include "sim/formation.hpp"
 #include "sim/rules.hpp"
 #include "sim/world.hpp"
@@ -895,6 +896,20 @@ class Sim {
   bool gather_nearest(EntityId worker, int kind);   // a munkás a legközelebbi ilyen lelőhelyre (szkript, gép)   // Égkő-fényben áll (MECH-RIFT)
   bool buffed(EntityId e, uint16_t ability);
 
+  // népmodulok (M7, ADR-008): a horgok összesítve (szorzók szorzata, engedélyek ÉS-e, bónuszok összege)
+  Fixed mod_speed(EntityId e);
+  Fixed mod_damage(EntityId e, EntityId t);
+  Fixed mod_build(EntityId b);
+  Fixed mod_gather(EntityId w);
+  Fixed mod_regen(EntityId e);
+  int32_t mod_supply(uint8_t owner);
+  bool mod_can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* error);
+  bool mod_can_gather(EntityId w, int kind);
+  bool mod_shield_ok(EntityId e);
+  bool mod_hidden(EntityId e);
+  std::vector<std::unique_ptr<FactionModule>> modules_;
+  PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
+
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
   void step();                           // egy tick (1/30 s)
   int64_t tick() const { return tick_; }
@@ -906,7 +921,8 @@ class Sim {
   std::vector<uint8_t> save() const;     // teljes mentés (a még végre nem hajtott parancsokkal)
   bool load(const std::vector<uint8_t>& data);
 
- private:
+ // belső felület – a népmodulok (src/sim/factions) is használják (ADR-008)
+ public:
   void apply(const Command& c);
   void report_deaths();
   void nav_request(EntityId e, Fixed x, Fixed y);
