@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "render/atlas_build.hpp"
 
+#include "render/calm.hpp"
+
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -310,6 +312,11 @@ AtlasData build_atlas(const std::vector<std::string>& sheet_jsons, const AtlasOp
     s.directions = std::max(1, img->height / s.frame_h);
     s.has_mask = mask.has_value();
     s.first = static_cast<uint32_t>(atlas.frames.size());
+    if (opt.calm && calm_applies(s.type)) {   // a képkockák szűrése a vágás és a csomagolás előtt
+      for (int d = 0; d < s.directions; ++d) {
+        for (int c = 0; c < s.columns; ++c) calm_frame(*img, c * s.frame_w, d * s.frame_h, s.frame_w, s.frame_h);
+      }
+    }
     for (int d = 0; d < s.directions; ++d) {
       for (int c = 0; c < s.columns; ++c) {
         const int fx = c * s.frame_w, fy = d * s.frame_h;

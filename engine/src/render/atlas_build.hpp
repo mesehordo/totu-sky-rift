@@ -77,6 +77,7 @@ struct AtlasOptions {
   int page_size = 4096;
   int padding = 2;
   bool half = false;
+  bool calm = true;   // „nyugodt + belső átlag” szűrő a játéktér figuráin (render/calm; a régi játék szerint)
 };
 
 // Az atlasz építése a megadott sprite-leírásokból. A kész lapokat (alap és maszk) a `write_page` kapja meg, amint

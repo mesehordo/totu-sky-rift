@@ -74,7 +74,7 @@ add_library(totu_image STATIC src/render/image.cpp)
 target_include_directories(totu_image PUBLIC src)
 target_link_libraries(totu_image PUBLIC totu_stb PRIVATE totu_options)
 # atlaszkészítő (grafikus kártya nélkül) és eszköze
-add_library(totu_assets STATIC src/render/atlas_build.cpp src/render/daylight.cpp src/render/particles.cpp
+add_library(totu_assets STATIC src/render/atlas_build.cpp src/render/calm.cpp src/render/daylight.cpp src/render/particles.cpp
             src/render/weather_look.cpp)
 target_link_libraries(totu_assets PUBLIC totu_core totu_image PRIVATE totu_options)
 add_executable(totu_atlas src/tools/totu_atlas.cpp)

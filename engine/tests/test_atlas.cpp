@@ -10,9 +10,13 @@
 #include <string>
 #include <vector>
 
+#include <cstdio>
+#include <cstdlib>
+
 #include "check.hpp"
 #include "core/rng.hpp"
 #include "render/atlas_build.hpp"
+#include "render/calm.hpp"
 
 using namespace totu;
 
@@ -101,6 +105,7 @@ TEST_CASE("atlasz: vágás, több lapra bontás, pixelre egyező képkockák és
   std::map<int, std::pair<render::Image, render::Image>> pages;
   render::AtlasOptions opt;
   opt.page_size = 128;
+  opt.calm = false;   // a pixelre egyezés a szűrő nélkül (a szűrőnek saját próbája van)
   std::vector<std::string> warnings;
   const auto atlas = render::build_atlas(
       sheets, opt, [&](int p, const render::Image& b, const render::Image& m) { pages[p] = {b, m}; }, &warnings);
@@ -163,4 +168,33 @@ TEST_CASE("atlasz: valódi sprite-lap (ha a grafika megvan)") {
   for (const auto& f : atlas.frames) used += static_cast<long long>(f.w) * f.h;
   std::printf("  cro_agyfalo: %zu képkocka, a vágás után az eredeti terület %.0f%%-a\n", atlas.frames.size(),
               100.0 * static_cast<double>(used) / (8.0 * 28.0 * 116.0 * 128.0));
+}
+
+TEST_CASE("nyugodt + belső átlag: körvonal a sziluett köré, a belső zaj simul, a felület és a háttér marad") {
+  CHECK(render::calm_applies("unit") && render::calm_applies("building") && render::calm_applies("resource"));
+  CHECK(render::calm_applies("prop") && !render::calm_applies("decor") && !render::calm_applies("tileset"));
+  render::Image img;
+  img.width = img.height = 32;
+  img.rgba.assign(32 * 32 * 4, 0);
+  for (int y = 10; y < 22; ++y) {
+    for (int x = 10; x < 22; ++x) {
+      uint8_t* p = img.at(x, y);
+      p[0] = 200; p[1] = 100; p[2] = 50; p[3] = 255;
+    }
+  }
+  img.at(16, 16)[0] = 206;   // halk zaj belül (élnek nem számít, a medián elsimítja)
+  img.at(20, 11)[0] = img.at(20, 11)[1] = img.at(20, 11)[2] = 255;   // erős folt: él, megmarad (élvédelem)
+  render::calm_frame(img, 0, 0, 32, 32);
+  // 1 képpontos körvonal a sziluett körül, a belső szín 0,40-szerese + (8, 6, 8)
+  const uint8_t* ring = img.at(9, 16);
+  std::printf("  körvonal: %d %d %d %d; zaj: %d; folt: %d\n", ring[0], ring[1], ring[2], ring[3], img.at(16, 16)[0],
+              img.at(20, 11)[2]);
+  CHECK(ring[3] == 255);
+  CHECK(std::abs(ring[0] - 88) <= 4 && std::abs(ring[1] - 46) <= 4 && std::abs(ring[2] - 28) <= 4);
+  CHECK(img.at(8, 16)[3] == 0 && img.at(0, 0)[3] == 0);   // a körvonalon túl átlátszó marad
+  // a belső zaj a medián felé simul
+  CHECK(img.at(16, 16)[0] <= 202);   // a halk zaj a medián felé simul
+  CHECK(img.at(20, 11)[2] > 150);    // az erős folt (él) megmarad
+  // a sima felület (a tinta csak a helyi maximumnál sötétebb pontokat érinti) lényegében változatlan
+  CHECK(std::abs(img.at(12, 20)[0] - 200) <= 6 && img.at(12, 20)[3] == 255);
 }

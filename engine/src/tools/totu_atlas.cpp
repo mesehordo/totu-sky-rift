@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Atlaszkészítő eszköz (M5): a grafika sprite-lapjaiból 4096²-es atlaszlapok és leírás.
-//   totu_atlas <grafika-mappa> <kimeneti-mappa> [--half] [--page N] [--only előtag1,előtag2]
+//   totu_atlas <grafika-mappa> <kimeneti-mappa> [--half] [--page N] [--only előtag1,előtag2] [--no-calm]
+// (--no-calm: a „nyugodt + belső átlag” szűrő nélkül)
 // A kimenet (page_N.png, mask_N.png, atlas.json) gyorsítótár: a játék a grafikából építi, a repóba nem kerül.
 #include <chrono>
 #include <cstdio>
@@ -24,6 +25,7 @@ int main(int argc, char** argv) {
   std::vector<std::string> only;
   for (int i = 3; i < argc; ++i) {
     if (std::strcmp(argv[i], "--half") == 0) opt.half = true;
+    else if (std::strcmp(argv[i], "--no-calm") == 0) opt.calm = false;
     else if (std::strcmp(argv[i], "--page") == 0 && i + 1 < argc) opt.page_size = std::atoi(argv[++i]);
     else if (std::strcmp(argv[i], "--only") == 0 && i + 1 < argc) {
       std::string s = argv[++i];
