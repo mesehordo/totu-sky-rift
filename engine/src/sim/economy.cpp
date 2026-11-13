@@ -41,6 +41,11 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Garrison>("Garrison");   // helyőrség (D39)
   world_.register_component<Sheltered>("Sheltered");
   world_.register_component<Enter>("Enter");
+  world_.register_component<HeroState>("HeroState");   // hősök, tárgyak, táborok (M7)
+  world_.register_component<GroundItem>("GroundItem");
+  world_.register_component<Fetch>("Fetch");
+  world_.register_component<Camp>("Camp");
+  world_.register_component<CampMember>("CampMember");
 }
 
 int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
@@ -68,6 +73,21 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
   if (d.attack.has) world_.add(e, Combat{});
   world_.add(e, Stealth{});
   world_.add(e, Afflict{});
+  if (d.hero) {   // hős: az elesett állapota (újraélesztés) vagy új, 1. szinten egy ponttal
+    HeroState hs;
+    if (owner <= kMaxPlayers) {
+      auto& fl = players_[owner].fallen;
+      const auto it = std::find_if(fl.begin(), fl.end(), [&](const auto& f) { return f.first == def; });
+      if (it != fl.end()) {
+        hs = it->second;
+        fl.erase(it);
+      }
+    }
+    world_.add(e, hs);
+    hero_recalc(e, false);
+    Health& hh = *world_.get<Health>(e);
+    hh.hp = hh.max;
+  }
   if (!d.abilities.empty() || d.energy_max > 0) {
     Caster cs;
     cs.energy = std::min(50, d.energy_max) * 1000;   // a régi: legfeljebb 50 energiával indul
@@ -183,6 +203,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   vision_system();
   build_terrain_patches();
   for (int i = 0; i <= kMaxPlayers; ++i) rebuild_rules(static_cast<uint8_t>(i));
+  if (setup.camps) spawn_camps(m);   // a Vadon táborai (D25)
   return true;
 }
 

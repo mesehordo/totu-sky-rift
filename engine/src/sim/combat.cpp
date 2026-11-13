@@ -68,7 +68,7 @@ Fixed Sim::attack_range(EntityId e, EntityId target) {
   const EntityDef& d = rules_->defs[def];
   const AttackDef& a = d.attack;
   const Health* h = world_.get<Health>(e);
-  Fixed r = research_stat(h ? h->owner : 0, "Attack.range", a.range, d);
+  Fixed r = stat(e, "Attack.range", a.range);
   const int delta = level_at(e) - level_at(target);
   if (delta > 0 && (a.ranged() || bu)) {   // magaslatról messzebb (D33)
     const auto& el = rules_->elevation;
@@ -270,7 +270,7 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   }
   if (dmg > 0) {
     if (!magic) {   // a varázssebzés páncél nélkül hat
-      const int32_t armor = research_stat(h->owner, "Health.armor", Fixed::from_int(td.armor), td).floor_int();
+      const int32_t armor = stat(t, "Health.armor", Fixed::from_int(td.armor)).floor_int();
       int64_t add = tu ? milli_of(unit_mods(t).armor_add) : 0;   // képesség, aura
       if (taf && taf->sunder_until > tick_) add -= int64_t{taf->sunder_armor} * 1000;   // páncéltörés
       dmg = std::max<int64_t>(500, dmg - int64_t{armor} * 1000 - add);   // páncél; legalább 0,5
@@ -278,6 +278,7 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
     const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0) - dmg;
     if (eff <= 0) {
       if (std::find(dying_.begin(), dying_.end(), t) == dying_.end()) dying_.push_back(t);
+      killer_[t] = {src, owner};   // a tapasztalathoz (D25)
     } else {
       h->hp = static_cast<int32_t>((eff + 999) / 1000);
       if (vt) vt->deficit = static_cast<int32_t>(int64_t{h->hp} * 1000 - eff);
@@ -323,7 +324,7 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   const AttackDef& a = ed.attack;
   const uint8_t owner = world_.get<Health>(e)->owner;
   c.cooldown = a.cooldown;
-  int64_t dmg = milli_of(research_stat(owner, "Attack.damage", a.damage, ed));
+  int64_t dmg = milli_of(stat(e, "Attack.damage", a.damage));
   if (u) dmg = mul_fixed(dmg, unit_mods(e).damage_mult);   // képesség (önerősítés, kapcsoló, aura)
   if (u && rules_of(owner).has_rage) {   // vérszomj-irány: minél sebesültebb, annál erősebb (a régi E 131)
     const RuleSet& rs = rules_of(owner);
@@ -533,6 +534,16 @@ void Sim::shot_system() {
 
 void Sim::die(EntityId e) {
   if (!world_.alive(e)) return;
+  if (const auto it = killer_.find(e); it != killer_.end()) grant_kill_xp(e, it->second.second, it->second.first);
+  if (const HeroState* hs = world_.get<HeroState>(e)) {   // az elesett hős állapota megmarad (újraélesztés)
+    const Health* h = world_.get<Health>(e);
+    const Unit* u = world_.get<Unit>(e);
+    if (h && u && h->owner >= 1 && h->owner <= kMaxPlayers) {
+      auto& fl = players_[h->owner].fallen;
+      fl.erase(std::remove_if(fl.begin(), fl.end(), [&](const auto& x) { return x.first == u->def; }), fl.end());
+      fl.emplace_back(u->def, *hs);
+    }
+  }
   if (const Building* b = world_.get<Building>(e)) {
     if (b->builder_in) leave_construction(e, true);   // a lerombolt épületből sérülten ugrik ki
     if (world_.get<Garrison>(e)) unload(e);            // a helyőrség kiszáll
@@ -547,8 +558,7 @@ void Sim::match_combat_system() {
     const Unit* u = world_.get<Unit>(e);
     if (!u) return;
     const EntityDef& d = rules_->defs[u->def];
-    const Health* h = world_.get<Health>(e);
-    const int64_t cap = int64_t{std::max(0, research_stat(h ? h->owner : 0, "Health.shield", Fixed::from_int(d.shield), d).floor_int())} * 1000;
+    const int64_t cap = int64_t{std::max(0, stat(e, "Health.shield", Fixed::from_int(d.shield)).floor_int())} * 1000;
     if (cap <= 0 || v.shield >= cap) return;
     const int64_t delay = d.shield_delay > 0 ? d.shield_delay : rules_->shield_regen_delay;
     if (tick_ - v.last_hit <= delay) return;
@@ -571,7 +581,7 @@ void Sim::match_combat_system() {
     if (incapacitated(e)) continue;   // kábult vagy fél (az újratöltés közben is telik)
     if (const Caster* cs = world_.get<Caster>(e); cs && cs->cast != kNoAbility) continue;   // képességet használ
     const EntityDef& d = rules_->defs[u->def];
-    const Fixed sight = research_stat(h->owner, "Vision.sight", Fixed::from_int(std::max(1, d.sight)), d) *
+    const Fixed sight = stat(e, "Vision.sight", Fixed::from_int(std::max(1, d.sight))) *
                         env_sight_mult(h->owner, d);
     const Movement* mv = world_.get<Movement>(e);
     auto engage = [&](EntityId t) {
@@ -590,6 +600,7 @@ void Sim::match_combat_system() {
       case Combat::None: {
         if (world_.get<Worker>(e)) break;   // a munkás magától nem támad
         if (mv && mv->moving) break;        // csak a tétlen keres célpontot (a mozgásparancs alatt nem; a régi E 747)
+        if (world_.get<CampMember>(e)) break;   // a tábor egysége a camp_system szerint keres
         if (--c.scan > 0) break;
         c.scan = kScanTicks;
         const EntityId t = find_enemy(e, sight);
@@ -681,6 +692,7 @@ void Sim::death_system() {
   dying_.erase(std::unique(dying_.begin(), dying_.end()), dying_.end());
   for (const EntityId e : dying_) die(e);
   dying_.clear();
+  killer_.clear();
 }
 
 }  // namespace totu::sim

@@ -105,6 +105,8 @@ struct AbilityDef {
   std::string buff;                     // `gpower` (`levy`): a kapott önerősítés
   std::string effect;                   // `gpower`: `levy` (mozgósítás) …
   char hotkey = 0;                      // gyorsbillentyű (nagybetű; 0 = nincs)
+  uint8_t level = 1, max_level = 1;     // a hős képességének szintje (a változat) és a szintek száma
+  uint16_t base = 0;                    // az 1. szintű változat sorszáma (Rules::abilities)
   // `gpower`: költség (a játékos nyersanyagából; az áhítat is), a főépület életereje, célzott, épületeket is sújt,
   // felfedés (csempe); `blink`: landolási sebzés és sugár
   std::array<int32_t, kResources> cost{};
@@ -174,6 +176,10 @@ struct EntityDef {
   Fixed regen;                                // életerő / s (`Health.regen`)
   int32_t garrison = 0;                       // helyőrség-helyek (`Garrison.slots`)
   std::string shape;                          // `Identity.shape` (a felemelkedés nem számolja: wall, node, dropoff)
+  // hős (D25): szintenkénti növekedés (`Hero.growth`); tapasztalat-érték (`Hero.xp`; -1: a képlet szerint)
+  Fixed grow_hp, grow_damage, grow_armor, grow_energy, grow_shield;
+  int32_t xp_value = -1;
+  int32_t count = 1;                          // `Cost.count`: ennyi egység jön egy képzésből
   bool rift_source = false;                   // Égkő (`Mechanics.rift_source`)
   std::vector<uint16_t> powers;               // főépület-képességek (`Powers.list`, Rules::abilities)
   bool has_tag(const std::string& t) const;
@@ -235,8 +241,27 @@ struct Environment {
   std::map<std::string, EnvEffect> weather;                    // időjárás-azonosító → általános hatás
 };
 
+// tárgy (D25, TARGY-1): fogyó (gyógyítás, energia, tapasztalat, örök bónusz) vagy viselt (D24-módosítók)
+struct ItemDef {
+  std::string id;
+  bool equip = false;
+  uint8_t rarity = 0;                         // 0 közönséges, 1 ritka, 2 ereklye
+  int32_t heal = 0, energy = 0, xp = 0, perm_hp = 0, perm_damage = 0;
+  std::vector<Modifier> modifiers;            // viselt: Health.max, Health.armor, Attack.damage, Movement.speed_pct, …
+};
+
+// tábor (D25, TABOR-1): a szint egységei és a zsákmány ritkaságai
+struct CampDef {
+  int level = 1;
+  std::vector<std::pair<uint16_t, int>> units;
+  std::vector<uint8_t> loot;
+};
+
 struct FactionDef {
-  std::string id;                             // pl. `ursan` (a sablon `faction_ursan`)
+  std::string id;
+  Fixed regen;                                // faji életerő-visszatöltés / s (`Faction.regen`)
+  bool neutral = false;                       // a Vadon: a semleges (0.) játékos
+  std::vector<CampDef> camps;                             // pl. `ursan` (a sablon `faction_ursan`)
   uint16_t hq = kNoDef, worker = kNoDef;
   std::vector<std::pair<uint16_t, int>> start_units;
   std::string builder;                        // MECH-BUILD: stay, stay_single, enter, consume, leave
@@ -318,6 +343,26 @@ struct Rules {
     Fixed spell_mult = Fixed::from_int(1);
   } rift;
   int32_t garrison_dmg = 4;                                // helyőrség sebzése fejenként (a régi alapja)
+  // hősök, tárgyak, táborok (D25; `game.json` → `heroes`, `camps`; a régi játék állandói)
+  struct Heroes {
+    std::vector<int32_t> levels{0, 200, 500, 900, 1400, 2000, 2700, 3500, 4400, 5400};   // szinthatárok
+    Fixed share_radius = Fixed::from_int(12);
+    int inventory = 6;
+    Fixed revive_base = Fixed::from_ratio(3, 5), revive_per_level = Fixed::from_ratio(3, 25);
+    Fixed levelup_heal = Fixed::from_ratio(1, 4);
+    int ultimate_level = 6;
+    int32_t xp_hero_base = 100, xp_hero_per_level = 60;
+    Fixed xp_unit_base = Fixed::from_int(8), xp_cost_mult = Fixed::from_ratio(18, 100);
+  } heroes;
+  struct Camps {
+    Fixed home = Fixed::from_ratio(3, 2), search = Fixed::from_int(5), leash = Fixed::from_int(7);
+    Fixed regen_pct = Fixed::from_ratio(1, 10);           // a visszatérő tábor-egység gyógyulása / s (max életerő arányában)
+    int potion_level = 3;
+    int32_t potion_permille = 600;
+    int32_t min_start_dist = 12;                          // csempe: a kezdőhelytől ennyin belül nincs tábor
+  } camps;
+  std::vector<ItemDef> items;                              // azonosító szerint rendezve
+  int item_index(const std::string& id) const;            // -1, ha nincs
 };
 
 }  // namespace totu::sim

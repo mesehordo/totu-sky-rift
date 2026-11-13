@@ -68,6 +68,13 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
   QueueItem q;
   q.def = def;
   q.time = std::max(1, d.time_ticks);
+  if (d.hero) {   // újraélesztés: idő × (0,6 + 0,12 × szint), ugyanazon az áron (HOS-1)
+    for (const auto& [fd, hs] : p.fallen) {
+      if (fd != def) continue;
+      const Fixed m = rules_->heroes.revive_base + rules_->heroes.revive_per_level * Fixed::from_int(hs.level);
+      q.time = std::max(1, (Fixed::from_int(q.time) * m).floor_int());
+    }
+  }
   q.cost = d.cost;
   q.supply = d.supply;
   world_.get<Producer>(cands.front().second)->queue.push_back(q);

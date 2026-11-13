@@ -339,7 +339,7 @@ void Sim::nav_movement() {
     if (rules_ && h) {   // M6 7. lépés: kutatás (Movement.speed_pct) és napszak/időjárás (D35) – csak meccsben
       if (const Unit* u = world_.get<Unit>(e)) {
         const EntityDef& d = rules_->defs[u->def];
-        const Fixed pct = research_stat(h->owner, "Movement.speed_pct", Fixed{}, d);
+        const Fixed pct = stat(e, "Movement.speed_pct", Fixed{});
         speed = speed * (Fixed::from_int(1) + pct / Fixed::from_int(100)) * env_speed_mult(h->owner, d);
         const Fixed am = unit_speed_mult(e);   // képesség, lassítás; kábulva (és dárdafalban) 0: áll, az útja marad
         if (am.raw() <= 0) return;

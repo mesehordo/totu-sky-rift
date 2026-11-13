@@ -116,6 +116,7 @@ bool Session::start_match(const std::vector<std::string>& factions, bool upkeep,
   sim::MatchSetup setup;
   setup.factions = factions;
   setup.upkeep = upkeep;
+  setup.camps = true;   // egyéni csata: a Vadon táboraival (D25)
   if (!sim_->setup_match(*map_, setup, error)) return false;
   if (!ai.empty()) {   // a szkriptelt ellenfél (Lua; determinisztikus, a hash és a mentés része)
     std::ifstream in(std::filesystem::path(content_dir_) / "base" / "scripts" / "ai_ursan.lua", std::ios::binary);
@@ -279,6 +280,12 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       } else if (const auto* un = w.get<sim::Unit>(e)) {
         if (w.get<sim::Sheltered>(e)) return;   // helyőrségben: nem látszik
         u.def = un->def;
+        if (const auto* hs = w.get<sim::HeroState>(e)) {
+          u.hero_level = hs->level;
+          u.hero_points = hs->points;
+          u.items = hs->items;
+          u.learned = hs->learned;
+        }
         if (const auto* k = w.get<sim::Worker>(e)) {
           if (k->inside) return;   // bent épít: nem látszik
           u.amount = k->carry;

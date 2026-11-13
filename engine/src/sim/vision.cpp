@@ -57,7 +57,7 @@ void Sim::update_vision(uint8_t player) {
     if (hh.owner != player || hh.hp <= 0) return;
     if (const Unit* u = world_.get<Unit>(e)) {
       const EntityDef& d = rules_->defs[u->def];
-      const Fixed s = research_stat(player, "Vision.sight", Fixed::from_int(std::max(1, d.sight)), d) * env_sight_mult(player, d);
+      const Fixed s = stat(e, "Vision.sight", Fixed::from_int(std::max(1, d.sight))) * env_sight_mult(player, d);
       see_from(e, std::max(1, s.floor_int()), d.flying);
     } else if (const Building* b = world_.get<Building>(e)) {
       const EntityDef& bd = rules_->defs[b->def];

@@ -159,7 +159,7 @@ TEST_CASE("gazdaság: determinisztikus, és mentésből folytatva ugyanoda jut")
   CHECK(a.sim->hash() == b.sim->hash());
   // rögzített állapothash: minden rendszeren ugyanennyi (a gazdaság determinizmusa a CI mind az öt rendszerén)
   std::printf("  gazdasági állapothash (900 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0x77d03dd74528f495ULL);
+  CHECK(a.sim->hash() == 0x842b8518eb617003ULL);
   const auto saved = a.sim->save();
   a.run(900);
   Match c("ECO-ALAP", true, false);   // ugyanaz a pálya, meccsindítás nélkül

@@ -150,6 +150,18 @@ void Sim::apply(const Command& c) {
     case Command::Kind::Power:
       use_power(c.owner, c.target, c.def, c.x, c.y);
       break;
+    case Command::Kind::Learn:
+      if (!c.units.empty()) learn(c.units.front(), c.def);
+      break;
+    case Command::Kind::Pickup:
+      if (!c.units.empty()) order_pickup(c.units.front(), c.target);
+      break;
+    case Command::Kind::UseItem:
+      if (!c.units.empty()) use_item(c.units.front(), c.rx);
+      break;
+    case Command::Kind::DropItem:
+      if (!c.units.empty()) drop_item(c.units.front(), c.rx);
+      break;
   }
 }
 
@@ -288,6 +300,8 @@ uint64_t Sim::hash() const {
       h.add_bytes(p.path);
       h.add_u64(p.ascended);
       h.add_u64(p.defeated);
+      h.add_u64(p.fallen.size());
+      for (const auto& [fd, hs] : p.fallen) { h.add_u64(fd); hs.hash(h); }
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
       h.add_u64(p.research_mods.size());
@@ -326,7 +340,8 @@ bool Command::needs_v4() const {
          kind == Kind::Demolish || kind == Kind::Train || kind == Kind::Research || kind == Kind::CancelQueue ||
          kind == Kind::Rally || kind == Kind::Attack || kind == Kind::AttackMove || kind == Kind::Hold ||
          kind == Kind::Ability || kind == Kind::Garrison || kind == Kind::Unload || kind == Kind::ChoosePath ||
-         kind == Kind::Power || target != 0 ||
+         kind == Kind::Power || kind == Kind::Learn || kind == Kind::Pickup || kind == Kind::UseItem ||
+         kind == Kind::DropItem || target != 0 ||
          !def.empty();
 }
 
@@ -354,7 +369,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 22 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 26 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -383,7 +398,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(8);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség)
+  w.u32(9);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -407,6 +422,8 @@ std::vector<uint8_t> Sim::save() const {
       w.str(p.path);
       w.u8(p.ascended ? 1 : 0);
       w.u8(p.defeated ? 1 : 0);
+      w.u32(static_cast<uint32_t>(p.fallen.size()));
+      for (const auto& [fd, hs] : p.fallen) { w.u32(fd); hs.save(w); }
       w.str(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
       w.str(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
       w.u32(static_cast<uint32_t>(p.research_mods.size()));
@@ -432,7 +449,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 8) return false;
+  if (schema < 3 || schema > 9) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -466,6 +483,13 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       p.path = r.str();
       p.ascended = r.u8() != 0;
       p.defeated = schema >= 8 && r.u8() != 0;
+      p.fallen.clear();
+      if (schema >= 9) {
+        for (uint32_t i = 0, nf = r.u32(); i < nf && i < 64 && r.ok(); ++i) {
+          const auto fd = static_cast<uint16_t>(r.u32());
+          p.fallen.emplace_back(fd, HeroState::load(r));
+        }
+      }
       const std::string vis = r.str(), exp = r.str();
       p.visible.assign(vis.begin(), vis.end());
       p.explored.assign(exp.begin(), exp.end());

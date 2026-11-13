@@ -47,6 +47,9 @@ struct SnapUnit {
   std::array<uint16_t, 5> queue_def{};
   uint8_t queue_research = 0;           // bitmaszk: az elem kutatás
   uint16_t queue_progress = 0;          // az első elem haladása ezrelékben
+  uint8_t hero_level = 0, hero_points = 0;   // hős (D25): szint, el nem költött képességpont
+  std::array<uint16_t, 6> items{};           // hős: a leltár (sim::kNoItem = üres)
+  std::vector<uint16_t> learned;             // hős: a megtanult képességek (a szintváltozat)
 };
 
 // a játékos állapota a felületnek

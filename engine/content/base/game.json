@@ -402,5 +402,29 @@
    "spacing": 1,
    "together": false
   }
+ },
+ "heroes": {
+  "_leiras": "Hősök (D25; a régi játék állandói, HOS-1–4): szinthatárok, a tapasztalat elosztása, leltár, újraélesztés, szintlépés.",
+  "levels": [0, 200, 500, 900, 1400, 2000, 2700, 3500, 4400, 5400],
+  "xp_share_radius": 12,
+  "inventory": 6,
+  "revive_base": 0.6,
+  "revive_per_level": 0.12,
+  "levelup_heal": 0.25,
+  "ultimate_level": 6,
+  "xp_hero_base": 100,
+  "xp_hero_per_level": 60,
+  "xp_unit_base": 8,
+  "xp_cost_mult": 0.18
+ },
+ "camps": {
+  "_leiras": "Semleges táborok (D25, TABOR-1–2): a tábor körzete, keresés, póráz, gyógyulás visszatéréskor, zsákmány-főzet.",
+  "home_radius": 1.5,
+  "search_radius": 5,
+  "leash": 7,
+  "return_regen": 0.1,
+  "potion_from_level": 3,
+  "potion_chance": 0.6,
+  "min_start_dist": 12
  }
 }

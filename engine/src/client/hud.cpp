@@ -161,6 +161,23 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, World& 
       text(batch, true, 12, py + 8, title, 245, 230, 190);
       std::snprintf(buf, sizeof buf, "Életerő %d/%d", u->hp, u->max_hp);
       text(batch, false, 12, py + 46, buf, 210, 200, 170);
+      if (u->hero_level > 0) {   // hős: szint, pont, tanulás, leltár (D25)
+        std::snprintf(buf, sizeof buf, "%d. szint · %d pont", u->hero_level, u->hero_points);
+        text(batch, false, 12, py + 66, buf, 230, 210, 140);
+        if (u->hero_points > 0) {
+          for (const uint16_t ab : d.abilities) {
+            next_button("Tanul: " + session.display_name("ability." + rules->abilities[ab].id + ".name"),
+                        {HudAction::Learn, rules->abilities[ab].id, sim::kNoDef, 0});
+          }
+        }
+        for (int i = 0; i < 6; ++i) {
+          const uint16_t it = u->items[static_cast<size_t>(i)];
+          if (it == sim::kNoItem || it >= rules->items.size()) continue;
+          HudAction act{HudAction::UseItem, rules->items[it].id, sim::kNoDef, 0};
+          act.slot = i;
+          next_button(session.display_name("item." + rules->items[it].id + ".name"), act, !rules->items[it].equip);
+        }
+      }
       // képességek (a kijelöltek közös listája, egyszer)
       std::vector<uint16_t> abs;
       bool worker = false;

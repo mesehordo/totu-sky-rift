@@ -82,6 +82,9 @@ bool Sim::has_ability(EntityId e, uint16_t ability) {
   const Building* b = u ? nullptr : world_.get<Building>(e);
   if ((!u && !b) || !rules_) return false;
   const EntityDef& d = rules_->defs[u ? u->def : b->def];
+  if (const HeroState* hs = world_.get<HeroState>(e)) {   // hős: csak a megtanult (a szintváltozat)
+    return std::find(hs->learned.begin(), hs->learned.end(), ability) != hs->learned.end();
+  }
   if (std::find(d.abilities.begin(), d.abilities.end(), ability) == d.abilities.end()) return false;
   const Health* h = world_.get<Health>(e);
   for (const auto& [a, rid] : d.ability_research) {   // kutatáshoz kötött (pl. Fegyverbe! – Népfelkelés)
@@ -407,11 +410,21 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
   if (!rules_) return false;
   const int ai = rules_->ability_index(id);
   if (ai < 0) return false;
-  const auto ab = static_cast<uint16_t>(ai);
+  // hősnél a megtanult szintváltozat; a csoportból azok, akiknél ugyanaz
+  uint16_t ab = kNoAbility;
+  for (const EntityId e : units) {
+    if (!world_.alive(e)) continue;
+    const uint16_t v = ability_for(e, static_cast<uint16_t>(ai));
+    if (v != kNoAbility && has_ability(e, v)) {
+      ab = v;
+      break;
+    }
+  }
+  if (ab == kNoAbility) return false;
   const AbilityDef& a = rules_->abilities[ab];
   std::vector<EntityId> us;
   for (const EntityId e : units) {
-    if (!world_.alive(e) || !world_.get<Caster>(e) || !has_ability(e, ab)) continue;
+    if (!world_.alive(e) || !world_.get<Caster>(e) || ability_for(e, static_cast<uint16_t>(ai)) != ab || !has_ability(e, ab)) continue;
     if (sheltered(e)) continue;
     if (const Afflict* af = world_.get<Afflict>(e); af && af->silence_until > tick_ && a.type != AbilityDef::Type::Toggle &&
                                                      a.type != AbilityDef::Type::Chant) {
@@ -608,7 +621,7 @@ void Sim::aura_system() {
     const Health* h = world_.get<Health>(e);
     if (!u || !h || h->hp <= 0) return;
     if (sheltered(e)) return;
-    for (const uint16_t ab : rules_->defs[u->def].abilities) {
+    for (const uint16_t ab : abilities_of(e)) {
       const AbilityDef& a = rules_->abilities[ab];
       if (a.type == AbilityDef::Type::Aura ||
           (a.type == AbilityDef::Type::Chant && std::binary_search(c.toggles.begin(), c.toggles.end(), ab))) {
@@ -735,7 +748,14 @@ void Sim::ability_system() {
     Health* h = world_.get<Health>(e);
     if (!h || h->hp <= 0) return;
     const EntityDef& d = rules_->defs[def];
-    Fixed r = research_stat(h->owner, "Health.regen", d.regen, d);   // + kutatás és irány (Rúnapajzs, tundra)
+    Fixed r = stat(e, "Health.regen", d.regen);   // + kutatás, irány és hős-tárgy (Rúnapajzs, tundra, gyűrű)
+    if (h->owner == 0 || h->owner > kMaxPlayers) {   // a Vadon faji gyógyulása
+      for (const FactionDef& f : rules_->factions) {
+        if (f.neutral) r = r + f.regen;
+      }
+    } else if (const FactionDef* f = rules_->faction(players_[h->owner].faction)) {
+      r = r + f->regen;
+    }
     if (const auto it = aura_.find(e); it != aura_.end()) r = r + it->second.regen_add;
     if (r.raw() > 0 && h->hp < h->max) {
       Vital* vt = world_.get<Vital>(e);
@@ -750,6 +770,8 @@ void Sim::ability_system() {
     if (b.complete) regen(e, b.def);
   });
   garrison_system();
+  item_system();
+  camp_system();
   if (tick_ % 15 == 0) ascension_system();   // a régi: 0,5 s-onként
   std::vector<EntityId> ids;
   world_.pool<Caster>().each([&](EntityId e, const Caster&) { ids.push_back(e); });
@@ -760,9 +782,11 @@ void Sim::ability_system() {
     if (!cp || !u || !h || h->hp <= 0) continue;
     Caster& c = *cp;
     const EntityDef& d = rules_->defs[u->def];
-    if (d.energy_max > 0 && c.energy < d.energy_max * 1000) {
-      const Fixed er = in_rift(e) ? rules_->energy_regen_per_tick * rules_->rift.energy_mult : rules_->energy_regen_per_tick;
-      c.energy = static_cast<int32_t>(std::min<int64_t>(int64_t{d.energy_max} * 1000, c.energy + milli_of(er)));
+    const int32_t emax = d.energy_max > 0 ? stat(e, "Energy.max", Fixed::from_int(d.energy_max)).floor_int() : 0;
+    if (emax > 0 && c.energy < emax * 1000) {   // + a hős növekedése és tárgyai (Éterkő: energy_regen)
+      Fixed er = in_rift(e) ? rules_->energy_regen_per_tick * rules_->rift.energy_mult : rules_->energy_regen_per_tick;
+      er = er + stat(e, "energy_regen", Fixed{}) / Fixed::from_int(kTickHz);
+      c.energy = static_cast<int32_t>(std::min<int64_t>(int64_t{emax} * 1000, c.energy + milli_of(er)));
     }
     // lejárt önerősítések; a Fegyverbe! után a munkás visszamegy dolgozni
     c.buffs.erase(std::remove_if(c.buffs.begin(), c.buffs.end(), [&](const auto& b) { return b.second <= tick_; }), c.buffs.end());
@@ -787,7 +811,7 @@ void Sim::ability_system() {
     // önműködő gyógyítás (0,5 s-onként): a körzet legsebesültebb saját élőlénye
     if (--cc.heal_timer <= 0) {
       cc.heal_timer = kPulseTicks;
-      for (const uint16_t ab : d.abilities) {
+      for (const uint16_t ab : abilities_of(e)) {
         const AbilityDef& a = rules_->abilities[ab];
         if (a.type != AbilityDef::Type::Autoheal || !ability_ready(e, cc, a)) continue;
         const Position& p = *world_.get<Position>(e);
@@ -837,8 +861,9 @@ void Sim::ability_system() {
     }
   });
   for (const auto& [e, k] : dot_dead) {
-    (void)k;
     if (std::find(dying_.begin(), dying_.end(), e) == dying_.end()) dying_.push_back(e);
+    const Health* kh = world_.alive(k) ? world_.get<Health>(k) : nullptr;
+    if (kh) killer_[e] = {k, kh->owner};
   }
   // félelem: a menekülő egység az okozótól elfelé fut, utána megáll
   world_.pool<Afflict>().each([&](EntityId e, Afflict& af) {

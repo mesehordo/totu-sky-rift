@@ -467,6 +467,17 @@ int main(int argc, char** argv) {
               runner.post(c);
               break;
             case client::HudAction::TargetAbility: pending_ability = act.id; break;
+            case client::HudAction::Learn:
+              c.kind = sim::Command::Kind::Learn;
+              c.units = world.selection();
+              runner.post(c);
+              break;
+            case client::HudAction::UseItem:
+              c.kind = sim::Command::Kind::UseItem;
+              c.units = world.selection();
+              c.rx = act.slot;
+              runner.post(c);
+              break;
             case client::HudAction::Build: {
               build_list = {act.def};
               build_idx = 0;

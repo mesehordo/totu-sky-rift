@@ -575,3 +575,12 @@ A 8. lépés (az Ursanok teljesen) három részben: **8a** képességkeret (ez),
 **Régi hiba javítva (D43):** a bekapcsolt ének a használójára kétszer hatott (kapcsolóként is) – most csak auraként (a kürtös ×1,15).
 **CI:** a HUD betűje a lekért fájlok közé került; a gazdasági képpróba referenciája a HUD-dal (a CI Mesa-képéből).
 **Tesztek:** 141 (7 új, `test_elements.cpp`); a hash-ek és a golden M6 újra rögzítve (az elemállapot miatt).
+
+## 2026-11-13 – M7 2. lépés: hősök, tárgyak, táborok, Vadon (D25)
+
+A régi játék szerint (`heroes.cpp`; HOS-1–4, TARGY-1–2, TABOR-1–2), az állandók a `game.json`-ban (`heroes`, `camps`; D25):
+- **Hős:** 1. szinten egy képességponttal indul; tapasztalat ölésért (a célpont `Hero.xp`-je, hősnél 100 + 60 × szint, különben 8 + 0,18 × költség / darab, épületnél a fele; idézett nem ad), a gyilkos 12 csempén belüli hősei osztoznak (ha nincs, a gyilkos hős kapja); szintlépés: +1 pont, növekedés (`Hero.growth`), +25% életerő; legfeljebb 10. szint. **Tanulás** (`Learn`): a képesség n. szintje a 2n − 1. hősszinttől, a végső a 6.-tól; a képesség szintjei külön változatok (`id@n`), így a meglévő képességkód szintenként helyes. A hős bónuszai (növekedés, tómok, viselt tárgyak) D24-módosítók – a statok egy helyen (`Sim::stat`). **Újraélesztés:** az elesett hős állapota (szint, tapasztalat, tanult képességek, leltár) megmarad; újraképzése idő × (0,6 + 0,12 × szint).
+- **Tárgyak:** 6 hely; fogyó (gyógyítás – teljes életerőnél nem, energia, tapasztalat, örök bónusz) és viselt (a tárgy D24-módosítói; cserénél az életerő aránya marad); eldobás, felvétel (`Pickup`, `UseItem`, `DropItem`).
+- **Táborok (a Vadon, a 0. játékos – mindenkinek ellensége):** kezdőhelyenként egy könnyű és egy közepes, a felezőkön erősebbek, középen a főnök (a kezdőhelyektől 12 csempén belül nincs); a tábor egysége csak a tábora mellett, 5 csempés körben keres, egy támadásra az egész tábor felriad, 7 csempén túl visszatér (nem támad, 10%/s-mal gyógyul); a kiirtott tábor egyszer zsákmányt dob (3. szinttől 60%-kal főzetet is). A Vadon faji gyógyulása (`regen`). A meccsbeállítás kapcsolja (`MatchSetup::camps`; a kliens egyéni csatája bekapcsolja, a próbák alapból nélküle). Mentésformátum 9.
+- **Kliens:** a HUD a hős szintjét, pontjait, a tanulást és a leltár használatát mutatja.
+**A M6-os hős-próbák** a tanulással (szint, pont) frissítve. **Tesztek:** 147 (6 új, `test_heroes.cpp`); a hash-ek és a golden M6 újra rögzítve.

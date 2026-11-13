@@ -479,6 +479,73 @@ struct Spell {   // a lövedék varázslat (`bolt`): varázssebzés, lassítás 
   static Spell load(core::ByteReader& r) { Spell s; s.ability = static_cast<uint16_t>(r.u32()); return s; }
 };
 
+// --- hősök, tárgyak, táborok (M7 2. lépés; D25) --------------------------------------------------------------------
+constexpr uint16_t kNoItem = 0xFFFF;
+
+struct HeroState {   // szint, tapasztalat, képességpont, a megtanult képességek (a szintváltozat sorszáma), leltár
+  uint8_t level = 1;
+  int32_t xp = 0;                       // ezred tapasztalat
+  uint8_t points = 1;
+  std::vector<uint16_t> learned;        // Rules::abilities (a változat: `id@n`)
+  std::array<uint16_t, 6> items{kNoItem, kNoItem, kNoItem, kNoItem, kNoItem, kNoItem};
+  int32_t perm_hp = 0, perm_damage = 0; // örök bónusz (tómok)
+  void hash(core::StateHash& h) const {
+    h.add_u64(level); h.add_i64(xp); h.add_u64(points); h.add_u64(learned.size());
+    for (const uint16_t a : learned) h.add_u64(a);
+    for (const uint16_t i : items) h.add_u64(i);
+    h.add_i64(perm_hp); h.add_i64(perm_damage);
+  }
+  void save(core::ByteWriter& w) const {
+    w.u8(level); w.i32(xp); w.u8(points); w.u32(static_cast<uint32_t>(learned.size()));
+    for (const uint16_t a : learned) w.u32(a);
+    for (const uint16_t i : items) w.u32(i);
+    w.i32(perm_hp); w.i32(perm_damage);
+  }
+  static HeroState load(core::ByteReader& r) {
+    HeroState s;
+    s.level = r.u8(); s.xp = r.i32(); s.points = r.u8();
+    for (uint32_t i = 0, n = r.u32(); i < n && i < 32 && r.ok(); ++i) s.learned.push_back(static_cast<uint16_t>(r.u32()));
+    for (uint16_t& i : s.items) i = static_cast<uint16_t>(r.u32());
+    s.perm_hp = r.i32(); s.perm_damage = r.i32();
+    return s;
+  }
+};
+
+struct GroundItem {   // a földön heverő tárgy (a helye a Position)
+  uint16_t item = kNoItem;
+  void hash(core::StateHash& h) const { h.add_u64(item); }
+  void save(core::ByteWriter& w) const { w.u32(item); }
+  static GroundItem load(core::ByteReader& r) { GroundItem g; g.item = static_cast<uint16_t>(r.u32()); return g; }
+};
+
+struct Fetch {   // a hős egy földön heverő tárgyért megy
+  EntityId item = 0;
+  int32_t repath = 0;
+  void hash(core::StateHash& h) const { h.add_u64(item); h.add_i64(repath); }
+  void save(core::ByteWriter& w) const { w.u32(item); w.i32(repath); }
+  static Fetch load(core::ByteReader& r) { Fetch f; f.item = r.u32(); f.repath = r.i32(); return f; }
+};
+
+struct Camp {   // semleges tábor (a helye a Position): szint, felriadt-e, kifosztva-e
+  uint8_t level = 1, alerted = 0, looted = 0;
+  void hash(core::StateHash& h) const { h.add_u64(level); h.add_u64(alerted); h.add_u64(looted); }
+  void save(core::ByteWriter& w) const { w.u8(level); w.u8(alerted); w.u8(looted); }
+  static Camp load(core::ByteReader& r) { Camp c; c.level = r.u8(); c.alerted = r.u8(); c.looted = r.u8(); return c; }
+};
+
+struct CampMember {   // a tábor egysége: a tábora és a helye (ide tér vissza)
+  EntityId camp = 0;
+  Fixed hx, hy;
+  uint8_t returning = 0;
+  void hash(core::StateHash& h) const { h.add_u64(camp); h.add_i64(hx.raw()); h.add_i64(hy.raw()); h.add_u64(returning); }
+  void save(core::ByteWriter& w) const { w.u32(camp); w.i32(hx.raw()); w.i32(hy.raw()); w.u8(returning); }
+  static CampMember load(core::ByteReader& r) {
+    CampMember m;
+    m.camp = r.u32(); m.hx = Fixed::from_raw(r.i32()); m.hy = Fixed::from_raw(r.i32()); m.returning = r.u8();
+    return m;
+  }
+};
+
 // --- helyőrség (M6 8. lépés; D39) ----------------------------------------------------------------------------------
 struct Garrison {   // az épületben lévő egységek (a beszállás sorrendjében)
   std::vector<EntityId> units;
@@ -528,6 +595,8 @@ struct PlayerState {
   int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
   // kutatással kapott, állandó statmódosítók (D24, M6 7. lépés): a sorrend a kutatás befejezésének sorrendje
   std::vector<Modifier> research_mods;
+  // elesett hősök állapota (D25, HOS-1): újraképzéskor (újraélesztés) visszaáll
+  std::vector<std::pair<uint16_t, HeroState>> fallen;
 };
 
 struct MatchSetup {
@@ -538,6 +607,7 @@ struct MatchSetup {
   // Alapbeállítás a tulajdonos döntése szerint: napszak hatással, időjárás hangulat.
   enum class Daytime : uint8_t { Off = 0, Mood = 1, Effect = 2 } daytime = Daytime::Effect;
   enum class WeatherMode : uint8_t { Off = 0, Mood = 1, Effect = 2, EffectTerrain = 3 } weather = WeatherMode::Mood;
+  bool camps = false;                  // a Vadon táborai (D25; az egyéni csata kliense bekapcsolja)
 };
 
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
@@ -581,7 +651,10 @@ struct Command {
                               // M6 8. lépés: Ability (`units`, `def` a képesség, x, y, `target`); Garrison (`units` →
                               // `target` épület, 0 = a legközelebbi szabad helyű); Unload (`target` épület);
                               // ChoosePath (`owner`, `def` az irány); Power (`owner`, `target` épület, `def` a képesség)
-                              Ability = 18, Garrison = 19, Unload = 20, ChoosePath = 21, Power = 22 };
+                              Ability = 18, Garrison = 19, Unload = 20, ChoosePath = 21, Power = 22,
+                              // M7 2. lépés: Learn (`units[0]` hős, `def` képesség), Pickup (`units` → `target` tárgy),
+                              // UseItem / DropItem (`units[0]`, `rx` a leltárhely)
+                              Learn = 23, Pickup = 24, UseItem = 25, DropItem = 26 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -742,6 +815,15 @@ class Sim {
   // Győzelem és vereség (ADR-007 9. lépés): akinek minden épülete elpusztult, kiesik; a győztes az egyetlen megmaradt
   // játékos (0: még tart, vagy nincs meccs).
   int winner() const;
+  // Hősök és tárgyak (M7 2. lépés; D25, HOS-1–4, TARGY-1)
+  bool learn(EntityId hero, const std::string& ability);     // egy képességpont: a következő szint
+  void add_xp(EntityId hero, int32_t xp_milli);              // szintlépéssel
+  bool order_pickup(EntityId hero, EntityId item);
+  bool use_item(EntityId hero, int slot);
+  bool drop_item(EntityId hero, int slot);
+  EntityId drop_ground_item(uint16_t item, Fixed x, Fixed y);
+  bool give_item(EntityId hero, uint16_t item);              // a leltárba (tele: false)
+  Fixed stat(EntityId e, const char* path, Fixed base);      // a kutatással és a hős bónuszaival (D24)
   // A szkriptelt ellenfélnek (Lua): építési hely a (x, y) csempe körül, és egy szabad munkás építeni (false: nincs).
   bool build_near(uint8_t owner, uint16_t def, int x, int y);
   bool gather_nearest(EntityId worker, int kind);   // a munkás a legközelebbi ilyen lelőhelyre (szkript, gép)   // Égkő-fényben áll (MECH-RIFT)
@@ -822,6 +904,16 @@ class Sim {
   std::map<EntityId, AbilityMods> aura_;     // tickenként újraszámolt (nem állapot)
   std::set<EntityId> rift_;                  // Égkő-fényben állók (tickenként újraszámolt)
   void give_buff(EntityId e, uint16_t ability, int32_t ticks);
+  // hősök, tárgyak, táborok (heroes.cpp)
+  std::vector<Modifier> hero_mods(EntityId e);
+  void hero_recalc(EntityId e, bool keep_ratio);
+  void grant_kill_xp(EntityId victim, uint8_t killer_owner, EntityId killer);
+  std::vector<uint16_t> abilities_of(EntityId e);
+  uint16_t ability_for(EntityId e, uint16_t base);
+  void item_system();
+  void camp_system();
+  void spawn_camps(map::Map& m);
+  std::map<EntityId, std::pair<EntityId, uint8_t>> killer_;   // a tick haldoklóinak gyilkosa (nem állapot)
   int64_t spell_milli(EntityId e, Fixed dmg);
   void garrison_system();
   void tower_system();
@@ -838,7 +930,8 @@ class Sim {
   void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);
   EntityId find_enemy(EntityId e, Fixed radius);
   bool can_hit(EntityId e, EntityId target);
-  bool hostile(uint8_t a, uint8_t b) const { return a != b && a >= 1 && b >= 1 && a <= kMaxPlayers && b <= kMaxPlayers; }
+  // a 0. játékos a Vadon (semleges): mindenkinek ellensége (D25)
+  bool hostile(uint8_t a, uint8_t b) const { return a != b && a <= kMaxPlayers && b <= kMaxPlayers; }
   Fixed gap(EntityId a, EntityId b);
   Fixed attack_range(EntityId e, EntityId target);
   void halt(EntityId e);      // a mozgás leállítása (a munka és a harci parancs marad)

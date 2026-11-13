@@ -2,6 +2,7 @@
 #include "sim/rules.hpp"
 
 #include <algorithm>
+#include <cstdlib>
 
 namespace totu::sim {
 
@@ -336,14 +337,18 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
   std::vector<std::pair<std::string, std::string>> summon_units;   // képesség → idézett sablon
   {
     auto& abs = set["ability"];
-    for (const std::string& id : abs.ids()) {
-      const content::Value* v = abs.get(id);
+    for (const std::string& base_id : abs.ids()) {
+      const content::Value* v = abs.get(base_id);
       const content::Value* spec = v ? v->find("Spec") : nullptr;
       if (!spec || !spec->is_object()) continue;
-      const content::Value* lv0 = nullptr;   // az 1. szint (hős)
-      if (const content::Value* lv = spec->find("levels"); lv && lv->is_array() && !lv->items().empty() &&
-                                                           lv->items()[0].is_object()) {
-        lv0 = &lv->items()[0];
+      // szintenként egy változat (hős, D25): az 1. szint az alap azonosító, a többi `id@n`
+      const content::Value* lvs = spec->find("levels");
+      const int nlev = lvs && lvs->is_array() && !lvs->items().empty() ? static_cast<int>(lvs->items().size()) : 1;
+      for (int level = 1; level <= nlev; ++level) {
+      const std::string id = level == 1 ? base_id : base_id + "@" + std::to_string(level);
+      const content::Value* lv0 = nullptr;   // a szint adatai (a `levels[n]` felülírja az alapot)
+      if (lvs && lvs->is_array() && static_cast<int>(lvs->items().size()) >= level && lvs->items()[static_cast<size_t>(level - 1)].is_object()) {
+        lv0 = &lvs->items()[static_cast<size_t>(level - 1)];
       }
       auto key = [&](const char* k) -> const content::Value* {
         if (lv0) {
@@ -357,6 +362,8 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       };
       AbilityDef a;
       a.id = id;
+      a.level = static_cast<uint8_t>(level);
+      a.max_level = static_cast<uint8_t>(nlev);
       const content::Value* t = spec->find("type");
       const std::string type = t && t->is_string() ? t->text() : "";
       using T = AbilityDef::Type;
@@ -402,7 +409,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.land_damage = fixed_of(key("land_damage"), Fixed{});
       a.land_radius = fixed_of(key("land_radius"), a.land_radius);
       if (const content::Value* hk = key("hotkey"); hk && hk->is_string() && hk->text().size() == 1) a.hotkey = hk->text()[0];
-      if (const auto it = ability_element.find(id); it != ability_element.end()) a.element = it->second;
+      if (const auto it = ability_element.find(base_id); it != ability_element.end()) a.element = it->second;
       auto mod = [&](const char* k, Fixed def) {
         for (const content::Value* src : {lv0 ? lv0->find("modifiers") : nullptr, spec->find("modifiers")}) {
           if (const content::Value* x = src && src->is_object() ? src->find(k) : nullptr) return fixed_of(x, def);
@@ -417,10 +424,15 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.mods.regen_add = mod("regen_add", Fixed{});
       if (const content::Value* u = key("unit"); u && u->is_string()) summon_units.emplace_back(id, u->text());
       r.abilities.push_back(std::move(a));
+      }
     }
   }
 
   std::sort(r.abilities.begin(), r.abilities.end(), [](const AbilityDef& a, const AbilityDef& b) { return a.id < b.id; });
+  for (AbilityDef& a : r.abilities) {   // az alap (1. szintű) változat sorszáma
+    const int bi = r.ability_index(a.id.substr(0, a.id.find('@')));
+    a.base = static_cast<uint16_t>(bi >= 0 ? bi : 0);
+  }
 
   // egységek és épületek (a `template_` kezdetű absztrakt sablonok nélkül)
   auto& ents = set["entity"];
@@ -558,6 +570,15 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     d.regen = fixed_of(path(*v, "Health", "regen"), Fixed{});
     d.garrison = int_of(path(*v, "Garrison", "slots"), 0);
     if (const content::Value* sh = path(*v, "Identity", "shape"); sh && sh->is_string()) d.shape = sh->text();
+    if (const content::Value* gr = path(*v, "Hero", "growth"); gr && gr->is_object()) {
+      d.grow_hp = fixed_of(gr->find("hp"), Fixed{});
+      d.grow_damage = fixed_of(gr->find("damage"), Fixed{});
+      d.grow_armor = fixed_of(gr->find("armor"), Fixed{});
+      d.grow_energy = fixed_of(gr->find("energy"), Fixed{});
+      d.grow_shield = fixed_of(gr->find("shield"), Fixed{});
+    }
+    d.xp_value = int_of(path(*v, "Hero", "xp"), -1);
+    d.count = std::max(1, int_of(path(*v, "Cost", "count"), 1));
     const content::Value* rsrc = path(*v, "Mechanics", "rift_source");
     d.rift_source = rsrc && rsrc->is_bool() && rsrc->as_bool();
     if (const content::Value* pw = path(*v, "Powers", "list"); pw && pw->is_array()) {
@@ -616,6 +637,54 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
   }
   std::sort(r.researches.begin(), r.researches.end(), [](const ResearchDef& a, const ResearchDef& b) { return a.id < b.id; });
 
+  // tárgyak (D25)
+  auto& its = set["item"];
+  for (const std::string& id : its.ids()) {
+    const content::Value* v = its.get(id);
+    const content::Value* it = v ? v->find("Item") : nullptr;
+    if (!it || !it->is_object()) continue;
+    ItemDef d;
+    d.id = id;
+    const content::Value* k = it->find("kind");
+    d.equip = k && k->is_string() && k->text() == "equip";
+    const content::Value* ra = it->find("rarity");
+    const std::string rar = ra && ra->is_string() ? ra->text() : "common";
+    d.rarity = rar == "artifact" ? 2 : rar == "rare" ? 1 : 0;
+    d.heal = int_of(it->find("heal"), 0);
+    d.energy = int_of(it->find("energy"), 0);
+    d.xp = int_of(it->find("xp"), 0);
+    d.perm_hp = int_of(path(*it, "perm", "hp"), 0);
+    d.perm_damage = int_of(path(*it, "perm", "damage"), 0);
+    parse_modifiers(v->find("Modifiers"), d.modifiers);
+    r.items.push_back(std::move(d));
+  }
+  std::sort(r.items.begin(), r.items.end(), [](const ItemDef& a, const ItemDef& b) { return a.id < b.id; });
+  if (const content::Value* he = game.find("heroes"); he && he->is_object()) {
+    if (const content::Value* lv = he->find("levels"); lv && lv->is_array()) {
+      r.heroes.levels.clear();
+      for (const auto& x : lv->items()) r.heroes.levels.push_back(int_of(&x, 0));
+    }
+    r.heroes.share_radius = fixed_of(he->find("xp_share_radius"), r.heroes.share_radius);
+    r.heroes.inventory = int_of(he->find("inventory"), r.heroes.inventory);
+    r.heroes.revive_base = fixed_of(he->find("revive_base"), r.heroes.revive_base);
+    r.heroes.revive_per_level = fixed_of(he->find("revive_per_level"), r.heroes.revive_per_level);
+    r.heroes.levelup_heal = fixed_of(he->find("levelup_heal"), r.heroes.levelup_heal);
+    r.heroes.ultimate_level = int_of(he->find("ultimate_level"), r.heroes.ultimate_level);
+    r.heroes.xp_hero_base = int_of(he->find("xp_hero_base"), r.heroes.xp_hero_base);
+    r.heroes.xp_hero_per_level = int_of(he->find("xp_hero_per_level"), r.heroes.xp_hero_per_level);
+    r.heroes.xp_unit_base = fixed_of(he->find("xp_unit_base"), r.heroes.xp_unit_base);
+    r.heroes.xp_cost_mult = fixed_of(he->find("xp_cost_mult"), r.heroes.xp_cost_mult);
+  }
+  if (const content::Value* ca = game.find("camps"); ca && ca->is_object()) {
+    r.camps.home = fixed_of(ca->find("home_radius"), r.camps.home);
+    r.camps.search = fixed_of(ca->find("search_radius"), r.camps.search);
+    r.camps.leash = fixed_of(ca->find("leash"), r.camps.leash);
+    r.camps.regen_pct = fixed_of(ca->find("return_regen"), r.camps.regen_pct);
+    r.camps.potion_level = int_of(ca->find("potion_from_level"), r.camps.potion_level);
+    r.camps.potion_permille = static_cast<int32_t>((static_cast<int64_t>(fixed_of(ca->find("potion_chance"), Fixed::from_ratio(3, 5)).raw()) * 1000) >> 16);
+    r.camps.min_start_dist = int_of(ca->find("min_start_dist"), r.camps.min_start_dist);
+  }
+
   // napszak és időjárás (D35, M6 7. lépés)
   if (const content::Value* env = game.find("environment"); env && env->is_object()) {
     r.env.day_cycle_ticks = std::max(1, int_of(env->find("day_cycle_ticks"), r.env.day_cycle_ticks));
@@ -672,6 +741,30 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     if (const content::Value* fe = f->find("environment"); fe && fe->is_object()) {
       parse_env_map(fe->find("daytime"), fd.env_daytime);
       parse_env_map(fe->find("weather"), fd.env_weather);
+    }
+    fd.regen = fixed_of(f->find("regen"), Fixed{});
+    const content::Value* neu = f->find("neutral");
+    fd.neutral = neu && neu->is_bool() && neu->as_bool();
+    if (const content::Value* cm = f->find("camps"); cm && cm->is_object()) {
+      for (const auto& [lvl, cv] : cm->members()) {
+        if (!cv.is_object()) continue;
+        CampDef c;
+        c.level = std::atoi(lvl.c_str());
+        if (const content::Value* us = cv.find("units"); us && us->is_object()) {
+          for (const auto& [uid, n] : us->members()) {
+            const uint16_t ud = r.def(uid);
+            if (ud != kNoDef) c.units.emplace_back(ud, int_of(&n, 1));
+          }
+        }
+        if (const content::Value* lt = cv.find("loot"); lt && lt->is_array()) {
+          for (const auto& x : lt->items()) {
+            if (!x.is_string()) continue;
+            c.loot.push_back(x.text() == "artifact" ? 2 : x.text() == "rare" ? 1 : 0);
+          }
+        }
+        fd.camps.push_back(std::move(c));
+      }
+      std::sort(fd.camps.begin(), fd.camps.end(), [](const CampDef& a, const CampDef& b) { return a.level < b.level; });
     }
     if (const content::Value* asc = f->find("ascension"); asc && asc->is_object()) {
       fd.ascension_buildings = int_of(asc->find("buildings"), 3);
@@ -744,6 +837,11 @@ Element element_of(const std::string& n) {
     if (n == kNames[i]) return static_cast<Element>(i);
   }
   return Element::None;
+}
+
+int Rules::item_index(const std::string& id) const {
+  const auto it = std::lower_bound(items.begin(), items.end(), id, [](const ItemDef& x, const std::string& v) { return x.id < v; });
+  return it != items.end() && it->id == id ? static_cast<int>(it - items.begin()) : -1;
 }
 
 const PathDef* FactionDef::path(const std::string& pid) const {

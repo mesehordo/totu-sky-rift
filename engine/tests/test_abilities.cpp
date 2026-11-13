@@ -54,6 +54,15 @@ int count_units(sim::Sim& s, const char* id, uint8_t owner) {
 
 void set_energy(sim::Sim& s, sim::EntityId e, int v) { s.world().get<sim::Caster>(e)->energy = v * 1000; }
 
+// hős a megadott szinten, a megadott képességekkel (D25: tapasztalat → szint, képességpont → tanulás)
+sim::EntityId hero(sim::Sim& s, const char* id, uint8_t owner, int x10, int y10, int level,
+                   std::initializer_list<const char*> learn) {
+  const auto e = put(s, id, owner, x10, y10);
+  if (level > 1) s.add_xp(e, R().heroes.levels[static_cast<size_t>(level - 1)] * 1000);
+  for (const char* a : learn) CHECK(s.learn(e, a));
+  return e;
+}
+
 }  // namespace
 
 TEST_CASE("képességek: a tartalom – az Ursanok 16 képessége és a hősöké, típus, szint, elem, idézett egység") {
@@ -247,8 +256,8 @@ TEST_CASE("harci kürt (ének) és aurák: a körzet saját egységei erősebbek
   // két azonos aura (két hős Esküje) nem halmozódik: +1 páncél marad
   Match m2("BUILD-ALAP");
   sim::Sim& s2 = *m2.sim;
-  put(s2, "urs_hos_ragna", 1, 40, 180);
-  put(s2, "urs_hos_ragna", 1, 60, 180);
+  hero(s2, "urs_hos_ragna", 1, 40, 180, 1, {"h_ragna_esku"});
+  hero(s2, "urs_hos_ragna", 1, 60, 180, 1, {"h_ragna_esku"});
   const auto ally = put(s2, "urs_berserker", 1, 50, 185);
   run(m2, 1);
   CHECK(s2.unit_mods(ally).armor_add == Fixed::from_int(1));
@@ -357,9 +366,9 @@ TEST_CASE("rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a k
 TEST_CASE("hősök (az M6-ban szint nélkül, az 1. szinten): energia, Ragna, Hjalmar és Bjarka képességei") {
   Match m("BUILD-ALAP");
   sim::Sim& s = *m.sim;
-  const auto ragna = put(s, "urs_hos_ragna", 1, 30, 180);
-  const auto hja = put(s, "urs_hos_hjalmar", 1, 30, 190);
-  const auto bja = put(s, "urs_hos_bjarka", 1, 30, 170);
+  const auto ragna = hero(s, "urs_hos_ragna", 1, 30, 180, 2, {"h_ragna_esku", "h_ragna_roham"});
+  const auto hja = hero(s, "urs_hos_hjalmar", 1, 30, 190, 6, {"h_hja_szilank", "h_hja_fagyott_ido"});
+  const auto bja = hero(s, "urs_hos_bjarka", 1, 30, 170, 6, {"h_bja_falka", "h_bja_medve", "h_bja_mamutcsorda"});
   CHECK(s.world().get<sim::Caster>(bja)->energy == 50000);   // legfeljebb 50 energiával indul
   run(m, 30);
   const int32_t en = s.world().get<sim::Caster>(bja)->energy;
@@ -408,7 +417,7 @@ TEST_CASE("hősök (az M6-ban szint nélkül, az 1. szinten): energia, Ragna, Hj
 TEST_CASE("Hjalmar hóvihara (területi mező): 5 s-ig, 0,5 s-onként 8 varázssebzés és lassítás a körben") {
   Match m("BUILD-ALAP");
   sim::Sim& s = *m.sim;
-  const auto hja = put(s, "urs_hos_hjalmar", 1, 20, 180);
+  const auto hja = hero(s, "urs_hos_hjalmar", 1, 20, 180, 1, {"h_hja_vihar"});
   const auto foe = put(s, "urs_berserker", 2, 95, 180);
   const auto spot = put(s, "urs_berserker", 1, 70, 190);
   (void)spot;
@@ -429,7 +438,7 @@ TEST_CASE("képességek: determinisztikus, és mentésből folytatva ugyanaz (ka
     sim::Sim& s = *m.sim;
     const auto sh = put(s, "urs_pajzshordozo", 1, 30, 180, false);
     const auto b = put(s, "urs_berserker", 1, 40, 185, false);
-    const auto hja = put(s, "urs_hos_hjalmar", 1, 20, 190);
+    const auto hja = hero(s, "urs_hos_hjalmar", 1, 20, 190, 1, {"h_hja_vihar"});
     const auto pap = put(s, "urs_runapap", 1, 30, 195);
     put(s, "urs_berserker", 2, 110, 180, false);
     put(s, "urs_szigonyvezo", 2, 120, 185, false);
@@ -454,5 +463,5 @@ TEST_CASE("képességek: determinisztikus, és mentésből folytatva ugyanaz (ka
   c.run(450);
   CHECK(c.sim->hash() == a.sim->hash());
   std::printf("  képesség-állapothash (600 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0xa46c463ec46ff4b8ULL);   // minden rendszeren ugyanez
+  CHECK(a.sim->hash() == 0xeb0279344b41bc68ULL);   // minden rendszeren ugyanez
 }
