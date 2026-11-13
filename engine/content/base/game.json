@@ -10,6 +10,7 @@
   "meteor": 0
  },
  "max_supply": 200,
+ "build_cancel_refund": 0.75,
  "summon_research": {
   "summon_duration": {
    "name": "Idézés tartósítása I.",

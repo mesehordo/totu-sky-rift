@@ -319,3 +319,9 @@ Az M6 (játékmag, függőleges szelet) négy kérdésére a tulajdonos válasza
 RmlUi-felület az M8-ban; (2) a szabályok **a régi játék képletei és számai** szerint, próbákkal rögzítve – eltérés csak
 döntéssel; (3) a három ursan hős az M6-ban **egységként** (képességekkel, szint és tárgy nélkül), a hősrendszer az M7-ben;
 (4) a kapumeccs **ursan tükörmeccs** szkriptelt (Lua) ellenféllel. A terv: [ADR-007](dontesek/ADR-007-jatekmag.md).
+
+### D38 – Épület megszakítása és lebontása · ELDÖNTVE (2026-11-13)
+
+A régi játékban nem lehetett épületet megszakítani vagy lebontani; az ADR-007 a megszakítást kérte. A tulajdonos
+döntése: a **félkész épület megszakítása a költség 75%-át adja vissza** (a WC3 szerint; `game.json` →
+`build_cancel_refund`), **kész épület lebontása nincs**.
