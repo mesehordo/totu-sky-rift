@@ -5,6 +5,8 @@
 #include <chrono>
 #include <cstdio>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
 #include <memory>
 
 #include "content/loader.hpp"
@@ -23,6 +25,25 @@ bool load_terrain(const std::string& content_dir, map::TerrainTable& out) {
   const auto rep = loader.load(set);
   std::vector<std::string> errors = rep.errors;
   if (!out.load(set, errors) || !errors.empty()) {
+    for (const auto& e : errors) std::fprintf(stderr, "tartalomhiba: %s\n", e.c_str());
+    return false;
+  }
+  return true;
+}
+
+bool load_match_content(const std::string& content_dir, map::TerrainTable& terrain, std::optional<sim::Rules>& rules) {
+  content::Vfs vfs;
+  vfs.add_layer("totu", std::filesystem::path(content_dir) / "base");
+  content::ContentSet set;
+  content::ContentLoader loader(vfs, std::filesystem::path(content_dir) / "schema");
+  const auto rep = loader.load(set);
+  std::vector<std::string> errors = rep.errors;
+  terrain.load(set, errors);
+  std::ifstream in(std::filesystem::path(content_dir) / "base" / "game.json", std::ios::binary);
+  const std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
+  const auto game = content::parse(text);
+  if (game) rules = sim::Rules::load(*game, set, errors);
+  if (!game || !rules || !errors.empty()) {
     for (const auto& e : errors) std::fprintf(stderr, "tartalomhiba: %s\n", e.c_str());
     return false;
   }

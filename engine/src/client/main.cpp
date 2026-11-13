@@ -39,6 +39,7 @@
 #include <vector>
 
 #include "core/platform_info.hpp"
+#include "client/hud.hpp"
 #include "client/world.hpp"
 #include "render/atlas.hpp"
 #include "render/daylight.hpp"
@@ -316,6 +317,8 @@ int main(int argc, char** argv) {
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture fallback, white;
+    client::Hud hud;
+    std::string pending_ability;   // célzott képesség: a következő bal kattintás a világban a célpont
     client::Camera cam;
     render::Lighting lighting;
     std::vector<render::Light> lights;
@@ -381,6 +384,7 @@ int main(int argc, char** argv) {
           px.width = px.height = 1;
           px.rgba = {255, 255, 255, 255};
           white = dev.create_array_from(px, false);
+          if (session.has_starts() && !hud.init(dev, o.assets, &err)) std::fprintf(stderr, "HUD: %s\n", err.c_str());
           const float mw = static_cast<float>(world.map().width()) * client::World::kTilePx;
           const float mh = static_cast<float>(world.map().height()) * client::World::kTilePx;
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
@@ -437,6 +441,62 @@ int main(int argc, char** argv) {
           SDL_GetMouseState(&mx, &my);
           cam.x += mx / old - mx / cam.zoom;   // a kurzor alatti pont marad
           cam.y += my / old - my / cam.zoom;
+        }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key >= SDLK_A && ev.key.key <= SDLK_Z && session.rules()) {
+          float kmx = 0, kmy = 0;   // a kijelöltek képessége a betűjével (a régi játék gyorsbillentyűi)
+          SDL_GetMouseState(&kmx, &kmy);
+          const char key = static_cast<char>('A' + (ev.key.key - SDLK_A));
+          if (world.ability_hotkey(key, cam.x + kmx / cam.zoom, cam.y + kmy / cam.zoom)) continue;
+        }
+        if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT && session.has_starts() &&
+            [&] { int ww = 0, wh = 0; SDL_GetWindowSize(win, &ww, &wh); return hud.contains(ev.button.x, ev.button.y, wh); }()) {
+          const client::HudAction act = hud.click(ev.button.x, ev.button.y);
+          sim::Command c;
+          c.owner = 1;
+          c.def = act.id;
+          c.target = act.building;
+          switch (act.kind) {
+            case client::HudAction::Train: c.kind = sim::Command::Kind::Train; runner.post(c); break;
+            case client::HudAction::Research: c.kind = sim::Command::Kind::Research; runner.post(c); break;
+            case client::HudAction::Unload: c.kind = sim::Command::Kind::Unload; runner.post(c); break;
+            case client::HudAction::Power: c.kind = sim::Command::Kind::Power; runner.post(c); break;
+            case client::HudAction::ChoosePath: c.kind = sim::Command::Kind::ChoosePath; runner.post(c); break;
+            case client::HudAction::Ability:
+              c.kind = sim::Command::Kind::Ability;
+              c.units = world.selection();
+              runner.post(c);
+              break;
+            case client::HudAction::TargetAbility: pending_ability = act.id; break;
+            case client::HudAction::Build: {
+              build_list = {act.def};
+              build_idx = 0;
+              float bmx = 0, bmy = 0;
+              SDL_GetMouseState(&bmx, &bmy);
+              ghost_at(bmx, bmy);
+              break;
+            }
+            case client::HudAction::None: break;
+          }
+          continue;
+        }
+        if (!pending_ability.empty() && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {   // a célzott képesség célpontja
+          if (ev.button.button == SDL_BUTTON_LEFT) {
+            const float wx = cam.x + ev.button.x / cam.zoom, wy = cam.y + ev.button.y / cam.zoom;
+            if (pending_ability == "beszallas") {
+              if (const sim::EntityId gb = world.garrison_at(wx, wy)) world.order_garrison(gb);
+            } else {
+              sim::Command c;
+              c.kind = sim::Command::Kind::Ability;
+              c.units = world.selection();
+              c.def = pending_ability;
+              c.x = core::Fixed::from_raw(static_cast<int32_t>(wx / client::World::kTilePx * 65536.0f));
+              c.y = core::Fixed::from_raw(static_cast<int32_t>(wy / client::World::kTilePx * 65536.0f));
+              c.target = world.enemy_at(wx, wy);
+              runner.post(c);
+            }
+          }
+          pending_ability.clear();
+          continue;
         }
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_B && session.rules()) {   // építési mód
           if (build_list.empty()) build_list = world.buildable_defs("ursan");
@@ -611,6 +671,11 @@ int main(int argc, char** argv) {
         if (!o.fog) lighting.set_fog(0, 0, {});
         else if (fog_changed) lighting.set_fog(world.map().width(), world.map().height(), fogv);
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
+        if (session.has_starts()) {   // ideiglenes HUD (a képernyő vetítésében)
+          batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
+          hud.draw(batch, white, world, session, w, h);
+          batch.end();
+        }
         // ideiglenes kijelzés (a HUD az M6 9. lépésében): az 1. játékos nyersanyagai és létszáma a címsorban
         if (frame % 15 == 0 && session.has_starts()) {
           if (const client::SnapPlayer* pl = world.player(1); pl && pl->active) {

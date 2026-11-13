@@ -339,5 +339,5 @@ TEST_CASE("helyőrség és irány: determinisztikus, és mentésből folytatva u
   c.run(400);
   CHECK(c.sim->hash() == a.sim->hash());
   std::printf("  helyőrség-állapothash (616 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0x0307c21855795244ULL);   // minden rendszeren ugyanez
+  CHECK(a.sim->hash() == 0xd3120f78c3209b64ULL);   // minden rendszeren ugyanez
 }

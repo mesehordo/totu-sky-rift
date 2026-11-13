@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "sim/replay.hpp"
 
+#include <algorithm>
 #include <memory>
 
 #include "content/json.hpp"
@@ -65,9 +66,20 @@ bool attach_map(Sim& s, const Replay& r, const map::TerrainTable* terrain, Navig
 }
 
 bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::TerrainTable* terrain, std::string& error,
-         std::vector<std::string>* messages = nullptr) {
+         std::vector<std::string>* messages = nullptr, const Rules* rules = nullptr) {
   Navigation navigation;
   if (!attach_map(s, r, terrain, navigation, error)) return false;
+  if (!r.factions.empty()) {   // M6: meccs a szabályadatokkal
+    if (!rules || !navigation.map) {
+      error = "a meccs-visszajátszáshoz pálya és szabályadat kell";
+      return false;
+    }
+    s.attach_rules(rules);
+    MatchSetup setup;
+    setup.factions = r.factions;
+    setup.weather = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.weather, 3));
+    if (!s.setup_match(*navigation.map, setup, &error)) return false;
+  }
   const auto hosts = attach_scripts(s, r);
   for (const auto& c : r.commands) s.queue(c);
   for (int64_t t = 0; t < r.ticks; ++t) {
@@ -81,6 +93,10 @@ bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::Terra
 }
 
 int format_of(const Replay& r) {
+  if (!r.factions.empty()) return 4;
+  for (const auto& c : r.commands) {
+    if (c.needs_v4()) return 4;
+  }
   if (!r.map.empty()) return 3;
   for (const auto& c : r.commands) {
     if (c.needs_v3()) return 3;
@@ -105,11 +121,20 @@ Replay record(uint64_t seed, int64_t ticks, std::vector<Command> commands, int64
   return r;
 }
 
-VerifyResult verify(const Replay& r, const map::TerrainTable* terrain) {
+Replay record_match(Replay r, const map::TerrainTable& terrain, const Rules& rules) {
+  r.checkpoint_every = r.checkpoint_every > 0 ? r.checkpoint_every : 30;
+  r.checkpoints.clear();
+  Sim s(r.seed);
+  std::string error;
+  run(s, r, r.checkpoints, &terrain, error, nullptr, &rules);
+  return r;
+}
+
+VerifyResult verify(const Replay& r, const map::TerrainTable* terrain, const Rules* rules) {
   VerifyResult v;
   Sim s(r.seed);
   std::vector<Checkpoint> got;
-  if (!run(s, r, got, terrain, v.error, &v.script_messages)) return v;
+  if (!run(s, r, got, terrain, v.error, &v.script_messages, rules)) return v;
   if (got.size() != r.checkpoints.size()) {
     v.error = "eltérő számú ellenőrzőpont";
     return v;
@@ -141,12 +166,17 @@ std::vector<uint8_t> encode(const Replay& r) {
   w.i64(r.ticks);
   w.i64(r.checkpoint_every);
   w.u32(static_cast<uint32_t>(r.commands.size()));
-  for (const auto& c : r.commands) save_command(w, c, format >= 3 ? 3 : 1);
+  for (const auto& c : r.commands) save_command(w, c, format >= 4 ? 4 : format >= 3 ? 3 : 1);
   if (format >= 2) {
     w.u32(static_cast<uint32_t>(r.scripts.size()));
     for (const auto& f : r.scripts) { w.str(f.mod); w.str(f.name); w.str(f.source); }
   }
   if (format >= 3) w.str(r.map);
+  if (format >= 4) {
+    w.u32(static_cast<uint32_t>(r.factions.size()));
+    for (const auto& f : r.factions) w.str(f);
+    w.u8(r.weather);
+  }
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -161,7 +191,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 3) return std::nullopt;
+  if (version < 1 || version > 4) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -169,7 +199,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   if (r.ticks < 0 || r.checkpoint_every <= 0) return std::nullopt;
   const uint32_t n = rd.u32();
   for (uint32_t i = 0; i < n && rd.ok(); ++i) {
-    auto c = load_command(rd, version >= 3 ? 3 : 1);
+    auto c = load_command(rd, version >= 4 ? 4 : version >= 3 ? 3 : 1);
     if (!c) return std::nullopt;
     r.commands.push_back(std::move(*c));
   }
@@ -185,6 +215,11 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
     }
   }
   if (version >= 3) r.map = rd.str();
+  if (version >= 4) {
+    const uint32_t nf = rd.u32();
+    for (uint32_t i = 0; i < nf && i < 8 && rd.ok(); ++i) r.factions.push_back(rd.str());
+    r.weather = rd.u8();
+  }
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {
     Checkpoint c;

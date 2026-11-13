@@ -93,11 +93,43 @@ void World::select_box(float x0, float y0, float x1, float y1) {
   if (x0 > x1) std::swap(x0, x1);
   if (y0 > y1) std::swap(y0, y1);
   selected_.clear();
+  selected_building_ = 0;
   if (!cur_) return;
   for (const SnapUnit& u : cur_->units) {
     if (u.owner != 1 || u.hp <= 0 || u.kind != SnapUnit::kUnit) continue;
     if (u.x >= x0 - 8 && u.x <= x1 + 8 && u.y >= y0 - 8 && u.y <= y1 + 8) selected_.push_back(u.id);
   }
+  if (!selected_.empty()) return;
+  for (const SnapUnit& u : cur_->units) {   // egység nélkül: a pont alatti saját épület
+    if (u.owner != 1 || u.hp <= 0 || u.kind != SnapUnit::kBuilding) continue;
+    const float bx = static_cast<float>(u.tx) * kTilePx, by = static_cast<float>(u.ty) * kTilePx;
+    if (x0 >= bx && x0 < bx + static_cast<float>(u.w) * kTilePx && y0 >= by && y0 < by + static_cast<float>(u.h) * kTilePx) {
+      selected_building_ = u.id;
+    }
+  }
+}
+
+bool World::ability_hotkey(char key, float wx, float wy) {
+  const sim::Rules* r = session_.rules();
+  if (!r || selected_.empty() || !cur_) return false;
+  // a kijelöltek sablonjainak képességei közül az első, amelynek ez a gyorsbillentyűje
+  for (const sim::EntityId id : selected_) {
+    const SnapUnit* u = cur_->find(id);
+    if (!u || u->def >= r->defs.size()) continue;
+    for (const uint16_t ab : r->defs[u->def].abilities) {
+      if (r->abilities[ab].hotkey != key) continue;
+      sim::Command c;
+      c.kind = sim::Command::Kind::Ability;
+      c.units = selected_;
+      c.def = r->abilities[ab].id;
+      c.x = to_fixed(wx);
+      c.y = to_fixed(wy);
+      c.target = enemy_at(wx, wy);
+      runner_.post(c);
+      return true;
+    }
+  }
+  return false;
 }
 
 void World::order_move(float wx, float wy, sim::Formation f) {

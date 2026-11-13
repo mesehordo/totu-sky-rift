@@ -444,6 +444,20 @@ void Sim::economy_system() {
   });
 }
 
+int Sim::winner() const {
+  int alive = 0, last = 0, playing = 0;
+  for (int i = 1; i <= kMaxPlayers; ++i) {
+    const PlayerState& p = players_[static_cast<size_t>(i)];
+    if (!p.active) continue;
+    ++playing;
+    if (!p.defeated) {
+      ++alive;
+      last = i;
+    }
+  }
+  return playing >= 2 && alive == 1 ? last : 0;
+}
+
 void Sim::supply_system() {
   std::array<int32_t, kMaxPlayers + 1> cap{}, used{};
   const auto& hp = world_.pool<Health>();
@@ -465,6 +479,16 @@ void Sim::supply_system() {
     if (!h || h->owner > kMaxPlayers) return;
     for (const QueueItem& q : pr.queue) used[h->owner] += q.supply;
   });
+  // vereség: akinek nincs több (kész vagy félkész) épülete
+  std::array<int32_t, kMaxPlayers + 1> buildings{};
+  world_.pool<Building>().each([&](EntityId e, const Building&) {
+    const Health* h = hp.get(e);
+    if (h && h->hp > 0 && h->owner <= kMaxPlayers) ++buildings[h->owner];
+  });
+  for (int i = 1; i <= kMaxPlayers; ++i) {
+    PlayerState& p = players_[static_cast<size_t>(i)];
+    if (p.active && !p.defeated && buildings[static_cast<size_t>(i)] == 0) p.defeated = true;
+  }
   for (int i = 0; i <= kMaxPlayers; ++i) {
     players_[static_cast<size_t>(i)].supply_cap = std::min(cap[static_cast<size_t>(i)], rules_->max_supply);
     players_[static_cast<size_t>(i)].supply_used = used[static_cast<size_t>(i)];

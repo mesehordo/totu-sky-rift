@@ -95,6 +95,7 @@ struct AbilityDef {
   AbilityMods mods;
   std::string buff;                     // `gpower` (`levy`): a kapott önerősítés
   std::string effect;                   // `gpower`: `levy` (mozgósítás) …
+  char hotkey = 0;                      // gyorsbillentyű (nagybetű; 0 = nincs)
 };
 
 // Szabálymódosítók (KUT-RULE, a régi `rules`): kulcsonként az utolsó felülír (a régi `merge_rules`).

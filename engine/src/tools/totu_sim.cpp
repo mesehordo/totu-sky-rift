@@ -14,6 +14,7 @@
 #include <cstring>
 #include <fstream>
 #include <iterator>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -172,12 +173,42 @@ int main(int argc, char** argv) {
                 static_cast<long long>(b.expanded), b.path_ms, b.move_ms);
     return b.p99 <= 40.0 ? 0 : 1;
   }
+  if (argc >= 4 && std::strcmp(argv[1], "m6golden") == 0) {   // golden M6: két szkriptelt ursan gép egymás ellen
+    map::TerrainTable terrain;
+    std::optional<sim::Rules> rules;
+    if (!tools::load_match_content(content, terrain, rules)) return 2;
+    const auto mapbytes = read_file(argv[3]);
+    const auto ai = read_file((std::string(content) + "/base/scripts/ai_ursan.lua").c_str());
+    if (mapbytes.empty() || ai.empty()) { std::fprintf(stderr, "nem olvasható: %s vagy a gép szkriptje\n", argv[3]); return 2; }
+    sim::Replay base;
+    base.seed = static_cast<uint64_t>(arg_ll(argc, argv, "--seed", 20261113));
+    base.ticks = arg_ll(argc, argv, "--ticks", 12 * 60 * 30);
+    base.checkpoint_every = 150;
+    base.map = std::string(mapbytes.begin(), mapbytes.end());
+    base.factions = {"ursan", "ursan"};
+    base.weather = 3;
+    base.scripts = {sim::ScriptFile{"ai", "ai_players", "AI_PLAYERS = {1, 2}"},
+                    sim::ScriptFile{"ai", "ai_ursan.lua", std::string(ai.begin(), ai.end())}};
+    const sim::Replay r = sim::record_match(base, terrain, *rules);
+    const auto v = sim::verify(r, &terrain, &*rules);
+    if (!v.ok) { std::fprintf(stderr, "a felvétel önmagával sem egyezik: %s\n", v.error.c_str()); return 1; }
+    if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
+    std::printf("rögzítve: %s – %lld tick, %zu ellenőrzőpont, végső hash 0x%016llx\n", argv[2],
+                static_cast<long long>(r.ticks), r.checkpoints.size(),
+                static_cast<unsigned long long>(r.checkpoints.back().hash));
+    return 0;
+  }
   if (argc >= 3 && std::strcmp(argv[1], "verify") == 0) {
     auto r = sim::decode(read_file(argv[2]));
     if (!r) { std::fprintf(stderr, "hibás vagy hiányzó visszajátszás: %s\n", argv[2]); return 2; }
     map::TerrainTable terrain;
-    if (!r->map.empty() && !tools::load_terrain(content, terrain)) return 2;
-    const auto v = sim::verify(*r, r->map.empty() ? nullptr : &terrain);
+    std::optional<sim::Rules> rules;
+    if (!r->factions.empty()) {
+      if (!tools::load_match_content(content, terrain, rules)) return 2;
+    } else if (!r->map.empty() && !tools::load_terrain(content, terrain)) {
+      return 2;
+    }
+    const auto v = sim::verify(*r, r->map.empty() ? nullptr : &terrain, rules ? &*rules : nullptr);
     if (!v.script_messages.empty()) {
       std::printf("szkriptnapló: %zu sor, az utolsó: %s\n", v.script_messages.size(), v.script_messages.back().c_str());
     }

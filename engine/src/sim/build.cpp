@@ -6,6 +6,7 @@
 // (`enter`) munkása bemászik az épületbe, és csak bentről épít; készen kijön, és ha gyűjtött, oda megy vissza.
 // Az életerő a haladással nő (a hiányzó 90% arányosan). Megszakítás: a költség `cancel_refund` része vissza.
 #include <algorithm>
+#include <cstdlib>
 
 #include "map/map.hpp"
 #include "map/pathfinder.hpp"
@@ -385,6 +386,47 @@ bool Sim::cancel_build(EntityId e) {
   if (nav_) nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
   world_.destroy(e);
   return true;
+}
+
+}  // namespace totu::sim
+
+namespace totu::sim {
+
+bool Sim::gather_nearest(EntityId worker, int kind) {
+  const Position* p = world_.get<Position>(worker);
+  if (!rules_ || !p || kind < 0 || kind >= kResources || !interrupt(worker)) return false;
+  const EntityId r = nearest_resource(kind, p->x, p->y, Fixed::from_int(1000), kNoEntity);
+  return r != kNoEntity && order_gather(worker, r);
+}
+
+bool Sim::build_near(uint8_t owner, uint16_t def, int x, int y) {
+  if (!rules_ || !map_ || def >= rules_->defs.size()) return false;
+  // a munkás: a tétlenek közül, ha nincs, a gyűjtők közül a legkisebb azonosítójú (determinisztikus)
+  EntityId worker = kNoEntity;
+  int best_rank = 3;
+  world_.pool<Worker>().each([&](EntityId e, const Worker& w) {
+    const Health* h = world_.get<Health>(e);
+    if (!h || h->owner != owner || h->hp <= 0 || w.inside || sheltered(e)) return;
+    const int rank = w.state == Worker::Idle ? 0 : (w.state == Worker::Build || w.state == Worker::Construct) ? 3 : 1;
+    if (rank < best_rank) {
+      best_rank = rank;
+      worker = e;
+    }
+  });
+  if (worker == kNoEntity) return false;
+  // a hely: egyre táguló gyűrűkben a (x, y) körül, egy csempe hézaggal (a munkások átférjenek)
+  for (int r = 0; r <= 14; ++r) {
+    for (int dy = -r; dy <= r; ++dy) {
+      for (int dx = -r; dx <= r; ++dx) {
+        if (std::max(std::abs(dx), std::abs(dy)) != r) continue;
+        const int tx = x + dx, ty = y + dy;
+        if (!can_place(owner, def, tx, ty)) continue;
+        if (!can_place(0, def, tx - 1, ty - 1) && !can_place(0, def, tx + 1, ty + 1)) continue;   // ne zárjon körbe
+        return order_build(worker, def, tx, ty);
+      }
+    }
+  }
+  return false;
 }
 
 }  // namespace totu::sim

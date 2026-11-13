@@ -824,10 +824,116 @@ int g_cancel(lua_State* L) {
   return 1;
 }
 
+// --- meccs (M6 9. lépés: a szkriptelt ellenfélhez) ------------------------------------------------------------------
+uint8_t check_owner(lua_State* L, int i) {
+  const lua_Integer o = luaL_checkinteger(L, i);
+  if (o < 1 || o > sim::Sim::kMaxPlayers) luaL_error(L, "érvénytelen játékos: %d", static_cast<int>(o));
+  return static_cast<uint8_t>(o);
+}
+
+uint16_t check_def(lua_State* L, sim::Sim& s, int i) {
+  const char* id = luaL_checkstring(L, i);
+  const uint16_t d = s.rules() ? s.rules()->def(id) : sim::kNoDef;
+  if (d == sim::kNoDef) luaL_error(L, "ismeretlen sablon: %s", id);
+  return d;
+}
+
+// Game.player(owner) → {wood, stone, meteor, supply_used, supply_cap, ascended, path, defeated}
+int g_player(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  const sim::PlayerState& p = s.player(check_owner(L, 1));
+  lua_createtable(L, 0, 8);
+  lua_pushinteger(L, p.resource(sim::kWood)); lua_setfield(L, -2, "wood");
+  lua_pushinteger(L, p.resource(sim::kStone)); lua_setfield(L, -2, "stone");
+  lua_pushinteger(L, p.resource(sim::kMeteor)); lua_setfield(L, -2, "meteor");
+  lua_pushinteger(L, p.supply_used); lua_setfield(L, -2, "supply_used");
+  lua_pushinteger(L, p.supply_cap); lua_setfield(L, -2, "supply_cap");
+  lua_pushboolean(L, p.ascended); lua_setfield(L, -2, "ascended");
+  lua_pushstring(L, p.path.c_str()); lua_setfield(L, -2, "path");
+  lua_pushboolean(L, p.defeated); lua_setfield(L, -2, "defeated");
+  return 1;
+}
+
+// Game.kind(id) → a sablon azonosítója (egység vagy épület), vagy nil
+int g_kind(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  const sim::EntityId e = check_id(L, 1);
+  if (!s.world().alive(e) || !s.rules()) return 0;
+  uint16_t d = sim::kNoDef;
+  bool complete = true;
+  if (const auto* u = s.world().get<sim::Unit>(e)) d = u->def;
+  else if (const auto* b = s.world().get<sim::Building>(e)) {
+    d = b->def;
+    complete = b->complete != 0;
+  }
+  if (d == sim::kNoDef) return 0;
+  lua_pushstring(L, s.rules()->defs[d].id.c_str());
+  lua_pushboolean(L, complete);
+  return 2;
+}
+
+int g_train(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  lua_pushboolean(L, s.train(check_owner(L, 1), check_def(L, s, 2)));
+  return 1;
+}
+
+int g_research(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  lua_pushboolean(L, s.research(check_owner(L, 1), luaL_checkstring(L, 2)));
+  return 1;
+}
+
+// Game.build(owner, épület, x, y): egy munkás építeni a (x, y) csempe közelébe
+int g_build(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  const uint8_t o = check_owner(L, 1);
+  const uint16_t d = check_def(L, s, 2);
+  const auto x = static_cast<int>(luaL_checkinteger(L, 3)), y = static_cast<int>(luaL_checkinteger(L, 4));
+  lua_pushboolean(L, s.build_near(o, d, x, y));
+  return 1;
+}
+
+// Game.attack(azonosítók, x, y): támadó mozgás
+int g_attack(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  luaL_checktype(L, 1, LUA_TTABLE);
+  const core::Fixed x = to_fixed(L, 2, "x"), y = to_fixed(L, 3, "y");
+  lua_Integer n = 0;
+  const auto len = static_cast<lua_Integer>(lua_rawlen(L, 1));
+  for (lua_Integer i = 1; i <= len; ++i) {
+    lua_rawgeti(L, 1, i);
+    if (s.order_attack_move(check_id(L, -1), x, y)) ++n;
+    lua_pop(L, 1);
+  }
+  lua_pushinteger(L, n);
+  return 1;
+}
+
+// Game.gather(munkás, "wood" | "stone" | "meteor"): a legközelebbi ilyen lelőhelyre
+int g_gather(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  lua_pushboolean(L, s.gather_nearest(check_id(L, 1), sim::resource_index(luaL_checkstring(L, 2))));
+  return 1;
+}
+
+int g_choose_path(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  lua_pushboolean(L, s.choose_path(check_owner(L, 1), luaL_checkstring(L, 2)));
+  return 1;
+}
+
+int g_winner(lua_State* L) {
+  lua_pushinteger(L, need_sim(L).winner());
+  return 1;
+}
+
 void open_game(lua_State* L) {
   static const luaL_Reg funcs[] = {{"tick", g_tick},   {"spawn", g_spawn}, {"move", g_move},   {"kill", g_kill},
                                    {"unit", g_unit},   {"units", g_units}, {"count", g_count}, {"after", g_after},
-                                   {"cancel", g_cancel}, {nullptr, nullptr}};
+                                   {"cancel", g_cancel}, {"player", g_player}, {"kind", g_kind}, {"train", g_train},
+                                   {"research", g_research}, {"build", g_build}, {"attack", g_attack},
+                                   {"choose_path", g_choose_path}, {"gather", g_gather}, {"winner", g_winner}, {nullptr, nullptr}};
   luaL_newlib(L, funcs);
   wrap_readonly(L);
   lua_setglobal(L, "Game");

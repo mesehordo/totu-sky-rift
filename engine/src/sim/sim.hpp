@@ -501,6 +501,7 @@ struct PlayerState {
   std::vector<std::string> researched;       // a kész kutatások (rendezve; az 5. lépésben töltődik)
   std::string path;                          // a választott fejlődési irány (MECH-ASC; 8. lépés)
   bool ascended = false;
+  bool defeated = false;                     // minden épülete elpusztult (M6 9. lépés)
   // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
   std::vector<uint8_t> visible, explored;
   int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
@@ -716,7 +717,13 @@ class Sim {
   bool choose_path(uint8_t owner, const std::string& path);
   // Főépület-képesség (`gpower`, pl. az ursan Eskü-riadó: minden munkás Fegyverbe!).
   bool use_power(uint8_t owner, EntityId building, const std::string& ability);
-  bool in_rift(EntityId e) const { return rift_.count(e) != 0; }   // Égkő-fényben áll (MECH-RIFT)
+  bool in_rift(EntityId e) const { return rift_.count(e) != 0; }
+  // Győzelem és vereség (ADR-007 9. lépés): akinek minden épülete elpusztult, kiesik; a győztes az egyetlen megmaradt
+  // játékos (0: még tart, vagy nincs meccs).
+  int winner() const;
+  // A szkriptelt ellenfélnek (Lua): építési hely a (x, y) csempe körül, és egy szabad munkás építeni (false: nincs).
+  bool build_near(uint8_t owner, uint16_t def, int x, int y);
+  bool gather_nearest(EntityId worker, int kind);   // a munkás a legközelebbi ilyen lelőhelyre (szkript, gép)   // Égkő-fényben áll (MECH-RIFT)
   bool buffed(EntityId e, uint16_t ability);
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre

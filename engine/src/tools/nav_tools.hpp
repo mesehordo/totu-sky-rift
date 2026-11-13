@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,8 @@ namespace totu::tools {
 
 // A tartalom (terepfajták, mozgásosztályok) betöltése; hibánál üzenet a stderr-re.
 bool load_terrain(const std::string& content_dir, map::TerrainTable& out);
+// A meccshez: a terepadat és a szabályadatok (a `game.json`-nal); hibánál false (a hiba a standard hibakimeneten).
+bool load_match_content(const std::string& content_dir, map::TerrainTable& terrain, std::optional<sim::Rules>& rules);
 
 // Golden M4: két 60 fős, vegyes méretű, ellenséges sereg a NAV-BRIDGE pályán – alakzatok, csata, kapu, építés.
 std::vector<sim::Command> golden_m4_commands(uint64_t seed);

@@ -30,6 +30,23 @@ const SnapUnit* Snapshot::find(sim::EntityId id) const {
 }
 
 bool Session::load(const std::string& content_dir, const std::string& map_path, uint64_t seed, std::string* error) {
+  content_dir_ = content_dir;
+  seed_ = seed;
+  {   // a nevek (hu.po): msgctxt "kulcs" után az msgid "szöveg"
+    std::ifstream po(std::filesystem::path(content_dir) / "base" / "locale" / "hu.po", std::ios::binary);
+    std::string line, ctx;
+    auto quoted = [](const std::string& l) {
+      const size_t a = l.find('"'), b = l.rfind('"');
+      return a != std::string::npos && b > a ? l.substr(a + 1, b - a - 1) : std::string();
+    };
+    while (std::getline(po, line)) {
+      if (line.rfind("msgctxt ", 0) == 0) ctx = quoted(line);
+      else if (line.rfind("msgid ", 0) == 0 && !ctx.empty()) {
+        names_[ctx] = quoted(line);
+        ctx.clear();
+      }
+    }
+  }
   content::Vfs vfs;
   vfs.add_layer("totu", std::filesystem::path(content_dir) / "base");
   content::ContentSet set;
@@ -85,7 +102,12 @@ void Session::spawn_demo(int players, int per_player) {
   last_.reset();   // a következő pillanatkép már az új egységekkel
 }
 
-bool Session::start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error) {
+std::string Session::display_name(const std::string& key) const {
+  const auto it = names_.find(key);
+  return it != names_.end() && !it->second.empty() ? it->second : key;
+}
+
+bool Session::start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error, std::vector<int> ai) {
   if (!rules_) {
     if (error) *error = "a játékszabályok nem tölthetők be";
     return false;
@@ -95,6 +117,21 @@ bool Session::start_match(const std::vector<std::string>& factions, bool upkeep,
   setup.factions = factions;
   setup.upkeep = upkeep;
   if (!sim_->setup_match(*map_, setup, error)) return false;
+  if (!ai.empty()) {   // a szkriptelt ellenfél (Lua; determinisztikus, a hash és a mentés része)
+    std::ifstream in(std::filesystem::path(content_dir_) / "base" / "scripts" / "ai_ursan.lua", std::ios::binary);
+    const std::string src{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
+    std::string players = "AI_PLAYERS = {";
+    for (size_t i = 0; i < ai.size(); ++i) players += (i ? ", " : "") + std::to_string(ai[i]);
+    players += "}";
+    ai_ = std::make_unique<script::ScriptHost>("ai", seed_);
+    if (src.empty() || !ai_->run("ai_players", players) || !ai_->run("ai_ursan.lua", src)) {
+      if (error) *error = "a gép szkriptje nem tölthető be";
+      ai_.reset();
+    } else {
+      sim_->add_hooks(ai_.get());
+      ai_->start(*sim_);
+    }
+  }
   last_.reset();
   fog_.reset();
   remembered_.clear();
@@ -225,6 +262,15 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         u.progress = static_cast<uint16_t>(std::min<int64_t>(1000, int64_t{b->progress} * 1000 / total));
         u.slots = static_cast<uint8_t>(std::clamp(sim_->rules()->defs[b->def].garrison, 0, 255));
         if (const auto* g = w.get<sim::Garrison>(e)) u.garrison = static_cast<uint8_t>(std::min<size_t>(g->units.size(), 255));
+        if (const auto* pr = w.get<sim::Producer>(e)) {
+          for (const auto& q : pr->queue) {
+            if (u.queue_n >= 5) break;
+            u.queue_def[u.queue_n] = q.def;
+            if (q.research) u.queue_research = static_cast<uint8_t>(u.queue_research | (1u << u.queue_n));
+            ++u.queue_n;
+          }
+          if (!pr->queue.empty()) u.queue_progress = static_cast<uint16_t>(pr->queue[0].progress * 1000 / std::max(1, pr->queue[0].time));
+        }
       } else if (const auto* n = w.get<sim::ResourceNode>(e)) {
         u.kind = SnapUnit::kResource;
         u.tx = n->tx; u.ty = n->ty; u.w = u.h = n->size;
@@ -286,7 +332,14 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       for (int r = 0; r < sim::kResources; ++r) o.res[static_cast<size_t>(r)] = p.resource(r);
       o.supply_cap = p.supply_cap;
       o.supply_used = p.supply_used;
+      o.defeated = p.defeated;
+      o.ascended = p.ascended;
+      o.path = p.path;
+      if (i == 1) o.researched = p.researched;
     }
+    s->winner = sim_->winner();
+    s->night = sim_->night_permille();
+    s->weather = sim_->weather_info().kind;
   }
   std::sort(s->units.begin(), s->units.end(), [](const SnapUnit& a, const SnapUnit& b) { return a.id < b.id; });
   s->fog = fog_;

@@ -39,6 +39,8 @@ struct Replay {
   std::vector<Command> commands;
   std::vector<ScriptFile> scripts;
   std::string map;                 // M4: a pálya (map.json szövege); üres = pálya és navigáció nélkül
+  std::vector<std::string> factions;   // M6 (4-es változat): meccs a pálya kezdőhelyein, játékosonként a nép
+  uint8_t weather = 1;                 // M6: MatchSetup::WeatherMode (0 ki, 1 hangulat, 2 hatással, 3 + pálya)
   std::vector<Checkpoint> checkpoints;
 };
 
@@ -46,6 +48,9 @@ struct Replay {
 // Pályás visszajátszáshoz (map nem üres) a terepfajták és mozgásosztályok táblája kell (a tartalomból).
 Replay record(uint64_t seed, int64_t ticks, std::vector<Command> commands, int64_t checkpoint_every = 30,
               std::vector<ScriptFile> scripts = {}, std::string map = {}, const map::TerrainTable* terrain = nullptr);
+// Meccs-visszajátszás (M6): a `base` a mag, a hossz, a parancsok, a szkriptek, a pálya, a népek és az időjárás-mód;
+// a szabályadatok (a tartalomból) a futáshoz kellenek, a fájlba nem kerülnek.
+Replay record_match(Replay base, const map::TerrainTable& terrain, const Rules& rules);
 
 struct VerifyResult {
   bool ok = false;
@@ -55,7 +60,7 @@ struct VerifyResult {
   std::string error;
   std::vector<std::string> script_messages;   // a szkriptek naplója az ellenőrző futásból
 };
-VerifyResult verify(const Replay& r, const map::TerrainTable* terrain = nullptr);
+VerifyResult verify(const Replay& r, const map::TerrainTable* terrain = nullptr, const Rules* rules = nullptr);
 
 // Szkript nélkül az 1-es, szkripttel a 2-es, pályával vagy M4-es parancsokkal a 3-as változat.
 std::vector<uint8_t> encode(const Replay& r);

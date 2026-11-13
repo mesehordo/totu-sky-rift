@@ -60,6 +60,13 @@ class World {
   bool order_build(uint16_t def, int tx, int ty);
   std::vector<uint16_t> buildable_defs(const std::string& faction) const;
   size_t selected() const { return selected_.size(); }
+  // a HUD-nak (M6 9. lépés): a kijelölés, a kijelölt saját épület, a pillanatkép, parancs a futtató sorába
+  const std::vector<sim::EntityId>& selection() const { return selected_; }
+  sim::EntityId selected_building() const { return selected_building_; }
+  const Snapshot* snapshot() const { return cur_.get(); }
+  void post(sim::Command c) { runner_.post(std::move(c)); }
+  // a kijelöltek képessége a gyorsbillentyűvel (a régi játék szerint): a pont és az alatta álló ellenség a célpont
+  bool ability_hotkey(char key, float wx, float wy);
 
   // rajzolás: `alpha` a két pillanatkép közötti arány (0..1), `time` másodperc
   void draw(render::SpriteBatch& batch, render::Atlas* atlas, const render::Texture& fallback, const Camera& cam,
@@ -103,6 +110,7 @@ class World {
   std::shared_ptr<const Snapshot> prev_, cur_;
   std::vector<Visual> vis_;
   std::vector<sim::EntityId> selected_;
+  sim::EntityId selected_building_ = 0;
   std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai
   bool sheets_ready_ = false;
   std::shared_ptr<const std::vector<uint8_t>> fog_seen_;

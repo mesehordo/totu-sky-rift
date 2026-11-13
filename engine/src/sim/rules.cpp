@@ -345,6 +345,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.ultimate = flag("ultimate");
       if (const content::Value* b = key("buff"); b && b->is_string()) a.buff = b->text();
       if (const content::Value* ef = key("effect"); ef && ef->is_string()) a.effect = ef->text();
+      if (const content::Value* hk = key("hotkey"); hk && hk->is_string() && hk->text().size() == 1) a.hotkey = hk->text()[0];
       if (const auto it = ability_element.find(id); it != ability_element.end()) a.element = it->second;
       auto mod = [&](const char* k, Fixed def) {
         for (const content::Value* src : {lv0 ? lv0->find("modifiers") : nullptr, spec->find("modifiers")}) {

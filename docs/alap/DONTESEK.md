@@ -399,3 +399,10 @@ határok puhák.
 és a lelőhelyek a **legutóbb látott állapotukban** maradnak (a ködben lerombolt is, amíg újra oda nem lát); a
 **átmenetek sokkal kevésbé hirtelenek**: mindhárom zóna (felfedezetlen, felderített, látott) között kb. háromszor
 szélesebb, fokozatos határ (a köd 5 × 5 mintás, ±1,5 csempés súlyozott átlagából).
+
+### D42 – A végleges HUD a Python-játék HUD-ja szerint · ELDÖNTVE (2026-11-13)
+
+A tulajdonos kérése: a végleges kezelőfelület **pontosan úgy nézzen ki, mint a régi (Python) játékban** – elrendezés,
+színek, keretek, ikonok, betű (Rováskönyv / Rováskönyv Text), a régi `rts/hud.py` (alsó sáv, jellemzőlap, hatás- és
+számlálósorok) a minta. Az M6 ideiglenes HUD-ja (D37) csak a játszhatósághoz kell, már a régi betűvel; a régi HUD
+pontos átvétele az M8 (RmlUi) feladata, a régi játék képernyőképeivel összevetve.

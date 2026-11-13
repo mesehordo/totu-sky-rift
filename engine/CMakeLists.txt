@@ -70,7 +70,7 @@ if(MSVC)
 else()
   target_compile_options(totu_stb PRIVATE -w)
 endif()
-add_library(totu_image STATIC src/render/image.cpp)
+add_library(totu_image STATIC src/render/image.cpp src/render/font.cpp)
 target_include_directories(totu_image PUBLIC src)
 target_link_libraries(totu_image PUBLIC totu_stb PRIVATE totu_options)
 # atlaszkészítő (grafikus kártya nélkül) és eszköze
@@ -87,7 +87,7 @@ enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
-  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp src/client/session.cpp)
+  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp src/client/session.cpp)
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
@@ -104,6 +104,9 @@ add_test(NAME golden_replay COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/
 add_test(NAME golden_replay_m3 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m3.trep)
 # M4 kapu: a pályás golden visszajátszás (alakzatok, csata, kapu, építés a NAV-BRIDGE pályán) minden rendszeren egyezik
 add_test(NAME golden_replay_m4 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m4.trep
+         --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
+# M6 kapu: két szkriptelt ursan gép 12 perces meccse (gazdaság, építés, termelés, kutatás, harc, időjárás) mindenhol egyezik
+add_test(NAME golden_replay_m6 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m6.trep
          --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
 
 # --- kliens (SDL3 + OpenGL 3.3 core) ------------------------------------------------------------------------------
@@ -127,7 +130,7 @@ if(TOTU_CLIENT)
   add_library(totu_render STATIC src/render/gl.cpp src/render/rhi.cpp src/render/sprite_batch.cpp src/render/sprite_sheet.cpp
               src/render/atlas.cpp src/render/terrain_view.cpp src/render/lighting.cpp src/render/effects.cpp)
   target_link_libraries(totu_render PUBLIC totu_core totu_image totu_assets PRIVATE totu_options)
-  add_executable(totu src/client/main.cpp src/client/world.cpp src/client/session.cpp)
+  add_executable(totu src/client/main.cpp src/client/world.cpp src/client/session.cpp src/client/hud.cpp)
   target_link_libraries(totu PRIVATE totu_core totu_render totu_options SDL3::SDL3 Threads::Threads)
   target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets"
                                           TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")

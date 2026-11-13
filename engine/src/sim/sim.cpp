@@ -287,6 +287,7 @@ uint64_t Sim::hash() const {
       for (const auto& r : p.researched) h.add_bytes(r);
       h.add_bytes(p.path);
       h.add_u64(p.ascended);
+      h.add_u64(p.defeated);
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
       h.add_u64(p.research_mods.size());
@@ -382,7 +383,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(7);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség)
+  w.u32(8);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -405,6 +406,7 @@ std::vector<uint8_t> Sim::save() const {
       for (const auto& r : p.researched) w.str(r);
       w.str(p.path);
       w.u8(p.ascended ? 1 : 0);
+      w.u8(p.defeated ? 1 : 0);
       w.str(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
       w.str(std::string_view(reinterpret_cast<const char*>(p.explored.data()), p.explored.size()));
       w.u32(static_cast<uint32_t>(p.research_mods.size()));
@@ -430,7 +432,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 7) return false;
+  if (schema < 3 || schema > 8) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -463,6 +465,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       for (uint32_t i = 0; i < nr && i < 4096 && r.ok(); ++i) p.researched.push_back(r.str());
       p.path = r.str();
       p.ascended = r.u8() != 0;
+      p.defeated = schema >= 8 && r.u8() != 0;
       const std::string vis = r.str(), exp = r.str();
       p.visible.assign(vis.begin(), vis.end());
       p.explored.assign(exp.begin(), exp.end());

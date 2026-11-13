@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "map/pathfinder.hpp"
+#include "script/host.hpp"
 #include "sim/sim.hpp"
 
 namespace totu::client {
@@ -42,6 +43,10 @@ struct SnapUnit {
   float sx = 0, sy = 0;                 // lövedék: a kiindulás (az ívhez és az irányhoz)
   float lift = 0;                       // lövedék: az ív magassága most (képpont)
   uint8_t garrison = 0, slots = 0;      // épület: a helyőrség (bent lévők, helyek; D39)
+  uint8_t queue_n = 0;                  // épület: a termelési sor (legfeljebb 5; egység: sablon, kutatás: sorszám)
+  std::array<uint16_t, 5> queue_def{};
+  uint8_t queue_research = 0;           // bitmaszk: az elem kutatás
+  uint16_t queue_progress = 0;          // az első elem haladása ezrelékben
 };
 
 // a játékos állapota a felületnek
@@ -49,6 +54,9 @@ struct SnapPlayer {
   bool active = false;
   std::array<int32_t, sim::kResources> res{};
   int32_t supply_cap = 0, supply_used = 0;
+  bool defeated = false, ascended = false;
+  std::string path;
+  std::vector<std::string> researched;
 };
 
 // látványesemény (a részecskéknek): találat (az életerő csökkent) vagy halál
@@ -65,6 +73,9 @@ struct Snapshot {
   // 255 látható; csak változáskor új (a régit a korábbi pillanatképek megosztva tartják)
   std::shared_ptr<const std::vector<uint8_t>> fog;
   std::array<SnapPlayer, sim::Sim::kMaxPlayers + 1> players{};
+  int winner = 0;                 // 0: a meccs tart
+  int32_t night = 0;              // 0 nappal .. 1000 éjjel
+  std::string weather;            // "" = derült
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
 };
 
@@ -76,8 +87,11 @@ class Session {
   void order_demo_attack();   // mindkét sereg a másik felé indul (méréshez, képpróbához)
   // meccs (M6): ha a pályán vannak kezdőhelyek; játékosonként a nép (pl. {"ursan", "ursan"})
   bool has_starts() const { return map_ && !map_->objects().starts.empty(); }
-  bool start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error);
+  // `ai`: a szkriptelt ellenfél ezekhez a játékosokhoz (M6 9. lépés; `content/base/scripts/ai_ursan.lua`)
+  bool start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error, std::vector<int> ai = {2});
   const sim::Rules* rules() const { return rules_ ? &*rules_ : nullptr; }
+  // a megjelenített név a magyar fordításból (`locale/hu.po`: msgctxt → msgid); ha nincs, maga a kulcs
+  std::string display_name(const std::string& key) const;
   // köd nélkül (--nofog): minden látszik, a pillanatkép nem szűr (D41)
   void set_reveal_all(bool on) { reveal_all_ = on; }
   // képpróba (M6 5. lépés): két vegyes ursan sereg a pálya közepe két oldalán, támadó mozgással egymásnak
@@ -100,6 +114,10 @@ class Session {
   std::unique_ptr<map::NavGrid> nav_;
   std::unique_ptr<map::Pathfinder> pf_;
   std::unique_ptr<sim::Sim> sim_;
+  std::unique_ptr<script::ScriptHost> ai_;
+  std::string content_dir_;
+  std::map<std::string, std::string> names_;
+  uint64_t seed_ = 0;
   std::shared_ptr<const Snapshot> last_;
   std::shared_ptr<const std::vector<uint8_t>> fog_;
   // D41: a ködben az 1. játékos a nem saját épületeket és a lelőhelyeket abban az állapotban látja, ahogy utoljára
