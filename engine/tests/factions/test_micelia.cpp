@@ -181,6 +181,26 @@ TEST_CASE("Micéliák fonalgráf és létszám: kapcsolt kész épületenként +
   (void)cc;
 }
 
+TEST_CASE("Micéliák létszám: a szabály network_supply_add (az Óriásliget iránya: +2) kapcsolt épületenként hozzáadódik") {
+  Myc m;
+  sim::Sim& s = *m.sim;
+  const Chain c = chain_tiles(s);
+  const uint16_t fon = def_of("myc_sporafonal");
+  const int32_t prov = R().defs[fon].supply_provides, ns = net_supply();
+  const content::Value* rules = R().faction("mycel")->raw->find("Paths")->find("liget")->find("rules");
+  const int32_t add = num(rules->find("network_supply_add")).floor_int();
+  CHECK(add == 2);
+  m.run(1);
+  const int32_t cap0 = s.player(1).supply_cap;
+  s.place_building(fon, 1, c.hx + 5, c.hy, true);
+  m.run(1);
+  CHECK(s.player(1).supply_cap - cap0 == prov + ns);
+  s.player_mut(1).path = "liget";
+  m.run(1);
+  // a Szívgomba és a fonal is kapcsolt: mindkettő + add
+  CHECK(s.player(1).supply_cap - cap0 == prov + ns + 2 * add);
+}
+
 TEST_CASE("Micéliák lerakás: a nem mag épület csak egy kapcsolt saját épület link_radius-án belül") {
   Myc m;
   sim::Sim& s = *m.sim;
@@ -212,6 +232,7 @@ TEST_CASE("Micéliák mező: a kapcsolt épületek field_radius-án belül a faj
   const auto in = put(s, "myc_pofeteg", 1, hp.x, hp.y + Fixed::from_int(3));
   const auto out = put(s, "myc_pofeteg", 1, Fixed::from_int(28) + fx(1, 2), Fixed::from_int(18) + fx(1, 2));
   const Fixed regen = R().faction("mycel")->regen;
+  CHECK(num(R().game_raw->find("creep_regen_mult")) == Fixed::from_int(3));   // a szorzó a game.json-ból
   m.run(1);
   CHECK(s.mod_regen(in) == regen * Fixed::from_int(2));
   CHECK(s.mod_regen(out) == Fixed{});

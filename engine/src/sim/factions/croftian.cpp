@@ -5,13 +5,19 @@
 //   - a mélység: minden saját épület `Mechanics.creep_radius` körében; kész épületnél a sugár másodpercenként 0,7-del
 //     nő a teljesig (épülőnél 1 + fél méret), csak építhető terepen; játékosonként külön mező (a komponensekből
 //     származtatva – a hash és a mentés a sugarakat tartalmazza, a mező újraszámolható);
-//   - építés csak saját mélységre (a `no_creep` épület kivétel); a mélységen a földi egység × 1,3 gyors, a gyógyulás × 3;
+//   - építés csak saját mélységre (a `no_creep` épület kivétel); a mélységen a földi egység `creep_speed_mult` (1,3)
+//     szorosan gyors, a gyógyulás `creep_regen_mult` (3) × a szabály `creep_regen_mult` (kutatás, irány) szoros – a
+//     szorzók a nép adatából, különben a `game.json`-ból;
 //   - a mélységen álló fák a főépülettől mért távolság szerint rothadnak (fa-bevétel, másodpercenként legfeljebb 6,5);
 //   - fertőzés: a croftian ölés után a mélységen 30%-kal 6 s múlva Karmos kel ki;
-//   - mérgező tüske: nem akadály; a rajta álló, nem tüske-immunis földi egység lassul és mérgeződik;
+//   - mérgező tüske: nem akadály; a rajta álló, nem tüske-immunis földi egység lassul és mérgeződik; a tűz- és
+//     méregfegyver teljesen sebzi, más × 0,2 (`Legacy.spike_taken`), a nem tüske-immunis támadó megmérgeződik;
+//   - `summons_permanent`: az idézések nem járnak le (hősönként legfeljebb 4: a legrégebbi pusztul);
+//   - `spell_resource: hp`: a képesség energiája életerőből fizet (1 energia = 1 életerő; legalább 1 marad);
 //   - átváltozás (`morph`): a költségért gubó lesz, `time` s múlva az új egység.
 #include <algorithm>
 #include <array>
+#include <cstdint>
 #include <map>
 #include <string>
 #include <vector>
@@ -61,6 +67,21 @@ struct CroHatch {   // kikelő fertőzés (a helye a Position)
   }
 };
 
+struct CroSummon {   // állandóvá tett idézés: az idéző hős (0: nincs a közelben), és mikor
+  EntityId hero = 0;
+  int64_t since = 0;
+  void hash(core::StateHash& h) const { h.add_u64(hero); h.add_i64(since); }
+  void save(core::ByteWriter& w) const { w.u32(hero); w.i64(since); }
+  static CroSummon load(core::ByteReader& rd) { CroSummon c; c.hero = rd.u32(); c.since = rd.i64(); return c; }
+};
+
+struct CroBlood {   // életerőből fizető varázsló: a legutóbb beállított energia (ezred)
+  int32_t set = 0;
+  void hash(core::StateHash& h) const { h.add_i64(set); }
+  void save(core::ByteWriter& w) const { w.i32(set); }
+  static CroBlood load(core::ByteReader& rd) { CroBlood c; c.set = rd.i32(); return c; }
+};
+
 struct CroCocoon {   // átváltozó gubó: ebből lesz, ekkor
   uint16_t into = kNoDef;
   int64_t until = 0;
@@ -89,12 +110,39 @@ const content::Value* path2(const content::Value* v, const char* a, const char* 
   return x && b ? x->find(b) : x;
 }
 
-// a mélység állandói (a `game.json` a modulok számára nem érhető el: a régi értékek – FAJMECHANIKAK MECH-CREEP-3)
-const Fixed kCreepSpeed = Fixed::from_ratio(13, 10);
-const Fixed kCreepRegen = Fixed::from_int(3);
+// kód-állandók (a régi játék): a sugár növekedése, a rothadás alapkerete, a fertőzés késése, hősönként az állandó
+// idézések száma; a mélységi szorzók és a tüske sebzésszorzójának tartaléka (ha sem a nép, sem a `game.json` nem adja)
+const Fixed kCreepSpeedDefault = Fixed::from_ratio(13, 10);
+const Fixed kCreepRegenDefault = Fixed::from_int(3);
+const Fixed kSpikeTakenDefault = Fixed::from_ratio(1, 5);
+constexpr int kSummonsPerHero = 4;
 const Fixed kGrow = Fixed::from_ratio(7, 10);
 const Fixed kRotCap = Fixed::from_ratio(13, 2);   // 6,5 fa / s
 constexpr int32_t kInfestDelayDefault = 6;
+
+// a nép kulcsa, különben a `game.json` azonos kulcsa, különben a tartalék
+Fixed tuning(Sim& s, const FactionDef* f, const char* key, Fixed def) {
+  if (const content::Value* v = f ? path2(faction_obj(*f), key, nullptr) : nullptr) return num(v, def);
+  const content::Value* g = s.rules()->game_raw.get();
+  return num(g ? g->find(key) : nullptr, def);
+}
+
+// a játékos szabályszorzója: a kész kutatások (`Rules`) és a választott irány (`Paths.<irány>.rules`) szorzata
+Fixed rule_mult(Sim& s, uint8_t owner, const FactionDef* f, const char* key) {
+  Fixed m = Fixed::from_int(1);
+  const PlayerState& p = s.player(owner);
+  for (const std::string& id : p.researched) {
+    const ResearchDef* r = s.rules()->research(id);
+    if (const content::Value* v = r && r->raw ? path2(r->raw.get(), "Rules", key) : nullptr) m = m * num(v, Fixed::from_int(1));
+  }
+  if (!p.path.empty() && f && f->raw) {
+    const content::Value* pr = path2(f->raw.get(), "Paths", p.path.c_str());
+    if (const content::Value* v = pr ? path2(pr, "rules", key) : nullptr) m = m * num(v, Fixed::from_int(1));
+  }
+  return m;
+}
+
+bool is_spike(const EntityDef& d) { return d.raw && flag(path2(d.raw.get(), "Legacy", "spike_tile")); }
 
 class Module final : public FactionModule {
  public:
@@ -106,9 +154,21 @@ class Module final : public FactionModule {
     w.register_component<CroPlayer>("CroPlayer");
     w.register_component<CroHatch>("CroHatch");
     w.register_component<CroCocoon>("CroCocoon");
+    w.register_component<CroSummon>("CroSummon");
+    w.register_component<CroBlood>("CroBlood");
   }
 
   // --- a mező -----------------------------------------------------------------------------------------------------
+  const FactionDef* fdef(Sim& s, uint8_t owner) {
+    if (owner < 1 || owner > Sim::kMaxPlayers || !s.rules()) return nullptr;
+    return s.rules()->faction(s.player(owner).faction);
+  }
+
+  bool faction_flag(Sim& s, uint8_t owner, const char* key) {
+    const FactionDef* f = fdef(s, owner);
+    return f && flag(path2(faction_obj(*f), key, nullptr));
+  }
+
   bool creep_faction(Sim& s, uint8_t owner) {
     if (owner < 1 || owner > Sim::kMaxPlayers || !s.rules()) return false;
     const FactionDef* f = s.rules()->faction(s.player(owner).faction);
@@ -187,7 +247,7 @@ class Module final : public FactionModule {
     if (!b || !h) return;
     const EntityDef& d = s.rules()->defs[b->def];
     // mérgező tüske: nem akadály (a régi `spike_tile`)
-    if (d.raw && flag(path2(d.raw.get(), "Legacy", "spike_tile")) && s.nav_) s.nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
+    if (is_spike(d) && s.nav_) s.nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
     const int cr = creep_radius_of(s, b->def);
     if (cr <= 0 || !creep_faction(s, h->owner)) return;
     s.world().add(e, CroCreep{b->complete ? Fixed::from_int(cr) : Fixed::from_int(2)});
@@ -224,7 +284,8 @@ class Module final : public FactionModule {
   Fixed speed_mult(Sim& s, EntityId e) override {
     const Unit* u = s.world().get<Unit>(e);
     if (!u || s.rules()->defs[u->def].flying) return Fixed::from_int(1);
-    return unit_on_own_creep(s, e) ? kCreepSpeed : Fixed::from_int(1);
+    if (!unit_on_own_creep(s, e)) return Fixed::from_int(1);
+    return tuning(s, fdef(s, s.world().get<Health>(e)->owner), "creep_speed_mult", kCreepSpeedDefault);
   }
 
   Fixed regen_add(Sim& s, EntityId e) override {
@@ -240,11 +301,31 @@ class Module final : public FactionModule {
       on = on_creep(s, h->owner, b->tx, b->ty);
     }
     if (!on) return Fixed{};
-    // a régi: (faji + stat) gyógyulás × 3 – a közös számítás az alapot adja, a modul a különbözetet
-    const FactionDef* f = s.rules()->faction(s.player(h->owner).faction);
+    // a régi: (faji + stat) gyógyulás × creep_regen_mult × szabály – a közös számítás az alapot adja, a modul a különbözetet
+    const FactionDef* f = fdef(s, h->owner);
     const EntityDef& d = s.rules()->defs[u ? u->def : b->def];
     const Fixed base = (f ? f->regen : Fixed{}) + d.regen;
-    return base * (kCreepRegen - Fixed::from_int(1));
+    const Fixed mult = tuning(s, f, "creep_regen_mult", kCreepRegenDefault) * rule_mult(s, h->owner, f, "creep_regen_mult");
+    return base * (mult - Fixed::from_int(1));
+  }
+
+  // mérgező tüske (MECH-CREEP-7): a tűz- és méregfegyver teljesen sebzi, más × 0,2; a nem tüske-immunis támadó
+  // egységet megmérgezi (mint a rajta állót). Az égés és a méreg idővel ható sebzése nem ide fut (teljes).
+  Fixed damage_taken_mult(Sim& s, EntityId src, EntityId t, bool, bool magic) override {
+    const Building* b = s.world().get<Building>(t);
+    if (!b) return Fixed::from_int(1);
+    const EntityDef& d = s.rules()->defs[b->def];
+    if (!is_spike(d)) return Fixed::from_int(1);
+    const Unit* su = src && s.world().alive(src) ? s.world().get<Unit>(src) : nullptr;
+    if (su) {
+      const Health* sh = s.world().get<Health>(src);
+      if (sh && !faction_flag(s, sh->owner, "spike_immune")) {
+        if (Afflict* af = s.world().get<Afflict>(src)) poison(s, *af, t);
+      }
+      const AttackDef& w = s.rules()->defs[su->def].attack;
+      if (!magic && (w.element == Element::Fire || w.element == Element::Poison || w.poison_dps.raw() > 0)) return Fixed::from_int(1);
+    }
+    return num(path2(d.raw.get(), "Legacy", "spike_taken"), kSpikeTakenDefault);
   }
 
   void on_death(Sim& s, EntityId victim, EntityId /*killer*/, uint8_t ko) override {
@@ -325,7 +406,7 @@ class Module final : public FactionModule {
       spikes_freed_ = true;
       s.world().pool<Building>().each([&](EntityId, const Building& b) {
         const EntityDef& d = s.rules()->defs[b.def];
-        if (d.raw && flag(path2(d.raw.get(), "Legacy", "spike_tile"))) s.nav_->remove_obstacle({b.tx, b.ty, b.w, b.h});
+        if (is_spike(d)) s.nav_->remove_obstacle({b.tx, b.ty, b.w, b.h});
       });
     }
     // a mező forrásainak lenyomata (épület eltűnése, elkészülte, pusztulása): eltérésnél újraszámolás
@@ -381,6 +462,8 @@ class Module final : public FactionModule {
     }
     // mérgező tüskék (0,5 s): lassítás és méreg a rajtuk álló földi, nem tüske-immunis egységnek
     if (now % 15 == 0) spikes(s);
+    permanent_summons(s);
+    blood_magic(s);
   }
 
  private:
@@ -461,22 +544,87 @@ class Module final : public FactionModule {
     }
   }
 
+  static void poison(Sim& s, Afflict& af, EntityId src) {   // a tüske mérge: 4 / s, 2 s
+    af.poison_src = src;
+    af.poison_dps = std::max(af.poison_until > s.tick() ? af.poison_dps : 0, 4000);
+    af.poison_until = s.tick() + 60;
+  }
+
+  // `summons_permanent`: az új idézés (Lifetime) nem jár le, de idézettnek számít; az idéző a legközelebbi saját hős
+  // 3 csempén belül; hősönként legfeljebb 4 – a legrégebbi pusztul
+  void permanent_summons(Sim& s) {
+    std::vector<EntityId> fresh;
+    s.world().pool<Lifetime>().each([&](EntityId e, const Lifetime&) {
+      const Health* h = s.world().get<Health>(e);
+      if (h && h->hp > 0 && !s.world().get<CroSummon>(e) && faction_flag(s, h->owner, "summons_permanent")) fresh.push_back(e);
+    });
+    if (fresh.empty()) return;
+    std::vector<EntityId> heroes;
+    for (const EntityId e : fresh) {
+      const uint8_t owner = s.world().get<Health>(e)->owner;
+      const Position& p = *s.world().get<Position>(e);
+      EntityId best = 0;
+      int64_t bd = 0;
+      s.world().pool<HeroState>().each([&](EntityId he, const HeroState&) {
+        const Health* hh = s.world().get<Health>(he);
+        const Position* hp = s.world().get<Position>(he);
+        if (!hh || !hp || hh->owner != owner || hh->hp <= 0) return;
+        if (core::length(hp->x - p.x, hp->y - p.y) > Fixed::from_int(3)) return;
+        const int64_t d = core::length_sq_raw(hp->x - p.x, hp->y - p.y);
+        if (!best || d < bd) {
+          best = he;
+          bd = d;
+        }
+      });
+      s.world().get<Lifetime>(e)->until = INT64_MAX / 2;
+      s.world().add(e, CroSummon{best, s.tick()});
+      if (best && std::find(heroes.begin(), heroes.end(), best) == heroes.end()) heroes.push_back(best);
+    }
+    for (const EntityId he : heroes) {
+      std::vector<std::pair<int64_t, EntityId>> mine;
+      s.world().pool<CroSummon>().each([&](EntityId e, const CroSummon& c) {
+        const Health* h = s.world().get<Health>(e);
+        if (c.hero == he && h && h->hp > 0) mine.emplace_back(c.since, e);
+      });
+      std::sort(mine.begin(), mine.end());
+      for (size_t i = 0; i + kSummonsPerHero < mine.size(); ++i) s.kill(mine[i].second);
+    }
+  }
+
+  // `spell_resource: hp`: a varázsló energiája a felhasználható életerő (életerő − 1); amit a képességek a legutóbb
+  // beállított értékből elköltöttek, azt az életerő fizeti
+  void blood_magic(Sim& s) {
+    s.world().pool<Caster>().each([&](EntityId e, Caster& c) {
+      Health* h = s.world().get<Health>(e);
+      if (!h || h->hp <= 0 || !s.world().get<Unit>(e)) return;
+      const FactionDef* f = fdef(s, h->owner);
+      const content::Value* sr = f ? path2(faction_obj(*f), "spell_resource", nullptr) : nullptr;
+      if (!sr || !sr->is_string() || sr->text() != "hp") return;
+      CroBlood* bl = s.world().get<CroBlood>(e);
+      if (bl && bl->set > c.energy) h->hp = std::max(1, h->hp - (bl->set - c.energy + 999) / 1000);
+      const int32_t avail = std::max(0, h->hp - 1) * 1000;
+      c.energy = avail;
+      if (bl) {
+        bl->set = avail;
+      } else {
+        s.world().add(e, CroBlood{avail});
+      }
+    });
+  }
+
   void spikes(Sim& s) {
     std::vector<std::pair<EntityId, std::pair<int, int>>> sp;
     s.world().pool<Building>().each([&](EntityId e, const Building& b) {
       const EntityDef& d = s.rules()->defs[b.def];
       const Health* h = s.world().get<Health>(e);
-      if (!b.complete || !h || h->hp <= 0 || !d.raw || !flag(path2(d.raw.get(), "Legacy", "spike_tile"))) return;
+      if (!b.complete || !h || h->hp <= 0 || !is_spike(d)) return;
       sp.push_back({e, {b.tx, b.ty}});
     });
     if (sp.empty()) return;
     s.world().pool<Unit>().each([&](EntityId e, const Unit& u) {
       const Health* h = s.world().get<Health>(e);
       if (!h || h->hp <= 0 || s.rules()->defs[u.def].flying || s.sheltered(e)) return;
-      if (h->owner >= 1 && h->owner <= Sim::kMaxPlayers) {   // a tüske-immunis faj (Croftianok) nem sérül
-        const FactionDef* f = s.rules()->faction(s.player(h->owner).faction);
-        if (f && flag(path2(faction_obj(*f), "spike_immune", nullptr))) return;
-      }
+      if (faction_flag(s, h->owner, "spike_immune")) return;   // a tüske-immunis faj (Croftianok) nem sérül
       const Position& p = *s.world().get<Position>(e);
       const int tx = p.x.floor_int(), ty = p.y.floor_int();
       for (const auto& [se, xy] : sp) {
@@ -488,9 +636,7 @@ class Module final : public FactionModule {
         const Fixed cur = af->slow_until > s.tick() ? af->slow_mult : Fixed::from_int(1);
         af->slow_mult = std::min(cur, Fixed::from_ratio(3, 5));   // max(0,2, 1 − 0,4)
         af->slow_until = s.tick() + 21;                           // 0,7 s
-        af->poison_src = se;
-        af->poison_dps = std::max(af->poison_until > s.tick() ? af->poison_dps : 0, 4000);   // 4 / s
-        af->poison_until = s.tick() + 60;                         // 2 s
+        poison(s, *af, se);
         break;
       }
     });

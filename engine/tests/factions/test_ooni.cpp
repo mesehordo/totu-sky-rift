@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Ooni (M7, ADR-008; MECH-LANT-1–3): a népmodul viselkedési próbái (src/sim/factions/ooni.cpp).
+#include <algorithm>
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -168,4 +169,167 @@ TEST_CASE("Ooni: determinisztikus, és mentésből folytatva ugyanaz") {
   c.sim->restore_obstacles(*c.map);
   c.run(400);
   CHECK(c.sim->hash() == a.sim->hash());
+}
+
+namespace {
+
+void learn(sim::Sim& s, uint8_t owner, const char* id) {   // a kutatás kész (a szabályai a nyers sablonból)
+  auto& r = s.player_mut(owner).researched;
+  r.push_back(id);
+  std::sort(r.begin(), r.end());
+}
+
+Fixed dist(sim::Sim& s, sim::EntityId a, sim::EntityId b) {
+  const auto& pa = *s.world().get<sim::Position>(a);
+  const auto& pb = *s.world().get<sim::Position>(b);
+  return core::length(pa.x - pb.x, pa.y - pb.y);
+}
+
+sim::EntityId hq(sim::Sim& s, uint8_t owner) {
+  sim::EntityId out = 0;
+  s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building& b) {
+    if (!out && b.def == def_of("oon_nian_csarnok") && s.world().get<sim::Health>(e)->owner == owner) out = e;
+  });
+  return out;
+}
+
+bool torii(sim::Sim& s, sim::EntityId u, sim::EntityId gate) {
+  sim::Command c;
+  c.kind = sim::Command::Kind::Module;
+  c.def = "ooni.torii";
+  c.owner = 1;
+  c.units = {u};
+  c.target = gate;
+  return s.mod_command(c);
+}
+
+}  // namespace
+
+TEST_CASE("Ooni Torii-kapupár: belépés, 2 s várakozás rejtve, átkelés a párhoz; utána 8 s töltés; a pár elestével kijönnek") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  const auto a = s.place_building(def_of("oon_torii"), 1, 12, 16, true);
+  const auto b = s.place_building(def_of("oon_torii"), 1, 26, 15, true);
+  const auto u1 = put(s, "oon_oni_harcos", 1, 130, 190);
+  const auto u2 = put(s, "oon_oni_harcos", 1, 140, 190);
+  CHECK(torii(s, u1, a));
+  m.run(2);
+  CHECK(s.mod_hidden(u1));   // a kapuban vár
+  m.run(60);
+  CHECK(!s.mod_hidden(u1));
+  CHECK(dist(s, u1, b) < Fixed::from_int(3));
+  // a kapu most tölt: a második egység 2 s után sem kel át, csak a 8 s lejártával
+  CHECK(torii(s, u2, a));
+  m.run(62);
+  CHECK(dist(s, u2, a) < Fixed::from_int(3) && s.mod_hidden(u2));
+  m.run(240 - 62);
+  CHECK(dist(s, u2, b) < Fixed::from_int(3));
+  // a pár elpusztul: a várakozó kijön
+  const auto u3 = put(s, "oon_oni_harcos", 1, 130, 190);
+  CHECK(torii(s, u3, a));
+  m.run(2);
+  CHECK(s.mod_hidden(u3));
+  s.deal_damage(0, 2, sim::kNoDef, b, 100000000, false, true);
+  m.run(3);
+  CHECK(!s.mod_hidden(u3) && dist(s, u3, a) < Fixed::from_int(3));
+}
+
+TEST_CASE("Ooni Torii lerakás: a pár második kapuja csak látott helyre (fény nélkül is); legfeljebb `torii_pairs` pár (Kettős kapu: 2)") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  std::string err;
+  s.place_building(def_of("oon_torii"), 1, 12, 16, true);
+  m.run(7);   // a látótér 6 tickenként frissül
+  CHECK(!s.can_place(1, def_of("oon_torii"), 23, 15, &err));   // sötét, nem látott
+  std::printf("  nem látott: %s\n", err.c_str());
+  put(s, "oon_kohajito", 1, 265, 160);
+  m.run(7);
+  CHECK(s.can_place(1, def_of("oon_torii"), 23, 15, &err));    // látott: fény nélkül is
+  s.place_building(def_of("oon_torii"), 1, 23, 15, true);
+  CHECK(!s.can_place(1, def_of("oon_torii"), 11, 11, &err));   // egy pár a határ
+  std::printf("  harmadik kapu: %s\n", err.c_str());
+  learn(s, 1, "oon_kettos_kapu");
+  CHECK(s.can_place(1, def_of("oon_torii"), 11, 11, &err));
+}
+
+TEST_CASE("Ooni őrök: a Kőkutya (hűséggel +2) és a bekapcsolt Kapuőrzés (+3) páncélt ad a 2,5 csempén belüli épületnek, legfeljebb 6") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  const auto b = s.place_building(def_of("oon_lakohaz"), 1, 12, 16, true);
+  const auto& bp = *s.world().get<sim::Position>(b);
+  const int bx = (bp.x * Fixed::from_int(10)).floor_int(), by = (bp.y * Fixed::from_int(10)).floor_int();
+  const auto dog = put(s, "oon_kokutya", 1, bx + 15, by);
+  m.run(31);
+  CHECK(s.mod_armor(b) == 0);   // hűség nélkül
+  learn(s, 1, "oon_kokutya_huseg");
+  m.run(30);
+  CHECK(s.mod_armor(b) == 2);
+  CHECK(s.use_ability({dog}, "oon_kapuorzes", {}, {}, 0));
+  m.run(30);
+  CHECK(s.mod_armor(b) == 5);
+  const auto dog2 = put(s, "oon_kokutya", 1, bx - 15, by);
+  CHECK(s.use_ability({dog2}, "oon_kapuorzes", {}, {}, 0));
+  m.run(30);
+  CHECK(s.mod_armor(b) == 6);   // 10 helyett a határ
+  const auto far = s.place_building(def_of("oon_lakohaz"), 1, 4, 16, true);
+  m.run(30);
+  CHECK(s.mod_armor(far) == 0);
+}
+
+TEST_CASE("Ooni kutatások: Lámpásmágia (fényben varázssebzés ×1,2), Messzefény (+2 fénysugár)") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  const auto pap = put(s, "oon_lampaspap", 1, 110, 150);   // a csarnok fényében
+  const auto dark = put(s, "oon_lampaspap", 1, 290, 185);
+  const auto foe = put(s, "urs_berserker", 2, 300, 50);
+  m.run(1);
+  CHECK(s.mod_damage_taken(pap, foe, false, true) == Fixed::from_int(1));
+  learn(s, 1, "oon_lampas_magia");
+  const Fixed lm = s.mod_damage_taken(pap, foe, false, true);
+  CHECK(lm.raw() >= fx(6, 5).raw() - 1 && lm.raw() <= fx(6, 5).raw() + 1);
+  CHECK(s.mod_damage_taken(pap, foe, false, false) == Fixed::from_int(1));   // nem varázs
+  CHECK(s.mod_damage_taken(dark, foe, false, true) == Fixed::from_int(1));   // sötétben
+  // Messzefény: a 8-as kör szélén túl (9 csempe) csak a kutatással gyógyul
+  const auto& hp = *s.world().get<sim::Position>(hq(s, 1));
+  const auto edge = s.spawn_unit(def_of("oon_oni_harcos"), 1, hp.x + Fixed::from_int(9), hp.y);
+  if (auto* c = s.world().get<sim::Combat>(edge)) c->order = sim::Combat::Hold;
+  auto& eh = *s.world().get<sim::Health>(edge);
+  eh.hp = eh.max - 20;
+  m.run(31);
+  CHECK(eh.hp == eh.max - 20);
+  learn(s, 1, "oon_messzefeny");
+  m.run(30);
+  CHECK(eh.hp == eh.max - 18);
+}
+
+TEST_CASE("Ooni Harci dobok: a sérülés harci kedv-vesztesége × 0,6 – fél életerő és hét társ eleste után sem törik meg") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  learn(s, 1, "oon_harci_dobok");
+  const auto u = put(s, "oon_oni_harcos", 1, 185, 185);
+  m.run(1);
+  s.deal_damage(0, 2, sim::kNoDef, u, int64_t{s.world().get<sim::Health>(u)->max / 2} * 1000, false, true);   // −18
+  for (int i = 0; i < 7; ++i) {   // −70: 100 − 18 − 70 = 12
+    const auto a = put(s, "oon_oni_harcos", 1, 175 + i * 3, 175);
+    m.run(1);
+    s.deal_damage(0, 2, sim::kNoDef, a, 100000000, false, true);
+    m.run(1);
+  }
+  CHECK(!broken(s, u));
+}
+
+TEST_CASE("Ooni Tanuki tárgylelet: a bányászott rakományok némelyikénél tárgy kerül a földre (2%)") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  sim::EntityId node = 0;
+  s.world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode&) { if (!node) node = e; });
+  for (int i = 0; i < 16; ++i) {
+    const auto t = s.spawn_unit(def_of("oon_tanuki"), 1, fx(80 + (i % 4) * 6, 10), fx(60 + (i / 4) * 6, 10));
+    s.order_gather(t, node);
+  }
+  m.run(30 * 240);
+  int items = 0;
+  s.world().pool<sim::GroundItem>().each([&](sim::EntityId, const sim::GroundItem&) { ++items; });
+  std::printf("  lelet: %d tárgy, %lld kő\n", items, static_cast<long long>(s.player(1).gathered[sim::kStone]));
+  CHECK(items >= 1);
 }

@@ -147,6 +147,12 @@ TEST_CASE("Croftianok mélység: földi egység ×1,3 gyors, gyógyulása ×3; a
   CHECK(s.mod_regen(on) == base * Fixed::from_int(2));   // (faji + saját) × 3 = alap + 2 × alap
   CHECK(s.mod_regen(off) == Fixed{});
   CHECK(s.mod_regen(foe) == Fixed{});
+  // a szorzók a game.json-ból; a Mélységi gyógyulás kutatás (`Rules.creep_regen_mult` 2) a gyógyulást × 2-vel szorozza
+  CHECK(R().game_raw->find("creep_speed_mult")->as_fixed() == fx(13, 10));
+  CHECK(R().game_raw->find("creep_regen_mult")->as_fixed() == Fixed::from_int(3));
+  s.player_mut(1).researched.push_back("cro_melysegi_gyogyulas");
+  CHECK(s.mod_regen(on) == base * Fixed::from_int(5));   // × 3 × 2 = alap + 5 × alap
+  s.player_mut(1).researched.clear();
   // mérve: a mélységen gyorsabban ér célba
   const auto a = put(s, "cro_karmos", 1, fx(95, 10), fx(165, 10));
   const auto c = put(s, "cro_karmos", 1, fx(235, 10), fx(165, 10));
@@ -253,6 +259,89 @@ TEST_CASE("Croftianok mérgező tüske: nem akadály; az ellenséget lassítja (
   s.order_move(walker, fx(135, 10), fx(165, 10));
   m.run(150);
   CHECK(s.world().get<sim::Position>(walker)->x > fx(125, 10));
+}
+
+TEST_CASE("Croftianok mérgező tüske: a nem tűz/méreg sebzés × 0,2, a támadót megmérgezi; a croftian támadót nem") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto sp = s.place_building(def_of("cro_merges_tuskek"), 1, 11, 16, true);
+  const auto foe = put(s, "urs_berserker", 2, fx(135, 10), fx(165, 10));
+  const int hp0 = s.world().get<sim::Health>(sp)->hp;
+  CHECK(s.mod_damage_taken(foe, sp, false, true) == fx(1, 5));
+  s.deal_damage(foe, 2, def_of("urs_berserker"), sp, 50000, false, true);
+  std::printf("  tüske: %d -> %d\n", hp0, s.world().get<sim::Health>(sp)->hp);
+  CHECK(std::abs(hp0 - s.world().get<sim::Health>(sp)->hp - 10) <= 1);   // 50 × 0,2 (a tört kerekítése)
+  CHECK(s.world().get<sim::Afflict>(foe)->poison_dps == 4000);
+  CHECK(s.world().get<sim::Afflict>(foe)->poison_until > s.tick());
+  // a varázssebzés is × 0,2; a tüske-immunis (croftian) támadó nem mérgeződik
+  const auto own = put(s, "cro_karmos", 1, fx(95, 10), fx(165, 10));
+  const int hp1 = s.world().get<sim::Health>(sp)->hp;
+  s.deal_damage(own, 1, def_of("cro_karmos"), sp, 10000, false, true);
+  CHECK(hp1 - s.world().get<sim::Health>(sp)->hp == 2);
+  CHECK(s.world().get<sim::Afflict>(own)->poison_dps == 0);
+  // más épület sebzése változatlan
+  const auto hq = hq_of(s, 1);
+  const int hq0 = s.world().get<sim::Health>(hq)->hp;
+  s.deal_damage(0, 2, sim::kNoDef, hq, 10000, false, true);
+  CHECK(hq0 - s.world().get<sim::Health>(hq)->hp == 10);
+}
+
+TEST_CASE("Croftianok idézés: summons_permanent – az idézés nem jár le; hősönként legfeljebb 4 (a legrégebbi pusztul)") {
+  CHECK(faction_key("summons_permanent") && faction_key("summons_permanent")->as_bool());
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto hero = put(s, "cro_hos_vor", 1, fx(105, 10), fx(165, 10));
+  CHECK(s.world().get<sim::HeroState>(hero) != nullptr);
+  std::vector<sim::EntityId> sum;
+  for (int i = 0; i < 6; ++i) {
+    const auto k = put(s, "cro_karmos", 1, fx(105 + (i % 3) * 5, 10), fx(175 + (i / 3) * 5, 10));
+    s.world().add(k, sim::Lifetime{s.tick() + 30});
+    sum.push_back(k);
+    m.run(1);
+  }
+  m.run(120);
+  auto live = [&](sim::EntityId e) {
+    const auto* h = s.world().alive(e) ? s.world().get<sim::Health>(e) : nullptr;
+    return h && h->hp > 0;
+  };
+  int alive = 0;
+  for (const auto k : sum) alive += live(k);
+  CHECK(alive == 4);
+  CHECK(!live(sum[0]));   // a két legrégebbi pusztult
+  CHECK(!live(sum[1]));
+  CHECK(s.world().get<sim::Lifetime>(sum[5]) != nullptr);   // idézettnek számít (nem fertőz, nem ad tapasztalatot)
+  // hős nélkül idézett: nem jár le, korlát nélkül
+  const auto lone = put(s, "cro_karmos", 1, fx(285, 10), fx(185, 10));
+  s.world().add(lone, sim::Lifetime{s.tick() + 30});
+  m.run(120);
+  CHECK(live(lone));
+  // az idegen nép idézése lejár
+  const auto foreign = put(s, "urs_berserker", 2, fx(285, 10), fx(105, 10));
+  s.world().add(foreign, sim::Lifetime{s.tick() + 30});
+  m.run(60);
+  CHECK(!live(foreign));
+}
+
+TEST_CASE("Croftianok varázserő: spell_resource hp – a képesség energiája életerőből fizet (legalább 1 marad)") {
+  CHECK(faction_key("spell_resource")->text() == "hp");
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto hero = put(s, "cro_hos_keth", 1, fx(105, 10), fx(165, 10));
+  m.run(1);
+  auto& h = *s.world().get<sim::Health>(hero);
+  auto& c = *s.world().get<sim::Caster>(hero);
+  CHECK(c.energy == (h.hp - 1) * 1000);   // a felhasználható energia az életerő − 1
+  const int hp0 = h.hp;
+  c.energy -= 75000;   // egy 75 energiás képesség elköltése
+  m.run(1);
+  CHECK(hp0 - s.world().get<sim::Health>(hero)->hp == 75);
+  CHECK(s.world().get<sim::Caster>(hero)->energy == (s.world().get<sim::Health>(hero)->hp - 1) * 1000);
+  // túlköltés: legalább 1 életerő marad
+  s.world().get<sim::Caster>(hero)->energy = 0;
+  m.run(1);
+  // (a közös energiatöltés a modul után fut: a tickenkénti töltés a következő elszámolásban beszámít)
+  CHECK(s.world().get<sim::Health>(hero)->hp <= 2);
+  CHECK(s.world().get<sim::Caster>(hero)->energy < 2000);
 }
 
 TEST_CASE("Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz") {

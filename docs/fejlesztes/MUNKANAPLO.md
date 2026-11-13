@@ -618,3 +618,7 @@ Kész Diplomácia csarnoka (`Mechanics.diplomacy`) után egyszer, véglegesen sz
 ## M7: Szürke elfek – bekötés az új horgokra
 
 A Napáldás (`mine_boost`) a népi épületképesség-horgon (`use_power`) megy; új népi parancs: `elves.pray` (a munkások a szentélyhez mennek fohászkodni); a Rezonancia és az Arany fohász a kutatás nyers adatából; az Égkő-fény varázssebzése a sérülésszorzó-horgon (×1,25). **Hiányzik:** a Napszemű papok energiatöltése (`energy_regen_ids`). **Teszt:** 211.
+
+## M7: Ooni, Croftian, Aurethi, Micélia – bekötés az új horgokra
+
+**Ooni:** Torii-kapupár (`ooni.torii` parancs; párosítás a lerakás sorrendjében, 2 s várakozás, átkelés, 8 s töltés), őrpáncél (Kőkutya, Kapuőrzés; `armor_add`, legfeljebb 6), a kutatási szabályok (`light_add`, `lantern_magic`, `morale_hurt_mult`, `drum_mult`) a kutatás nyers adatából, Lámpásmágia a sérülésszorzón, Tanuki tárgylelet. **Croftian:** a mélységi szorzók az adatból (`creep_regen_mult` kutatás és irány szerint), tüske ×0,2 (nem tűz/méreg) és visszamérgezés, `summons_permanent` (hősönként 4, a legrégebbi pusztul), `spell_resource: hp`. **Aurethi:** a lapkövet a `Legacy.foundation_tile` jelöli. **Micélia:** `creep_regen_mult` és `network_supply_add` az adatból. **Hiányzik:** Ooni kapu-irány `build_boost_mult`, Vérszomj. **Teszt:** 221; hash-ek és golden M6 újra.

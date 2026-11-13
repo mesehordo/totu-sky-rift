@@ -5,8 +5,9 @@
 // mechanikájú népekre hat, az adatot a nyers JSON-ból olvassa.
 //   - fonalgráf: a kész `network_core` épületekből bejárás a kész épületeken; két épület össze van kötve, ha a
 //     középpontjuk távolsága ≤ max(link_radius) (alap 4); a nem kapcsolt kész épület leáll (a termelése nem halad);
-//   - mező: a kapcsolt kész épületek `field_radius` (alap 4) körében a csempék; a mezőn a faji gyógyulás háromszoros;
-//   - létszám: minden kapcsolt kész épület + `network_supply`;
+//   - mező: a kapcsolt kész épületek `field_radius` (alap 4) körében a csempék; a mezőn a faji gyógyulás
+//     × `creep_regen_mult` (a nép adatából, különben a `game.json`-ból: 3) × a szabály `creep_regen_mult`;
+//   - létszám: minden kapcsolt kész épület + `network_supply` + a szabály `network_supply_add` (kutatás, irány);
 //   - lerakás: a nem mag épület középpontja egy kész, kapcsolt saját épület max(link_radius) körében;
 //   - spórák: egységenként legfeljebb 6; +1 ölésért, 10 s-onként +1, ha kapcsolt saját épület 8 csempén belül van;
 //   - osztódás (`split_kills`): ennyi ölés után, ha van létszám, kettéválik (fél-fél életerő, az iker a spórák felét
@@ -40,9 +41,32 @@ struct Spores {
 
 constexpr int kMaxSpores = 6;
 constexpr int kSporeTicks = 300;   // 10 s
-const Fixed kFieldRegenMult = Fixed::from_int(3);   // a régi `creep_regen_mult`
+const Fixed kFieldRegenDefault = Fixed::from_int(3);   // tartalék, ha sem a nép, sem a `game.json` nem adja
 
 const content::Value* faction_obj(const FactionDef& f) { return f.raw ? f.raw->find("Faction") : nullptr; }
+
+Fixed num(const content::Value* v, Fixed def);
+
+// a nép kulcsa, különben a `game.json` azonos kulcsa, különben a tartalék
+Fixed tuning(const Rules& r, const FactionDef& f, const char* key, Fixed def) {
+  const content::Value* o = faction_obj(f);
+  if (const content::Value* v = o ? o->find(key) : nullptr) return num(v, def);
+  return num(r.game_raw ? r.game_raw->find(key) : nullptr, def);
+}
+
+// egy szabálykulcs a kész kutatásokból (`Rules`) és a választott irányból (`Paths.<irány>.rules`)
+template <class Fold>
+void each_rule(const Rules& r, const FactionDef& f, const PlayerState& p, const char* key, Fold fold) {
+  for (const std::string& id : p.researched) {
+    const ResearchDef* rd = r.research(id);
+    const content::Value* rr = rd && rd->raw ? rd->raw->find("Rules") : nullptr;
+    if (const content::Value* v = rr ? rr->find(key) : nullptr) fold(v);
+  }
+  const content::Value* ps = !p.path.empty() && f.raw ? f.raw->find("Paths") : nullptr;
+  const content::Value* pp = ps ? ps->find(p.path) : nullptr;
+  const content::Value* pr = pp ? pp->find("rules") : nullptr;
+  if (const content::Value* v = pr ? pr->find(key) : nullptr) fold(v);
+}
 
 std::string fstr(const FactionDef& f, const char* key) {
   const content::Value* o = faction_obj(f);
@@ -156,8 +180,13 @@ class Module final : public FactionModule {
   // --- horgok ---------------------------------------------------------------------------------------------------------
   int32_t supply_bonus(Sim& s, uint8_t owner) override {
     if (!network(s, owner)) return 0;
+    // minden kapcsolt épület: `network_supply` + a szabály `network_supply_add` (kutatás, irány)
     const FactionDef* f = s.rules_->faction(s.players_[owner].faction);
-    return fint(*f, "network_supply") * static_cast<int32_t>(net(s, owner).connected.size());
+    int32_t per = fint(*f, "network_supply");
+    each_rule(*s.rules_, *f, s.players_[owner], "network_supply_add", [&](const content::Value* v) {
+      per += static_cast<int32_t>(v->as_int().value_or(0));
+    });
+    return per * static_cast<int32_t>(net(s, owner).connected.size());
   }
 
   bool can_place(Sim& s, uint8_t owner, uint16_t def, int tx, int ty, std::string* error) override {
@@ -181,7 +210,11 @@ class Module final : public FactionModule {
     if (!h || !p || !network(s, h->owner) || !s.world_.get<Unit>(e)) return Fixed{};
     if (!in_field(s, h->owner, p->x, p->y)) return Fixed{};
     const FactionDef* f = s.rules_->faction(s.players_[h->owner].faction);
-    return f->regen * (kFieldRegenMult - Fixed::from_int(1));   // a mezőn a faji gyógyulás háromszoros
+    // a mezőn a faji gyógyulás × `creep_regen_mult` (nép, különben `game.json`) × a szabály `creep_regen_mult`
+    Fixed mult = tuning(*s.rules_, *f, "creep_regen_mult", kFieldRegenDefault);
+    each_rule(*s.rules_, *f, s.players_[h->owner], "creep_regen_mult",
+              [&](const content::Value* v) { mult = mult * num(v, Fixed::from_int(1)); });
+    return f->regen * (mult - Fixed::from_int(1));
   }
 
   void on_unit_spawned(Sim& s, EntityId e) override {

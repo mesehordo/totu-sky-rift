@@ -106,6 +106,11 @@ TEST_CASE("Aurethi Birodalom: a népmodul betöltve") {
   bool found = false;
   for (const auto& mod : m.sim->modules_) found = found || std::string(mod->name()) == "imperium";
   CHECK(found);
+  // a lapkövet az adat jelöli (`Legacy.foundation_tile`), nem az azonosító
+  for (const char* id : {"imp_alapozas", "imp_nagy_alapozas"}) {
+    const content::Value* l = R().defs[def_of(id)].raw->find("Legacy");
+    CHECK(l && l->find("foundation_tile") && l->find("foundation_tile")->as_bool());
+  }
 }
 
 TEST_CASE("Aurethi alapozás: a kész lapkő alapozás marad; rajta teljes, nélküle fél életerő és 0,2%/s kopás 50%-ig") {

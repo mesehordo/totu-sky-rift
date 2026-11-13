@@ -88,8 +88,10 @@ const content::Value* foundation_cfg(Sim& s, uint8_t owner) {
   return fd && fd->is_object() ? fd : nullptr;
 }
 
-bool is_foundation_tile(const EntityDef& d) {   // a lapkő maga (`Placement.foundation_free` és az alapozás sablonja)
-  return d.id == "imp_alapozas" || d.id == "imp_nagy_alapozas";
+bool is_foundation_tile(const EntityDef& d) {   // a lapkő maga (`Legacy.foundation_tile`)
+  const content::Value* l = d.raw ? d.raw->find("Legacy") : nullptr;
+  const content::Value* t = l ? l->find("foundation_tile") : nullptr;
+  return t && t->is_bool() && t->as_bool();
 }
 
 // a téglalap minden csempéje a játékos alapozásán áll-e

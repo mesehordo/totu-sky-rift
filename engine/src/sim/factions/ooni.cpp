@@ -8,10 +8,21 @@
 //     (3 s óta nem sérült: `regen`/s, másik dobos közelében + `drum.regen`/s), fényben legalább `light_min`;
 //     megtörve sebzés × 0,7, sebesség × 1,2, `break_until`-nál helyreáll;
 //   - Taiko-dobos: a 4 csempén belüli épülő ooni épület × 1,5-tel épül;
-//   - Védőfény (`ward`): a körben a saját egységek ideiglenes pajzsot kapnak.
+//   - Védőfény (`ward`): a körben a saját egységek ideiglenes pajzsot kapnak;
+//   - Torii-kapupár (`ooni.torii` parancs): a kapuk lerakási sorrendben párt alkotnak (legfeljebb `torii_pairs` pár),
+//     a pár második kapuja csak látott helyre kerülhet (fény nélkül is); a belépő 2 s-ot vár, majd (a kapu 8 s-os
+//     újratöltése után) a párnál jelenik meg; utána mindkét kapu tölt; ha a pár elpusztul, a várakozók kijönnek;
+//   - őrök: 30 tickenként a saját épület páncélbónusza a 2,5 csempén belüli Kőkutyák (`kokutya_guard`) és a bekapcsolt
+//     Kapuőrzés (+3) összege, legfeljebb 6;
+//   - kutatási szabályok (`ResearchDef::raw` → `Rules`): `light_add` (a fény sugara +), `lantern_magic` (fényben a
+//     varázssebzés ×), `morale_hurt_mult`, `drum_mult`, `torii_pairs`, `kokutya_guard`;
+//   - Tanuki tárgylelet (`Worker.find_items`): minden kibányászott rakománynál `chance` eséllyel egy tárgy a földre.
 #include <algorithm>
+#include <array>
+#include <cstdint>
 
 #include "content/json.hpp"
+#include "map/map.hpp"
 #include "sim/faction_module.hpp"
 #include "sim/sim.hpp"
 
@@ -43,6 +54,48 @@ struct Ward {
   static Ward load(core::ByteReader& r) { Ward x; x.milli = r.i32(); x.until = r.i64(); return x; }
 };
 
+// Torii-kapu: a párja (0 = nincs) és az újratöltés vége
+struct ToriiGate {
+  EntityId pair = 0;
+  int64_t ready = 0;
+  void hash(core::StateHash& h) const { h.add_u64(pair); h.add_i64(ready); }
+  void save(core::ByteWriter& w) const { w.u32(pair); w.i64(ready); }
+  static ToriiGate load(core::ByteReader& r) { ToriiGate g; g.pair = r.u32(); g.ready = r.i64(); return g; }
+};
+
+// a kapu felé tartó (`wait` = 0) vagy a kapuban váró egység (`wait`: ettől a ticktől kelhet át)
+struct ToriiTrip {
+  EntityId gate = 0;
+  int64_t wait = 0;
+  void hash(core::StateHash& h) const { h.add_u64(gate); h.add_i64(wait); }
+  void save(core::ByteWriter& w) const { w.u32(gate); w.i64(wait); }
+  static ToriiTrip load(core::ByteReader& r) { ToriiTrip t; t.gate = r.u32(); t.wait = r.i64(); return t; }
+};
+
+// őrpáncél (30 tickenként újraszámolva)
+struct Guard {
+  int32_t armor = 0;
+  void hash(core::StateHash& h) const { h.add_i64(armor); }
+  void save(core::ByteWriter& w) const { w.i32(armor); }
+  static Guard load(core::ByteReader& r) { Guard g; g.armor = r.i32(); return g; }
+};
+
+// tárgyleletes munkás: a gyűjtés előző tickbeli állapota (a kibányászott rakomány felismeréséhez)
+struct Finder {
+  uint8_t prev = 0;
+  void hash(core::StateHash& h) const { h.add_u64(prev); }
+  void save(core::ByteWriter& w) const { w.u8(prev); }
+  static Finder load(core::ByteReader& r) { Finder f; f.prev = r.u8(); return f; }
+};
+
+// determinisztikus keverés (a közös véletlenszám-folyamokat nem érinti)
+uint64_t mix(uint64_t x) {
+  x += 0x9E3779B97F4A7C15ull;
+  x = (x ^ (x >> 30)) * 0xBF58476D1CE4E5B9ull;
+  x = (x ^ (x >> 27)) * 0x94D049BB133111EBull;
+  return x ^ (x >> 31);
+}
+
 Fixed fnum(const content::Value* v, Fixed def) {
   if (!v || !v->is_number()) return def;
   const auto f = v->as_fixed();
@@ -58,11 +111,16 @@ class Module final : public FactionModule {
   void register_components(World& w) override {
     w.register_component<Morale>("OoniMorale");
     w.register_component<Ward>("OoniWard");
+    w.register_component<ToriiGate>("OoniTorii");
+    w.register_component<ToriiTrip>("OoniToriiTrip");
+    w.register_component<Guard>("OoniGuard");
+    w.register_component<Finder>("OoniFinder");
   }
 
   void on_unit_spawned(Sim& s, EntityId e) override {
     if (!load(s) || !is_ooni(s, e)) return;
     const EntityDef& d = def_of(s, e);
+    if (find_items(d)) s.world().add(e, Finder{});
     if (d.worker || !d.attack.has || d.has_tag("summoned")) return;
     const Health& h = *s.world().get<Health>(e);
     Morale m;
@@ -74,7 +132,24 @@ class Module final : public FactionModule {
   bool can_place(Sim& s, uint8_t owner, uint16_t def, int tx, int ty, std::string* error) override {
     if (!load(s) || owner == 0 || owner > Sim::kMaxPlayers || s.player(owner).faction != "ooni") return true;
     const EntityDef& d = s.rules()->defs[def];
-    if (d.faction != "ooni" || no_light(d)) return true;
+    if (d.faction != "ooni") return true;
+    if (is_torii(d)) {   // kapupár: a darabszám és a pár második kapuja
+      int n = 0;
+      s.world().pool<ToriiGate>().each([&](EntityId g, const ToriiGate&) {
+        const Health* gh = s.world().get<Health>(g);
+        if (gh && gh->owner == owner && gh->hp > 0) ++n;
+      });
+      if (n >= 2 * prules(s, owner).torii_pairs) {
+        if (error) *error = "nem építhető több Torii-kapupár";
+        return false;
+      }
+      if (n % 2 == 1) {   // a második kapu: csak látott helyre (fény nélkül is)
+        if (tile_visible(s, owner, tx + std::max(1, d.fw) / 2, ty + std::max(1, d.fh) / 2)) return true;
+        if (error) *error = "a kapu párja csak látott helyre építhető";
+        return false;
+      }
+    }
+    if (no_light(d)) return true;
     const Fixed cx = Fixed::from_int(tx) + Fixed::from_ratio(std::max(1, d.fw), 2);
     const Fixed cy = Fixed::from_int(ty) + Fixed::from_ratio(std::max(1, d.fh), 2);
     if (in_light(s, owner, cx, cy, true)) return true;
@@ -97,6 +172,59 @@ class Module final : public FactionModule {
     return near ? boost_mult_ : Fixed::from_int(1);
   }
 
+  // Kőkutya, Kapuőrzés
+  int32_t armor_add(Sim& s, EntityId t) override {
+    const Guard* g = s.world().get<Guard>(t);
+    return g ? g->armor : 0;
+  }
+
+  // lámpásmágia: a fényben álló ooni varázssebzése ×
+  Fixed damage_taken_mult(Sim& s, EntityId src, EntityId, bool, bool magic) override {
+    if (!magic || !src || !s.world().alive(src) || !load(s)) return Fixed::from_int(1);
+    const Health* h = s.world().get<Health>(src);
+    const Position* p = s.world().get<Position>(src);
+    if (!h || !p || !owner_ooni(s, h->owner)) return Fixed::from_int(1);
+    const Fixed m = prules(s, h->owner).lantern_magic;
+    if (m == Fixed::from_int(1) || !in_light(s, h->owner, p->x, p->y, false)) return Fixed::from_int(1);
+    return m;
+  }
+
+  bool hidden(Sim& s, EntityId e) override {   // a kapuban váró nem látszik
+    const ToriiTrip* t = s.world().get<ToriiTrip>(e);
+    return t && t->wait > 0;
+  }
+
+  void on_building_placed(Sim& s, EntityId b) override {   // a kapuk lerakási sorrendben párt alkotnak
+    if (!load(s) || !is_ooni(s, b) || !is_torii(def_of(s, b))) return;
+    const uint8_t owner = s.world().get<Health>(b)->owner;
+    EntityId mate = 0;
+    s.world().pool<ToriiGate>().each([&](EntityId g, const ToriiGate& tg) {
+      const Health* gh = s.world().get<Health>(g);
+      if (!mate && g != b && tg.pair == 0 && gh && gh->owner == owner && gh->hp > 0) mate = g;
+    });
+    s.world().add(b, ToriiGate{mate, 0});
+    if (mate) s.world().get<ToriiGate>(mate)->pair = b;
+  }
+
+  // `ooni.torii`: a `units` a `target` kapuhoz mennek, és átkelnek a párjához
+  bool on_command(Sim& s, const Command& c) override {
+    if (c.def != "ooni.torii") return false;
+    const ToriiGate* g = s.world().alive(c.target) ? s.world().get<ToriiGate>(c.target) : nullptr;
+    const Health* gh = g ? s.world().get<Health>(c.target) : nullptr;
+    const Building* gb = g ? s.world().get<Building>(c.target) : nullptr;
+    if (!g || !gh || !gb || gh->hp <= 0 || !gb->complete || !g->pair) return true;
+    const Position gp = *s.world().get<Position>(c.target);
+    for (const EntityId u : c.units) {
+      if (!s.world().alive(u) || !s.world().get<Unit>(u)) continue;
+      const Health* uh = s.world().get<Health>(u);
+      if (!uh || uh->owner != gh->owner || uh->hp <= 0) continue;
+      if (ToriiTrip* t = s.world().get<ToriiTrip>(u)) *t = ToriiTrip{c.target, 0};
+      else s.world().add(u, ToriiTrip{c.target, 0});
+      s.order_move(u, gp.x, gp.y);
+    }
+    return true;
+  }
+
   Fixed damage_mult(Sim& s, EntityId a, EntityId) override {
     const Morale* m = s.world().get<Morale>(a);
     return m && m->broken ? broken_damage_ : Fixed::from_int(1);
@@ -109,6 +237,10 @@ class Module final : public FactionModule {
 
   void on_death(Sim& s, EntityId v, EntityId, uint8_t) override {
     if (!load(s) || !is_ooni(s, v)) return;
+    if (ToriiGate* g = s.world().get<ToriiGate>(v)) {   // a pár egyedül marad (a várakozókat a tick engedi ki)
+      if (ToriiGate* p = s.world().alive(g->pair) ? s.world().get<ToriiGate>(g->pair) : nullptr; p && p->pair == v) p->pair = 0;
+      g->pair = 0;
+    }
     const EntityDef& d = def_of(s, v);
     if (s.world().get<Lifetime>(v) || d.has_tag("summoned") || !s.world().get<Unit>(v)) return;
     const Position& vp = *s.world().get<Position>(v);
@@ -187,7 +319,8 @@ class Module final : public FactionModule {
       if (!h) return;
       const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0);
       if (eff < m.last_eff && h->max > 0) {
-        m.value = static_cast<int32_t>(std::max<int64_t>(0, m.value - (m.last_eff - eff) * hurt_ / h->max));
+        const int64_t loss = ((m.last_eff - eff) * hurt_ / h->max * prules(s, h->owner).hurt_mult.raw()) >> 16;
+        m.value = static_cast<int32_t>(std::max<int64_t>(0, m.value - loss));
         m.last_hurt = now;
         if (m.value <= 0) m.broken = 1;
       }
@@ -209,7 +342,7 @@ class Module final : public FactionModule {
         for (const auto& [d, dp] : drums) {
           const Health* dh = s.world().get<Health>(d);
           if (d != e && dh->owner == h->owner && core::length(dp.first - p->x, dp.second - p->y) <= drum_radius_) {
-            add += drum_regen_ * 500;
+            add += static_cast<int32_t>((int64_t{drum_regen_} * 500 * prules(s, h->owner).drum_mult.raw()) >> 16);
             break;
           }
         }
@@ -218,6 +351,9 @@ class Module final : public FactionModule {
         if (m.broken && m.value >= break_until_ * 1000) m.broken = 0;
       });
     }
+    torii_tick(s);
+    finder_tick(s);
+    if (now % 30 == 0) guard_tick(s);
     if (now % 30 == 0) {   // lámpásfény-gyógyulás
       s.world().pool<Unit>().each([&](EntityId e, const Unit&) {
         Health* h = s.world().get<Health>(e);
@@ -230,6 +366,160 @@ class Module final : public FactionModule {
   }
 
  private:
+  // a kész kutatások szabályai játékosonként (származtatott, nem állapot: a kész kutatások számával frissül)
+  struct PRules {
+    size_t key = SIZE_MAX;
+    Fixed light_add, lantern_magic = Fixed::from_int(1), drum_mult = Fixed::from_int(1), hurt_mult = Fixed::from_int(1);
+    int32_t torii_pairs = 1, kokutya_guard = 0;
+  };
+  std::array<PRules, Sim::kMaxPlayers + 1> pr_{};
+  const PRules& prules(Sim& s, uint8_t o) {
+    const int i = std::min<int>(o, Sim::kMaxPlayers);
+    PRules& r = pr_[static_cast<size_t>(i)];
+    const auto& done = s.player(i).researched;
+    if (r.key == done.size()) return r;
+    r = PRules{};
+    r.key = done.size();
+    for (const std::string& id : done) {
+      const ResearchDef* rd = s.rules() ? s.rules()->research(id) : nullptr;
+      const content::Value* ru = rd && rd->raw ? rd->raw->find("Rules") : nullptr;
+      if (!ru) continue;
+      r.light_add += fnum(ru->find("light_add"), Fixed{});
+      r.lantern_magic *= fnum(ru->find("lantern_magic"), Fixed::from_int(1));
+      r.drum_mult *= fnum(ru->find("drum_mult"), Fixed::from_int(1));
+      r.hurt_mult *= fnum(ru->find("morale_hurt_mult"), Fixed::from_int(1));
+      r.torii_pairs = std::max(r.torii_pairs, fnum(ru->find("torii_pairs"), Fixed{}).floor_int());
+      r.kokutya_guard += fnum(ru->find("kokutya_guard"), Fixed{}).floor_int();
+    }
+    return r;
+  }
+
+  static constexpr int64_t kToriiWait = 60, kToriiCooldown = 240;   // 2 s, 8 s
+  static constexpr int32_t kGateGuard = 3, kGuardMax = 6;
+
+  // Torii: odaérés, várakozás, átkelés; a pár nélküli kapuból a várakozók kijönnek
+  void torii_tick(Sim& s) {
+    const int64_t now = s.tick();
+    auto gate_ok = [&](EntityId g) {
+      if (!s.world().alive(g)) return false;
+      const Health* h = s.world().get<Health>(g);
+      const Building* b = s.world().get<Building>(g);
+      return h && b && h->hp > 0 && b->complete && s.world().get<ToriiGate>(g);
+    };
+    s.world().pool<ToriiGate>().each([&](EntityId g, ToriiGate& tg) {   // a megszűnt párok bontása
+      if (!tg.pair) return;
+      const ToriiGate* p = s.world().alive(tg.pair) ? s.world().get<ToriiGate>(tg.pair) : nullptr;
+      const Health* ph = p ? s.world().get<Health>(tg.pair) : nullptr;
+      if (!p || p->pair != g || !ph || ph->hp <= 0) tg.pair = 0;
+    });
+    std::vector<EntityId> drop;
+    std::vector<std::pair<EntityId, EntityId>> go;   // (egység, kapu)
+    s.world().pool<ToriiTrip>().each([&](EntityId u, ToriiTrip& t) {
+      const Health* uh = s.world().get<Health>(u);
+      if (!uh || uh->hp <= 0 || !gate_ok(t.gate) || !s.world().get<ToriiGate>(t.gate)->pair) {
+        drop.push_back(u);
+        return;
+      }
+      const Position& up = *s.world().get<Position>(u);
+      const Movement* m = s.world().get<Movement>(u);
+      if (t.wait > 0) {   // a kapuban: új mozgásparancsra kilép
+        if (m && m->moving) drop.push_back(u);
+        else if (now >= t.wait) go.push_back({u, t.gate});
+        return;
+      }
+      const Position& gp = *s.world().get<Position>(t.gate);
+      const Building& gb = *s.world().get<Building>(t.gate);
+      const Fixed reach = Fixed::from_ratio(std::max(gb.w, gb.h), 2) + Fixed::from_ratio(3, 2);
+      if (core::length(up.x - gp.x, up.y - gp.y) <= reach) {
+        s.stop(u);
+        t.wait = now + kToriiWait;
+      } else if (!m || !m->moving) {
+        drop.push_back(u);   // megállt vagy más parancsot kapott
+      }
+    });
+    for (const EntityId u : drop) s.world().pool<ToriiTrip>().remove(u);
+    // átkelés: kapunként a kész várakozók együtt, ha a kapu nem tölt
+    std::vector<EntityId> fired;
+    for (const auto& [u, g] : go) {
+      const ToriiGate& tg = *s.world().get<ToriiGate>(g);
+      const bool now_fired = std::find(fired.begin(), fired.end(), g) != fired.end();
+      if ((now < tg.ready && !now_fired) || !gate_ok(tg.pair)) continue;
+      const Position pp = *s.world().get<Position>(tg.pair);
+      s.place_at_free(u, pp.x, pp.y);
+      s.world().pool<ToriiTrip>().remove(u);
+      if (!now_fired) fired.push_back(g);
+    }
+    for (const EntityId g : fired) {
+      ToriiGate& tg = *s.world().get<ToriiGate>(g);
+      tg.ready = now + kToriiCooldown;
+      s.world().get<ToriiGate>(tg.pair)->ready = now + kToriiCooldown;
+    }
+  }
+
+  // őrök: a saját épületek páncélbónusza újra (Kőkutya, Kapuőrzés), 2,5 csempén belül, legfeljebb 6
+  void guard_tick(Sim& s) {
+    struct Src { uint8_t owner; Fixed x, y; int32_t armor; };
+    std::vector<Src> src;
+    const uint16_t dog = s.rules()->def("oon_kokutya");
+    const int gate_ab = s.rules()->ability_index("oon_kapuorzes");
+    s.world().pool<Unit>().each([&](EntityId e, const Unit& u) {
+      const Health* h = s.world().get<Health>(e);
+      if (!h || h->hp <= 0 || !owner_ooni(s, h->owner)) return;
+      int32_t a = 0;
+      if (u.def == dog) a += prules(s, h->owner).kokutya_guard;
+      if (gate_ab >= 0 && s.toggled(e, static_cast<uint16_t>(gate_ab))) {
+        const AbilityDef& ad = s.rules()->abilities[static_cast<size_t>(gate_ab)];
+        a += fnum(ad.spec ? ad.spec->find("guard_armor") : nullptr, Fixed::from_int(kGateGuard)).floor_int();
+      }
+      if (a <= 0) return;
+      const Position& p = *s.world().get<Position>(e);
+      src.push_back({h->owner, p.x, p.y, a});
+    });
+    const Fixed radius = Fixed::from_ratio(5, 2);
+    std::vector<std::pair<EntityId, int32_t>> set;
+    s.world().pool<Building>().each([&](EntityId b, const Building&) {
+      const Health* h = s.world().get<Health>(b);
+      if (!h || !owner_ooni(s, h->owner)) return;
+      const Position& p = *s.world().get<Position>(b);
+      int32_t a = 0;
+      for (const Src& g : src) {
+        if (g.owner == h->owner && core::length(g.x - p.x, g.y - p.y) <= radius) a += g.armor;
+      }
+      if (a > 0 || s.world().get<Guard>(b)) set.push_back({b, std::min(a, kGuardMax)});
+    });
+    for (const auto& [b, a] : set) {
+      if (a <= 0) s.world().pool<Guard>().remove(b);
+      else if (Guard* g = s.world().get<Guard>(b)) g->armor = a;
+      else s.world().add(b, Guard{a});
+    }
+  }
+
+  // Tanuki tárgylelet: a kibányászott rakománynál (munka → visszaút) `chance` eséllyel egy tárgy a lábához
+  void finder_tick(Sim& s) {
+    std::vector<std::pair<EntityId, uint16_t>> found;
+    s.world().pool<Finder>().each([&](EntityId e, Finder& f) {
+      const Worker* w = s.world().get<Worker>(e);
+      const Unit* u = s.world().get<Unit>(e);
+      if (!w || !u) return;
+      if (f.prev == Worker::Work && w->state == Worker::Return && w->carry > 0) {
+        const content::Value* fi = find_items(s.rules()->defs[u->def]);
+        const content::Value* pool = fi ? fi->find("pool") : nullptr;
+        const int64_t chance = milli(fnum(fi ? fi->find("chance") : nullptr, Fixed{}));   // ezrelék
+        const uint64_t r = mix((static_cast<uint64_t>(s.tick()) << 32) ^ e);
+        if (pool && pool->is_array() && !pool->items().empty() && static_cast<int64_t>(r % 1000) < chance) {
+          const content::Value& it = pool->items()[(r >> 20) % pool->items().size()];
+          const int idx = it.is_string() ? s.rules()->item_index(it.text()) : -1;
+          if (idx >= 0) found.push_back({e, static_cast<uint16_t>(idx)});
+        }
+      }
+      f.prev = w->state;
+    });
+    for (const auto& [e, item] : found) {
+      const Position p = *s.world().get<Position>(e);
+      s.drop_ground_item(item, p.x, p.y);
+    }
+  }
+
   bool loaded_ = false, ok_ = false;
   int32_t max_ = 100, hurt_ = 60, ally_death_ = 10, hero_death_ = 25, regen_ = 2, drum_regen_ = 8, light_min_ = 30,
           break_until_ = 50;
@@ -286,6 +576,21 @@ class Module final : public FactionModule {
     return h && owner_ooni(s, h->owner) && (s.world().get<Unit>(e) || s.world().get<Building>(e));
   }
   static const content::Value* mech(const EntityDef& d) { return d.raw ? d.raw->find("Mechanics") : nullptr; }
+  static bool is_torii(const EntityDef& d) {
+    const content::Value* m = mech(d);
+    const content::Value* t = m ? m->find("torii") : nullptr;
+    return t && t->is_bool() && t->as_bool();
+  }
+  static const content::Value* find_items(const EntityDef& d) {
+    const content::Value* w = d.raw ? d.raw->find("Worker") : nullptr;
+    return w ? w->find("find_items") : nullptr;
+  }
+  static bool tile_visible(Sim& s, uint8_t owner, int x, int y) {
+    const auto& v = s.player(owner).visible;
+    if (v.empty() || !s.map_ || s.fog_ == MatchSetup::Fog::None) return true;
+    if (x < 0 || y < 0 || x >= s.map_->width() || y >= s.map_->height()) return false;
+    return v[static_cast<size_t>(y * s.map_->width() + x)] != 0;
+  }
   static bool no_light(const EntityDef& d) {
     const content::Value* pl = d.raw ? d.raw->find("Placement") : nullptr;
     const content::Value* nl = pl ? pl->find("no_light") : nullptr;
@@ -303,8 +608,9 @@ class Module final : public FactionModule {
       const Health* h = s.world().get<Health>(b);
       if (!h || h->owner != owner || h->hp <= 0) return;
       const EntityDef& d = s.rules()->defs[bd.def];
-      const Fixed r = light_radius(d);
+      Fixed r = light_radius(d);
       if (r.raw() <= 0) return;
+      r += prules(s, owner).light_add;
       const content::Value* m = mech(d);
       const content::Value* ln = m ? m->find("lantern") : nullptr;
       if (!bd.complete && !(for_build && ln && ln->is_bool() && ln->as_bool())) return;
@@ -321,8 +627,9 @@ class Module final : public FactionModule {
       const Health* h = s.world().get<Health>(b);
       if (!h || h->owner != owner || h->hp <= 0 || !bd.complete) return;
       const EntityDef& d = s.rules()->defs[bd.def];
-      const Fixed r = light_radius(d);
+      Fixed r = light_radius(d);
       if (r.raw() <= 0) return;
+      r += prules(s, owner).light_add;
       const Position& p = *s.world().get<Position>(b);
       if (core::length(p.x - x, p.y - y) > r) return;
       found = true;
