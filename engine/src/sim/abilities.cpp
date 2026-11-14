@@ -532,8 +532,13 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
         return false;
       }
       [[fallthrough]];
+    case T::Raise:
     case T::Bolt:
     case T::Area: {
+      if (a.type == T::Raise) {   // lélekidézés: kell idézhető holttest a pont közelében
+        size_t ci = 0;
+        if (!find_corpse(x, y, Fixed::from_ratio(5, 2), &ci)) return false;
+      }
       if (a.type == T::Bolt) {   // csak ellenséges, látható egységre
         const Health* th = world_.get<Health>(target);
         const Health* mh = world_.get<Health>(us.front());
@@ -639,7 +644,81 @@ void Sim::cast_step(EntityId e, Caster& c) {
     world_.add(f, Field{h.owner, e, ab, tick_ + a.duration, tick_ + 1});
   } else if (a.type == T::Summon) {
     summon(e, ab, true, c.cx, c.cy);
+  } else if (a.type == T::Raise) {
+    raise_corpse(e, ab, c.cx, c.cy);   // ha közben elporladt: nincs költség
   }
+}
+
+// --- holttestek és lélekidézés (a régi G 148, 336, 1261, 2944–2967) ----------------------------------------------------
+void Sim::add_corpse(EntityId e) {
+  const Unit* u = world_.get<Unit>(e);
+  const Health* h = world_.get<Health>(e);
+  const Position* p = world_.get<Position>(e);
+  if (!rules_ || !u || !h || !p || corpses_.size() >= 200) return;
+  bool wanted = false;   // csak ha valamelyik játékos népe idéz (a többi meccs állapota így változatlan)
+  for (int i = 1; i <= kMaxPlayers; ++i) {
+    const PlayerState& ps = players_[static_cast<size_t>(i)];
+    const FactionDef* f = ps.active ? rules_->faction(ps.faction) : nullptr;
+    wanted = wanted || (f && f->raises);
+  }
+  if (!wanted) return;
+  const EntityDef& d = rules_->defs[u->def];
+  const content::Value* lt = d.raw ? d.raw->find("Lifetime") : nullptr;
+  const content::Value* nc = lt ? lt->find("no_corpse") : nullptr;
+  if (nc && nc->is_bool() && nc->as_bool()) return;
+  corpses_.push_back(Corpse{u->def, h->owner, p->x, p->y, tick_});
+}
+
+// a legközelebbi idézhető holttest (legalább 1 s-os, a sugáron belül; egyenlő távolságnál a későbbi)
+bool Sim::find_corpse(Fixed x, Fixed y, Fixed r, size_t* out) const {
+  bool found = false;
+  int64_t best = core::length_sq_raw(r, Fixed{});
+  for (size_t i = 0; i < corpses_.size(); ++i) {
+    const Corpse& c = corpses_[i];
+    if (tick_ - c.tick < kTickHz) continue;
+    const int64_t d = core::length_sq_raw(c.x - x, c.y - y);
+    if (d <= best) {
+      best = d;
+      *out = i;
+      found = true;
+    }
+  }
+  return found;
+}
+
+bool Sim::raise_corpse(EntityId caster, uint16_t ab, Fixed x, Fixed y) {
+  Caster* c = world_.get<Caster>(caster);
+  const Health* h = world_.get<Health>(caster);
+  size_t ci = 0;
+  if (!c || !h || !find_corpse(x, y, Fixed::from_ratio(5, 2), &ci)) return false;
+  const AbilityDef& a = rules_->abilities[ab];
+  const Corpse cp = corpses_[ci];
+  const EntityDef& cd = rules_->defs[cp.def];
+  const uint16_t def = cd.has_tag("large") || cd.supply >= 4 ? a.large : a.small;   // nagy testű: `large` vagy 4+ létszám
+  if (def == kNoDef) return false;
+  corpses_.erase(corpses_.begin() + static_cast<std::ptrdiff_t>(ci));
+  ability_spend(*c, ab, a);
+  const EntityId u = spawn_unit(def, h->owner, cp.x, cp.y);
+  if (u != kNoEntity) place_at_free(u, cp.x, cp.y);
+  return true;
+}
+
+// irány-szabály (`raise_from_kills`): az egység által ölt szerves, nem idézett, nem hős ellenségből esélyre
+// ideiglenes egység kel a gyilkos gazdájának (a régi G 1205)
+void Sim::raise_from_kills(EntityId victim, EntityId killer, uint8_t ko) {
+  if (!rules_ || ko < 1 || ko > kMaxPlayers) return;
+  const RuleSet& rs = rules_of(ko);
+  const Unit* vu = world_.get<Unit>(victim);
+  const Health* vh = world_.get<Health>(victim);
+  if (rs.rfk_unit == kNoDef || !vu || !vh || !hostile(ko, vh->owner) || world_.get<Building>(killer)) return;
+  const EntityDef& vd = rules_->defs[vu->def];
+  if (vd.hero || !vd.has_tag("organic") || world_.get<Lifetime>(victim)) return;
+  if (static_cast<int64_t>(combat_rng_.next() % 1000u) >= (int64_t{rs.rfk_chance.raw()} * 1000 >> 16)) return;
+  const Position p = *world_.get<Position>(victim);
+  const EntityId u = spawn_unit(rs.rfk_unit, ko, p.x, p.y);
+  if (u == kNoEntity) return;
+  place_at_free(u, p.x, p.y);
+  if (rs.rfk_lifetime > 0) world_.add(u, Lifetime{tick_ + rs.rfk_lifetime});
 }
 
 void Sim::aura_system() {
@@ -772,6 +851,12 @@ void Sim::ability_system() {
     if (l.until <= tick_) expired.push_back(e);
   });
   for (const EntityId e : expired) kill(e);
+  // a holttestek 10 s után elporladnak (1 s-onként nézve, a régi G 336)
+  if (tick_ % kTickHz == 0 && !corpses_.empty()) {
+    corpses_.erase(std::remove_if(corpses_.begin(), corpses_.end(),
+                                  [&](const Corpse& c) { return tick_ - c.tick >= 10 * kTickHz; }),
+                   corpses_.end());
+  }
   // életerő-visszatöltés (`Health.regen` + aura `regen_add`) és energia
   auto regen = [&](EntityId e, uint16_t def) {
     Health* h = world_.get<Health>(e);

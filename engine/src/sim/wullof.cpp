@@ -30,8 +30,37 @@ Fixed rect_gap(Fixed px, Fixed py, const Building& b) {
 }  // namespace
 
 Fixed Sim::pack_damage_mult(EntityId e) {
-  const Pack* p = world_.get<Pack>(e);
   const Health* h = world_.get<Health>(e);
+  if (h && h->owner >= 1 && h->owner <= kMaxPlayers && rules_of(h->owner).has_pack) {
+    // szabályként adott falkabónusz (irány; a régi G 764–787): a nép falkabónusza helyett, a címkéseknek; a ± sugarú
+    // négyzetben álló saját, nem munkás, nem jószág (címkés) egységek száma, legfeljebb max / per
+    const RuleSet& rs = rules_of(h->owner);
+    const Unit* u = world_.get<Unit>(e);
+    const Position* p = world_.get<Position>(e);
+    if (!u || !p || rs.pack_per.raw() <= 0) return Fixed::from_int(1);
+    auto tagged = [&](const EntityDef& d) {
+      if (rs.pack_tags.empty()) return true;
+      for (const auto& t : rs.pack_tags) {
+        if (d.has_tag(t)) return true;
+      }
+      return false;
+    };
+    const EntityDef& ed = rules_->defs[u->def];
+    if (ed.worker || !tagged(ed)) return Fixed::from_int(1);
+    const int cap = static_cast<int>(int64_t{rs.pack_max.raw()} / rs.pack_per.raw());   // a régi int(max / per)
+    int n = 0;
+    world_.pool<Unit>().each([&](EntityId o, const Unit& ou) {
+      if (o == e || n >= cap) return;
+      const Health* oh = world_.get<Health>(o);
+      if (!oh || oh->owner != h->owner || oh->hp <= 0 || sheltered(o)) return;
+      const EntityDef& od = rules_->defs[ou.def];
+      if (od.worker || od.has_tag("livestock") || !tagged(od)) return;
+      const Position& op = *world_.get<Position>(o);
+      if (absf(op.x - p->x) <= rs.pack_radius && absf(op.y - p->y) <= rs.pack_radius) ++n;
+    });
+    return Fixed::from_int(1) + rs.pack_per * Fixed::from_int(std::min(n, cap));
+  }
+  const Pack* p = world_.get<Pack>(e);
   if (!p || !h || h->owner == 0 || h->owner > kMaxPlayers) return Fixed::from_int(1);
   const FactionDef* f = rules_->faction(players_[h->owner].faction);
   return f && f->pack ? Fixed::from_int(1) + f->pack_per * Fixed::from_int(p->n) : Fixed::from_int(1);

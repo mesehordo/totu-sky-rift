@@ -133,6 +133,22 @@ void parse_rules(const content::Value* obj, const Rules& r, RuleSet& out) {
     read_tags(rg->find("tags"), out.rage_tags);
     out.rage_max = fixed_of(rg->find("max"), Fixed{});
   }
+  // falkabónusz szabályként (a régi G 764: a `rules` vagy a nép `pack_bonus`-a)
+  if (const content::Value* pb = obj->find("pack_bonus"); pb && pb->is_object()) {
+    out.has_pack = true;
+    out.pack_radius = fixed_of(pb->find("radius"), Fixed::from_int(4));
+    out.pack_per = fixed_of(pb->find("per"), Fixed{});
+    out.pack_max = fixed_of(pb->find("max"), Fixed::from_ratio(2, 5));
+    out.pack_tags.clear();
+    read_tags(pb->find("tags"), out.pack_tags);
+  }
+  // ölt szerves ellenségből esélyre ideiglenes egység (a régi G 1205)
+  if (const content::Value* rk = obj->find("raise_from_kills"); rk && rk->is_object()) {
+    const content::Value* u = rk->find("unit");
+    out.rfk_unit = u && u->is_string() ? r.def(u->text()) : kNoDef;
+    out.rfk_chance = fixed_of(rk->find("chance"), Fixed{});
+    out.rfk_lifetime = seconds_to_ticks(fixed_of(rk->find("lifetime"), Fixed{}));
+  }
 }
 
 }  // namespace
@@ -375,7 +391,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
              : type == "autoheal" ? T::Autoheal : type == "bolt" ? T::Bolt : type == "summon" ? T::Summon
              : type == "area" ? T::Area : type == "passive" ? T::Passive : type == "gpower" ? T::Power
              : type == "blink" ? T::Blink : type == "mount" ? T::Mount : type == "dismount" ? T::Dismount
-             : type == "capture" ? T::Capture : type == "occupy" ? T::Occupy : T::Unknown;
+             : type == "capture" ? T::Capture : type == "occupy" ? T::Occupy : type == "raise" ? T::Raise : T::Unknown;
       // alapértékek típusonként (KEPESSEGEK.md B-2)
       const bool cd10 = a.type == T::Nova || a.type == T::SelfBuff || a.type == T::Blink;
       const Fixed cd_def = cd10 ? Fixed::from_int(10) : (a.type == T::Summon || a.type == T::Autoheal) ? Fixed::from_int(1) : Fixed{};
@@ -429,7 +445,8 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.mods.range_add = mod("range_add", Fixed{});
       a.mods.regen_add = mod("regen_add", Fixed{});
       if (const content::Value* u = key("unit"); u && u->is_string()) summon_units.emplace_back(id, u->text());
-      for (auto [k, dst] : {std::pair<const char*, std::string*>{"into", &a.into_id}, {"mount", &a.mount_id}, {"rider", &a.rider_id}}) {
+      for (auto [k, dst] : {std::pair<const char*, std::string*>{"into", &a.into_id}, {"mount", &a.mount_id}, {"rider", &a.rider_id},
+                            {"small", &a.small_id}, {"large", &a.large_id}}) {
         if (const content::Value* x = key(k); x && x->is_string()) *dst = x->text();
       }
       read_tags(key("riders"), a.rider_ids);
@@ -638,6 +655,8 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     if (!a.into_id.empty()) a.into = r.def(a.into_id);
     if (!a.mount_id.empty()) a.mount = r.def(a.mount_id);
     if (!a.rider_id.empty()) a.rider = r.def(a.rider_id);
+    if (!a.small_id.empty()) a.small = r.def(a.small_id);
+    if (!a.large_id.empty()) a.large = r.def(a.large_id);
     for (const auto& rid : a.rider_ids) {
       if (r.def(rid) != kNoDef) a.riders.push_back(r.def(rid));
     }
@@ -675,6 +694,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
     parse_modifiers(v->find("Modifiers"), rd.modifiers);
     parse_rules(v->find("Rules"), r, rd.rules);
+    if (const content::Value* ex = v->find("Exclusive"); ex && ex->is_string()) rd.exclusive = ex->text();
     rd.raw = std::make_shared<const content::Value>(*v);
     r.researches.push_back(std::move(rd));
   }
@@ -923,6 +943,14 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     r.factions.push_back(std::move(fd));
   }
   std::sort(r.factions.begin(), r.factions.end(), [](const FactionDef& a, const FactionDef& b) { return a.id < b.id; });
+  for (FactionDef& fd : r.factions) {   // lélekidézés: a nép valamely egysége (hőse) holttestből idéz
+    for (const EntityDef& d : r.defs) {
+      if (d.faction != fd.id) continue;
+      for (const uint16_t ai : d.abilities) {
+        fd.raises = fd.raises || r.abilities[ai].type == AbilityDef::Type::Raise;
+      }
+    }
+  }
   if (errors.size() != before) return std::nullopt;
   return r;
 }
@@ -996,6 +1024,18 @@ void RuleSet::merge(const RuleSet& o) {
     has_rage = true;
     rage_tags = o.rage_tags;
     rage_max = o.rage_max;
+  }
+  if (o.has_pack) {
+    has_pack = true;
+    pack_radius = o.pack_radius;
+    pack_per = o.pack_per;
+    pack_max = o.pack_max;
+    pack_tags = o.pack_tags;
+  }
+  if (o.rfk_unit != kNoDef) {
+    rfk_unit = o.rfk_unit;
+    rfk_chance = o.rfk_chance;
+    rfk_lifetime = o.rfk_lifetime;
   }
 }
 

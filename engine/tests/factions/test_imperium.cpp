@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Aurethi Birodalom (M7, ADR-008): a népmodul viselkedési próbái (src/sim/factions/imperium.cpp) – alapozás és kopás,
-// Reaktorpajzs, Lélekhorgony (horgony, újratestesülés, mentés), gyűjtők, Égkő-fény gépjavítás, Túlhajtás.
+// Reaktorpajzs, Lélekhorgony (horgony, újratestesülés, mentés), gyűjtők, Égkő-fény gépjavítás, Túlhajtás; lélekidézés
+// (holttestek), a Lélek- és a Légió-irány szabályai, a kizáró kutatáscsoport.
 #include <algorithm>
 #include <cstdio>
 #include <string>
@@ -312,4 +313,135 @@ TEST_CASE("Aurethi Birodalom: determinisztikus, és mentésből folytatva ugyana
   c.sim->restore_obstacles(*c.map);
   c.run(900);
   CHECK(c.sim->hash() == a.sim->hash());
+}
+
+TEST_CASE("Aurethi lélekidézés: a holttestből kis testűből szellemlégiós, nagy testűből szellemkolosszus; 10 s után elporlad") {
+  Match m = imperium();
+  IMP_REQUIRE(m.ok);
+  sim::Sim& s = *m.sim;
+  const auto caster = put(s, "imp_szellemidezo", 1, 190, 95);
+  IMP_REQUIRE(s.world().get<sim::Caster>(caster));
+  s.world().get<sim::Caster>(caster)->energy = 200000;
+  CHECK(!s.use_ability({caster}, "lelekidezes", fx(220, 10), fx(95, 10), 0));   // nincs holttest
+  slay(s, put(s, "urs_berserker", 2, 220, 95));
+  m.run(1);
+  IMP_REQUIRE(s.corpses_.size() == 1);
+  CHECK(!s.use_ability({caster}, "lelekidezes", fx(220, 10), fx(95, 10), 0));   // 1 s-nál frissebb
+  m.run(sim::kTickHz);
+  const int32_t e0 = s.world().get<sim::Caster>(caster)->energy;
+  CHECK(s.use_ability({caster}, "lelekidezes", fx(220, 10), fx(95, 10), 0));
+  for (int i = 0; i < 3 * sim::kTickHz && all_of(s, "imp_szellemlegios", 1).empty(); ++i) m.run(1);
+  CHECK(all_of(s, "imp_szellemlegios", 1).size() == 1);
+  CHECK(s.corpses_.empty());
+  const int32_t e1 = s.world().get<sim::Caster>(caster)->energy;
+  std::printf("  energia: %d -> %d\n", e0, e1);
+  CHECK(e1 < e0);
+  // nagy testű (a `large` címke) holttestből szellemkolosszus, állandó (élettartam nélkül)
+  slay(s, put(s, "urs_mammut", 2, 220, 95));
+  m.run(sim::kTickHz + 1);
+  for (int i = 0; i < 40 * sim::kTickHz && all_of(s, "imp_szellemkolosszus", 1).empty(); ++i) {
+    s.world().get<sim::Caster>(caster)->energy = 200000;
+    s.use_ability({caster}, "lelekidezes", fx(220, 10), fx(95, 10), 0);
+    m.run(1);
+  }
+  const auto kol = all_of(s, "imp_szellemkolosszus", 1);
+  IMP_REQUIRE(kol.size() == 1);
+  CHECK(!s.world().get<sim::Lifetime>(kol.front()));
+  // a holttest 10 s után elporlad; a `no_corpse` (szellem) nem hagy holttestet
+  slay(s, put(s, "urs_berserker", 2, 120, 40));
+  slay(s, kol.front());
+  m.run(1);
+  CHECK(s.corpses_.size() == 1);
+  m.run(11 * sim::kTickHz);
+  bool fresh = true;   // (a kelt szellemek közben harcolhatnak: csak a 10 s-nál régebbi nem maradhat)
+  for (const auto& c : s.corpses_) fresh = fresh && s.tick() - c.tick < 10 * sim::kTickHz;
+  CHECK(fresh);
+  // lélekidéző nép nélkül nincs holttest (a többi meccs állapota változatlan)
+  Match o("BUILD-ALAP", true, true, {"ursan", "ursan"});
+  IMP_REQUIRE(o.ok);
+  slay(*o.sim, o.sim->spawn_unit(def_of("urs_berserker"), 2, fx(220, 10), fx(95, 10)));
+  o.run(1);
+  CHECK(o.sim->corpses_.empty());
+}
+
+TEST_CASE("Aurethi Lélek-irány: az ölt szerves ellenségből 20% eséllyel 40 s-os szellemlégiós kel") {
+  Match m = imperium();
+  IMP_REQUIRE(m.ok);
+  sim::Sim& s = *m.sim;
+  const auto killer = put(s, "imp_legios", 1, 190, 95);
+  auto kill_n = [&](int n, const char* id) {
+    for (int i = 0; i < n; ++i) {
+      const auto v = put(s, id, 2, 215, 95);
+      s.world().pool<sim::Combat>().remove(v);   // a halála tickjében ne üssön vissza (a kelt szellemekre)
+      s.deal_damage(killer, 1, sim::kNoDef, v, 100000000, false, true);
+      m.run(1);
+    }
+  };
+  kill_n(20, "urs_berserker");
+  CHECK(all_of(s, "imp_szellemlegios", 1).empty());   // irány nélkül nem
+  s.player_mut(1).path = "lelek";
+  s.rebuild_rules(1);
+  kill_n(20, "imp_legios");   // gép (nem szerves): nem
+  CHECK(all_of(s, "imp_szellemlegios", 1).empty());
+  const int64_t t0 = s.tick();
+  kill_n(100, "urs_berserker");
+  const auto ghosts = all_of(s, "imp_szellemlegios", 1);
+  std::printf("  100 ölésből %zu szellemlégiós\n", ghosts.size());
+  CHECK(ghosts.size() >= 8 && ghosts.size() <= 35);
+  bool timed = !ghosts.empty();
+  for (const auto g : ghosts) {
+    const auto* lt = s.world().get<sim::Lifetime>(g);
+    timed = timed && lt && lt->until > t0 + 40 * sim::kTickHz && lt->until <= s.tick() + 40 * sim::kTickHz;
+  }
+  CHECK(timed);
+}
+
+TEST_CASE("Aurethi alapozás: a foundation_free épület (Égkő) alapozás nélkül is teljes életerővel készül el, és nem kopik") {
+  Match m = imperium();
+  IMP_REQUIRE(m.ok);
+  sim::Sim& s = *m.sim;
+  rich(s);
+  const sim::Building hq = hq_of(s, 1);
+  const auto w = all_of(s, "imp_fabrikator", 1).front();
+  sim::EntityId b = sim::kNoEntity;
+  const bool built = build(m, w, "imp_egko", hq.tx + hq.w + 3, hq.ty, &b);
+  IMP_REQUIRE(built);
+  CHECK(HP(b).hp == HP(b).max);
+  m.run(30 * sim::kTickHz);
+  CHECK(HP(b).hp == HP(b).max);
+}
+
+TEST_CASE("kizáró kutatás: egy Exclusive csoportból csak egy indítható (folyamatban vagy kész)") {
+  Match m = imperium();
+  IMP_REQUIRE(m.ok);
+  sim::Sim& s = *m.sim;
+  rich(s);
+  s.place_building(def_of("imp_finomito"), 1, 22, 14, true);
+  m.run(1);
+  std::string err;
+  CHECK(s.research(1, "imp_hajtomu", &err));
+  CHECK(!s.research(1, "imp_tartaly", &err));   // ugyanaz a csoport (arato_fejlesztes), a másik folyamatban
+  std::printf("  elutasítva: %s\n", err.c_str());
+  CHECK(err.find("imp_hajtomu") != std::string::npos);
+  m.run(60 * sim::kTickHz);
+  const auto& done = s.player(1).researched;
+  CHECK(std::binary_search(done.begin(), done.end(), std::string("imp_hajtomu")));
+  CHECK(!s.research(1, "imp_tartaly", &err));   // a másik kész
+}
+
+TEST_CASE("Aurethi Légió-irány: szabályként adott falkabónusz – gyalogos társanként +6% sebzés, legfeljebb +30%") {
+  Match m = imperium();
+  IMP_REQUIRE(m.ok);
+  sim::Sim& s = *m.sim;
+  const auto a = put(s, "imp_legios", 1, 200, 150);
+  for (int i = 1; i <= 2; ++i) put(s, "imp_legios", 1, 200 + i * 8, 150);
+  put(s, "imp_szellemidezo", 1, 200, 160);   // nem gyalogos: nem számít
+  m.run(1);
+  CHECK(s.pack_damage_mult(a) == Fixed::from_int(1));   // irány nélkül nincs
+  s.player_mut(1).path = "legio";
+  s.rebuild_rules(1);
+  CHECK(s.pack_damage_mult(a) == Fixed::from_int(1) + fx(6, 100) * Fixed::from_int(2));
+  for (int i = 0; i < 6; ++i) put(s, "imp_legios", 1, 190 + i * 4, 140);
+  CHECK(s.pack_damage_mult(a) == Fixed::from_int(1) + fx(6, 100) * Fixed::from_int(5));   // legfeljebb 0,3 / 0,06 = 5
+  CHECK(s.pack_damage_mult(put(s, "imp_szellemidezo", 1, 205, 150)) == Fixed::from_int(1));
 }

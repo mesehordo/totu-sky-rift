@@ -87,7 +87,7 @@ struct AbilityMods {   // a `modifiers`: szorzók (1 = nincs) és összeadandók
 };
 struct AbilityDef {
   enum class Type : uint8_t { Unknown = 0, Garrison, SelfBuff, Toggle, Nova, Chant, Aura, Autoheal, Bolt, Summon, Area,
-                              Passive, Power, Blink, Mount, Dismount, Capture, Occupy };
+                              Passive, Power, Blink, Mount, Dismount, Capture, Occupy, Raise };
   std::string id;
   Type type = Type::Unknown;
   int32_t cooldown = 0, duration = 0;   // tick
@@ -113,6 +113,9 @@ struct AbilityDef {
   std::vector<std::string> rider_ids;
   uint16_t into = kNoDef, mount = kNoDef, rider = kNoDef;
   std::vector<uint16_t> riders;
+  // lélekidézés (`raise`): a kis és a nagy testű holttestből kelő egység
+  std::string small_id, large_id;
+  uint16_t small = kNoDef, large = kNoDef;
   std::shared_ptr<const content::Value> spec;   // a `Spec` (a népmodulok saját típusaihoz és kulcsaihoz)
   // `gpower`: költség (a játékos nyersanyagából; az áhítat is), a főépület életereje, célzott, épületeket is sújt,
   // felfedés (csempe); `blink`: landolási sebzés és sugár
@@ -137,6 +140,12 @@ struct RuleSet {
   std::vector<std::string> rage_tags;
   Fixed rage_max;
   Fixed bounty_gold;                                           // Zsákmányszerzés: a zsákmány ennyiszerese aranyban is
+  bool has_pack = false;                                       // falkabónusz szabályként (irány): mint a népi, címkével
+  Fixed pack_radius = Fixed::from_int(4), pack_per, pack_max = Fixed::from_ratio(2, 5);
+  std::vector<std::string> pack_tags;
+  uint16_t rfk_unit = kNoDef;                                  // ölt szerves ellenségből esélyre ideiglenes egység
+  Fixed rfk_chance;
+  int32_t rfk_lifetime = 0;                                    // tick (0: nem jár le)
   void merge(const RuleSet& o);
 };
 
@@ -224,6 +233,7 @@ Fixed apply_modifiers(const std::vector<const std::vector<Modifier>*>& lists, co
 
 struct ResearchDef {
   std::string id, faction;
+  std::string exclusive;             // kizáró csoport (`Exclusive`): egy csoportból csak egy kutatás
   std::array<int32_t, kResources> cost{};
   int32_t time_ticks = 0;
   std::vector<EntityDef::Req> reqs;
@@ -284,6 +294,7 @@ struct FactionDef {
   Fixed regen;                                // faji életerő-visszatöltés / s (`Faction.regen`)
   bool neutral = false;                       // a Vadon: a semleges (0.) játékos
   bool ally = false;                          // szövetséges kisnép (D26)
+  bool raises = false;                        // van lélekidéző (`raise`) képességű egysége: a holttestek számítanak
   std::array<int32_t, kResources> ally_cost{};   // a szövetség ára (a főnépé)
   // Wullof (MECH-WUL-1–4)
   bool pack = false;

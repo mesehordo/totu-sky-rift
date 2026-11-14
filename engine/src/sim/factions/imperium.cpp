@@ -4,7 +4,8 @@
 // 722–730, 1255–1300) és a spec/FAJMECHANIKAK.md 7.3 szerint:
 //   - alapozás: a Fabrikátor lapkövet épít (`imp_alapozas` 2 × 2, `imp_nagy_alapozas` 4 × 4); kész lapkő helyén alapozás
 //     marad (nem akadály); a teljesen alapozáson álló épület teljes életerővel készül el, alapozás nélkül fél életerővel,
-//     és fél életerő fölött 0,2%/s-mal kopik (0,5 s-onként); a főépület alapozáson kezd (1 csempés peremmel);
+//     és fél életerő fölött 0,2%/s-mal kopik (0,5 s-onként); a `foundation_free` épület alapozás nélkül is teljes;
+//     a főépület alapozáson kezd (1 csempés peremmel);
 //   - Reaktorpajzs (`shield_zone: reactor`): a pajzs csak Lélekreaktor 6 csempéjén belül vagy Égkő-fényben töltődik;
 //   - Lélekhorgony: a `lelekhorgony` képességű, nem hős, nem idézett egység helyén horgony marad (életereje a sablon
 //     életereje, legalább 50, 15%-on); teljesen helyreállítva újra az eredeti egység lesz; a `lelekhorgony_mentes`
@@ -166,6 +167,10 @@ class Module final : public FactionModule {
       s.world().destroy(e);
       return;
     }
+    // alapozás nélkül is teljes életerős (`Placement.foundation_free`, a régi G 2767)
+    const content::Value* pl = d.raw ? d.raw->find("Placement") : nullptr;
+    const content::Value* ff = pl ? pl->find("foundation_free") : nullptr;
+    if (ff && ff->is_bool() && ff->as_bool()) return;
     if (founded(s, h->owner, b->tx, b->ty, b->w, b->h)) return;
     const Fixed unf = fx_of(cfg->find("unfounded_hp"), Fixed::from_ratio(1, 2));
     h->hp = std::min(h->hp, std::max(1, (Fixed::from_int(h->max) * unf).floor_int()));
