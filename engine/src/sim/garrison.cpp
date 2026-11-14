@@ -407,6 +407,7 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, F
     const EntityId f = world_.create();
     world_.add(f, Position{x, y});
     world_.add(f, Field{owner, b, ab, tick_ + a.duration, tick_ + 1});
+    if (a.reveal > 0) players_[owner].reveals.push_back({x.floor_int(), y.floor_int(), a.reveal, static_cast<int32_t>(tick_ + 10 * kTickHz)});   // 10 s-ra felfedi (a régi G 1697)
   } else if (a.effect == "summon" && a.unit != kNoDef) {   // idézés a pont köré
     for (int k = 0; k < a.count; ++k) {
       const core::Angle ang = core::Angle::from_units(k * 21900);   // 2,1 radián lépésenként

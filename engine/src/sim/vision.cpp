@@ -54,6 +54,19 @@ void Sim::update_vision(uint8_t player) {
       }
     }
   };
+  // ideiglenes felfedés (a főépület-képesség `reveal`-je); a lejártak törlődnek
+  auto& rvs = p.reveals;
+  rvs.erase(std::remove_if(rvs.begin(), rvs.end(), [&](const auto& rv) { return rv[3] <= tick_; }), rvs.end());
+  for (const auto& rv : rvs) {
+    for (int y = std::max(0, rv[1] - rv[2]); y <= std::min(h - 1, rv[1] + rv[2]); ++y) {
+      for (int x = std::max(0, rv[0] - rv[2]); x <= std::min(w - 1, rv[0] + rv[2]); ++x) {
+        if ((x - rv[0]) * (x - rv[0]) + (y - rv[1]) * (y - rv[1]) > rv[2] * rv[2]) continue;
+        const size_t i = static_cast<size_t>(y) * static_cast<size_t>(w) + static_cast<size_t>(x);
+        p.visible[i] = 1;
+        p.explored[i] = 1;
+      }
+    }
+  }
   world_.pool<Health>().each([&](EntityId e, const Health& hh) {
     if (hh.owner != player || hh.hp <= 0) return;
     if (const Unit* u = world_.get<Unit>(e)) {
@@ -109,16 +122,22 @@ void Sim::stealth_system() {
       if (oh.hp <= 0 || !hostile(oh.owner, hh->owner) || (st->detected & (1u << oh.owner))) return;
       const Position* op = world_.get<Position>(o);
       if (!op) return;
-      int det = 0;
+      Fixed det;
       bool unit = false;
       if (const Unit* ou = world_.get<Unit>(o)) {
-        det = rules_->defs[ou->def].detect;
+        det = Fixed::from_int(rules_->defs[ou->def].detect);
         unit = true;
+        {   // a passzív képesség felfedő köre (`detect`; A Kórus szeme)
+          for (const uint16_t ab : abilities_of(o)) {
+            const AbilityDef& a = rules_->abilities[ab];
+            if (a.type == AbilityDef::Type::Passive && a.detect > det) det = a.detect;
+          }
+        }
       } else if (const Building* ob = world_.get<Building>(o); ob && ob->complete) {
-        det = rules_->defs[ob->def].detect;
+        det = Fixed::from_int(rules_->defs[ob->def].detect);
       }
       const Fixed d = core::length(op->x - hp->x, op->y - hp->y);
-      if ((det > 0 && d <= Fixed::from_int(det)) || (unit && d <= near)) st->detected = static_cast<uint16_t>(st->detected | (1u << oh.owner));
+      if ((det.raw() > 0 && d <= det) || (unit && d <= near)) st->detected = static_cast<uint16_t>(st->detected | (1u << oh.owner));
     });
   }
 }

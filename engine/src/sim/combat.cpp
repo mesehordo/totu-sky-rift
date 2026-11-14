@@ -240,6 +240,13 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
       for (const auto& [k, v] : sd.attack.type_bonus) {
         if (k == tt) m = std::max(m, v);
       }
+      if (m > Fixed::from_int(1) && tu) {   // aktivált képesség (`no_weak`: Napfolt, Héjba húzódás) alatt sem gyenge
+        if (const Caster* tc = world_.get<Caster>(t)) {
+          for (const auto& [bab, until] : tc->buffs) {
+            if (until > tick_ && rules_->abilities[bab].no_weak) m = Fixed::from_int(1);
+          }
+        }
+      }
       if (m > Fixed::from_int(1) && tu && rules_of(h->owner).has_no_weak) {   // gyengeség elvesztése (Tüskés pajzsfal)
         for (const auto& [who, classes] : rules_of(h->owner).no_weak) {
           if ((who == td.id || td.has_tag(who)) && std::find(classes.begin(), classes.end(), sd.utype) != classes.end()) {

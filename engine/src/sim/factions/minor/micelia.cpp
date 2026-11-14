@@ -234,6 +234,24 @@ class Module final : public FactionModule {
     if (split_kills(s, killer) > 0) sp->meals = static_cast<uint8_t>(std::min(255, sp->meals + 1));
   }
 
+  // a képesség spóra-ára (a régi `ab_ok`/`ab_pay`: `spores`)
+  static int spore_cost(const AbilityDef& a) {
+    const content::Value* v = spec_key(a, "spores");
+    const auto i = v && v->is_number() ? v->as_int() : std::nullopt;
+    return i ? static_cast<int>(*i) : 0;
+  }
+  bool has_ability_costs() const override { return true; }
+  bool ability_affordable(Sim& s, EntityId e, const AbilityDef& a) override {
+    const int c = spore_cost(a);
+    if (c <= 0) return true;
+    const Spores* sp = s.world_.get<Spores>(e);
+    return sp && sp->spores >= c;
+  }
+  void ability_paid(Sim& s, EntityId e, const AbilityDef& a) override {
+    const int c = spore_cost(a);
+    if (Spores* sp = c > 0 ? s.world_.get<Spores>(e) : nullptr) sp->spores = static_cast<uint8_t>(std::max(0, sp->spores - c));
+  }
+
   int split_kills(Sim& s, EntityId e) {
     for (const uint16_t ab : s.abilities_of(e)) {
       const content::Value* v = spec_key(s.rules_->abilities[ab], "split_kills");

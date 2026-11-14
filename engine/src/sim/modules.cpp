@@ -81,6 +81,24 @@ int32_t Sim::mod_armor(EntityId t) {
   return a;
 }
 
+bool Sim::mod_ability_affordable(EntityId e, const AbilityDef& a) {
+  for (auto& m : modules_) {
+    if (!m->ability_affordable(*this, e, a)) return false;
+  }
+  return true;
+}
+
+void Sim::mod_ability_paid(EntityId e, const AbilityDef& a) {
+  for (auto& m : modules_) m->ability_paid(*this, e, a);
+}
+
+bool Sim::mod_ability_costs() const {
+  for (const auto& m : modules_) {
+    if (m->has_ability_costs()) return true;
+  }
+  return false;
+}
+
 bool Sim::mod_use_power(uint8_t owner, EntityId b, uint16_t ability, Fixed x, Fixed y) {
   for (auto& m : modules_) {
     if (m->use_power(*this, owner, b, ability, x, y)) return true;

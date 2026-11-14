@@ -16,6 +16,7 @@ namespace totu::sim {
 
 class Sim;
 struct Command;
+struct AbilityDef;
 using core::Fixed;
 
 class FactionModule {
@@ -55,6 +56,11 @@ class FactionModule {
   virtual bool use_power(Sim&, uint8_t /*owner*/, EntityId /*building*/, uint16_t /*ability*/, Fixed /*x*/, Fixed /*y*/) { return false; }
   // népi parancs (`Command::Kind::Module`; `def` a parancs neve, pl. `ooni.torii`); true: kezelte
   virtual bool on_command(Sim&, const Command&) { return false; }
+  // népi képességköltség (a régi `ab_ok`/`ab_pay`: a Micélia spórája): elég-e, és a levonás; `has_ability_costs`:
+  // van-e egyáltalán ilyen (a levonás csak ekkor keresi meg a varázslót)
+  virtual bool ability_affordable(Sim&, EntityId, const AbilityDef&) { return true; }
+  virtual void ability_paid(Sim&, EntityId, const AbilityDef&) {}
+  virtual bool has_ability_costs() const { return false; }
 };
 
 // a modulok rögzített sorrendben (src/sim/factions/registry.cpp)

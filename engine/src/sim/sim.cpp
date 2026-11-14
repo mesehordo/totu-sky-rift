@@ -316,6 +316,10 @@ uint64_t Sim::hash() const {
       for (const auto& r : p.researched) h.add_bytes(r);
       h.add_bytes(p.path);
       h.add_bytes(p.ally);
+      if (!p.reveals.empty()) {   // (üresen nem: a korábbi állapotok hash-e változatlan)
+        h.add_u64(p.reveals.size());
+        for (const auto& rv : p.reveals) for (const int32_t v : rv) h.add_i64(v);
+      }
       h.add_u64(p.ascended);
       h.add_u64(p.defeated);
       h.add_u64(p.fallen.size());
@@ -417,7 +421,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(10);   // séma (2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(11);   // séma (11: ideiglenes felfedés; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -440,6 +444,8 @@ std::vector<uint8_t> Sim::save() const {
       for (const auto& r : p.researched) w.str(r);
       w.str(p.path);
       w.str(p.ally);
+      w.u32(static_cast<uint32_t>(p.reveals.size()));
+      for (const auto& rv : p.reveals) for (const int32_t v : rv) w.i32(v);
       w.u8(p.ascended ? 1 : 0);
       w.u8(p.defeated ? 1 : 0);
       w.u32(static_cast<uint32_t>(p.fallen.size()));
@@ -469,7 +475,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 10) return false;
+  if (schema < 3 || schema > 11) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -502,6 +508,11 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       for (uint32_t i = 0; i < nr && i < 4096 && r.ok(); ++i) p.researched.push_back(r.str());
       p.path = r.str();
       p.ally = schema >= 10 ? r.str() : std::string();
+      p.reveals.clear();
+      if (schema >= 11) {
+        p.reveals.resize(r.u32());
+        for (auto& rv : p.reveals) for (int32_t& v : rv) v = r.i32();
+      }
       p.ascended = r.u8() != 0;
       p.defeated = schema >= 8 && r.u8() != 0;
       p.fallen.clear();

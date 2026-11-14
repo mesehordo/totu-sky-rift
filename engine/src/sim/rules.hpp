@@ -122,6 +122,21 @@ struct AbilityDef {
   Fixed below = Fixed::from_int(1);     // az elfoglalható épület életerő-aránya ez alatt
   bool targeted = false, hits_buildings = false;
   Fixed land_damage, land_radius = Fixed::from_ratio(6, 5);
+  // a régi `ab_ok` / `ab_pay` költségei: életerő (`hp_cost`; nem használható, ha hp <= hp_cost + 5); az áhítat az
+  // egységképességnél a `cost[kFaith]`-ből; a spórát (`spores`) a népmodul (Micélia) vonja le
+  int32_t hp_cost = 0;
+  // célzott lövés (`bolt`): saját pattanás, területi sebzés, méreg [dps, idő]
+  int32_t bounces = 0;
+  Fixed splash, poison_dps;
+  int32_t poison_ticks = 0;
+  // nova: épületsebzés (`building_damage`), önrobbanás (`self_destruct`); önerősítés: utána lassulás
+  // (`after_slow`: ennyi ideig × 0,6, a régi `slow_after`; tick), alatta nem gyenge (`no_weak`)
+  Fixed building_damage;
+  bool self_destruct = false, no_weak = false;
+  int32_t after_slow = 0;
+  // önműködő gyógyítás célcímkéi (`heal_tags`; üres = organic); passzív felfedés (`detect`, csempe)
+  std::vector<std::string> heal_tags;
+  Fixed detect;
 };
 
 // Szabálymódosítók (KUT-RULE, a régi `rules`): kulcsonként az utolsó felülír (a régi `merge_rules`).

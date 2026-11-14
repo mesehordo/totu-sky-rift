@@ -701,6 +701,8 @@ struct PlayerState {
   std::vector<std::string> researched;       // a kész kutatások (rendezve; az 5. lépésben töltődik)
   std::string path;                          // a választott fejlődési irány (MECH-ASC; 8. lépés)
   std::string ally;                          // a szövetséges kisnép (MECH-ALLY, D26; egyszer, véglegesen)
+  // ideiglenes felfedés (a főépület-képesség `reveal`-je): x, y, sugár (csempe), eddig (tick)
+  std::vector<std::array<int32_t, 4>> reveals;
   bool ascended = false;
   bool defeated = false;                     // minden épülete elpusztult (M6 9. lépés)
   // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
@@ -978,6 +980,9 @@ class Sim {
   int32_t mod_armor(EntityId t);
   bool mod_use_power(uint8_t owner, EntityId b, uint16_t ability, Fixed x, Fixed y);
   bool mod_command(const Command& c);
+  bool mod_ability_affordable(EntityId e, const AbilityDef& a);
+  void mod_ability_paid(EntityId e, const AbilityDef& a);
+  bool mod_ability_costs() const;
   std::vector<std::unique_ptr<FactionModule>> modules_;
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 
@@ -1044,7 +1049,7 @@ class Sim {
   void aura_system();
   void field_system();
   void cast_step(EntityId e, Caster& c);
-  bool ability_ready(EntityId e, const Caster& c, const AbilityDef& a) const;
+  bool ability_ready(EntityId e, const Caster& c, const AbilityDef& a);
   void ability_spend(Caster& c, uint16_t ability, const AbilityDef& a);
   bool activate_buff(EntityId e, uint16_t ability);
   bool cast_nova(EntityId e, uint16_t ability);

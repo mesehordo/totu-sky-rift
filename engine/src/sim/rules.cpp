@@ -414,6 +414,23 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.hits_buildings = flag("buildings");
       a.land_damage = fixed_of(key("land_damage"), Fixed{});
       a.land_radius = fixed_of(key("land_radius"), a.land_radius);
+      a.hp_cost = int_of(key("hp_cost"), 0);
+      a.bounces = int_of(key("bounces"), 0);
+      a.splash = fixed_of(key("splash"), Fixed{});
+      if (const content::Value* pz = key("poison"); pz && pz->is_array() && pz->items().size() == 2) {
+        a.poison_dps = fixed_of(&pz->items()[0], Fixed{});
+        a.poison_ticks = seconds_to_ticks(fixed_of(&pz->items()[1], Fixed{}));
+      }
+      a.building_damage = fixed_of(key("building_damage"), Fixed{});
+      a.self_destruct = flag("self_destruct");
+      a.no_weak = flag("no_weak");
+      a.after_slow = seconds_to_ticks(fixed_of(key("after_slow"), Fixed{}));
+      if (const content::Value* ht = key("heal_tags"); ht && ht->is_array()) {
+        for (const auto& tg : ht->items()) {
+          if (tg.is_string()) a.heal_tags.push_back(tg.text());
+        }
+      }
+      a.detect = fixed_of(key("detect"), Fixed{});
       if (const content::Value* hk = key("hotkey"); hk && hk->is_string() && hk->text().size() == 1) a.hotkey = hk->text()[0];
       if (const auto it = ability_element.find(base_id); it != ability_element.end()) a.element = it->second;
       auto mod = [&](const char* k, Fixed def) {

@@ -151,14 +151,32 @@ std::vector<EntityId> Sim::enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed
   return out;
 }
 
-bool Sim::ability_ready(EntityId e, const Caster& c, const AbilityDef& a) const {
-  (void)e;
-  return c.energy >= a.energy * 1000 && ready_at(c, static_cast<uint16_t>(&a - rules_->abilities.data())) <= tick_;
+bool Sim::ability_ready(EntityId e, const Caster& c, const AbilityDef& a) {
+  if (c.energy < a.energy * 1000 || ready_at(c, static_cast<uint16_t>(&a - rules_->abilities.data())) > tick_) return false;
+  // a régi `ab_ok`: életerő-ár (hp > ár + 5), az egységképesség áhítat-ára, a népi költség (spóra)
+  const Health* h = world_.get<Health>(e);
+  if (a.hp_cost > 0 && (!h || h->hp <= a.hp_cost + 5)) return false;
+  if (a.cost[kFaith] > 0 && world_.get<Unit>(e) && (!h || players_[h->owner].resource(kFaith) < a.cost[kFaith])) return false;
+  return mod_ability_affordable(e, a);
 }
 
 void Sim::ability_spend(Caster& c, uint16_t ability, const AbilityDef& a) {
   c.energy -= a.energy * 1000;
   set_ready(c, ability, tick_ + a.cooldown);
+  if (a.hp_cost <= 0 && a.cost[kFaith] <= 0 && !mod_ability_costs()) return;
+  EntityId e = kNoEntity;   // a varázsló (a ritka, költséges esetben megkeresve)
+  world_.pool<Caster>().each([&](EntityId x, Caster& cc) {
+    if (&cc == &c) e = x;
+  });
+  if (e == kNoEntity) return;
+  Health* h = world_.get<Health>(e);
+  if (h && a.hp_cost > 0) h->hp = std::max(1, h->hp - a.hp_cost);
+  if (h && a.cost[kFaith] > 0 && world_.get<Unit>(e)) {
+    std::array<int32_t, kResources> f{};
+    f[kFaith] = a.cost[kFaith];
+    pay(h->owner, f);
+  }
+  mod_ability_paid(e, a);
 }
 
 void Sim::apply_element(EntityId src, EntityId t, Element el, int64_t dmg) {
@@ -266,10 +284,18 @@ void Sim::apply_element(EntityId src, EntityId t, Element el, int64_t dmg) {
 }
 
 void Sim::apply_spell(EntityId src, uint8_t owner, const AbilityDef& a, EntityId t) {
-  (void)src;
   (void)owner;
   Afflict* af = world_.get<Afflict>(t);
-  if (!af || !a.has_slow) return;
+  if (!af) return;
+  if (a.poison_dps.raw() > 0) {   // a célzott lövés mérge (a régi `poison` [dps, idő]; gépet nem)
+    const Unit* tu = world_.get<Unit>(t);
+    if (tu && !rules_->defs[tu->def].has_tag("mech")) {
+      af->poison_src = src;
+      af->poison_dps = static_cast<int32_t>((int64_t{a.poison_dps.raw()} * 1000) >> 16);
+      af->poison_until = tick_ + a.poison_ticks;
+    }
+  }
+  if (!a.has_slow) return;
   if (a.slow.raw() <= 0) {   // `slow` 0: kábítás
     af->stun_until = tick_ + a.duration;
   } else {
@@ -343,6 +369,18 @@ bool Sim::cast_nova(EntityId e, uint16_t ab) {
       }
     }
   }
+  if (a.building_damage.raw() > 0) {   // Mészbombás manó: az ellenséges épületeket is rombolja (a régi E 1484)
+    std::vector<EntityId> bs;
+    world_.pool<Building>().each([&](EntityId b, const Building& bb) {
+      const Health* bh = world_.get<Health>(b);
+      if (!bh || bh->hp <= 0 || !hostile(h->owner, bh->owner)) return;
+      const Fixed cx = Fixed::from_int(bb.tx) + Fixed::from_ratio(bb.w, 2), cy = Fixed::from_int(bb.ty) + Fixed::from_ratio(bb.h, 2);
+      const Fixed half = Fixed::from_ratio(std::max(bb.w, bb.h), 2);
+      if (core::length(cx - p->x, cy - p->y) <= a.radius + half) bs.push_back(b);
+    });
+    for (const EntityId b : bs) deal_damage(e, h->owner, kNoDef, b, (int64_t{a.building_damage.raw()} * 1000) >> 16, false, true);
+  }
+  if (a.self_destruct && world_.alive(e)) kill(e);   // robbanó atka: a robbanás megöli
   return true;
 }
 
@@ -380,6 +418,7 @@ void Sim::fire_bolt(EntityId e, uint16_t ab, EntityId t) {
   if (!a.projectile) {   // azonnal (roham, zuhanó csapás)
     deal_damage(e, h->owner, kNoDef, t, dmg, false, true, a.element);
     apply_spell(e, h->owner, a, t);
+    if (a.splash.raw() > 0) splash_at(e, h->owner, kNoDef, tp.x, tp.y, a.splash, dmg, t);
     return;
   }
   const ProjectileKind& pk = rules_->projectiles[a.projectile - 1u];
@@ -393,6 +432,8 @@ void Sim::fire_bolt(EntityId e, uint16_t ab, EntityId t) {
   s.ax = tp.x;
   s.ay = tp.y;
   s.damage = static_cast<int32_t>(dmg);
+  s.splash = a.splash;                                              // a képesség saját területi sebzése
+  s.bounces = static_cast<uint8_t>(std::clamp(a.bounces, 0, 8));   // és pattanása (a régi: a képességé, alapból 0)
   if (pk.line) {
     const Fixed dx = tp.x - sp.x, dy = tp.y - sp.y;
     const Fixed len = std::max(core::length(dx, dy), Fixed::from_ratio(1, 64));
@@ -822,6 +863,15 @@ void Sim::ability_system() {
       c.energy = static_cast<int32_t>(std::min<int64_t>(int64_t{emax} * 1000, c.energy + milli_of(er)));
     }
     // lejárt önerősítések; a Fegyverbe! után a munkás visszamegy dolgozni
+    for (const auto& [bab, until] : c.buffs) {   // Gőztúlnyomás: a lejáratkor lehűl a kazán (a régi `slow_after`: × 0,6)
+      const AbilityDef& ba = rules_->abilities[bab];
+      if (until <= tick_ && ba.after_slow > 0) {
+        if (Afflict* af = world_.get<Afflict>(e)) {
+          af->slow_until = std::max(af->slow_until, tick_ + ba.after_slow);
+          af->slow_mult = Fixed::from_ratio(3, 5);
+        }
+      }
+    }
     c.buffs.erase(std::remove_if(c.buffs.begin(), c.buffs.end(), [&](const auto& b) { return b.second <= tick_; }), c.buffs.end());
     if (c.resume && !buffed(e, c.resume_buff)) {
       const EntityId res = c.resume;
@@ -852,7 +902,10 @@ void Sim::ability_system() {
         int64_t best_v = 980;   // ezrelék: csak 98% alatt
         world_.pool<Unit>().each([&](EntityId o, const Unit& ou) {
           const Health* oh = world_.get<Health>(o);
-          if (!oh || oh->owner != h->owner || oh->hp <= 0 || !rules_->defs[ou.def].has_tag("organic")) return;
+          if (!oh || oh->owner != h->owner || oh->hp <= 0) return;
+          bool tag_ok = a.heal_tags.empty() && rules_->defs[ou.def].has_tag("organic");   // a célcímkék (`heal_tags`; alapból organic)
+          for (const auto& tg : a.heal_tags) tag_ok = tag_ok || rules_->defs[ou.def].has_tag(tg);
+          if (!tag_ok) return;
           if (sheltered(o)) return;
           const Position& op = *world_.get<Position>(o);
           if (core::length(op.x - p.x, op.y - p.y) > a.range) return;
