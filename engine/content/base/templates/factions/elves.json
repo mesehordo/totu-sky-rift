@@ -22,7 +22,6 @@
     "elf_hos_itzcoatl",
     "elf_hos_xochi",
     "elf_fopap",
-    "elf_jaguar",
     "elf_csillagjos",
     "elf_pancelos_raptor"
    ],
@@ -90,7 +89,6 @@
     "tagline": "path.elves.jaguar.tagline",
     "building": "elf_raptor_karam",
     "units": [
-     "elf_jaguar",
      "elf_pancelos_raptor",
      "elf_tollas_rex"
     ],
@@ -217,7 +215,6 @@
        "elf_raptor_karam"
       ],
       "army": {
-       "elf_jaguar": 3,
        "elf_pancelos_raptor": 2,
        "elf_tollas_rex": 1
       }

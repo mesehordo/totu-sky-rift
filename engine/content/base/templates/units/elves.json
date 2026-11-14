@@ -908,7 +908,8 @@
     "ranged",
     "organic"
    ],
-   "class": "lovesz"
+   "class": "lovesz",
+   "hidden": true
   },
   "Cost": {
    "resources": {

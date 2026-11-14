@@ -21,10 +21,6 @@ uint16_t def_of(const std::string& id) { return R().def(id); }
 // a BUILD-ALAP szabad, sík helyei a 3 × 3-as épületeknek
 const std::vector<std::pair<int, int>> kSpots = {{12, 9}, {16, 9}, {12, 13}, {16, 13}, {0, 16}, {3, 16}, {12, 17}, {16, 17}};
 
-// nyitott tartalmi kérdés (a tulajdonos dönt): a régi játékban sem keletkezett – a FACTIONS.md szerint a Jaguár-orvlövész
-// „idézett / mutációval”, a Dárdavető portyázó rejtett egység
-const std::vector<std::string> kOpen = {"elf_jaguar", "wul_tomahawkos"};
-
 std::vector<std::string> main_factions() {
   std::vector<std::string> out;
   for (const auto& f : R().factions) {
@@ -312,13 +308,8 @@ TEST_CASE("népi lefedettség: minden főnép minden egysége képezhető a felt
       const uint16_t ud = def_of(id);
       const uint16_t prod = producer_of(f, ud);
       if (prod == sim::kNoDef) {
-        bool by_ability = !origin_of(id).empty();
-        if (!by_ability) {
-          const bool open = std::find(kOpen.begin(), kOpen.end(), id) != kOpen.end();
-          std::printf("  %s: %s se nem képezhető, se más módon nem keletkezik%s\n", f.c_str(), id.c_str(),
-                      open ? " (nyitott tartalmi kérdés)" : "");
-          by_ability = open;
-        }
+        const bool by_ability = !origin_of(id).empty();
+        if (!by_ability) std::printf("  %s: %s se nem képezhető, se más módon nem keletkezik\n", f.c_str(), id.c_str());
         CHECK(by_ability);
         summoned += by_ability ? 1 : 0;
         continue;
