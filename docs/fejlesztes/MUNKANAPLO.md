@@ -682,3 +682,7 @@ Az utolsó 13 sor: több egység egy képzésből (`Cost.count`, a Karmos párba
 - **A beásott egység nem lökhető:** a mozgó egységek ütközés-feloldása (`nav_shove`, `nav_nudge`) a tétlen (`inert`) egységet nem tolja el.
 - **A gép magától nem ás be** – ez a valódi gépi ellenféllel (M9) jön.
 **Tesztek:** 286 (1 új); a hash-ek és a golden felvételek változatlanok.
+
+## 2026-11-14 – CI: a gazdasági képpróba referenciája frissítve
+
+A leltár-pótlás után egy munkás a lelőhely mellett máshol áll (a lelőhely-szabályok miatt), ezért a `kepproba_gazdasag` 7‰-kel eltért; a referencia a CI Mesa-képére cserélve (a többi képpróba változatlanul egyezik). **D44** (a tulajdonos döntése): az M8 felülete saját rajzolóval, RmlUi nélkül.
