@@ -257,5 +257,5 @@ TEST_CASE("harc: determinisztikus csata (rögzített hash) és mentésből folyt
   c.run(450);
   CHECK(c.sim->hash() == a.sim->hash());
   std::printf("  harci állapothash (900 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0x57a5824d88feefd6ULL);   // minden rendszeren ugyanez
+  CHECK(a.sim->hash() == 0xe6c72cb55ce68157ULL);   // minden rendszeren ugyanez
 }

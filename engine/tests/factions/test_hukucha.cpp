@@ -101,6 +101,79 @@ TEST_CASE("Huk: ikra-akna – a pontra rakva, ellenség érkezésekor ebihalak k
   CHECK(count(s, "huk_ebihal", 1) == 0);   // élettartam
 }
 
+TEST_CASE("Huk: Áradás – a tó egy csempével kitágul, a tavon gyógyít, a végén visszahúzódik (az épület alatt nem)") {
+  Match m = huk();
+  sim::Sim& s = *m.sim;
+  s.add_resources(1, sim::kFaith, 100);
+  const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 20, 22, true);
+  const uint16_t house = def_of("huk_gyongybuborek");
+  std::string err;
+  CHECK(!s.can_place(1, house, 10, 12, &err));   // a perem (3–10) mellett: a 11-es oszlop még nem tó
+  const auto frog = s.spawn_unit(def_of("huk_csuzlis"), 1, fx(95, 10), fx(155, 10));
+  s.world().get<sim::Health>(frog)->hp -= 20;
+  const int32_t hp0 = s.world().get<sim::Health>(frog)->hp;
+  CHECK(s.use_power(1, shrine, "aradas"));
+  CHECK(s.player(1).resource(sim::kFaith) == 70);
+  CHECK(s.can_place(1, house, 10, 12, &err));    // kiáradt
+  CHECK(!s.use_power(1, shrine, "aradas"));      // újratöltés
+  s.world().get<sim::Combat>(frog)->order = sim::Combat::Hold;
+  m.run(60);
+  const int32_t hp1 = s.world().get<sim::Health>(frog)->hp;
+  std::printf("  gyógyulás 2 s alatt: %d\n", hp1 - hp0);
+  CHECK(hp1 - hp0 == 6);
+  s.place_building(house, 1, 10, 15, true);      // a kiáradt (11, 15–16) csempékre épít
+  m.run(30 * 30);
+  CHECK(!s.can_place(1, house, 10, 12, &err));   // visszahúzódott
+  const auto in_pond = s.spawn_unit(def_of("huk_csuzlis"), 1, fx(115, 10), fx(125, 10));
+  CHECK(s.mod_speed(in_pond) == Fixed::from_int(1));
+  // az épület alatti csempe tó maradt: lebontás után is ott a tó
+  sim::EntityId hb = sim::kNoEntity;
+  s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building& b) { if (b.tx == 10 && b.ty == 15) hb = e; });
+  CHECK(hb != sim::kNoEntity);
+  s.kill(hb);
+  m.run(1);
+  const auto kept = s.spawn_unit(def_of("huk_csuzlis"), 1, fx(115, 10), fx(155, 10) + Fixed::from_int(1));
+  CHECK(s.mod_speed(kept) == fx(13, 10));
+}
+
+TEST_CASE("Huk: Gyöngyérés – az épület kétszer gyorsabban kutat") {
+  auto progress = [](bool haste) {
+    Match m = huk();
+    sim::Sim& s = *m.sim;
+    for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 1000);
+    const auto shop = s.place_building(def_of("huk_gyongymuhely"), 1, 20, 22, true);
+    std::string err;
+    CHECK(s.research(1, "huk_gyongygolyo", &err));
+    if (haste) CHECK(s.use_power(1, shop, "gyongyeres"));
+    m.run(100);
+    const auto& q = s.world().get<sim::Producer>(shop)->queue;
+    return q.empty() ? -1 : q.front().progress;
+  };
+  const int slow = progress(false), fast = progress(true);
+  std::printf("  haladás 100 tick alatt: %d → %d\n", slow, fast);
+  CHECK(slow > 0 && fast >= 2 * slow - 2 && fast <= 2 * slow + 2);
+}
+
+TEST_CASE("Huk: Tóének – a népi paranccsal a szentélyhez küldött Tóásók Tóéneket gyűjtenek") {
+  Match m = huk();
+  sim::Sim& s = *m.sim;
+  const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 14, 12, true);
+  sim::Command c;
+  c.kind = sim::Command::Kind::Module;
+  c.def = "hukucha.toenek";
+  c.owner = 1;
+  c.target = shrine;
+  c.units = m.workers(1);
+  const int32_t f0 = s.player(1).resource(sim::kFaith);
+  s.apply(c);
+  m.run(20 * 30);
+  const int32_t got = s.player(1).resource(sim::kFaith) - f0;
+  std::printf("  Tóének 20 s alatt (%zu munkás): %d\n", c.units.size(), got);
+  CHECK(got > 0);
+  c.def = "masnep.valami";   // más nép parancsát nem nyeli el
+  CHECK(!s.mod_command(c));
+}
+
 TEST_CASE("Huk: determinisztikus, és mentésből folytatva ugyanaz (a tótérkép is)") {
   auto setup = [](Match& m) {
     sim::Sim& s = *m.sim;
@@ -127,4 +200,31 @@ TEST_CASE("Huk: determinisztikus, és mentésből folytatva ugyanaz (a tótérk�
   CHECK(c.sim->hash() == a.sim->hash());
   std::string err;
   CHECK(c.sim->can_place(1, def_of("huk_gyongybuborek"), 15, 13, &err));   // a tótérkép a mentésben
+}
+
+// A szentély a térkép szélén túlra is kilóg: a `level_at` ezt a szélső csempére korlátozza (különben a látótér
+// a tömbön túlról olvasott, és futásonként eltért).
+TEST_CASE("Huk: Áradás és Gyöngyérés – determinisztikus, és mentésből folytatva ugyanaz") {
+  auto setup = [](Match& m) {
+    sim::Sim& s = *m.sim;
+    for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 1000);
+    const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 20, 22, true);
+    s.use_power(1, shrine, "aradas");
+    const auto shop = s.place_building(def_of("huk_gyongymuhely"), 1, 24, 22, true);
+    s.research(1, "huk_gyongygolyo");
+    s.use_power(1, shop, "gyongyeres");
+  };
+  Match a = huk(), b = huk();
+  setup(a);
+  setup(b);
+  a.run(200);
+  b.run(200);
+  CHECK(a.sim->hash() == b.sim->hash());
+  const auto saved = a.sim->save();
+  a.run(800);   // az áradás vége is
+  Match c("BUILD-ALAP", true, false, {"hukucha", "ursan"});
+  CHECK(c.sim->load(saved));
+  c.sim->restore_obstacles(*c.map);
+  c.run(800);
+  CHECK(c.sim->hash() == a.sim->hash());
 }

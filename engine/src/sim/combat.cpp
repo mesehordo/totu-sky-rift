@@ -40,7 +40,9 @@ Fixed rect_gap(Fixed px, Fixed py, int x, int y, int w, int h) {
 
 int Sim::level_at(EntityId e) {
   if (!map_) return 0;
-  if (const Building* b = world_.get<Building>(e)) return map_->level(b->tx, b->ty);
+  if (const Building* b = world_.get<Building>(e)) {   // a térképen kívüli lábnyom is a szélső csempe szintjét kapja
+    return map_->level(std::clamp<int>(b->tx, 0, map_->width() - 1), std::clamp<int>(b->ty, 0, map_->height() - 1));
+  }
   const Position* p = world_.get<Position>(e);
   if (!p) return 0;
   const int x = std::clamp(p->x.floor_int(), 0, map_->width() - 1), y = std::clamp(p->y.floor_int(), 0, map_->height() - 1);
