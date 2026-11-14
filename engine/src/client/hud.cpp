@@ -201,7 +201,7 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, World& 
         std::string label = session.display_name("ability." + a.id + ".name");
         if (a.hotkey) label += std::string(" (") + a.hotkey + ")";
         const bool targeted = a.type == T::Bolt || a.type == T::Area || (a.type == T::Summon && a.target_placement) ||
-                              a.type == T::Garrison;
+                              a.type == T::Garrison || a.type == T::Raise;
         next_button(label, {targeted ? HudAction::TargetAbility : HudAction::Ability, a.id, sim::kNoDef, 0});
       }
       if (worker) {   // építési menü

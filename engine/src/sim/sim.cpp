@@ -343,6 +343,10 @@ uint64_t Sim::hash() const {
     for (const auto& t : mud_patches_) h.add_u64(t.converted);
     h.add_u64(ice_patches_.size());
     for (const auto& t : ice_patches_) h.add_u64(t.converted);
+    if (!corpses_.empty()) {   // holttestek (üresen a hash a korábbi marad)
+      h.add_u64(corpses_.size());
+      for (const Corpse& c : corpses_) { h.add_u64(c.def); h.add_u64(c.owner); h.add_i64(c.x.raw()); h.add_i64(c.y.raw()); h.add_i64(c.tick); }
+    }
   }
   return h.value();
 }
@@ -421,7 +425,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(11);   // séma (11: ideiglenes felfedés; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(12);   // séma (12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -467,6 +471,8 @@ std::vector<uint8_t> Sim::save() const {
     for (const auto& t : mud_patches_) { w.i32(t.x); w.i32(t.y); w.u32(t.orig_terrain); w.u8(t.converted); }
     w.u32(static_cast<uint32_t>(ice_patches_.size()));
     for (const auto& t : ice_patches_) { w.i32(t.x); w.i32(t.y); w.u32(t.orig_terrain); w.u8(t.converted); }
+    w.u32(static_cast<uint32_t>(corpses_.size()));
+    for (const Corpse& c : corpses_) { w.u32(c.def); w.u8(c.owner); w.i32(c.x.raw()); w.i32(c.y.raw()); w.i64(c.tick); }
   }
   return w.data();
 }
@@ -475,7 +481,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 11) return false;
+  if (schema < 3 || schema > 12) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -509,7 +515,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       p.path = r.str();
       p.ally = schema >= 10 ? r.str() : std::string();
       p.reveals.clear();
-      if (schema >= 11) {
+      if (schema >= 12) {
         p.reveals.resize(r.u32());
         for (auto& rv : p.reveals) for (int32_t& v : rv) v = r.i32();
       }
@@ -567,6 +573,15 @@ bool Sim::load(const std::vector<uint8_t>& data) {
         t.x = static_cast<int16_t>(r.i32()); t.y = static_cast<int16_t>(r.i32());
         t.orig_terrain = static_cast<uint16_t>(r.u32()); t.converted = r.u8();
         ice_patches_.push_back(t);
+      }
+    }
+    corpses_.clear();
+    if (schema >= 11) {
+      for (uint32_t i = 0, nc = r.u32(); i < nc && i < 256 && r.ok(); ++i) {
+        Corpse c;
+        c.def = static_cast<uint16_t>(r.u32()); c.owner = r.u8();
+        c.x = Fixed::from_raw(r.i32()); c.y = Fixed::from_raw(r.i32()); c.tick = r.i64();
+        corpses_.push_back(c);
       }
     }
   }

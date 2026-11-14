@@ -110,17 +110,32 @@ bool Sim::research(uint8_t owner, const std::string& id, std::string* error) {
   PlayerState& p = players_[owner];
   if (std::binary_search(p.researched.begin(), p.researched.end(), id)) return fail("már kész");
   bool running = false;
+  std::vector<std::string> chosen(p.researched);   // a kész és a folyamatban lévő kutatások (a kizáró csoporthoz)
   std::vector<std::pair<size_t, EntityId>> cands;
   world_.pool<Producer>().each([&](EntityId e, const Producer& pr) {
     const Building* b = world_.get<Building>(e);
     const Health* h = world_.get<Health>(e);
     if (!b || !h || h->owner != owner) return;
-    for (const QueueItem& q : pr.queue) running = running || (q.research && q.def == ri);
+    for (const QueueItem& q : pr.queue) {
+      running = running || (q.research && q.def == ri);
+      if (q.research) chosen.push_back(rules_->researches[q.def].id);
+    }
     if (h->hp <= 0 || !b->complete || occupied_against(e, owner)) return;   // megszállva nem (D30)
     const auto& rl = rules_->defs[b->def].researches;
     if (std::find(rl.begin(), rl.end(), id) != rl.end()) cands.emplace_back(pr.queue.size(), e);
   });
   if (running) return fail("már folyamatban");
+  // kizáró kutatás (`Exclusive`): ha ugyanabból a csoportból már választott (kész vagy folyamatban), a többi tiltott
+  // (a régi G 3561–3569)
+  if (const std::string& grp = rules_->researches[static_cast<size_t>(ri)].exclusive; !grp.empty()) {
+    std::sort(chosen.begin(), chosen.end());
+    for (const std::string& o : chosen) {
+      const int oi = rules_->research_index(o);
+      if (o != id && oi >= 0 && rules_->researches[static_cast<size_t>(oi)].exclusive == grp) {
+        return fail("már ezt választottad: " + o + " – a többi nem fejleszthető");
+      }
+    }
+  }
   if (cands.empty()) return fail("nincs megfelelő épület");
   const ResearchDef& rd = rules_->researches[static_cast<size_t>(ri)];
   EntityDef tmp;

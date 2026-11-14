@@ -561,6 +561,7 @@ void Sim::die(EntityId e) {
   if (const auto it = killer_.find(e); it != killer_.end()) {
     grant_kill_xp(e, it->second.second, it->second.first);
     heal_on_kill(e, it->second.first, it->second.second);
+    raise_from_kills(e, it->second.first, it->second.second);   // irány-szabály (szellemlégiós)
     const uint8_t ko = it->second.second;   // Wullof vadászzsákmány: a költség / darab × 0,2 × 0,5
     const Health* vh = world_.get<Health>(e);
     const FactionDef* kf = ko >= 1 && ko <= kMaxPlayers ? rules_->faction(players_[ko].faction) : nullptr;
@@ -593,6 +594,7 @@ void Sim::die(EntityId e) {
     if (world_.get<Occupants>(e)) evict(e, true);      // a megszállók fél életerővel (D30)
     if (nav_) nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
   }
+  add_corpse(e);   // egységnél holttest (csak lélekidéző nép jelenlétében)
   kill(e);
 }
 

@@ -1045,6 +1045,19 @@ class Sim {
     uint8_t converted = 0;
   };
   std::vector<TerrainPatch> mud_patches_, ice_patches_;
+  // holttestek (a régi G 148, 1261): csak ha valamelyik játékos népe lélekidéző (`FactionDef::raises`); 10 s-ig
+  // maradnak, 1 s után idézhetők; az állapot része (üresen a hash és a mentés a korábbi marad)
+  struct Corpse {
+    uint16_t def = kNoDef;
+    uint8_t owner = 0;
+    Fixed x, y;
+    int64_t tick = 0;
+  };
+  std::vector<Corpse> corpses_;
+  void add_corpse(EntityId e);
+  bool find_corpse(Fixed x, Fixed y, Fixed r, size_t* out) const;
+  bool raise_corpse(EntityId caster, uint16_t ability, Fixed x, Fixed y);
+  void raise_from_kills(EntityId victim, EntityId killer, uint8_t killer_owner);
   void build_terrain_patches();   // a jelöltlisták egyszeri felépítése (setup_match)
   // képességek (M6 8. lépés; abilities.cpp)
   void ability_system();
