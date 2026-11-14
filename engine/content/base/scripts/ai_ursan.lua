@@ -1,11 +1,12 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 -- Szkriptelt ursan ellenfél (M6, ADR-007 9. lépés; D37): munkások, építési sorrend, kiképzés, kutatás, fejlődési irány
 -- és támadóhullámok – a nép `ai` adatai szerint. A valódi gépi ellenfél az M9-ben. Az AI_PLAYERS a csatolás előtt
--- állítható (alapérték: a 2. játékos).
+-- állítható (alapérték: a 2. játékos); az AI_ALLY[p] előírja a kisnépet (egyébként a nép `ai.ally_pref` listájából).
 AI_PLAYERS = AI_PLAYERS or {2}
+AI_ALLY = AI_ALLY or {}
 
 local BUILD = {"urs_hosszuhaz", "urs_harcosok_haza", "urs_tanya", "urs_hosszuhaz", "urs_eskufa", "urs_harcosok_haza",
-               "urs_runakovacs", "urs_ortorony", "urs_tanya", "urs_tanya"}
+               "urs_runakovacs", "urs_ortorony", "urs_tanya", "urs_tanya", "urs_diplomacia"}
 local ARMY = {"urs_pajzshordozo", "urs_szigonyvezo", "urs_pajzshordozo", "urs_dardaor", "urs_szigonyvezo", "urs_runapap",
               "urs_pajzshordozo", "urs_dardaor", "urs_szigonyvezo"}
 local RESEARCH = {"urs_runapengek", "urs_medvebunda", "urs_vasszigony", "urs_telegi_edzes", "urs_runapajzs",
@@ -17,7 +18,8 @@ local FIRST_WAVE = 4 * 60 * 30  -- az első hullám legkorábban 4 perc után
 
 function on_start()
   for _, p in ipairs(AI_PLAYERS) do
-    S[p] = {army_i = 1, research_i = 1, wave_size = 6, next_wave = Game.tick() + FIRST_WAVE, assigned = {}, n = 0}
+    S[p] = {army_i = 1, research_i = 1, wave_size = 6, next_wave = Game.tick() + FIRST_WAVE, assigned = {}, n = 0,
+            build = {table.unpack(BUILD)}, army = {table.unpack(ARMY)}, ally_on = false}
   end
 end
 
@@ -79,7 +81,7 @@ local function think(p, tick)
     if free < 3 and me.supply_cap < 200 then want = "urs_tanya" end
     if not want then
       local need = {}
-      for _, b in ipairs(BUILD) do
+      for _, b in ipairs(st.build) do
         need[b] = (need[b] or 0) + 1
         if (inv.count[b] or 0) < need[b] then want = b break end
       end
@@ -88,10 +90,22 @@ local function think(p, tick)
   end
   -- kiképzés és kutatás
   if (inv.count["urs_harcosok_haza"] or 0) > 0 and free >= 2 then
-    if Game.train(p, ARMY[st.army_i]) then st.army_i = st.army_i % #ARMY + 1 end
+    if Game.train(p, st.army[st.army_i]) then st.army_i = st.army_i % #st.army + 1 end
   end
   if st.research_i <= #RESEARCH and Game.research(p, RESEARCH[st.research_i]) then st.research_i = st.research_i + 1 end
   if me.ascended and me.path == "" then Game.choose_path(p, "runa") end
+  -- szövetség (KIS-1): kész Diplomácia csarnokával; utána a kisnép épületei és egységei a tervbe
+  if me.ally == "" and (inv.count["urs_diplomacia"] or 0) > 0 then Game.ai_ally(p, AI_ALLY[p]) end
+  if me.ally ~= "" and not st.ally_on then
+    st.ally_on = true
+    local plan = Game.faction_ai(me.ally)
+    if plan then
+      for _, b in ipairs(plan.build) do st.build[#st.build + 1] = b end
+      for _, u in ipairs(plan.army) do
+        for _ = 1, math.min(u[2], 2) do st.army[#st.army + 1] = u[1] end
+      end
+    end
+  end
   -- támadóhullám
   if tick >= st.next_wave and #inv.army >= st.wave_size then
     local x, y = enemy_target(p)

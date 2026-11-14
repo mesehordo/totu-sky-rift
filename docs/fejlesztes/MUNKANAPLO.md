@@ -640,3 +640,8 @@ A Napáldás (`mine_boost`) a népi épületképesség-horgon (`use_power`) megy
 
 A pálya leírása szintenként (1–5) kisnép-tábort kérhet: `"camps": {"1": "pinguu", "4": "tokla"}` (a többi szint a Vadoné). A 12 kisnép tábor-leírása (szerepkörök és szintenkénti összetétel, a régi `camps.json` szerint) a nép **saját sablonjában** (`factions/<nép>.json` → `Camp`) – új kisnépnél ott kell megadni; a szerepkör-recept a `game.json` `camps.recipe` mezőjében (ha a népnek nincs saját összetétele az adott szintre). A tábor egységei a semleges (0.) játékoséi, a viselkedés (TABOR-2) és a zsákmány a Vadon azonos szintű táboráé. A kisnép-Micéliának nincs tábora (mint a régiben).
 **Tesztek:** 230 (1 új, `test_allies.cpp`); a hash-ek változatlanok.
+
+## 2026-11-14 – M7: a gép szövetséget köt (KIS-1)
+
+`Sim::ai_choose_ally`: az előírt kisnép (a szkriptben `AI_ALLY[p]`, a régi `forced_ally`), egyébként a nép `Faction.ai.ally_pref` listájából 80%-ban az első kettő közül (a determinisztikus harci véletlennel; a véletlen csak akkor fogy, ha a szövetség meg is köthető – kész csarnok, elég nyersanyag). Lua: `Game.ai_ally(p [, előírt])`, `Game.faction_ai(nép)` (a nép `ai.build` és `ai.army` terve), `Game.player(p).ally`. A szkriptelt ursan gép az építési listája végén felépíti a Diplomácia csarnokát, szövetséget köt, és a kisnép épületeit és egységeit beveszi a tervébe (a régi `on_ally` szerint).
+**Tesztek:** 231 (1 új, `test_match.cpp`); a hash-ek és a golden M6 változatlanok.

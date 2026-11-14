@@ -332,6 +332,46 @@ bool Sim::choose_ally(uint8_t owner, const std::string& people, std::string* err
   return true;
 }
 
+std::string Sim::ai_choose_ally(uint8_t owner, const std::string& forced) {
+  if (!rules_ || owner < 1 || owner > kMaxPlayers || !players_[owner].ally.empty()) return {};
+  // a véletlen csak akkor fogy, ha a szövetség meg is köthető (kész csarnok, elég nyersanyag)
+  const FactionDef* own = rules_->faction(players_[owner].faction);
+  if (!own) return {};
+  for (int r = 0; r < kResources; ++r) {
+    if (players_[owner].resource(r) < own->ally_cost[static_cast<size_t>(r)]) return {};
+  }
+  bool hall = false;
+  world_.pool<Building>().each([&](EntityId e, const Building& b) {
+    const Health* h = world_.get<Health>(e);
+    hall = hall || (b.complete && h && h->owner == owner && h->hp > 0 && rules_->defs[b.def].diplomacy);
+  });
+  if (!hall) return {};
+  std::vector<std::string> allies;
+  for (const FactionDef& f : rules_->factions) {
+    if (f.ally) allies.push_back(f.id);
+  }
+  if (allies.empty()) return {};
+  std::string pick;
+  if (std::find(allies.begin(), allies.end(), forced) != allies.end()) {
+    pick = forced;
+  } else {
+    std::vector<std::string> pref;
+    const FactionDef* mine = rules_->faction(players_[owner].faction);
+    const content::Value* fa = mine && mine->raw ? mine->raw->find("Faction") : nullptr;
+    const content::Value* ai = fa ? fa->find("ai") : nullptr;
+    if (const content::Value* ap = ai ? ai->find("ally_pref") : nullptr; ap && ap->is_array()) {
+      for (const auto& a : ap->items()) {
+        if (a.is_string() && std::find(allies.begin(), allies.end(), a.text()) != allies.end()) pref.push_back(a.text());
+      }
+    }
+    if (pref.empty()) pref = allies;
+    const bool top2 = pref.size() > 1 && combat_rng_.next() % 100u < 80u;
+    const size_t n = top2 ? 2 : pref.size();
+    pick = pref[combat_rng_.next() % n];
+  }
+  return choose_ally(owner, pick) ? pick : std::string{};
+}
+
 // --- főépület-képesség -----------------------------------------------------------------------------------------------
 bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, Fixed y) {
   if (!rules_) return false;

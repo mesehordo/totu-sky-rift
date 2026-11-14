@@ -931,6 +931,9 @@ class Sim {
   bool choose_path(uint8_t owner, const std::string& path);
   // Szövetség egy kisnéppel (MECH-ALLY, D26): kész Diplomácia csarnoka kell; egyszer, véglegesen, `ally_cost` áron.
   bool choose_ally(uint8_t owner, const std::string& people, std::string* error = nullptr);
+  // a gép szövetségválasztása (KIS-1): az előírt kisnép (`forced`), egyébként a nép `ai.ally_pref` listájából 80%-ban
+  // az első kettő közül (a determinisztikus harci véletlennel); a megkötött kisnép, vagy üres
+  std::string ai_choose_ally(uint8_t owner, const std::string& forced = {});
   // Főépület-képesség (`gpower`, pl. az ursan Eskü-riadó: minden munkás Fegyverbe!).
   bool use_power(uint8_t owner, EntityId building, const std::string& ability, Fixed x = {}, Fixed y = {});
   // megszállás (D30): a megszállók kiűzése (`half`: az épület ledőlt – fél életerővel jönnek ki); idegen megszálló van-e bent

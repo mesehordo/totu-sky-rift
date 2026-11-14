@@ -842,7 +842,7 @@ uint16_t check_def(lua_State* L, sim::Sim& s, int i) {
 int g_player(lua_State* L) {
   sim::Sim& s = need_sim(L);
   const sim::PlayerState& p = s.player(check_owner(L, 1));
-  lua_createtable(L, 0, 8);
+  lua_createtable(L, 0, 9);
   lua_pushinteger(L, p.resource(sim::kWood)); lua_setfield(L, -2, "wood");
   lua_pushinteger(L, p.resource(sim::kStone)); lua_setfield(L, -2, "stone");
   lua_pushinteger(L, p.resource(sim::kMeteor)); lua_setfield(L, -2, "meteor");
@@ -851,6 +851,7 @@ int g_player(lua_State* L) {
   lua_pushboolean(L, p.ascended); lua_setfield(L, -2, "ascended");
   lua_pushstring(L, p.path.c_str()); lua_setfield(L, -2, "path");
   lua_pushboolean(L, p.defeated); lua_setfield(L, -2, "defeated");
+  lua_pushstring(L, p.ally.c_str()); lua_setfield(L, -2, "ally");
   return 1;
 }
 
@@ -929,6 +930,49 @@ int g_choose_ally(lua_State* L) {
   return 1;
 }
 
+// Game.ai_ally(p [, előírt]) → a gép szövetségválasztása (KIS-1); a megkötött kisnép, vagy nil
+int g_ai_ally(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  const std::string pick = s.ai_choose_ally(check_owner(L, 1), luaL_optstring(L, 2, ""));
+  if (pick.empty()) return 0;
+  lua_pushstring(L, pick.c_str());
+  return 1;
+}
+
+// Game.faction_ai(nép) → {build = {…}, army = {{id, n}, …}} – a nép `ai` tervéből (a kisnépé a szövetség után)
+int g_faction_ai(lua_State* L) {
+  sim::Sim& s = need_sim(L);
+  const sim::FactionDef* f = s.rules() ? s.rules()->faction(luaL_checkstring(L, 1)) : nullptr;
+  const content::Value* fa = f && f->raw ? f->raw->find("Faction") : nullptr;
+  const content::Value* ai = fa ? fa->find("ai") : nullptr;
+  if (!ai) return 0;
+  lua_createtable(L, 0, 2);
+  lua_newtable(L);
+  int i = 0;
+  if (const content::Value* b = ai->find("build"); b && b->is_array()) {
+    for (const auto& x : b->items()) {
+      if (!x.is_string()) continue;
+      lua_pushstring(L, x.text().c_str());
+      lua_rawseti(L, -2, ++i);
+    }
+  }
+  lua_setfield(L, -2, "build");
+  lua_newtable(L);
+  i = 0;
+  if (const content::Value* a = ai->find("army"); a && a->is_object()) {
+    for (const auto& [id, n] : a->members()) {
+      lua_createtable(L, 2, 0);
+      lua_pushstring(L, id.c_str());
+      lua_rawseti(L, -2, 1);
+      lua_pushinteger(L, n.as_int().value_or(1));
+      lua_rawseti(L, -2, 2);
+      lua_rawseti(L, -2, ++i);
+    }
+  }
+  lua_setfield(L, -2, "army");
+  return 1;
+}
+
 int g_winner(lua_State* L) {
   lua_pushinteger(L, need_sim(L).winner());
   return 1;
@@ -939,7 +983,7 @@ void open_game(lua_State* L) {
                                    {"unit", g_unit},   {"units", g_units}, {"count", g_count}, {"after", g_after},
                                    {"cancel", g_cancel}, {"player", g_player}, {"kind", g_kind}, {"train", g_train},
                                    {"research", g_research}, {"build", g_build}, {"attack", g_attack},
-                                   {"choose_path", g_choose_path}, {"gather", g_gather}, {"choose_ally", g_choose_ally}, {"winner", g_winner}, {nullptr, nullptr}};
+                                   {"choose_path", g_choose_path}, {"gather", g_gather}, {"choose_ally", g_choose_ally}, {"ai_ally", g_ai_ally}, {"faction_ai", g_faction_ai}, {"winner", g_winner}, {nullptr, nullptr}};
   luaL_newlib(L, funcs);
   wrap_readonly(L);
   lua_setglobal(L, "Game");

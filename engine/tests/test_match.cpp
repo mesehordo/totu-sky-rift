@@ -102,3 +102,37 @@ TEST_CASE("betű: a játék TTF-betűje magyar ékezetekkel atlaszba sütve") {
   CHECK(f.width("Fa: 120") > 20.0f && f.width("Fa: 120") < 120.0f);
   CHECK(render::utf8_codepoints("őz").size() == 2);
 }
+
+TEST_CASE("gépi szövetség (KIS-1): előírt kisnép, egyébként az `ally_pref` első kettőjéből; csarnok nélkül nem, a véletlen sem fogy") {
+  {
+    Match m("BUILD-ALAP");
+    sim::Sim& s = *m.sim;
+    for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 5000);
+    const uint64_t h0 = s.hash();
+    CHECK(s.ai_choose_ally(1).empty());   // csarnok nélkül
+    CHECK(s.hash() == h0);
+    s.place_building(content_once().rules->def("urs_diplomacia"), 1, 12, 9, true);
+    const std::string pick = s.ai_choose_ally(1);
+    std::printf("  választás: %s\n", pick.c_str());
+    CHECK(pick == "pinguu" || pick == "tokla" || pick == "ghoblin");
+    CHECK(s.player(1).ally == pick);
+    CHECK(s.ai_choose_ally(1, "tokla").empty());   // egyszer
+  }
+  // a szkriptelt gép: kész csarnokkal megköti az előírt szövetséget, és a kisnép épületét is felépíti
+  Match m("ECO-ALAP");
+  sim::Sim& s = *m.sim;
+  script::ScriptHost ai("ai", 20261113);
+  CHECK(ai.run("ai_players", "AI_PLAYERS = {1}; AI_ALLY = {[1] = 'tokla'}"));
+  CHECK(ai.run("ai_ursan.lua", ai_source()));
+  s.add_hooks(&ai);
+  ai.start(s);
+  for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 20000);
+  m.run(8 * 60 * 30);
+  for (const auto& msg : ai.messages()) std::printf("  napló: %s\n", msg.c_str());
+  CHECK(s.player(1).ally == "tokla");
+  bool tokla_building = false;
+  s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building& b) {
+    tokla_building = tokla_building || (s.world().get<sim::Health>(e)->owner == 1 && content_once().rules->defs[b.def].faction == "tokla");
+  });
+  CHECK(tokla_building);
+}
