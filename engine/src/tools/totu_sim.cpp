@@ -16,12 +16,14 @@
 #include <iterator>
 #include <optional>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "core/platform_info.hpp"
 #include "core/rng.hpp"
 #include "map/terrain.hpp"
 #include "sim/replay.hpp"
+#include "tools/aibatch.hpp"
 #include "tools/nav_tools.hpp"
 
 using namespace totu;
@@ -222,6 +224,41 @@ int main(int argc, char** argv) {
                 static_cast<long long>(r.ticks), r.checkpoints.size(),
                 static_cast<unsigned long long>(r.checkpoints.back().hash));
     return 0;
+  }
+  if (argc >= 2 && std::strcmp(argv[1], "aibatch") == 0) {   // M9 kapu: tömeges gép–gép meccsek, elakadás-észlelés
+    map::TerrainTable terrain;
+    std::optional<sim::Rules> rules;
+    if (!tools::load_match_content(content, terrain, rules)) return 2;
+    const int count = static_cast<int>(arg_ll(argc, argv, "--count", 100));
+    const int minutes = static_cast<int>(arg_ll(argc, argv, "--minutes", 12));
+    const int threads = static_cast<int>(arg_ll(argc, argv, "--threads", std::max(1u, std::thread::hardware_concurrency())));
+    const char* map_arg = arg_str(argc, argv, "--map", nullptr);
+    const char* script_arg = arg_str(argc, argv, "--script", nullptr);
+    const std::string map_path = map_arg ? map_arg : std::string(content) + "/../tests/data/maps/ECO-ALAP.json";
+    const std::string script_path = script_arg ? script_arg : std::string(content) + "/base/scripts/ai_nep.lua";
+    const auto src = read_file(script_path.c_str());
+    if (src.empty()) { std::fprintf(stderr, "nem olvasható: %s\n", script_path.c_str()); return 2; }
+    std::vector<std::string> fs;
+    for (const auto& f : rules->factions) {
+      if (!f.ally && !f.neutral) fs.push_back(f.id);
+    }
+    std::vector<tools::AiBatchMatch> ms;
+    for (int i = 0; i < count; ++i) {   // minden népi pár sorra, változó maggal
+      tools::AiBatchMatch m;
+      m.map_path = map_path;
+      m.factions = {fs[static_cast<size_t>(i) % fs.size()], fs[static_cast<size_t>(i / static_cast<int>(fs.size()) + i + 1) % fs.size()]};
+      m.seed = 1000 + static_cast<uint64_t>(i);
+      m.ticks = int64_t{minutes} * 60 * 30;
+      m.camps = i % 2 == 1;
+      m.script_name = script_path.substr(script_path.find_last_of("/\\") + 1);
+      m.script_source.assign(src.begin(), src.end());
+      ms.push_back(std::move(m));
+    }
+    const auto res = tools::run_ai_batch(ms, terrain, *rules, threads);
+    int bad = 0;
+    for (const auto& r : res) bad += r.ok ? 0 : 1;
+    std::printf("%d meccs, %d hibás vagy elakadt\n", count, bad);
+    return bad == 0 ? 0 : 1;
   }
   if (argc >= 3 && std::strcmp(argv[1], "verify") == 0) {
     auto r = sim::decode(read_file(argv[2]));

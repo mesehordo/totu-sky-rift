@@ -99,7 +99,7 @@ target_link_libraries(totu_tests PRIVATE totu_core totu_image totu_assets totu_o
 add_test(NAME core COMMAND totu_tests)
 
 # --- ablak nélküli szimulációs futtató és az M2 kapu: a golden visszajátszás minden rendszeren egyezik -----------
-add_executable(totu_sim src/tools/totu_sim.cpp src/tools/nav_tools.cpp)
+add_executable(totu_sim src/tools/totu_sim.cpp src/tools/nav_tools.cpp src/tools/aibatch.cpp)
 target_link_libraries(totu_sim PRIVATE totu_core totu_options)
 target_compile_definitions(totu_sim PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
 add_test(NAME golden_replay COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m2.trep)
@@ -113,6 +113,9 @@ add_test(NAME golden_replay_m6 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DI
          --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
 # M7 kapu: vegyes népek (Szürke elfek – Wullof) az adatvezérelt géppel (`ai_nep.lua`), 12 perc, minden rendszeren azonos
 add_test(NAME golden_replay_m7 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m7.trep
+         --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
+# M9 kapu (rövidítve): minden főnép gépe gépe ellen, elakadás és szkripthiba nélkül
+add_test(NAME ai_batch_rovid COMMAND totu_sim aibatch --count 7 --minutes 4 --threads 4
          --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
 
 # --- kliens (SDL3 + OpenGL 3.3 core) ------------------------------------------------------------------------------

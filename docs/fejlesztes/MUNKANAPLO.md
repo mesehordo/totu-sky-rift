@@ -709,3 +709,7 @@ A tároló minden szövegfájlja LF (`.gitattributes`: `* text=auto eol=lf`, a k
 ## 2026-11-14 – A gazdasági képpróba referenciája: az új HUD
 
 A referencia a CI Mesa-képére cserélve (az M8 HUD-ja: alsó sáv a régi elrendezésben, felső erőforrássáv, küldetéslista). A CI-ben a felület képei nincsenek letöltve, ezért az ikonhelyek üresek – a többi képpróba változatlanul egyezik.
+
+## 2026-11-14 – M9 indul: tömeges gép–gép futtató
+
+`totu_sim aibatch [--count N] [--minutes M] [--threads T] [--map pálya] [--script gép.lua]`: minden főnépi pár sorra, változó maggal (minden második meccs táborokkal), párhuzamos szálakon; játékosonként gyűjtés, egységek, épületek, kutatások; **elakadás**, ha egy még játszó játékos haladása 3 percig nem változik és nincs győztes. CTest: `ai_batch_rovid` (7 meccs, 4 perc). Alapvonal a mostani `ai_nep.lua`-val az ECO-ALAP pályán: 100 meccsből 98 rendben, 2-ben az elf gép a 8–11. percben megállt – a kis pálya nyersanyaga (5 lelőhely) elfogy; a kapuhoz a régi 20 csatapálya átvétele folyamatban (külön ág), az új M9-gép is külön ágon készül.
