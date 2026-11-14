@@ -108,24 +108,30 @@ std::string Session::display_name(const std::string& key) const {
 }
 
 bool Session::start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error, std::vector<int> ai) {
+  sim::MatchSetup setup;
+  setup.factions = factions;
+  setup.upkeep = upkeep;
+  setup.camps = true;   // egyéni csata: a Vadon táboraival (D25)
+  return start_match(setup, ai, "ai_ursan.lua", error);
+}
+
+bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& ai, const std::string& ai_script,
+                          std::string* error) {
   if (!rules_) {
     if (error) *error = "a játékszabályok nem tölthetők be";
     return false;
   }
   sim_->attach_rules(&*rules_);
-  sim::MatchSetup setup;
-  setup.factions = factions;
-  setup.upkeep = upkeep;
-  setup.camps = true;   // egyéni csata: a Vadon táboraival (D25)
   if (!sim_->setup_match(*map_, setup, error)) return false;
+  if (setup.fog == sim::MatchSetup::Fog::None) reveal_all_ = true;
   if (!ai.empty()) {   // a szkriptelt ellenfél (Lua; determinisztikus, a hash és a mentés része)
-    std::ifstream in(std::filesystem::path(content_dir_) / "base" / "scripts" / "ai_ursan.lua", std::ios::binary);
+    std::ifstream in(std::filesystem::path(content_dir_) / "base" / "scripts" / ai_script, std::ios::binary);
     const std::string src{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
     std::string players = "AI_PLAYERS = {";
     for (size_t i = 0; i < ai.size(); ++i) players += (i ? ", " : "") + std::to_string(ai[i]);
     players += "}";
     ai_ = std::make_unique<script::ScriptHost>("ai", seed_);
-    if (src.empty() || !ai_->run("ai_players", players) || !ai_->run("ai_ursan.lua", src)) {
+    if (src.empty() || !ai_->run("ai_players", players) || !ai_->run(ai_script, src)) {
       if (error) *error = "a gép szkriptje nem tölthető be";
       ai_.reset();
     } else {

@@ -1,6 +1,7 @@
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
+"Language-Name: Magyar\n"
 
 msgctxt "unit.dar_fullanclandzsas.name"
 msgid "Fullánclándzsás"
@@ -7265,4 +7266,433 @@ msgstr ""
 
 msgctxt "ability.megszallas.desc"
 msgid "Az egységek beköltöznek az ellenséges vagy semleges épületbe; amíg bent vannak, a tulajdonos ott nem képezhet és nem kutathat, a távolharcos megszállók kilőnek. Férőhely: kicsi épület 2, közepes 4, nagy 6. 50% alatti életerőnél vagy visszafoglaláskor kiűzik őket."
+msgstr ""
+
+# --- felület (M8): menük és beállítások; msgctxt = a kód kulcsa
+msgctxt "ui.main.single"
+msgid "Egyjátékos"
+msgstr ""
+
+msgctxt "ui.main.single.hint"
+msgid "Kampány, egyéni csata és mentett játékok."
+msgstr ""
+
+msgctxt "ui.main.campaign"
+msgid "Kampány"
+msgstr ""
+
+msgctxt "ui.main.campaign.hint"
+msgid "A történet küldetései, egymás után."
+msgstr ""
+
+msgctxt "ui.main.novellas"
+msgid "Novellák"
+msgstr ""
+
+msgctxt "ui.main.novellas.hint"
+msgid "A novellák önálló pályái – bármikor, bármilyen sorrendben."
+msgstr ""
+
+msgctxt "ui.main.skirmish"
+msgid "Egyéni csata"
+msgstr ""
+
+msgctxt "ui.main.skirmish.hint"
+msgid "Csata gépi ellenfelek ellen, saját beállításokkal."
+msgstr ""
+
+msgctxt "ui.main.load"
+msgid "Betöltés"
+msgstr ""
+
+msgctxt "ui.main.load.hint"
+msgid "Egy korábban mentett játék folytatása."
+msgstr ""
+
+msgctxt "ui.main.multiplayer"
+msgid "Többjátékos"
+msgstr ""
+
+msgctxt "ui.main.multiplayer.hint"
+msgid "Játék a helyi hálózaton (LAN): létrehozás vagy csatlakozás."
+msgstr ""
+
+msgctxt "ui.main.stories"
+msgid "Történetek"
+msgstr ""
+
+msgctxt "ui.main.stories.hint"
+msgid "A világ, a népek és a novellák – olvasnivaló képekkel."
+msgstr ""
+
+msgctxt "ui.main.settings"
+msgid "Beállítások"
+msgstr ""
+
+msgctxt "ui.main.settings.hint"
+msgid "A játék és a profil beállításai."
+msgstr ""
+
+msgctxt "ui.main.game_settings"
+msgid "Játékbeállítások"
+msgstr ""
+
+msgctxt "ui.main.game_settings.hint"
+msgid "Nyelv, görgetés, felbontás, kijelzés."
+msgstr ""
+
+msgctxt "ui.main.profiles"
+msgid "Profilok"
+msgstr ""
+
+msgctxt "ui.main.profiles.hint"
+msgid "Profil választása, létrehozása és statisztikái."
+msgstr ""
+
+msgctxt "ui.main.mods"
+msgid "Modok"
+msgstr ""
+
+msgctxt "ui.main.mods.hint"
+msgid "Modok engedélyezése, letiltása és betöltési sorrendje."
+msgstr ""
+
+msgctxt "ui.main.credits"
+msgid "Készítők"
+msgstr ""
+
+msgctxt "ui.main.credits.hint"
+msgid "A játék készítői."
+msgstr ""
+
+msgctxt "ui.main.quit"
+msgid "Kilépés"
+msgstr ""
+
+msgctxt "ui.main.quit.hint"
+msgid "Kilépés a játékból."
+msgstr ""
+
+msgctxt "ui.main.soon"
+msgid "hamarosan"
+msgstr ""
+
+msgctxt "ui.main.creator"
+msgid "Kreátor: Mesehordo"
+msgstr ""
+
+msgctxt "ui.back"
+msgid "Vissza"
+msgstr ""
+
+msgctxt "ui.on"
+msgid "Be"
+msgstr ""
+
+msgctxt "ui.off"
+msgid "Ki"
+msgstr ""
+
+msgctxt "ui.skirmish.title"
+msgid "EGYÉNI CSATA"
+msgstr ""
+
+msgctxt "ui.skirmish.map"
+msgid "Pálya"
+msgstr ""
+
+msgctxt "ui.skirmish.no_map"
+msgid "Nincs játszható pálya."
+msgstr ""
+
+msgctxt "ui.skirmish.no_faction"
+msgid "Nincs választható nép."
+msgstr ""
+
+msgctxt "ui.skirmish.map_info"
+msgid "{n} játékos • {w}×{h}"
+msgstr ""
+
+msgctxt "ui.skirmish.col.num"
+msgid "#"
+msgstr ""
+
+msgctxt "ui.skirmish.col.participant"
+msgid "Résztvevő"
+msgstr ""
+
+msgctxt "ui.skirmish.col.faction"
+msgid "Faj"
+msgstr ""
+
+msgctxt "ui.skirmish.col.color"
+msgid "Szín"
+msgstr ""
+
+msgctxt "ui.skirmish.random"
+msgid "Véletlen"
+msgstr ""
+
+msgctxt "ui.skirmish.player"
+msgid "Játékos"
+msgstr ""
+
+msgctxt "ui.skirmish.computer"
+msgid "Gép"
+msgstr ""
+
+msgctxt "ui.skirmish.closed"
+msgid "Zárt"
+msgstr ""
+
+msgctxt "ui.skirmish.need_two"
+msgid "Legalább két résztvevő kell."
+msgstr ""
+
+msgctxt "ui.skirmish.start"
+msgid "INDÍTÁS"
+msgstr ""
+
+msgctxt "ui.color.0"
+msgid "Piros"
+msgstr ""
+
+msgctxt "ui.color.1"
+msgid "Kék"
+msgstr ""
+
+msgctxt "ui.color.2"
+msgid "Zöld"
+msgstr ""
+
+msgctxt "ui.color.3"
+msgid "Sárga"
+msgstr ""
+
+msgctxt "ui.color.4"
+msgid "Lila"
+msgstr ""
+
+msgctxt "ui.color.5"
+msgid "Narancs"
+msgstr ""
+
+msgctxt "ui.color.6"
+msgid "Türkiz"
+msgstr ""
+
+msgctxt "ui.color.7"
+msgid "Fehér"
+msgstr ""
+
+msgctxt "ui.color_safe.0"
+msgid "Narancs"
+msgstr ""
+
+msgctxt "ui.color_safe.1"
+msgid "Kék"
+msgstr ""
+
+msgctxt "ui.color_safe.2"
+msgid "Sárga"
+msgstr ""
+
+msgctxt "ui.color_safe.3"
+msgid "Égkék"
+msgstr ""
+
+msgctxt "ui.color_safe.4"
+msgid "Rózsaszín"
+msgstr ""
+
+msgctxt "ui.color_safe.5"
+msgid "Vörös"
+msgstr ""
+
+msgctxt "ui.color_safe.6"
+msgid "Kékeszöld"
+msgstr ""
+
+msgctxt "ui.color_safe.7"
+msgid "Fehér"
+msgstr ""
+
+msgctxt "ui.opt.fog"
+msgid "Köd"
+msgstr ""
+
+msgctxt "ui.opt.fog.normal"
+msgid "Normál"
+msgstr ""
+
+msgctxt "ui.opt.fog.explored"
+msgid "Felderített térkép"
+msgstr ""
+
+msgctxt "ui.opt.fog.none"
+msgid "Nincs köd"
+msgstr ""
+
+msgctxt "ui.opt.daytime"
+msgid "Napszak"
+msgstr ""
+
+msgctxt "ui.opt.weather"
+msgid "Időjárás"
+msgstr ""
+
+msgctxt "ui.opt.mode.off"
+msgid "Ki"
+msgstr ""
+
+msgctxt "ui.opt.mode.mood"
+msgid "Hangulat"
+msgstr ""
+
+msgctxt "ui.opt.mode.effect"
+msgid "Hatással"
+msgstr ""
+
+msgctxt "ui.opt.mode.effect_terrain"
+msgid "Hatással és pályaváltozással"
+msgstr ""
+
+msgctxt "ui.opt.camps"
+msgid "Szörnytáborok"
+msgstr ""
+
+msgctxt "ui.opt.upkeep"
+msgid "Hadtáp"
+msgstr ""
+
+msgctxt "ui.settings.title"
+msgid "BEÁLLÍTÁSOK"
+msgstr ""
+
+msgctxt "ui.settings.language"
+msgid "Nyelv"
+msgstr ""
+
+msgctxt "ui.settings.resolution"
+msgid "Felbontás"
+msgstr ""
+
+msgctxt "ui.settings.fullscreen"
+msgid "Teljes képernyő"
+msgstr ""
+
+msgctxt "ui.settings.ui_scale"
+msgid "Felület mérete"
+msgstr ""
+
+msgctxt "ui.settings.colorblind"
+msgid "Színvak-barát csapatszínek"
+msgstr ""
+
+msgctxt "ui.settings.scroll_speed"
+msgid "Görgetés sebessége"
+msgstr ""
+
+msgctxt "ui.settings.edge_scroll"
+msgid "Képernyőszéli görgetés"
+msgstr ""
+
+msgctxt "ui.settings.show_fps"
+msgid "FPS-kijelzés"
+msgstr ""
+
+msgctxt "ui.settings.fps_limit"
+msgid "Képkocka-korlát"
+msgstr ""
+
+msgctxt "ui.settings.sound"
+msgid "Hangerő és hangkategóriák"
+msgstr ""
+
+msgctxt "ui.settings.keys"
+msgid "Billentyűkiosztás"
+msgstr ""
+
+msgctxt "ui.settings.none"
+msgid "Nincs"
+msgstr ""
+
+msgctxt "ui.settings.sound_button"
+msgid "Hangbeállítások"
+msgstr ""
+
+msgctxt "ui.settings.keys_button"
+msgid "Parancsrács"
+msgstr ""
+
+msgctxt "ui.settings.footer"
+msgid "A beállítások a felhasználói beállításfájlba mentődnek."
+msgstr ""
+
+msgctxt "ui.sound.title"
+msgid "HANGBEÁLLÍTÁSOK"
+msgstr ""
+
+msgctxt "ui.sound.master"
+msgid "Főhangerő"
+msgstr ""
+
+msgctxt "ui.sound.music"
+msgid "Zene"
+msgstr ""
+
+msgctxt "ui.sound.units"
+msgid "Egység- és hőshangok"
+msgstr ""
+
+msgctxt "ui.sound.combat"
+msgid "Harci effektek"
+msgstr ""
+
+msgctxt "ui.sound.buildings"
+msgid "Épülethangok"
+msgstr ""
+
+msgctxt "ui.sound.interface"
+msgid "Kezelőfelület és riasztások"
+msgstr ""
+
+msgctxt "ui.sound.environment"
+msgid "Környezeti hangok"
+msgstr ""
+
+msgctxt "ui.sound.footer"
+msgid "A hang még nincs a motorban; a beállítás tárolódik."
+msgstr ""
+
+msgctxt "ui.keys.title"
+msgid "BILLENTYŰKIOSZTÁS"
+msgstr ""
+
+msgctxt "ui.keys.info"
+msgid "A parancsrács (4 × 3) billentyűi. Kattints egy mezőre, majd nyomd le az új betűt. Foglalt: P (szünet) és a számjegyek (csapatok)."
+msgstr ""
+
+msgctxt "ui.keys.default"
+msgid "Alapértelmezés"
+msgstr ""
+
+msgctxt "ui.keys.press"
+msgid "Nyomd le az új billentyűt a(z) {n}. helyhez (Esc: mégse)."
+msgstr ""
+
+msgctxt "ui.keys.restored"
+msgid "Visszaállítva: W E R T / S D F G / X C V B."
+msgstr ""
+
+msgctxt "ui.keys.done"
+msgid "Kész: a(z) {n}. hely billentyűje {k}."
+msgstr ""
+
+msgctxt "ui.keys.invalid"
+msgid "Ez a billentyű nem használható (foglalt: P, számjegyek)."
+msgstr ""
+
+msgctxt "ui.keys.conflict"
+msgid "Ütközés: a(z) {k} már a(z) {n}. hely billentyűje."
 msgstr ""
