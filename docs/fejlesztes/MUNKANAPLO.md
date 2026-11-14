@@ -626,3 +626,5 @@ A Napáldás (`mine_boost`) a népi épületképesség-horgon (`use_power`) megy
 ## M7: Huk'ucha a népi horgokon; determinizmus-hiba javítva
 
 **Huk'ucha:** Áradás (`use_power`: a tó kitágul, a tavon gyógyít, a végén visszahúzódik; ismételve hosszabbít), Gyöngyérés (kétszeres kutatás és képzés), Tóének (`hukucha.toenek` parancs), Tavak útja (`pond_dmg` a kutatásból), `pond_speed` a `game.json`-ból. **Hibajavítás (közös):** a `level_at` épületnél nem korlátozta a lábnyom bal felső sarkát a térképre; a térképen kívül kilógó épület (a próbában a 20 magas térkép 22. sora) a szintet a tömbön túlról olvasta, így a látótér futásonként eltért. Most a szélső csempe szintje számít. **Teszt:** 225; a Huk determinizmus-próbája újra a teljes hash-t nézi; hash-ek és golden M6 újra.
+
+**CI (FreeBSD, „ILLEGAL”):** ugyanez a túlindexelés a libc++ védett módjában csapdát váltott ki (az elfoglalás-próba főépülete a térkép alsó szélén túl állt). Javítás: a `level_at` korlátozása mellett a `place_building` térképen kívülre már nem rak le (`kNoEntity`); a két próba épületei a térképre kerültek.

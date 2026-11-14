@@ -105,7 +105,7 @@ TEST_CASE("Huk: Áradás – a tó egy csempével kitágul, a tavon gyógyít, a
   Match m = huk();
   sim::Sim& s = *m.sim;
   s.add_resources(1, sim::kFaith, 100);
-  const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 20, 22, true);
+  const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 20, 12, true);
   const uint16_t house = def_of("huk_gyongybuborek");
   std::string err;
   CHECK(!s.can_place(1, house, 10, 12, &err));   // a perem (3–10) mellett: a 11-es oszlop még nem tó
@@ -141,7 +141,7 @@ TEST_CASE("Huk: Gyöngyérés – az épület kétszer gyorsabban kutat") {
     Match m = huk();
     sim::Sim& s = *m.sim;
     for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 1000);
-    const auto shop = s.place_building(def_of("huk_gyongymuhely"), 1, 20, 22, true);
+    const auto shop = s.place_building(def_of("huk_gyongymuhely"), 1, 20, 12, true);
     std::string err;
     CHECK(s.research(1, "huk_gyongygolyo", &err));
     if (haste) CHECK(s.use_power(1, shop, "gyongyeres"));
@@ -208,9 +208,9 @@ TEST_CASE("Huk: Áradás és Gyöngyérés – determinisztikus, és mentésből
   auto setup = [](Match& m) {
     sim::Sim& s = *m.sim;
     for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 1000);
-    const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 20, 22, true);
+    const auto shrine = s.place_building(def_of("huk_toteremto"), 1, 20, 12, true);
     s.use_power(1, shrine, "aradas");
-    const auto shop = s.place_building(def_of("huk_gyongymuhely"), 1, 24, 22, true);
+    const auto shop = s.place_building(def_of("huk_gyongymuhely"), 1, 24, 12, true);
     s.research(1, "huk_gyongygolyo");
     s.use_power(1, shop, "gyongyeres");
   };

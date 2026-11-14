@@ -124,6 +124,7 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   if (!rules_ || def >= rules_->defs.size()) return kNoEntity;
   const EntityDef& d = rules_->defs[def];
   const int w = std::max(1, d.fw), h = std::max(1, d.fh);
+  if (map_ && (tx < 0 || ty < 0 || tx + w > map_->width() || ty + h > map_->height())) return kNoEntity;   // csak a térképre
   const EntityId e = world_.create();
   const int32_t hp = std::max(1, research_stat(owner, "Health.max", Fixed::from_int(d.hp), d).floor_int());
   world_.add(e, Position{Fixed::from_int(tx) + half(w), Fixed::from_int(ty) + half(h)});

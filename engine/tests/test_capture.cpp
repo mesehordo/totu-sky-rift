@@ -50,7 +50,7 @@ TEST_CASE("elfoglalás: 50% alatti idegen épület, 8 s varázslás, a használ�
   const auto u = put(s, "urs_telepes", 1, 110, 100);
   CHECK(!s.use_ability({u}, "elfoglalas", {}, {}, b));   // ép épületre nem
   hp(s, b).hp = hp(s, b).max * 4 / 10;
-  const auto hq = s.place_building(R().faction("wullof")->hq, 2, 20, 20, true);
+  const auto hq = s.place_building(R().faction("wullof")->hq, 2, 26, 14, true);
   hp(s, hq).hp = 10;
   CHECK(!s.use_ability({u}, "elfoglalas", {}, {}, hq));  // a főépület nem
   CHECK(s.use_ability({u}, "elfoglalas", {}, {}, b));
