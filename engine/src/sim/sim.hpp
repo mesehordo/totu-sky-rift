@@ -958,6 +958,8 @@ class Sim {
   bool order_unpack(EntityId wagon, int tx, int ty);
   Fixed pack_damage_mult(EntityId e);                        // falkaszellem: 1 + 0,1 n
   Fixed pack_speed_mult(EntityId e);                         // 1 + 0,02 n
+  Fixed moon_mult(uint8_t owner) const;                      // Holdtölte: az időszakban × `mult`, különben 1
+  void heal_on_kill(EntityId victim, EntityId killer, uint8_t killer_owner);   // irány-szabály: életerő ölésenként
   // A szkriptelt ellenfélnek (Lua): építési hely a (x, y) csempe körül, és egy szabad munkás építeni (false: nincs).
   bool build_near(uint8_t owner, uint16_t def, int x, int y);
   bool gather_nearest(EntityId worker, int kind);   // a munkás a legközelebbi ilyen lelőhelyre (szkript, gép)   // Égkő-fényben áll (MECH-RIFT)
@@ -1049,6 +1051,7 @@ class Sim {
   bool activate_buff(EntityId e, uint16_t ability);
   bool cast_nova(EntityId e, uint16_t ability);
   bool summon(EntityId e, uint16_t ability, bool at_point, Fixed x, Fixed y);
+  int32_t summon_life(uint8_t owner, int32_t ticks) const;   // az idézés élettartama a `summon_life_mult` szerint
   void fire_bolt(EntityId e, uint16_t ability, EntityId target);
   void apply_spell(EntityId src, uint8_t owner, const AbilityDef& a, EntityId target);   // lassítás vagy kábítás
   void apply_element(EntityId src, EntityId target, Element el, int64_t dmg_milli);

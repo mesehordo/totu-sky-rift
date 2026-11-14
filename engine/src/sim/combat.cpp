@@ -260,6 +260,10 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
       dmg = mul_fixed(dmg, rs.lhr_mult);
     }
   }
+  if (src != kNoEntity && (src_def < rules_->defs.size() ? !rules_->defs[src_def].building
+                                                         : world_.alive(src) && world_.get<Unit>(src))) {   // Holdtölte (a régi G 1098)
+    dmg = mul_fixed(dmg, moon_mult(owner));
+  }
   if (tu && ranged) dmg = mul_fixed(dmg, unit_mods(t).ranged_taken_mult);
   if (!modules_.empty()) dmg = mul_fixed(dmg, mod_damage_taken(src, t, ranged, magic));   // népi sérüléshorog   // pajzsfal: kevesebb a távolsági sebzés
   Vital* vt = world_.get<Vital>(t);
@@ -549,6 +553,7 @@ void Sim::die(EntityId e) {
   }
   if (const auto it = killer_.find(e); it != killer_.end()) {
     grant_kill_xp(e, it->second.second, it->second.first);
+    heal_on_kill(e, it->second.first, it->second.second);
     const uint8_t ko = it->second.second;   // Wullof vadászzsákmány: a költség / darab × 0,2 × 0,5
     const Health* vh = world_.get<Health>(e);
     const FactionDef* kf = ko >= 1 && ko <= kMaxPlayers ? rules_->faction(players_[ko].faction) : nullptr;

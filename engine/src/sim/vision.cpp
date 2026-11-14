@@ -112,7 +112,7 @@ void Sim::stealth_system() {
       int det = 0;
       bool unit = false;
       if (const Unit* ou = world_.get<Unit>(o)) {
-        det = rules_->defs[ou->def].detect;
+        det = std::max(rules_->defs[ou->def].detect, oh.owner <= kMaxPlayers ? rules_of(oh.owner).detect_all : 0);   // `detect_all` (a régi G 1329)
         unit = true;
       } else if (const Building* ob = world_.get<Building>(o); ob && ob->complete) {
         det = rules_->defs[ob->def].detect;

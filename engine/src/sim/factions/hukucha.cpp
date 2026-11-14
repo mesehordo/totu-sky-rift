@@ -206,6 +206,11 @@ class Module final : public FactionModule {
 
   static bool pond_tile_def(const EntityDef& d) { return d.raw && flag(find(d.raw.get(), {"Legacy", "pond_tile"})); }
   static bool no_pond(const EntityDef& d) { return d.raw && flag(find(d.raw.get(), {"Placement", "no_pond"})); }
+  // a tavacska oldalhossza: a kutatás / irány `pond_size` szabálya (a régi G 2436, 2468), különben a lábnyom
+  static int pond_side(Sim& s, uint8_t owner, int footprint) {
+    const int n = owner >= 1 && owner <= Sim::kMaxPlayers ? s.rules_of(owner).pond_size : 0;
+    return n > 0 ? n : footprint;
+  }
 
   // --- horgok --------------------------------------------------------------------------------------------------------
   bool can_place(Sim& s, uint8_t owner, uint16_t def, int tx, int ty, std::string* error) override {
@@ -213,8 +218,20 @@ class Module final : public FactionModule {
     const EntityDef& d = s.rules()->defs[def];
     const int w = std::max(1, d.fw), h = std::max(1, d.fh);
     if (pond_tile_def(d)) {   // tavacska: legalább egy csempe még nem saját tó
-      for (int y = ty; y < ty + h; ++y) {
-        for (int x = tx; x < tx + w; ++x) {
+      const int n = pond_side(s, owner, w);
+      if (n > w || n > h) {   // a nagyobb tavacska (`pond_size`) minden csempéje a térképen, építhető terepen
+        const PondMap* p = pond(s);
+        for (int y = ty; y < ty + n; ++y) {
+          for (int x = tx; x < tx + n; ++x) {
+            if (!p || x < 0 || y < 0 || x >= p->w || y >= p->h || !buildable(s, x, y)) {
+              if (error) *error = "nem építhető terep";
+              return false;
+            }
+          }
+        }
+      }
+      for (int y = ty; y < ty + std::max(h, n); ++y) {
+        for (int x = tx; x < tx + std::max(w, n); ++x) {
           if (pond_at(s, x, y) != owner) return true;
         }
       }
@@ -291,12 +308,13 @@ class Module final : public FactionModule {
     const Building* b = s.world().get<Building>(be);
     const Health* h = s.world().get<Health>(be);
     if (!b || !h || !pond_tile_def(s.rules()->defs[b->def])) return;
-    mark(s, h->owner, b->tx, b->ty, b->w, b->h);
+    const int qw = std::max<int>(b->w, pond_side(s, h->owner, b->w)), qh = std::max<int>(b->h, pond_side(s, h->owner, b->h));
+    mark(s, h->owner, b->tx, b->ty, qw, qh);
     if (PondFlood* f = flood_state(s); f && pond(s)) {   // a kiásott tó maradandó: nem húzódik vissza
       const int pw = pond(s)->w;
       std::erase_if(f->tiles, [&](const std::pair<int32_t, uint8_t>& t) {
         const int x = t.first % pw, y = t.first / pw;
-        return x >= b->tx && x < b->tx + b->w && y >= b->ty && y < b->ty + b->h;
+        return x >= b->tx && x < b->tx + qw && y >= b->ty && y < b->ty + qh;
       });
     }
     if (s.nav_) s.nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});

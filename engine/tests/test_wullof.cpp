@@ -39,6 +39,19 @@ void rich(sim::Sim& s) {
   for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 20000);
 }
 
+// a kutatás kész (a szabályaival együtt), a kutatási idő nélkül
+void grant(sim::Sim& s, uint8_t owner, const char* id) {
+  auto& done = s.player_mut(owner).researched;
+  done.insert(std::upper_bound(done.begin(), done.end(), std::string(id)), id);
+  s.rebuild_rules(owner);
+}
+
+int64_t taken(sim::Sim& s, sim::EntityId e) {
+  const auto* h = s.world().get<sim::Health>(e);
+  const auto* v = s.world().get<sim::Vital>(e);
+  return int64_t{h->max - h->hp} * 1000 + (v ? v->deficit : 0);
+}
+
 }  // namespace
 
 TEST_CASE("Wullof falkaszellem: a ±4 csempés négyzet társai (legfeljebb 4) – sebzés ×(1 + 0,1 n), sebesség ×(1 + 0,02 n)") {
@@ -169,6 +182,67 @@ TEST_CASE("Wullof felültetés (a Bölénylovaglással) és leszállás; javít�
   const int64_t g = ks.player(1).gathered[sim::kWood];
   std::printf("  csapolás 30 s alatt: %lld fa (5 gyűjtögető)\n", static_cast<long long>(g / 1000));
   CHECK(g > 0);
+}
+
+TEST_CASE("Wullof Holdtölte: 240 s-onként 60 s-ig a sebzés ×1,15 (a kutatással), utána újra ×1") {
+  Match m = wullof();
+  sim::Sim& s = *m.sim;
+  const auto w = put(s, "wul_landzsas", 1, 50, 180);
+  const auto a = put(s, "urs_berserker", 2, 80, 180);
+  const auto b = put(s, "urs_berserker", 2, 80, 150);
+  const auto c = put(s, "urs_berserker", 2, 80, 120);
+  CHECK(s.moon_mult(1) == Fixed::from_int(1));
+  s.deal_damage(w, 1, def_of("wul_landzsas"), a, 20000, false, true);
+  const int64_t ta = taken(s, a);
+  grant(s, 1, "wul_holdtolte");
+  CHECK(s.tick() % 7200 < 1800);
+  CHECK(s.moon_mult(1) == fx(115, 100));
+  s.deal_damage(w, 1, def_of("wul_landzsas"), b, 20000, false, true);
+  std::printf("  Holdtölte: %lld -> %lld ezred\n", static_cast<long long>(ta), static_cast<long long>(taken(s, b)));
+  CHECK(taken(s, b) >= ta * 115 / 100 - 2 && taken(s, b) <= ta * 115 / 100 + 2);
+  m.run(static_cast<int>(1800 - s.tick() % 7200));   // a telihold vége
+  CHECK(s.moon_mult(1) == Fixed::from_int(1));
+  s.deal_damage(w, 1, def_of("wul_landzsas"), c, 20000, false, true);
+  CHECK(taken(s, c) == ta);
+  CHECK(s.moon_mult(2) == Fixed::from_int(1));   // a másik játékosnak nincs
+}
+
+TEST_CASE("Wullof Groomi-irány (heal_on_kill): a vadállat öléskor 35 életerőt kap, más nem") {
+  Match m = wullof();
+  sim::Sim& s = *m.sim;
+  s.player_mut(1).path = "groomi";
+  s.rebuild_rules(1);
+  const auto g = put(s, "wul_groomi", 1, 50, 180);
+  const auto l = put(s, "wul_landzsas", 1, 50, 150);
+  s.world().get<sim::Health>(g)->hp = 50;
+  s.world().get<sim::Health>(l)->hp = 20;
+  const auto f1 = put(s, "urs_berserker", 2, 150, 180);   // messze: ne üssön vissza
+  const auto f2 = put(s, "urs_berserker", 2, 150, 150);
+  s.deal_damage(g, 1, def_of("wul_groomi"), f1, 100000000, false);
+  s.deal_damage(l, 1, def_of("wul_landzsas"), f2, 100000000, false);
+  m.run(1);
+  CHECK(!s.world().alive(f1));
+  std::printf("  groomi %d, landzsas %d\n", s.world().get<sim::Health>(g)->hp, s.world().get<sim::Health>(l)->hp);
+  CHECK(s.world().get<sim::Health>(g)->hp == 85);
+  CHECK(s.world().get<sim::Health>(l)->hp == 20);   // nem vadállat
+  const auto own = put(s, "wul_landzsas", 1, 70, 180);   // a saját egység megölése nem gyógyít
+  s.deal_damage(g, 1, def_of("wul_groomi"), own, 100000000, false);
+  m.run(1);
+  CHECK(s.world().get<sim::Health>(g)->hp == 85);
+}
+
+TEST_CASE("Wullof Nyomolvasás (detect_all): minden saját egység 8 csempés észlelő") {
+  Match m = wullof();
+  sim::Sim& s = *m.sim;
+  const auto hid = put(s, "wul_landzsas", 1, 55, 60);   // erdei rejtőzés a BUILD-ALAP erdeje mellett
+  put(s, "urs_berserker", 2, 105, 60);                   // 5 csempére: közelről (2,2) nem látja
+  m.run(16);
+  CHECK(s.world().get<sim::Stealth>(hid)->hidden);
+  CHECK(!(s.world().get<sim::Stealth>(hid)->detected & (1u << 2)));
+  grant(s, 2, "wul_nyomolvasas");   // a szabály a kutatásból jön (népfüggetlenül)
+  m.run(16);
+  CHECK(s.world().get<sim::Stealth>(hid)->hidden);
+  CHECK(s.world().get<sim::Stealth>(hid)->detected & (1u << 2));
 }
 
 TEST_CASE("Wullof: determinisztikus, és mentésből folytatva ugyanaz") {
