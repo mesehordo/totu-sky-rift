@@ -1,6 +1,6 @@
 {
  "ability:after_slow": {
-  "hianyzik": "rts/entities.py:1403 Gőztúlnyomás: az önerősítés után lassulás (slow_after); a motor nem olvassa – nincs megvalósítva"
+  "teszt": "önerősítés: lejárta után lassulás (`after_slow`, Gőztúlnyomás); alatta nem gyenge (`no_weak`, Napfolt)"
  },
  "ability:ally": {
   "halott": "csak a generátor címkéje (tools/allies.py:447); a régi játék a képességnél nem olvassa, a szövetségi zár az egységen/épületen van"
@@ -9,19 +9,19 @@
   "teszt": "gyógyítás (önműködő): a rúnapap 0,8 s-onként 10 életerőt ad a legsebesültebb közeli élőlénynek, gépnek nem"
  },
  "ability:bounces": {
-  "hianyzik": "rts/entities.py:1354 a célzott lövés saját bounces értéke (bumerang: 2) a lövedékbe kerül; a motor a lövedékfajta bounces-át használja (boomerang: 1), a képesség kulcsát nem olvassa"
+  "teszt": "célzott lövés: a képesség saját mérge (`poison`), területi sebzése (`splash`) és pattanása (`bounces`)"
  },
  "ability:buff": {
   "teszt": "Eskü-riadó (főépület-képesség): minden munkás Fegyverbe! 30 s-ig, kutatás nélkül; 240 s újratöltés"
  },
  "ability:building_damage": {
-  "hianyzik": "rts/entities.py:1480-1487 nova: épületekre külön sebzés (Mészbombás manó); a motor nem olvassa – nincs megvalósítva"
+  "teszt": "nova: épületsebzés (`building_damage`) és önrobbanás (`self_destruct`) – a Mészbombás manó"
  },
  "ability:buildings": {
   "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
  },
  "ability:burrow": {
-  "hianyzik": "rts/entities.py:1542 croftian beásás-kapcsoló (sebesülten, ellenség közelében); a motor nem olvassa – nincs megvalósítva"
+  "teszt": "Croftianok beasas: a beasott egyseg rejtett, all, nem tamad; kiasva ujra harcol"
  },
  "ability:color": {
   "megjelenites": "hatás színe (add_fx), csak megjelenítés"
@@ -42,7 +42,7 @@
   "megjelenites": "leírás szövege"
  },
  "ability:detect": {
-  "hianyzik": "rts/game.py:1324 passzív képesség detect sugara felfedi a rejtetteket (A Kórus szeme); a motor csak a Vision.detect-et olvassa, a képességét nem – nincs megvalósítva"
+  "teszt": "felfedés: a passzív képesség köre (`detect`, A Kórus szeme) és a főépület-képesség pontja (`reveal`, 10 s)"
  },
  "ability:dps": {
   "teszt": "Hjalmar hóvihara (területi mező): 5 s-ig, 0,5 s-onként 8 varázssebzés és lassítás a körben"
@@ -60,22 +60,22 @@
   "teszt": "hősök (az M6-ban szint nélkül, az 1. szinten): energia, Ragna, Hjalmar és Bjarka képességei"
  },
  "ability:faith": {
-  "hianyzik": "rts/entities.py:287-298 egységképesség Áhítat-ára a játékostól; a motor csak az épület-/főépület-képességnél vonja le (Napáldás próbája megvan), egységképességnél (napkitores, nap_kegyelme, huk idézések) nem"
+  "teszt": "képességár: életerő (`hp_cost`; hp <= ár + 5 alatt nem) és az egységképesség áhítat-ára (`faith`)"
  },
  "ability:heal": {
   "teszt": "Huk: Áradás – a tó egy csempével kitágul, a tavon gyógyít, a végén visszahúzódik (az épület alatt nem)"
  },
  "ability:heal_tags": {
-  "hianyzik": "rts/entities.py:1425 önműködő gyógyítás célcímkéi (h_livia_horgony: mech); a motor beégetve csak organic-ot gyógyít – nincs megvalósítva"
+  "teszt": "önműködő gyógyítás célcímkéi (`heal_tags`): Livia horgonya a gépeket gyógyítja"
  },
  "ability:hotkey": {
   "megjelenites": "gyorsbillentyű (kliens)"
  },
  "ability:hp_cost": {
-  "hianyzik": "rts/entities.py:289-300 a képesség életerőbe kerül (nem használható, ha hp <= hp_cost+5); a motor nem olvassa – nincs megvalósítva"
+  "teszt": "képességár: életerő (`hp_cost`; hp <= ár + 5 alatt nem) és az egységképesség áhítat-ára (`faith`)"
  },
  "ability:hq_hp": {
-  "hianyzik": "rts/game.py:1685-1690 főépület-képesség a főépület életerejéből fizet; a motorban megvan (garrison.cpp:403-405), de nincs próba"
+  "teszt": "főépület-képesség: a Mélységi kitörés a főépület életerejéből fizet (250); túl sebesült főépületnél nem"
  },
  "ability:icon": {
   "megjelenites": "ikon"
@@ -90,7 +90,7 @@
   "teszt": "ugrás (blink): a pont felé legfeljebb a hatótávig, szabad helyre; a landolás megsebzi a közelieket"
  },
  "ability:large": {
-  "hianyzik": "rts/game.py:2961 lélekidézés: nagy testű holttestből ez az egység; a raise típus nincs megvalósítva"
+  "teszt": "Aurethi lélekidézés: a holttestből kis testűből szellemlégiós, nagy testűből szellemkolosszus; 10 s után elporlad"
  },
  "ability:levels": {
   "teszt": "hős: képességtanulás – az n. szint a 2n − 1. hősszinttől, a végső a 6.-tól; a szintváltozat erősebb"
@@ -99,7 +99,7 @@
   "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
  },
  "ability:max": {
-  "hianyzik": "rts/game.py:1909 ikrarakás: egyszerre legfeljebb max ikra; a motorban megvan (hukucha.cpp:311), de nincs próba"
+  "teszt": "ikrarakás: egyszerre legfeljebb 12 ikra; ha egy elfogy, újra rakható"
  },
  "ability:meteor": {
   "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
@@ -117,10 +117,10 @@
   "megjelenites": "megnevezés"
  },
  "ability:no_weak": {
-  "hianyzik": "rts/game.py:966 önerősítés alatt nem gyenge semmi ellen (napfolt, hejba); a motor a képességnél nem olvassa (csak a Rules.no_weak-et) – nincs megvalósítva"
+  "teszt": "önerősítés: lejárta után lassulás (`after_slow`, Gőztúlnyomás); alatta nem gyenge (`no_weak`, Napfolt)"
  },
  "ability:poison": {
-  "hianyzik": "rts/entities.py:1354 a célzott lövés mérge [dps, idő] (savkopes); a motor a képesség poison kulcsát nem adja a lövedéknek – nincs megvalósítva"
+  "teszt": "célzott lövés: a képesség saját mérge (`poison`), területi sebzése (`splash`) és pattanása (`bounces`)"
  },
  "ability:projectile": {
   "teszt": "horgonyszigony és zuhanó csapás (célzott lövés): varázssebzés, kábítás, illetve lassítás; újratöltés"
@@ -132,10 +132,10 @@
   "teszt": "célzott lövés messziről: a használó előbb odamegy; más parancs megszakítja"
  },
  "ability:range_research": {
-  "hianyzik": "rts/entities.py:1387 ugrás hatótáva kutatással nő (bekaugras: huk_ugrolabak +5); a motor nem olvassa – nincs megvalósítva"
+  "teszt": "Huk Ugrólábak (range_research): a Békaugrás hatótávja 2,5 helyett 5"
  },
  "ability:reveal": {
-  "hianyzik": "rts/game.py:1697 főépület-képesség felfedi a pont körét (gp_napcsova); a motor beolvassa (AbilityDef::reveal), de sehol nem használja – nincs megvalósítva"
+  "teszt": "felfedés: a passzív képesség köre (`detect`, A Kórus szeme) és a főépület-képesség pontja (`reveal`, 10 s)"
  },
  "ability:rider": {
   "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
@@ -144,7 +144,7 @@
   "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
  },
  "ability:self_destruct": {
-  "hianyzik": "rts/entities.py:1491 a nova megöli a használóját (robbanó atka, Mészbombás manó); a motor nem olvassa – nincs megvalósítva"
+  "teszt": "nova: épületsebzés (`building_damage`) és önrobbanás (`self_destruct`) – a Mészbombás manó"
  },
  "ability:self_hp": {
   "teszt": "Aurethi Túlhajtás: az épülő épület hátralévő idejének fele azonnal; a Fabrikátor a max életereje 40%-át veszti"
@@ -156,10 +156,10 @@
   "teszt": "Hjalmar hóvihara (területi mező): 5 s-ig, 0,5 s-onként 8 varázssebzés és lassítás a körben"
  },
  "ability:small": {
-  "hianyzik": "rts/game.py:2962 lélekidézés: kis testű holttestből ez az egység; a raise típus nincs megvalósítva"
+  "teszt": "Aurethi lélekidézés: a holttestből kis testűből szellemlégiós, nagy testűből szellemkolosszus; 10 s után elporlad"
  },
  "ability:splash": {
-  "hianyzik": "rts/entities.py:1354 a célzott lövés területi sebzése (tuzkopes); a motor a képesség splash kulcsát nem adja a lövedéknek – nincs megvalósítva"
+  "teszt": "célzott lövés: a képesség saját mérge (`poison`), területi sebzése (`splash`) és pattanása (`bounces`)"
  },
  "ability:split_kills": {
   "teszt": "Micéliák osztódás: split_kills ölés után kettéválik (fél-fél életerő, az iker a spórák felét kapja)"
@@ -250,7 +250,7 @@
   "teszt": "Micéliák osztódás: split_kills ölés után kettéválik (fél-fél életerő, az iker a spórák felét kapja)"
  },
  "ability_type:raise": {
-  "hianyzik": "rts/game.py:2955-2965 lélekidézés: holttestből kis/nagy szellemegység (small/large); a motorban a 'raise' típus ismeretlen (AbilityDef::Type::Unknown), egyik népmodul sem kezeli – nincs megvalósítva"
+  "teszt": "Aurethi lélekidézés: a holttestből kis testűből szellemlégiós, nagy testűből szellemkolosszus; 10 s után elporlad"
  },
  "ability_type:self_buff": {
   "teszt": "vérszomj és roham (önerősítés): ideiglenes, újratöltéssel; a berserker többet üt és többet kap"
@@ -290,7 +290,7 @@
   "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
  },
  "building:attack.targets": {
-  "hianyzik": "rts/entities.py:112 – a torony földi/légi célzása; a motorban megvan (can_hit), próba nincs"
+  "teszt": "célzás: a légvédelmi torony lövi a repülőt; csak földre lövő torony nem (egységre és épületre is)"
  },
  "building:aura": {
   "hianyzik": "rts/heroes.py:~315 – épület-aura (páncél, lőtáv, gyógyulás a körben); a motor az épület Aura komponensét nem olvassa"
@@ -320,7 +320,7 @@
   "teszt": "Micéliák mező: a kapcsolt épületek field_radius-án belül a faji gyógyulás háromszoros"
  },
  "building:foundation_free": {
-  "hianyzik": "rts/game.py:2767 – a foundation_free épület alapozás nélkül is teljes életerős; a motor (imperium.cpp) nem olvassa, minden nem lapkő épületet felez"
+  "teszt": "Aurethi alapozás: a foundation_free épület (Égkő) alapozás nélkül is teljes életerővel készül el, és nem kopik"
  },
  "building:foundation_tile": {
   "teszt": "Aurethi alapozás: a kész lapkő alapozás marad; rajta teljes, nélküle fél életerő és 0,2%/s kopás 50%-ig"
@@ -338,10 +338,10 @@
   "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
  },
  "building:larva": {
-  "hianyzik": "rts/entities.py:1671 – a croftian Kaptár lárvákat tart, a képzés lárvát fogyaszt; a motor a Producer.larva kulcsot nem olvassa"
+  "teszt": "Croftianok larva: a Kaptar 4 larvaval kepez, a kepzes larvat fogyaszt, visszavonaskor visszajar"
  },
  "building:larva_time": {
-  "hianyzik": "rts/entities.py:1743 – a lárva visszanövési ideje; a motorban nincs"
+  "teszt": "Croftianok larva: a larva larva_time (5,5 s) alatt no vissza; a Gyors larvak kutatas +1 es x1,25 utem"
  },
  "building:light_heal": {
   "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
@@ -468,34 +468,34 @@
   "teszt": "fejlődési irány: a berserker-ág vérszomja (sebesülten erősebb), a rúna-ág épületpáncélja és tornya"
  },
  "effect_stat:carry_pct": {
-  "hianyzik": "Kutatás: a munkás rakománya +% (rts/entities.py:376); a motorban megvan, de nincs próba (Worker.carry_pct, economy.cpp:67)"
+  "teszt": "kutatási stat: teherbírás (Tartály: +50% az Aratóknak)"
  },
  "effect_stat:damage": {
   "atfedes": "Modifiers path Attack.damage",
   "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
  },
  "effect_stat:energy": {
-  "hianyzik": "Kutatás: max energia + (rts/entities.py:78); a motorban megvan, de nincs próba (Energy.max, abilities.cpp:818); az irány-effects kStat térképéből hiányzik"
+  "teszt": "kutatási stat: energia (Arcanor csillagai: +25 energia a varázslóknak) – a töltődés plafonja feljebb"
  },
  "effect_stat:hp": {
   "atfedes": "Modifiers path Health.max",
   "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
  },
  "effect_stat:range": {
-  "hianyzik": "Kutatás/irány: lőtáv + (rts/entities.py:122); a motorban megvan, de nincs próba (Attack.range, combat.cpp:73)"
+  "teszt": "kutatási stat: lőtáv és látótáv (Csillagfény: +1 lőtáv a lövészeknek, +1 látótáv)"
  },
  "effect_stat:regen": {
   "atfedes": "Modifiers path Health.regen",
   "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
  },
  "effect_stat:shield": {
-  "hianyzik": "Kutatás: max pajzs + (rts/entities.py:76); a motorban megvan, de nincs próba (Health.shield, economy.cpp:83, combat.cpp:593)"
+  "teszt": "kutatási stat: pajzs (Napégi pajzs: +30) – az élő egységen és az újonnan születőn is"
  },
  "effect_stat:sight": {
-  "hianyzik": "Kutatás/irány: látótáv + (rts/entities.py:105); a motorban megvan, de nincs próba (Vision.sight, combat.cpp:617)"
+  "teszt": "kutatási stat: lőtáv és látótáv (Csillagfény: +1 lőtáv a lövészeknek, +1 látótáv)"
  },
  "effect_stat:speed_pct": {
-  "hianyzik": "Kutatás/irány: sebesség +% (rts/entities.py:380); a motorban megvan, de nincs próba (Movement.speed_pct, navmove.cpp:342)"
+  "teszt": "kutatási stat: sebesség (Inas lábak: +30% a raj-egységeknek)"
  },
  "faction:accent": {
   "megjelenites": "a nép kiemelőszíne (felület, épületrajz)"
@@ -679,7 +679,7 @@
   "megjelenites": "leírás"
  },
  "item:energy": {
-  "hianyzik": "rts/heroes.py – az energiafőzet energiát tölt; a motor olvassa (ItemDef.energy), de nincs próba"
+  "teszt": "tárgyak: energiafőzet (+100 energia, teli energiánál elutasítva) és tudás könyve (+300 tapasztalat)"
  },
  "item:heal": {
   "teszt": "tárgyak: 6 hely; főzet (teljes életerőnél nem), tóm (örökre), viselt (páncél, életerő aránya marad), eldobás, felvétel"
@@ -700,7 +700,7 @@
   "teszt": "táborok: a Vadon táborai a kezdőhelyektől távol; a tábor együtt riad, pórázon tér vissza, kiirtva zsákmányt dob"
  },
  "item:xp": {
-  "hianyzik": "rts/heroes.py – a tudás könyve tapasztalatot ad; a motor olvassa (ItemDef.xp), de nincs próba"
+  "teszt": "tárgyak: energiafőzet (+100 energia, teli energiánál elutasítva) és tudás könyve (+300 tapasztalat)"
  },
  "mechanic:creep": {
   "teszt": "Croftianok mélység: a Kaptár köre (creep_radius + fél méret), csak építhető terepen; az ursan nem kap"
@@ -780,7 +780,7 @@
   "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
  },
  "research:exclusive": {
-  "hianyzik": "rts/game.py:3565-3569 kizáró csoport: egy csoportból csak egy kutatás; az adatban Exclusive (imperium.json), de a motor nem olvassa – nincs megvalósítva"
+  "teszt": "kizáró kutatás: egy Exclusive csoportból csak egy indítható (folyamatban vagy kész)"
  },
  "research:icon": {
   "megjelenites": "ikon"
@@ -809,22 +809,22 @@
   "teszt": "termelés: kutatás a sorban; hős egyszer, legfeljebb három; determinisztikus"
  },
  "rule:bounty_gold": {
-  "hianyzik": "Wullof Zsákmányszerzés: a vadászzsákmány × bounty_gold kőben/aranyban is (rts/game.py:1236); a motorban megvan, de nincs próba (combat.cpp:564)"
+  "teszt": "Wullof Zsákmányszerzés: a vadászzsákmány fele aranyban is (`bounty_gold` 0,5)"
  },
  "rule:build_boost_mult": {
   "teszt": "Ooni Vörös dojó irány: a Taiko-dobos építésgyorsítása × 1,75 (`build_boost_mult`); Vérszomj: ölésenként +20 életerő"
  },
  "rule:convert_kills": {
-  "hianyzik": "Croftian irány: az ölt ellenség esélyre saját egységként átáll (rts/game.py:1211); a motorban nincs megvalósítva"
+  "teszt": "Croftianok convert_kills: a Korus iranyon az olt ellenseg 15%-kal atall, 35% eletero; munkas nem"
  },
  "rule:creep_regen_mult": {
   "teszt": "Croftianok mélység: földi egység ×1,3 gyors, gyógyulása ×3; a repülő és az idegen nem kap"
  },
  "rule:detect_all": {
-  "hianyzik": "Wullof kutatás: minden saját egység N csempés észlelő (rts/game.py:1329); a motorban nincs megvalósítva"
+  "teszt": "Wullof Nyomolvasás (detect_all): minden saját egység 8 csempés észlelő"
  },
  "rule:drum_mult": {
-  "hianyzik": "Ooni Harci dobok: a dobos harci kedv-töltése × drum_mult (rts/game.py:1999); a motorban megvan, de nincs próba (ooni.cpp:362; a Harci dobok próba csak a morale_hurt_mult-ot méri)"
+  "teszt": "Ooni Harci dobok: a dobos harci kedv-töltése × 2 (`drum_mult`) – a megtört harcos hamarabb helyreáll"
  },
  "rule:energy_regen_ids": {
   "teszt": "Szürke elfek Napszemű papok: a Napszóró energiája × 1,5-tel töltődik (`energy_regen_ids`), másé nem"
@@ -839,7 +839,7 @@
   "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
  },
  "rule:heal_on_kill": {
-  "hianyzik": "Wullof irány: címkés egység ölésenként életerőt kap (rts/game.py:1201); a motorban nincs megvalósítva (csak az ooni kill_heal)"
+  "teszt": "Wullof Groomi-irány (heal_on_kill): a vadállat öléskor 35 életerőt kap, más nem"
  },
  "rule:kill_heal": {
   "teszt": "Ooni Vörös dojó irány: a Taiko-dobos építésgyorsítása × 1,75 (`build_boost_mult`); Vérszomj: ölésenként +20 életerő"
@@ -851,10 +851,10 @@
   "teszt": "Ooni kutatások: Lámpásmágia (fényben varázssebzés ×1,2), Messzefény (+2 fénysugár)"
  },
  "rule:larva_add": {
-  "hianyzik": "Croftian kutatás: a lárva-maximum + larva_add (rts/entities.py:1738); a motorban nincs megvalósítva"
+  "teszt": "Croftianok larva: a larva larva_time (5,5 s) alatt no vissza; a Gyors larvak kutatas +1 es x1,25 utem"
  },
  "rule:larva_mult": {
-  "hianyzik": "Croftian kutatás: a lárva-idő / larva_mult (rts/entities.py:1743); a motorban nincs megvalósítva"
+  "teszt": "Croftianok larva: a larva larva_time (5,5 s) alatt no vissza; a Gyors larvak kutatas +1 es x1,25 utem"
  },
  "rule:light_add": {
   "teszt": "Ooni kutatások: Lámpásmágia (fényben varázssebzés ×1,2), Messzefény (+2 fénysugár)"
@@ -863,7 +863,7 @@
   "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
  },
  "rule:moon": {
-  "hianyzik": "Wullof Holdtölte: időszakosan (period/dur) a sebzés × mult (rts/game.py:307, 1098); a motorban nincs megvalósítva"
+  "teszt": "Wullof Holdtölte: 240 s-onként 60 s-ig a sebzés ×1,15 (a kutatással), utána újra ×1"
  },
  "rule:morale_hurt_mult": {
   "teszt": "Ooni Harci dobok: a sérülés harci kedv-vesztesége × 0,6 – fél életerő és hét társ eleste után sem törik meg"
@@ -875,16 +875,16 @@
   "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
  },
  "rule:pack_bonus": {
-  "hianyzik": "Szabályként (Aurethi irány) falkabónusz (rts/game.py:764: rules vagy faction); a motor csak a népi pack_bonus-t olvassa (rules.cpp:822, Wullof-próba fedi), az irány-szabályt nem"
+  "teszt": "Aurethi Légió-irány: szabályként adott falkabónusz – gyalogos társanként +6% sebzés, legfeljebb +30%"
  },
  "rule:poison_attacks": {
-  "hianyzik": "Croftian kutatás: a címkés támadás a szerves célt mérgezi (rts/game.py:1074); a motorban nincs megvalósítva"
+  "teszt": "Croftianok poison_attacks: a Benito mereg kutatassal a tavolsagi tamadas a szerves celt mergezi (4 / s, 3 s)"
  },
  "rule:pond_dmg": {
-  "hianyzik": "Huk Tavak útja: saját tavon a sebzés × pond_dmg (rts/game.py:1101); a motorban megvan, de nincs próba (hukucha.cpp:245-255)"
+  "teszt": "Huk'ucha Tavak útja: a saját tavon álló saját egység sebzése × 1,2 (`pond_dmg`), szárazon nem"
  },
  "rule:pond_size": {
-  "hianyzik": "Huk kutatás: a tavacska mérete pond_size (rts/game.py:2436, 2468); a motorban nincs megvalósítva"
+  "teszt": "Huk Árvíz-irány (pond_size): a tavacska 3 × 3-as lesz"
  },
  "rule:power_add": {
   "teszt": "Szürke elfek Rezonancia: a mezőadók köre +2 csempe (`Rules.power_add`)"
@@ -893,25 +893,25 @@
   "teszt": "fejlődési irány: a berserker-ág vérszomja (sebesülten erősebb), a rúna-ág épületpáncélja és tornya"
  },
  "rule:raise_from_kills": {
-  "hianyzik": "Aurethi irány: ölt szerves ellenségből esélyre ideiglenes szellemlégiós kel (rts/game.py:1205); a motorban nincs megvalósítva"
+  "teszt": "Aurethi Lélek-irány: az ölt szerves ellenségből 20% eséllyel 40 s-os szellemlégiós kel"
  },
  "rule:rot_cap": {
-  "hianyzik": "Croftian kutatás: a rothadás másodpercenkénti korlátja (rts/game.py:1793); a motor a rothadást megvalósítja, de ezt a szabályt nem olvassa"
+  "teszt": "Croftianok rot_cap: a rothadas masodpercenkenti kerete 6,5; a Melyebb rothasztas kutatassal 9"
  },
  "rule:rot_mult": {
-  "hianyzik": "Croftian kutatás: a rothadás üteme × rot_mult (rts/game.py:1803); a motor nem olvassa"
+  "teszt": "Croftianok rot_mult: a Melyebb rothasztas kutatassal a rothadas uteme x1,5"
  },
  "rule:spike_max": {
-  "hianyzik": "Croftian kutatás: a tüskék legnagyobb száma (rts/game.py:2500); a motorban nincs megvalósítva"
+  "teszt": "Croftianok spike_max: legfeljebb 16 tuske; a Tuskemezo kutatassal 24"
  },
  "rule:spike_mult": {
-  "hianyzik": "Croftian Bénító méreg: a tüske hatása × spike_mult (rts/game.py:2555, 2581); a motor nem olvassa"
+  "teszt": "Croftianok spike_mult: a Benito mereg kutatassal a tuske lassitasa max(0,2; 1 - 0,4 x 2), merge 8 / s"
  },
  "rule:spike_size": {
-  "hianyzik": "Croftian kutatás: a tüske lerakási mérete n×n (rts/game.py:2510); a motorban nincs megvalósítva"
+  "teszt": "Croftianok spike_size: a Tuskemezo kutatassal az elkeszult tuske 2 x 2-es mezove egeszul ki"
  },
  "rule:summon_life_mult": {
-  "hianyzik": "Huk kutatás: az idézések élettartama × summon_life_mult (rts/game.py:1707, entities.py:1530); a motorban nincs megvalósítva"
+  "teszt": "Huk Mély víz (summon_life_mult): az idézések élettartama ×1,3"
  },
  "rule:supply_add": {
   "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
@@ -920,7 +920,7 @@
   "teszt": "Ooni Torii lerakás: a pár második kapuja csak látott helyre (fény nélkül is); legfeljebb `torii_pairs` pár (Kettős kapu: 2)"
  },
  "rule:train_time_mult": {
-  "hianyzik": "Croftian kutatás: a címkés egység képzési ideje × mult (rts/game.py:3541); a motorban nincs megvalósítva"
+  "teszt": "Croftianok train_time_mult: a Raj iranyon a kepzesi ido x0,7"
  },
  "unit:abilities": {
   "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
@@ -969,7 +969,7 @@
   "teszt": "lövedékek (D40): a nyíl követi a célt; a szikla a kilövéskori helyre esik, és területre sebez"
  },
  "unit:attack.targets": {
-  "hianyzik": "rts/entities.py:112 – a fegyver földi/légi célzása; a motor megvalósítja (combat.cpp can_hit), de nincs próba, ami légi célt vagy annak tiltását gyakorolná"
+  "teszt": "célzás: csak földre lövő egység nem lő repülőt, a légvédelmi igen; földi egységre és épületre mindkettő"
  },
  "unit:builds": {
   "hianyzik": "rts/entities.py:372 – a 'builds: false' munkás nem építhet; a motor a Worker.builds kulcsot nem olvassa"
