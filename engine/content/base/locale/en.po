@@ -413,7 +413,7 @@ msgstr ""
 
 msgctxt "unit.mic_sporaszedo.name"
 msgid "Spóraszedő"
-msgstr ""
+msgstr "Spore Gatherer"
 
 msgctxt "unit.mic_sporaszedo.desc"
 msgid "Gyűjtögető gombanép: készleteket hord a telepre."
@@ -421,7 +421,7 @@ msgstr ""
 
 msgctxt "unit.mic_pofeteg.name"
 msgid "Pöfeteg"
-msgstr ""
+msgstr "Puffball"
 
 msgctxt "unit.mic_pofeteg.desc"
 msgid "A telep pöfeteg-őre."
@@ -437,11 +437,11 @@ msgstr ""
 
 msgctxt "unit.mic_tuskegomba_lovesz.name"
 msgid "Tüskegomba-lövész"
-msgstr ""
+msgstr "Spinecap Shooter"
 
 msgctxt "unit.mic_tuskegomba_lovesz.desc"
 msgid "Mérgező spóratüskéket lő, földi és légi célpontokra."
-msgstr ""
+msgstr "Fires poisonous spore spines at ground and air targets."
 
 msgctxt "unit.mic_emlekor.name"
 msgid "Emlékőr"
@@ -453,7 +453,7 @@ msgstr ""
 
 msgctxt "building.mic_termotest.name"
 msgid "Termőtest"
-msgstr ""
+msgstr "Fruiting Body"
 
 msgctxt "building.mic_termotest.desc"
 msgid "Spóraszedőket, pöfetegeket és fonalhálósokat képez."
@@ -461,7 +461,7 @@ msgstr ""
 
 msgctxt "building.mic_szivgomba.name"
 msgid "Szívgomba"
-msgstr ""
+msgstr "Heart Fungus"
 
 msgctxt "building.mic_szivgomba.desc"
 msgid "Tüskegomba-lövészeket és emlékőröket képez; a telep lüktető szíve."
@@ -469,7 +469,7 @@ msgstr ""
 
 msgctxt "building.mic_emlekfa.name"
 msgid "Emlékfa"
-msgstr ""
+msgstr "Memory Tree"
 
 msgctxt "building.mic_emlekfa.desc"
 msgid "A micélia fejlesztések fája; gyökerei között a régi társak történetei pihennek."
@@ -485,11 +485,11 @@ msgstr ""
 
 msgctxt "research.mic_sporafonal.name"
 msgid "Spórafonal"
-msgstr ""
+msgstr "Spore Thread"
 
 msgctxt "research.mic_sporafonal.desc"
 msgid "+10% sebesség minden egységnek."
-msgstr ""
+msgstr "+10% speed for every unit."
 
 msgctxt "research.mic_szivdobbanas.name"
 msgid "Szívdobbanás"
@@ -501,7 +501,7 @@ msgstr ""
 
 msgctxt "faction.micelia.name"
 msgid "Micéliák"
-msgstr ""
+msgstr "Mycelians"
 
 msgctxt "faction.micelia.desc"
 msgid "Ezek a gyökérlábú gombalények élő fonalakkal kötik össze telepeiket, amelyek szívében egy óriási gomba lüktet. Míg a spóraszedők készleteket gyűjtenek és a pöfetegek őrzik a telepet, az Emlékfa gyökerei között régi társaik történetei pihennek."
@@ -581,7 +581,7 @@ msgstr ""
 
 msgctxt "research.nii_csatornarend.desc"
 msgid "+10% sebesség minden egységnek."
-msgstr ""
+msgstr "+10% speed for every unit."
 
 msgctxt "research.nii_lotuszaldas.name"
 msgid "Lótuszáldás"
@@ -789,7 +789,7 @@ msgstr ""
 
 msgctxt "research.pin_osvenyvezetok.desc"
 msgid "+10% sebesség minden egységnek."
-msgstr ""
+msgstr "+10% speed for every unit."
 
 msgctxt "research.pin_jegpancel.name"
 msgid "Jégpáncél"
@@ -1197,7 +1197,7 @@ msgstr ""
 
 msgctxt "research.tuz_izzo_nyilhegy.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.tuz_homokvihar.name"
 msgid "Homokvihar"
@@ -1297,7 +1297,7 @@ msgstr ""
 
 msgctxt "research.zha_gyors_keltetes.desc"
 msgid "+10% sebesség minden egységnek."
-msgstr ""
+msgstr "+10% speed for every unit."
 
 msgctxt "research.zha_kakaskukorekolas.name"
 msgid "Kakaskukorékolás"
@@ -1329,235 +1329,235 @@ msgstr ""
 
 msgctxt "unit.cro_csapszolga.name"
 msgid "Csápszolga"
-msgstr ""
+msgstr "Tendril Thrall"
 
 msgctxt "unit.cro_csapszolga.desc"
 msgid "Munkás. Épületté alakul át, vagy beleolvad egy Fertőzött tárnába (elfogy). Nem gyűjt: a fát a mélység rothasztja el, az aranyat és a meteoritot a tárnák adják."
-msgstr ""
+msgstr "Worker. Turns into the building it makes (is consumed)."
 
 msgctxt "unit.cro_karmos.name"
 msgid "Karmos"
-msgstr ""
+msgstr "Clawling"
 
 msgctxt "unit.cro_karmos.desc"
 msgid "Olcsó, gyors rajegység. Egy lárvából kettő kel ki."
-msgstr ""
+msgstr "Cheap, fast swarm unit. Two hatch from one larva."
 
 msgctxt "unit.cro_tuskekopo.name"
 msgid "Tüskeköpő"
-msgstr ""
+msgstr "Spine Spitter"
 
 msgctxt "unit.cro_tuskekopo.desc"
 msgid "Csonttüskéket köp, földi és légi célpontokra."
-msgstr ""
+msgstr "Spits bone spines at ground and air targets."
 
 msgctxt "unit.cro_savkopo.name"
 msgid "Savköpő"
-msgstr ""
+msgstr "Acid Spitter"
 
 msgctxt "unit.cro_savkopo.desc"
 msgid "Élő tüzérség. Messzire köpött savhólyagok, terület-sebzés, bónusz épületek ellen."
-msgstr ""
+msgstr "Living artillery. Long-range acid sacs, splash damage, bonus against buildings."
 
 msgctxt "unit.cro_agyfalo.name"
 msgid "Agyfaló"
-msgstr ""
+msgstr "Mind Eater"
 
 msgctxt "unit.cro_agyfalo.desc"
 msgid "Pszionikus rém. Őrület ködét bocsátja az ellenségre."
-msgstr ""
+msgstr "Psionic horror. Unleashes the mist of madness on the enemy."
 
 msgctxt "unit.cro_szarnyas_rem.name"
 msgid "Szárnyas rém"
-msgstr ""
+msgstr "Winged Dread"
 
 msgctxt "unit.cro_szarnyas_rem.desc"
 msgid "Hártyás szárnyú repülő ragadozó."
-msgstr ""
+msgstr "A flying predator on membrane wings."
 
 msgctxt "unit.cro_csapos_horror.name"
 msgid "Csápos horror"
-msgstr ""
+msgstr "Tendril Horror"
 
 msgctxt "unit.cro_csapos_horror.desc"
 msgid "A mélység óriása. Csápjaival egyszerre több ellenfelet zúz."
-msgstr ""
+msgstr "Giant of the deep. Its tendrils crush several foes at once."
 
 msgctxt "unit.cro_hos_keth.name"
 msgid "Keth"
-msgstr ""
+msgstr "Keth"
 
 msgctxt "unit.cro_hos_keth.desc"
 msgid "Egy megszállt kethri város emlékőre; a Kórus parancsnoki csomópontja – de régi önmaga nem tűnt el."
-msgstr ""
+msgstr "The memory-keeper of a possessed kethri city; a command node of the Choir – yet the old self has not vanished."
 
 msgctxt "unit.cro_pancelbogar.name"
 msgid "Páncélbogár"
-msgstr ""
+msgstr "Armoured Beetle"
 
 msgctxt "unit.cro_pancelbogar.desc"
 msgid "Karmosból mutálódott, páncélos rohamállat. Csak mutációval jön létre."
-msgstr ""
+msgstr "A Clawling mutated into an armoured assault beast. Only created by mutation."
 
 msgctxt "unit.cro_guboj.name"
 msgid "Gubó"
-msgstr ""
+msgstr "Cocoon"
 
 msgctxt "unit.cro_guboj.desc"
 msgid "Mutálódó egység – sérülékeny, de páncélos burok."
-msgstr ""
+msgstr "A mutating unit – a vulnerable but armoured shell."
 
 msgctxt "unit.cro_szemhordozo.name"
 msgid "Szemhordozó"
-msgstr ""
+msgstr "Eye Bearer"
 
 msgctxt "unit.cro_szemhordozo.desc"
 msgid "Lebegő szemzsák: messzire lát, és a Kórus létszámát hordozza (+8)."
-msgstr ""
+msgstr "A floating eye-sac: sees far, and carries the Choir's numbers (+8)."
 
 msgctxt "unit.cro_hos_vor.name"
 msgid "Vor-Uthul"
-msgstr ""
+msgstr "Vor-Uthul"
 
 msgctxt "unit.cro_hos_vor.desc"
 msgid "A Mutáció Mestere: a saját testéből költ lárvákat, kitinpáncélt növeszt."
-msgstr ""
+msgstr "The Master of Mutation: hatches larvae from his own body and grows chitin armour."
 
 msgctxt "unit.cro_hos_ssarha.name"
 msgid "Ssarha, a Raj Hangja"
-msgstr ""
+msgstr "Ssarha, Voice of the Swarm"
 
 msgctxt "unit.cro_hos_ssarha.desc"
 msgid "A Kórus hangja: a rajt egy akaratba fogja, és összeölti a sebeket."
-msgstr ""
+msgstr "The voice of the Choir: binds the swarm into one will and stitches its wounds."
 
 msgctxt "unit.cro_robbanoatka.name"
 msgid "Robbanó atka"
-msgstr ""
+msgstr "Blast Mite"
 
 msgctxt "unit.cro_robbanoatka.desc"
 msgid "Olcsó, gyors atka: az ellenség közé rohan és felrobban."
-msgstr ""
+msgstr "A cheap, fast mite: rushes among the enemy and explodes."
 
 msgctxt "unit.cro_vadaszkarmos.name"
 msgid "Vadászkarmos"
-msgstr ""
+msgstr "Hunter Clawling"
 
 msgctxt "unit.cro_vadaszkarmos.desc"
 msgid "Fürge karmos-változat: gyorsan üldöz és szaggat."
-msgstr ""
+msgstr "A nimble Clawling variant: pursues fast and rends."
 
 msgctxt "unit.cro_ostromtaraj.name"
 msgid "Ostromtaréj"
-msgstr ""
+msgstr "Siege Crest"
 
 msgctxt "unit.cro_ostromtaraj.desc"
 msgid "Élő ostromgép: messzire köpi a maró kitintüskéket, épületekre különösen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
-msgstr ""
+msgstr "A living siege engine: spits corrosive chitin spines far, especially at buildings."
 
 msgctxt "unit.cro_asoferegg.name"
 msgid "Ásóféreg"
-msgstr ""
+msgstr "Burrow Worm"
 
 msgctxt "unit.cro_asoferegg.desc"
 msgid "A föld alatt közlekedő féreg: beásva rejtőzik, és alulról támad."
-msgstr ""
+msgstr "A worm that travels underground: hides burrowed and strikes from below."
 
 msgctxt "building.cro_kaptar.name"
 msgid "Kaptár"
-msgstr ""
+msgstr "Hive"
 
 msgctxt "building.cro_kaptar.desc"
 msgid "Élő főépület. Lárvákat nevel (max. 3), minden egység innen kel ki – párhuzamosan."
-msgstr ""
+msgstr "Living main building. Raises larvae (max. 3); every unit hatches here – in parallel."
 
 msgctxt "building.cro_tapgomba.name"
 msgid "Tápgomba"
-msgstr ""
+msgstr "Feeding Fungus"
 
 msgctxt "building.cro_tapgomba.desc"
 msgid "Tápláló gombatelep: messzire terjeszti a mélységet, és gyógyítja a rajt."
-msgstr ""
+msgstr "A nourishing fungus colony: spreads the deep far and heals the swarm."
 
 msgctxt "building.cro_emeszto.name"
 msgid "Emésztőkamra"
-msgstr ""
+msgstr "Digestion Chamber"
 
 msgctxt "building.cro_emeszto.desc"
 msgid "Emésztőkamra: a mélység lassú bendője. Itt fejleszthető a lárvázás, a rothasztás, a méreg és a gyógyulás; nyersanyag leadására is jó."
-msgstr ""
+msgstr "Drop-off for every resource."
 
 msgctxt "building.cro_ikrafeszek.name"
 msgid "Ikrafészek"
-msgstr ""
+msgstr "Spawning Nest"
 
 msgctxt "building.cro_ikrafeszek.desc"
 msgid "Lehetővé teszi a Karmosokat."
-msgstr ""
+msgstr "Enables Clawlings."
 
 msgctxt "building.cro_tuskeverem.name"
 msgid "Tüskeverem"
-msgstr ""
+msgstr "Spine Pit"
 
 msgctxt "building.cro_tuskeverem.desc"
 msgid "Lehetővé teszi a Tüskeköpőket és a Savköpőket."
-msgstr ""
+msgstr "Enables Spine Spitters and Acid Spitters."
 
 msgctxt "building.cro_agyszentely.name"
 msgid "Agyszentély"
-msgstr ""
+msgstr "Brain Sanctum"
 
 msgctxt "building.cro_agyszentely.desc"
 msgid "Lehetővé teszi az Agyfalót és a Csápos horrort."
-msgstr ""
+msgstr "Enables the Mind Eater and the Tendril Horror."
 
 msgctxt "building.cro_csontcsucs.name"
 msgid "Csontcsúcs"
-msgstr ""
+msgstr "Bone Spire"
 
 msgctxt "building.cro_csontcsucs.desc"
 msgid "Lehetővé teszi a Szárnyas rémeket."
-msgstr ""
+msgstr "Enables Winged Dreads."
 
 msgctxt "building.cro_tuskes_gyoker.name"
 msgid "Tüskés gyökér"
-msgstr ""
+msgstr "Spined Root"
 
 msgctxt "building.cro_tuskes_gyoker.desc"
 msgid "Védőépület, földi és légi célpontokra."
-msgstr ""
+msgstr "Defensive building against ground and air targets."
 
 msgctxt "building.kethri_tojaskamra.name"
 msgid "Kethri tojáskamra"
-msgstr ""
+msgstr "Kethri Egg Chamber"
 
 msgctxt "building.kethri_tojaskamra.desc"
 msgid "Fertőzetlen kethri tojások – a jövő nemzedéke. Védd meg!"
-msgstr ""
+msgstr "Uninfected kethri eggs – the next generation. Protect it!"
 
 msgctxt "building.cro_korus_kut.name"
 msgid "Kórus-kút"
-msgstr ""
+msgstr "Choir Well"
 
 msgctxt "building.cro_korus_kut.desc"
 msgid "Lüktető hangkút: innen szólnak a Kórus hősei – Keth, Vor-Uthul és Ssarha."
-msgstr ""
+msgstr "A throbbing well of sound: from here speak the Choir's heroes – Keth, Vor-Uthul and Ssarha."
 
 msgctxt "building.cro_rajkamra.name"
 msgid "Rajkamra"
-msgstr ""
+msgstr "Swarm Chamber"
 
 msgctxt "building.cro_rajkamra.desc"
 msgid "Lüktető keltetőkamra: robbanó atkák és vadászkarmosok (a Kaptárban kelnek ki)."
-msgstr ""
+msgstr "A throbbing hatching chamber: blast mites and hunter clawlings (they hatch in the Hive)."
 
 msgctxt "building.cro_kitinkamra.name"
 msgid "Kitinkamra"
-msgstr ""
+msgstr "Chitin Chamber"
 
 msgctxt "building.cro_kitinkamra.desc"
 msgid "Páncélnövesztő kamra: páncélbogarak, ostromtaréjak, ásóférgek."
-msgstr ""
+msgstr "An armour-growing chamber: armoured beetles, siege crests, burrow worms."
 
 msgctxt "building.cro_diplomacia.name"
 msgid "Diplomácia csarnoka"
@@ -1585,43 +1585,43 @@ msgstr ""
 
 msgctxt "building.cro_merges_tuskek.name"
 msgid "Tüskemező telepítése"
-msgstr ""
+msgstr "Poisonous Spikes"
 
 msgctxt "building.cro_merges_tuskek.desc"
 msgid "A Csápszolga 2 mp alatt rakja le. A tüskéken áthaladó nem Croftian földi egységek 40%-kal lassulnak és 4 sebzés/mp mérgezést kapnak. Ez a saját és a szövetséges kisfaji egységekre is érvényes. Mezőnként 40 életerő. A tűz és méreg teljes, a többi támadás 20% sebzést okoz, és a nem Croftian támadó megmérgeződik. Legfeljebb 16 mező. A Tüskemező kutatással 2×2-es."
-msgstr ""
+msgstr "A Tendril Servant places this in 2 seconds. Non-Croftian ground units crossing the spikes are slowed by 40% and poisoned for 4 damage per second. This includes your own and allied minor-faction units. Each tile has 40 HP. Fire and poison deal full damage. Other attacks deal 20% damage and poison non-Croftian attackers. Up to 16 tiles. Spike Field research expands placement to 2×2."
 
 msgctxt "research.cro_inas_labak.name"
 msgid "Inas lábak"
-msgstr ""
+msgstr "Sinewy Legs"
 
 msgctxt "research.cro_inas_labak.desc"
 msgid "+30% sebesség a Karmosoknak."
-msgstr ""
+msgstr "+30% speed for Clawlings."
 
 msgctxt "research.cro_savas_tuskek.name"
 msgid "Savas tüskék"
-msgstr ""
+msgstr "Acid Spines"
 
 msgctxt "research.cro_savas_tuskek.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.cro_kitinpancel.name"
 msgid "Kitinpáncél"
-msgstr ""
+msgstr "Chitin Armour"
 
 msgctxt "research.cro_kitinpancel.desc"
 msgid "+1 páncél minden egységnek."
-msgstr ""
+msgstr "+1 armour for every unit."
 
 msgctxt "research.cro_eletnedv.name"
 msgid "Életnedv"
-msgstr ""
+msgstr "Life Sap"
 
 msgctxt "research.cro_eletnedv.desc"
 msgid "+1 életerő-regeneráció másodpercenként."
-msgstr ""
+msgstr "+1 health regeneration per second."
 
 msgctxt "research.cro_tuskemezo.name"
 msgid "Tüskemező"
@@ -1637,7 +1637,7 @@ msgstr ""
 
 msgctxt "research.cro_eles_karmok.desc"
 msgid "+2 sebzés a közelharci egységeknek."
-msgstr ""
+msgstr "+2 damage for melee units."
 
 msgctxt "research.cro_gyors_larva.name"
 msgid "Gyors lárvázás"
@@ -1721,179 +1721,179 @@ msgstr ""
 
 msgctxt "faction.croftian.name"
 msgid "Croftianok"
-msgstr ""
+msgstr "Croftians"
 
 msgctxt "faction.croftian.desc"
 msgid "Az Idegen Kórus: a meteorokkal érkezett spórák megszállták a hangyaszerű kethri népet. A Kaptár lárváiból minden egység párhuzamosan kel ki, a Karmosok gubóban páncélos bogárrá mutálódnak, és a mélységen elesett élő ellenségből új Karmos kelhet ki."
-msgstr ""
+msgstr "The Alien Choir: spores that came with the meteors have possessed the ant-like kethri people. Every unit hatches in parallel from the Hive's larvae, Clawlings mutate into armoured beetles inside cocoons, and a living enemy that falls on the deep may hatch as a new Clawling."
 
 msgctxt "faction.croftian.tagline"
 msgid "Mélység • lárvák • mutáció • fertőzés"
-msgstr ""
+msgstr "The deep • larvae • mutation • infestation"
 
 msgctxt "path.croftian.raj.name"
 msgid "Raj"
-msgstr ""
+msgstr "Swarm"
 
 msgctxt "path.croftian.raj.desc"
 msgid "A lárvák 30%-kal gyorsabban kelnek ki, a rajlények gyorsabbak. Robbanó atkák és vadászkarmosok öntik el az ellenfelet, mielőtt felkészülne."
-msgstr ""
+msgstr "Larvae hatch 30% faster, swarm creatures move faster. Blast mites and hunter clawlings flood the enemy before they are ready."
 
 msgctxt "path.croftian.raj.tagline"
 msgid "Olcsó tömeg, korai elárasztás"
-msgstr ""
+msgstr "Cheap masses, early flooding"
 
 msgctxt "path.croftian.pancel.name"
 msgid "Páncél"
-msgstr ""
+msgstr "Carapace"
 
 msgctxt "path.croftian.pancel.desc"
 msgid "+2 páncél minden élő egységnek. A Karmosok páncélbogárrá alakulhatnak; ostromtaréjak és alagutat ásó férgek törik fel a védelmet."
-msgstr ""
+msgstr "+2 armour for every living unit. Clawlings can turn into armoured beetles; siege crests and tunnelling worms crack the defences."
 
 msgctxt "path.croftian.pancel.tagline"
 msgid "Lassú, szívós menetelés"
-msgstr ""
+msgstr "A slow, tough march"
 
 msgctxt "path.croftian.korus.name"
 msgid "Kórus"
-msgstr ""
+msgstr "Choir"
 
 msgctxt "path.croftian.korus.desc"
 msgid "A Kórus hangja: a megölt ellenséges egységek 15%-a a te oldaladon kel fel. Agyfalók és csápos horrorok bomlasztják az ellenséges sereget."
-msgstr ""
+msgstr "The Choir's voice: 15% of the enemy units you kill rise again on your side. Brain-eaters and tentacled horrors break up the enemy army."
 
 msgctxt "path.croftian.korus.tagline"
 msgid "Irányítás és átállítás"
-msgstr ""
+msgstr "Control and conversion"
 
 msgctxt "unit.elf_kofarago.name"
 msgid "Kőfaragó"
-msgstr ""
+msgstr "Stonecarver"
 
 msgctxt "unit.elf_kofarago.desc"
 msgid "Munkás. Megidézi az épületeket, majd visszatér gyűjteni."
-msgstr ""
+msgstr "Worker. Summons the buildings, then goes back to gathering."
 
 msgctxt "unit.elf_tollas_harcos.name"
 msgid "Tollas harcos"
-msgstr ""
+msgstr "Feathered Warrior"
 
 msgctxt "unit.elf_tollas_harcos.desc"
 msgid "Obszidiánpengés buzogánnyal harcoló elit gyalogos."
-msgstr ""
+msgstr "Elite infantry fighting with an obsidian-edged club."
 
 msgctxt "unit.elf_jade_ijasz.name"
 msgid "Jáde-íjász"
-msgstr ""
+msgstr "Jade Archer"
 
 msgctxt "unit.elf_jade_ijasz.desc"
 msgid "Távolsági egység, földi és légi célpontokra is lő."
-msgstr ""
+msgstr "Ranged unit, shoots ground and air targets."
 
 msgctxt "unit.elf_raptor_lovas.name"
 msgid "Raptorlovas"
-msgstr ""
+msgstr "Raptor Rider"
 
 msgctxt "unit.elf_raptor_lovas.desc"
 msgid "Farkatlan, tollas gyíkon lovagló gyors lovas. Bónusz a távolsági egységek ellen."
-msgstr ""
+msgstr "Fast rider on a tailless feathered lizard. Bonus against ranged units."
 
 msgctxt "unit.elf_napszoro.name"
 msgid "Napszóró pap"
-msgstr ""
+msgstr "Sunscatter Priest"
 
 msgctxt "unit.elf_napszoro.desc"
 msgid "Meteoritmágus. Napvihart idéz az ellenségre."
-msgstr ""
+msgstr "Meteorite mage. Calls a sun storm upon the enemy."
 
 msgctxt "unit.elf_quetzal.name"
 msgid "Quetzal"
-msgstr ""
+msgstr "Quetzal"
 
 msgctxt "unit.elf_quetzal.desc"
 msgid "Tollas, repülő dínó. Mindenre lecsap."
-msgstr ""
+msgstr "Feathered flying dinosaur. Strikes at everything."
 
 msgctxt "unit.elf_tollas_rex.name"
 msgid "Tollaskoronás rex"
-msgstr ""
+msgstr "Crested Rex"
 
 msgctxt "unit.elf_tollas_rex.desc"
 msgid "Díszes tollkoronás óriásdínó, hátán íjászokkal. Területi harapás."
-msgstr ""
+msgstr "A giant dinosaur with a feather crown, archers on its back. Area bite."
 
 msgctxt "unit.elf_hos_szelai.name"
 msgid "Szelai"
-msgstr ""
+msgstr "Szelai"
 
 msgctxt "unit.elf_hos_szelai.desc"
 msgid "Rezonanciaépítész, akit a sors parancsnokká tett. Hálózatot épít és bont; Napvihart idéz."
-msgstr ""
+msgstr "A resonance architect made a commander by fate. Builds and breaks networks; calls a sun storm."
 
 msgctxt "unit.elf_csillagdardas.name"
 msgid "Csillagdárdás"
-msgstr ""
+msgstr "Star Spear"
 
 msgctxt "unit.elf_csillagdardas.desc"
 msgid "Csillagérc-hegyű dárdákat hajít – messzire hord, légi célpontokra is."
-msgstr ""
+msgstr "Throws star-ore tipped spears – long reach, hits air targets too."
 
 msgctxt "unit.elf_obszidian_veto.name"
 msgid "Obszidián-vető"
-msgstr ""
+msgstr "Obsidian Hurler"
 
 msgctxt "unit.elf_obszidian_veto.desc"
 msgid "Kőfaragók ostromgépe: obszidiántömböket hajít, épületek ellen különösen erős. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
-msgstr ""
+msgstr "The stonecarvers' siege engine: hurls blocks of obsidian, especially strong against buildings."
 
 msgctxt "unit.elf_jadeor.name"
 msgid "Jádeőr"
-msgstr ""
+msgstr "Jade Guardian"
 
 msgctxt "unit.elf_jadeor.desc"
 msgid "Életre keltett jádeszobor (idézett)."
-msgstr ""
+msgstr "A jade statue brought to life (summoned)."
 
 msgctxt "unit.elf_hos_itzcoatl.name"
 msgid "Itzcoatl"
-msgstr ""
+msgstr "Itzcoatl"
 
 msgctxt "unit.elf_hos_itzcoatl.desc"
 msgid "A Kilenc Lépcső tollas hadura. Közelharcos, a sereg élén áll."
-msgstr ""
+msgstr "The feathered warlord of the Nine Steps. A melee fighter at the head of the army."
 
 msgctxt "unit.elf_hos_xochi.name"
 msgid "Xochi"
-msgstr ""
+msgstr "Xochi"
 
 msgctxt "unit.elf_hos_xochi.desc"
 msgid "A rezonancia mestere: jádeőröket ébreszt és gyógyít."
-msgstr ""
+msgstr "Master of resonance: awakens jade guardians and heals."
 
 msgctxt "unit.elf_fopap.name"
 msgid "Nap főpapja"
-msgstr ""
+msgstr "High Priest of the Sun"
 
 msgctxt "unit.elf_fopap.desc"
 msgid "A Nap főpapja: folyamatosan gyógyítja a körülötte harcolókat."
-msgstr ""
+msgstr "The Sun's high priest: constantly heals those fighting around him."
 
 msgctxt "unit.elf_jaguar.name"
 msgid "Jaguár-orvlövész"
-msgstr ""
+msgstr "Jaguar Sniper"
 
 msgctxt "unit.elf_jaguar.desc"
 msgid "Jaguárbőrös vadász: az erdőből lő, lesállásban halálos."
-msgstr ""
+msgstr "A hunter in jaguar hide: shoots from the forest, deadly in ambush."
 
 msgctxt "unit.elf_csillagjos.name"
 msgid "Csillagjós"
-msgstr ""
+msgstr "Star Seer"
 
 msgctxt "unit.elf_csillagjos.desc"
 msgid "A csillagvizsgálók mestere: meteorzáport hív le messziről."
-msgstr ""
+msgstr "Master of the observatories: calls down a meteor shower from afar."
 
 msgctxt "unit.elf_pancelos_raptor.name"
 msgid "Páncélos raptor"
@@ -1905,83 +1905,83 @@ msgstr ""
 
 msgctxt "building.elf_napszentely.name"
 msgid "Napszentély"
-msgstr ""
+msgstr "Sun Sanctuary"
 
 msgctxt "building.elf_napszentely.desc"
 msgid "Lépcsős piramis, főépület. Leadóhely, Kőfaragókat képez."
-msgstr ""
+msgstr "Stepped pyramid, main building. Drop-off, trains Stonecarvers."
 
 msgctxt "building.elf_obeliszk.name"
 msgid "Napobeliszk"
-msgstr ""
+msgstr "Sun Obelisk"
 
 msgctxt "building.elf_obeliszk.desc"
 msgid "+8 létszám. Energiamezőt sugároz – az elf épületek csak ebben működnek."
-msgstr ""
+msgstr "+8 population. Radiates a power field – elf buildings only work inside it."
 
 msgctxt "building.elf_harcos_csarnok.name"
 msgid "Harcosok csarnoka"
-msgstr ""
+msgstr "Hall of Warriors"
 
 msgctxt "building.elf_harcos_csarnok.desc"
 msgid "Tollas harcosokat és jáde-íjászokat képez."
-msgstr ""
+msgstr "Trains Feathered Warriors and Jade Archers."
 
 msgctxt "building.elf_obszidian_muhely.name"
 msgid "Obszidián műhely"
-msgstr ""
+msgstr "Obsidian Workshop"
 
 msgctxt "building.elf_obszidian_muhely.desc"
 msgid "Fegyver- és pajzsfejlesztések."
-msgstr ""
+msgstr "Weapon and shield upgrades; builds Star Spears and Obsidian Hurlers."
 
 msgctxt "building.elf_raptor_karam.name"
 msgid "Raptorkarám"
-msgstr ""
+msgstr "Raptor Pen"
 
 msgctxt "building.elf_raptor_karam.desc"
 msgid "Raptorlovasokat és tollaskoronás rexeket nevel."
-msgstr ""
+msgstr "Raises Raptor Riders and Crested Rexes."
 
 msgctxt "building.elf_csillagvizsgalo.name"
 msgid "Csillagvizsgáló"
-msgstr ""
+msgstr "Observatory"
 
 msgctxt "building.elf_csillagvizsgalo.desc"
 msgid "Napszóró papokat képez, a csillagok tudását kutatja."
-msgstr ""
+msgstr "Trains Sunscatter Priests and studies the wisdom of the stars."
 
 msgctxt "building.elf_tollfeszek.name"
 msgid "Tollfészek-piramis"
-msgstr ""
+msgstr "Feather Nest Pyramid"
 
 msgctxt "building.elf_tollfeszek.desc"
 msgid "Quetzalokat nevel."
-msgstr ""
+msgstr "Raises Quetzals."
 
 msgctxt "building.elf_jade_oszlop.name"
 msgid "Jádeoszlop"
-msgstr ""
+msgstr "Jade Pillar"
 
 msgctxt "building.elf_jade_oszlop.desc"
 msgid "Védőtorony, földi és légi célpontokra."
-msgstr ""
+msgstr "Defensive tower against ground and air targets."
 
 msgctxt "building.elf_napkapu.name"
 msgid "Napkapu"
-msgstr ""
+msgstr "Sun Gate"
 
 msgctxt "building.elf_napkapu.desc"
 msgid "Hősidéző templomkapu: Szelai, Itzcoatl és Xochi."
-msgstr ""
+msgstr "Hero-summoning temple gate: Szelai, Itzcoatl and Xochi."
 
 msgctxt "building.elf_naptemplom.name"
 msgid "Naptemplom"
-msgstr ""
+msgstr "Sun Temple"
 
 msgctxt "building.elf_naptemplom.desc"
 msgid "Aranyozott lépcsős templom: a Nap főpapjai és napszóró papok."
-msgstr ""
+msgstr "A gilded stepped temple: high priests of the Sun and sun-scattering priests."
 
 msgctxt "building.elf_diplomacia.name"
 msgid "Diplomácia csarnoka"
@@ -2009,35 +2009,35 @@ msgstr ""
 
 msgctxt "research.elf_obszidian_penge.name"
 msgid "Obszidián pengék"
-msgstr ""
+msgstr "Obsidian Blades"
 
 msgctxt "research.elf_obszidian_penge.desc"
 msgid "+2 sebzés a közelharci egységeknek."
-msgstr ""
+msgstr "+2 damage for melee units."
 
 msgctxt "research.elf_jade_hegyek.name"
 msgid "Jádehegyű nyilak"
-msgstr ""
+msgstr "Jade-tipped Arrows"
 
 msgctxt "research.elf_jade_hegyek.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.elf_napegi_pajzs.name"
 msgid "Napégi pajzs"
-msgstr ""
+msgstr "Sunsky Shield"
 
 msgctxt "research.elf_napegi_pajzs.desc"
 msgid "+30 pajzs minden elf egységnek."
-msgstr ""
+msgstr "+30 shield for every elf unit."
 
 msgctxt "research.elf_csillagfeny.name"
 msgid "Csillagfény-látás"
-msgstr ""
+msgstr "Starlight Sight"
 
 msgctxt "research.elf_csillagfeny.desc"
 msgid "+1 lőtáv a távolsági egységeknek, +1 látótáv mindenkinek."
-msgstr ""
+msgstr "+1 range for ranged units, +1 sight for everyone."
 
 msgctxt "research.elf_arany_fohasz.name"
 msgid "Arany fohász"
@@ -2121,7 +2121,7 @@ msgstr ""
 
 msgctxt "research.elf_rezonancia.name"
 msgid "Rezonancia"
-msgstr ""
+msgstr "Resonance"
 
 msgctxt "research.elf_rezonancia.desc"
 msgid "A Napobeliszkek energiamezeje 2 csempével nagyobb."
@@ -2137,31 +2137,31 @@ msgstr ""
 
 msgctxt "faction.elves.name"
 msgid "Szürke elfek"
-msgstr ""
+msgstr "Grey Elves"
 
 msgctxt "faction.elves.desc"
 msgid "A Kő és a Csillag Városai: lépcsős templomvárosok, amelyeket a Kilenc Lépcső Tanácsa fog össze. Kevés, hosszan képzett harcos meteoritpajzzsal; az épületeket a rezonanciaobeliszkek mezejébe idézik meg."
-msgstr ""
+msgstr "The Cities of Stone and Star: stepped temple-cities bound together by the Council of the Nine Steps. Few, long-trained warriors with meteorite shields; buildings are summoned into the fields of the resonance obelisks."
 
 msgctxt "faction.elves.tagline"
 msgid "Energiamező • pajzs • önmagától épülő templomok"
-msgstr ""
+msgstr "Power field • shields • self-raising temples"
 
 msgctxt "path.elves.nap.name"
 msgid "Nap temploma"
-msgstr ""
+msgstr "Temple of the Sun"
 
 msgctxt "path.elves.nap.desc"
 msgid "Minden élő egységed folyamatosan gyógyul (+1 regeneráció). Főpapok gyógyítanak, napszóró papok égetnek, és a quetzalok az égből csapnak le."
-msgstr ""
+msgstr "All your living units regenerate constantly (+1 regeneration). High priests heal, sun-scattering priests burn, and quetzals strike from the sky."
 
 msgctxt "path.elves.nap.tagline"
 msgid "Papokkal támogatott tömeghadsereg"
-msgstr ""
+msgstr "A mass army backed by priests"
 
 msgctxt "path.elves.jaguar.name"
 msgid "Jaguár-harcosok"
-msgstr ""
+msgstr "Jaguar Warriors"
 
 msgctxt "path.elves.jaguar.desc"
 msgid "Az erdőben a gyalogosaid láthatatlanok, a közelharcosok +2 sebzést kapnak. Jaguár-orvlövészek, páncélos raptorok és tollas rexek."
@@ -2169,19 +2169,19 @@ msgstr ""
 
 msgctxt "path.elves.jaguar.tagline"
 msgid "Vadászat, lesből támadás"
-msgstr ""
+msgstr "Hunting, attacking from ambush"
 
 msgctxt "path.elves.csillag.name"
 msgid "Csillagvizsgálók"
-msgstr ""
+msgstr "Stargazers"
 
 msgctxt "path.elves.csillag.desc"
 msgid "+1 lőtáv minden távolsági egységnek. Obszidián-vetők és csillagjósok meteorokat hívnak messziről."
-msgstr ""
+msgstr "+1 range for every ranged unit. Obsidian throwers and star seers call meteors from afar."
 
 msgctxt "path.elves.csillag.tagline"
 msgid "Távolsági ostrom, lassú őrlés"
-msgstr ""
+msgstr "Long-range siege, slow grinding"
 
 msgctxt "unit.huk_toaso.name"
 msgid "Tóásó"
@@ -2469,7 +2469,7 @@ msgstr ""
 
 msgctxt "research.huk_gyongygolyo.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.huk_kagylohej.name"
 msgid "Kagylóhéj-vért"
@@ -2525,7 +2525,7 @@ msgstr ""
 
 msgctxt "research.huk_kampohegy.desc"
 msgid "+2 sebzés a közelharci egységeknek."
-msgstr ""
+msgstr "+2 damage for melee units."
 
 msgctxt "research.huk_gyongygolyo_2.name"
 msgid "Gyöngygolyó II."
@@ -2641,123 +2641,123 @@ msgstr ""
 
 msgctxt "unit.imp_fabrikator.name"
 msgid "Fabrikátor"
-msgstr ""
+msgstr "Fabricator"
 
 msgctxt "unit.imp_fabrikator.desc"
 msgid "Pókszerű munkásgép. Épít (egy épületen egyszerre csak egy Fabrikátor dolgozhat – Túlhajtással gyorsíthat), alapoz, fát hord, és javítja az épületeket és a gépeket. Aranyat és meteoritot az Arató gyűjt."
-msgstr ""
+msgstr "Spider-like worker machine. Builds, gathers, and repairs buildings and machines (right-click a damaged machine)."
 
 msgctxt "unit.imp_legios.name"
 msgid "Légiós"
-msgstr ""
+msgstr "Legionary"
 
 msgctxt "unit.imp_legios.desc"
 msgid "Kis lépegetőtestbe zárt légiós-szellem, scutummal és gladiusszal."
-msgstr ""
+msgstr "A legionary soul locked in a small walker body, with scutum and gladius."
 
 msgctxt "unit.imp_ballistarius.name"
 msgid "Ballistarius"
-msgstr ""
+msgstr "Ballistarius"
 
 msgctxt "unit.imp_ballistarius.desc"
 msgid "Kis gép vállra szerelt íjpuskával."
-msgstr ""
+msgstr "Small machine with a shoulder-mounted crossbow."
 
 msgctxt "unit.imp_szellemidezo.name"
 msgid "Szellemidéző"
-msgstr ""
+msgstr "Soul Caller"
 
 msgctxt "unit.imp_szellemidezo.desc"
 msgid "Lélekmentő gép-pap. A csatatér tetemeiből lélekhorgonyt ment, és szellemlégióst támaszt."
-msgstr ""
+msgstr "Soul-saving machine priest. Rescues soul anchors from the corpses of the battlefield and raises ghost legionaries."
 
 msgctxt "unit.imp_centurio.name"
 msgid "Centurio-mecha"
-msgstr ""
+msgstr "Centurion Mech"
 
 msgctxt "unit.imp_centurio.desc"
 msgid "Közepes lépegető mecha forgócsöves gépágyúval."
-msgstr ""
+msgstr "Medium walker mech with a rotary cannon."
 
 msgctxt "unit.imp_aquila.name"
 msgid "Aquila-drón"
-msgstr ""
+msgstr "Aquila Drone"
 
 msgctxt "unit.imp_aquila.desc"
 msgid "Sas formájú repülő gép."
-msgstr ""
+msgstr "An eagle-shaped flying machine."
 
 msgctxt "unit.imp_kolosszus.name"
 msgid "Kolosszus"
-msgstr ""
+msgstr "Colossus"
 
 msgctxt "unit.imp_kolosszus.desc"
 msgid "Óriás ostrom-mecha. Ostrom-módban mozdulatlan, de messzebbre és nagyobbat lő."
-msgstr ""
+msgstr "Giant siege mech. In siege mode it cannot move, but shoots further and harder."
 
 msgctxt "unit.imp_szellemlegios.name"
 msgid "Szellemlégiós"
-msgstr ""
+msgstr "Ghost Legionary"
 
 msgctxt "unit.imp_szellemlegios.desc"
 msgid "Egy elesett harcos lelke, a Szellemidéző akaratához kötve."
-msgstr ""
+msgstr "The soul of a fallen warrior, bound to the Soul Caller's will."
 
 msgctxt "unit.imp_szellemkolosszus.name"
 msgid "Szellemkolosszus"
-msgstr ""
+msgstr "Ghost Colossus"
 
 msgctxt "unit.imp_szellemkolosszus.desc"
 msgid "Egy elesett óriás lelke."
-msgstr ""
+msgstr "The soul of a fallen giant."
 
 msgctxt "unit.imp_hos_livia.name"
 msgid "Livia Varr"
-msgstr ""
+msgstr "Livia Varr"
 
 msgctxt "unit.imp_hos_livia.desc"
 msgid "Egykori orvos, a lélekhorgonyokat mentő légió tisztje."
-msgstr ""
+msgstr "Once a physician, now an officer of the legion that rescues soul anchors."
 
 msgctxt "unit.imp_hos_nera.name"
 msgid "Nera"
-msgstr ""
+msgstr "Nera"
 
 msgctxt "unit.imp_hos_nera.desc"
 msgid "Livia lánya: gyermekként került géptestbe; hetven év tapasztalattal, de a birodalmi jog szerint még mindig kiskorú."
-msgstr ""
+msgstr "Livia's daughter: put into a machine body as a child; seventy years of experience, but by imperial law still a minor."
 
 msgctxt "unit.imp_onager.name"
 msgid "Onager-mecha"
-msgstr ""
+msgstr "Onager Mech"
 
 msgctxt "unit.imp_onager.desc"
 msgid "Négylábú hajítógép: messzire hord, épületek és csoportok ellen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
-msgstr ""
+msgstr "Four-legged throwing engine: long range, against buildings and groups."
 
 msgctxt "unit.imp_hos_cassius.name"
 msgid "Cassius Ferrum legátus"
-msgstr ""
+msgstr "Legate Cassius Ferrum"
 
 msgctxt "unit.imp_hos_cassius.desc"
 msgid "A Hetedik Légió parancsnoka nehéz géptestben: roham, fegyelem és Ordan haragja."
-msgstr ""
+msgstr "Commander of the Seventh Legion in a heavy machine body: charge, discipline and the wrath of Ordan."
 
 msgctxt "unit.imp_lelekhorgony.name"
 msgid "Lélekhorgony"
-msgstr ""
+msgstr "Soul Anchor"
 
 msgctxt "unit.imp_lelekhorgony.desc"
 msgid "Egy elesett gép lelke. Egy Fabrikátor 40 mp-en belül újraépítheti (javítással) – különben a lélek elillan."
-msgstr ""
+msgstr "The soul of a fallen machine. A Fabricator can rebuild it within 40 s (by repairing) – otherwise the soul fades."
 
 msgctxt "unit.imp_praetorianus.name"
 msgid "Praetoriánus"
-msgstr ""
+msgstr "Praetorian"
 
 msgctxt "unit.imp_praetorianus.desc"
 msgid "Elit gépharcos aranyozott páncélban: a légió gerince."
-msgstr ""
+msgstr "An elite machine warrior in gilded armour: the backbone of the legion."
 
 msgctxt "unit.imp_arato.name"
 msgid "Arató"
@@ -2769,83 +2769,83 @@ msgstr ""
 
 msgctxt "building.imp_forum.name"
 msgid "Fórum"
-msgstr ""
+msgstr "Forum"
 
 msgctxt "building.imp_forum.desc"
 msgid "Oszlopcsarnokos főtér gőzölgő gépházzal. Leadóhely, Fabrikátorokat gyárt."
-msgstr ""
+msgstr "Colonnaded square with a steaming engine house. Drop-off, builds Fabricators."
 
 msgctxt "building.imp_reaktor.name"
 msgid "Lélekreaktor"
-msgstr ""
+msgstr "Soul Reactor"
 
 msgctxt "building.imp_reaktor.desc"
 msgid "+10 létszám – lélekenergiát ad a gépeknek."
-msgstr ""
+msgstr "+10 population – gives soul energy to the machines."
 
 msgctxt "building.imp_legiogyar.name"
 msgid "Légió-gyár"
-msgstr ""
+msgstr "Legion Works"
 
 msgctxt "building.imp_legiogyar.desc"
 msgid "Légiósokat és Ballistariusokat szerel össze."
-msgstr ""
+msgstr "Assembles Legionaries and Ballistarii."
 
 msgctxt "building.imp_ontode.name"
 msgid "Öntöde"
-msgstr ""
+msgstr "Foundry"
 
 msgctxt "building.imp_ontode.desc"
 msgid "Centurio-mechákat és Kolosszusokat önt."
-msgstr ""
+msgstr "Casts Centurion Mechs, Onagers and Colossi."
 
 msgctxt "building.imp_gepisten_templom.name"
 msgid "Ordan temploma"
-msgstr ""
+msgstr "Temple of Ordan"
 
 msgctxt "building.imp_gepisten_templom.desc"
 msgid "Ordan, a Kéz, amely Megtart hálózatának szentélye. Szellemidézőket avat, fejlesztéseket kutat."
-msgstr ""
+msgstr "Shrine of the network of Ordan, the Hand that Holds. Ordains Soul Callers, researches upgrades."
 
 msgctxt "building.imp_hangar.name"
 msgid "Hangár"
-msgstr ""
+msgstr "Hangar"
 
 msgctxt "building.imp_hangar.desc"
 msgid "Aquila-drónokat gyárt."
-msgstr ""
+msgstr "Builds Aquila Drones."
 
 msgctxt "building.imp_aquila_torony.name"
 msgid "Aquila-torony"
-msgstr ""
+msgstr "Aquila Tower"
 
 msgctxt "building.imp_aquila_torony.desc"
 msgid "Sasos őrtorony íjpuskával."
-msgstr ""
+msgstr "Eagle watchtower with a crossbow."
 
 msgctxt "building.imp_panteon.name"
 msgid "Panteon"
-msgstr ""
+msgstr "Pantheon"
 
 msgctxt "building.imp_panteon.desc"
 msgid "A megmentett hősök csarnoka: Livia, Nera és Cassius."
-msgstr ""
+msgstr "The hall of the rescued heroes: Livia, Nera and Cassius."
 
 msgctxt "building.imp_praetorium.name"
 msgid "Praetorium"
-msgstr ""
+msgstr "Praetorium"
 
 msgctxt "building.imp_praetorium.desc"
 msgid "A légió parancsnoksága: praetoriánusok és Centurio-mechák."
-msgstr ""
+msgstr "The legion's headquarters: praetorians and Centurio mechs."
 
 msgctxt "building.imp_lelekkut.name"
 msgid "Lélekkút"
-msgstr ""
+msgstr "Soul Well"
 
 msgctxt "building.imp_lelekkut.desc"
 msgid "Lélekfénnyel izzó kút: állandó szellemlégiósok és szellemkolosszusok."
-msgstr ""
+msgstr "A well glowing with soul-light: permanent spirit legionaries and spirit colossi."
 
 msgctxt "building.imp_diplomacia.name"
 msgid "Diplomácia csarnoka"
@@ -2929,35 +2929,35 @@ msgstr ""
 
 msgctxt "research.imp_legiopengek.name"
 msgid "Légiós pengék"
-msgstr ""
+msgstr "Legion Blades"
 
 msgctxt "research.imp_legiopengek.desc"
 msgid "+2 sebzés a közelharci egységeknek."
-msgstr ""
+msgstr "+2 damage for melee units."
 
 msgctxt "research.imp_gyorstoltes.name"
 msgid "Gyorstöltés"
-msgstr ""
+msgstr "Quick Loading"
 
 msgctxt "research.imp_gyorstoltes.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.imp_edzett_acel.name"
 msgid "Edzett acél"
-msgstr ""
+msgstr "Tempered Steel"
 
 msgctxt "research.imp_edzett_acel.desc"
 msgid "+1 páncél minden gépnek."
-msgstr ""
+msgstr "+1 armour for every machine."
 
 msgctxt "research.imp_megerositett_vaz.name"
 msgid "Megerősített váz"
-msgstr ""
+msgstr "Reinforced Frame"
 
 msgctxt "research.imp_megerositett_vaz.desc"
 msgid "+30 életerő minden gépnek."
-msgstr ""
+msgstr "+30 health for every machine."
 
 msgctxt "research.imp_hajtomu.name"
 msgid "Gyorsított hajtómű"
@@ -3121,323 +3121,323 @@ msgstr ""
 
 msgctxt "faction.imperium.name"
 msgid "Aurethi Birodalom"
-msgstr ""
+msgstr "Iron Empire"
 
 msgctxt "faction.imperium.desc"
 msgid "Aureth népe: az Égszakadás éterbetegségében haldokló embereket Ordan, a Kéz, amely Megtart, géptestekbe vezette át. Valódi emberi szellemek acélban – nem születnek új tagjaik, ezért minden nyersanyag számukra életfeltétel. Létszámukat a lélekreaktorok adják; a Fabrikátorok javítják a gépeket, a szellemidézők az elesettekből légiót támasztanak."
-msgstr ""
+msgstr "The people of Aureth: Ordan, the Hand that Holds, carried those dying of the ether sickness of the Skyfall into machine bodies. Real human souls in steel – no new members are born to them, so every resource is a matter of life. Their numbers come from soul reactors; Fabricators repair the machines, and soul callers raise a legion from the fallen."
 
 msgctxt "faction.imperium.tagline"
 msgid "Lélekidézés • gépjavítás • ostrom • lélekreaktorok"
-msgstr ""
+msgstr "Soul calling • machine repair • siege • soul reactors"
 
 msgctxt "path.imperium.legio.name"
 msgid "Légió"
-msgstr ""
+msgstr "Legion"
 
 msgctxt "path.imperium.legio.desc"
 msgid "Alakzat: a gyalogosok minden közeli bajtársért +6% sebzést kapnak (max. +30%), és +1 páncélt. Praetoriánusok és Centurio-mechák."
-msgstr ""
+msgstr "Formation: infantry gain +6% damage for every nearby comrade (max. +30%) and +1 armour. Praetorians and Centurio mechs."
 
 msgctxt "path.imperium.legio.tagline"
 msgid "Fegyelmezett tömeg alakzatban"
-msgstr ""
+msgstr "A disciplined mass in formation"
 
 msgctxt "path.imperium.gepisten.name"
 msgid "Gépisten"
-msgstr ""
+msgstr "Machine God"
 
 msgctxt "path.imperium.gepisten.desc"
 msgid "Kolosszusok és onager-mechák, +150 életerővel és +4 ostromsebzéssel. Lassú, drága, de megállíthatatlan."
-msgstr ""
+msgstr "Colossi and onager mechs with +150 health and +4 siege damage. Slow, costly, but unstoppable."
 
 msgctxt "path.imperium.gepisten.tagline"
 msgid "Kevés, hatalmas gép"
-msgstr ""
+msgstr "Few, enormous machines"
 
 msgctxt "path.imperium.lelek.name"
 msgid "Lélek"
-msgstr ""
+msgstr "Soul"
 
 msgctxt "path.imperium.lelek.desc"
 msgid "A megölt élő ellenségek 20%-a szellemlégiósként kel fel nálad (40 mp-re). A Lélekkútban állandó szellemlégiósok és szellemkolosszusok képezhetők."
-msgstr ""
+msgstr "20% of the living enemies you kill rise as spirit legionaries on your side (for 40 s). Permanent spirit legionaries and spirit colossi can be trained at the Soul Well."
 
 msgctxt "path.imperium.lelek.tagline"
 msgid "Kifárasztó, élőhalott játék"
-msgstr ""
+msgstr "An attritional, undead game"
 
 msgctxt "unit.myc_sporaszedo.name"
 msgid "Spóraszedő"
-msgstr ""
+msgstr "Spore Gatherer"
 
 msgctxt "unit.myc_sporaszedo.desc"
 msgid "Munkás. Bármelyik hálózatba kötött épületbe leadhatja a terhét."
-msgstr ""
+msgstr "Worker. Can drop its load at any building linked to the network."
 
 msgctxt "unit.myc_pofeteg.name"
 msgid "Pöfeteg"
-msgstr ""
+msgstr "Puffball"
 
 msgctxt "unit.myc_pofeteg.desc"
 msgid "Olcsó, ugráló gombalény. Halálakor mérgező spórafelhő tör ki belőle. Hármasával Óriáspöfeteggé olvad."
-msgstr ""
+msgstr "Cheap, hopping fungus creature. A poison spore cloud bursts out when it dies. Three merge into a Giant Puffball."
 
 msgctxt "unit.myc_tuskegomba_lovesz.name"
 msgid "Tüskegomba-lövész"
-msgstr ""
+msgstr "Spinecap Shooter"
 
 msgctxt "unit.myc_tuskegomba_lovesz.desc"
 msgid "Mérgező spóratüskéket lő, földi és légi célpontokra."
-msgstr ""
+msgstr "Fires poisonous spore spines at ground and air targets."
 
 msgctxt "unit.myc_kalapos_or.name"
 msgid "Kalapos őr"
-msgstr ""
+msgstr "Capped Guard"
 
 msgctxt "unit.myc_kalapos_or.desc"
 msgid "Vastag kalapú, páncélos gombaharcos."
-msgstr ""
+msgstr "An armoured fungus warrior with a thick cap."
 
 msgctxt "unit.myc_alomsaman.name"
 msgid "Álomgomba-sámán"
-msgstr ""
+msgstr "Dreamcap Shaman"
 
 msgctxt "unit.myc_alomsaman.desc"
 msgid "Gyökérkötéssel egy területen megbénítja az ellenséget."
-msgstr ""
+msgstr "Binds an area with roots and paralyses the enemy."
 
 msgctxt "unit.myc_oriaspofeteg.name"
 msgid "Óriáspöfeteg"
-msgstr ""
+msgstr "Giant Puffball"
 
 msgctxt "unit.myc_oriaspofeteg.desc"
 msgid "Három Pöfetegből összeolvadt óriás. Halálakor hatalmas spórarobbanás."
-msgstr ""
+msgstr "A giant merged from three Puffballs. A huge spore blast when it dies."
 
 msgctxt "unit.myc_lebego_pofeteg.name"
 msgid "Lebegő pöfeteg"
-msgstr ""
+msgstr "Floating Puffball"
 
 msgctxt "unit.myc_lebego_pofeteg.desc"
 msgid "Gázzal telt, lebegő gombatest; spóraesőt szór."
-msgstr ""
+msgstr "A gas-filled floating fungus body; scatters spore rain."
 
 msgctxt "unit.myc_hos_mor.name"
 msgid "Mór"
-msgstr ""
+msgstr "Mór"
 
 msgctxt "unit.myc_hos_mor.desc"
 msgid "Fiatal emlékkertész, magában hordja egy sérült emlékkert töredékeit. Gyógyít és fertőzést vizsgál."
-msgstr ""
+msgstr "A young memory-gardener carrying fragments of a damaged memory garden inside him. Heals and studies infection."
 
 msgctxt "unit.myc_rothaszto.name"
 msgid "Rothasztó"
-msgstr ""
+msgstr "Rotter"
 
 msgctxt "unit.myc_rothaszto.desc"
 msgid "Bomló gombatest: közelharcban rothaszt, halálakor mérgező spórafelhőt ereget."
-msgstr ""
+msgstr "A decaying fungus body: rots its foes in melee and releases a poison spore cloud when it dies."
 
 msgctxt "unit.myc_hos_gyokeranya.name"
 msgid "A Gyökéranya"
-msgstr ""
+msgstr "The Root Mother"
 
 msgctxt "unit.myc_hos_gyokeranya.desc"
 msgid "Az ősi micélium teste: gyökeret ereszt, gúzsba köt, és megrengeti a földet."
-msgstr ""
+msgstr "Body of the ancient mycelium: puts down roots, binds, and shakes the earth."
 
 msgctxt "unit.myc_hos_sporin.name"
 msgid "Sporin, a Bomlasztó"
-msgstr ""
+msgstr "Sporin the Decayer"
 
 msgctxt "unit.myc_hos_sporin.desc"
 msgid "A bomlás vándora: tüskéi rothasztanak, köpenye spórafelhő."
-msgstr ""
+msgstr "Wanderer of decay: its spines rot, its cloak is a spore cloud."
 
 msgctxt "unit.myc_tetemgomba.name"
 msgid "Tetemgomba"
-msgstr ""
+msgstr "Corpse Fungus"
 
 msgctxt "unit.myc_tetemgomba.desc"
 msgid "Az elesettekből kelt, gombával átszőtt test: lassú, de nem adja fel."
-msgstr ""
+msgstr "A body risen from the fallen, woven through with fungus: slow, but it never gives up."
 
 msgctxt "unit.myc_fagomba_orias.name"
 msgid "Fagomba-óriás"
-msgstr ""
+msgstr "Bracket-fungus Giant"
 
 msgctxt "unit.myc_fagomba_orias.desc"
 msgid "Járó, ősi fagomba: a liget védelmezője, gyökereivel megköt."
-msgstr ""
+msgstr "A walking ancient tree fungus: guardian of the grove, binds with its roots."
 
 msgctxt "unit.myc_alomszovo.name"
 msgid "Álomszövő"
-msgstr ""
+msgstr "Dreamweaver"
 
 msgctxt "unit.myc_alomszovo.desc"
 msgid "Altató spórákat szövő gomba-mágus."
-msgstr ""
+msgstr "A fungal mage weaving sleeping spores."
 
 msgctxt "building.myc_szivgomba.name"
 msgid "Szívgomba"
-msgstr ""
+msgstr "Heart Fungus"
 
 msgctxt "building.myc_szivgomba.desc"
 msgid "A hálózat szíve: kicsi főépület és védőtorony egyben. +6 létszám (és a hálózat minden összekötött épülete +1), Spóraszedőket nevel, spórákkal lő. Akárhány építhető."
-msgstr ""
+msgstr "Heart of the network: a small main building and defensive tower in one. +6 population (and +1 for every linked building of the network), raises Spore Gatherers, shoots spores. Any number can be built."
 
 msgctxt "building.myc_sporafonal.name"
 msgid "Spórafonal"
-msgstr ""
+msgstr "Spore Thread"
 
 msgctxt "building.myc_sporafonal.desc"
 msgid "Hálózati csomópont: összeköti az épületeket a Szívgombával."
-msgstr ""
+msgstr "Network node: links buildings to the Heart Fungus."
 
 msgctxt "building.myc_termotest.name"
 msgid "Termőtest"
-msgstr ""
+msgstr "Fruiting Body"
 
 msgctxt "building.myc_termotest.desc"
 msgid "Pöfetegeket és Kalapos őröket növeszt."
-msgstr ""
+msgstr "Grows Puffballs, Rotters and Capped Guards."
 
 msgctxt "building.myc_tuskegomba_telep.name"
 msgid "Tüskegomba-telep"
-msgstr ""
+msgstr "Spinecap Colony"
 
 msgctxt "building.myc_tuskegomba_telep.desc"
 msgid "Tüskegomba-lövészeket növeszt."
-msgstr ""
+msgstr "Grows Spinecap Shooters."
 
 msgctxt "building.myc_gyokerbarlang.name"
 msgid "Gyökérbarlang"
-msgstr ""
+msgstr "Root Cave"
 
 msgctxt "building.myc_gyokerbarlang.desc"
 msgid "Fejlesztések a hálózat mélyén."
-msgstr ""
+msgstr "Upgrades deep within the network."
 
 msgctxt "building.myc_alomkert.name"
 msgid "Álomkert"
-msgstr ""
+msgstr "Dream Garden"
 
 msgctxt "building.myc_alomkert.desc"
 msgid "Álomgomba-sámánokat nevel."
-msgstr ""
+msgstr "Raises Dreamcap Shamans."
 
 msgctxt "building.myc_lebegobolcso.name"
 msgid "Lebegőbölcső"
-msgstr ""
+msgstr "Floating Cradle"
 
 msgctxt "building.myc_lebegobolcso.desc"
 msgid "Lebegő pöfetegeket nevel."
-msgstr ""
+msgstr "Raises Floating Puffballs."
 
 msgctxt "building.myc_emlekfa.name"
 msgid "Emlékfa"
-msgstr ""
+msgstr "Memory Tree"
 
 msgctxt "building.myc_emlekfa.desc"
 msgid "Az elfeledett nevek fája: Mór, a Gyökéranya és Sporin hívása."
-msgstr ""
+msgstr "The tree of forgotten names: calls Mór, the Root Mother and Sporin."
 
 msgctxt "building.myc_rothadokert.name"
 msgid "Rothadókert"
-msgstr ""
+msgstr "Rot Garden"
 
 msgctxt "building.myc_rothadokert.desc"
 msgid "Bomló tetemeken nőtt gombakert: rothasztók és tetemgombák."
-msgstr ""
+msgstr "A fungus garden grown on decaying corpses: rotters and corpse fungi."
 
 msgctxt "building.myc_oriasliget.name"
 msgid "Óriásliget"
-msgstr ""
+msgstr "Giant Grove"
 
 msgctxt "building.myc_oriasliget.desc"
 msgid "Ősi fagombák ligete: fagomba-óriások."
-msgstr ""
+msgstr "A grove of ancient tree fungi: bracket-fungus giants."
 
 msgctxt "research.myc_meregspora.name"
 msgid "Méregspóra"
-msgstr ""
+msgstr "Poison Spore"
 
 msgctxt "research.myc_meregspora.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.myc_kemenykalap.name"
 msgid "Keménykalap"
-msgstr ""
+msgstr "Hard Cap"
 
 msgctxt "research.myc_kemenykalap.desc"
 msgid "+1 páncél minden egységnek."
-msgstr ""
+msgstr "+1 armour for every unit."
 
 msgctxt "research.myc_gyors_micelium.name"
 msgid "Gyors micélium"
-msgstr ""
+msgstr "Swift Mycelium"
 
 msgctxt "research.myc_gyors_micelium.desc"
 msgid "+15% sebesség minden egységnek."
-msgstr ""
+msgstr "+15% speed for every unit."
 
 msgctxt "research.myc_dus_spora.name"
 msgid "Dús spóra"
-msgstr ""
+msgstr "Rich Spore"
 
 msgctxt "research.myc_dus_spora.desc"
 msgid "+20 életerő minden gombaegységnek."
-msgstr ""
+msgstr "+20 health for every fungus unit."
 
 msgctxt "faction.mycel.name"
 msgid "Micéliák"
-msgstr ""
+msgstr "Mycelians"
 
 msgctxt "faction.mycel.desc"
 msgid "A Mélykertek népe: önálló gombaszemélyek, akiket a föld alatti fonalhálózat köt össze (a fajnév munkacím). Épületeik csak spórafonalakkal a Szívgombához kötve működnek, de bármelyikbe leadható a nyersanyag; három Pöfeteg Óriáspöfeteggé olvad."
-msgstr ""
+msgstr "The people of the Deep Gardens: individual fungal persons bound together by an underground web of threads (the name is a working title). Their buildings only work when linked to a Heart Fungus by spore threads, but resources can be dropped at any of them; three Puffballs merge into a Giant Puffball."
 
 msgctxt "faction.mycel.tagline"
 msgid "Spórafonal-hálózat • szívgombák • összeolvadás"
-msgstr ""
+msgstr "Spore-thread network • heart fungi • merging"
 
 msgctxt "path.mycel.rothadas.name"
 msgid "Rothadás"
-msgstr ""
+msgstr "Rot"
 
 msgctxt "path.mycel.rothadas.desc"
 msgid "A közelharcosaid mérgeznek, és az elesett élőkből 25% eséllyel tetemgomba-zombi kel. Rothasztók vezetik a lassan terjedő pusztulást."
-msgstr ""
+msgstr "Your melee fighters poison, and 25% of fallen living foes rise as corpse-fungus zombies. Rotters lead the slowly spreading decay."
 
 msgctxt "path.mycel.rothadas.tagline"
 msgid "Felőrlő, méreggel nyújtott harc"
-msgstr ""
+msgstr "Grinding, poison-prolonged battle"
 
 msgctxt "path.mycel.liget.name"
 msgid "Óriásliget"
-msgstr ""
+msgstr "Giant Grove"
 
 msgctxt "path.mycel.liget.desc"
 msgid "A hálózat minden összekötött épülete +2 létszámot ad, az épületek +250 életerőt kapnak. Járó fagomba-óriások védik a ligetet."
-msgstr ""
+msgstr "Every connected building of the network gives +2 population, buildings gain +250 health. Walking bracket-fungus giants guard the grove."
 
 msgctxt "path.mycel.liget.tagline"
 msgid "Terjeszkedés és területfoglalás"
-msgstr ""
+msgstr "Expansion and territory"
 
 msgctxt "path.mycel.alom.name"
 msgid "Álom"
-msgstr ""
+msgstr "Dream"
 
 msgctxt "path.mycel.alom.desc"
 msgid "Az erdőben minden egységed láthatatlan, amíg nem mozog és nem támad. Álomsámánok és Álomszövők altató spórákkal bénítják meg az ellenfelet."
-msgstr ""
+msgstr "In the forest all your units are invisible while they neither move nor attack. Dream shamans and Dreamweavers paralyse the enemy with sleeping spores."
 
 msgctxt "path.mycel.alom.tagline"
 msgid "Csel, rejtőzés, rajtaütés"
-msgstr ""
+msgstr "Trickery, stealth, ambush"
 
 msgctxt "unit.oon_lampasvivo.name"
 msgid "Lámpásvivő"
@@ -3757,7 +3757,7 @@ msgstr ""
 
 msgctxt "research.oon_kotel.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.oon_messzefeny.name"
 msgid "Messzefény"
@@ -3905,251 +3905,251 @@ msgstr ""
 
 msgctxt "unit.urs_telepes.name"
 msgid "Telepes"
-msgstr ""
+msgstr "Settler"
 
 msgctxt "unit.urs_telepes.desc"
 msgid "Munkás. Építéskor bemászik a félkész épületbe: bent védett, és csak készen jön ki. Javít, gyűjt."
-msgstr ""
+msgstr "Worker. Builds (stays until it is done), repairs, gathers."
 
 msgctxt "unit.urs_pajzshordozo.name"
 msgid "Pajzshordozó"
-msgstr ""
+msgstr "Shieldbearer"
 
 msgctxt "unit.urs_pajzshordozo.desc"
 msgid "Az ursan sereg gerince. Pajzsfal: a távolsági sebzés nagy részét elnyeli."
-msgstr ""
+msgstr "Backbone of the Ursan army. Shield wall: absorbs most ranged damage."
 
 msgctxt "unit.urs_szigonyvezo.name"
 msgid "Szigonyvető"
-msgstr ""
+msgstr "Harpooner"
 
 msgctxt "unit.urs_szigonyvezo.desc"
 msgid "Korai légvédelem: szigonya földi és légi célpontokat is eltalál, a repülő típus és a nagy testű célpontok ellen bónuszsebzést okoz."
-msgstr ""
+msgstr "Early anti-air: harpoons hit ground and air targets, dealing bonus damage against flyer-type and large targets."
 
 msgctxt "unit.urs_berserker.name"
 msgid "Medvebőrös berserker"
-msgstr ""
+msgstr "Bearskin Berserker"
 
 msgctxt "unit.urs_berserker.desc"
 msgid "Gyors, nagy sebzésű közelharcos."
-msgstr ""
+msgstr "Fast, hard-hitting melee fighter."
 
 msgctxt "unit.urs_runapap.name"
 msgid "Rúnapap"
-msgstr ""
+msgstr "Rune Priest"
 
 msgctxt "unit.urs_runapap.desc"
 msgid "Gyógyító. Automatikusan foltozza a sebesült harcosokat."
-msgstr ""
+msgstr "Healer. Automatically patches up wounded warriors."
 
 msgctxt "unit.urs_kardfogu.name"
 msgid "Kardfogú lovas"
-msgstr ""
+msgstr "Sabretooth Rider"
 
 msgctxt "unit.urs_kardfogu.desc"
 msgid "Kardfogú tigrisen lovagló gyors harcos. Roham képesség."
-msgstr ""
+msgstr "Fast warrior riding a sabretooth tiger. Charge ability."
 
 msgctxt "unit.urs_viharhollo.name"
 msgid "Viharholló"
-msgstr ""
+msgstr "Storm Raven"
 
 msgctxt "unit.urs_viharhollo.desc"
 msgid "Óriás holló. Felderítő és légvédelem."
-msgstr ""
+msgstr "Giant raven. Scout and anti-air."
 
 msgctxt "unit.urs_mammut.name"
 msgid "Harci mammut"
-msgstr ""
+msgstr "War Mammoth"
 
 msgctxt "unit.urs_mammut.desc"
 msgid "Gyapjas mamut, hátán kőhajítókkal. Terület-sebzés, bónusz épületek ellen."
-msgstr ""
+msgstr "Woolly mammoth with stone throwers on its back. Splash damage, bonus against buildings."
 
 msgctxt "unit.urs_hos_ragna.name"
 msgid "Ragna Kőváll"
-msgstr ""
+msgstr "Ragna Stoneshoulder"
 
 msgctxt "unit.urs_hos_ragna.desc"
 msgid "Egy határerőd parancsnoka. A pajzsa először a mellette állót védi."
-msgstr ""
+msgstr "Commander of a border fort. Her shield protects the one beside her first."
 
 msgctxt "unit.urs_dardaor.name"
 msgid "Dárdaőr"
-msgstr ""
+msgstr "Spear Guard"
 
 msgctxt "unit.urs_dardaor.desc"
 msgid "Hosszú dárdás védő – lovasság és nagy vadak ellen kiváló."
-msgstr ""
+msgstr "Defender with a long spear – excellent against cavalry and large beasts."
 
 msgctxt "unit.urs_ostromszan.name"
 msgid "Ostromszán"
-msgstr ""
+msgstr "Siege Sled"
 
 msgctxt "unit.urs_ostromszan.desc"
 msgid "Szánra szerelt kőhajító, épületek ellen. Felállítás: lövés előtt 2 mp-ig áll fel (utána +1 lőtáv), mozgás előtt 1 mp-ig csukódik össze."
-msgstr ""
+msgstr "A stone thrower mounted on a sled, against buildings."
 
 msgctxt "unit.urs_kardfogu_tigris.name"
 msgid "Kardfogú tigris"
-msgstr ""
+msgstr "Sabretooth Tiger"
 
 msgctxt "unit.urs_kardfogu_tigris.desc"
 msgid "Bjarka hívására érkező vadállat (idézett)."
-msgstr ""
+msgstr "A beast answering Bjarka's call (summoned)."
 
 msgctxt "unit.urs_hos_hjalmar.name"
 msgid "Hjalmar Fagyjós"
-msgstr ""
+msgstr "Hjalmar Frostseer"
 
 msgctxt "unit.urs_hos_hjalmar.desc"
 msgid "A jégkorszak emlékét őrző jós: fagy, vihar és lassítás."
-msgstr ""
+msgstr "A seer keeping the memory of the ice age: frost, storm and slowing."
 
 msgctxt "unit.urs_hos_bjarka.name"
 msgid "Bjarka, a Vadak Ura"
-msgstr ""
+msgstr "Bjarka, Lord of Beasts"
 
 msgctxt "unit.urs_hos_bjarka.desc"
 msgid "Vadász és vadidomár: kardfogú tigriseket és mamutokat hív harcba."
-msgstr ""
+msgstr "Hunter and beast tamer: calls sabretooth tigers and mammoths to battle."
 
 msgctxt "unit.urs_runako.name"
 msgid "Rúnakő"
-msgstr ""
+msgstr "Rune Stone"
 
 msgctxt "unit.urs_runako.desc"
 msgid "Rúnapap által állított kő (idézett). Aurája véd és gyógyít."
-msgstr ""
+msgstr "A stone raised by a Rune Priest (summoned). Its aura protects and heals."
 
 msgctxt "unit.urs_medvealak.name"
 msgid "Medvealakváltó"
-msgstr ""
+msgstr "Bear Shapeshifter"
 
 msgctxt "unit.urs_medvealak.desc"
 msgid "Az ursan teljesen medvévé változik: hatalmas karmok, rettentő üvöltés."
-msgstr ""
+msgstr "The Ursan turns fully into a bear: huge claws, a terrifying roar."
 
 msgctxt "unit.urs_kurtos.name"
 msgid "Harci kürtös"
-msgstr ""
+msgstr "War Hornblower"
 
 msgctxt "unit.urs_kurtos.desc"
 msgid "Kürtszava felszítja a harcosokat: +15% sebzés, +10% sebesség a közelben."
-msgstr ""
+msgstr "The horn call stirs the warriors: +15% damage, +10% speed nearby."
 
 msgctxt "unit.urs_runaorias.name"
 msgid "Rúnaóriás"
-msgstr ""
+msgstr "Rune Giant"
 
 msgctxt "unit.urs_runaorias.desc"
 msgid "Rúnákkal életre keltett kőóriás: lassú, de épületeket zúz."
-msgstr ""
+msgstr "A stone giant awakened by runes: slow, but it smashes buildings."
 
 msgctxt "building.urs_nagyterem.name"
 msgid "Nagyterem"
-msgstr ""
+msgstr "Great Hall"
 
 msgctxt "building.urs_nagyterem.desc"
 msgid "Faragott hosszúcsarnok, főépület. Leadóhely, Telepeseket képez."
-msgstr ""
+msgstr "Carved longhall, main building. Drop-off, trains Settlers."
 
 msgctxt "building.urs_hosszuhaz.name"
 msgid "Hosszúház"
-msgstr ""
+msgstr "Longhouse"
 
 msgctxt "building.urs_hosszuhaz.desc"
 msgid "Erődített hosszúház: 4 fős helyőrség, riadóban a telepesek menedéke."
-msgstr ""
+msgstr "Fortified longhouse: garrison of 4, the settlers' refuge in an alarm."
 
 msgctxt "building.urs_fatelep.name"
 msgid "Fatelep"
-msgstr ""
+msgstr "Lumber Yard"
 
 msgctxt "building.urs_fatelep.desc"
 msgid "Leadóhely fának, aranynak és meteoritnak."
-msgstr ""
+msgstr "Drop-off for wood, stone and meteorite."
 
 msgctxt "building.urs_harcosok_haza.name"
 msgid "Harcosok háza"
-msgstr ""
+msgstr "House of Warriors"
 
 msgctxt "building.urs_harcosok_haza.desc"
 msgid "Pajzshordozókat, dárdaőröket és szigonyvetőket képez. A szigonyvetők korai légvédelmet adnak."
-msgstr ""
+msgstr "Trains Shieldbearers, Spear Guards and Harpooners. Harpooners provide early anti-air defense."
 
 msgctxt "building.urs_runakovacs.name"
 msgid "Rúnakovács"
-msgstr ""
+msgstr "Rune Forge"
 
 msgctxt "building.urs_runakovacs.desc"
 msgid "Rúnapapokat képez, fegyvert és páncélt fejleszt."
-msgstr ""
+msgstr "Trains Rune Priests and Siege Sleds, upgrades weapons and armour."
 
 msgctxt "building.urs_vadak_karama.name"
 msgid "Vadak karáma"
-msgstr ""
+msgstr "Beast Pen"
 
 msgctxt "building.urs_vadak_karama.desc"
 msgid "Kardfogú lovasokat és harci mamutokat nevel."
-msgstr ""
+msgstr "Raises Sabretooth Riders and War Mammoths."
 
 msgctxt "building.urs_sasszirt.name"
 msgid "Sasszirt"
-msgstr ""
+msgstr "Eagle Crag"
 
 msgctxt "building.urs_sasszirt.desc"
 msgid "Viharhollókat nevel."
-msgstr ""
+msgstr "Raises Storm Ravens."
 
 msgctxt "building.urs_ortorony.name"
 msgid "Őrtorony"
-msgstr ""
+msgstr "Watchtower"
 
 msgctxt "building.urs_ortorony.desc"
 msgid "Fa-kő őrtorony íjászokkal."
-msgstr ""
+msgstr "Wood-and-stone watchtower with archers."
 
 msgctxt "building.urs_eskufa.name"
 msgid "Esküfa"
-msgstr ""
+msgstr "Oath Tree"
 
 msgctxt "building.urs_eskufa.desc"
 msgid "Ősi kőris, amely alatt a jarlok esküt tesznek: Ragna, Hjalmar és Bjarka."
-msgstr ""
+msgstr "An ancient ash under which the jarls swear their oaths: Ragna, Hjalmar and Bjarka."
 
 msgctxt "building.urs_tanya.name"
 msgid "Tanya"
-msgstr ""
+msgstr "Farmstead"
 
 msgctxt "building.urs_tanya.desc"
 msgid "Árpaföld, ólak és szénapajták: a jarlság népe innen él. +10 létszám."
-msgstr ""
+msgstr "Barley field, sheds and hay barns: the jarldom lives off it. +10 population."
 
 msgctxt "building.urs_colopfal.name"
 msgid "Cölöpfal"
-msgstr ""
+msgstr "Palisade"
 
 msgctxt "building.urs_colopfal.desc"
 msgid "Hegyes karókból álló falszakasz – elzárja az utat. Olcsó, gyorsan épül; a telepesek javítják."
-msgstr ""
+msgstr "A wall section of sharpened stakes – blocks the way. Cheap and quick to build; settlers repair it."
 
 msgctxt "building.urs_verfogadalom.name"
 msgid "Vérfogadalom-csarnok"
-msgstr ""
+msgstr "Hall of the Blood Oath"
 
 msgctxt "building.urs_verfogadalom.desc"
 msgid "Itt teszik le a berserkerek a vérfogadalmat."
-msgstr ""
+msgstr "Here the berserkers swear their blood oath."
 
 msgctxt "building.urs_runaszentely.name"
 msgid "Rúnaszentély"
-msgstr ""
+msgstr "Rune Sanctum"
 
 msgctxt "building.urs_runaszentely.desc"
 msgid "Rúnakőkör kovácsműhellyel: rúnaóriások és ostromszánok."
-msgstr ""
+msgstr "A rune-stone circle with a forge: rune giants and siege sleds."
 
 msgctxt "building.urs_diplomacia.name"
 msgid "Diplomácia csarnoka"
@@ -4169,35 +4169,35 @@ msgstr ""
 
 msgctxt "research.urs_runapengek.name"
 msgid "Rúnás pengék"
-msgstr ""
+msgstr "Rune Blades"
 
 msgctxt "research.urs_runapengek.desc"
 msgid "+2 sebzés a közelharci egységeknek."
-msgstr ""
+msgstr "+2 damage for melee units."
 
 msgctxt "research.urs_vasszigony.name"
 msgid "Vashegyű szigonyok"
-msgstr ""
+msgstr "Iron-tipped Harpoons"
 
 msgctxt "research.urs_vasszigony.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.urs_medvebunda.name"
 msgid "Medvebunda-páncél"
-msgstr ""
+msgstr "Bear-pelt Armour"
 
 msgctxt "research.urs_medvebunda.desc"
 msgid "+1 páncél minden élő egységnek."
-msgstr ""
+msgstr "+1 armour for every living unit."
 
 msgctxt "research.urs_telegi_edzes.name"
 msgid "Télegi edzés"
-msgstr ""
+msgstr "Winter Training"
 
 msgctxt "research.urs_telegi_edzes.desc"
 msgid "+25 életerő a gyalogságnak és a lovasságnak."
-msgstr ""
+msgstr "+25 health for infantry and cavalry."
 
 msgctxt "research.urs_nepfelkeles.name"
 msgid "Népfelkelés"
@@ -4297,271 +4297,271 @@ msgstr ""
 
 msgctxt "faction.ursan.name"
 msgid "Ursanok"
-msgstr ""
+msgstr "Ursans"
 
 msgctxt "faction.ursan.desc"
 msgid "Az Északi Eskük Birodalma: esküvel összekötött jarlságok, jurtákkal kevert hosszúcsarnokok, árpaföldes tanyák. Sisakot nem hordanak, legfeljebb ágyékkötőt; nagy, lapos deszkapajzzsal harcolnak. A csarnokok és tornyok helyőrséget fogadnak (riadókor a telepesek is behúzódnak), a létszámot a tanyák adják. Pajzsfal és jégkorszaki harci vadak."
-msgstr ""
+msgstr "The Empire of the Northern Oaths: jarldoms bound by oath, longhalls mixed with yurts, barley farmsteads. They wear no helmets, at most a loincloth, and fight with great flat plank shields. Halls and towers take in garrisons (in an alarm the settlers hide inside too); their numbers are fed by farmsteads. Shield walls and ice-age war beasts."
 
 msgctxt "faction.ursan.tagline"
 msgid "Helyőrség • tanyák • javítás • pajzsfal"
-msgstr ""
+msgstr "Garrisons • farmsteads • repair • shield wall"
 
 msgctxt "path.ursan.berserker.name"
 msgid "Berserker-klán"
-msgstr ""
+msgstr "Berserker Clan"
 
 msgctxt "path.ursan.berserker.desc"
 msgid "Vérfogadalom: a közelharcosok annál erősebbek, minél sebesültebbek (+60% sebzésig). Berserkerek, medvévé változó alakváltók és harci kürtösök."
-msgstr ""
+msgstr "Blood oath: melee fighters grow stronger the more wounded they are (up to +60% damage). Berserkers, shapeshifters who turn into bears, and war hornblowers."
 
 msgctxt "path.ursan.berserker.tagline"
 msgid "Korai, nyers közelharci nyomás"
-msgstr ""
+msgstr "Early, raw melee pressure"
 
 msgctxt "path.ursan.runa.name"
 msgid "Rúnakovácsok"
-msgstr ""
+msgstr "Runesmiths"
 
 msgctxt "path.ursan.runa.desc"
 msgid "Rúnákkal vésett falak és tornyok: +3 páncél minden épületnek, +6 toronysebzés. Rúnaóriások és ostromszánok törik át a frontot, amikor már minden megvan."
-msgstr ""
+msgstr "Rune-carved walls and towers: +3 armour for every building, +6 tower damage. Rune giants and siege sleds break the front once everything is in place."
 
 msgctxt "path.ursan.runa.tagline"
 msgid "Erőd, technológia, késői erő"
-msgstr ""
+msgstr "Fortress, technology, late-game power"
 
 msgctxt "path.ursan.tundra.name"
 msgid "Tundra hívása"
-msgstr ""
+msgstr "Call of the Tundra"
 
 msgctxt "path.ursan.tundra.desc"
 msgid "Mamutok, kardfogú lovasok és viharhollók. A vadállatok és a lovasság +60 életerőt és gyorsabb regenerációt kapnak. Lassú, nehéz ostrom."
-msgstr ""
+msgstr "Mammoths, sabre-tooth riders and storm ravens. Beasts and cavalry gain +60 health and faster regeneration. A slow, heavy siege."
 
 msgctxt "path.ursan.tundra.tagline"
 msgid "Nagytestű vadak, kevés, de hatalmas egység"
-msgstr ""
+msgstr "Great beasts – few, but huge units"
 
 msgctxt "unit.vad_kristalybogar.name"
 msgid "Kristálybogár"
-msgstr ""
+msgstr "Crystal Beetle"
 
 msgctxt "unit.vad_kristalybogar.desc"
 msgid "Csillagérctől megnőtt bogár; páncélján kristályok nőnek."
-msgstr ""
+msgstr "A beetle grown huge from star-ore; crystals grow on its shell."
 
 msgctxt "unit.vad_hamufarkas.name"
 msgid "Hamufarkas"
-msgstr ""
+msgstr "Ash Wolf"
 
 msgctxt "unit.vad_hamufarkas.desc"
 msgid "A becsapódás hamujában élő falkavad."
-msgstr ""
+msgstr "A pack beast living in the ash of the impact."
 
 msgctxt "unit.vad_eterliderc.name"
 msgid "Éterlidérc"
-msgstr ""
+msgstr "Ether Wisp"
 
 msgctxt "unit.vad_eterliderc.desc"
 msgid "Szabadon kóborló étercsomó – egykor talán egy lélek volt."
-msgstr ""
+msgstr "A freely wandering knot of ether – once perhaps a soul."
 
 msgctxt "unit.vad_kotroll.name"
 msgid "Kőtroll"
-msgstr ""
+msgstr "Stone Troll"
 
 msgctxt "unit.vad_kotroll.desc"
 msgid "Hegyi óriás, bőrébe kristályok nőttek."
-msgstr ""
+msgstr "A mountain giant with crystals grown into its skin."
 
 msgctxt "unit.vad_ercgolem.name"
 msgid "Csillagérc-gólem"
-msgstr ""
+msgstr "Star-ore Golem"
 
 msgctxt "unit.vad_ercgolem.desc"
 msgid "A Fekete Tükör pereméről indult élő érctömb. A vadon ura."
-msgstr ""
+msgstr "A living lump of ore that set out from the rim of the Black Mirror. Lord of the wild."
 
 msgctxt "faction.vadon.name"
 msgid "Vadon"
-msgstr ""
+msgstr "The Wild"
 
 msgctxt "faction.vadon.desc"
 msgid "A Fényes Eső óta a vadonban éterrel átitatott lények őrzik a kristálylelőhelyeket és a kincseket."
-msgstr ""
+msgstr "Since the Bright Rain, ether-soaked creatures of the wild guard the crystal deposits and the treasures."
 
 msgctxt "faction.vadon.tagline"
 msgid "Semleges szörnyek"
-msgstr ""
+msgstr "Neutral monsters"
 
 msgctxt "unit.wul_gyujtogeto.name"
 msgid "Gyűjtögető"
-msgstr ""
+msgstr "Gatherer"
 
 msgctxt "unit.wul_gyujtogeto.desc"
 msgid "Munkás. Fát csapol: a fához kötődik, és hordás nélkül, lassan, folyamatosan jön a fa (egy fán egy csapoló). Aranyat hord, javít; építéskor mellette állva dolgozik; többen együtt gyorsabban építenek."
-msgstr ""
+msgstr "Worker. Gathers, builds, repairs; carries the haul in a woven back basket."
 
 msgctxt "unit.wul_landzsas.name"
 msgid "Lándzsás harcos"
-msgstr ""
+msgstr "Spear Warrior"
 
 msgctxt "unit.wul_landzsas.desc"
 msgid "Gyors, kovakőhegyű lándzsás, keskeny festett hárítópajzzsal; dárdavetővel (woomera) messzire is hajít. Falkában erős."
-msgstr ""
+msgstr "A fast warrior with a flint spear and a narrow painted parrying shield. Dangerous in a pack."
 
 msgctxt "unit.wul_ijas_vadasz.name"
 msgid "Bumerángvető"
-msgstr ""
+msgstr "Boomerang Thrower"
 
 msgctxt "unit.wul_ijas_vadasz.desc"
 msgid "Távolsági vadász: a bumeráng visszatérő íven a közeli ellenségeket is eltalálja. Földi és légi célpontokra."
-msgstr ""
+msgstr "A ranged hunter: the boomerang's returning arc also strikes nearby enemies. Hits ground and air."
 
 msgctxt "unit.wul_holdsaman.name"
 msgid "Holdsámán"
-msgstr ""
+msgstr "Moon Shaman"
 
 msgctxt "unit.wul_holdsaman.desc"
 msgid "Gyógyít, és szellemfarkasokat hív a holdfényből."
-msgstr ""
+msgstr "Heals, and calls spirit wolves from the moonlight."
 
 msgctxt "unit.wul_szellemfarkas.name"
 msgid "Szellemfarkas"
-msgstr ""
+msgstr "Spirit Wolf"
 
 msgctxt "unit.wul_szellemfarkas.desc"
 msgid "A holdfényből idézett szellem-dingó. Fél percig él."
-msgstr ""
+msgstr "A spirit dingo called from the moonlight. Lives for half a minute."
 
 msgctxt "unit.wul_bolenylovas.name"
 msgid "Bölénylovas"
-msgstr ""
+msgstr "Bison Rider"
 
 msgctxt "unit.wul_bolenylovas.desc"
 msgid "Bölényen ülő wullof harcos: erős roham. Le is szállhat."
-msgstr ""
+msgstr "A Wullof warrior riding a bison: a mighty charge. Can also dismount."
 
 msgctxt "unit.wul_mennydorgesmadar.name"
 msgid "Viharkakadu"
-msgstr ""
+msgstr "Storm Cockatoo"
 
 msgctxt "unit.wul_mennydorgesmadar.desc"
 msgid "Óriás viharkakadu; villámai a célpont környékét is sújtják."
-msgstr ""
+msgstr "A giant storm cockatoo; its lightning also strikes around the target."
 
 msgctxt "unit.wul_totemorias.name"
 msgid "Termeszvár-óriás"
-msgstr ""
+msgstr "Termite-mound Giant"
 
 msgctxt "unit.wul_totemorias.desc"
 msgid "Életre kelt vörös termeszvár – lassú, de az épületeket porrá zúzza."
-msgstr ""
+msgstr "A red termite mound come to life – slow, but it grinds buildings to dust."
 
 msgctxt "unit.wul_vandorszeker.name"
 msgid "Vándorbatyu"
-msgstr ""
+msgstr "Bundle Camp"
 
 msgctxt "unit.wul_vandorszeker.desc"
 msgid "Felszedett tábor, rudakra kötve. Jobb gomb: Letelepítés máshol."
-msgstr ""
+msgstr "A packed-up camp tied to poles. Right-click: settle elsewhere."
 
 msgctxt "unit.wul_hos_tava.name"
 msgid "Tava"
-msgstr ""
+msgstr "Tava"
 
 msgctxt "unit.wul_hos_tava.desc"
 msgid "Folyami térképész és követ a Hét Út Szövetségéből. Utat nyit és felderít."
-msgstr ""
+msgstr "River cartographer and envoy of the Alliance of the Seven Roads. Opens roads and scouts."
 
 msgctxt "unit.wul_tomahawkos.name"
 msgid "Dárdavető portyázó"
-msgstr ""
+msgstr "Spear-thrower Raider"
 
 msgctxt "unit.wul_tomahawkos.desc"
 msgid "Gyors portyázó dárdavetővel (woomera): a munkások és a távolsági egységek réme."
-msgstr ""
+msgstr "A fast raider with a woomera: the terror of workers and ranged units."
 
 msgctxt "unit.wul_hos_varnu.name"
 msgid "Varnu, a Holdsámán"
-msgstr ""
+msgstr "Varnu the Moon Shaman"
 
 msgctxt "unit.wul_hos_varnu.desc"
 msgid "Az ősök szellemeivel beszél: gyógyít, ködöt és szellemfalkát hív."
-msgstr ""
+msgstr "Speaks with the spirits of the ancestors: heals, calls mist and a spirit pack."
 
 msgctxt "unit.wul_hos_kurrin.name"
 msgid "Kurrin Harcfőnök"
-msgstr ""
+msgstr "Warchief Kurrin"
 
 msgctxt "unit.wul_hos_kurrin.desc"
 msgid "Harci bölényen lovagló harcfőnök: tapos, üvölt, és a Hét Út harcosait hívja."
-msgstr ""
+msgstr "A warchief riding a war bison: tramples, howls, and calls the warriors of the Seven Roads."
 
 msgctxt "unit.wul_emu.name"
 msgid "Emu"
-msgstr ""
+msgstr "Emu"
 
 msgctxt "unit.wul_emu.desc"
 msgid "Tenyészemu: +6 létszám. Emukarámonként legfeljebb 5 tartható."
-msgstr ""
+msgstr "Breeding emu: +6 population. At most 5 per Emu Pen."
 
 msgctxt "unit.wul_boleny.name"
 msgid "Bölény"
-msgstr ""
+msgstr "Bison"
 
 msgctxt "unit.wul_boleny.desc"
 msgid "Erős, de lassú bölény. Felültethető rá egy wullof gyalogos harcos."
-msgstr ""
+msgstr "A strong but slow bison. A Wullof foot warrior can be mounted on it."
 
 msgctxt "unit.wul_groomi.name"
 msgid "Groomi"
-msgstr ""
+msgstr "Groomi"
 
 msgctxt "unit.wul_groomi.desc"
 msgid "Piros szörnymadár: gyors, harapós földi vadász. A Groomi-fészekben sav-, tűz- vagy fagyköpést tanulhat (csak egyet)."
-msgstr ""
+msgstr "A red monster bird: a fast, biting ground hunter. In the Groomi Nest it can learn acid, fire or frost spit (only one)."
 
 msgctxt "unit.wul_csordavezer.name"
 msgid "Csordavezér bika"
-msgstr ""
+msgstr "Herd-leader Bull"
 
 msgctxt "unit.wul_csordavezer.desc"
 msgid "Hatalmas bölénybika: épületeket tipor, rohamában mindent elsöpör."
-msgstr ""
+msgstr "A huge bison bull: tramples buildings and sweeps everything aside in its charge."
 
 msgctxt "unit.wul_groomi_fioka.name"
 msgid "Groomi-fióka"
-msgstr ""
+msgstr "Groomi Chick"
 
 msgctxt "unit.wul_groomi_fioka.desc"
 msgid "Kicsi, de fürge és harapós Groomi."
-msgstr ""
+msgstr "A small but nimble, bitey Groomi."
 
 msgctxt "unit.wul_groomi_anya.name"
 msgid "Groomi-anya"
-msgstr ""
+msgstr "Groomi Mother"
 
 msgctxt "unit.wul_groomi_anya.desc"
 msgid "Óriás Groomi-tojó: fiókákat keltet, és keményen harap."
-msgstr ""
+msgstr "A giant Groomi hen: hatches chicks and bites hard."
 
 msgctxt "unit.wul_totemfarago.name"
 msgid "Totemfaragó"
-msgstr ""
+msgstr "Totem Carver"
 
 msgctxt "unit.wul_totemfarago.desc"
 msgid "Ősök-dalát éneklő faragó: a közeli szövetségesek +2 páncélt kapnak."
-msgstr ""
+msgstr "A carver singing the Ancestors' song: nearby allies gain +2 armour."
 
 msgctxt "unit.wul_alomjaro.name"
 msgid "Álomjáró"
-msgstr ""
+msgstr "Dreamwalker"
 
 msgctxt "unit.wul_alomjaro.desc"
 msgid "Az ősök álmait járja: álomködöt borít az ellenségre, és az álmok útján ugrik egyik helyről a másikra."
-msgstr ""
+msgstr "Walks the dreams of the ancestors: heals and calls spirit wolves."
 
 msgctxt "unit.wul_ijas_vadasz_falka.name"
 msgid "Bumerángvető-falka (3)"
@@ -4581,91 +4581,91 @@ msgstr ""
 
 msgctxt "building.wul_tanacssator.name"
 msgid "Tanácskunyhó"
-msgstr ""
+msgstr "Council Hut"
 
 msgctxt "building.wul_tanacssator.desc"
 msgid "A törzs nagy kéregkunyhója. Leadóhely, Gyűjtögetőket nevel. Felszedhető."
-msgstr ""
+msgstr "The tribe's great bark hut. Drop-off point, trains Gatherers. Can be packed up."
 
 msgctxt "building.wul_tipi.name"
 msgid "Kéregkunyhó"
-msgstr ""
+msgstr "Bark Hut"
 
 msgctxt "building.wul_tipi.desc"
 msgid "Eukaliptuszkéreg-kunyhó: Lándzsás harcosokat képez. Felszedhető."
-msgstr ""
+msgstr "Eucalyptus-bark hut: trains Spear Warriors. Can be packed up."
 
 msgctxt "building.wul_harcosok_tuze.name"
 msgid "Harcosok tüze"
-msgstr ""
+msgstr "Warriors' Fire"
 
 msgctxt "building.wul_harcosok_tuze.desc"
 msgid "Dárdavetőket és bumerángvetőket képez. Felszedhető."
-msgstr ""
+msgstr "Trains spear-throwers and boomerang throwers. Can be packed up."
 
 msgctxt "building.wul_bolenykaram.name"
 msgid "Emukarám"
-msgstr ""
+msgstr "Emu Pen"
 
 msgctxt "building.wul_bolenykaram.desc"
 msgid "Emukat tenyészt (karámonként legfeljebb 5). Csak az emuk növelik a létszámot. Felszedhető."
-msgstr ""
+msgstr "Breeds emus (at most 5 per pen). Only emus raise the population limit. Can be packed up."
 
 msgctxt "building.wul_samansator.name"
 msgid "Sámánkunyhó"
-msgstr ""
+msgstr "Shaman's Hut"
 
 msgctxt "building.wul_samansator.desc"
 msgid "Holdsámánokat képez, fejlesztéseket kutat. Felszedhető."
-msgstr ""
+msgstr "Trains Moon Shamans and researches upgrades. Can be packed up."
 
 msgctxt "building.wul_mennydorges_szikla.name"
 msgid "Vörös szikla"
-msgstr ""
+msgstr "Red Rock"
 
 msgctxt "building.wul_mennydorges_szikla.desc"
 msgid "A viharkakaduk fészke a pusztai vörös sziklán."
-msgstr ""
+msgstr "The storm cockatoos nest on the red rock of the plains."
 
 msgctxt "building.wul_szellemtotem.name"
 msgid "Eukaliptusz-őrfa"
-msgstr ""
+msgstr "Eucalyptus Lookout"
 
 msgctxt "building.wul_szellemtotem.desc"
 msgid "Kilátós őrfa: a fenti vadászok bumerángokkal védik a tábort."
-msgstr ""
+msgstr "A lookout tree: the hunters above guard the camp with boomerangs."
 
 msgctxt "building.wul_osok_kore.name"
 msgid "Ősök köre"
-msgstr ""
+msgstr "Circle of Ancestors"
 
 msgctxt "building.wul_osok_kore.desc"
 msgid "Faragott oszlopok köre: Tava, Varnu és Kurrin hívása. Felszedhető."
-msgstr ""
+msgstr "A circle of carved posts: calls Tava, Varnu and Kurrin. Can be packed up."
 
 msgctxt "building.wul_bolenyakol.name"
 msgid "Bölénykarám"
-msgstr ""
+msgstr "Bison Corral"
 
 msgctxt "building.wul_bolenyakol.desc"
 msgid "Bölényeket és Csordavezér bikákat képez. Felszedhető."
-msgstr ""
+msgstr "Provides Bison and Termite-mound Giants. Can be packed up."
 
 msgctxt "building.wul_groomi_feszek.name"
 msgid "Groomi-fészek"
-msgstr ""
+msgstr "Groomi Nest"
 
 msgctxt "building.wul_groomi_feszek.desc"
 msgid "Groomikat nevel; itt választható ki a köpésük."
-msgstr ""
+msgstr "Raises Groomis; their spit is chosen here."
 
 msgctxt "building.wul_totemkert.name"
 msgid "Totemkert"
-msgstr ""
+msgstr "Totem Garden"
 
 msgctxt "building.wul_totemkert.desc"
 msgid "Faragott totemek kertje: Totemfaragókat, Álomjárókat és termeszvár-óriásokat ad."
-msgstr ""
+msgstr "A garden of carved totems: provides Totem Carvers, Dreamwalkers and Termite-mound Giants."
 
 msgctxt "building.wul_diplomacia.name"
 msgid "Diplomácia csarnoka"
@@ -4685,59 +4685,59 @@ msgstr ""
 
 msgctxt "research.wul_obszidian_landzsa.name"
 msgid "Kovakő lándzsahegyek"
-msgstr ""
+msgstr "Flint Spearheads"
 
 msgctxt "research.wul_obszidian_landzsa.desc"
 msgid "+2 sebzés a közelharci egységeknek."
-msgstr ""
+msgstr "+2 damage for melee units."
 
 msgctxt "research.wul_holdfeny_ijak.name"
 msgid "Vasfa bumerángok"
-msgstr ""
+msgstr "Ironwood Boomerangs"
 
 msgctxt "research.wul_holdfeny_ijak.desc"
 msgid "+2 sebzés a távolsági egységeknek."
-msgstr ""
+msgstr "+2 damage for ranged units."
 
 msgctxt "research.wul_bolenybor.name"
 msgid "Kengurubőr vértek"
-msgstr ""
+msgstr "Kangaroo-hide Armour"
 
 msgctxt "research.wul_bolenybor.desc"
 msgid "+1 páncél minden élő egységnek."
-msgstr ""
+msgstr "+1 armour for every living unit."
 
 msgctxt "research.wul_falkaszellem.name"
 msgid "A falka szelleme"
-msgstr ""
+msgstr "Spirit of the Pack"
 
 msgctxt "research.wul_falkaszellem.desc"
 msgid "+10% sebesség minden egységnek."
-msgstr ""
+msgstr "+10% speed for every unit."
 
 msgctxt "research.wul_savkopes.name"
 msgid "Savköpés"
-msgstr ""
+msgstr "Acid Spit"
 
 msgctxt "research.wul_savkopes.desc"
 msgid "A Groomik maró, mérgező savat köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető."
-msgstr ""
+msgstr "Groomis can spit corrosive, poisonous acid. Only one spit can be chosen: once you research this, the other two can never be researched."
 
 msgctxt "research.wul_tuzkopes.name"
 msgid "Tűzköpés"
-msgstr ""
+msgstr "Fire Spit"
 
 msgctxt "research.wul_tuzkopes.desc"
 msgid "A Groomik lángcsóvát köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető."
-msgstr ""
+msgstr "Groomis can spit a jet of flame. Only one spit can be chosen: once you research this, the other two can never be researched."
 
 msgctxt "research.wul_fagykopes.name"
 msgid "Fagyköpés"
-msgstr ""
+msgstr "Frost Spit"
 
 msgctxt "research.wul_fagykopes.desc"
 msgid "A Groomik jeges köpetet köphetnek. Csak egy köpésfajta választható: ha ezt kifejleszted, a másik kettő többé nem fejleszthető."
-msgstr ""
+msgstr "Groomis can spit icy slime. Only one spit can be chosen: once you research this, the other two can never be researched."
 
 msgctxt "research.wul_zsakmanyszerzes.name"
 msgid "Zsákmányszerzés"
@@ -4829,723 +4829,723 @@ msgstr ""
 
 msgctxt "faction.wullof.name"
 msgid "Wullof"
-msgstr ""
+msgstr "Wullof"
 
 msgctxt "faction.wullof.desc"
 msgid "A Hét Út Szövetsége: dingónép folyóvárosokkal, vándorló közösségekkel és útének-dalokkal a vörös pusztán és az eukaliptuszerdőkben. A táboraik felszedhetők és máshol letelepíthetők; a létszámot az emucsordák adják, falkában erősebbek, és minden zsákmány fát hoz a törzsnek."
-msgstr ""
+msgstr "The Alliance of the Seven Roads: a dingo people of river towns, wandering communities and road-songs on the red plains and in the eucalyptus forests. Their camps can be packed up and pitched elsewhere; emu herds provide the population, they are stronger as a pack, and every kill brings wood to the tribe."
 
 msgctxt "faction.wullof.tagline"
 msgid "Nomád táborok • falkaerő • vadászzsákmány"
-msgstr ""
+msgstr "Nomad camps • pack strength • hunting spoils"
 
 msgctxt "path.wullof.boleny.name"
 msgid "Bölény-csorda"
-msgstr ""
+msgstr "Bison Herd"
 
 msgctxt "path.wullof.boleny.desc"
 msgid "Bölényeket nevelsz, és a harcosaid felülnek rájuk. A lovasság és a vadállatok gyorsabbak és erősebbek; a Csordavezér bika épületeket tipor. Középjátékban egyetlen, döntő rohamra épít."
-msgstr ""
+msgstr "You raise bison and your warriors mount them. Cavalry and beasts are faster and stronger; the Herd-leader Bull tramples buildings. Built for one decisive mid-game charge."
 
 msgctxt "path.wullof.boleny.tagline"
 msgid "Kevés, drága, megállíthatatlan roham"
-msgstr ""
+msgstr "A few costly, unstoppable charges"
 
 msgctxt "path.wullof.groomi.name"
 msgid "Groomi-fészek"
-msgstr ""
+msgstr "Groomi Nest"
 
 msgctxt "path.wullof.groomi.desc"
 msgid "Piros szörnymadarak: a Groomik öléskor gyógyulnak és gyorsabbak, a Groomi-anya fiókákat keltet. A köpésük (sav, tűz vagy fagy) egyszer, végleg választható. Munkásvadászat, térképuralom."
-msgstr ""
+msgstr "Red monster birds: Groomis heal on kills and run faster, the Groomi Mother hatches chicks. Their spit (acid, fire or frost) can be chosen once, permanently. Worker hunting, map control."
 
 msgctxt "path.wullof.groomi.tagline"
 msgid "Gyors portyázás, vadászat a gyengékre"
-msgstr ""
+msgstr "Fast raids, hunting the weak"
 
 msgctxt "path.wullof.osok.name"
 msgid "Ősök útja"
-msgstr ""
+msgstr "Way of the Ancestors"
 
 msgctxt "path.wullof.osok.desc"
 msgid "Totemkertet emelsz: a tornyok erősebbek és messzebbre látnak, az épületek szívósabbak. Totemfaragók és Álomjárók támogatják a termeszvár-óriásokat. Védekező, területfoglaló játék."
-msgstr ""
+msgstr "You raise a Totem Garden: towers hit harder and see farther, buildings are tougher. Totem Carvers and Dreamwalkers support the Termite-mound Giants. A defensive, territorial game."
 
 msgctxt "path.wullof.osok.tagline"
 msgid "Totemlánc, lassú és biztos előrenyomulás"
-msgstr ""
+msgstr "Totem chain, slow and sure advance"
 
 msgctxt "ability.pajzsfal.name"
 msgid "Pajzsfal"
-msgstr ""
+msgstr "Shield Wall"
 
 msgctxt "ability.pajzsfal.desc"
 msgid "Összezárt pajzsok: -60% távolsági sebzés, +2 páncél, de fele sebesség."
-msgstr ""
+msgstr "Locked shields: -60% ranged damage, +2 armour, but half speed."
 
 msgctxt "ability.napvihar.name"
 msgid "Napvihar"
-msgstr ""
+msgstr "Sun Storm"
 
 msgctxt "ability.napvihar.desc"
 msgid "Izzó meteorpor-zápor: 4 mp alatt 88 sebzés minden ellenségnek a területen."
-msgstr ""
+msgstr "A rain of glowing meteor dust: 88 damage over 4 s to every enemy in the area."
 
 msgctxt "ability.oruletkod.name"
 msgid "Őrület köde"
-msgstr ""
+msgstr "Mist of Madness"
 
 msgctxt "ability.oruletkod.desc"
 msgid "Elmét bomlasztó spórafelhő: 50% lassítás és folyamatos sebzés 6 mp-ig."
-msgstr ""
+msgstr "A mind-rending spore cloud: 50% slow and continuous damage for 6 s."
 
 msgctxt "ability.gyogyitas.name"
 msgid "Rúnás gyógyítás"
-msgstr ""
+msgstr "Rune Healing"
 
 msgctxt "ability.gyogyitas.desc"
 msgid "Automatikusan gyógyítja a közeli sérült élő szövetségeseket."
-msgstr ""
+msgstr "Automatically heals nearby wounded living allies."
 
 msgctxt "ability.vagta.name"
 msgid "Vágta"
-msgstr ""
+msgstr "Gallop"
 
 msgctxt "ability.vagta.desc"
 msgid "A gyíkhátas 4 mp-ig 80%-kal gyorsabb."
-msgstr ""
+msgstr "The lizard rider is 80% faster for 4 s."
 
 msgctxt "ability.roham.name"
 msgid "Roham"
-msgstr ""
+msgstr "Charge"
 
 msgctxt "ability.roham.desc"
 msgid "4 mp-ig +70% sebesség és +30% sebzés."
-msgstr ""
+msgstr "+70% speed and +30% damage for 4 s."
 
 msgctxt "ability.holdgyogyitas.name"
 msgid "Holdfény-gyógyítás"
-msgstr ""
+msgstr "Moonlight Healing"
 
 msgctxt "ability.holdgyogyitas.desc"
 msgid "Automatikusan gyógyítja a közeli sérült élő szövetségeseket."
-msgstr ""
+msgstr "Automatically heals nearby wounded living allies."
 
 msgctxt "ability.szellemfarkasok.name"
 msgid "Szellemfarkasok"
-msgstr ""
+msgstr "Spirit Wolves"
 
 msgctxt "ability.szellemfarkasok.desc"
 msgid "Két szellem-dingót idéz 30 másodpercre."
-msgstr ""
+msgstr "Summons two spirit dingoes for 30 seconds."
 
 msgctxt "ability.gyokerkotes.name"
 msgid "Gyökérkötés"
-msgstr ""
+msgstr "Root Binding"
 
 msgctxt "ability.gyokerkotes.desc"
 msgid "Gyökerek fonják körbe az ellenséget: 4 mp-ig szinte mozdulni sem tud."
-msgstr ""
+msgstr "Roots wrap around the enemy: for 4 s it can barely move."
 
 msgctxt "ability.osszeolvadas.name"
 msgid "Összeolvadás"
-msgstr ""
+msgstr "Merge"
 
 msgctxt "ability.osszeolvadas.desc"
 msgid "Három közeli Pöfeteg egyetlen Óriáspöfeteggé olvad."
-msgstr ""
+msgstr "Three nearby Puffballs merge into a single Giant Puffball."
 
 msgctxt "ability.lelekidezes.name"
 msgid "Lélekidézés"
-msgstr ""
+msgstr "Soul Calling"
 
 msgctxt "ability.lelekidezes.desc"
 msgid "Egy közeli tetemből szellemlégióst (nagy tetemből szellemkolosszust) támaszt."
-msgstr ""
+msgstr "Raises a ghost legionary (a ghost colossus from a large corpse) from a nearby corpse."
 
 msgctxt "ability.ostrommod.name"
 msgid "Ostrom-mód"
-msgstr ""
+msgstr "Siege Mode"
 
 msgctxt "ability.ostrommod.desc"
 msgid "A Kolosszus letelepszik: nem mozog, de +3 lőtáv és +25% sebzés."
-msgstr ""
+msgstr "The Colossus settles: it cannot move, but +3 range and +25% damage."
 
 msgctxt "ability.h_tava_nyil.name"
 msgid "Nyomkereső nyíl"
-msgstr ""
+msgstr "Tracking Arrow"
 
 msgctxt "ability.h_tava_nyil.desc"
 msgid "Tava célzott lövése: nagy sebzés és lassítás egy ellenségen."
-msgstr ""
+msgstr "Tava's aimed shot: high damage and a slow on one enemy."
 
 msgctxt "ability.h_tava_utenek.name"
 msgid "Útének"
-msgstr ""
+msgstr "Road Song"
 
 msgctxt "ability.h_tava_utenek.desc"
 msgid "A közeli szövetségesek gyorsabban mozognak (és jobban védekeznek)."
-msgstr ""
+msgstr "Nearby allies move faster (and defend better)."
 
 msgctxt "ability.h_tava_farkasok.name"
 msgid "Szellemfarkasok"
-msgstr ""
+msgstr "Spirit Wolves"
 
 msgctxt "ability.h_tava_farkasok.desc"
 msgid "Szellem-dingókat idéz."
-msgstr ""
+msgstr "Summons spirit dingoes."
 
 msgctxt "ability.h_tava_madar.name"
 msgid "A Hét Út hívása"
-msgstr ""
+msgstr "Call of the Seven Roads"
 
 msgctxt "ability.h_tava_madar.desc"
 msgid "Végső: két viharkakadu érkezik 45 másodpercre."
-msgstr ""
+msgstr "Ultimate: two Storm Cockatoos arrive for 45 seconds."
 
 msgctxt "ability.h_ragna_pajzsfal.name"
 msgid "Pajzsfal"
-msgstr ""
+msgstr "Shield Wall"
 
 msgctxt "ability.h_ragna_pajzsfal.desc"
 msgid "A pajzs először a mellette állót védi: kevesebb távolsági sebzés, több páncél."
-msgstr ""
+msgstr "The shield protects the one beside her first: less ranged damage, more armour."
 
 msgctxt "ability.h_ragna_esku.name"
 msgid "Az eskü súlya"
-msgstr ""
+msgstr "Weight of the Oath"
 
 msgctxt "ability.h_ragna_esku.desc"
 msgid "A közeli szövetségesek páncélja nő."
-msgstr ""
+msgstr "Nearby allies gain armour."
 
 msgctxt "ability.h_ragna_roham.name"
 msgid "Pajzsroham"
-msgstr ""
+msgstr "Shield Charge"
 
 msgctxt "ability.h_ragna_roham.desc"
 msgid "Ragna nekiront egy ellenségnek: sebzi és rövid időre megbénítja."
-msgstr ""
+msgstr "Ragna rushes an enemy: damages it and stuns it briefly."
 
 msgctxt "ability.h_ragna_hosszutel.name"
 msgid "Hosszú tél"
-msgstr ""
+msgstr "Long Winter"
 
 msgctxt "ability.h_ragna_hosszutel.desc"
 msgid "Végső képesség: fagyos vihar, amely lassít és sebez."
-msgstr ""
+msgstr "Ultimate: a freezing storm that slows and damages."
 
 msgctxt "ability.h_szelai_napvihar.name"
 msgid "Napvihar"
-msgstr ""
+msgstr "Sun Storm"
 
 msgctxt "ability.h_szelai_napvihar.desc"
 msgid "Izzó meteorpor-zápor."
-msgstr ""
+msgstr "A rain of glowing meteor dust."
 
 msgctxt "ability.h_szelai_rezonancia.name"
 msgid "Rezonancia"
-msgstr ""
+msgstr "Resonance"
 
 msgctxt "ability.h_szelai_rezonancia.desc"
 msgid "A közeli szövetségesek sebzése nő."
-msgstr ""
+msgstr "Nearby allies deal more damage."
 
 msgctxt "ability.h_szelai_levalasztas.name"
 msgid "Leválasztás"
-msgstr ""
+msgstr "Severance"
 
 msgctxt "ability.h_szelai_levalasztas.desc"
 msgid "Rezonanciacsapás, amely egy célpontot kiszakít a hálózatából."
-msgstr ""
+msgstr "A resonance strike that tears a target out of its network."
 
 msgctxt "ability.h_szelai_csillagorok.name"
 msgid "A Kilenc Lépcső őrei"
-msgstr ""
+msgstr "Guardians of the Nine Steps"
 
 msgctxt "ability.h_szelai_csillagorok.desc"
 msgid "Végső képesség: négy tollas harcos-szellem."
-msgstr ""
+msgstr "Ultimate: four feathered warrior spirits."
 
 msgctxt "ability.h_mor_gyogyspora.name"
 msgid "Gyógyspóra"
-msgstr ""
+msgstr "Healing Spore"
 
 msgctxt "ability.h_mor_gyogyspora.desc"
 msgid "Automatikusan gyógyítja a közeli sérült élő szövetségeseket."
-msgstr ""
+msgstr "Automatically heals nearby wounded living allies."
 
 msgctxt "ability.h_mor_gyokerkotes.name"
 msgid "Gyökérkötés"
-msgstr ""
+msgstr "Root Binding"
 
 msgctxt "ability.h_mor_gyokerkotes.desc"
 msgid "Gyökerek fonják körbe az ellenséget."
-msgstr ""
+msgstr "Roots wrap around the enemy."
 
 msgctxt "ability.h_mor_emlekkert.name"
 msgid "Emlékkert"
-msgstr ""
+msgstr "Memory Garden"
 
 msgctxt "ability.h_mor_emlekkert.desc"
 msgid "A közeli szövetségesek gyorsabban regenerálódnak."
-msgstr ""
+msgstr "Nearby allies regenerate faster."
 
 msgctxt "ability.h_mor_ebredes.name"
 msgid "Az Emlékkert ébredése"
-msgstr ""
+msgstr "Awakening of the Memory Garden"
 
 msgctxt "ability.h_mor_ebredes.desc"
 msgid "Végső képesség: két Óriáspöfeteg sarjad."
-msgstr ""
+msgstr "Ultimate: two Giant Puffballs sprout."
 
 msgctxt "ability.h_livia_lelek.name"
 msgid "Lélekmentés"
-msgstr ""
+msgstr "Soul Rescue"
 
 msgctxt "ability.h_livia_lelek.desc"
 msgid "Egy közeli tetemből szellemlégióst támaszt."
-msgstr ""
+msgstr "Raises a ghost legionary from a nearby corpse."
 
 msgctxt "ability.h_livia_horgony.name"
 msgid "Horgonyjavítás"
-msgstr ""
+msgstr "Anchor Repair"
 
 msgctxt "ability.h_livia_horgony.desc"
 msgid "Automatikusan javítja a közeli sérült gépeket."
-msgstr ""
+msgstr "Automatically repairs nearby damaged machines."
 
 msgctxt "ability.h_livia_legio.name"
 msgid "A légió fegyelme"
-msgstr ""
+msgstr "Discipline of the Legion"
 
 msgctxt "ability.h_livia_legio.desc"
 msgid "A közeli szövetségesek sebzése nő."
-msgstr ""
+msgstr "Nearby allies deal more damage."
 
 msgctxt "ability.h_livia_lelegzet.name"
 msgid "Második lélegzet"
-msgstr ""
+msgstr "Second Breath"
 
 msgctxt "ability.h_livia_lelegzet.desc"
 msgid "Végső képesség: a területen minden szövetséges gyógyul."
-msgstr ""
+msgstr "Ultimate: every ally in the area is healed."
 
 msgctxt "ability.h_keth_kod.name"
 msgid "Őrület köde"
-msgstr ""
+msgstr "Mist of Madness"
 
 msgctxt "ability.h_keth_kod.desc"
 msgid "Elmét bomlasztó spórafelhő."
-msgstr ""
+msgstr "A mind-rending spore cloud."
 
 msgctxt "ability.h_keth_korushang.name"
 msgid "Kórus-hang"
-msgstr ""
+msgstr "Choir Voice"
 
 msgctxt "ability.h_keth_korushang.desc"
 msgid "A közeli szövetségesek gyorsabbak és regenerálódnak."
-msgstr ""
+msgstr "Nearby allies are faster and regenerate."
 
 msgctxt "ability.h_keth_csap.name"
 msgid "Csápcsapás"
-msgstr ""
+msgstr "Tendril Lash"
 
 msgctxt "ability.h_keth_csap.desc"
 msgid "Savas csapás egy célpontra."
-msgstr ""
+msgstr "An acid strike on one target."
 
 msgctxt "ability.h_keth_sokasag.name"
 msgid "A sokaság"
-msgstr ""
+msgstr "The Multitude"
 
 msgctxt "ability.h_keth_sokasag.desc"
 msgid "Végső képesség: legfeljebb négy Karmos kel ki. Nem jár le az élettartamuk, és nem foglalnak létszámot. Keth egyszerre legfeljebb négy élő egységet idézhet."
-msgstr ""
+msgstr "Ultimate: six Clawlings hatch."
 
 msgctxt "ability.h_nera_toltes.name"
 msgid "Gyorstöltés"
-msgstr ""
+msgstr "Quick Charge"
 
 msgctxt "ability.h_nera_toltes.desc"
 msgid "Rövid ideig nagyobb sebzés."
-msgstr ""
+msgstr "More damage for a short time."
 
 msgctxt "ability.h_nera_loves.name"
 msgid "Célzott lövés"
-msgstr ""
+msgstr "Aimed Shot"
 
 msgctxt "ability.h_nera_loves.desc"
 msgid "Messzire hordó, erős lövés."
-msgstr ""
+msgstr "A powerful long-range shot."
 
 msgctxt "ability.h_nera_batorsag.name"
 msgid "Bátorság"
-msgstr ""
+msgstr "Courage"
 
 msgctxt "ability.h_nera_batorsag.desc"
 msgid "„Félek – és mégis megyek.” A közeli szövetségesek páncélja nő."
-msgstr ""
+msgstr "„I am afraid – and I go anyway.” Nearby allies gain armour."
 
 msgctxt "ability.h_nera_horgony.name"
 msgid "Szabad horgony"
-msgstr ""
+msgstr "Free Anchor"
 
 msgctxt "ability.h_nera_horgony.desc"
 msgid "Végső képesség: Nera felszabadult lelke 10 másodpercre félelmetes erővé válik."
-msgstr ""
+msgstr "Ultimate: Nera's freed soul becomes a fearsome force for 10 seconds."
 
 msgctxt "ability.h_itz_darda.name"
 msgid "Obszidián-dárda"
-msgstr ""
+msgstr "Obsidian Spear"
 
 msgctxt "ability.h_itz_darda.desc"
 msgid "Hajított obszidián-dárda: nagy sebzés, lassítás."
-msgstr ""
+msgstr "A thrown obsidian spear: high damage, slow."
 
 msgctxt "ability.h_itz_csapas.name"
 msgid "Földrengető csapás"
-msgstr ""
+msgstr "Earthshaker Strike"
 
 msgctxt "ability.h_itz_csapas.desc"
 msgid "A hadúr a földbe sújt: a körülötte állókat megsebzi és megbénítja."
-msgstr ""
+msgstr "The warlord strikes the ground: damages and stuns those around him."
 
 msgctxt "ability.h_itz_jelenlet.name"
 msgid "A hadúr jelenléte"
-msgstr ""
+msgstr "Presence of the Warlord"
 
 msgctxt "ability.h_itz_jelenlet.desc"
 msgid "A közeli szövetségesek páncélja és sebzése nő."
-msgstr ""
+msgstr "Nearby allies gain armour and damage."
 
 msgctxt "ability.h_itz_kukulkan.name"
 msgid "Quetzlaru alakja"
-msgstr ""
+msgstr "Form of Quetzlaru"
 
 msgctxt "ability.h_itz_kukulkan.desc"
 msgid "Végső képesség: a tollas kígyóisten ereje – kétszeres sebzés, +6 páncél."
-msgstr ""
+msgstr "Ultimate: the power of the feathered serpent god – double damage, +6 armour."
 
 msgctxt "ability.h_xochi_hullam.name"
 msgid "Rezonanciahullám"
-msgstr ""
+msgstr "Resonance Wave"
 
 msgctxt "ability.h_xochi_hullam.desc"
 msgid "Jádeszínű rezgés tépi szét a területet."
-msgstr ""
+msgstr "A jade-coloured vibration tears the area apart."
 
 msgctxt "ability.h_xochi_harmonia.name"
 msgid "Harmónia"
-msgstr ""
+msgstr "Harmony"
 
 msgctxt "ability.h_xochi_harmonia.desc"
 msgid "A közeli szövetségesek életereje és pajzsa gyorsabban töltődik."
-msgstr ""
+msgstr "Nearby allies recover health and shields faster."
 
 msgctxt "ability.h_xochi_jadeor.name"
 msgid "Jádeőr"
-msgstr ""
+msgstr "Jade Guardian"
 
 msgctxt "ability.h_xochi_jadeor.desc"
 msgid "Élő jádeszobrot ébreszt, amely a hívójáért harcol."
-msgstr ""
+msgstr "Awakens a living jade statue that fights for its caller."
 
 msgctxt "ability.h_xochi_napkorona.name"
 msgid "Napkorona"
-msgstr ""
+msgstr "Sun Crown"
 
 msgctxt "ability.h_xochi_napkorona.desc"
 msgid "Végső képesség: a területen minden szövetséges gyógyul."
-msgstr ""
+msgstr "Ultimate: every ally in the area is healed."
 
 msgctxt "ability.h_hja_szilank.name"
 msgid "Jégszilánk"
-msgstr ""
+msgstr "Ice Shard"
 
 msgctxt "ability.h_hja_szilank.desc"
 msgid "Fagyos szilánk: sebez és erősen lassít."
-msgstr ""
+msgstr "A freezing shard: damages and slows heavily."
 
 msgctxt "ability.h_hja_vihar.name"
 msgid "Hóvihar"
-msgstr ""
+msgstr "Blizzard"
 
 msgctxt "ability.h_hja_vihar.desc"
 msgid "Jeges vihar csap le a területre."
-msgstr ""
+msgstr "An icy storm strikes the area."
 
 msgctxt "ability.h_hja_bunda.name"
 msgid "Téli bundák"
-msgstr ""
+msgstr "Winter Pelts"
 
 msgctxt "ability.h_hja_bunda.desc"
 msgid "A közeli szövetségesek páncélja és regenerációja nő."
-msgstr ""
+msgstr "Nearby allies gain armour and regeneration."
 
 msgctxt "ability.h_hja_fagyott_ido.name"
 msgid "Megfagyott idő"
-msgstr ""
+msgstr "Frozen Time"
 
 msgctxt "ability.h_hja_fagyott_ido.desc"
 msgid "Végső képesség: minden közeli ellenség jégbe dermed."
-msgstr ""
+msgstr "Ultimate: every nearby enemy freezes into ice."
 
 msgctxt "ability.h_bja_medve.name"
 msgid "Kardfogú hívása"
-msgstr ""
+msgstr "Call of the Sabretooth"
 
 msgctxt "ability.h_bja_medve.desc"
 msgid "Kardfogú tigrist hív a hegyekből."
-msgstr ""
+msgstr "Calls a sabretooth tiger from the mountains."
 
 msgctxt "ability.h_bja_falka.name"
 msgid "A falka ereje"
-msgstr ""
+msgstr "Strength of the Pack"
 
 msgctxt "ability.h_bja_falka.desc"
 msgid "A közeli szövetségesek (és vadak) sebzése nő."
-msgstr ""
+msgstr "Nearby allies (and beasts) deal more damage."
 
 msgctxt "ability.h_bja_szigony.name"
 msgid "Vadászszigony"
-msgstr ""
+msgstr "Hunting Harpoon"
 
 msgctxt "ability.h_bja_szigony.desc"
 msgid "Szigonyt vet egy ellenségbe: sebzi és rövid időre megbénítja."
-msgstr ""
+msgstr "Hurls a harpoon into an enemy: damages it and stuns it briefly."
 
 msgctxt "ability.h_bja_mamutcsorda.name"
 msgid "Mamutcsorda"
-msgstr ""
+msgstr "Mammoth Herd"
 
 msgctxt "ability.h_bja_mamutcsorda.desc"
 msgid "Végső képesség: két harci mamut csatlakozik 40 másodpercre."
-msgstr ""
+msgstr "Ultimate: two war mammoths join for 40 seconds."
 
 msgctxt "ability.h_vor_sugar.name"
 msgid "Savsugár"
-msgstr ""
+msgstr "Acid Beam"
 
 msgctxt "ability.h_vor_sugar.desc"
 msgid "Maró savsugár."
-msgstr ""
+msgstr "A corrosive beam of acid."
 
 msgctxt "ability.h_vor_pancel.name"
 msgid "Mutáns páncél"
-msgstr ""
+msgstr "Mutant Armour"
 
 msgctxt "ability.h_vor_pancel.desc"
 msgid "Kitinlemezek nőnek a mester testén."
-msgstr ""
+msgstr "Chitin plates grow on the master's body."
 
 msgctxt "ability.h_vor_larvak.name"
 msgid "Lárvahullám"
-msgstr ""
+msgstr "Larva Wave"
 
 msgctxt "ability.h_vor_larvak.desc"
 msgid "Karmosokat költ ki. Nem jár le az élettartamuk, és nem foglalnak létszámot. Vor egyszerre legfeljebb négy élő egységet idézhet."
-msgstr ""
+msgstr "Hatches Clawlings from his own body."
 
 msgctxt "ability.h_vor_robbanas.name"
 msgid "Kitinrobbanás"
-msgstr ""
+msgstr "Chitin Burst"
 
 msgctxt "ability.h_vor_robbanas.desc"
 msgid "Végső képesség: kitinszilánkok repesznek szét a mester körül."
-msgstr ""
+msgstr "Ultimate: chitin shards burst out around the master."
 
 msgctxt "ability.h_ssa_felho.name"
 msgid "Spórafelhő"
-msgstr ""
+msgstr "Spore Cloud"
 
 msgctxt "ability.h_ssa_felho.desc"
 msgid "Fojtó spórafelhő."
-msgstr ""
+msgstr "A choking spore cloud."
 
 msgctxt "ability.h_ssa_rajtudat.name"
 msgid "Rajtudat"
-msgstr ""
+msgstr "Swarm Mind"
 
 msgctxt "ability.h_ssa_rajtudat.desc"
 msgid "A raj egy akarattal mozog: gyorsabb és erősebb."
-msgstr ""
+msgstr "The swarm moves with one will: faster and stronger."
 
 msgctxt "ability.h_ssa_oltes.name"
 msgid "Hús-öltés"
-msgstr ""
+msgstr "Flesh Stitch"
 
 msgctxt "ability.h_ssa_oltes.desc"
 msgid "Automatikusan összefoltozza a közeli sérült élő szövetségeseket."
-msgstr ""
+msgstr "Automatically stitches up nearby wounded living allies."
 
 msgctxt "ability.h_ssa_remszarnyak.name"
 msgid "Rémszárnyak"
-msgstr ""
+msgstr "Dread Wings"
 
 msgctxt "ability.h_ssa_remszarnyak.desc"
 msgid "Végső képesség: legfeljebb négy Szárnyas rém érkezik. Nem jár le az élettartamuk, és nem foglalnak létszámot. Ss’arha egyszerre legfeljebb négy élő egységet idézhet."
-msgstr ""
+msgstr "Ultimate: four winged dreads arrive."
 
 msgctxt "ability.h_var_holdfeny.name"
 msgid "Holdfény"
-msgstr ""
+msgstr "Moonlight"
 
 msgctxt "ability.h_var_holdfeny.desc"
 msgid "Automatikusan gyógyítja a közeli sérült szövetségeseket."
-msgstr ""
+msgstr "Automatically heals nearby wounded allies."
 
 msgctxt "ability.h_var_kod.name"
 msgid "Ősök köde"
-msgstr ""
+msgstr "Mist of the Ancestors"
 
 msgctxt "ability.h_var_kod.desc"
 msgid "Az ősök szellemei ködként fonják körül az ellenséget."
-msgstr ""
+msgstr "The spirits of the ancestors wrap around the enemy like mist."
 
 msgctxt "ability.h_var_falka.name"
 msgid "Szellemfalka"
-msgstr ""
+msgstr "Spirit Pack"
 
 msgctxt "ability.h_var_falka.desc"
 msgid "Szellem-dingók falkáját hívja."
-msgstr ""
+msgstr "Calls a pack of spirit dingoes."
 
 msgctxt "ability.h_var_telihold.name"
 msgid "Telihold"
-msgstr ""
+msgstr "Full Moon"
 
 msgctxt "ability.h_var_telihold.desc"
 msgid "Végső képesség: telihold-fény gyógyít a területen."
-msgstr ""
+msgstr "Ultimate: full-moon light heals the area."
 
 msgctxt "ability.h_kur_taposas.name"
 msgid "Bölénytaposás"
-msgstr ""
+msgstr "Bison Stomp"
 
 msgctxt "ability.h_kur_taposas.desc"
 msgid "A harci bölény a földbe dobbant: sebez és megbénít."
-msgstr ""
+msgstr "The war bison stamps the ground: damages and stuns."
 
 msgctxt "ability.h_kur_uvoltes.name"
 msgid "Harci üvöltés"
-msgstr ""
+msgstr "War Howl"
 
 msgctxt "ability.h_kur_uvoltes.desc"
 msgid "A közeli szövetségesek sebzése nő."
-msgstr ""
+msgstr "Nearby allies deal more damage."
 
 msgctxt "ability.h_kur_verfalka.name"
 msgid "Vérfalka"
-msgstr ""
+msgstr "Blood Pack"
 
 msgctxt "ability.h_kur_verfalka.desc"
 msgid "Vadászláz: rövid ideig gyorsabb és erősebb."
-msgstr ""
+msgstr "Hunting frenzy: faster and stronger for a short time."
 
 msgctxt "ability.h_kur_het_ut.name"
 msgid "A Hét Út harcosai"
-msgstr ""
+msgstr "Warriors of the Seven Roads"
 
 msgctxt "ability.h_kur_het_ut.desc"
 msgid "Végső képesség: öt lándzsás harcos érkezik a Hét Útról."
-msgstr ""
+msgstr "Ultimate: five spear warriors arrive from the Seven Roads."
 
 msgctxt "ability.h_gya_halo.name"
 msgid "Gyökérháló"
-msgstr ""
+msgstr "Root Web"
 
 msgctxt "ability.h_gya_halo.desc"
 msgid "Gyökerek fonják gúzsba az ellenséget."
-msgstr ""
+msgstr "Roots bind the enemy."
 
 msgctxt "ability.h_gya_melygyoker.name"
 msgid "Mélygyökér"
-msgstr ""
+msgstr "Deep Root"
 
 msgctxt "ability.h_gya_melygyoker.desc"
 msgid "Gyökeret ereszt: lassú, de szinte elpusztíthatatlan."
-msgstr ""
+msgstr "Puts down roots: slow, but almost indestructible."
 
 msgctxt "ability.h_gya_talaj.name"
 msgid "Tápláló talaj"
-msgstr ""
+msgstr "Nourishing Soil"
 
 msgctxt "ability.h_gya_talaj.desc"
 msgid "A közeli szövetségesek regenerációja és páncélja nő."
-msgstr ""
+msgstr "Nearby allies gain regeneration and armour."
 
 msgctxt "ability.h_gya_rengés.name"
 msgid "Gyökérrengés"
-msgstr ""
+msgstr "Root Quake"
 
 msgctxt "ability.h_gya_rengés.desc"
 msgid "Végső képesség: a föld alól feltörő gyökerek mindenkit megbénítanak."
-msgstr ""
+msgstr "Ultimate: roots bursting from below stun everyone."
 
 msgctxt "ability.h_spo_tuske.name"
 msgid "Bomlasztó tüske"
-msgstr ""
+msgstr "Decaying Spine"
 
 msgctxt "ability.h_spo_tuske.desc"
 msgid "Rothasztó spóratüske."
-msgstr ""
+msgstr "A rotting spore spine."
 
 msgctxt "ability.h_spo_rothadas.name"
 msgid "Rothadás"
-msgstr ""
+msgstr "Rot"
 
 msgctxt "ability.h_spo_rothadas.desc"
 msgid "Minden elrothad a területen."
-msgstr ""
+msgstr "Everything rots in the area."
 
 msgctxt "ability.h_spo_kopeny.name"
 msgid "Spóraköpeny"
-msgstr ""
+msgstr "Spore Cloak"
 
 msgctxt "ability.h_spo_kopeny.desc"
 msgid "Spórafelhőbe burkolózik: gyorsabb, és a lövések elvétik."
-msgstr ""
+msgstr "Wraps itself in a spore cloud: faster, and shots miss."
 
 msgctxt "ability.h_spo_raj.name"
 msgid "Pöfeteg-raj"
-msgstr ""
+msgstr "Puffball Swarm"
 
 msgctxt "ability.h_spo_raj.desc"
 msgid "Végső képesség: hat pöfeteg sarjad – robbanó spórazsákok."
-msgstr ""
+msgstr "Ultimate: six puffballs sprout – exploding spore sacs."
 
 msgctxt "ability.h_cas_roham.name"
 msgid "Légió-roham"
-msgstr ""
+msgstr "Legion Charge"
 
 msgctxt "ability.h_cas_roham.desc"
 msgid "A legátus gépteste előrelendül, és szétszórja az ellenséget."
-msgstr ""
+msgstr "The legate's machine body surges forward and scatters the enemy."
 
 msgctxt "ability.h_cas_fegyelem.name"
 msgid "Vasfegyelem"
-msgstr ""
+msgstr "Iron Discipline"
 
 msgctxt "ability.h_cas_fegyelem.desc"
 msgid "A közeli szövetségesek páncélja nő."
-msgstr ""
+msgstr "Nearby allies gain armour."
 
 msgctxt "ability.h_cas_legio.name"
 msgid "Mechalégió"
-msgstr ""
+msgstr "Mech Legion"
 
 msgctxt "ability.h_cas_legio.desc"
 msgid "Légiósokat rendel a frontra."
-msgstr ""
+msgstr "Orders legionaries to the front."
 
 msgctxt "ability.h_cas_harag.name"
 msgid "Ordan haragja"
-msgstr ""
+msgstr "Wrath of Ordan"
 
 msgctxt "ability.h_cas_harag.desc"
 msgid "Végső képesség: Ordan lelke tölti meg a legátus gépét."
-msgstr ""
+msgstr "Ultimate: Ordan's soul fills the legate's machine."
 
 msgctxt "ability.lelekhorgony_mentes.name"
 msgid "Lélekhorgony mentése"
@@ -5557,555 +5557,555 @@ msgstr ""
 
 msgctxt "ability.atvaltozas.name"
 msgid "Mutáció itt"
-msgstr ""
+msgstr "Mutation: Armoured Beetle"
 
 msgctxt "ability.atvaltozas.desc"
 msgid "A Karmos a kijelölt helyre megy, ott gubóba zárkózik, és Páncélbogárrá alakul."
-msgstr ""
+msgstr "The Clawling shuts itself in a cocoon and turns into an armoured beetle."
 
 msgctxt "ability.beszallas.name"
 msgid "Helyőrség"
-msgstr ""
+msgstr "Garrison"
 
 msgctxt "ability.beszallas.desc"
 msgid "A kijelölt egységek beszállnak a legközelebbi helyőrség-épületbe; ott védve vannak, és minden beszállt egység erősíti az épület lövéseit."
-msgstr ""
+msgstr "The selected units enter the nearest garrison building; they are protected there, and every unit inside strengthens the building's shots."
 
 msgctxt "ability.p_halozati_gyujtes.name"
 msgid "Hálózati gyűjtés"
-msgstr ""
+msgstr "Network Gathering"
 
 msgctxt "ability.p_halozati_gyujtes.desc"
 msgid "A terhét bármelyik hálózatba kötött épületbe leadhatja."
-msgstr ""
+msgstr "Can drop its load at any building linked to the network."
 
 msgctxt "ability.p_gepjavitas.name"
 msgid "Gépjavítás és újratestesítés"
-msgstr ""
+msgstr "Machine Repair and Re-embodiment"
 
 msgctxt "ability.p_gepjavitas.desc"
 msgid "Jobb klikk sérült gépre: javítás. A lélekhorgonyokat is újraépíti."
-msgstr ""
+msgstr "Right-click a damaged machine: repair. Also rebuilds soul anchors."
 
 msgctxt "ability.lelekhorgony.name"
 msgid "Lélekhorgony"
-msgstr ""
+msgstr "Soul Anchor"
 
 msgctxt "ability.lelekhorgony.desc"
 msgid "Ha a gép elpusztul, a lelke horgonyban marad 40 mp-ig – egy Fabrikátor újraépítheti."
-msgstr ""
+msgstr "When the machine is destroyed, its soul stays in an anchor for 40 s – a Fabricator can rebuild it."
 
 msgctxt "ability.osztodas2.name"
 msgid "Osztódás (2 ölés)"
-msgstr ""
+msgstr "Division (2 kills)"
 
 msgctxt "ability.osztodas2.desc"
 msgid "Minden két legyőzött ellenség után kettéosztódik (mintha megette volna őket)."
-msgstr ""
+msgstr "After every two defeated enemies it divides in two (as if it had eaten them)."
 
 msgctxt "ability.osztodas3.name"
 msgid "Osztódás (3 ölés)"
-msgstr ""
+msgstr "Division (3 kills)"
 
 msgctxt "ability.osztodas3.desc"
 msgid "Minden három legyőzött ellenség után kettéosztódik."
-msgstr ""
+msgstr "After every three defeated enemies it divides in two."
 
 msgctxt "ability.osztodas4.name"
 msgid "Osztódás (4 ölés)"
-msgstr ""
+msgstr "Division (4 kills)"
 
 msgctxt "ability.osztodas4.desc"
 msgid "Minden négy legyőzött ellenség után kettéosztódik."
-msgstr ""
+msgstr "After every four defeated enemies it divides in two."
 
 msgctxt "ability.erdei_rejtozes.name"
 msgid "Erdei rejtőzés"
-msgstr ""
+msgstr "Forest Stealth"
 
 msgctxt "ability.erdei_rejtozes.desc"
 msgid "Fák mellett, álló helyzetben láthatatlan (lesállás), amíg nem támad; a közeli ellenség észreveszi."
-msgstr ""
+msgstr "Invisible next to trees until it attacks for 3 s (nearby enemies notice it)."
 
 msgctxt "ability.korus_szem.name"
 msgid "A Kórus szeme"
-msgstr ""
+msgstr "Eye of the Choir"
 
 msgctxt "ability.korus_szem.desc"
 msgid "Felfedi a közeli rejtőzködő és beásott ellenségeket."
-msgstr ""
+msgstr "Reveals nearby hidden and burrowed enemies."
 
 msgctxt "ability.jadetest.name"
 msgid "Jádetest"
-msgstr ""
+msgstr "Jade Body"
 
 msgctxt "ability.jadetest.desc"
 msgid "A varázslatok csak fele sebzést okoznak neki."
-msgstr ""
+msgstr "Spells deal only half damage to it."
 
 msgctxt "ability.szellemtest.name"
 msgid "Szellemtest"
-msgstr ""
+msgstr "Spirit Body"
 
 msgctxt "ability.szellemtest.desc"
 msgid "Idézett lény; idővel szertefoszlik."
-msgstr ""
+msgstr "A summoned being; fades away in time."
 
 msgctxt "ability.gubo_p.name"
 msgid "Gubó"
-msgstr ""
+msgstr "Cocoon"
 
 msgctxt "ability.gubo_p.desc"
 msgid "Mutálódik; ha elpusztul, az átalakulás elvész."
-msgstr ""
+msgstr "Mutating; if it is destroyed, the transformation is lost."
 
 msgctxt "ability.taborkocsi.name"
 msgid "Vándortábor"
-msgstr ""
+msgstr "Wandering Camp"
 
 msgctxt "ability.taborkocsi.desc"
 msgid "Felszedett tábor – bárhol letelepíthető."
-msgstr ""
+msgstr "A packed-up camp – can be pitched anywhere."
 
 msgctxt "ability.kristalypancel.name"
 msgid "Kristálypáncél"
-msgstr ""
+msgstr "Crystal Armour"
 
 msgctxt "ability.kristalypancel.desc"
 msgid "Kemény kristályokkal benőtt páncél."
-msgstr ""
+msgstr "Armour overgrown with hard crystals."
 
 msgctxt "ability.falkavadasz.name"
 msgid "Falkavadász"
-msgstr ""
+msgstr "Pack Hunter"
 
 msgctxt "ability.falkavadasz.desc"
 msgid "Falkában vadászik."
-msgstr ""
+msgstr "Hunts in a pack."
 
 msgctxt "ability.runako_aura.name"
 msgid "Rúnakő"
-msgstr ""
+msgstr "Rune Stone"
 
 msgctxt "ability.runako_aura.desc"
 msgid "A közeli szövetségesek páncélja és gyógyulása nő."
-msgstr ""
+msgstr "Nearby allies gain armour and regeneration."
 
 msgctxt "ability.fenylepes.name"
 msgid "Fénylépés"
-msgstr ""
+msgstr "Light Step"
 
 msgctxt "ability.fenylepes.desc"
 msgid "Fénnyé válik, és a kijelölt pontra lép (7 mező)."
-msgstr ""
+msgstr "Turns into light and steps to the chosen point (7 tiles)."
 
 msgctxt "ability.fenylepes_munkas.name"
 msgid "Fénylépés"
-msgstr ""
+msgstr "Light Step"
 
 msgctxt "ability.fenylepes_munkas.desc"
 msgid "Menekülő teleport (5 mező)."
-msgstr ""
+msgstr "An escape teleport (5 tiles)."
 
 msgctxt "ability.jade_celzas.name"
 msgid "Jáde-célzás"
-msgstr ""
+msgstr "Jade Aim"
 
 msgctxt "ability.jade_celzas.desc"
 msgid "6 mp-ig +2 lőtáv és +20% sebzés."
-msgstr ""
+msgstr "+2 range and +20% damage for 6 s."
 
 msgctxt "ability.csillagdarda.name"
 msgid "Csillagdárda"
-msgstr ""
+msgstr "Star Spear"
 
 msgctxt "ability.csillagdarda.desc"
 msgid "Célzott, csillagérc-hegyű dárda: 45 sebzés és lassítás."
-msgstr ""
+msgstr "An aimed, star-ore tipped spear: 45 damage and a slow."
 
 msgctxt "ability.zuhanorepules.name"
 msgid "Zuhanórepülés"
-msgstr ""
+msgstr "Dive"
 
 msgctxt "ability.zuhanorepules.desc"
 msgid "Lecsap a földre: a közeli ellenségek sebződnek és megtántorodnak."
-msgstr ""
+msgstr "Swoops to the ground: nearby enemies are damaged and stagger."
 
 msgctxt "ability.tollkorona_uvoltes.name"
 msgid "Tollkorona-üvöltés"
-msgstr ""
+msgstr "Crest Roar"
 
 msgctxt "ability.tollkorona_uvoltes.desc"
 msgid "Rémisztő üvöltés: a közeli ellenségek lelassulnak."
-msgstr ""
+msgstr "A terrifying roar: nearby enemies slow down."
 
 msgctxt "ability.napfokusz.name"
 msgid "Napfókusz"
-msgstr ""
+msgstr "Sun Focus"
 
 msgctxt "ability.napfokusz.desc"
 msgid "Telepítés: nem mozog, de +3 lőtáv és +20% sebzés."
-msgstr ""
+msgstr "Deploy: cannot move, but +3 range and +20% damage."
 
 msgctxt "ability.dardafal.name"
 msgid "Dárdafal"
-msgstr ""
+msgstr "Spear Wall"
 
 msgctxt "ability.dardafal.desc"
 msgid "Leszúrt dárdák: nem mozog, de +60% sebzés és +2 páncél."
-msgstr ""
+msgstr "Planted spears: cannot move, but +60% damage and +2 armour."
 
 msgctxt "ability.horgonyszigony.name"
 msgid "Horgonyszigony"
-msgstr ""
+msgstr "Anchor Harpoon"
 
 msgctxt "ability.horgonyszigony.desc"
 msgid "Szigony egy ellenségbe: sebez és 1,2 mp-re megbénít."
-msgstr ""
+msgstr "A harpoon into an enemy: damages and stuns it for 1.2 s."
 
 msgctxt "ability.verszomj.name"
 msgid "Vérszomj"
-msgstr ""
+msgstr "Bloodlust"
 
 msgctxt "ability.verszomj.desc"
 msgid "7 mp-ig +50% sebzés, +20% sebesség, de -2 páncél."
-msgstr ""
+msgstr "+50% damage and +20% speed for 7 s, but -2 armour."
 
 msgctxt "ability.runako.name"
 msgid "Rúnakő állítása"
-msgstr ""
+msgstr "Rune Stone"
 
 msgctxt "ability.runako.desc"
 msgid "A Rúnapap a kijelölt helyhez megy, és rúnakövet állít. A közeli szövetségesek páncélja és gyógyulása nő."
-msgstr ""
+msgstr "Raises a rune stone: nearby allies gain armour and regeneration."
 
 msgctxt "ability.zuhano_csapas.name"
 msgid "Zuhanó csapás"
-msgstr ""
+msgstr "Diving Strike"
 
 msgctxt "ability.zuhano_csapas.desc"
 msgid "A holló lecsap egy célpontra."
-msgstr ""
+msgstr "The raven swoops on a target."
 
 msgctxt "ability.taposas.name"
 msgid "Taposás"
-msgstr ""
+msgstr "Trample"
 
 msgctxt "ability.taposas.desc"
 msgid "A mamut a földbe dobbant: sebez és megbénít."
-msgstr ""
+msgstr "The mammoth stamps the ground: damages and stuns."
 
 msgctxt "ability.telepites.name"
 msgid "Telepítés"
-msgstr ""
+msgstr "Deploy"
 
 msgctxt "ability.telepites.desc"
 msgid "A szán lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés."
-msgstr ""
+msgstr "The sled anchors: cannot move, but +3 range and +25% damage."
 
 msgctxt "ability.beasas.name"
 msgid "Beásás"
-msgstr ""
+msgstr "Burrow"
 
 msgctxt "ability.beasas.desc"
 msgid "A föld alá ássa magát: láthatatlan (csak felfedő találja meg), gyorsan gyógyul, de nem támad."
-msgstr ""
+msgstr "Digs itself underground: invisible (only detectors find it), heals fast, but cannot attack."
 
 msgctxt "ability.tuskezapor.name"
 msgid "Tüskezápor"
-msgstr ""
+msgstr "Spine Volley"
 
 msgctxt "ability.tuskezapor.desc"
 msgid "Csonttüskék záporoznak a területre. Ára: 20 életerő."
-msgstr ""
+msgstr "Bone spines rain on the area. Costs 20 health."
 
 msgctxt "ability.savtocsa.name"
 msgid "Savtócsa"
-msgstr ""
+msgstr "Acid Pool"
 
 msgctxt "ability.savtocsa.desc"
 msgid "Maró savtócsa: sebez és lassít. Ára: 30 életerő."
-msgstr ""
+msgstr "A corrosive acid pool: damages and slows. Costs 30 health."
 
 msgctxt "ability.ragadozo_zuhanas.name"
 msgid "Ragadozó zuhanás"
-msgstr ""
+msgstr "Predator's Dive"
 
 msgctxt "ability.ragadozo_zuhanas.desc"
 msgid "Lecsap egy célpontra. Ára: 15 életerő."
-msgstr ""
+msgstr "Swoops on a target. Costs 15 health."
 
 msgctxt "ability.csapsopres.name"
 msgid "Csápsöprés"
-msgstr ""
+msgstr "Tendril Sweep"
 
 msgctxt "ability.csapsopres.desc"
 msgid "Körbecsapó csápok: nagy sebzés és lassítás. Ára: 40 életerő."
-msgstr ""
+msgstr "Sweeping tendrils: heavy damage and a slow. Costs 40 health."
 
 msgctxt "ability.kitinroham.name"
 msgid "Kitinroham"
-msgstr ""
+msgstr "Chitin Charge"
 
 msgctxt "ability.kitinroham.desc"
 msgid "5 mp-es roham: +60% sebesség, +30% sebzés. Ára: 20 életerő."
-msgstr ""
+msgstr "A 5 s charge: +60% speed, +30% damage. Costs 20 health."
 
 msgctxt "ability.harci_enek.name"
 msgid "Harci ének"
-msgstr ""
+msgstr "War Song"
 
 msgctxt "ability.harci_enek.desc"
 msgid "Ének (egyszerre egy): a közeli szövetségesek +8% sebzés."
-msgstr ""
+msgstr "Song (one at a time): nearby allies +12% damage."
 
 msgctxt "ability.vandor_enek.name"
 msgid "Vándorének"
-msgstr ""
+msgstr "Road Song"
 
 msgctxt "ability.vandor_enek.desc"
 msgid "Ének (egyszerre egy): a közeli szövetségesek +10% sebesség."
-msgstr ""
+msgstr "Song (one at a time): nearby allies +15% speed."
 
 msgctxt "ability.osok_haragja.name"
 msgid "Ősök haragja"
-msgstr ""
+msgstr "Wrath of the Ancestors"
 
 msgctxt "ability.osok_haragja.desc"
 msgid "Ének: a közeli szövetségesek +2 páncél."
-msgstr ""
+msgstr "Song: nearby allies +2 armour."
 
 msgctxt "ability.tomahawk.name"
 msgid "Dárdavetés"
-msgstr ""
+msgstr "Spear Throw"
 
 msgctxt "ability.tomahawk.desc"
 msgid "Dárdavetővel (woomera) hajított dárda: messzire repül, sebez és lassít."
-msgstr ""
+msgstr "A spear hurled with a woomera: flies far, damages and slows."
 
 msgctxt "ability.vadaszles.name"
 msgid "Vadászles"
-msgstr ""
+msgstr "Hunter's Blind"
 
 msgctxt "ability.vadaszles.desc"
 msgid "Lesállás: nem mozog, de +2 lőtáv és +20% sebzés."
-msgstr ""
+msgstr "Ambush stance: cannot move, but +2 range and +20% damage."
 
 msgctxt "ability.villamcsapas.name"
 msgid "Villámcsapás"
-msgstr ""
+msgstr "Lightning Strike"
 
 msgctxt "ability.villamcsapas.desc"
 msgid "A madár villámot sújt maga köré."
-msgstr ""
+msgstr "The bird calls down lightning around itself."
 
 msgctxt "ability.sporatuske.name"
 msgid "Spóratüske"
-msgstr ""
+msgstr "Spore Spine"
 
 msgctxt "ability.sporatuske.desc"
 msgid "Mérgező tüske: sebez és lassít. Ára: 2 spóra."
-msgstr ""
+msgstr "A poisonous spine: damages and slows. Costs 2 spores."
 
 msgctxt "ability.kalapfal.name"
 msgid "Kalapfal"
-msgstr ""
+msgstr "Cap Wall"
 
 msgctxt "ability.kalapfal.desc"
 msgid "A kalap pajzzsá feszül: +4 páncél, -40% távolsági sebzés, de lassú."
-msgstr ""
+msgstr "The cap stiffens into a shield: +4 armour, -40% ranged damage, but slow."
 
 msgctxt "ability.sporarobbanas.name"
 msgid "Spórarobbanás"
-msgstr ""
+msgstr "Spore Burst"
 
 msgctxt "ability.sporarobbanas.desc"
 msgid "Mérgező spórafelhő robban ki belőle. Ára: 3 spóra."
-msgstr ""
+msgstr "A poison spore cloud bursts out of it. Costs 3 spores."
 
 msgctxt "ability.sporaeso.name"
 msgid "Spóraeső"
-msgstr ""
+msgstr "Spore Rain"
 
 msgctxt "ability.sporaeso.desc"
 msgid "Spóraeső a területre. Ára: 3 spóra."
-msgstr ""
+msgstr "Spore rain on the area. Costs 3 spores."
 
 msgctxt "ability.testudo.name"
 msgid "Testudo"
-msgstr ""
+msgstr "Testudo"
 
 msgctxt "ability.testudo.desc"
 msgid "Teknősalakzat: -55% távolsági sebzés, +1 páncél, de lassú."
-msgstr ""
+msgstr "Tortoise formation: -55% ranged damage, +1 armour, but slow."
 
 msgctxt "ability.gyorstoltes_u.name"
 msgid "Gyorstöltés"
-msgstr ""
+msgstr "Quick Loading"
 
 msgctxt "ability.gyorstoltes_u.desc"
 msgid "6 mp-ig +40% sebzés."
-msgstr ""
+msgstr "+40% damage for 6 s."
 
 msgctxt "ability.geppuska_sorozat.name"
 msgid "Gépágyú-sorozat"
-msgstr ""
+msgstr "Cannon Burst"
 
 msgctxt "ability.geppuska_sorozat.desc"
 msgid "5 mp-ig +70% sebzés, de lassabb."
-msgstr ""
+msgstr "+70% damage for 5 s, but slower."
 
 msgctxt "ability.zuhanobomba.name"
 msgid "Zuhanóbomba"
-msgstr ""
+msgstr "Dive Bomb"
 
 msgctxt "ability.zuhanobomba.desc"
 msgid "Bombát old ki maga alá."
-msgstr ""
+msgstr "Drops a bomb beneath itself."
 
 msgctxt "ability.ostrom_telepites.name"
 msgid "Ostrom-telepítés"
-msgstr ""
+msgstr "Siege Deploy"
 
 msgctxt "ability.ostrom_telepites.desc"
 msgid "Lehorgonyoz: nem mozog, de +3 lőtáv és +25% sebzés."
-msgstr ""
+msgstr "Anchors: cannot move, but +3 range and +25% damage."
 
 msgctxt "ability.eterloket.name"
 msgid "Éterlöket"
-msgstr ""
+msgstr "Ether Blast"
 
 msgctxt "ability.eterloket.desc"
 msgid "Éterlövedék."
-msgstr ""
+msgstr "An ether bolt."
 
 msgctxt "ability.foldrenges.name"
 msgid "Földrengés"
-msgstr ""
+msgstr "Earthquake"
 
 msgctxt "ability.foldrenges.desc"
 msgid "Megrengeti a földet maga körül."
-msgstr ""
+msgstr "Shakes the ground around itself."
 
 msgctxt "ability.bumerang.name"
 msgid "Bumeráng"
-msgstr ""
+msgstr "Boomerang"
 
 msgctxt "ability.bumerang.desc"
 msgid "Visszatérő bumeráng: a célpont után még két közeli ellenséget eltalál (csökkenő sebzéssel)."
-msgstr ""
+msgstr "A returning boomerang: after the target it strikes two more nearby enemies (with falling damage)."
 
 msgctxt "ability.riado_futas.name"
 msgid "Riadófutás"
-msgstr ""
+msgstr "Panic Run"
 
 msgctxt "ability.riado_futas.desc"
 msgid "Az emu megriad és elszalad: 4 mp-ig +80% sebesség."
-msgstr ""
+msgstr "The emu panics and runs: +80% speed for 4 s."
 
 msgctxt "ability.felultetes.name"
 msgid "Felültetés"
-msgstr ""
+msgstr "Mount"
 
 msgctxt "ability.felultetes.desc"
 msgid "A legközelebbi wullof gyalogos harcos felül a bölényre: Bölénylovas lesz belőlük."
-msgstr ""
+msgstr "The nearest Wullof foot warrior mounts the bison: together they become a Bison Rider."
 
 msgctxt "ability.leszallas.name"
 msgid "Leszállás"
-msgstr ""
+msgstr "Dismount"
 
 msgctxt "ability.leszallas.desc"
 msgid "A lovas leszáll: újra külön bölény és gyalogos harcos."
-msgstr ""
+msgstr "The rider dismounts: a separate bison and foot warrior again."
 
 msgctxt "ability.savkopes.name"
 msgid "Savköpés"
-msgstr ""
+msgstr "Acid Spit"
 
 msgctxt "ability.savkopes.desc"
 msgid "Maró sav: 8 sebzés, majd 6 mp-en át másodpercenként 6 méregsebzés."
-msgstr ""
+msgstr "Corrosive acid: 8 damage, then 6 poison damage per second for 6 s."
 
 msgctxt "ability.tuzkopes.name"
 msgid "Tűzköpés"
-msgstr ""
+msgstr "Fire Spit"
 
 msgctxt "ability.tuzkopes.desc"
 msgid "Lángcsóva: 26 sebzés a célpontra, fele a körülötte állókra."
-msgstr ""
+msgstr "A jet of flame: 26 damage to the target, half to those around it."
 
 msgctxt "ability.fagykopes.name"
 msgid "Fagyköpés"
-msgstr ""
+msgstr "Frost Spit"
 
 msgctxt "ability.fagykopes.desc"
 msgid "Jeges köpet: 10 sebzés, és a célpont 2,5 mp-re megfagy (nem mozog, nem támad)."
-msgstr ""
+msgstr "Icy spit: 10 damage, and the target freezes for 2.5 s (cannot move or attack)."
 
 msgctxt "ability.fiokakeltes.name"
 msgid "Fiókakeltetés"
-msgstr ""
+msgstr "Hatch Chicks"
 
 msgctxt "ability.fiokakeltes.desc"
 msgid "Két Groomi-fióka kel ki a tojásaiból 45 másodpercre."
-msgstr ""
+msgstr "Two Groomi chicks hatch from her eggs for 45 seconds."
 
 msgctxt "ability.harci_kurt.name"
 msgid "Harci kürt"
-msgstr ""
+msgstr "War Horn"
 
 msgctxt "ability.harci_kurt.desc"
 msgid "Kürtszó (egyszerre egy): a közeli szövetségesek +15% sebzés és +10% sebesség."
-msgstr ""
+msgstr "Horn call (one at a time): nearby allies +15% damage and +10% speed."
 
 msgctxt "ability.medveuvoltes.name"
 msgid "Medveüvöltés"
-msgstr ""
+msgstr "Bear Roar"
 
 msgctxt "ability.medveuvoltes.desc"
 msgid "Rettentő üvöltés: sebez és megbénítja a közeli ellenséget."
-msgstr ""
+msgstr "A terrifying roar: damages and stuns nearby enemies."
 
 msgctxt "ability.robbanas.name"
 msgid "Önrobbantás"
-msgstr ""
+msgstr "Self-destruct"
 
 msgctxt "ability.robbanas.desc"
 msgid "Felrobban: nagy sebzés a közelben – az atka elpusztul."
-msgstr ""
+msgstr "Explodes: heavy damage nearby – the mite dies."
 
 msgctxt "ability.alomspora.name"
 msgid "Álomspóra"
-msgstr ""
+msgstr "Dream Spores"
 
 msgctxt "ability.alomspora.desc"
 msgid "Altató spórafelhő: a közeli ellenség 3 mp-re elalszik."
-msgstr ""
+msgstr "A sleeping spore cloud: nearby enemies fall asleep for 3 s."
 
 msgctxt "ability.napfeny_aldas.name"
 msgid "Napfény-áldás"
-msgstr ""
+msgstr "Sunlight Blessing"
 
 msgctxt "ability.napfeny_aldas.desc"
 msgid "Automatikusan gyógyítja a közeli sebesült szövetségeseket."
-msgstr ""
+msgstr "Automatically heals nearby wounded allies."
 
 msgctxt "ability.meteorhivas.name"
 msgid "Meteorhívás"
-msgstr ""
+msgstr "Call Meteors"
 
 msgctxt "ability.meteorhivas.desc"
 msgid "Meteorzápor: 3 mp alatt 105 sebzés a területen."
-msgstr ""
+msgstr "Meteor shower: 105 damage over 3 s in the area."
 
 msgctxt "ability.lesallas.name"
 msgid "Les"
-msgstr ""
+msgstr "Ambush"
 
 msgctxt "ability.lesallas.desc"
 msgid "Lesállás: nem mozog, de +50% sebzés és +1 lőtáv."
-msgstr ""
+msgstr "Ambush stance: cannot move, but +50% damage and +1 range."
 
 msgctxt "ability.huk_horog.name"
 msgid "Horog"
@@ -6285,11 +6285,11 @@ msgstr ""
 
 msgctxt "ability.oon_kapuorzes.name"
 msgid "Kapuőrzés"
-msgstr ""
+msgstr "Gate Guard"
 
 msgctxt "ability.oon_kapuorzes.desc"
 msgid "Kapuőrként megáll egy épület mellett: nem mozdul, az épület +3 páncélt kap (legfeljebb +6). Bekapcsolás után az első lovas elleni találata 1,2 mp-re 35%-kal lassítja a célpontot."
-msgstr ""
+msgstr "Stands guard by a building without moving, granting it +3 armor (up to +6). After activation, the first hit against a mounted unit slows it by 35% for 1.2 seconds."
 
 msgctxt "ability.oon_szelvihar.name"
 msgid "Szélvihar"
@@ -6349,7 +6349,7 @@ msgstr ""
 
 msgctxt "ability.oon_villamcsapas.name"
 msgid "Villámcsapás"
-msgstr ""
+msgstr "Lightning Strike"
 
 msgctxt "ability.oon_villamcsapas.desc"
 msgid "Villám: nagy sebzés, rövid bénulás."
@@ -6813,7 +6813,7 @@ msgstr ""
 
 msgctxt "ability.tok_hovihar.name"
 msgid "Hóvihar"
-msgstr ""
+msgstr "Blizzard"
 
 msgctxt "ability.tok_hovihar.desc"
 msgid "Területre ható csapás: 5 mp alatt 70 sebzés, és lassít."
@@ -7029,123 +7029,123 @@ msgstr ""
 
 msgctxt "item.gyogyfozet.name"
 msgid "Gyógyfőzet"
-msgstr ""
+msgstr "Healing Draught"
 
 msgctxt "item.gyogyfozet.desc"
 msgid "Azonnal 250 életerőt ad vissza."
-msgstr ""
+msgstr "Instantly restores 250 health."
 
 msgctxt "item.eterfozet.name"
 msgid "Éterfőzet"
-msgstr ""
+msgstr "Ether Draught"
 
 msgctxt "item.eterfozet.desc"
 msgid "Azonnal 100 energiát ad vissza."
-msgstr ""
+msgstr "Instantly restores 100 energy."
 
 msgctxt "item.emlekkonyv.name"
 msgid "Emlékkönyv"
-msgstr ""
+msgstr "Book of Memories"
 
 msgctxt "item.emlekkonyv.desc"
 msgid "Egy elveszett emlékkert lapjai: +300 tapasztalat."
-msgstr ""
+msgstr "Pages of a lost memory garden: +300 experience."
 
 msgctxt "item.erotom.name"
 msgid "Erő tómja"
-msgstr ""
+msgstr "Tome of Strength"
 
 msgctxt "item.erotom.desc"
 msgid "Végleg +2 sebzés."
-msgstr ""
+msgstr "Permanently +2 damage."
 
 msgctxt "item.eletertom.name"
 msgid "Életerő tómja"
-msgstr ""
+msgstr "Tome of Vitality"
 
 msgctxt "item.eletertom.desc"
 msgid "Végleg +60 életerő."
-msgstr ""
+msgstr "Permanently +60 health."
 
 msgctxt "item.csizma.name"
 msgid "Vándorcsizma"
-msgstr ""
+msgstr "Wanderer's Boots"
 
 msgctxt "item.csizma.desc"
 msgid "+15% mozgási sebesség."
-msgstr ""
+msgstr "+15% movement speed."
 
 msgctxt "item.vedogyuru.name"
 msgid "Védőgyűrű"
-msgstr ""
+msgstr "Ring of Protection"
 
 msgctxt "item.vedogyuru.desc"
 msgid "+2 páncél."
-msgstr ""
+msgstr "+2 armour."
 
 msgctxt "item.karomkesztyu.name"
 msgid "Karomkesztyű"
-msgstr ""
+msgstr "Claw Gauntlet"
 
 msgctxt "item.karomkesztyu.desc"
 msgid "+5 sebzés."
-msgstr ""
+msgstr "+5 damage."
 
 msgctxt "item.eletamulett.name"
 msgid "Életerő-amulett"
-msgstr ""
+msgstr "Amulet of Vitality"
 
 msgctxt "item.eletamulett.desc"
 msgid "+150 életerő."
-msgstr ""
+msgstr "+150 health."
 
 msgctxt "item.regengyuru.name"
 msgid "Megújulás gyűrűje"
-msgstr ""
+msgstr "Ring of Renewal"
 
 msgctxt "item.regengyuru.desc"
 msgid "+2 életerő-regeneráció."
-msgstr ""
+msgstr "+2 health regeneration."
 
 msgctxt "item.eterko.name"
 msgid "Éterkő"
-msgstr ""
+msgstr "Ether Stone"
 
 msgctxt "item.eterko.desc"
 msgid "+60 energia, +1 energia-regeneráció."
-msgstr ""
+msgstr "+60 energy, +1 energy regeneration."
 
 msgctxt "item.hosipajzs.name"
 msgid "Hősi pajzs"
-msgstr ""
+msgstr "Heroic Shield"
 
 msgctxt "item.hosipajzs.desc"
 msgid "+4 páncél, +100 életerő."
-msgstr ""
+msgstr "+4 armour, +100 health."
 
 msgctxt "item.ercpenge.name"
 msgid "Csillagérc-penge"
-msgstr ""
+msgstr "Star-ore Blade"
 
 msgctxt "item.ercpenge.desc"
 msgid "Az égi kőből kovácsolt penge: +12 sebzés."
-msgstr ""
+msgstr "A blade forged from the sky stone: +12 damage."
 
 msgctxt "item.arnykopeny.name"
 msgid "Árnyköpeny"
-msgstr ""
+msgstr "Shadow Cloak"
 
 msgctxt "item.arnykopeny.desc"
 msgid "+12% sebesség, +2 páncél, +1 regeneráció."
-msgstr ""
+msgstr "+12% speed, +2 armour, +1 regeneration."
 
 msgctxt "item.orokhajnal.name"
 msgid "Az Örök Hajnal szilánkja"
-msgstr ""
+msgstr "Shard of the Eternal Dawn"
 
 msgctxt "item.orokhajnal.desc"
 msgid "Ordan hálózatának töredéke: +200 életerő, +100 energia, +6 sebzés."
-msgstr ""
+msgstr "A fragment of Ordan's network: +200 health, +100 energy, +6 damage."
 
 msgctxt "status.fire.name"
 msgid "Tűz"
@@ -7197,7 +7197,7 @@ msgstr ""
 
 msgctxt "status.sleep.name"
 msgid "Álom"
-msgstr ""
+msgstr "Dream"
 
 msgctxt "status.sleep.status"
 msgid "Alszik"

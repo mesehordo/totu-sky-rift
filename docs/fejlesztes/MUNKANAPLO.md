@@ -686,3 +686,8 @@ Az utolsó 13 sor: több egység egy képzésből (`Cost.count`, a Karmos párba
 ## 2026-11-14 – CI: a gazdasági képpróba referenciája frissítve
 
 A leltár-pótlás után egy munkás a lelőhely mellett máshol áll (a lelőhely-szabályok miatt), ezért a `kepproba_gazdasag` 7‰-kel eltért; a referencia a CI Mesa-képére cserélve (a többi képpróba változatlanul egyezik). **D44** (a tulajdonos döntése): az M8 felülete saját rajzolóval, RmlUi nélkül.
+
+## 2026-11-14 – M8, 1. ág: menük, beállítások, nyelvek
+
+Főmenü, egyéni csata beállító képernyő (a `MatchSetup`-ba; a gépi játékosok az `ai_nep.lua`-val), beállítások (nyelv, felbontás, teljes képernyő, felület-méretarány, színvak-barát csapatszínek, görgetés, FPS, hang-kategóriák tárolva, billentyűkiosztás ütközés-ellenőrzéssel), `settings.json` a felhasználói mappában (`SDL_GetPrefPath`). GL nélkül tesztelhető logika: `client/i18n`, `settings`, `menu`; rajzolás: `menu_view`. **Nyelvek külön fájlban** (a tulajdonos kérése): a nyelvlista a `locale/*.po` fájlokból (alap és modok), a megjelenített név a .po `Language-Name:` fejlécsorából; a felület szövegei `ui.*` kulcsok a .po-kban; hiányzó szöveg → angol → kulcs. Az `en.po` a régi `data/lang/en.json` „data” részéből kitöltve (834 bejegyzés; 981 – kisnépek, új tartalom – a régi játékban sem volt angolul: a végső teljes angol fordítás része). A tartalom-átalakító (helyi eszköz) megtartja a `Language-Name` sort és az `ui.*` bejegyzéseket, és az angolt kulcs szerint tölti.
+**Tesztek:** 297 (11 új, `test_menu.cpp`).
