@@ -700,3 +700,8 @@ GL nélkül tesztelhető elrendezés (`client/hud_layout`: minimap, banner, kara
 ## 2026-11-14 – Egységes sorvég
 
 A tároló minden szövegfájlja LF (`.gitattributes`: `* text=auto eol=lf`, a képek, betűk, `.trep` binárisak, a `third_party` érintetlen); egyszeri normalizálás (698 fájl). A vegyes CRLF/LF okozta beolvasztási ütközések és cserehibák megszűnnek. Tesztek, hash-ek, golden felvételek, leltár-kapu változatlanok.
+
+## 2026-11-14 – Szünetmenü; a tulajdonos döntései (M8)
+
+- **Szünetmenü a játékban:** az Esc (ha a HUD nem fogyasztotta el – célzás, aloldal) és a fogaskerék megállítja a szimulációt (`SimRunner::set_paused`), a HUD nem ad parancsot, a képernyő elsötétül; Esc/Enter/kattintás = folytatás, Q = kilépés. Szövegek: `ui.pause.*` (hu, en).
+- **Döntések:** a színvak-barát csapatszínek az Okabe–Ito-palettából (a régiben nem volt); a kamera a nyilakkal mozog, a W/S/D a parancsrácsé (mint a régiben); az Esc előbb a célzást/aloldalt zárja, különben szünetmenü.

@@ -8218,3 +8218,16 @@ msgstr ""
 msgctxt "hud.lose"
 msgid "Vereség"
 msgstr ""
+
+msgctxt "ui.pause.title"
+msgid "Szünet"
+msgstr ""
+
+msgctxt "ui.pause.resume"
+msgid "Folytatás (Esc)"
+msgstr ""
+
+msgctxt "ui.pause.quit"
+msgid "Kilépés (Q)"
+msgstr ""
+

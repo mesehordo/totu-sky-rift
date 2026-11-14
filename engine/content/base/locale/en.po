@@ -8219,3 +8219,16 @@ msgstr "Victory!"
 msgctxt "hud.lose"
 msgid "Vereség"
 msgstr "Defeat"
+
+msgctxt "ui.pause.title"
+msgid "Szünet"
+msgstr "Paused"
+
+msgctxt "ui.pause.resume"
+msgid "Folytatás (Esc)"
+msgstr "Resume (Esc)"
+
+msgctxt "ui.pause.quit"
+msgid "Kilépés (Q)"
+msgstr "Quit (Q)"
+

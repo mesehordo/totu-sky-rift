@@ -466,6 +466,11 @@ void SimRunner::loop() {
   const auto period = std::chrono::duration_cast<clock::duration>(std::chrono::duration<double>(kTickSeconds));
   auto next = clock::now() + period;
   while (!stop_.load()) {
+    if (paused_.load()) {   // szünet: nem lép, az óra nem halmoz lemaradást
+      std::this_thread::sleep_for(period);
+      next = clock::now() + period;
+      continue;
+    }
     run_one();
     const auto t = clock::now();
     if (t < next) {

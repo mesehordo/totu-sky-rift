@@ -509,6 +509,7 @@ int main(int argc, char** argv) {
     }
     std::vector<double> times;
     bool running = rc == 0 && !menu_quit;
+    bool game_paused = false;   // a játékon belüli szünetmenü (Esc, fogaskerék)
     long frame = 0;
     const auto start = std::chrono::steady_clock::now();
     while (running && (o.frames < 0 || frame < o.frames)) {
@@ -532,8 +533,21 @@ int main(int argc, char** argv) {
         }
       }
       while (SDL_PollEvent(&ev)) {
+        if (ev.type == SDL_EVENT_QUIT) running = false;
+        if (game_paused) {   // szünetmenü: Esc / Enter / kattintás = folytatás, Q = kilépés
+          if (ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat) {
+            if (ev.key.key == SDLK_Q) running = false;
+            else if (ev.key.key == SDLK_ESCAPE || ev.key.key == SDLK_RETURN) game_paused = false;
+          } else if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+            game_paused = false;
+          }
+          continue;
+        }
         if (hud_on && hud_event(hud.model(), ev, cam, world)) continue;   // a HUD elfogyasztotta
-        if (ev.type == SDL_EVENT_QUIT || (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE)) running = false;
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE && !ev.key.repeat) {
+          if (hud_on) game_paused = true;   // a régi szerint: Esc (ha a HUD nem fogyasztotta el) a szünetmenü
+          else running = false;
+        }
         if (!have_world) continue;
         if (ev.type == SDL_EVENT_MOUSE_WHEEL) {
           const float old = cam.zoom;
@@ -607,7 +621,12 @@ int main(int argc, char** argv) {
         cam.y = hud.model().jump_y - static_cast<float>(jh) / 2 / cam.zoom;
         hud.model().jump = false;
       }
-      if (hud_on) hud.model().menu_requested = false;   // a fogaskerék: a szünetmenü (a menük munkája) – most nincs
+      if (hud_on && hud.model().menu_requested) game_paused = true;   // a fogaskerék: a szünetmenü
+      if (hud_on) {
+        hud.model().menu_requested = false;
+        hud.model().paused = game_paused;   // szünetben nincs parancs (a régi őr)
+      }
+      runner.set_paused(game_paused);
       const auto f0 = std::chrono::steady_clock::now();
       int w = 0, h = 0;
       SDL_GetWindowSizeInPixels(win, &w, &h);
@@ -721,6 +740,18 @@ int main(int argc, char** argv) {
           hf.cam_h = static_cast<float>(h) / cam.zoom;
           batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
           hud.draw(batch, white, hf);
+          if (game_paused) {   // szünetmenü: sötétítés, cím, a két lehetőség
+            render::SpriteInstance dim;
+            dim.w = static_cast<float>(w);
+            dim.h = static_cast<float>(h);
+            dim.tint[0] = dim.tint[1] = dim.tint[2] = 0;
+            dim.tint[3] = 150;
+            batch.draw(white, nullptr, dim);
+            const float cx = static_cast<float>(w) / 2, cy = static_cast<float>(h) / 2;
+            hud.text(batch, 40, cx - 90, cy - 70, locale.tr("ui.pause.title"), 240, 220, 160);
+            hud.text(batch, 24, cx - 120, cy, locale.tr("ui.pause.resume"), 230, 230, 230);
+            hud.text(batch, 24, cx - 120, cy + 36, locale.tr("ui.pause.quit"), 230, 230, 230);
+          }
           batch.end();
         }
         // ideiglenes kijelzés (a HUD az M6 9. lépésében): az 1. játékos nyersanyagai és létszáma a címsorban

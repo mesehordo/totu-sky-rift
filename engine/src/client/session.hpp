@@ -163,6 +163,8 @@ class SimRunner {
   bool threaded() const { return thread_.joinable(); }
   void step_sync();                  // szinkron mód: egy tick a hívó szálán
   void post(sim::Command c);         // a következő tickben hajtódik végre (c.tick-et a futtató állítja)
+  void set_paused(bool p) { paused_.store(p); }   // szünet: a szimuláció nem lép (a kép tovább rajzolódik)
+  bool paused() const { return paused_.load(); }
 
   // a két legutóbbi pillanatkép (előző, jelenlegi) – a rajzolás a kettő között simít
   void latest(std::shared_ptr<const Snapshot>* prev, std::shared_ptr<const Snapshot>* cur);
@@ -177,6 +179,7 @@ class SimRunner {
   Session& s_;
   std::thread thread_;
   std::atomic<bool> stop_{false};
+  std::atomic<bool> paused_{false};
   std::mutex mu_;
   std::vector<sim::Command> pending_;
   std::shared_ptr<const Snapshot> prev_, cur_;
