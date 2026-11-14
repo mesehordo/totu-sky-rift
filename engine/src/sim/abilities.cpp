@@ -136,7 +136,8 @@ Fixed Sim::unit_speed_mult(EntityId e) {
 
 bool Sim::incapacitated(EntityId e) {
   const Afflict* af = world_.get<Afflict>(e);
-  return af && (af->stunned(tick_) || af->feared(tick_));
+  if (af && (af->stunned(tick_) || af->feared(tick_))) return true;
+  return !modules_.empty() && mod_inert(e);   // népmodul (beásás)
 }
 
 std::vector<EntityId> Sim::enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed r) {

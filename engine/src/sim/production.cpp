@@ -44,7 +44,7 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
   }
   // a gyártó épületek: saját, kész, élő, és képezi ezt
   std::vector<std::pair<size_t, EntityId>> cands;
-  bool any = false;
+  bool any = false, blocked = false;
   world_.pool<Producer>().each([&](EntityId e, const Producer& pr) {
     const Building* b = world_.get<Building>(e);
     const Health* h = world_.get<Health>(e);
@@ -53,6 +53,10 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
     if (std::find(pu.begin(), pu.end(), def) == pu.end()) return;
     if (building && e != building) return;
     any = true;
+    if (!modules_.empty() && !mod_can_train(e, def)) {   // népmodul (pl. nincs szabad lárva)
+      blocked = true;
+      return;
+    }
     if (pr.queue.size() < static_cast<size_t>(Rules::kQueueMax)) cands.emplace_back(pr.queue.size(), e);
   });
   if (!any) return fail("nincs megfelelő épület");
@@ -79,12 +83,16 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
     });
     if (have >= nb * d.per_building_max) return fail("elérted az épületenkénti darabkorlátot");
   }
-  if (cands.empty()) return fail("a gyártósor megtelt");
+  if (cands.empty()) return fail(blocked ? "nincs szabad lárva" : "a gyártósor megtelt");
   std::sort(cands.begin(), cands.end());   // a legrövidebb sor; egyenlőnél a kisebb azonosító
   pay(owner, d.cost);
   QueueItem q;
   q.def = def;
   q.time = std::max(1, d.time_ticks);
+  if (!modules_.empty()) {   // népi képzésiidő-szorzó (pl. a Raj iránya)
+    const Fixed tm = mod_train_time(owner, def);
+    if (tm != Fixed::from_int(1)) q.time = std::max(1, (Fixed::from_int(q.time) * tm).floor_int());
+  }
   if (d.hero) {   // újraélesztés: idő × (0,6 + 0,12 × szint), ugyanazon az áron (HOS-1)
     for (const auto& [fd, hs] : p.fallen) {
       if (fd != def) continue;
@@ -95,6 +103,7 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
   q.cost = d.cost;
   q.supply = d.supply;
   world_.get<Producer>(cands.front().second)->queue.push_back(q);
+  if (!modules_.empty()) mod_on_train(cands.front().second, def);
   p.supply_used += d.supply;   // azonnal (a következő tick is ugyanígy számolja)
   return true;
 }
@@ -163,6 +172,7 @@ bool Sim::cancel_queue_item(EntityId e, int index) {
   pr->queue.erase(pr->queue.begin() + index);
   refund(h->owner, q.cost, 1000);
   players_[h->owner].supply_used = std::max(0, players_[h->owner].supply_used - q.supply);
+  if (!q.research && !modules_.empty()) mod_train_cancel(e, q.def);   // pl. a lárva visszajár
   return true;
 }
 
