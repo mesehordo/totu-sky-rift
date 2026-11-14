@@ -413,3 +413,10 @@ ADR-008 elfogadva. **Sorrend:** mechanika szerint – közös képességkeret, h
 Aurethi Birodalom, Ooni, Croftianok, Huk’ucha, Szürke elfek, Micéliák, kisnépek és szövetség, elfoglalás és
 előléptetés. **A régi játék nyilvánvaló hibái** (pl. az ének kétszer hat a használójára) azonnal javulnak, naplózva;
 balanszszám az M7-ben nem változik.
+
+### D44 – Az M8 felülete saját rajzolóval · ELDÖNTVE (2026-11-14)
+
+A tulajdonos döntése: a végleges kezelőfelület (HUD, menük, beállítások) **a motor saját rajzolójával** készül, RmlUi nélkül –
+nincs új harmadik féltől származó függőség, és mind a négy CI-rendszeren biztosan fordul. A kinézet a D42 szerint a régi
+Python-játéké; a felület logikája (elrendezés, parancsrács, kijelölés, menü-állapotgép, beállítások) GL nélkül tesztelhető.
+A kapu: a régi `test_hud.py` pontjai C++-próbaként zöldek.
