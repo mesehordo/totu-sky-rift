@@ -74,6 +74,39 @@
      "nil_lotuszszentseg"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "nil_szornykoto",
+    "shield": "nil_szornykoto",
+    "ranged": "nil_naga",
+    "caster": "nil_makara_idezo",
+    "big": "nil_rakshasa"
+   },
+   "levels": {
+    "1": {
+     "nil_szornykoto": 1
+    },
+    "2": {
+     "nil_naga": 1,
+     "nil_szornykoto": 1
+    },
+    "3": {
+     "nil_szornykoto": 2,
+     "nil_naga": 1
+    },
+    "4": {
+     "nil_rakshasa": 1,
+     "nil_szornykoto": 2,
+     "nil_naga": 1
+    },
+    "5": {
+     "nil_rakshasa": 2,
+     "nil_szornykoto": 2,
+     "nil_naga": 2,
+     "nil_makara_idezo": 2
+    }
+   }
   }
  }
 }

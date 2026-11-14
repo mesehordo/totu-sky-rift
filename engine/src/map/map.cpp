@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "map/map.hpp"
 
+#include <cstdlib>
+
 #include "core/hash.hpp"
 
 namespace totu::map {
@@ -175,6 +177,15 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
 
   // éghajlat (D35): "climate": "temperate" | "snowy" | "desert" | "swampy" | "volcanic" (üres = "temperate")
   if (const content::Value* cl = doc.find("climate"); cl && cl->is_string()) m.climate_ = cl->text();
+
+  // kisnép-táborok (TABOR-1): "camps": {"1": "pinguu", "4": "tokla"} – szintenként (1–5) melyik nép tábora; a többi a Vadoné
+  if (const content::Value* cp = doc.find("camps"); cp && cp->is_object()) {
+    for (const auto& [lvl, who] : cp->members()) {
+      const int l = std::atoi(lvl.c_str());
+      if (l < 1 || l > 5 || !who.is_string()) errors.push_back("camps: szint (1–5) → kisnép kell");
+      else m.objects_.camp_peoples.emplace_back(l, who.text());
+    }
+  }
 
   // pályaobjektumok (M6): "objects": {"starts": [[x, y], …], "trees": {"rows": [...]} (`T` = fa),
   // "resources": [{"kind": "stone", "x": …, "y": …, "size": 2, "amount": …}, …]}

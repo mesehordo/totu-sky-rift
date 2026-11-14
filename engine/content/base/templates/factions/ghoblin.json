@@ -76,6 +76,45 @@
      "gho_meszvakitas"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "gho_koharapo",
+    "shield": "gho_pajzskoves",
+    "ranged": "gho_meszkopo",
+    "caster": "gho_meszbomba",
+    "big": "gho_koheju_oreg"
+   },
+   "levels": {
+    "1": {
+     "gho_koharapo": 2,
+     "gho_meszkopo": 1
+    },
+    "2": {
+     "gho_koharapo": 1,
+     "gho_pajzskoves": 1,
+     "gho_meszkopo": 2
+    },
+    "3": {
+     "gho_koharapo": 1,
+     "gho_pajzskoves": 2,
+     "gho_meszkopo": 2,
+     "gho_meszbomba": 1
+    },
+    "4": {
+     "gho_koheju_oreg": 1,
+     "gho_koharapo": 1,
+     "gho_pajzskoves": 1,
+     "gho_meszkopo": 2,
+     "gho_meszbomba": 1
+    },
+    "5": {
+     "gho_koheju_oreg": 3,
+     "gho_pajzskoves": 2,
+     "gho_meszkopo": 5,
+     "gho_meszbomba": 2
+    }
+   }
   }
  }
 }

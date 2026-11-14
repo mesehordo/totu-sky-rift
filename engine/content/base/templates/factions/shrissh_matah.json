@@ -73,6 +73,43 @@
      "shr_szikla_kapaszkodas"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "shr_sziklafuto",
+    "shield": "shr_pajzsbogar",
+    "ranged": "shr_tuskelovo",
+    "caster": "shr_runaszovo",
+    "big": "shr_pajzsbogar"
+   },
+   "levels": {
+    "1": {
+     "shr_sziklafuto": 1,
+     "shr_tuskelovo": 1
+    },
+    "2": {
+     "shr_sziklafuto": 1,
+     "shr_pajzsbogar": 1,
+     "shr_tuskelovo": 2
+    },
+    "3": {
+     "shr_sziklafuto": 1,
+     "shr_pajzsbogar": 1,
+     "shr_tuskelovo": 2,
+     "shr_runaszovo": 1
+    },
+    "4": {
+     "shr_pajzsbogar": 2,
+     "shr_sziklafuto": 1,
+     "shr_tuskelovo": 3,
+     "shr_runaszovo": 1
+    },
+    "5": {
+     "shr_pajzsbogar": 4,
+     "shr_tuskelovo": 6,
+     "shr_runaszovo": 3
+    }
+   }
   }
  }
 }

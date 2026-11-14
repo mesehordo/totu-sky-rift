@@ -73,6 +73,43 @@
      "zha_tollszellem"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "zha_csirkepasztor",
+    "shield": "zha_kakaslovas",
+    "ranged": "zha_tojasdobalo",
+    "caster": "zha_tolljos",
+    "big": "zha_kakaslovas"
+   },
+   "levels": {
+    "1": {
+     "zha_csirkepasztor": 3,
+     "zha_tojasdobalo": 1
+    },
+    "2": {
+     "zha_csirkepasztor": 1,
+     "zha_kakaslovas": 1,
+     "zha_tojasdobalo": 3
+    },
+    "3": {
+     "zha_csirkepasztor": 1,
+     "zha_kakaslovas": 1,
+     "zha_tojasdobalo": 1,
+     "zha_tolljos": 1
+    },
+    "4": {
+     "zha_kakaslovas": 2,
+     "zha_csirkepasztor": 1,
+     "zha_tojasdobalo": 4,
+     "zha_tolljos": 1
+    },
+    "5": {
+     "zha_kakaslovas": 5,
+     "zha_tojasdobalo": 5,
+     "zha_tolljos": 3
+    }
+   }
   }
  }
 }

@@ -748,6 +748,13 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     r.camps.potion_level = int_of(ca->find("potion_from_level"), r.camps.potion_level);
     r.camps.potion_permille = static_cast<int32_t>((static_cast<int64_t>(fixed_of(ca->find("potion_chance"), Fixed::from_ratio(3, 5)).raw()) * 1000) >> 16);
     r.camps.min_start_dist = int_of(ca->find("min_start_dist"), r.camps.min_start_dist);
+    if (const content::Value* rc = ca->find("recipe"); rc && rc->is_object()) {
+      for (const auto& [lvl, rv] : rc->members()) {
+        const int l = std::atoi(lvl.c_str());
+        if (l < 1 || l > 5 || !rv.is_object()) continue;
+        for (const auto& [role, n] : rv.members()) r.camps.recipe[static_cast<size_t>(l)].emplace_back(role, int_of(&n, 0));
+      }
+    }
   }
 
   // napszak és időjárás (D35, M6 7. lépés)
@@ -853,6 +860,36 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
         fd.camps.push_back(std::move(c));
       }
       std::sort(fd.camps.begin(), fd.camps.end(), [](const CampDef& a, const CampDef& b) { return a.level < b.level; });
+    }
+    // kisnép-tábor (TABOR-1, `Camp`): szintenként a nép saját összetétele (`levels`), ha nincs, a szerepköreiből
+    // (`roles`) a `game.json` recept szerint; a zsákmány a Vadoné (a táborkezelés a Vadon szintjéből veszi)
+    if (const content::Value* cp = v->find("Camp"); cp && cp->is_object() && fd.camps.empty()) {
+      const content::Value* roles = cp->find("roles");
+      const content::Value* levels = cp->find("levels");
+      for (int l = 1; l <= 5; ++l) {
+        CampDef c;
+        c.level = l;
+        auto add = [&](const std::string& uid, int n) {
+          const uint16_t ud = r.def(uid);
+          if (ud == kNoDef || n <= 0) return;
+          for (auto& [d, k] : c.units) {
+            if (d == ud) {
+              k += n;
+              return;
+            }
+          }
+          c.units.emplace_back(ud, n);
+        };
+        const content::Value* fixed = levels ? levels->find(std::to_string(l)) : nullptr;
+        if (fixed && fixed->is_object()) {
+          for (const auto& [uid, n] : fixed->members()) add(uid, int_of(&n, 0));
+        } else if (roles && roles->is_object()) {
+          for (const auto& [role, n] : r.camps.recipe[static_cast<size_t>(l)]) {
+            if (const content::Value* u = roles->find(role); u && u->is_string()) add(u->text(), n);
+          }
+        }
+        if (!c.units.empty()) fd.camps.push_back(std::move(c));
+      }
     }
     if (const content::Value* asc = f->find("ascension"); asc && asc->is_object()) {
       fd.ascension_buildings = int_of(asc->find("buildings"), 3);

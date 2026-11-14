@@ -73,6 +73,42 @@
      "ten_lampasfeny"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "ten_tovisvivo",
+    "shield": "ten_tovisvivo",
+    "ranged": "ten_lombijasz",
+    "caster": "ten_szelhimzo",
+    "big": "ten_tolgyor"
+   },
+   "levels": {
+    "1": {
+     "ten_tovisvivo": 1,
+     "ten_lombijasz": 1
+    },
+    "2": {
+     "ten_tovisvivo": 2,
+     "ten_lombijasz": 2
+    },
+    "3": {
+     "ten_tovisvivo": 4,
+     "ten_lombijasz": 1,
+     "ten_szelhimzo": 1
+    },
+    "4": {
+     "ten_tolgyor": 1,
+     "ten_tovisvivo": 2,
+     "ten_lombijasz": 2,
+     "ten_szelhimzo": 1
+    },
+    "5": {
+     "ten_tolgyor": 3,
+     "ten_tovisvivo": 2,
+     "ten_lombijasz": 4,
+     "ten_szelhimzo": 2
+    }
+   }
   }
  }
 }

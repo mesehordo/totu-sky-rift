@@ -73,6 +73,45 @@
      "mho_gepjavitas"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "mho_hajnalpenge",
+    "shield": "mho_szikraor",
+    "ranged": "mho_szerkezet_ijasz",
+    "caster": "mho_kardkovacs",
+    "big": "mho_fogaskerek_golem"
+   },
+   "levels": {
+    "1": {
+     "mho_hajnalpenge": 1,
+     "mho_szerkezet_ijasz": 1
+    },
+    "2": {
+     "mho_hajnalpenge": 1,
+     "mho_szikraor": 1,
+     "mho_szerkezet_ijasz": 2
+    },
+    "3": {
+     "mho_hajnalpenge": 1,
+     "mho_szikraor": 2,
+     "mho_szerkezet_ijasz": 1,
+     "mho_kardkovacs": 1
+    },
+    "4": {
+     "mho_fogaskerek_golem": 1,
+     "mho_hajnalpenge": 1,
+     "mho_szikraor": 1,
+     "mho_szerkezet_ijasz": 2,
+     "mho_kardkovacs": 1
+    },
+    "5": {
+     "mho_fogaskerek_golem": 2,
+     "mho_szikraor": 2,
+     "mho_szerkezet_ijasz": 3,
+     "mho_kardkovacs": 2
+    }
+   }
   }
  }
 }

@@ -73,6 +73,45 @@
      "dar_rajzas"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "dar_fullanclandzsas",
+    "shield": "dar_gyantapajzsos",
+    "ranged": "dar_szarnyas_ijasz",
+    "caster": "dar_rajenekes",
+    "big": "dar_darazsraj"
+   },
+   "levels": {
+    "1": {
+     "dar_fullanclandzsas": 1,
+     "dar_szarnyas_ijasz": 1
+    },
+    "2": {
+     "dar_fullanclandzsas": 1,
+     "dar_gyantapajzsos": 1,
+     "dar_szarnyas_ijasz": 2
+    },
+    "3": {
+     "dar_fullanclandzsas": 2,
+     "dar_gyantapajzsos": 1,
+     "dar_szarnyas_ijasz": 1,
+     "dar_rajenekes": 1
+    },
+    "4": {
+     "dar_darazsraj": 1,
+     "dar_fullanclandzsas": 1,
+     "dar_gyantapajzsos": 1,
+     "dar_szarnyas_ijasz": 3,
+     "dar_rajenekes": 1
+    },
+    "5": {
+     "dar_darazsraj": 2,
+     "dar_gyantapajzsos": 3,
+     "dar_szarnyas_ijasz": 4,
+     "dar_rajenekes": 4
+    }
+   }
   }
  }
 }

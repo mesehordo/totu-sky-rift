@@ -73,6 +73,43 @@
      "nii_aradas"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "nii_papiruszlandzsas",
+    "shield": "nii_lotuszpajzsos",
+    "ranged": "nii_nadhajos_ijasz",
+    "caster": "nii_arapalypap",
+    "big": "nii_krokodilor"
+   },
+   "levels": {
+    "1": {
+     "nii_papiruszlandzsas": 2,
+     "nii_nadhajos_ijasz": 1
+    },
+    "2": {
+     "nii_papiruszlandzsas": 1,
+     "nii_lotuszpajzsos": 1,
+     "nii_nadhajos_ijasz": 2
+    },
+    "3": {
+     "nii_papiruszlandzsas": 1,
+     "nii_lotuszpajzsos": 1,
+     "nii_arapalypap": 1
+    },
+    "4": {
+     "nii_krokodilor": 1,
+     "nii_papiruszlandzsas": 1,
+     "nii_nadhajos_ijasz": 2,
+     "nii_arapalypap": 1
+    },
+    "5": {
+     "nii_krokodilor": 2,
+     "nii_lotuszpajzsos": 2,
+     "nii_nadhajos_ijasz": 3,
+     "nii_arapalypap": 3
+    }
+   }
   }
  }
 }

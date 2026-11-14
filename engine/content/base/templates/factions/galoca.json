@@ -73,6 +73,45 @@
      "gal_gyors_burjanzas"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "gal_fogaskalap",
+    "shield": "gal_tuskebunkos",
+    "ranged": "gal_sporakopo",
+    "caster": "gal_gyokergancsolo",
+    "big": "gal_oriasgaloca"
+   },
+   "levels": {
+    "1": {
+     "gal_fogaskalap": 1,
+     "gal_sporakopo": 1
+    },
+    "2": {
+     "gal_fogaskalap": 1,
+     "gal_tuskebunkos": 1,
+     "gal_sporakopo": 1
+    },
+    "3": {
+     "gal_fogaskalap": 1,
+     "gal_tuskebunkos": 1,
+     "gal_sporakopo": 2,
+     "gal_gyokergancsolo": 1
+    },
+    "4": {
+     "gal_oriasgaloca": 1,
+     "gal_fogaskalap": 1,
+     "gal_tuskebunkos": 1,
+     "gal_sporakopo": 2,
+     "gal_gyokergancsolo": 1
+    },
+    "5": {
+     "gal_oriasgaloca": 2,
+     "gal_tuskebunkos": 2,
+     "gal_sporakopo": 4,
+     "gal_gyokergancsolo": 3
+    }
+   }
   }
  }
 }

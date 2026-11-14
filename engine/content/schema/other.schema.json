@@ -53,6 +53,7 @@
   "Status": {"type": "object"},
   "Roster": {"type": "object"},
   "Paths": {"type": "object"},
+  "Camp": {"type": "object"},
   "Faction": {"type": "object"},
   "Legacy": {"type": "object"}
  }

@@ -73,6 +73,42 @@
      "tok_hagoorseg"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "tok_zuzmaraturpe",
+    "shield": "tok_zuzmaraturpe",
+    "ranged": "tok_jegveto_turpe",
+    "caster": "tok_hovihar_buso",
+    "big": "tok_fagyorias"
+   },
+   "levels": {
+    "1": {
+     "tok_zuzmaraturpe": 2,
+     "tok_jegveto_turpe": 1
+    },
+    "2": {
+     "tok_zuzmaraturpe": 2,
+     "tok_jegveto_turpe": 2
+    },
+    "3": {
+     "tok_zuzmaraturpe": 3,
+     "tok_jegveto_turpe": 1,
+     "tok_hovihar_buso": 1
+    },
+    "4": {
+     "tok_fagyorias": 1,
+     "tok_zuzmaraturpe": 2,
+     "tok_jegveto_turpe": 1,
+     "tok_hovihar_buso": 1
+    },
+    "5": {
+     "tok_fagyorias": 3,
+     "tok_zuzmaraturpe": 2,
+     "tok_jegveto_turpe": 4,
+     "tok_hovihar_buso": 2
+    }
+   }
   }
  }
 }

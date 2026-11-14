@@ -35,6 +35,7 @@ struct MapObjects {
   std::vector<std::pair<int, int>> starts;   // játékosonként a főépület közepe (csempe)
   std::vector<std::pair<int, int>> trees;    // fák csempénként (a sorrend a pálya sorrendje: fentről le, balról jobbra)
   std::vector<MapResource> resources;
+  std::vector<std::pair<int, std::string>> camp_peoples;   // szint → a kisnép, akinek a tábora ott áll (TABOR-1)
 };
 
 class Map {

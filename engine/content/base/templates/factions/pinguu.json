@@ -73,6 +73,46 @@
      "pin_hidegtures"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "pin_kajakos",
+    "shield": "pin_hopajzsos",
+    "ranged": "pin_jegdardas",
+    "caster": "pin_arapaly_saman",
+    "big": "pin_rozmarlovas"
+   },
+   "levels": {
+    "1": {
+     "pin_kajakos": 1,
+     "pin_jegdardas": 1
+    },
+    "2": {
+     "pin_kajakos": 1,
+     "pin_hopajzsos": 1,
+     "pin_jegdardas": 2
+    },
+    "3": {
+     "pin_kajakos": 1,
+     "pin_hopajzsos": 1,
+     "pin_jegdardas": 1,
+     "pin_arapaly_saman": 1,
+     "pin_rozmarlovas": 1
+    },
+    "4": {
+     "pin_rozmarlovas": 1,
+     "pin_kajakos": 1,
+     "pin_hopajzsos": 1,
+     "pin_jegdardas": 2,
+     "pin_arapaly_saman": 1
+    },
+    "5": {
+     "pin_rozmarlovas": 2,
+     "pin_hopajzsos": 2,
+     "pin_jegdardas": 3,
+     "pin_arapaly_saman": 2
+    }
+   }
   }
  }
 }

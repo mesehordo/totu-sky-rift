@@ -291,6 +291,13 @@ void Sim::spawn_camps(map::Map& m) {
   if (!vadon || starts.empty()) return;
   const Fixed cx = Fixed::from_ratio(m.width(), 2), cy = Fixed::from_ratio(m.height(), 2);
   auto camp_def = [&](int level) -> const CampDef* {
+    for (const auto& [l, who] : m.objects().camp_peoples) {   // a pálya kisnép-tábort kér erre a szintre
+      const FactionDef* p = l == level ? rules_->faction(who) : nullptr;
+      if (!p) continue;
+      for (const CampDef& c : p->camps) {
+        if (c.level == level) return &c;
+      }
+    }
     for (const CampDef& c : vadon->camps) {
       if (c.level == level) return &c;
     }

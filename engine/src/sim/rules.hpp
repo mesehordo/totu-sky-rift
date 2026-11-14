@@ -405,6 +405,8 @@ struct Rules {
     int potion_level = 3;
     int32_t potion_permille = 600;
     int32_t min_start_dist = 12;                          // csempe: a kezdőhelytől ennyin belül nincs tábor
+    // kisnép-tábor (TABOR-1): szintenként (1–5) szerepkör → darab (`recipe`)
+    std::array<std::vector<std::pair<std::string, int>>, 6> recipe;
   } camps;
   std::vector<ItemDef> items;                              // azonosító szerint rendezve
   int item_index(const std::string& id) const;            // -1, ha nincs

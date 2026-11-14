@@ -437,6 +437,14 @@
   "return_regen": 0.1,
   "potion_from_level": 3,
   "potion_chance": 0.6,
-  "min_start_dist": 12
+  "min_start_dist": 12,
+  "_recept": "Kisnép-tábor (TABOR-1): a pálya `camps` mezője szintenként (1–5) egy kisnépet kérhet; a tábor a nép `Camp.levels` összetétele, ha nincs, a `Camp.roles` szerepköreiből e recept szerint; a zsákmány a Vadon azonos szintű táboráé.",
+  "recipe": {
+   "1": {"melee": 2, "ranged": 1},
+   "2": {"melee": 1, "shield": 1, "ranged": 2},
+   "3": {"melee": 1, "shield": 2, "ranged": 2, "caster": 1},
+   "4": {"big": 1, "melee": 1, "shield": 1, "ranged": 3, "caster": 1},
+   "5": {"big": 2, "shield": 2, "ranged": 3, "caster": 2}
+  }
  }
 }

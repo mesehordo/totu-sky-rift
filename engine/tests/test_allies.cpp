@@ -110,3 +110,47 @@ TEST_CASE("kisnépek: mind a 13 csomagja – épületek felépíthetők, egység
   std::printf("  %d kisnép: %d épület, %d egység, %d kutatás\n", peoples, built, trained, researched);
   CHECK(peoples == 13);
 }
+
+TEST_CASE("kisnép-tábor (TABOR-1): 12 kisnépnek 5 szintű tábora; a pálya `camps` mezője szintenként kéri; zsákmány a Vadoné") {
+  int peoples = 0;
+  for (const sim::FactionDef& f : R().factions) {
+    if (!f.ally || f.camps.empty()) continue;
+    ++peoples;
+    CHECK(f.camps.size() == 5);
+    for (const auto& c : f.camps) {
+      for (const auto& [d, n] : c.units) CHECK(R().defs[d].faction == f.id && n > 0);
+    }
+  }
+  CHECK(peoples == 12);   // a kisnép-Micéliának nincs tábora
+  // a pálya leírása: "camps": {"1": "pinguu", "2": "tokla"}
+  {
+    std::string text = read_file(std::filesystem::path(TOTU_TEST_DATA) / "maps" / "ECO-ALAP.json");
+    text.insert(text.find('{') + 1, "\"camps\": {\"1\": \"pinguu\", \"2\": \"tokla\"},");
+    const auto doc = content::parse(text);
+    CHECK(doc.has_value());
+    std::vector<std::string> errors;
+    const auto mp = map::Map::from_json(*doc, content_once().terrain, errors);
+    CHECK(mp.has_value() && errors.empty());
+    CHECK(mp->objects().camp_peoples.size() == 2 && mp->objects().camp_peoples[1].second == "tokla");
+  }
+  Match m("ECO-ALAP", true, false);
+  m.map->objects().camp_peoples = {{4, "pinguu"}, {5, "tokla"}};   // a kis pályán csak a 4. szint fér el
+  sim::MatchSetup setup;
+  setup.factions = {"ursan", "ursan"};
+  setup.camps = true;
+  std::string err;
+  CHECK(m.sim->setup_match(*m.map, setup, &err));
+  sim::Sim& s = *m.sim;
+  int pin = 0, tok = 0, other = 0;
+  s.world().pool<sim::CampMember>().each([&](sim::EntityId e, const sim::CampMember& cm) {
+    const auto& u = *s.world().get<sim::Unit>(e);
+    const int lvl = s.world().get<sim::Camp>(cm.camp)->level;
+    const std::string& fac = R().defs[u.def].faction;
+    CHECK(s.world().get<sim::Health>(e)->owner == 0);
+    if (lvl == 4) (fac == "pinguu" ? pin : other) += 1;
+    else if (lvl == 5) (fac == "tokla" ? tok : other) += 1;
+  });
+  std::printf("  pinguu %d, tokla %d, más %d\n", pin, tok, other);
+  CHECK(pin > 0 && other == 0);   // a kért szinten a kisnép; az el nem férő 5. szint nem jelenik meg
+  CHECK(tok == 0);
+}

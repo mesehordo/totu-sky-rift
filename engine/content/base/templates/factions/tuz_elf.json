@@ -74,6 +74,43 @@
      "tuz_tuzallo_pancel"
     ]
    }
+  },
+  "Camp": {
+   "roles": {
+    "melee": "tuz_homokszablyas",
+    "shield": "tuz_homokvihartancos",
+    "ranged": "tuz_parazsijasz",
+    "caster": "tuz_hoszovo",
+    "big": "tuz_homokvihartancos"
+   },
+   "levels": {
+    "1": {
+     "tuz_homokszablyas": 1,
+     "tuz_parazsijasz": 1
+    },
+    "2": {
+     "tuz_homokszablyas": 1,
+     "tuz_homokvihartancos": 1,
+     "tuz_parazsijasz": 1
+    },
+    "3": {
+     "tuz_homokszablyas": 1,
+     "tuz_homokvihartancos": 2,
+     "tuz_parazsijasz": 1,
+     "tuz_hoszovo": 1
+    },
+    "4": {
+     "tuz_homokvihartancos": 2,
+     "tuz_homokszablyas": 1,
+     "tuz_parazsijasz": 3,
+     "tuz_hoszovo": 1
+    },
+    "5": {
+     "tuz_homokvihartancos": 4,
+     "tuz_parazsijasz": 3,
+     "tuz_hoszovo": 2
+    }
+   }
   }
  }
 }

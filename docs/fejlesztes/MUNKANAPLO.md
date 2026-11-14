@@ -635,3 +635,8 @@ A Napáldás (`mine_boost`) a népi épületképesség-horgon (`use_power`) megy
 **Nyitott tartalmi kérdés (a tulajdonos dönt):** `elf_jaguar` (Jaguár-orvlövész, „idézett / mutációval”) és `wul_tomahawkos` (Dárdavető portyázó, rejtett) a régi játékban sem keletkezett semmilyen módon. **A tulajdonos döntése: maradjanak rejtve** – kikerültek a népi listából (és a Jaguár-harcosok irány egységlistájából, valamint az AI-hadrendből), az `elf_jaguar` is `hidden`; a sablonjuk megmarad.
 **CI:** a FreeBSD és az OpenBSD feladat a tulajdonos kérésére szünetel (`if: false`), később visszakapcsoljuk.
 **Tesztek:** 229 (4 új); a hash-ek változatlanok.
+
+## 2026-11-14 – M7: kisnép-táborok (TABOR-1, KIS-4)
+
+A pálya leírása szintenként (1–5) kisnép-tábort kérhet: `"camps": {"1": "pinguu", "4": "tokla"}` (a többi szint a Vadoné). A 12 kisnép tábor-leírása (szerepkörök és szintenkénti összetétel, a régi `camps.json` szerint) a nép **saját sablonjában** (`factions/<nép>.json` → `Camp`) – új kisnépnél ott kell megadni; a szerepkör-recept a `game.json` `camps.recipe` mezőjében (ha a népnek nincs saját összetétele az adott szintre). A tábor egységei a semleges (0.) játékoséi, a viselkedés (TABOR-2) és a zsákmány a Vadon azonos szintű táboráé. A kisnép-Micéliának nincs tábora (mint a régiben).
+**Tesztek:** 230 (1 új, `test_allies.cpp`); a hash-ek változatlanok.
