@@ -126,7 +126,7 @@ class MenuView {
     for (size_t i = 0; i < 4; ++i) in.tint[i] = c[i];
     b.draw(white_, nullptr, in);
   }
-  void frame(render::SpriteBatch& b, const Rect& r, Rgba c, float t = 1) {
+  void frame(render::SpriteBatch& b, const MenuRect& r, Rgba c, float t = 1) {
     rect(b, r.x, r.y, r.w, t, c);
     rect(b, r.x, r.y + r.h - t, r.w, t, c);
     rect(b, r.x, r.y, t, r.h, c);
@@ -316,7 +316,7 @@ class MenuView {
     rect(b, sw - 4, 0, 2, H_, kFrame);
     rect(b, sw - 1, 0, 1, H_, kFrameDark);
     for (float y = std::floor(H_ * 0.08f); y < H_; y += std::max(40.0f, std::floor(H_ / 9))) diamond(b, sw - 3, y, k(4), kGold);
-    const Rect lg = m.logo_rect();
+    const MenuRect lg = m.logo_rect();
     float ly = k(14) + k(90);
     if (logo_.id && lg.w > 0) {
       render::SpriteInstance in;
@@ -342,7 +342,7 @@ class MenuView {
     }
   }
 
-  void panel(render::SpriteBatch& b, const Rect& r, int a, bool gold_top) {
+  void panel(render::SpriteBatch& b, const MenuRect& r, int a, bool gold_top) {
     rect(b, r.x, r.y, r.w, r.h, Rgba{10, 9, 14, static_cast<uint8_t>(std::clamp(a, 0, 255))});
     frame(b, {r.x - 1, r.y - 1, r.w + 2, r.h + 2}, kFrameDark);
     frame(b, r, kFrame);
@@ -351,7 +351,7 @@ class MenuView {
 
   // --- widgetek ---
   void button(render::SpriteBatch& b, const MenuWidget& w, bool hot, int big) {
-    const Rect& r = w.r;
+    const MenuRect& r = w.r;
     Rgba base = w.enabled ? Rgba{64, 52, 34, 255} : Rgba{38, 36, 40, 255};
     if (hot || w.selected) base = Rgba{124, 92, 44, 255};
     const float d = std::max(2.0f, std::floor(r.h / 16));
@@ -368,7 +368,7 @@ class MenuView {
   }
 
   void widget(render::SpriteBatch& b, const MenuWidget& w, float mx, float my, bool is_open) {
-    const Rect& r = w.r;
+    const MenuRect& r = w.r;
     const bool hot = w.enabled && r.contains(mx, my);
     switch (w.kind) {
       case MenuWidget::Kind::Item: {   // a főmenü pontja: keret nélküli felirat, egérre aranyló sáv
@@ -428,9 +428,9 @@ class MenuView {
     }
   }
 
-  void dropdown_list(render::SpriteBatch& b, const MenuWidget& d, const std::vector<Rect>& items, float mx, float my) {
+  void dropdown_list(render::SpriteBatch& b, const MenuWidget& d, const std::vector<MenuRect>& items, float mx, float my) {
     for (size_t i = 0; i < items.size(); ++i) {
-      const Rect& r = items[i];
+      const MenuRect& r = items[i];
       const bool hot = r.contains(mx, my);
       rect(b, r.x, r.y, r.w, r.h, hot ? Rgba{90, 70, 36, 255} : Rgba{28, 24, 18, 245});
       frame(b, r, Rgba{130, 104, 62, 255});

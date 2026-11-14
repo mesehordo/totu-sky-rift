@@ -20,7 +20,7 @@
 
 namespace totu::client {
 
-struct Rect {
+struct MenuRect {
   float x = 0, y = 0, w = 0, h = 0;
   bool contains(float px, float py) const { return px >= x && px < x + w && py >= y && py < y + h; }
   float cx() const { return x + w / 2; }
@@ -92,7 +92,7 @@ enum class MenuAct : uint8_t {
 struct MenuWidget {
   enum class Kind : uint8_t { Item, Button, Dropdown, Slider, KeyCell, MapRow };
   Kind kind = Kind::Button;
-  Rect r;
+  MenuRect r;
   std::string label;                 // lefordítva
   std::string hint;                  // főmenü: a súgó az oldalsáv alján
   std::string tag;                   // kis jelölés a felirat mellett (lefordított „hamarosan”)
@@ -121,7 +121,7 @@ struct MenuText {
 };
 
 struct MenuPanel {
-  Rect r;
+  MenuRect r;
   int alpha = 200;
   bool gold_top = false;   // az almenü-panel arany felső vonala
 };
@@ -166,9 +166,9 @@ class Menu {
   const MenuWidget* find(MenuAct act, int arg = 0) const;   // a próbáknak és a rajzolónak
   // a nyitott lenyíló (nullptr: nincs) és a listája (képernyő-téglalapok, a választható feliratok sorrendjében)
   const MenuWidget* open_dropdown() const;
-  std::vector<Rect> dropdown_items() const;
+  std::vector<MenuRect> dropdown_items() const;
   int sidebar_width() const { return static_cast<int>(sidebar_w_); }   // főmenü: az oldalsáv (0: nincs)
-  Rect logo_rect() const { return logo_; }
+  MenuRect logo_rect() const { return logo_; }
 
   SkirmishSetup& skirmish() { return sk_; }
   const std::vector<MapInfo>& maps() const { return maps_; }
@@ -187,7 +187,7 @@ class Menu {
   void layout_keys();
   void title(const std::string& text);
   void back_button();
-  MenuWidget& add(MenuWidget::Kind kind, Rect r, std::string label, MenuAct act, int arg = 0);
+  MenuWidget& add(MenuWidget::Kind kind, MenuRect r, std::string label, MenuAct act, int arg = 0);
   void text(float x, float y, float w, std::string s, MenuText::Font f, MenuText::Color c, bool center = false,
             int lines = 1);
   Result activate(const MenuWidget& w, int button, float x);
@@ -214,7 +214,7 @@ class Menu {
   int w_ = 1280, h_ = 720;
   float u_ = 1;
   float sidebar_w_ = 0;
-  Rect logo_;
+  MenuRect logo_;
   std::vector<MenuWidget> widgets_;
   std::vector<MenuText> texts_;
   std::vector<MenuPanel> panels_;

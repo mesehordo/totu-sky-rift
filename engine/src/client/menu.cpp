@@ -213,7 +213,7 @@ void Menu::apply_map() {
   if (!any && n > 1) sk_.slots[1].kind = SlotSetup::Kind::Ai;
 }
 
-MenuWidget& Menu::add(MenuWidget::Kind kind, Rect r, std::string label, MenuAct act, int arg) {
+MenuWidget& Menu::add(MenuWidget::Kind kind, MenuRect r, std::string label, MenuAct act, int arg) {
   MenuWidget w;
   w.kind = kind;
   w.r = r;
@@ -333,7 +333,7 @@ void Menu::layout_skirmish() {
   const float lx = k(24), lw = k(270);
   const float x0 = lx + lw + k(24);
   // ---- pályalista
-  const Rect lp{lx, top, lw, H - top - k(100)};
+  const MenuRect lp{lx, top, lw, H - top - k(100)};
   panels_.push_back({lp, 200, false});
   text(lp.x + k(10), lp.y + k(6), lw - k(20), tr("ui.skirmish.map"), MenuText::Med, MenuText::Gold);
   const int nmaps = static_cast<int>(std::min<size_t>(maps_.size(), 10));
@@ -372,7 +372,7 @@ void Menu::layout_skirmish() {
     x += cw[i] + gap;
   }
   const float row_y0 = top + k(36), row_h = k(34), dh = k(27);
-  const Rect slots{x0 - k(10), top, W - x0 - k(14), row_y0 + 8 * row_h + k(8) - top};
+  const MenuRect slots{x0 - k(10), top, W - x0 - k(14), row_y0 + 8 * row_h + k(8) - top};
   panels_.push_back({slots, 200, false});
   const char* heads[] = {"ui.skirmish.col.num", "ui.skirmish.col.participant", "ui.skirmish.col.faction",
                          "ui.skirmish.col.color"};
@@ -446,7 +446,7 @@ void Menu::layout_settings() {
   const float pw = std::min(k(720), W - k(72));
   const float step = std::max(k(20), std::min(k(54), std::floor((H - top - k(150)) / kSettingRows)));
   const float bh = std::max(1.0f, step - k(2));
-  const Rect pr{W / 2 - pw / 2, top, pw, kSettingRows * step + k(60)};
+  const MenuRect pr{W / 2 - pw / 2, top, pw, kSettingRows * step + k(60)};
   panels_.push_back({pr, 215, false});
   const float bw = k(270);
   auto onoff = [&](bool v) { return tr(v ? "ui.on" : "ui.off"); };
@@ -482,11 +482,11 @@ void Menu::layout_sound() {
   const float top = k(96);
   const float pw = std::min(k(770), W - k(72));
   const float step = std::max(k(24), std::min(k(61), std::floor((H - top - k(120)) / static_cast<float>(kSoundCount))));
-  const Rect pr{std::floor((W - pw) / 2), top, pw, step * static_cast<float>(kSoundCount) + k(25) + k(30)};
+  const MenuRect pr{std::floor((W - pw) / 2), top, pw, step * static_cast<float>(kSoundCount) + k(25) + k(30)};
   panels_.push_back({pr, 215, false});
   for (size_t i = 0; i < kSoundCount; ++i) {
     const float y = pr.y + k(12) + static_cast<float>(i) * step;
-    const Rect btn{pr.x + pr.w - k(105), y, k(80), step - k(8)};
+    const MenuRect btn{pr.x + pr.w - k(105), y, k(80), step - k(8)};
     const float left = pr.x + std::floor(pw / 2);
     const Settings::Volume& v = st_.volume[i];
     MenuWidget& b = add(MenuWidget::Kind::Button, btn, tr(v.enabled ? "ui.on" : "ui.off"), MenuAct::SoundToggle, static_cast<int>(i));
@@ -512,7 +512,7 @@ void Menu::layout_keys() {
   const float cell = k(84), gap = k(12);
   const float gw = 4 * cell + 3 * gap;
   const float pw = std::min(W - k(72), std::max(gw + k(60), k(620)));
-  const Rect pr{W / 2 - pw / 2, top, pw, k(70) + 3 * cell + 2 * gap + k(90)};
+  const MenuRect pr{W / 2 - pw / 2, top, pw, k(70) + 3 * cell + 2 * gap + k(90)};
   panels_.push_back({pr, 215, false});
   text(pr.x + k(24), pr.y + k(14), pr.w - k(48),
        tr("ui.keys.info"),
@@ -545,8 +545,8 @@ const MenuWidget* Menu::open_dropdown() const {
   return w && w->kind == MenuWidget::Kind::Dropdown ? w : nullptr;
 }
 
-std::vector<Rect> Menu::dropdown_items() const {
-  std::vector<Rect> out;
+std::vector<MenuRect> Menu::dropdown_items() const {
+  std::vector<MenuRect> out;
   const MenuWidget* d = open_dropdown();
   if (!d) return out;
   const float ih = k(26);
