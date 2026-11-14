@@ -899,7 +899,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       static const std::map<std::string, std::string> kStat = {
           {"hp", "Health.max"}, {"armor", "Health.armor"}, {"damage", "Attack.damage"}, {"regen", "Health.regen"},
           {"range", "Attack.range"}, {"sight", "Vision.sight"}, {"speed_pct", "Movement.speed_pct"},
-          {"shield", "Health.shield"}, {"carry_pct", "Worker.carry_pct"}};
+          {"shield", "Health.shield"}, {"carry_pct", "Worker.carry_pct"}, {"energy", "Energy.max"}};
       for (const auto& [pid, pv] : ps->members()) {
         if (!pv.is_object()) continue;
         PathDef pd;
