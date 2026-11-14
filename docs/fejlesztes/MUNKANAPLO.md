@@ -705,3 +705,7 @@ A tároló minden szövegfájlja LF (`.gitattributes`: `* text=auto eol=lf`, a k
 
 - **Szünetmenü a játékban:** az Esc (ha a HUD nem fogyasztotta el – célzás, aloldal) és a fogaskerék megállítja a szimulációt (`SimRunner::set_paused`), a HUD nem ad parancsot, a képernyő elsötétül; Esc/Enter/kattintás = folytatás, Q = kilépés. Szövegek: `ui.pause.*` (hu, en).
 - **Döntések:** a színvak-barát csapatszínek az Okabe–Ito-palettából (a régiben nem volt); a kamera a nyilakkal mozog, a W/S/D a parancsrácsé (mint a régiben); az Esc előbb a célzást/aloldalt zárja, különben szünetmenü.
+
+## 2026-11-14 – A gazdasági képpróba referenciája: az új HUD
+
+A referencia a CI Mesa-képére cserélve (az M8 HUD-ja: alsó sáv a régi elrendezésben, felső erőforrássáv, küldetéslista). A CI-ben a felület képei nincsenek letöltve, ezért az ikonhelyek üresek – a többi képpróba változatlanul egyezik.
