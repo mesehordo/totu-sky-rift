@@ -92,6 +92,7 @@ jobs:
 
   freebsd:
     name: FreeBSD x64 (clang)
+    if: false   # a tulajdonos kérése: a BSD-k egyelőre szünetelnek, később visszakapcsoljuk
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -111,6 +112,7 @@ jobs:
 
   openbsd:
     name: OpenBSD x64 (clang)
+    if: false   # a tulajdonos kérése: a BSD-k egyelőre szünetelnek, később visszakapcsoljuk
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
