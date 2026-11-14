@@ -248,6 +248,7 @@ class Module final : public FactionModule {
     if (s.tick_ % 15 == 0) faith(s);
     mines(s);
     rift(s);
+    energy_ids(s);
   }
 
  private:
@@ -349,6 +350,41 @@ class Module final : public FactionModule {
       const int kind = n.kind;
       s.income(h->owner, kind, whole);
       if (s.world_.get<ResourceNode>(node)->amount <= 0) s.remove_resource(node);
+    }
+  }
+
+  // Napszemű papok (kutatás, `energy_regen_ids`: sablon → szorzó; a régi E 200): a megnevezett egységek energiája ennyiszer
+  // gyorsabban töltődik – a közös töltés (a képességrendszerben) fölé a többlet
+  void energy_ids(Sim& s) {
+    for (uint8_t o = 1; o <= Sim::kMaxPlayers; ++o) {
+      const PlayerState& p = s.player(o);
+      if (!p.active || p.researched.empty()) continue;
+      std::vector<std::pair<uint16_t, Fixed>> mult;
+      for (const std::string& id : p.researched) {
+        const ResearchDef* rd = s.rules_->research(id);
+        const content::Value* ru = rd && rd->raw ? rd->raw->find("Rules") : nullptr;
+        const content::Value* er = ru ? ru->find("energy_regen_ids") : nullptr;
+        if (!er || !er->is_object()) continue;
+        for (const auto& [uid, m] : er->members()) {
+          if (s.rules_->def(uid) != kNoDef) mult.emplace_back(s.rules_->def(uid), num(&m, Fixed::from_int(1)));
+        }
+      }
+      if (mult.empty()) continue;
+      s.world_.pool<Caster>().each([&](EntityId e, Caster& c) {
+        const Unit* u = s.world_.get<Unit>(e);
+        const Health* h = s.world_.get<Health>(e);
+        if (!u || !h || h->owner != o || h->hp <= 0) return;
+        const EntityDef& d = s.rules_->defs[u->def];
+        if (d.energy_max <= 0) return;
+        for (const auto& [ud, m] : mult) {
+          if (ud != u->def || m <= Fixed::from_int(1)) continue;
+          const int32_t cap = s.stat(e, "Energy.max", Fixed::from_int(d.energy_max)).floor_int() * 1000;
+          Fixed er = s.in_rift(e) ? s.rules_->energy_regen_per_tick * s.rules_->rift.energy_mult : s.rules_->energy_regen_per_tick;
+          er = er + s.stat(e, "energy_regen", Fixed{}) / Fixed::from_int(kTickHz);
+          const Fixed extra = er * (m - Fixed::from_int(1));
+          if (c.energy < cap) c.energy = std::min<int32_t>(cap, c.energy + static_cast<int32_t>(int64_t{extra.raw()} * 1000 >> 16));
+        }
+      });
     }
   }
 

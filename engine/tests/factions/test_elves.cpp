@@ -365,3 +365,19 @@ TEST_CASE("Szürke elfek Égkő-fény: a varázssebzés × 1,25 (a közös × 1 
   s.deal_damage(far, 1, d, t2, 20000, false, false);
   CHECK(h3 - s.world().get<sim::Health>(t1)->hp == h4 - s.world().get<sim::Health>(t2)->hp);
 }
+
+TEST_CASE("Szürke elfek Napszemű papok: a Napszóró energiája × 1,5-tel töltődik (`energy_regen_ids`), másé nem") {
+  Match m = elves();
+  sim::Sim& s = *m.sim;
+  const auto p = put(s, "elf_napszoro", 1, 25, 100);
+  const auto o = put(s, "elf_tollas_harcos", 1, 45, 100);
+  finish(s, "elf_napszemu_papok");
+  m.run(1);
+  s.world().get<sim::Caster>(p)->energy = 0;
+  s.world().get<sim::Caster>(o)->energy = 0;
+  m.run(300);
+  const int32_t ep = s.world().get<sim::Caster>(p)->energy, eo = s.world().get<sim::Caster>(o)->energy;
+  std::printf("  energia 10 s alatt: Napszóró %d, harcos %d ezred\n", ep, eo);
+  CHECK(eo >= 7700 && eo <= 8100);   // 0,8 / s
+  CHECK(ep >= 11700 && ep <= 12100);  // 0,8 × 1,5 / s
+}

@@ -169,7 +169,14 @@ class Module final : public FactionModule {
       const Position& op = *s.world().get<Position>(o);
       if (oh && oh->owner == h->owner && oh->hp > 0 && core::length(op.x - p->x, op.y - p->y) <= boost_radius_) near = true;
     });
-    return near ? boost_mult_ : Fixed::from_int(1);
+    if (!near) return Fixed::from_int(1);
+    // a fejlődési irány szabálya felülírja (`Paths.<irány>.rules.build_boost_mult`; a Vörös dojó 1,75)
+    const std::string& path = s.player(h->owner).path;
+    const FactionDef* f = s.rules()->faction(s.player(h->owner).faction);
+    const content::Value* ps = f && f->raw && !path.empty() ? f->raw->find("Paths") : nullptr;
+    const content::Value* pd = ps ? ps->find(path) : nullptr;
+    const content::Value* pr = pd ? pd->find("rules") : nullptr;
+    return fnum(pr ? pr->find("build_boost_mult") : nullptr, boost_mult_);
   }
 
   // Kőkutya, Kapuőrzés
@@ -235,8 +242,18 @@ class Module final : public FactionModule {
     return m && m->broken ? broken_speed_ : Fixed::from_int(1);
   }
 
-  void on_death(Sim& s, EntityId v, EntityId, uint8_t) override {
-    if (!load(s) || !is_ooni(s, v)) return;
+  void on_death(Sim& s, EntityId v, EntityId killer, uint8_t) override {
+    if (!load(s)) return;
+    // Vérszomj (kutatás, `kill_heal`; a régi G 1222): az oni harcos ölésenként életerőt kap vissza
+    if (killer != v && s.world().alive(killer) && s.world().get<Unit>(killer) && is_ooni(s, killer)) {
+      Health* kh = s.world().get<Health>(killer);
+      const PRules& r = prules(s, kh->owner);
+      const uint16_t kd = s.world().get<Unit>(killer)->def;
+      if (kh->hp > 0 && r.kill_heal_hp > 0 && std::find(r.kill_heal_ids.begin(), r.kill_heal_ids.end(), kd) != r.kill_heal_ids.end()) {
+        kh->hp = std::min(kh->max, kh->hp + r.kill_heal_hp);
+      }
+    }
+    if (!is_ooni(s, v)) return;
     if (ToriiGate* g = s.world().get<ToriiGate>(v)) {   // a pár egyedül marad (a várakozókat a tick engedi ki)
       if (ToriiGate* p = s.world().alive(g->pair) ? s.world().get<ToriiGate>(g->pair) : nullptr; p && p->pair == v) p->pair = 0;
       g->pair = 0;
@@ -371,6 +388,8 @@ class Module final : public FactionModule {
     size_t key = SIZE_MAX;
     Fixed light_add, lantern_magic = Fixed::from_int(1), drum_mult = Fixed::from_int(1), hurt_mult = Fixed::from_int(1);
     int32_t torii_pairs = 1, kokutya_guard = 0;
+    std::vector<uint16_t> kill_heal_ids;   // Vérszomj (`kill_heal`): ölésenként ennyi életerő ezeknek
+    int32_t kill_heal_hp = 0;
   };
   std::array<PRules, Sim::kMaxPlayers + 1> pr_{};
   const PRules& prules(Sim& s, uint8_t o) {
@@ -390,6 +409,14 @@ class Module final : public FactionModule {
       r.hurt_mult *= fnum(ru->find("morale_hurt_mult"), Fixed::from_int(1));
       r.torii_pairs = std::max(r.torii_pairs, fnum(ru->find("torii_pairs"), Fixed{}).floor_int());
       r.kokutya_guard += fnum(ru->find("kokutya_guard"), Fixed{}).floor_int();
+      if (const content::Value* kh = ru->find("kill_heal"); kh && kh->is_object()) {
+        r.kill_heal_hp = fnum(kh->find("hp"), Fixed::from_int(20)).floor_int();
+        if (const content::Value* ids = kh->find("ids"); ids && ids->is_array()) {
+          for (const auto& x : ids->items()) {
+            if (x.is_string() && s.rules()->def(x.text()) != kNoDef) r.kill_heal_ids.push_back(s.rules()->def(x.text()));
+          }
+        }
+      }
     }
     return r;
   }

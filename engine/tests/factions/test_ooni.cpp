@@ -333,3 +333,30 @@ TEST_CASE("Ooni Tanuki tárgylelet: a bányászott rakományok némelyikénél t
   std::printf("  lelet: %d tárgy, %lld kő\n", items, static_cast<long long>(s.player(1).gathered[sim::kStone]));
   CHECK(items >= 1);
 }
+
+TEST_CASE("Ooni Vörös dojó irány: a Taiko-dobos építésgyorsítása × 1,75 (`build_boost_mult`); Vérszomj: ölésenként +20 életerő") {
+  Match m = ooni();
+  sim::Sim& s = *m.sim;
+  const auto site = s.place_building(def_of("oon_lakohaz"), 1, 12, 17, false);
+  put(s, "oon_dobos", 1, 130, 175);
+  CHECK(s.mod_build(site) == fx(3, 2));
+  s.player_mut(1).path = "voros";
+  CHECK(s.mod_build(site) == fx(7, 4));
+  // Vérszomj: az oni harcos ölése visszaad 20 életerőt (kutatás nélkül nem); a természetes gyógyulás mellett a különbség
+  const auto oni = put(s, "oon_oni_harcos", 1, 185, 185);
+  auto& h = *s.world().get<sim::Health>(oni);
+  auto gain = [&]() {
+    h.hp = h.max - 50;
+    const int32_t before = h.hp;
+    const auto v = put(s, "urs_telepes", 2, 190, 185);
+    s.deal_damage(oni, 1, sim::kNoDef, v, 100000000, false, true);
+    m.run(1);
+    return h.hp - before;
+  };
+  const int32_t plain = gain();
+  auto& r = s.player_mut(1).researched;
+  r.insert(std::lower_bound(r.begin(), r.end(), std::string("oon_verszomj")), "oon_verszomj");
+  const int32_t thirst = gain();
+  std::printf("  ölés után: kutatás nélkül %+d, Vérszomjjal %+d\n", plain, thirst);
+  CHECK(thirst - plain == 20);
+}

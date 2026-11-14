@@ -645,3 +645,10 @@ A pálya leírása szintenként (1–5) kisnép-tábort kérhet: `"camps": {"1":
 
 `Sim::ai_choose_ally`: az előírt kisnép (a szkriptben `AI_ALLY[p]`, a régi `forced_ally`), egyébként a nép `Faction.ai.ally_pref` listájából 80%-ban az első kettő közül (a determinisztikus harci véletlennel; a véletlen csak akkor fogy, ha a szövetség meg is köthető – kész csarnok, elég nyersanyag). Lua: `Game.ai_ally(p [, előírt])`, `Game.faction_ai(nép)` (a nép `ai.build` és `ai.army` terve), `Game.player(p).ally`. A szkriptelt ursan gép az építési listája végén felépíti a Diplomácia csarnokát, szövetséget köt, és a kisnép épületeit és egységeit beveszi a tervébe (a régi `on_ally` szerint).
 **Tesztek:** 231 (1 új, `test_match.cpp`); a hash-ek és a golden M6 változatlanok.
+
+## 2026-11-14 – M7: Napszemű papok, Vörös dojó építésgyorsítás, Vérszomj
+
+- **Napszemű papok** (elf kutatás, `Rules.energy_regen_ids`: sablon → szorzó; a régi E 200): a Napszóró energiája × 1,5-tel töltődik (a közös töltés fölé a többlet, az Égkő-fényt is figyelembe véve).
+- **Vörös dojó irány** (Ooni, `Paths.voros.rules.build_boost_mult`; a régi G 1494): a Taiko-dobos melletti építés × 1,75 (× 1,5 helyett).
+- **Vérszomj** (Ooni kutatás, `Rules.kill_heal`; a régi G 1222): az oni harcosok (Oni harcos, Tomboló oni, Ō-oni, Kőhajító) ölésenként 20 életerőt kapnak vissza.
+**Tesztek:** 233 (2 új); a hash-ek változatlanok.
