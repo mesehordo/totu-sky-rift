@@ -5,6 +5,7 @@
 // A szimulációt közvetlenül nem olvassa – így az külön szálon futhat.
 #pragma once
 
+#include <array>
 #include <map>
 #include <memory>
 #include <string>
@@ -28,6 +29,8 @@ class World {
 
   // A résztvevő népek egységlapjainak előkészítése egyszerre (a meccs töltésekor; menet közben nincs akadás).
   bool prepare_atlas(render::Atlas& atlas, std::string* error);
+  // a csapatszínek (M8: a beállítások színvak-barát palettája; játékosonként, az 1. játékos az első)
+  void set_team_colors(const std::array<std::array<uint8_t, 4>, 8>& c) { teams_ = c; }
 
   // Képkockánként egyszer: a két legutóbbi pillanatkép átvétele (új tick esetén az irányok és az animációk frissülnek).
   void update();
@@ -85,6 +88,9 @@ class World {
   static constexpr float kTilePx = render::TerrainView::kTilePx;
 
  private:
+  std::array<std::array<uint8_t, 4>, 8> teams_ = {{{220, 40, 40, 255},  {40, 90, 230, 255},  {40, 180, 60, 255},
+                                                  {230, 200, 40, 255}, {160, 60, 200, 255}, {240, 130, 30, 255},
+                                                  {40, 200, 200, 255}, {235, 235, 235, 255}}};
   struct Visual {   // a jelenlegi pillanatkép egységeivel párhuzamos (azonos sorrend)
     sim::EntityId id = 0;
     float px = 0, py = 0;   // az előző pillanatkép helye (új egységnél a mostani)

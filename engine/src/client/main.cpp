@@ -24,6 +24,9 @@
 //   totu --nopost                  utófeldolgozás nélkül (a 4. lépés képe)
 //   totu --check                   a képernyőképnek legalább 2%-a nem háttérszín (különben 1-es kilépési kód; CI)
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
+//   totu [--menu]                  főmenü (M8): egyéni csata, beállítások; paraméter nélkül is ez indul
+//                                  (--maps mappa: a pályák helye; a beállításfájl a felhasználói mappában;
+//                                  --menu-screen skirmish|settings|sound|keys: ezzel a képernyővel indul – képpróba)
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
@@ -40,6 +43,9 @@
 
 #include "core/platform_info.hpp"
 #include "client/hud.hpp"
+#include "client/i18n.hpp"
+#include "client/menu_view.hpp"
+#include "client/settings.hpp"
 #include "client/world.hpp"
 #include "render/atlas.hpp"
 #include "render/daylight.hpp"
@@ -83,6 +89,10 @@ struct Options {
   int battle_demo = 0;
   std::string assets = TOTU_ASSETS_DIR;
   int width = 1280, height = 720;
+  bool size_given = false;
+  bool menu = false;                 // M8: a főmenü
+  client::MenuScreen menu_screen = client::MenuScreen::Main;
+  std::string maps = TOTU_MAPS_DIR;
 };
 
 // a bemutató: népenként egy egységtípus (a sprite-lapok közül az első 8 csapatmaszkos), N egység rácsban
@@ -245,6 +255,15 @@ int main(int argc, char** argv) {
     else if (a == "--sync") o.sync = true;
     else if (a == "--build-demo") o.build_demo = true;
     else if (a == "--garrison-demo") o.garrison_demo = true;
+    else if (a == "--menu") o.menu = true;
+    else if (a == "--menu-screen") {   // képpróbához: a menü ezzel a képernyővel indul
+      const std::string v = next();
+      o.menu = true;
+      o.menu_screen = v == "skirmish" ? client::MenuScreen::Skirmish : v == "settings" ? client::MenuScreen::Settings
+                      : v == "sound"  ? client::MenuScreen::Sound    : v == "keys"     ? client::MenuScreen::Keys
+                                                                                        : client::MenuScreen::Main;
+    }
+    else if (a == "--maps") o.maps = next();
     else if (a == "--battle-demo") o.battle_demo = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--look") {
       char* end = nullptr;
@@ -267,7 +286,11 @@ int main(int argc, char** argv) {
       const long w = std::strtol(v, &end, 10);
       if (end && *end == 'x') {
         const long h = std::strtol(end + 1, nullptr, 10);
-        if (w > 0 && h > 0 && w <= 16384 && h <= 16384) { o.width = static_cast<int>(w); o.height = static_cast<int>(h); }
+        if (w > 0 && h > 0 && w <= 16384 && h <= 16384) {
+          o.width = static_cast<int>(w);
+          o.height = static_cast<int>(h);
+          o.size_given = true;
+        }
       }
     }
   }
@@ -282,6 +305,25 @@ int main(int argc, char** argv) {
 #if defined(__APPLE__)
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 #endif
+  // M8: a felhasználói beállítások (platformfüggetlen helyen) és a nyelvek (a locale mappák .po fájljai)
+  const bool menu_mode = o.menu || (o.world.empty() && o.atlas.empty() && o.demo == 0 && !o.bench);
+  client::Settings settings;
+  std::string settings_file;
+  if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
+    settings_file = client::settings_path(pref);
+    SDL_free(pref);
+    std::string serr;
+    if (!client::load_settings(settings_file, &settings, &serr)) std::fprintf(stderr, "%s\n", serr.c_str());
+  }
+  client::Locale locale;
+  locale.load(o.content);
+  locale.set_lang(settings.language);
+  if (menu_mode && !o.size_given) {
+    o.width = settings.width;
+    o.height = settings.height;
+  }
+  client::MatchConfig match_cfg;
+  bool have_cfg = false, menu_quit = false;
   SDL_WindowFlags flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
   if (o.hidden) flags |= SDL_WINDOW_HIDDEN;
   SDL_Window* win = SDL_CreateWindow("TOTU: Sky Rift", o.width, o.height, flags);
@@ -314,6 +356,12 @@ int main(int argc, char** argv) {
     client::Session session;
     client::SimRunner runner(session);
     client::World world(session, runner);
+    {
+      const auto& tc = client::team_colors(settings.colorblind);   // M8: színvak-barát csapatszínek
+      std::array<std::array<uint8_t, 4>, 8> teams{};
+      for (size_t i = 0; i < 8; ++i) teams[i] = tc[i];
+      world.set_team_colors(teams);
+    }
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture fallback, white;
@@ -358,6 +406,21 @@ int main(int argc, char** argv) {
       if (!batch.init(dev, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
+      } else if (menu_mode && !(have_cfg = [&] {   // M8: a főmenü; a meccs a választott beállítással indul
+                   if (settings.fullscreen && !o.size_given) client::apply_display(win, settings);
+                   client::MenuRunOptions mo;
+                   mo.assets = o.assets;
+                   mo.content = o.content;
+                   mo.maps_dir = o.maps;
+                   mo.settings_file = settings_file;
+                   mo.frames = o.frames;
+                   mo.screenshot = o.screenshot;
+                   mo.start = o.menu_screen;
+                   if (!client::run_menu(win, dev, batch, settings, locale, mo, &match_cfg, &rc)) return false;
+                   o.world = match_cfg.map_path;
+                   return true;
+                 }())) {
+        menu_quit = true;
       } else if (demo.units > 0 && !demo.load(dev, o.assets, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
@@ -371,7 +434,9 @@ int main(int argc, char** argv) {
           if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           // meccs (M6), ha a pályán vannak kezdőhelyek; különben a bemutató seregei
           if (session.has_starts()) {
-            if (!session.start_match({"ursan", "ursan"}, true, &err)) std::fprintf(stderr, "meccs: %s\n", err.c_str());
+            const bool started = have_cfg ? session.start_match(match_cfg.setup, match_cfg.ai, "ai_nep.lua", &err)
+                                          : session.start_match({"ursan", "ursan"}, true, &err);
+            if (!started) std::fprintf(stderr, "meccs: %s\n", err.c_str());
           } else {
             session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           }
@@ -426,7 +491,7 @@ int main(int argc, char** argv) {
       }
     }
     std::vector<double> times;
-    bool running = rc == 0;
+    bool running = rc == 0 && !menu_quit;
     long frame = 0;
     const auto start = std::chrono::steady_clock::now();
     while (running && (o.frames < 0 || frame < o.frames)) {

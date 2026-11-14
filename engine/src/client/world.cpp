@@ -12,8 +12,6 @@ namespace {
 
 Fixed to_fixed(float px) { return Fixed::from_raw(static_cast<int32_t>(px / World::kTilePx * 65536.0f)); }
 
-const uint8_t kTeams[8][4] = {{220, 40, 40, 255},  {40, 90, 230, 255},  {40, 180, 60, 255}, {230, 200, 40, 255},
-                              {160, 60, 200, 255}, {240, 130, 30, 255}, {40, 200, 200, 255}, {235, 235, 235, 255}};
 // bemutató: a játékosok népe (a sprite-lapok előtagja)
 const char* kFactions[8] = {"elf_", "cro_", "urs_", "imp_", "wul_", "huk_", "oon_", "dsz_"};
 
@@ -436,7 +434,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     const uint8_t owner = u.owner;
     const bool match = u.def != sim::kNoDef || u.kind != SnapUnit::kUnit;
     if (v.sheet == -2) v.sheet = !atlas ? -1 : match ? sheet_of(atlas, u) : sheet_for(atlas, u.id, owner);
-    const uint8_t* team = kTeams[(owner + 7) % 8];
+    const uint8_t* team = teams_[(owner + 7u) % 8u].data();
     if (u.kind == SnapUnit::kShot) {   // lövedék: az ív magasságában, az árnyéka a talajon
       if (atlas && v.sheet >= 0) {
         const auto& s = atlas->data().sheets[static_cast<size_t>(v.sheet)];

@@ -93,6 +93,9 @@ class Session {
   bool has_starts() const { return map_ && !map_->objects().starts.empty(); }
   // `ai`: a szkriptelt ellenfél ezekhez a játékosokhoz (M6 9. lépés; `content/base/scripts/ai_ursan.lua`)
   bool start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error, std::vector<int> ai = {2});
+  // meccs a teljes beállítással (M8, az egyéni csata képernyője): a gépi játékosok a `scripts/<ai_script>` szkripttel
+  // (az adatvezérelt `ai_nep.lua` bármely főnépnek); köd nélkül (Fog::None) a pillanatkép sem szűr
+  bool start_match(const sim::MatchSetup& setup, const std::vector<int>& ai, const std::string& ai_script, std::string* error);
   const sim::Rules* rules() const { return rules_ ? &*rules_ : nullptr; }
   // a megjelenített név a magyar fordításból (`locale/hu.po`: msgctxt → msgid); ha nincs, maga a kulcs
   std::string display_name(const std::string& key) const;
