@@ -231,6 +231,7 @@ bool Sim::nav_free(EntityId e, const Body& b, uint8_t owner, Fixed x, Fixed y, F
 // Az álló saját egység félreáll a mozgó útjából (Pottinger): a mozgás irányára merőlegesen, arra az oldalra, ahol
 // már amúgy is van; ha ott nem fér el, a másikra.
 bool Sim::nav_shove(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py) {
+  if (!modules_.empty() && mod_inert(blocker)) return false;   // a beásott egység nem lökhető (a tulajdonos döntése)
   Movement* bm = world_.get<Movement>(blocker);
   Path* bp = world_.get<Path>(blocker);
   const Body* bb = world_.get<Body>(blocker);
@@ -270,6 +271,7 @@ bool Sim::nav_shove(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py) {
 // Szemből jövő, mozgó saját egység: egy kis oldalirányú lökés (puha ütközés-szétválasztás), az útját nem változtatja
 // meg – így a két irányú forgalom sávokra válik (híd, szoros), nem akad össze.
 bool Sim::nav_nudge(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py) {
+  if (!modules_.empty() && mod_inert(blocker)) return false;   // a beásott egység nem lökhető
   const Body* bb = world_.get<Body>(blocker);
   Position* pos = world_.get<Position>(blocker);
   Path* bp = world_.get<Path>(blocker);

@@ -675,3 +675,10 @@ A pálya leírása szintenként (1–5) kisnép-tábort kérhet: `"camps": {"1":
 
 Az utolsó 13 sor: több egység egy képzésből (`Cost.count`, a Karmos párban), halálkori robbanás (`death_burst`), bányai rejtőzés (`mine_stealth`, Tanuki), típusszorzó-tiltás (`type_nostrength`), nem építő munkás (`Worker.builds`), párhuzamos gyártás (`parallel`, Kaptár), lelőhelyre építés (`on_resource`: Napfúró, Fertőzött tárna – csak a lelőhely sarkára), épület-aura (`Aura`, a Tápgomba gyógyítása is), erdei rejtőzés irány-szabályként (`forest_stealth`), a képesség spóra-ára (Micélia-mod), és a gépben (`ai_nep.lua`) a létszámegység (emu, szemhordozó; ha elfogyott, új karám) és a hős az oltárból (a sereg kivár a hős létszámára). Próbák: `test_leltar_maradek.cpp`. A lefedettségi próba helyteremtője a körzetadó épületekből (`Mechanics.*_radius`) többet is épít, a lelőhelyre épülőt nem használja, és a nagy egységet képző épület körül két csempét hagy.
 **Leltár-kapu (`--gate`): teljesül** – 361 sor: teszt 284, átfedés 35, megjelenítés 38, halott 4. A golden M7 újra rögzítve (a gép és a szabályok változtak). **Tesztek:** 285; 6 CTest; a rögzített hash-ek változatlanok.
+
+## 2026-11-14 – A tulajdonos döntései a Croftian beásásról
+
+- **A beásott egység gyorsan gyógyul** (a kapcsoló `regen_add`-ja, +4 életerő/s) – a régi játékban nem hatott (csak az `aura_mods`-ot olvasta); régi hiba javítva (D43).
+- **A beásott egység nem lökhető:** a mozgó egységek ütközés-feloldása (`nav_shove`, `nav_nudge`) a tétlen (`inert`) egységet nem tolja el.
+- **A gép magától nem ás be** – ez a valódi gépi ellenféllel (M9) jön.
+**Tesztek:** 286 (1 új); a hash-ek és a golden felvételek változatlanok.

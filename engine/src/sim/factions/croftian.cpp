@@ -389,6 +389,19 @@ class Module final : public FactionModule {
   Fixed regen_add(Sim& s, EntityId e) override {
     const Health* h = s.world().get<Health>(e);
     if (!h) return Fixed{};
+    // a beásott egység gyorsan gyógyul (a kapcsoló `regen_add`-ja, +4/s; a régiben nem hatott – a tulajdonos döntése)
+    Fixed dig;
+    if (const Caster* c = s.world().get<Caster>(e); c && burrowed(s, e)) {
+      for (const uint16_t a : c->toggles) {
+        const content::Value* sp = s.rules()->abilities[a].spec.get();
+        if (sp && flag(sp->find("burrow"))) dig = std::max(dig, s.rules()->abilities[a].mods.regen_add);
+      }
+    }
+    return dig + creep_regen(s, e, *h);
+  }
+
+  Fixed creep_regen(Sim& s, EntityId e, const Health& hh) {
+    const Health* h = &hh;
     const Unit* u = s.world().get<Unit>(e);
     const Building* b = u ? nullptr : s.world().get<Building>(e);
     if (!u && !b) return Fixed{};

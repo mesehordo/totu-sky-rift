@@ -718,3 +718,25 @@ TEST_CASE("Croftianok beasas: a beasott egyseg rejtett, all, nem tamad; kiasva u
   m.run(90);
   CHECK(s.world().get<sim::Health>(foe)->hp < hp0);
 }
+
+TEST_CASE("Croftianok beasas: a beasott egyseg gyorsan gyogyul (+4 / s) es nem lokheto (a tulajdonos dontese)") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto k = put(s, "cro_karmos", 1, fx(285, 10), fx(185, 10));
+  const auto o = put(s, "cro_karmos", 1, fx(285, 10), fx(165, 10));   // összehasonlító, nincs beásva
+  auto& hk = *s.world().get<sim::Health>(k);
+  auto& ho = *s.world().get<sim::Health>(o);
+  hk.hp = ho.hp = 10;
+  CHECK(s.use_ability({k}, "beasas", Fixed{}, Fixed{}, 0));
+  m.run(150);   // 5 s
+  std::printf("  5 s alatt: beásva %d, kint %d\n", hk.hp, ho.hp);
+  CHECK(hk.hp - 10 >= (ho.hp - 10) + 18);   // +4 / s többlet (kerekítéssel)
+  // a rajta átmenő saját egység nem tolja el
+  const auto& p0 = *s.world().get<sim::Position>(k);
+  const Fixed x0 = p0.x, y0 = p0.y;
+  const auto w = put(s, "cro_karmos", 1, fx(255, 10), fx(185, 10));
+  s.order_move(w, fx(315, 10), fx(185, 10));
+  m.run(120);
+  const auto& p1 = *s.world().get<sim::Position>(k);
+  CHECK(p1.x == x0 && p1.y == y0);
+}
