@@ -415,7 +415,7 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, F
       const EntityId u = spawn_unit(a.unit, owner, sx, sy);
       if (u == kNoEntity) continue;
       place_at_free(u, sx, sy);
-      world_.add(u, Lifetime{tick_ + a.lifetime});
+      world_.add(u, Lifetime{tick_ + summon_life(owner, a.lifetime)});
     }
   } else if (a.effect == "wind") {   // szél: a saját egységek önerősítést kapnak, az ellenség lassul
     const int bi = rules_->ability_index(a.buff);

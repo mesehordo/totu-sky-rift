@@ -404,9 +404,15 @@ bool Sim::summon(EntityId e, uint16_t ab, bool at_point, Fixed x, Fixed y) {
     const EntityId u = spawn_unit(a.unit, owner, sx, sy);
     if (u == kNoEntity) continue;
     place_at_free(u, sx, sy);
-    world_.add(u, Lifetime{tick_ + a.lifetime});
+    world_.add(u, Lifetime{tick_ + summon_life(owner, a.lifetime)});
   }
   return true;
+}
+
+int32_t Sim::summon_life(uint8_t owner, int32_t ticks) const {   // az idézés élettartama × `summon_life_mult` (a régi G 1707)
+  const Fixed m = rules_of(owner).summon_life_mult;
+  if (m == Fixed::from_int(1)) return ticks;
+  return static_cast<int32_t>((int64_t{ticks} * m.raw() + 32768) >> 16);
 }
 
 void Sim::fire_bolt(EntityId e, uint16_t ab, EntityId t) {
@@ -521,10 +527,17 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
       if (best == kNoEntity) return false;
       Position& p = *world_.get<Position>(best);
       Fixed tx = x, ty = y;
+      Fixed range = a.range;   // `range_research`: a kész kutatás a hatótávot legalább ennyire növeli (a régi E 1385)
+      if (!a.range_research.empty()) {
+        const auto& done = players_[world_.get<Health>(best)->owner].researched;
+        for (const auto& [rid, r] : a.range_research) {
+          if (std::find(done.begin(), done.end(), rid) != done.end()) range = std::max(range, r);
+        }
+      }
       const Fixed d = core::length(x - p.x, y - p.y);
-      if (d > a.range && d.raw() > 0) {
-        tx = p.x + (x - p.x) * a.range / d;
-        ty = p.y + (y - p.y) * a.range / d;
+      if (d > range && d.raw() > 0) {
+        tx = p.x + (x - p.x) * range / d;
+        ty = p.y + (y - p.y) * range / d;
       }
       ability_spend(*world_.get<Caster>(best), ab, a);
       interrupt(best);

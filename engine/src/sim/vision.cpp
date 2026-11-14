@@ -125,7 +125,7 @@ void Sim::stealth_system() {
       Fixed det;
       bool unit = false;
       if (const Unit* ou = world_.get<Unit>(o)) {
-        det = Fixed::from_int(rules_->defs[ou->def].detect);
+        det = Fixed::from_int(std::max(rules_->defs[ou->def].detect, oh.owner <= kMaxPlayers ? rules_of(oh.owner).detect_all : 0));   // + `detect_all` (a régi G 1329)
         unit = true;
         {   // a passzív képesség felfedő köre (`detect`; A Kórus szeme)
           for (const uint16_t ab : abilities_of(o)) {

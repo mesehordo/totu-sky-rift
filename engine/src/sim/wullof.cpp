@@ -45,6 +45,29 @@ Fixed Sim::pack_speed_mult(EntityId e) {
   return f && f->pack ? Fixed::from_int(1) + f->pack_speed_per * Fixed::from_int(p->n) : Fixed::from_int(1);
 }
 
+// Holdtölte (kutatás `moon`; a régi G 1098): a meccsidő `period` szerinti első `dur` részében a sebzés × `mult`
+Fixed Sim::moon_mult(uint8_t owner) const {
+  if (owner == 0 || owner > kMaxPlayers) return Fixed::from_int(1);
+  const RuleSet& rs = rules_of(owner);
+  if (!rs.has_moon || rs.moon_period <= 0) return Fixed::from_int(1);
+  return tick_ % rs.moon_period < rs.moon_dur ? rs.moon_mult : Fixed::from_int(1);
+}
+
+// irány-szabály `heal_on_kill` (a régi G 1201): az ellenséges, nem hős egységet megölő címkés egység életerőt kap
+void Sim::heal_on_kill(EntityId victim, EntityId killer, uint8_t ko) {
+  if (killer == kNoEntity || killer == victim || ko == 0 || ko > kMaxPlayers || !world_.alive(killer)) return;
+  const RuleSet& rs = rules_of(ko);
+  if (!rs.has_heal_on_kill || rs.hok_amount <= 0) return;
+  const Unit* ku = world_.get<Unit>(killer);
+  Health* kh = world_.get<Health>(killer);
+  const Health* vh = world_.get<Health>(victim);
+  if (!ku || !kh || kh->hp <= 0 || !vh || !world_.get<Unit>(victim) || world_.get<HeroState>(victim) || !hostile(ko, vh->owner)) return;
+  const EntityDef& kd = rules_->defs[ku->def];
+  bool tagged = rs.hok_tags.empty();
+  for (const auto& t : rs.hok_tags) tagged = tagged || kd.has_tag(t) || kd.id == t;
+  if (tagged) kh->hp = std::min(kh->max, kh->hp + rs.hok_amount);
+}
+
 // --- javítás ----------------------------------------------------------------------------------------------------------
 bool Sim::order_repair(const std::vector<EntityId>& units, EntityId b) {
   const Building* bd = world_.get<Building>(b);

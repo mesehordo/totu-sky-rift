@@ -133,6 +133,20 @@ void parse_rules(const content::Value* obj, const Rules& r, RuleSet& out) {
     read_tags(rg->find("tags"), out.rage_tags);
     out.rage_max = fixed_of(rg->find("max"), Fixed{});
   }
+  if (const content::Value* mo = obj->find("moon"); mo && mo->is_object()) {   // Holdtölte (a régi G 1098)
+    out.has_moon = true;
+    out.moon_period = std::max(1, seconds_to_ticks(fixed_of(mo->find("period"), Fixed::from_int(240))));
+    out.moon_dur = seconds_to_ticks(fixed_of(mo->find("dur"), Fixed::from_int(60)));
+    out.moon_mult = fixed_of(mo->find("mult"), Fixed::from_int(1));
+  }
+  if (const content::Value* hk = obj->find("heal_on_kill"); hk && hk->is_object()) {   // a régi G 1201
+    out.has_heal_on_kill = true;
+    read_tags(hk->find("tags"), out.hok_tags);
+    out.hok_amount = int_of(hk->find("amount"), 0);
+  }
+  if (const content::Value* da = obj->find("detect_all")) out.detect_all = int_of(da, 0);
+  if (const content::Value* ps = obj->find("pond_size")) out.pond_size = int_of(ps, 0);
+  out.summon_life_mult = fixed_of(obj->find("summon_life_mult"), out.summon_life_mult);
 }
 
 }  // namespace
@@ -431,6 +445,9 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
         }
       }
       a.detect = fixed_of(key("detect"), Fixed{});
+      if (const content::Value* rr = key("range_research"); rr && rr->is_object()) {
+        for (const auto& [rid, rv] : rr->members()) a.range_research.emplace_back(rid, fixed_of(&rv, a.range));
+      }
       if (const content::Value* hk = key("hotkey"); hk && hk->is_string() && hk->text().size() == 1) a.hotkey = hk->text()[0];
       if (const auto it = ability_element.find(base_id); it != ability_element.end()) a.element = it->second;
       auto mod = [&](const char* k, Fixed def) {
@@ -1014,6 +1031,20 @@ void RuleSet::merge(const RuleSet& o) {
     rage_tags = o.rage_tags;
     rage_max = o.rage_max;
   }
+  if (o.has_moon) {
+    has_moon = true;
+    moon_period = o.moon_period;
+    moon_dur = o.moon_dur;
+    moon_mult = o.moon_mult;
+  }
+  if (o.has_heal_on_kill) {
+    has_heal_on_kill = true;
+    hok_tags = o.hok_tags;
+    hok_amount = o.hok_amount;
+  }
+  if (o.detect_all > 0) detect_all = o.detect_all;
+  if (o.pond_size > 0) pond_size = o.pond_size;
+  if (o.summon_life_mult != Fixed::from_int(1)) summon_life_mult = o.summon_life_mult;
 }
 
 bool AbilityMods::empty() const {

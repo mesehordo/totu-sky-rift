@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Huk’ucha (M7, ADR-008; MECH-POND-1–5): a népmodul viselkedési próbái (src/sim/factions/hukucha.cpp).
+#include <algorithm>
 #include <cstdio>
 #include <string>
 
@@ -25,6 +26,13 @@ int count(sim::Sim& s, const char* id, uint8_t owner) {
     n += u.def == def_of(id) && h->owner == owner && h->hp > 0 ? 1 : 0;
   });
   return n;
+}
+
+// a kutatás kész (a szabályaival együtt), a kutatási idő nélkül
+void grant(sim::Sim& s, uint8_t owner, const char* id) {
+  auto& done = s.player_mut(owner).researched;
+  done.insert(std::upper_bound(done.begin(), done.end(), std::string(id)), id);
+  s.rebuild_rules(owner);
 }
 
 }  // namespace
@@ -172,6 +180,63 @@ TEST_CASE("Huk: Tóének – a népi paranccsal a szentélyhez küldött Tóás�
   CHECK(got > 0);
   c.def = "masnep.valami";   // más nép parancsát nem nyeli el
   CHECK(!s.mod_command(c));
+}
+
+TEST_CASE("Huk Árvíz-irány (pond_size): a tavacska 3 × 3-as lesz") {
+  Match m = huk();
+  sim::Sim& s = *m.sim;
+  for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 1000);
+  s.player_mut(1).path = "arviz";
+  s.rebuild_rules(1);
+  CHECK(s.rules_of(1).pond_size == 3);
+  std::string err;
+  CHECK(s.order_build(m.workers(1).front(), def_of("huk_tavacska"), 15, 13, &err));
+  m.run(400);
+  const uint16_t house = def_of("huk_gyongybuborek");   // 2 × 2: csak saját tóra
+  CHECK(s.can_place(1, house, 15, 13, &err));
+  CHECK(s.can_place(1, house, 16, 14, &err));   // a 3. sor és oszlop is tó
+  CHECK(!s.can_place(1, house, 17, 15, &err));  // a 4. már nem
+  CHECK(!s.can_place(1, def_of("huk_tavacska"), 15, 13, &err));   // a 3 × 3 már mind tó
+}
+
+TEST_CASE("Huk Mély víz (summon_life_mult): az idézések élettartama ×1,3") {
+  Match m = huk();
+  sim::Sim& s = *m.sim;
+  CHECK(s.summon_life(1, 900) == 900);
+  grant(s, 1, "huk_mely_viz");
+  CHECK(s.summon_life(1, 900) == 1170);
+  CHECK(s.summon_life(2, 900) == 900);
+  sim::EntityId caster = sim::kNoEntity;   // az első egység, amelyiknek a Szellemfarkasok a képessége
+  const auto ab = static_cast<uint16_t>(R().ability_index("szellemfarkasok"));
+  for (size_t i = 0; i < R().defs.size() && caster == sim::kNoEntity; ++i) {
+    const auto& d = R().defs[i];
+    if (std::find(d.abilities.begin(), d.abilities.end(), ab) != d.abilities.end()) {
+      caster = s.spawn_unit(static_cast<uint16_t>(i), 1, fx(60, 10), fx(180, 10));
+    }
+  }
+  CHECK(caster != sim::kNoEntity);
+  CHECK(s.use_ability({caster}, "szellemfarkasok", {}, {}, 0));
+  int n = 0;
+  s.world().pool<sim::Lifetime>().each([&](sim::EntityId, const sim::Lifetime& l) {
+    ++n;
+    CHECK(l.until == s.tick() + R().abilities[ab].lifetime * 13 / 10);
+  });
+  CHECK(n == R().abilities[ab].count);
+}
+
+TEST_CASE("Huk Ugrólábak (range_research): a Békaugrás hatótávja 2,5 helyett 5") {
+  auto jump = [](bool researched) {
+    Match m = huk();
+    sim::Sim& s = *m.sim;
+    if (researched) grant(s, 1, "huk_ugrolabak");
+    const auto j = s.spawn_unit(def_of("huk_csuzlis"), 1, fx(20, 10), fx(180, 10));
+    CHECK(s.use_ability({j}, "bekaugras", fx(150, 10), fx(180, 10), 0));
+    return s.world().get<sim::Position>(j)->x;
+  };
+  const Fixed a = jump(false), b = jump(true);
+  std::printf("  Békaugrás: 2,0 → %.2f, a kutatással → %.2f\n", a.to_double(), b.to_double());
+  CHECK(a <= fx(48, 10) && a >= fx(40, 10));
+  CHECK(b <= fx(73, 10) && b >= fx(65, 10));
 }
 
 TEST_CASE("Huk: determinisztikus, és mentésből folytatva ugyanaz (a tótérkép is)") {

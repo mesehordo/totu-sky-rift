@@ -137,6 +137,7 @@ struct AbilityDef {
   // önműködő gyógyítás célcímkéi (`heal_tags`; üres = organic); passzív felfedés (`detect`, csempe)
   std::vector<std::string> heal_tags;
   Fixed detect;
+  std::vector<std::pair<std::string, Fixed>> range_research;   // `blink`: kutatás → a hatótáv legalább ennyi
 };
 
 // Szabálymódosítók (KUT-RULE, a régi `rules`): kulcsonként az utolsó felülír (a régi `merge_rules`).
@@ -152,6 +153,15 @@ struct RuleSet {
   std::vector<std::string> rage_tags;
   Fixed rage_max;
   Fixed bounty_gold;                                           // Zsákmányszerzés: a zsákmány ennyiszerese aranyban is
+  bool has_moon = false;                                       // Holdtölte: `period` tickenként `dur` tickig sebzés × `mult`
+  int32_t moon_period = 0, moon_dur = 0;
+  Fixed moon_mult = Fixed::from_int(1);
+  bool has_heal_on_kill = false;                               // ölésenként életerő a címkés egységnek (üres: mindnek)
+  std::vector<std::string> hok_tags;
+  int32_t hok_amount = 0;
+  int32_t detect_all = 0;                                      // minden saját egység ennyi csempés észlelő (0: nincs)
+  int32_t pond_size = 0;                                       // a tavacska oldalhossza (0: az épület lábnyoma)
+  Fixed summon_life_mult = Fixed::from_int(1);                 // az idézések élettartama × ennyi
   void merge(const RuleSet& o);
 };
 
