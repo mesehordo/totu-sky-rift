@@ -38,6 +38,12 @@ class FactionModule {
   virtual bool can_gather(Sim&, EntityId /*worker*/, int /*kind*/) { return true; }
   virtual bool shield_regen_allowed(Sim&, EntityId) { return true; }
   virtual bool hidden(Sim&, EntityId) { return false; }   // rejtett (a felfedés a közös szabály szerint)
+  virtual bool inert(Sim&, EntityId) { return false; }    // tétlen (pl. beásva): nem támad, nem varázsol, mint a kábult
+  // képzés: az épület vállalhatja-e (pl. lárva), a sorba vétel és a visszavonás eseménye, az idő szorzója (1 = semleges)
+  virtual bool can_train(Sim&, EntityId /*building*/, uint16_t /*def*/) { return true; }
+  virtual void on_train(Sim&, EntityId /*building*/, uint16_t /*def*/) {}
+  virtual void on_train_cancel(Sim&, EntityId /*building*/, uint16_t /*def*/) {}
+  virtual Fixed train_time_mult(Sim&, uint8_t /*owner*/, uint16_t /*def*/) { return Fixed::from_int(1); }
   // sérülés: a célpont kapott sebzésének szorzója (a pajzs és a páncél előtt) és páncélbónusza (egész)
   virtual Fixed damage_taken_mult(Sim&, EntityId /*src*/, EntityId /*target*/, bool /*ranged*/, bool /*magic*/) { return Fixed::from_int(1); }
   virtual int32_t armor_add(Sim&, EntityId /*target*/) { return 0; }

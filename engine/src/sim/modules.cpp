@@ -69,6 +69,34 @@ bool Sim::mod_hidden(EntityId e) {
   return false;
 }
 
+bool Sim::mod_inert(EntityId e) {
+  for (auto& x : modules_) {
+    if (x->inert(*this, e)) return true;
+  }
+  return false;
+}
+
+bool Sim::mod_can_train(EntityId b, uint16_t def) {
+  for (auto& x : modules_) {
+    if (!x->can_train(*this, b, def)) return false;
+  }
+  return true;
+}
+
+void Sim::mod_on_train(EntityId b, uint16_t def) {
+  for (auto& x : modules_) x->on_train(*this, b, def);
+}
+
+void Sim::mod_train_cancel(EntityId b, uint16_t def) {
+  for (auto& x : modules_) x->on_train_cancel(*this, b, def);
+}
+
+Fixed Sim::mod_train_time(uint8_t owner, uint16_t def) {
+  Fixed m = Fixed::from_int(1);
+  for (auto& x : modules_) m = m * x->train_time_mult(*this, owner, def);
+  return m;
+}
+
 Fixed Sim::mod_damage_taken(EntityId src, EntityId t, bool ranged, bool magic) {
   Fixed m = Fixed::from_int(1);
   for (auto& x : modules_) m = m * x->damage_taken_mult(*this, src, t, ranged, magic);

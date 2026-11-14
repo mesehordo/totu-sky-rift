@@ -974,6 +974,11 @@ class Sim {
   bool mod_can_gather(EntityId w, int kind);
   bool mod_shield_ok(EntityId e);
   bool mod_hidden(EntityId e);
+  bool mod_inert(EntityId e);
+  bool mod_can_train(EntityId b, uint16_t def);
+  void mod_on_train(EntityId b, uint16_t def);
+  void mod_train_cancel(EntityId b, uint16_t def);
+  Fixed mod_train_time(uint8_t owner, uint16_t def);
   Fixed mod_damage_taken(EntityId src, EntityId t, bool ranged, bool magic);
   int32_t mod_armor(EntityId t);
   bool mod_use_power(uint8_t owner, EntityId b, uint16_t ability, Fixed x, Fixed y);

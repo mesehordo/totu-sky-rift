@@ -399,3 +399,322 @@ TEST_CASE("Croftianok: determinizmus és mentés (mélység, rothadás, fertőz�
   CHECK(c.sim->hash() == a.sim->hash());
   CHECK(sim::croftian_creep_tiles(*c.sim, 1) == sim::croftian_creep_tiles(*a.sim, 1));
 }
+
+namespace {
+
+// a Kaptárból képez: hányszor sikerült egymás után (az utolsó hiba az `err`-ban)
+int train_n(sim::Sim& s, int n, std::string* err) {
+  int ok = 0;
+  for (int i = 0; i < n; ++i) {
+    s.player_mut(1).supply_cap = 500;
+    if (!s.train(1, def_of("cro_csapszolga"), hq_of(s, 1), err)) break;
+    ++ok;
+  }
+  return ok;
+}
+
+void clear_queue(sim::Sim& s) { s.world().get<sim::Producer>(hq_of(s, 1))->queue.clear(); }
+
+// saját mélységen álló, tüskének szabad csempék
+std::vector<std::pair<int, int>> spike_spots(sim::Sim& s, int n) {
+  std::vector<std::pair<int, int>> out;
+  for (int y = 0; y < s.map_->height() && static_cast<int>(out.size()) < n; ++y) {
+    for (int x = 0; x < s.map_->width() && static_cast<int>(out.size()) < n; ++x) {
+      if (sim::croftian_on_creep(s, 1, x, y) && s.can_place(1, def_of("cro_merges_tuskek"), x, y)) out.push_back({x, y});
+    }
+  }
+  return out;
+}
+
+int spikes_of(sim::Sim& s, uint8_t owner) {
+  int n = 0;
+  s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building& b) {
+    n += b.def == def_of("cro_merges_tuskek") && s.world().get<sim::Health>(e)->owner == owner;
+  });
+  return n;
+}
+
+}  // namespace
+
+TEST_CASE("Croftianok larva: a Kaptar 4 larvaval kepez, a kepzes larvat fogyaszt, visszavonaskor visszajar") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 20000);
+  clear_queue(s);
+  m.run(30 * 30);   // a kezdő sor kiürül, a lárvák teli számra nőnek
+  clear_queue(s);
+  m.run(30 * 30);
+  std::string err;
+  CHECK(train_n(s, 5, &err) == 4);   // `Producer.larva` 4
+  CHECK(err == "nincs szabad lárva");
+  CHECK(s.cancel_queue_item(hq_of(s, 1), 0));
+  err.clear();
+  CHECK(train_n(s, 1, &err) == 1);   // a visszavont képzés lárvája visszajár
+  // a sorban lévő egységek a teli számba beszámítanak: amíg a sor 4, nem nő vissza
+  m.run(30 * 6);
+  CHECK(train_n(s, 1, &err) == 0);
+}
+
+TEST_CASE("Croftianok larva: a larva larva_time (5,5 s) alatt no vissza; a Gyors larvak kutatas +1 es x1,25 utem") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 20000);
+  clear_queue(s);
+  m.run(30 * 30);
+  std::string err;
+  CHECK(train_n(s, 4, &err) == 4);
+  clear_queue(s);   // a sor kiürül: a lárvák visszanőnek
+  int first = -1;
+  for (int t = 1; t <= 200 && first < 0; ++t) {
+    m.run(1);
+    if (train_n(s, 1, &err) == 1) first = t;
+  }
+  std::printf("  az első visszanőtt lárva: %d tick\n", first);
+  CHECK(first >= 164 && first <= 166);   // 5,5 s = 165 tick
+  // Gyors lárvák: legfeljebb 5, 5,5 / 1,25 = 4,4 s (132 tick)
+  s.player_mut(1).researched.push_back("cro_gyors_larva");
+  clear_queue(s);
+  m.run(30 * 40);
+  clear_queue(s);
+  CHECK(train_n(s, 6, &err) == 5);
+  CHECK(err == "nincs szabad lárva");
+  clear_queue(s);
+  first = -1;
+  for (int t = 1; t <= 200 && first < 0; ++t) {
+    m.run(1);
+    if (train_n(s, 1, &err) == 1) first = t;
+  }
+  std::printf("  kutatással: %d tick\n", first);
+  CHECK(first >= 131 && first <= 133);
+}
+
+TEST_CASE("Croftianok train_time_mult: a Raj iranyon a kepzesi ido x0,7") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  for (int r = 0; r < sim::kResources; ++r) s.add_resources(1, r, 20000);
+  clear_queue(s);
+  m.run(30 * 30);
+  clear_queue(s);
+  std::string err;
+  CHECK(train_n(s, 1, &err) == 1);
+  const int t0 = s.world().get<sim::Producer>(hq_of(s, 1))->queue.back().time;
+  CHECK(t0 == R().defs[def_of("cro_csapszolga")].time_ticks);
+  s.player_mut(1).path = "raj";
+  CHECK(train_n(s, 1, &err) == 1);
+  const int t1 = s.world().get<sim::Producer>(hq_of(s, 1))->queue.back().time;
+  CHECK(t1 == (Fixed::from_int(t0) * fx(7, 10)).floor_int());
+  // más irányon (szabály nélkül) változatlan
+  s.player_mut(1).path = "pancel";
+  CHECK(train_n(s, 1, &err) == 1);
+  CHECK(s.world().get<sim::Producer>(hq_of(s, 1))->queue.back().time == t0);
+}
+
+TEST_CASE("Croftianok spike_max: legfeljebb 16 tuske; a Tuskemezo kutatassal 24") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto spots = spike_spots(s, 30);
+  CHECK(spots.size() == 30u);
+  for (int i = 0; i < 16; ++i) s.place_building(def_of("cro_merges_tuskek"), 1, spots[static_cast<size_t>(i)].first, spots[static_cast<size_t>(i)].second, true);
+  std::string err;
+  CHECK(!s.can_place(1, def_of("cro_merges_tuskek"), spots[20].first, spots[20].second, &err));
+  CHECK(err == "elérted a tüskék korlátját");
+  s.player_mut(1).researched.push_back("cro_tuskemezo");
+  err.clear();
+  CHECK(s.can_place(1, def_of("cro_merges_tuskek"), spots[20].first, spots[20].second, &err));
+  for (int i = 16; i < 24; ++i) s.place_building(def_of("cro_merges_tuskek"), 1, spots[static_cast<size_t>(i)].first, spots[static_cast<size_t>(i)].second, true);
+  CHECK(!s.can_place(1, def_of("cro_merges_tuskek"), spots[26].first, spots[26].second, &err));
+  CHECK(!s.can_place(1, def_of("cro_tapgomba"), spots[26].first, spots[26].second, &err) || err != "elérted a tüskék korlátját");
+}
+
+TEST_CASE("Croftianok spike_size: a Tuskemezo kutatassal az elkeszult tuske 2 x 2-es mezove egeszul ki") {
+  for (const bool research : {false, true}) {
+    Match m = cro();
+    sim::Sim& s = *m.sim;
+    if (research) s.player_mut(1).researched.push_back("cro_tuskemezo");
+    // olyan hely, ahol a 2 × 2 mind szabad és mélység
+    int tx = -1, ty = -1;
+    for (const auto& [x, y] : spike_spots(s, 400)) {
+      if (s.can_place(1, def_of("cro_merges_tuskek"), x + 1, y) && s.can_place(1, def_of("cro_merges_tuskek"), x, y + 1) &&
+          s.can_place(1, def_of("cro_merges_tuskek"), x + 1, y + 1)) {
+        tx = x;
+        ty = y;
+        break;
+      }
+    }
+    CHECK(tx >= 0);
+    const auto e = s.place_building(def_of("cro_merges_tuskek"), 1, tx, ty, false);
+    s.world().get<sim::Building>(e)->complete = 1;
+    module(s)->on_building_complete(s, e);
+    CHECK(spikes_of(s, 1) == (research ? 4 : 1));
+  }
+}
+
+TEST_CASE("Croftianok spike_mult: a Benito mereg kutatassal a tuske lassitasa max(0,2; 1 - 0,4 x 2), merge 8 / s") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  s.player_mut(1).researched.push_back("cro_benito_mereg");
+  const auto sp = s.place_building(def_of("cro_merges_tuskek"), 1, 11, 16, true);
+  const auto foe = put(s, "urs_berserker", 2, fx(115, 10), fx(165, 10));
+  m.run(16);
+  const auto& af = *s.world().get<sim::Afflict>(foe);
+  CHECK(af.slow_mult >= fx(1, 5) && af.slow_mult <= fx(1, 5) + Fixed::from_raw(1));   // (a tört kerekítése)
+  CHECK(af.poison_dps == 8000);
+  // a támadója is 8 / s-mal mérgeződik
+  const auto atk = put(s, "urs_berserker", 2, fx(135, 10), fx(185, 10));
+  s.deal_damage(atk, 2, def_of("urs_berserker"), sp, 1000, false, false);
+  CHECK(s.world().get<sim::Afflict>(atk)->poison_dps == 8000);
+}
+
+TEST_CASE("Croftianok rot_mult: a Melyebb rothasztas kutatassal a rothadas uteme x1,5") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  no_workers(m);
+  s.player_mut(1).researched.push_back("cro_melyebb_rothasztas");
+  m.run(30 - static_cast<int>(s.tick() % 30));
+  std::vector<std::pair<sim::EntityId, int32_t>> trees;
+  s.world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode& n) {
+    if (n.kind == sim::kWood) trees.push_back({e, n.amount});
+  });
+  const int64_t wood0 = s.player(1).res[sim::kWood];
+  m.run(300);
+  const auto& b = *s.world().get<sim::Building>(hq_of(s, 1));
+  const Fixed hx = Fixed::from_int(b.tx) + fx(b.w, 2), hy = Fixed::from_int(b.ty) + fx(b.h, 2);
+  const Fixed rate = *faction_key("creep_rot")->find("rate")->as_fixed() * fx(3, 2);
+  const Fixed mult = *faction_key("creep_rot")->find("hq_mult")->as_fixed();
+  const Fixed rad = *faction_key("creep_rot")->find("hq_radius")->as_fixed();
+  int64_t expect = 0;
+  for (const auto& [e, a0] : trees) {
+    const auto& n = *s.world().get<sim::ResourceNode>(e);
+    const Fixed px = Fixed::from_int(n.tx) + fx(1, 2), py = Fixed::from_int(n.ty) + fx(1, 2);
+    if (!sim::croftian_on_creep(s, 1, n.tx, n.ty)) continue;
+    const bool in = core::length(px - hx, py - hy) <= rad;
+    expect += (((in ? rate * mult : rate).raw() * int64_t{1000}) >> 16) * 10;
+  }
+  const int64_t got = s.player(1).res[sim::kWood] - wood0;
+  std::printf("  rothadás kutatással: %lld (várt %lld)\n", static_cast<long long>(got), static_cast<long long>(expect));
+  CHECK(expect > 0);
+  CHECK(std::llabs(got - expect) < 1000);
+}
+
+TEST_CASE("Croftianok rot_cap: a rothadas masodpercenkenti kerete 6,5; a Melyebb rothasztas kutatassal 9") {
+  for (const bool research : {false, true}) {
+    Match m = cro();
+    sim::Sim& s = *m.sim;
+    no_workers(m);
+    if (research) s.player_mut(1).researched.push_back("cro_melyebb_rothasztas");
+    // sok fa a mélységen: a keret köt
+    int added = 0;
+    for (int y = 0; y < s.map_->height() && added < 200; ++y) {
+      for (int x = 0; x < s.map_->width() && added < 200; ++x) {
+        if (!sim::croftian_on_creep(s, 1, x, y) || !s.can_place(0, def_of("cro_merges_tuskek"), x, y)) continue;
+        const auto e = s.world().create();
+        s.world().add(e, sim::ResourceNode{sim::kWood, static_cast<int16_t>(x), static_cast<int16_t>(y), 1, 500});
+        s.world().add(e, sim::Position{Fixed::from_int(x) + fx(1, 2), Fixed::from_int(y) + fx(1, 2)});
+        ++added;
+      }
+    }
+    CHECK(added == 200);
+    m.run(30 - static_cast<int>(s.tick() % 30) + 1);
+    const int64_t wood0 = s.player(1).res[sim::kWood];
+    m.run(300);
+    const int64_t got = s.player(1).res[sim::kWood] - wood0;
+    const int64_t want = research ? 90000 : 65000;   // 10 s × keret
+    std::printf("  rothadás kerete: %lld\n", static_cast<long long>(got));
+    CHECK(std::llabs(got - want) <= 1000);
+  }
+}
+
+TEST_CASE("Croftianok poison_attacks: a Benito mereg kutatassal a tavolsagi tamadas a szerves celt mergezi (4 / s, 3 s)") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto ranged = put(s, "cro_tuskekopo", 1, fx(285, 10), fx(185, 10));
+  const auto melee = put(s, "cro_karmos", 1, fx(285, 10), fx(175, 10));
+  const auto foe = put(s, "urs_berserker", 2, fx(275, 10), fx(185, 10));
+  auto& af = *s.world().get<sim::Afflict>(foe);
+  auto rule_poisoned = [&](sim::EntityId src, uint16_t def, bool ranged_hit, bool magic) {
+    af.poison_dps = 0;
+    af.poison_until = 0;
+    af.poison_src = 0;
+    s.deal_damage(src, 1, def, foe, 1000, ranged_hit, magic);
+    return af.poison_dps == 4000 && af.poison_until == s.tick() + 90 && af.poison_src == src;
+  };
+  CHECK(!rule_poisoned(ranged, def_of("cro_tuskekopo"), true, false));   // kutatás nélkül nem
+  s.player_mut(1).researched.push_back("cro_benito_mereg");
+  CHECK(!rule_poisoned(melee, def_of("cro_karmos"), false, false));      // a közelharci nem címkés
+  CHECK(af.poison_dps == 0);
+  CHECK(!rule_poisoned(ranged, def_of("cro_tuskekopo"), true, true));    // a varázssebzés nem
+  CHECK(rule_poisoned(ranged, def_of("cro_tuskekopo"), true, false));
+}
+
+TEST_CASE("Croftianok convert_kills: a Korus iranyon az olt ellenseg 15%-kal atall, 35% eletero; munkas nem") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  sim::FactionModule* mod = module(s);
+  const auto killer = put(s, "cro_karmos", 1, fx(285, 10), fx(105, 10));
+  auto mine = [&]() { return count(s, "urs_berserker", 1); };
+  constexpr int kN = 100;
+  auto round = [&](const char* id) {
+    for (int i = 0; i < kN; ++i) {
+      s.player_mut(1).supply_cap = 1000;
+      const auto v = put(s, id, 2, fx(285, 10), fx(185, 10));
+      mod->on_death(s, v, killer, 1);
+      s.kill(v);
+    }
+  };
+  round("urs_berserker");
+  CHECK(mine() == 0);   // irány nélkül nem
+  s.player_mut(1).path = "korus";
+  round("urs_berserker");
+  const int conv = mine();
+  std::printf("  átállt: %d / %d\n", conv, kN);
+  CHECK(conv >= kN * 5 / 100);
+  CHECK(conv <= kN * 30 / 100);
+  s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit& u) {
+    const auto* h = s.world().get<sim::Health>(e);
+    if (u.def == def_of("urs_berserker") && h->owner == 1) {
+      CHECK(h->hp == std::max(1, (Fixed::from_int(h->max) * fx(35, 100)).floor_int()));
+    }
+  });
+  // munkás nem áll át; gyilkos egység nélkül sem
+  const uint16_t worker = R().faction("ursan")->worker;
+  int w0 = 0;
+  s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit& u) { w0 += u.def == worker && s.world().get<sim::Health>(e)->owner == 1; });
+  for (int i = 0; i < kN; ++i) {
+    const auto v = s.spawn_unit(worker, 2, fx(285, 10), fx(185, 10));
+    mod->on_death(s, v, killer, 1);
+    s.kill(v);
+  }
+  int w1 = 0;
+  s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit& u) { w1 += u.def == worker && s.world().get<sim::Health>(e)->owner == 1; });
+  CHECK(w1 == w0);
+  const int before = mine();
+  for (int i = 0; i < kN; ++i) {
+    const auto v = put(s, "urs_berserker", 2, fx(285, 10), fx(185, 10));
+    mod->on_death(s, v, 0, 1);
+    s.kill(v);
+  }
+  CHECK(mine() == before);
+}
+
+TEST_CASE("Croftianok beasas: a beasott egyseg rejtett, all, nem tamad; kiasva ujra harcol") {
+  Match m = cro();
+  sim::Sim& s = *m.sim;
+  const auto k = put(s, "cro_karmos", 1, fx(285, 10), fx(185, 10));
+  const auto foe = put(s, "urs_berserker", 2, fx(292, 10), fx(185, 10));
+  s.world().get<sim::Combat>(foe)->cooldown = 1000000;   // a célpont nem üt vissza
+  s.world().get<sim::Combat>(k)->order = sim::Combat::None;
+  CHECK(s.use_ability({k}, "beasas", Fixed{}, Fixed{}, 0));
+  CHECK(s.incapacitated(k));
+  CHECK(s.mod_hidden(k));
+  CHECK(s.unit_speed_mult(k) == Fixed{});
+  const int hp0 = s.world().get<sim::Health>(foe)->hp;
+  m.run(90);
+  CHECK(s.world().get<sim::Stealth>(k)->hidden == 1);
+  CHECK(s.world().get<sim::Health>(foe)->hp == hp0);   // beásva nem támad
+  CHECK(s.use_ability({k}, "beasas", Fixed{}, Fixed{}, 0));   // kiásás
+  CHECK(!s.incapacitated(k));
+  CHECK(!s.mod_hidden(k));
+  s.order_attack(k, foe);
+  m.run(90);
+  CHECK(s.world().get<sim::Health>(foe)->hp < hp0);
+}

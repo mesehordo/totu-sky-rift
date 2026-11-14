@@ -32,11 +32,17 @@ namespace totu::sim {
 namespace {
 
 // --- komponensek (a hash és a mentés része) ---------------------------------------------------------------------------
-struct CroCreep {   // a croftian épület mélységének sugara
+struct CroCreep {   // a croftian épület mélységének sugara; a lárvatartó épület (Kaptár) lárvái és a visszanövés ideje
   Fixed r;
-  void hash(core::StateHash& h) const { h.add_i64(r.raw()); }
-  void save(core::ByteWriter& w) const { w.i32(r.raw()); }
-  static CroCreep load(core::ByteReader& rd) { CroCreep c; c.r = Fixed::from_raw(rd.i32()); return c; }
+  int32_t larva = 0;
+  int32_t larva_t = 0;   // tick
+  void hash(core::StateHash& h) const { h.add_i64(r.raw()); h.add_i64(larva); h.add_i64(larva_t); }
+  void save(core::ByteWriter& w) const { w.i32(r.raw()); w.i32(larva); w.i32(larva_t); }
+  static CroCreep load(core::ByteReader& rd) {
+    CroCreep c;
+    c.r = Fixed::from_raw(rd.i32()); c.larva = rd.i32(); c.larva_t = rd.i32();
+    return c;
+  }
 };
 
 struct CroRot {   // a rothadó fa tört vesztesége (ezred)
@@ -142,7 +148,46 @@ Fixed rule_mult(Sim& s, uint8_t owner, const FactionDef* f, const char* key) {
   return m;
 }
 
+// a játékos szabálya (a régi `p.rules.get`): a kész kutatások, majd az irány – az utolsó érvényes (felülírás)
+const content::Value* rule_val(Sim& s, uint8_t owner, const char* key) {
+  if (owner < 1 || owner > Sim::kMaxPlayers || !s.rules()) return nullptr;
+  const content::Value* out = nullptr;
+  const PlayerState& p = s.player(owner);
+  for (const std::string& id : p.researched) {
+    const ResearchDef* r = s.rules()->research(id);
+    if (const content::Value* v = r && r->raw ? path2(r->raw.get(), "Rules", key) : nullptr) out = v;
+  }
+  if (!p.path.empty()) {
+    const FactionDef* f = s.rules()->faction(p.faction);
+    const content::Value* pr = f && f->raw ? path2(f->raw.get(), "Paths", p.path.c_str()) : nullptr;
+    if (const content::Value* v = pr ? path2(pr, "rules", key) : nullptr) out = v;
+  }
+  return out;
+}
+
+// a címkés szabály vonatkozik-e a sablonra (a régi `rule_tags`: címke nélkül mindenre; a címke vagy az azonosító)
+bool rule_applies(const content::Value* r, const EntityDef& d) {
+  if (!r || !r->is_object()) return false;
+  const content::Value* tags = r->find("tags");
+  if (!tags || !tags->is_array() || tags->items().empty()) return true;
+  for (const content::Value& t : tags->items()) {
+    if (t.is_string() && (d.has_tag(t.text()) || d.id == t.text())) return true;
+  }
+  return false;
+}
+
 bool is_spike(const EntityDef& d) { return d.raw && flag(path2(d.raw.get(), "Legacy", "spike_tile")); }
+
+// a lárvatartó épület adata (`Producer.larva`, `Producer.larva_time`)
+int32_t larva_of(const EntityDef& d) {
+  const content::Value* v = d.raw ? path2(d.raw.get(), "Producer", "larva") : nullptr;
+  return v ? static_cast<int32_t>(v->as_int().value_or(0)) : 0;
+}
+
+// kód-állandók (a régi `SPIKE`): a tüskék alapkorlátja, a lassítás szorzója (0,6) és a méreg (4 / s)
+constexpr int32_t kSpikeMaxDefault = 16;
+const Fixed kSpikeSlow = Fixed::from_ratio(3, 5);
+constexpr int32_t kSpikeDps = 4000;   // ezred / s
 
 class Module final : public FactionModule {
  public:
@@ -250,11 +295,58 @@ class Module final : public FactionModule {
     if (is_spike(d) && s.nav_) s.nav_->remove_obstacle({b->tx, b->ty, b->w, b->h});
     const int cr = creep_radius_of(s, b->def);
     if (cr <= 0 || !creep_faction(s, h->owner)) return;
-    s.world().add(e, CroCreep{b->complete ? Fixed::from_int(cr) : Fixed::from_int(2)});
+    s.world().add(e, CroCreep{b->complete ? Fixed::from_int(cr) : Fixed::from_int(2), b->complete ? larva_of(d) : 0, 0});
     dirty_ = true;
   }
 
-  void on_building_complete(Sim&, EntityId) override { dirty_ = true; }
+  void on_building_complete(Sim& s, EntityId e) override {
+    dirty_ = true;
+    const Building* b = s.world().get<Building>(e);
+    if (!b) return;
+    if (CroCreep* cc = s.world().get<CroCreep>(e)) cc->larva = larva_of(s.rules()->defs[b->def]);   // a régi: kész → teli
+    if (is_spike(s.rules()->defs[b->def])) lay_spikes(s, e);
+  }
+
+  // --- lárvák (a régi E 1671, 1738–1747; G 3519–3539, 3613): a lárvatartó épület csak szabad lárvával képez --------
+  bool can_train(Sim& s, EntityId b, uint16_t) override {
+    const CroCreep* cc = s.world().get<CroCreep>(b);
+    const Building* bb = s.world().get<Building>(b);
+    if (!cc || !bb || larva_of(s.rules()->defs[bb->def]) <= 0) return true;
+    return cc->larva > 0;
+  }
+
+  void on_train(Sim& s, EntityId b, uint16_t) override {
+    CroCreep* cc = s.world().get<CroCreep>(b);
+    const Building* bb = s.world().get<Building>(b);
+    if (cc && bb && larva_of(s.rules()->defs[bb->def]) > 0 && cc->larva > 0) --cc->larva;
+  }
+
+  void on_train_cancel(Sim& s, EntityId b, uint16_t) override {
+    CroCreep* cc = s.world().get<CroCreep>(b);
+    const Building* bb = s.world().get<Building>(b);
+    if (cc && bb && larva_of(s.rules()->defs[bb->def]) > 0) ++cc->larva;
+  }
+
+  // a címkés egység képzési ideje × `train_time_mult.mult` (a régi G 3541; pl. a Raj iránya)
+  Fixed train_time_mult(Sim& s, uint8_t owner, uint16_t def) override {
+    const content::Value* r = rule_val(s, owner, "train_time_mult");
+    if (!rule_applies(r, s.rules()->defs[def])) return Fixed::from_int(1);
+    return num(r->find("mult"), Fixed::from_int(1));
+  }
+
+  // --- beásás (a régi `burrow` kapcsoló, E 305, 730; G 1294): a beásott egység rejtett és tétlen ---------------------
+  bool burrowed(Sim& s, EntityId e) {
+    const Caster* c = s.world().get<Caster>(e);
+    if (!c || c->toggles.empty()) return false;
+    for (const uint16_t a : c->toggles) {
+      const content::Value* sp = s.rules()->abilities[a].spec.get();
+      if (sp && flag(sp->find("burrow"))) return true;
+    }
+    return false;
+  }
+
+  bool hidden(Sim& s, EntityId e) override { return burrowed(s, e); }
+  bool inert(Sim& s, EntityId e) override { return burrowed(s, e); }
   void on_match_start(Sim& s) override {
     for (int i = 1; i <= Sim::kMaxPlayers; ++i) {
       if (!s.player(i).active || !creep_faction(s, static_cast<uint8_t>(i))) continue;
@@ -265,8 +357,14 @@ class Module final : public FactionModule {
   }
 
   bool can_place(Sim& s, uint8_t owner, uint16_t def, int tx, int ty, std::string* error) override {
-    if (owner == 0 || !creep_faction(s, owner)) return true;
+    if (owner == 0) return true;
     const EntityDef& d = s.rules()->defs[def];
+    // a tüskék korlátja (a régi G 2500: `spike_max`, különben 16)
+    if (is_spike(d) && spike_count(s, owner) + 1 > spike_max(s, owner)) {
+      if (error) *error = "elérted a tüskék korlátját";
+      return false;
+    }
+    if (!creep_faction(s, owner)) return true;
     if (d.faction != s.player(owner).faction) return true;   // más nép (szövetséges kisnép) épülete
     if (d.raw && flag(path2(d.raw.get(), "Placement", "no_creep"))) return true;
     const int w = std::max(1, d.fw), h = std::max(1, d.fh);
@@ -312,6 +410,7 @@ class Module final : public FactionModule {
   // mérgező tüske (MECH-CREEP-7): a tűz- és méregfegyver teljesen sebzi, más × 0,2; a nem tüske-immunis támadó
   // egységet megmérgezi (mint a rajta állót). Az égés és a méreg idővel ható sebzése nem ide fut (teljes).
   Fixed damage_taken_mult(Sim& s, EntityId src, EntityId t, bool, bool magic) override {
+    poison_attack(s, src, t, magic);
     const Building* b = s.world().get<Building>(t);
     if (!b) return Fixed::from_int(1);
     const EntityDef& d = s.rules()->defs[b->def];
@@ -319,8 +418,11 @@ class Module final : public FactionModule {
     const Unit* su = src && s.world().alive(src) ? s.world().get<Unit>(src) : nullptr;
     if (su) {
       const Health* sh = s.world().get<Health>(src);
+      const Health* th = s.world().get<Health>(t);
       if (sh && !faction_flag(s, sh->owner, "spike_immune")) {
-        if (Afflict* af = s.world().get<Afflict>(src)) poison(s, *af, t);
+        // a régi `spike_mult` (Bénító méreg): a tüske gazdájának szorzója
+        const Fixed k = th ? rule_mult(s, th->owner, fdef(s, th->owner), "spike_mult") : Fixed::from_int(1);
+        if (Afflict* af = s.world().get<Afflict>(src)) poison(s, *af, t, k);
       }
       const AttackDef& w = s.rules()->defs[su->def].attack;
       if (!magic && (w.element == Element::Fire || w.element == Element::Poison || w.poison_dps.raw() > 0)) return Fixed::from_int(1);
@@ -328,8 +430,9 @@ class Module final : public FactionModule {
     return num(path2(d.raw.get(), "Legacy", "spike_taken"), kSpikeTakenDefault);
   }
 
-  void on_death(Sim& s, EntityId victim, EntityId /*killer*/, uint8_t ko) override {
+  void on_death(Sim& s, EntityId victim, EntityId killer, uint8_t ko) override {
     if (s.world().get<CroCreep>(victim)) dirty_ = true;
+    convert_kill(s, victim, killer, ko);
     if (!creep_faction(s, ko)) return;
     const FactionDef* f = s.rules()->faction(s.player(ko).faction);
     const content::Value* inf = f ? path2(faction_obj(*f), "infest", nullptr) : nullptr;
@@ -462,6 +565,7 @@ class Module final : public FactionModule {
     }
     // mérgező tüskék (0,5 s): lassítás és méreg a rajtuk álló földi, nem tüske-immunis egységnek
     if (now % 15 == 0) spikes(s);
+    larvae(s);
     permanent_summons(s);
     blood_magic(s);
   }
@@ -476,10 +580,11 @@ class Module final : public FactionModule {
       const FactionDef* f = s.rules()->faction(s.player(owner).faction);
       const content::Value* cr = f ? path2(faction_obj(*f), "creep_rot", nullptr) : nullptr;
       if (!cr || !cr->is_object()) continue;
-      const Fixed rate = num(cr->find("rate"), Fixed::from_ratio(3, 50));
+      // a kutatás (Mélyebb rothasztás) üteme `rot_mult` szoros, a keretet a `rot_cap` váltja (a régi G 1793, 1803)
+      const Fixed rate = num(cr->find("rate"), Fixed::from_ratio(3, 50)) * rule_mult(s, owner, f, "rot_mult");
       const Fixed hq_mult = num(cr->find("hq_mult"), Fixed::from_ratio(5, 2));
       const Fixed hq_radius = num(cr->find("hq_radius"), Fixed::from_int(9));
-      const Fixed cap = num(cr->find("cap"), kRotCap);
+      const Fixed cap = num(rule_val(s, owner, "rot_cap"), num(cr->find("cap"), kRotCap));
       // a saját főépületek
       std::vector<std::pair<Fixed, Fixed>> hqs;
       s.world().pool<Building>().each([&](EntityId e, const Building& b) {
@@ -544,10 +649,121 @@ class Module final : public FactionModule {
     }
   }
 
-  static void poison(Sim& s, Afflict& af, EntityId src) {   // a tüske mérge: 4 / s, 2 s
+  static void poison(Sim& s, Afflict& af, EntityId src, Fixed k) {   // a tüske mérge: 4 × `spike_mult` / s, 2 s
+    const int32_t dps = std::max(1, (Fixed::from_int(kSpikeDps) * k).floor_int());
     af.poison_src = src;
-    af.poison_dps = std::max(af.poison_until > s.tick() ? af.poison_dps : 0, 4000);
+    af.poison_dps = std::max(af.poison_until > s.tick() ? af.poison_dps : 0, dps);
     af.poison_until = s.tick() + 60;
+  }
+
+  // `poison_attacks` (a régi G 1074): a címkés egység nem varázs-támadása a szerves célpontot megmérgezi (a fegyver
+  // saját mérge elsőbb)
+  void poison_attack(Sim& s, EntityId src, EntityId t, bool magic) {
+    if (magic || !src || !s.world().alive(src)) return;
+    const Unit* su = s.world().get<Unit>(src);
+    const Unit* tu = s.world().get<Unit>(t);
+    const Health* sh = s.world().get<Health>(src);
+    if (!su || !tu || !sh) return;
+    const EntityDef& sd = s.rules()->defs[su->def];
+    if (sd.attack.poison_dps.raw() > 0 || !s.rules()->defs[tu->def].has_tag("organic")) return;
+    const content::Value* r = rule_val(s, sh->owner, "poison_attacks");
+    if (!rule_applies(r, sd)) return;
+    Afflict* af = s.world().get<Afflict>(t);
+    if (!af) return;
+    af->poison_src = src;
+    af->poison_dps = (Fixed::from_int(1000) * num(r->find("dps"), Fixed{})).floor_int();
+    af->poison_until = s.tick() + seconds_to_ticks(num(r->find("dur"), Fixed{}));
+  }
+
+  // `convert_kills` (a régi G 1211): az egység által ölt ellenséges egység esélyre a gyilkos gazdájához áll át
+  // (`hp` arányú életerővel); hős, idézett, nagy, munkás, jószág és a semleges nem; csak a létszámkorlát alatt
+  void convert_kill(Sim& s, EntityId victim, EntityId killer, uint8_t ko) {
+    if (ko < 1 || ko > Sim::kMaxPlayers || !killer || !s.world().alive(killer) || !s.world().get<Unit>(killer)) return;
+    const content::Value* ck = rule_val(s, ko, "convert_kills");
+    if (!ck || !ck->is_object()) return;
+    const Unit* vu = s.world().get<Unit>(victim);
+    const Health* vh = s.world().get<Health>(victim);
+    const Position* vp = s.world().get<Position>(victim);
+    if (!vu || !vh || !vp || vh->owner == 0 || !s.hostile(ko, vh->owner)) return;
+    const EntityDef& vd = s.rules()->defs[vu->def];
+    if (vd.hero || vd.worker || vd.has_tag("large") || vd.has_tag("livestock") || s.world().get<Lifetime>(victim)) return;
+    const PlayerState& p = s.player(ko);
+    if (p.supply_used + vd.supply > p.supply_cap) return;
+    const int64_t chance = (int64_t{num(ck->find("chance"), Fixed{}).raw()} * 1000) >> 16;
+    if (static_cast<int64_t>(s.combat_rng_.next() % 1000u) >= chance) return;
+    const Fixed x = vp->x, y = vp->y;
+    const uint16_t def = vu->def;
+    const EntityId u = s.spawn_unit(def, ko, x, y);
+    if (u == kNoEntity) return;
+    s.place_at_free(u, x, y);
+    if (Health* uh = s.world().get<Health>(u)) {
+      uh->hp = std::max(1, (Fixed::from_int(uh->max) * num(ck->find("hp"), Fixed::from_ratio(7, 20))).floor_int());
+    }
+  }
+
+  // a tüskék: a játékos élő tüskéinek száma (félkészen is) és a korlátja
+  int32_t spike_count(Sim& s, uint8_t owner) {
+    int32_t n = 0;
+    s.world().pool<Building>().each([&](EntityId e, const Building& b) {
+      const Health* h = s.world().get<Health>(e);
+      if (h && h->owner == owner && h->hp > 0 && is_spike(s.rules()->defs[b.def])) ++n;
+    });
+    return n;
+  }
+
+  int32_t spike_max(Sim& s, uint8_t owner) {
+    const content::Value* v = rule_val(s, owner, "spike_max");
+    return v ? static_cast<int32_t>(v->as_int().value_or(kSpikeMaxDefault)) : kSpikeMaxDefault;
+  }
+
+  // `spike_size` (Tüskemező, a régi G 2510, 2540): az elkészült tüske n × n-es mezővé egészül ki (a bal felső sarok a
+  // lerakott tüske; a szabad, lerakható csempékre, a korlátig)
+  void lay_spikes(Sim& s, EntityId e) {
+    const Building* b = s.world().get<Building>(e);
+    const Health* h = s.world().get<Health>(e);
+    if (!b || !h || h->owner == 0) return;
+    const content::Value* v = rule_val(s, h->owner, "spike_size");
+    const int n = v ? static_cast<int>(v->as_int().value_or(1)) : 1;
+    if (n <= 1) return;
+    const uint16_t def = b->def;
+    const uint8_t owner = h->owner;
+    const int tx = b->tx, ty = b->ty;
+    for (int y = ty; y < ty + n; ++y) {
+      for (int x = tx; x < tx + n; ++x) {
+        if ((x == tx && y == ty) || !s.can_place(owner, def, x, y)) continue;
+        s.place_building(def, owner, x, y, true);
+      }
+    }
+  }
+
+  // a lárvák visszanövése (a régi E 1738–1747): a teli számig (`larva` + `larva_add`, a sorban lévő egységekkel
+  // együtt) `larva_time` / `larva_mult` másodpercenként egy
+  void larvae(Sim& s) {
+    s.world().pool<CroCreep>().each([&](EntityId e, CroCreep& cc) {
+      const Building* b = s.world().get<Building>(e);
+      const Health* h = s.world().get<Health>(e);
+      if (!b || !h || h->hp <= 0 || !b->complete) return;
+      const EntityDef& d = s.rules()->defs[b->def];
+      const int32_t base = larva_of(d);
+      if (base <= 0) return;
+      const content::Value* add = rule_val(s, h->owner, "larva_add");
+      const int32_t maxl = base + (add ? static_cast<int32_t>(add->as_int().value_or(0)) : 0);
+      int32_t used = 0;
+      if (const Producer* pr = s.world().get<Producer>(e)) {
+        for (const QueueItem& q : pr->queue) used += q.research ? 0 : 1;
+      }
+      if (cc.larva + used >= maxl) {
+        cc.larva_t = 0;
+        return;
+      }
+      ++cc.larva_t;
+      const Fixed lt = num(d.raw ? path2(d.raw.get(), "Producer", "larva_time") : nullptr, Fixed::from_int(10));
+      const Fixed need = lt * Fixed::from_int(kTickHz) / rule_mult(s, h->owner, fdef(s, h->owner), "larva_mult");
+      if (Fixed::from_int(cc.larva_t) >= need) {
+        cc.larva_t = 0;
+        ++cc.larva;
+      }
+    });
   }
 
   // `summons_permanent`: az új idézés (Lifetime) nem jár le, de idézettnek számít; az idéző a legközelebbi saját hős
@@ -633,10 +849,13 @@ class Module final : public FactionModule {
         if (!sh || !s.hostile(sh->owner, h->owner)) continue;
         Afflict* af = s.world().get<Afflict>(e);
         if (!af) break;
+        // a tüske gazdájának `spike_mult` szorzója (Bénító méreg; a régi G 2581): lassítás max(0,2, 1 − 0,4 × k), méreg 4 × k
+        const Fixed k = rule_mult(s, sh->owner, fdef(s, sh->owner), "spike_mult");
+        const Fixed slow = std::max(Fixed::from_ratio(1, 5), Fixed::from_int(1) - (Fixed::from_int(1) - kSpikeSlow) * k);
         const Fixed cur = af->slow_until > s.tick() ? af->slow_mult : Fixed::from_int(1);
-        af->slow_mult = std::min(cur, Fixed::from_ratio(3, 5));   // max(0,2, 1 − 0,4)
+        af->slow_mult = std::min(cur, slow);
         af->slow_until = s.tick() + 21;                           // 0,7 s
-        poison(s, *af, se);
+        poison(s, *af, se, k);
         break;
       }
     });
