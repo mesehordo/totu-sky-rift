@@ -50,11 +50,26 @@ struct SnapUnit {
   uint8_t hero_level = 0, hero_points = 0;   // hős (D25): szint, el nem költött képességpont
   std::array<uint16_t, 6> items{};           // hős: a leltár (sim::kNoItem = üres)
   std::vector<uint16_t> learned;             // hős: a megtanult képességek (a szintváltozat)
+  // a HUD karakterlapjához és parancsrácsához (M8; a régi `rts/hud.py` adatai)
+  enum Order : uint8_t { kRest = 0, kMove, kAttackMove, kAttack, kGather, kGoBuild, kConstruct, kRepair, kHold, kCast };
+  uint8_t order = kRest;
+  int32_t energy = 0, energy_max = 0, shield = 0, shield_max = 0;
+  int32_t armor = 0, damage = 0;             // a kutatásokkal és a hős bónuszaival
+  float range = 0, speed = 0;                // csempe; csempe / s
+  int32_t xp = 0;                            // hős: tapasztalat
+  int64_t life_until = 0;                    // idézett egység: eddig a tickig él (0 = nem jár le)
+  uint16_t packed = sim::kNoDef;             // vándorszekér: az összecsomagolt épület sablonja
+  std::vector<std::pair<uint16_t, int64_t>> ready, buffs;   // képesség → használható ettől / erősítés eddig (tick)
+  std::vector<uint16_t> toggles;             // bekapcsolt kapcsolók és énekek
+  // átmeneti állapotok vége (tick), a régi EFFECT_INFO sorrendjében: ég, mérgezett, fagyott, lelassult, átázott, gúzsba
+  // kötve, alszik, kábult, megrémült, elvakult, elnémítva, megjelölt, páncéltörés
+  std::array<int64_t, 13> afflict{};
 };
 
 // a játékos állapota a felületnek
 struct SnapPlayer {
   bool active = false;
+  std::string faction;                       // pl. `ursan` (a HUD fajkinézetéhez és a parancsrácshoz)
   std::array<int32_t, sim::kResources> res{};
   int32_t supply_cap = 0, supply_used = 0;
   bool defeated = false, ascended = false;
@@ -115,6 +130,7 @@ class Session {
 
  private:
   void update_fog();
+  void hud_fields(sim::EntityId e, SnapUnit& u);   // a HUD adatai (M8): energia, pajzs, páncél, parancs, állapotok
   map::TerrainTable terrain_;
   std::optional<sim::Rules> rules_;   // a szimuláció előtt jön létre, utána szűnik meg
   std::optional<map::Map> map_;

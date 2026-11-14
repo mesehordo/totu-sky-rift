@@ -216,6 +216,51 @@ bool Session::rect_visible(int x, int y, int w, int h) const {
   return false;
 }
 
+void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
+  auto& w = sim_->world();
+  const sim::Rules* r = sim_->rules();
+  if (!r || u.def >= r->defs.size()) return;
+  const sim::EntityDef& d = r->defs[u.def];
+  const auto fl = [](Fixed f) { return static_cast<float>(f.raw()) / 65536.0f; };
+  u.armor = sim_->stat(e, "Health.armor", Fixed::from_int(d.armor)).floor_int();
+  if (const auto* a = w.get<sim::Attack>(e)) {
+    u.damage = sim_->stat(e, "Attack.damage", Fixed::from_int(a->damage)).floor_int();
+    u.range = fl(a->range);
+  }
+  u.shield_max = d.shield;
+  if (const auto* v = w.get<sim::Vital>(e)) u.shield = v->shield / 1000;
+  if (d.building) return;
+  u.energy_max = sim_->stat(e, "Energy.max", Fixed::from_int(d.energy_max)).floor_int();
+  if (const auto* c = w.get<sim::Caster>(e)) {
+    u.energy = c->energy / 1000;
+    u.ready = c->ready;
+    u.buffs = c->buffs;
+    u.toggles = c->toggles;
+    if (c->cast != sim::kNoAbility) u.order = SnapUnit::kCast;
+  }
+  if (const auto* m = w.get<sim::Movement>(e)) u.speed = fl(m->speed) * 30.0f;
+  if (const auto* hs = w.get<sim::HeroState>(e)) u.xp = hs->xp / 1000;
+  if (const auto* l = w.get<sim::Lifetime>(e)) u.life_until = l->until;
+  if (const auto* wg = w.get<sim::Wagon>(e)) u.packed = wg->building;
+  if (const auto* af = w.get<sim::Afflict>(e)) {
+    u.afflict = {af->burn_until, af->poison_until, af->frozen_until, af->slow_until, af->wet_until, af->root_until,
+                 af->sleep_until, af->stun_until, af->fear_until, af->blind_until, af->silence_until, af->mark_until,
+                 af->sunder_until};
+  }
+  if (u.order != SnapUnit::kRest) return;
+  if (w.get<sim::RepairOrder>(e)) {
+    u.order = SnapUnit::kRepair;
+  } else if (const auto* k = w.get<sim::Worker>(e); k && k->state != sim::Worker::Idle) {
+    u.order = k->state == sim::Worker::Build ? SnapUnit::kGoBuild
+              : k->state == sim::Worker::Construct ? SnapUnit::kConstruct : SnapUnit::kGather;
+  } else if (const auto* cb = w.get<sim::Combat>(e); cb && cb->order != sim::Combat::None && cb->order != sim::Combat::Leash) {
+    u.order = cb->order == sim::Combat::Attack ? SnapUnit::kAttack
+              : cb->order == sim::Combat::AttackMove ? SnapUnit::kAttackMove : SnapUnit::kHold;
+  } else if (const auto* m = w.get<sim::Movement>(e); m && m->moving) {
+    u.order = SnapUnit::kMove;
+  }
+}
+
 std::shared_ptr<const Snapshot> Session::snapshot() {
   if (last_ && last_->tick == sim_->tick()) return last_;
   if (sim_->rules()) {   // meccs: a köd az 1. játékos látóteréből (a szimulációé)
@@ -278,6 +323,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
           }
           if (!pr->queue.empty()) u.queue_progress = static_cast<uint16_t>(pr->queue[0].progress * 1000 / std::max(1, pr->queue[0].time));
         }
+        hud_fields(e, u);
       } else if (const auto* n = w.get<sim::ResourceNode>(e)) {
         u.kind = SnapUnit::kResource;
         u.tx = n->tx; u.ty = n->ty; u.w = u.h = n->size;
@@ -297,6 +343,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
           u.amount = k->carry;
           u.res = k->carry_kind;
         }
+        hud_fields(e, u);
       }
     }
     // D41: ami nem az 1. játékosé, az a ködben nem látszik (egység, lövedék); az épület és a lelőhely a legutóbb
@@ -342,6 +389,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       const sim::PlayerState& p = sim_->player(i);
       SnapPlayer& o = s->players[static_cast<size_t>(i)];
       o.active = p.active;
+      o.faction = p.faction;
       for (int r = 0; r < sim::kResources; ++r) o.res[static_cast<size_t>(r)] = p.resource(r);
       o.supply_cap = p.supply_cap;
       o.supply_used = p.supply_used;

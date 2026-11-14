@@ -26,7 +26,7 @@ struct FontBake {
   float width(std::string_view utf8) const;        // a szöveg szélessége képpontban
 };
 
-// A TTF-adatból `px` magasságban: az ASCII és a magyar ékezetes betűk (és néhány jel: →, ×, •). false: hibás betű.
+// A TTF-adatból `px` magasságban: az ASCII és a magyar ékezetes betűk (és néhány jel: →, ×, •, …, ✓, −). false: hibás betű.
 bool bake_font(const std::vector<uint8_t>& ttf, float px, FontBake& out);
 
 // UTF-8 → kódpontok (a hibás bájt kihagyva)

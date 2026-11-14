@@ -7695,4 +7695,526 @@ msgstr ""
 
 msgctxt "ui.keys.conflict"
 msgid "Ütközés: a(z) {k} már a(z) {n}. hely billentyűje."
+msgctxt "hud.move"
+msgid "Mozgás"
+msgstr ""
+
+msgctxt "hud.move.tip"
+msgid "Kattints a célpontra a térképen. Jobb klikk / Esc: mégse."
+msgstr ""
+
+msgctxt "hud.stop"
+msgid "Állj"
+msgstr ""
+
+msgctxt "hud.stop.tip"
+msgid "Az egységek abbahagyják, amit csinálnak."
+msgstr ""
+
+msgctxt "hud.attack"
+msgid "Támadás"
+msgstr ""
+
+msgctxt "hud.attack.tip"
+msgid "Egységre: megtámadja. Talajra: támadó menet – útközben minden ellenséggel harcol."
+msgstr ""
+
+msgctxt "hud.hold"
+msgid "Helyben tartás"
+msgstr ""
+
+msgctxt "hud.hold.tip"
+msgid "Nem mozdul, de a lőtávba érő ellenséget támadja."
+msgstr ""
+
+msgctxt "hud.build"
+msgid "Építés"
+msgstr ""
+
+msgctxt "hud.build.tip"
+msgid "Megnyitja a felhúzható épületek listáját."
+msgstr ""
+
+msgctxt "hud.unpack"
+msgid "Letelepítés"
+msgstr ""
+
+msgctxt "hud.unpack.tip"
+msgid "A vándorszekér tábort ver a kijelölt helyen."
+msgstr ""
+
+msgctxt "hud.learn"
+msgid "Tanulás (+{})"
+msgstr ""
+
+msgctxt "hud.learn.tip"
+msgid "Képességpont elköltése: új képesség vagy magasabb szint."
+msgstr ""
+
+msgctxt "hud.back"
+msgid "Vissza"
+msgstr ""
+
+msgctxt "hud.next_page"
+msgid "Következő oldal ({}/{})"
+msgstr ""
+
+msgctxt "hud.more_cmds"
+msgid "További parancsok ({}/{})"
+msgstr ""
+
+msgctxt "hud.missing"
+msgid "Hiányzik: {}"
+msgstr ""
+
+msgctxt "hud.req.producer"
+msgid "termelő épület"
+msgstr ""
+
+msgctxt "hud.req.building"
+msgid "épület"
+msgstr ""
+
+msgctxt "hud.req.done"
+msgid "kész"
+msgstr ""
+
+msgctxt "hud.req.path"
+msgid "irány"
+msgstr ""
+
+msgctxt "hud.req.ascended"
+msgid "felemelkedés"
+msgstr ""
+
+msgctxt "hud.req.ally"
+msgid "szövetség"
+msgstr ""
+
+msgctxt "hud.ally_choose"
+msgid "Szövetség: {}"
+msgstr ""
+
+msgctxt "hud.ally_price"
+msgid "{}. Ára: {}. A választás végleges."
+msgstr ""
+
+msgctxt "hud.ally_current"
+msgid "Szövetséges: {}"
+msgstr ""
+
+msgctxt "hud.pack"
+msgid "Felszedés"
+msgstr ""
+
+msgctxt "hud.pack.tip"
+msgid "A tábor szekérre pakol, és továbbvándorolhat."
+msgstr ""
+
+msgctxt "hud.unload"
+msgid "Kiürítés ({})"
+msgstr ""
+
+msgctxt "hud.unload.tip"
+msgid "A bent lévő egységek kijönnek."
+msgstr ""
+
+msgctxt "hud.path"
+msgid "Irány választása"
+msgstr ""
+
+msgctxt "hud.path.tip"
+msgid "A néped felemelkedett: válassz fejlődési irányt."
+msgstr ""
+
+msgctxt "hud.cancel"
+msgid "Mégse (utolsó a sorban)"
+msgstr ""
+
+msgctxt "hud.cancel.tip"
+msgid "Visszavonja a gyártósor utolsó elemét; az ár visszajár."
+msgstr ""
+
+msgctxt "hud.res.wood"
+msgid "Fa"
+msgstr ""
+
+msgctxt "hud.res.gold"
+msgid "Arany"
+msgstr ""
+
+msgctxt "hud.res.meteor"
+msgid "Meteorit"
+msgstr ""
+
+msgctxt "hud.res.faith"
+msgid "Áhítat"
+msgstr ""
+
+msgctxt "hud.res.gold_note"
+msgid "Aranybánya: a munkások bemennek a tárnába, és arannyal jönnek ki."
+msgstr ""
+
+msgctxt "hud.supply"
+msgid "Létszám"
+msgstr ""
+
+msgctxt "hud.stock"
+msgid "Készlet: {}"
+msgstr ""
+
+msgctxt "hud.seconds"
+msgid "{} mp"
+msgstr ""
+
+msgctxt "hud.owner"
+msgid "{}. játékos – {}"
+msgstr ""
+
+msgctxt "hud.building_kind"
+msgid "Épület"
+msgstr ""
+
+msgctxt "hud.building_progress"
+msgid "Épül: {}%"
+msgstr ""
+
+msgctxt "hud.hero_level"
+msgid "Hős • {}. szint"
+msgstr ""
+
+msgctxt "hud.worker"
+msgid "Munkás"
+msgstr ""
+
+msgctxt "hud.unit"
+msgid "Egység"
+msgstr ""
+
+msgctxt "hud.stat.attack"
+msgid "Támadás"
+msgstr ""
+
+msgctxt "hud.stat.armor"
+msgid "Páncél"
+msgstr ""
+
+msgctxt "hud.stat.speed"
+msgid "Mozgás"
+msgstr ""
+
+msgctxt "hud.stat.sight"
+msgid "Látótáv"
+msgstr ""
+
+msgctxt "hud.effects"
+msgid "Hatások"
+msgstr ""
+
+msgctxt "hud.effect_left"
+msgid "{} {} mp"
+msgstr ""
+
+msgctxt "hud.fx.buff"
+msgid "Erősítés: {}"
+msgstr ""
+
+msgctxt "hud.fx.burn.name"
+msgid "Ég"
+msgstr ""
+
+msgctxt "hud.fx.burn.desc"
+msgid "Tűz elemű találat: még néhány másodpercig sebez, páncélon át. Víz vagy jég eloltja."
+msgstr ""
+
+msgctxt "hud.fx.poison.name"
+msgid "Mérgezett"
+msgstr ""
+
+msgctxt "hud.fx.poison.desc"
+msgid "Lassú, páncélon átmenő sebzés."
+msgstr ""
+
+msgctxt "hud.fx.frozen.name"
+msgid "Fagyott"
+msgstr ""
+
+msgctxt "hud.fx.frozen.desc"
+msgid "Jég elemű találat: lassabban mozog. Tűz felolvasztja."
+msgstr ""
+
+msgctxt "hud.fx.slow.name"
+msgid "Lelassult"
+msgstr ""
+
+msgctxt "hud.fx.slow.desc"
+msgid "Lassabban mozog."
+msgstr ""
+
+msgctxt "hud.fx.wet.name"
+msgid "Átázott"
+msgstr ""
+
+msgctxt "hud.fx.wet.desc"
+msgid "Nem gyullad meg; a villám kétszer hosszabb sokkot ad rá."
+msgstr ""
+
+msgctxt "hud.fx.rooted.name"
+msgid "Gúzsba kötve"
+msgstr ""
+
+msgctxt "hud.fx.rooted.desc"
+msgid "Nem mozdulhat, de támadhat."
+msgstr ""
+
+msgctxt "hud.fx.asleep.name"
+msgid "Alszik"
+msgstr ""
+
+msgctxt "hud.fx.asleep.desc"
+msgid "Nem cselekszik; az első sebzésre felébred."
+msgstr ""
+
+msgctxt "hud.fx.stun.name"
+msgid "Kábult"
+msgstr ""
+
+msgctxt "hud.fx.stun.desc"
+msgid "Nem cselekszik."
+msgstr ""
+
+msgctxt "hud.fx.feared.name"
+msgid "Megrémült"
+msgstr ""
+
+msgctxt "hud.fx.feared.desc"
+msgid "Menekül, nem támad."
+msgstr ""
+
+msgctxt "hud.fx.blind.name"
+msgid "Elvakult"
+msgstr ""
+
+msgctxt "hud.fx.blind.desc"
+msgid "Távolsági támadásainak egy része mellémegy."
+msgstr ""
+
+msgctxt "hud.fx.silenced.name"
+msgid "Elnémítva"
+msgstr ""
+
+msgctxt "hud.fx.silenced.desc"
+msgid "Nem varázsolhat."
+msgstr ""
+
+msgctxt "hud.fx.marked.name"
+msgid "Megjelölt"
+msgstr ""
+
+msgctxt "hud.fx.marked.desc"
+msgid "Több sebzést kap, és az ellenfél a köd alól is látja."
+msgstr ""
+
+msgctxt "hud.fx.sunder.name"
+msgid "Páncéltörés"
+msgstr ""
+
+msgctxt "hud.fx.sunder.desc"
+msgid "Kevesebb a páncélja."
+msgstr ""
+
+msgctxt "hud.st.rest"
+msgid "Pihen"
+msgstr ""
+
+msgctxt "hud.st.move"
+msgid "Mozog"
+msgstr ""
+
+msgctxt "hud.st.amove"
+msgid "Támadó menet"
+msgstr ""
+
+msgctxt "hud.st.attack"
+msgid "Támad"
+msgstr ""
+
+msgctxt "hud.st.gather"
+msgid "Gyűjt"
+msgstr ""
+
+msgctxt "hud.st.gobuild"
+msgid "Építeni megy"
+msgstr ""
+
+msgctxt "hud.st.construct"
+msgid "Épít"
+msgstr ""
+
+msgctxt "hud.st.repair"
+msgid "Javít"
+msgstr ""
+
+msgctxt "hud.st.hold"
+msgid "Tartja a helyét"
+msgstr ""
+
+msgctxt "hud.st.cast"
+msgid "Varázsol"
+msgstr ""
+
+msgctxt "hud.st.carry"
+msgid "Szállít: {} {}"
+msgstr ""
+
+msgctxt "hud.st.constructing"
+msgid "Építés alatt – a munkások dolgoznak rajta."
+msgstr ""
+
+msgctxt "hud.st.producing"
+msgid "Gyárt: {} – {} mp"
+msgstr ""
+
+msgctxt "hud.st.queued"
+msgid " (+{} a sorban)"
+msgstr ""
+
+msgctxt "hud.st.supply"
+msgid "+{} létszám"
+msgstr ""
+
+msgctxt "hud.st.garrison"
+msgid "Helyőrség {}/{}"
+msgstr ""
+
+msgctxt "hud.st.rally"
+msgid "Jobb klikk a térképen: gyülekezőpont"
+msgstr ""
+
+msgctxt "hud.type.buildings"
+msgid "Épületek"
+msgstr ""
+
+msgctxt "hud.type.building_desc"
+msgid "Épület – az ostromgépek és az óriások ellen gyenge."
+msgstr ""
+
+msgctxt "hud.utype.kozelharcos.name"
+msgid "Közelharcos"
+msgstr ""
+
+msgctxt "hud.utype.kozelharcos.desc"
+msgid "kard, buzogány, balta"
+msgstr ""
+
+msgctxt "hud.utype.landzsas.name"
+msgid "Lándzsás / pajzsos"
+msgstr ""
+
+msgctxt "hud.utype.landzsas.desc"
+msgid "lándzsa, dárda, pajzsfal"
+msgstr ""
+
+msgctxt "hud.utype.lovesz.name"
+msgid "Lövész"
+msgstr ""
+
+msgctxt "hud.utype.lovesz.desc"
+msgid "íj, parittya, dobófegyver"
+msgstr ""
+
+msgctxt "hud.utype.lovas.name"
+msgid "Lovas / hátas"
+msgstr ""
+
+msgctxt "hud.utype.lovas.desc"
+msgid "gyors hátas harcos"
+msgstr ""
+
+msgctxt "hud.utype.orias.name"
+msgid "Óriás / szörny"
+msgstr ""
+
+msgctxt "hud.utype.orias.desc"
+msgid "nagy testű lény vagy gép"
+msgstr ""
+
+msgctxt "hud.utype.varazslo.name"
+msgid "Varázsló"
+msgstr ""
+
+msgctxt "hud.utype.varazslo.desc"
+msgid "mágiahasználó, támogató"
+msgstr ""
+
+msgctxt "hud.utype.repulo.name"
+msgid "Repülő"
+msgstr ""
+
+msgctxt "hud.utype.repulo.desc"
+msgid "légi egység"
+msgstr ""
+
+msgctxt "hud.utype.ostrom.name"
+msgid "Ostromgép"
+msgstr ""
+
+msgctxt "hud.utype.ostrom.desc"
+msgid "távoli, épületromboló"
+msgstr ""
+
+msgctxt "hud.utype.munkas.name"
+msgid "Munkás"
+msgstr ""
+
+msgctxt "hud.utype.munkas.desc"
+msgid "gyűjt, épít"
+msgstr ""
+
+msgctxt "hud.player"
+msgid "{}. játékos"
+msgstr ""
+
+msgctxt "hud.defeated_mark"
+msgid "  (kiesett)"
+msgstr ""
+
+msgctxt "hud.rel.you"
+msgid "Te"
+msgstr ""
+
+msgctxt "hud.rel.enemy"
+msgid "Ellenfél"
+msgstr ""
+
+msgctxt "hud.quests"
+msgid "Küldetések"
+msgstr ""
+
+msgctxt "hud.quest.defeat_all"
+msgid "Győzd le az összes ellenfelet"
+msgstr ""
+
+msgctxt "hud.key_hint"
+msgid "Billentyű: {}"
+msgstr ""
+
+msgctxt "hud.path.title"
+msgid "Felemelkedés – válassz irányt"
+msgstr ""
+
+msgctxt "hud.path.sub"
+msgid "A választás végleges: a másik két irány tartalma zárva marad."
+msgstr ""
+
+msgctxt "hud.path.hint"
+msgid "Esc: később (a főépület parancskártyáján újra megnyitható)"
+msgstr ""
+
+msgctxt "hud.win"
+msgid "Győzelem!"
+msgstr ""
+
+msgctxt "hud.lose"
+msgid "Vereség"
 msgstr ""
