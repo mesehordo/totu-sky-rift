@@ -1,0 +1,13 @@
+# Egységes sorvég: minden szövegfájl LF a tárolóban és a munkafában (a vegyes CRLF/LF ütközéseket és cserehibákat okozott)
+* text=auto eol=lf
+# bináris
+*.png binary
+*.jpg binary
+*.ttf binary
+*.otf binary
+*.trep binary
+*.wav binary
+*.ogg binary
+*.ico binary
+# a harmadik féltől származó kód érintetlen marad
+engine/third_party/** -text
