@@ -63,6 +63,8 @@ class World {
   // a HUD-nak (M6 9. lépés): a kijelölés, a kijelölt saját épület, a pillanatkép, parancs a futtató sorába
   const std::vector<sim::EntityId>& selection() const { return selected_; }
   sim::EntityId selected_building() const { return selected_building_; }
+  // a HUD kijelölése (M8): az egységek, vagy egyetlen épület
+  void set_selection(const std::vector<sim::EntityId>& ids);
   const Snapshot* snapshot() const { return cur_.get(); }
   void post(sim::Command c) { runner_.post(std::move(c)); }
   // a kijelöltek képessége a gyorsbillentyűvel (a régi játék szerint): a pont és az alatta álló ellenség a célpont

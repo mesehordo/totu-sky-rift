@@ -109,6 +109,19 @@ void World::select_box(float x0, float y0, float x1, float y1) {
   }
 }
 
+void World::set_selection(const std::vector<sim::EntityId>& ids) {
+  selected_.clear();
+  selected_building_ = 0;
+  if (!cur_) return;
+  for (const sim::EntityId id : ids) {
+    const SnapUnit* u = cur_->find(id);
+    if (!u) continue;
+    if (u->kind == SnapUnit::kUnit) selected_.push_back(id);
+    else if (u->kind == SnapUnit::kBuilding && !selected_building_) selected_building_ = id;
+  }
+  if (!selected_.empty()) selected_building_ = 0;
+}
+
 bool World::ability_hotkey(char key, float wx, float wy) {
   const sim::Rules* r = session_.rules();
   if (!r || selected_.empty() || !cur_) return false;
