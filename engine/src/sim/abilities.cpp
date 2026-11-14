@@ -820,6 +820,27 @@ void Sim::aura_system() {
       }
     });
   }
+  // épület-aura (`Aura`; a régi H 307–335 és a Tápgomba `regen_aura`): a kész épület körében a saját egységek
+  std::vector<EntityId> aura_b;
+  world_.pool<Building>().each([&](EntityId e, const Building& b) {
+    const Health* h = world_.get<Health>(e);
+    if (b.complete && h && h->hp > 0 && rules_->defs[b.def].has_aura) aura_b.push_back(e);
+  });
+  for (const EntityId be : aura_b) {
+    const Building& b = *world_.get<Building>(be);
+    const EntityDef& bd = rules_->defs[b.def];
+    const uint8_t owner = world_.get<Health>(be)->owner;
+    const Fixed cx = Fixed::from_int(b.tx) + Fixed::from_ratio(b.w, 2), cy = Fixed::from_int(b.ty) + Fixed::from_ratio(b.h, 2);
+    world_.pool<Unit>().each([&](EntityId o, const Unit& u) {
+      const Health* oh = world_.get<Health>(o);
+      if (!oh || oh->owner != owner || oh->hp <= 0) return;
+      const Position& op = *world_.get<Position>(o);
+      if (core::length(op.x - cx, op.y - cy) > bd.aura_radius) return;
+      bool tag_ok = bd.aura_tags.empty();
+      for (const auto& t : bd.aura_tags) tag_ok = tag_ok || rules_->defs[u.def].has_tag(t);
+      if (tag_ok) aura_merge(aura_[o], bd.aura_mods);
+    });
+  }
   for (const auto& [src, ab] : srcs) {
     const AbilityDef& a = rules_->abilities[ab];
     const Position& sp = *world_.get<Position>(src);

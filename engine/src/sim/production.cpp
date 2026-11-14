@@ -196,7 +196,7 @@ void Sim::set_rally(EntityId e, Fixed x, Fixed y, EntityId target) {
 EntityId Sim::spawn_group(uint16_t def, uint8_t owner, Fixed x, Fixed y, Producer* pr) {
   const EntityDef& d = rules_->defs[def];
   const uint16_t sdef = d.spawn_unit != kNoDef ? d.spawn_unit : def;
-  const int count = d.spawn_unit != kNoDef ? d.spawn_count : 1;
+  const int count = d.spawn_unit != kNoDef ? d.spawn_count : d.count;   // falka, illetve `Cost.count` (a Karmos párban jön)
   const bool rally = pr->has_rally;
   const Fixed rx = pr->rx, ry = pr->ry;
   const EntityId rt = pr->rally_target;
@@ -309,6 +309,20 @@ void Sim::production_system() {
     const Building* b = world_.get<Building>(e);
     const Health* h = world_.get<Health>(e);
     if (!pr || !b || !h || !b->complete || h->hp <= 0 || pr->queue.empty()) continue;
+    if (rules_->defs[b->def].parallel) {   // a teljes sor egyszerre (a régi E 1750)
+      for (size_t i = 0; i < pr->queue.size();) {
+        QueueItem& q = pr->queue[i];
+        q.progress = std::min(q.time, q.progress + 1);
+        const QueueItem done = q;
+        if (done.progress >= done.time && finish_item(e, done)) {
+          pr = world_.get<Producer>(e);
+          pr->queue.erase(pr->queue.begin() + static_cast<std::ptrdiff_t>(i));
+        } else {
+          ++i;
+        }
+      }
+      continue;
+    }
     QueueItem& q = pr->queue.front();
     q.progress = std::min(q.time, q.progress + 1);
     if (q.progress < q.time) continue;

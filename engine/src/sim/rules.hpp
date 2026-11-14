@@ -165,6 +165,8 @@ struct RuleSet {
   int32_t detect_all = 0;                                      // minden saját egység ennyi csempés észlelő (0: nincs)
   int32_t pond_size = 0;                                       // a tavacska oldalhossza (0: az épület lábnyoma)
   Fixed summon_life_mult = Fixed::from_int(1);                 // az idézések élettartama × ennyi
+  bool has_forest_stealth = false;                             // erdei rejtőzés szabályként (irány; címkeszűrővel)
+  std::vector<std::string> forest_stealth_tags;
   bool has_pack = false;                                       // falkabónusz szabályként (irány): mint a népi, címkével
   Fixed pack_radius = Fixed::from_int(4), pack_per, pack_max = Fixed::from_ratio(2, 5);
   std::vector<std::string> pack_tags;
@@ -234,6 +236,18 @@ struct EntityDef {
   int32_t spawn_count = 1;
   bool packable = false;
   bool diplomacy = false;                     // Diplomácia csarnoka (`Mechanics.diplomacy`; MECH-ALLY)
+  // a régi játék további egység- és épületszabályai (leltár-kapu)
+  Fixed burst_radius, burst_damage;           // `Attack.death_burst`: halálkor varázssebzés a körben (a régi G 1249)
+  int32_t mine_stealth = 0;                   // `Vision.mine_stealth`: 3 s nyugalom után rejtett arany/meteorit mellett
+  bool type_nostrength = false;               // `Attack.type_nostrength`: a támadó típusszorzója nem érvényes
+  bool builds = true;                         // `Worker.builds`: false = ez a munkás nem építhet
+  bool parallel = false;                      // `Producer.parallel`: a teljes sor egyszerre gyárt (a régi E 1750)
+  uint8_t on_resource = 0;                    // `Placement.on_resource`: csak ilyen lelőhelyre épül (nyersanyag-maszk)
+  bool altar = false;                         // `Mechanics.altar`: hősképző oltár (a gép innen képez hőst)
+  bool has_aura = false;                      // `Aura`: a kész épület körében a saját egységek módosítói
+  Fixed aura_radius = Fixed::from_int(6);
+  std::vector<std::string> aura_tags;
+  AbilityMods aura_mods;
   std::shared_ptr<const content::Value> raw;   // a teljes sablon (a népmodulok saját kulcsaihoz)
   bool rift_source = false;                   // Égkő (`Mechanics.rift_source`)
   std::vector<uint16_t> powers;               // főépület-képességek (`Powers.list`, Rules::abilities)

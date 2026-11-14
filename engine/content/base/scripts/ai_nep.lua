@@ -83,13 +83,25 @@ local function think(p, tick)
       if not Game.gather(w, res) and DEBUG_AI then log(me.faction .. " nem gyűjt: " .. res) end
     end
   end
+  -- létszámegység (a régi `manage_supply`: emu, szemhordozó): ha fogy a hely, ezt képzi
+  if plan.supply_unit and free <= 6 and me.supply_cap < 200 and (st.supply_t or 0) <= tick then
+    if Game.train(p, plan.supply_unit) then
+      st.supply_t = tick + 10 * 30
+      st.supply_full = false
+    else
+      st.supply_full = true
+    end
+  end
   -- építés: egyszerre egy; a létszám előbb (ha nem sikerült, a kör gyűjt: a sereg vár)
   local saving = false
   if inv.building == 0 and inv.hq then
     local hx, hy = math.floor(inv.hq.x), math.floor(inv.hq.y)
     local want
     -- létszám, de nem kétszer egymás után (különben a folytonos kiképzés mellett csak létszámépület épülne)
-    if free < 3 and me.supply_cap < 200 and plan.supply_building and not st.last_supply then want = plan.supply_building end
+    -- létszámépület; a létszámegységes népnél (emu) csak ha az egység nem képezhető (karámonként legfeljebb 5)
+    if free < 3 and me.supply_cap < 200 and plan.supply_building and not st.last_supply and (not plan.supply_unit or st.supply_full) then
+      want = plan.supply_building
+    end
     local wants = {}
     if want then wants[1] = want end
     local need = {}
@@ -108,6 +120,19 @@ local function think(p, tick)
       end
     end
   end
+  -- hős az oltárból (a régi `manage_heroes`): legalább 3 harcos mellett, egyenként
+  local hero_wait = false   -- a hős létszámára a sereg vár (a régi `reserve`)
+  if plan.heroes and #inv.army >= 3 then
+    for _, h in ipairs(plan.heroes) do
+      if (inv.count[h] or 0) == 0 then
+        if Game.train(p, h) then
+          hero_wait = false
+          break
+        end
+        hero_wait = true
+      end
+    end
+  end
   -- kutatás: a sorrend következő három eleméből az első indítható
   local order = plan.research_order or {}
   local busy = false
@@ -123,7 +148,7 @@ local function think(p, tick)
   -- ha a kutató épület a kiképzéssel foglalt, minden második körben a kiképzés szünetel (felszabadul a kutatásnak)
   local hold = (busy and (tick // THINK) % 2 == 0) or saving
   -- kiképzés: a hadrend körben (ami nem megy, átlépi)
-  if #st.army > 0 and free >= 2 and not hold then
+  if #st.army > 0 and free >= 2 and not hold and not (hero_wait and (tick // THINK) % 2 == 0) then
     for _ = 1, #st.army do
       local ok = Game.train(p, st.army[st.army_i])
       st.army_i = st.army_i % #st.army + 1

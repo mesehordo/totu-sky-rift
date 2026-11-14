@@ -12,6 +12,7 @@
 
 using namespace totu;
 using namespace totu::testing;
+using core::Fixed;
 
 namespace {
 
@@ -55,6 +56,15 @@ struct Setup {
     });
     return found;
   }
+  // körzetet adó épület (mezőadó, lámpás, mélység: `Mechanics.*_radius`) – ebből több is kellhet
+  static bool area_maker(const sim::EntityDef& d) {
+    const auto* m = d.raw ? d.raw->find("Mechanics") : nullptr;
+    if (!m || !m->is_object()) return false;
+    for (const auto& [k, v] : m->members()) {
+      if (k.size() > 7 && k.compare(k.size() - 7, 7, "_radius") == 0) return true;
+    }
+    return false;
+  }
   // csempét teremtő épület (tavacska, lapkő): elkészülve a csempébe olvad – a célhely lábnyomát fedi le
   static bool tile_maker(const sim::EntityDef& d) {
     const auto* l = d.raw ? d.raw->find("Legacy") : nullptr;
@@ -85,9 +95,11 @@ struct Setup {
   // a lábnyom körül egy csempe szabad marad (a munkás nem zárul be)
   bool margin_free(uint16_t def, int x, int y) {
     const auto& d = R().defs[def];
+    int g = 1;   // a nagy testű egységet képző épület körül kettő: a kész egységnek is legyen hol megjelennie
+    for (const uint16_t u : d.produces) g = R().defs[u].radius >= Fixed::from_ratio(4, 5) ? 2 : g;
     bool ok = true;
     s().world().pool<sim::Building>().each([&](sim::EntityId, const sim::Building& b) {
-      ok = ok && !(x - 1 < b.tx + b.w && b.tx < x + d.fw + 1 && y - 1 < b.ty + b.h && b.ty < y + d.fh + 1);
+      ok = ok && !(x - g < b.tx + b.w && b.tx < x + d.fw + g && y - g < b.ty + b.h && b.ty < y + d.fh + g);
     });
     return ok;
   }
@@ -124,7 +136,7 @@ struct Setup {
         const size_t i = n % R().defs.size();
         const auto& d = R().defs[i];
         const uint16_t id = static_cast<uint16_t>(i);
-        if (d.faction != f || !d.building || !d.reqs.empty() || d.fw <= 0 || id == def || has_building(id)) continue;
+        if (d.faction != f || !d.building || !d.reqs.empty() || d.fw <= 0 || id == def || (has_building(id) && !area_maker(d)) || d.on_resource) continue;
         if (tile_maker(d) != (n < R().defs.size())) continue;
         const auto at = tile_maker(d) ? cover_site(id, def) : legal_site(id);
         if (at.first < 0) continue;
@@ -329,7 +341,12 @@ TEST_CASE("népi lefedettség: minden főnép minden egysége képezhető a felt
       CHECK(ok);
       st.m.run(d.time_ticks + 30);
       const bool out = count_owned(st.s(), sim::kNoDef) > before;
-      if (ok && !out) std::printf("  %s: %s nem jelent meg\n", f.c_str(), id.c_str());
+      if (ok && !out) {
+        std::printf("  %s: %s nem jelent meg\n", f.c_str(), id.c_str());
+        st.s().world().pool<sim::Producer>().each([&](sim::EntityId pe, const sim::Producer& pr) {
+          if (!pr.queue.empty()) std::printf("    sor: %s, %zu elem, %d/%d\n", R().defs[st.s().world().get<sim::Building>(pe)->def].id.c_str(), pr.queue.size(), pr.queue[0].progress, pr.queue[0].time);
+        });
+      }
       CHECK(out);
       trained += ok && out ? 1 : 0;
     }

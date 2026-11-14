@@ -236,7 +236,7 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
     // típusszorzó (Ö24): a támadó osztálya a célpont osztálya ellen; a `type_bonus` ennél erősebb lehet
     const std::string tt = tb ? std::string("epulet") : td.utype;
     if (!sd.utype.empty() && !tt.empty()) {
-      Fixed m = rules_->type_mult(sd.utype, tt);
+      Fixed m = sd.type_nostrength ? Fixed::from_int(1) : rules_->type_mult(sd.utype, tt);   // `type_nostrength` (G 956)
       for (const auto& [k, v] : sd.attack.type_bonus) {
         if (k == tt) m = std::max(m, v);
       }
@@ -556,6 +556,15 @@ void Sim::die(EntityId e) {
     const auto kit = killer_.find(e);
     for (auto& m : modules_) {
       m->on_death(*this, e, kit != killer_.end() ? kit->second.first : 0, kit != killer_.end() ? kit->second.second : 0);
+    }
+  }
+  if (const Unit* du = world_.get<Unit>(e); du && rules_->defs[du->def].burst_damage.raw() > 0) {
+    // halálkori robbanás (`death_burst`; a régi G 1249): varázssebzés az ellenséges egységeknek a körben
+    const EntityDef& dd = rules_->defs[du->def];
+    const Position& dp = *world_.get<Position>(e);
+    const uint8_t downer = world_.get<Health>(e)->owner;
+    for (const EntityId t : enemy_units_in(downer, dp.x, dp.y, dd.burst_radius)) {
+      if (t != e) deal_damage(kNoEntity, downer, kNoDef, t, (int64_t{dd.burst_damage.raw()} * 1000) >> 16, false, true);
     }
   }
   if (const auto it = killer_.find(e); it != killer_.end()) {

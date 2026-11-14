@@ -90,10 +90,14 @@ bool Sim::can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* er
   world_.pool<Building>().each([&](EntityId, const Building& b) {
     busy = busy || overlap(tx, ty, w, h, b.tx, b.ty, b.w, b.h);
   });
+  bool on_node = false;   // lelőhelyre épülő (Napfúró, Fertőzött tárna; a régi G 2240): a lelőhely sarkára, belefér
   world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) {
-    busy = busy || (n.amount > 0 && overlap(tx, ty, w, h, n.tx, n.ty, n.size, n.size));
+    if (n.amount <= 0 || !overlap(tx, ty, w, h, n.tx, n.ty, n.size, n.size)) return;
+    if (d.on_resource && (d.on_resource & (1u << n.kind)) && n.tx == tx && n.ty == ty && w <= n.size && h <= n.size) on_node = true;
+    else busy = true;
   });
   if (busy) return fail("foglalt hely");
+  if (d.on_resource && !on_node) return fail("aranybányára vagy meteoritra kell építeni");
   if (owner) {
     std::string miss;
     if (missing_requirements(owner, d, &miss)) {
@@ -127,6 +131,7 @@ bool Sim::order_build(EntityId e, uint16_t def, int tx, int ty, std::string* err
   Worker* w = world_.get<Worker>(e);
   const Health* hp = world_.get<Health>(e);
   if (!w || !hp || hp->hp <= 0 || w->inside) return fail("ez az egység nem épít");
+  if (const Unit* wu = world_.get<Unit>(e); wu && !rules_->defs[wu->def].builds) return fail("ez a munkás nem épít");   // `Worker.builds`
   const PlayerState& p = players_[hp->owner];
   const EntityDef& d = rules_->defs[def];
   if (!d.building || (d.faction != p.faction && (p.ally.empty() || d.faction != p.ally))) return fail("ezt a nép nem építheti");   // + a szövetséges kisnépé (D26)
@@ -421,6 +426,7 @@ bool Sim::build_near(uint8_t owner, uint16_t def, int x, int y) {
   world_.pool<Worker>().each([&](EntityId e, const Worker& w) {
     const Health* h = world_.get<Health>(e);
     if (!h || h->owner != owner || h->hp <= 0 || w.inside || sheltered(e)) return;
+    if (const Unit* wu = world_.get<Unit>(e); wu && !rules_->defs[wu->def].builds) return;   // nem építő munkás
     const int rank = w.state == Worker::Idle ? 0 : (w.state == Worker::Build || w.state == Worker::Construct) ? 3 : 1;
     if (rank < best_rank) {
       best_rank = rank;

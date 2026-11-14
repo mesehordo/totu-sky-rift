@@ -147,6 +147,11 @@ void parse_rules(const content::Value* obj, const Rules& r, RuleSet& out) {
   if (const content::Value* da = obj->find("detect_all")) out.detect_all = int_of(da, 0);
   if (const content::Value* ps = obj->find("pond_size")) out.pond_size = int_of(ps, 0);
   out.summon_life_mult = fixed_of(obj->find("summon_life_mult"), out.summon_life_mult);
+  if (const content::Value* fs = obj->find("forest_stealth"); fs && fs->is_object()) {   // a régi `rule_tags` (G 1307)
+    out.has_forest_stealth = true;
+    out.forest_stealth_tags.clear();
+    read_tags(fs->find("tags"), out.forest_stealth_tags);
+  }
   // falkabónusz szabályként (a régi G 764: a `rules` vagy a nép `pack_bonus`-a)
   if (const content::Value* pb = obj->find("pack_bonus"); pb && pb->is_object()) {
     out.has_pack = true;
@@ -582,6 +587,32 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     if (const content::Value* cl = path(*v, "Identity", "class"); cl && cl->is_string()) d.utype = cl->text();
     d.shield = int_of(path(*v, "Health", "shield"), 0);
     d.detect = int_of(path(*v, "Vision", "detect"), 0);
+    d.mine_stealth = int_of(path(*v, "Vision", "mine_stealth"), 0);
+    if (const content::Value* db = path(*v, "Attack", "death_burst"); db && db->is_object()) {
+      d.burst_radius = fixed_of(db->find("radius"), Fixed{});
+      d.burst_damage = fixed_of(db->find("damage"), Fixed{});
+    }
+    if (const content::Value* tn = path(*v, "Attack", "type_nostrength"); tn && tn->is_bool()) d.type_nostrength = tn->as_bool();
+    if (const content::Value* wb = path(*v, "Worker", "builds"); wb && wb->is_bool()) d.builds = wb->as_bool();
+    if (const content::Value* pl = path(*v, "Producer", "parallel"); pl && pl->is_bool()) d.parallel = pl->as_bool();
+    d.on_resource = res_mask(path(*v, "Placement", "on_resource"));
+    if (const content::Value* al = path(*v, "Mechanics", "altar"); al && al->is_bool()) d.altar = al->as_bool();
+    if (const content::Value* au = v->find("Aura"); au && au->is_object()) {   // épület-aura (a régi H 307–335)
+      d.has_aura = true;
+      d.aura_radius = fixed_of(au->find("radius"), d.aura_radius);
+      read_tags(au->find("tags"), d.aura_tags);
+      const content::Value* mo = au->find("modifiers");
+      auto mod = [&](const char* k, Fixed def) {
+        const content::Value* x = mo && mo->is_object() ? mo->find(k) : nullptr;
+        return x ? fixed_of(x, def) : def;
+      };
+      d.aura_mods.speed_mult = mod("speed_mult", Fixed::from_int(1));
+      d.aura_mods.damage_mult = mod("damage_mult", Fixed::from_int(1));
+      d.aura_mods.ranged_taken_mult = mod("ranged_taken_mult", Fixed::from_int(1));
+      d.aura_mods.armor_add = mod("armor_add", Fixed{});
+      d.aura_mods.range_add = mod("range_add", Fixed{});
+      d.aura_mods.regen_add = fixed_of(au->find("regen"), mod("regen_add", Fixed{}));   // a régi `regen_aura` (Tápgomba)
+    }
     const content::Value* ah = path(*v, "Vision", "always_hidden");
     d.always_hidden = ah && ah->is_bool() && ah->as_bool();
     d.shield_delay = seconds_to_ticks(fixed_of(path(*v, "Health", "shield_delay"), Fixed{}));
@@ -1073,6 +1104,10 @@ void RuleSet::merge(const RuleSet& o) {
   if (o.detect_all > 0) detect_all = o.detect_all;
   if (o.pond_size > 0) pond_size = o.pond_size;
   if (o.summon_life_mult != Fixed::from_int(1)) summon_life_mult = o.summon_life_mult;
+  if (o.has_forest_stealth) {
+    has_forest_stealth = true;
+    forest_stealth_tags = o.forest_stealth_tags;
+  }
   if (o.has_pack) {
     has_pack = true;
     pack_radius = o.pack_radius;

@@ -94,12 +94,28 @@ void Sim::stealth_system() {
     const Unit* u = world_.get<Unit>(e);
     s.hidden = u && rules_->defs[u->def].always_hidden ? 1 : 0;
     if (!s.hidden && mod_hidden(e)) s.hidden = 1;   // népmodul (beásás, éjjeli rejtőzés …)
+    if (!s.hidden && u && rules_->defs[u->def].mine_stealth > 0 && tick_ - s.last_attack > 90 && !rules_->defs[u->def].flying) {
+      // bányai rejtőzés (`mine_stealth`, Tanuki; a régi G 1298): arany- vagy meteoritlelőhely a ± r csempés körzetben
+      const int rr = rules_->defs[u->def].mine_stealth;
+      const Position& mp = *world_.get<Position>(e);
+      const int mx = mp.x.floor_int(), my = mp.y.floor_int();
+      world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) {
+        if (n.amount <= 0 || (n.kind != kGold && n.kind != kMeteor)) return;
+        if (n.tx <= mx + rr && n.tx + n.size - 1 >= mx - rr && n.ty <= my + rr && n.ty + n.size - 1 >= my - rr) s.hidden = 1;
+      });
+    }
     if (!s.hidden && u) {   // erdei rejtőzés (Wullof): 3 s óta nem támadott, földi, áll, és fa van a 3 × 3-as körzetben
       const Health* h = world_.get<Health>(e);
       const FactionDef* f = h && h->owner >= 1 && h->owner <= kMaxPlayers ? rules_->faction(players_[h->owner].faction) : nullptr;
       const int fr = rules_->ability_index("erdei_rejtozes");
       const Movement* mv = world_.get<Movement>(e);
-      if (f && f->forest_stealth && fr >= 0 && has_ability(e, static_cast<uint16_t>(fr)) && tick_ - s.last_attack > 90 &&
+      bool by_rule = false;   // szabályként (irány, címkeszűrővel; a régi `rule_tags`, G 1307)
+      if (h && h->owner >= 1 && h->owner <= kMaxPlayers && rules_of(h->owner).has_forest_stealth) {
+        const auto& tags = rules_of(h->owner).forest_stealth_tags;
+        by_rule = tags.empty();
+        for (const auto& t : tags) by_rule = by_rule || rules_->defs[u->def].has_tag(t);
+      }
+      if (((f && f->forest_stealth && fr >= 0 && has_ability(e, static_cast<uint16_t>(fr))) || by_rule) && tick_ - s.last_attack > 90 &&
           !rules_->defs[u->def].flying && !(mv && mv->moving)) {
         const Position& p = *world_.get<Position>(e);
         const int tx = p.x.floor_int(), ty = p.y.floor_int();

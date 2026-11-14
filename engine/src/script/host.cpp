@@ -1011,7 +1011,19 @@ int g_faction_ai(lua_State* L) {
     }
   }
   lua_setfield(L, -2, "gather");
-  for (const char* key : {"hq", "worker", "supply_building"}) {
+  // a hősök: az oltár (`Mechanics.altar`) képezte hős egységek (a régi gép `manage_heroes`-a)
+  lua_newtable(L);
+  i = 0;
+  for (const auto& d : s.rules()->defs) {
+    if (d.faction != f->id || !d.building || !d.altar) continue;
+    for (const uint16_t u : d.produces) {
+      if (!s.rules()->defs[u].hero) continue;
+      lua_pushstring(L, s.rules()->defs[u].id.c_str());
+      lua_rawseti(L, -2, ++i);
+    }
+  }
+  lua_setfield(L, -2, "heroes");
+  for (const char* key : {"hq", "worker", "supply_building", "supply_unit"}) {
     if (const content::Value* v = fa->find(key); v && v->is_string()) {
       lua_pushstring(L, v->text().c_str());
       lua_setfield(L, -2, key);
