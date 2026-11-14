@@ -17,7 +17,7 @@
   "Cost": {
    "resources": {
     "wood": 40,
-    "stone": 20
+    "gold": 20
    },
    "supply": 0,
    "time": 1
@@ -68,7 +68,7 @@
   "Cost": {
    "resources": {
     "wood": 45,
-    "stone": 25
+    "gold": 25
    },
    "supply": 0,
    "time": 1
@@ -173,7 +173,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 150
+    "gold": 150
    },
    "supply": 0,
    "time": 1

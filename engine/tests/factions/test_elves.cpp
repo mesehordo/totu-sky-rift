@@ -53,10 +53,10 @@ int32_t progress(sim::Sim& s, sim::EntityId b) {
   return pr && !pr->queue.empty() ? pr->queue.front().progress : -1;
 }
 
-sim::EntityId stone_node(sim::Sim& s) {
+sim::EntityId gold_node(sim::Sim& s) {
   sim::EntityId out = sim::kNoEntity;
   s.world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode& n) {
-    if (!out && n.kind == sim::kStone) out = e;
+    if (!out && n.kind == sim::kGold) out = e;
   });
   return out;
 }
@@ -197,12 +197,12 @@ TEST_CASE("Szürke elfek Áhítat: a szentély 4 helye – 5 tétlen munkásból
 TEST_CASE("Szürke elfek Napfúró: 0,4 passzív + mellette álló munkások, carry / (gather_time + 7,4); Napáldás ×1,5") {
   Match m = elves();
   sim::Sim& s = *m.sim;
-  const auto node = stone_node(s);
+  const auto node = gold_node(s);
   CHECK(node != sim::kNoEntity);
   if (!node) return;
   const sim::ResourceNode n0 = *s.world().get<sim::ResourceNode>(node);
   const auto mine = s.place_building(def_of("elf_napfuro"), 1, n0.tx, n0.ty, true);
-  const sim::ResourceDef& rd = R().resources[sim::kStone];
+  const sim::ResourceDef& rd = R().resources[sim::kGold];
   const double per_s = rd.carry / (rd.gather_time.raw() / 65536.0 + 7.4);   // 6 / 10 = 0,6
   const auto amount = [&] { return s.world().get<sim::ResourceNode>(node)->amount; };
   int32_t a0 = amount();
@@ -260,7 +260,7 @@ TEST_CASE("Szürke elfek: determinizmus és folytatás mentésből") {
     s.set_rally(hall, Fixed::from_int(27), Fixed::from_int(16), sim::kNoEntity);
     s.train(1, def_of("elf_tollas_harcos"), hall);
     s.train(1, def_of("elf_tollas_harcos"), hall);
-    const sim::ResourceNode n = *s.world().get<sim::ResourceNode>(stone_node(s));
+    const sim::ResourceNode n = *s.world().get<sim::ResourceNode>(gold_node(s));
     const auto mine = s.place_building(def_of("elf_napfuro"), 1, n.tx, n.ty, true);
     s.use_power(1, mine, "napaldas");
     const auto hq = building_of(s, "elf_napszentely", 1);

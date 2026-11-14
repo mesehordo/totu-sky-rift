@@ -188,15 +188,15 @@ TEST_CASE("Aurethi Égkő-fény: a gépek +1 életerő/s (a faji 0,25/s mellett)
   // gyűjtők
   const auto fab = put(s, "imp_fabrikator", 1, 100, 175);
   const auto arato = put(s, "imp_arato", 1, 110, 175);
-  sim::EntityId stone = sim::kNoEntity, wood = sim::kNoEntity;
+  sim::EntityId gold = sim::kNoEntity, wood = sim::kNoEntity;
   s.world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode& n) {
-    if (n.kind == sim::kStone && !stone) stone = e;
+    if (n.kind == sim::kGold && !gold) gold = e;
     if (n.kind == sim::kWood && !wood) wood = e;
   });
-  IMP_REQUIRE(stone);
+  IMP_REQUIRE(gold);
   IMP_REQUIRE(wood);
-  CHECK(!s.order_gather(fab, stone));
-  CHECK(s.order_gather(arato, stone));
+  CHECK(!s.order_gather(fab, gold));
+  CHECK(s.order_gather(arato, gold));
   CHECK(s.order_gather(fab, wood));
 }
 

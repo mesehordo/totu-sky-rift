@@ -65,11 +65,11 @@ TEST_CASE("építés: Ursan – fizetés, belépés, haladás és életerő, kil
   const sim::EntityId wk = ws[0];
   const sim::EntityId was_res = s.world().get<sim::Worker>(wk)->res;
   CHECK(was_res != 0);
-  const int64_t wood0 = s.player(1).res[sim::kWood], stone0 = s.player(1).res[sim::kStone];
+  const int64_t wood0 = s.player(1).res[sim::kWood], stone0 = s.player(1).res[sim::kGold];
   s.queue(build_cmd(wk, "urs_tanya", 11, 15));   // tanya: 95 fa, 20 arany, 30 s, +10 létszám
   m.run(1);
   CHECK(s.player(1).res[sim::kWood] - wood0 <= -95000 + 8000);   // levonva (közben hozhattak fát)
-  CHECK(s.player(1).res[sim::kStone] == stone0 - 20000);
+  CHECK(s.player(1).res[sim::kGold] == stone0 - 20000);
   CHECK(s.world().get<sim::Worker>(wk)->state == sim::Worker::Build);
   // odamegy, lerakja, bemászik
   sim::EntityId farm = sim::kNoEntity;
@@ -140,9 +140,9 @@ TEST_CASE("építés: leadóhely a fánál, nincs pénz, megszakítás 75%-kal, 
   (void)hq;
   // nincs elég nyersanyag: semmi sem vonódik le
   std::string why;
-  const int64_t before = s.player(1).res[sim::kStone];
+  const int64_t before = s.player(1).res[sim::kGold];
   CHECK(!s.order_build(ws[1], def_of("urs_runaszentely"), 12, 14, &why));
-  CHECK(s.player(1).res[sim::kStone] == before);
+  CHECK(s.player(1).res[sim::kGold] == before);
   // megszakítás: 75% vissza, a munkás kijön, a hely szabad
   const int64_t wood0 = s.player(1).res[sim::kWood];
   CHECK(s.order_build(ws[1], def_of("urs_hosszuhaz"), 12, 14, &why));

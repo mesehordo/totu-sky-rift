@@ -4,15 +4,30 @@ name: motor
 
 on:
   push:
-    paths: ["engine/**", ".github/workflows/motor.yml"]
+    paths: ["engine/**", "tools/leltar_kapu.py", "docs/alap/leltar_kapu.json", ".github/workflows/motor.yml"]
   pull_request:
-    paths: ["engine/**", ".github/workflows/motor.yml"]
+    paths: ["engine/**", "tools/leltar_kapu.py", "docs/alap/leltar_kapu.json", ".github/workflows/motor.yml"]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  leltar:
+    name: Leltár-kapu (ADR-008)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            /engine/tests/
+            /tools/leltar_kapu.py
+            /docs/alap/tartalom_leltar.json
+            /docs/alap/leltar_kapu.json
+          sparse-checkout-cone-mode: false
+      - name: Minden leltársor besorolva, a hivatkozott próbák léteznek
+        run: python3 tools/leltar_kapu.py --check
+
   native:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}

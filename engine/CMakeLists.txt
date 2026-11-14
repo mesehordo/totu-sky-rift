@@ -110,6 +110,9 @@ add_test(NAME golden_replay_m4 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DI
 # M6 kapu: két szkriptelt ursan gép 12 perces meccse (gazdaság, építés, termelés, kutatás, harc, időjárás) mindenhol egyezik
 add_test(NAME golden_replay_m6 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m6.trep
          --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
+# M7 kapu: vegyes népek (Szürke elfek – Wullof) az adatvezérelt géppel (`ai_nep.lua`), 12 perc, minden rendszeren azonos
+add_test(NAME golden_replay_m7 COMMAND totu_sim verify ${CMAKE_CURRENT_SOURCE_DIR}/tests/data/golden_m7.trep
+         --content ${CMAKE_CURRENT_SOURCE_DIR}/content)
 
 # --- kliens (SDL3 + OpenGL 3.3 core) ------------------------------------------------------------------------------
 if(TOTU_CLIENT)

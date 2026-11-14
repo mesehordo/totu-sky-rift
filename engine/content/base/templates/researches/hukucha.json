@@ -9,7 +9,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 100
+    "gold": 100
    },
    "time": 60
   },
@@ -36,7 +36,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 120
+    "gold": 120
    },
    "time": 60
   },
@@ -63,7 +63,7 @@
   "Cost": {
    "resources": {
     "wood": 120,
-    "stone": 80,
+    "gold": 80,
     "meteor": 40
    },
    "time": 60
@@ -86,7 +86,7 @@
   "Cost": {
    "resources": {
     "wood": 120,
-    "stone": 100
+    "gold": 100
    },
    "time": 60
   },
@@ -125,7 +125,7 @@
   "Cost": {
    "resources": {
     "faith": 150,
-    "stone": 80
+    "gold": 80
    },
    "time": 45
   },
@@ -169,7 +169,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 100
+    "gold": 100
    },
    "time": 35
   },
@@ -196,7 +196,7 @@
   "Cost": {
    "resources": {
     "wood": 160,
-    "stone": 160
+    "gold": 160
    },
    "time": 75
   },
@@ -230,7 +230,7 @@
   "Cost": {
    "resources": {
     "wood": 240,
-    "stone": 240,
+    "gold": 240,
     "meteor": 50
    },
    "time": 90
@@ -268,7 +268,7 @@
   "Cost": {
    "resources": {
     "wood": 160,
-    "stone": 190
+    "gold": 190
    },
    "time": 75
   },
@@ -302,7 +302,7 @@
   "Cost": {
    "resources": {
     "wood": 240,
-    "stone": 290,
+    "gold": 290,
     "meteor": 50
    },
    "time": 90
@@ -340,7 +340,7 @@
   "Cost": {
    "resources": {
     "wood": 160,
-    "stone": 160
+    "gold": 160
    },
    "time": 43
   },
@@ -374,7 +374,7 @@
   "Cost": {
    "resources": {
     "wood": 240,
-    "stone": 240,
+    "gold": 240,
     "meteor": 50
    },
    "time": 52
@@ -412,7 +412,7 @@
   "Cost": {
    "resources": {
     "wood": 80,
-    "stone": 100
+    "gold": 100
    },
    "time": 35
   }
@@ -427,7 +427,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 100
+    "gold": 100
    },
    "time": 40
   },

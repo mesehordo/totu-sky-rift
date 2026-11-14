@@ -151,7 +151,7 @@
     "workers": 20,
     "gather_ratio": {
      "wood": 0.48,
-     "stone": 0.33,
+     "gold": 0.33,
      "meteor": 0.19
     },
     "build_order": [
@@ -247,7 +247,7 @@
     "buildings": 3
    },
    "ally_cost": {
-    "stone": 150,
+    "gold": 150,
     "meteor": 50
    },
    "creep_rot": {

@@ -34,12 +34,12 @@ TEST_CASE("szövetség: kész Diplomácia csarnoka kell, egyszer, véglegesen, a
   CHECK(!s.choose_ally(1, "pinguu", &err));   // csarnok nélkül nem
   CHECK(s.missing_requirements(1, R().defs[def_of("pin_jegdardas")]));
   s.place_building(def_of("urs_diplomacia"), 1, 12, 9, true);
-  const int32_t stone0 = s.player(1).resource(sim::kStone), met0 = s.player(1).resource(sim::kMeteor);
+  const int32_t gold0 = s.player(1).resource(sim::kGold), met0 = s.player(1).resource(sim::kMeteor);
   CHECK(!s.choose_ally(1, "ursan", &err));    // főnép nem lehet
   CHECK(s.choose_ally(1, "pinguu", &err));
   CHECK(s.player(1).ally == "pinguu");
   const auto& cost = R().faction("ursan")->ally_cost;
-  CHECK(stone0 - s.player(1).resource(sim::kStone) == cost[sim::kStone] && met0 - s.player(1).resource(sim::kMeteor) == cost[sim::kMeteor]);
+  CHECK(gold0 - s.player(1).resource(sim::kGold) == cost[sim::kGold] && met0 - s.player(1).resource(sim::kMeteor) == cost[sim::kMeteor]);
   CHECK(!s.choose_ally(1, "tokla", &err));    // egyszer
   CHECK(!s.missing_requirements(1, R().defs[def_of("pin_jegdardas")]));
 }

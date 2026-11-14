@@ -62,7 +62,7 @@
   "Cost": {
    "resources": {
     "wood": 60,
-    "stone": 30
+    "gold": 30
    },
    "supply": 2,
    "time": 15
@@ -112,7 +112,7 @@
   "Cost": {
    "resources": {
     "wood": 65,
-    "stone": 40
+    "gold": 40
    },
    "supply": 2,
    "time": 20
@@ -157,7 +157,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 70
+    "gold": 70
    },
    "supply": 3,
    "time": 26
@@ -204,7 +204,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 35,
+    "gold": 35,
     "meteor": 50
    },
    "supply": 2,
@@ -258,7 +258,7 @@
   "Cost": {
    "resources": {
     "wood": 70,
-    "stone": 30,
+    "gold": 30,
     "meteor": 10
    },
    "supply": 2,
@@ -349,7 +349,7 @@
   "Cost": {
    "resources": {
     "wood": 200,
-    "stone": 100
+    "gold": 100
    },
    "supply": 3,
    "time": 30
@@ -402,7 +402,7 @@
   "Cost": {
    "resources": {
     "wood": 220,
-    "stone": 110,
+    "gold": 110,
     "meteor": 50
    },
    "supply": 5,
@@ -460,7 +460,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 40
@@ -530,7 +530,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 40
@@ -599,7 +599,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 40
@@ -669,7 +669,7 @@
   "Cost": {
    "resources": {
     "wood": 110,
-    "stone": 40
+    "gold": 40
    },
    "supply": 3,
    "time": 24
@@ -723,7 +723,7 @@
   "Cost": {
    "resources": {
     "wood": 80,
-    "stone": 30,
+    "gold": 30,
     "meteor": 40
    },
    "supply": 2,
@@ -773,7 +773,7 @@
   "Cost": {
    "resources": {
     "wood": 150,
-    "stone": 90
+    "gold": 90
    },
    "supply": 4,
    "time": 30
@@ -828,7 +828,7 @@
   "Cost": {
    "resources": {
     "wood": 80,
-    "stone": 30,
+    "gold": 30,
     "meteor": 60
    },
    "supply": 2,
@@ -888,7 +888,7 @@
   "Cost": {
    "resources": {
     "wood": 120,
-    "stone": 45,
+    "gold": 45,
     "meteor": 40
    },
    "supply": 3,
@@ -941,7 +941,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 40,
+    "gold": 40,
     "meteor": 80
    },
    "supply": 3,
@@ -1054,7 +1054,7 @@
   "Cost": {
    "resources": {
     "wood": 50,
-    "stone": 10
+    "gold": 10
    },
    "supply": 1,
    "time": 13
@@ -1082,7 +1082,7 @@
   "Worker": {
    "builds": false,
    "gathers": [
-    "stone",
+    "gold",
     "meteor"
    ],
    "find_items": {

@@ -12,7 +12,7 @@ local ARMY = {"urs_pajzshordozo", "urs_szigonyvezo", "urs_pajzshordozo", "urs_da
 local RESEARCH = {"urs_runapengek", "urs_medvebunda", "urs_vasszigony", "urs_telegi_edzes", "urs_runapajzs",
                   "urs_kiados_tanya", "urs_gyors_helyorseg"}
 local WORKERS = 14
-local GATHER = {"wood", "stone", "wood", "stone", "wood", "meteor", "wood", "stone"}   -- ~ fa 0,5, kő 0,375, meteorit 0,125
+local GATHER = {"wood", "gold", "wood", "gold", "wood", "meteor", "wood", "gold"}   -- ~ fa 0,5, arany 0,375, meteorit 0,125
 local THINK = 30                -- tick (1 s)
 local FIRST_WAVE = 4 * 60 * 30  -- az első hullám legkorábban 4 perc után
 

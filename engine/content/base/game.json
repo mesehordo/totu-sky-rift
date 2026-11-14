@@ -6,7 +6,7 @@
  "sim_hz": 30,
  "start_resources": {
   "wood": 400,
-  "stone": 250,
+  "gold": 250,
   "meteor": 0
  },
  "max_supply": 200,
@@ -27,7 +27,7 @@
    "desc": "Az új, időkorlátos idézések 25%-kal tovább maradnak meg.",
    "cost": {
     "wood": 50,
-    "stone": 50
+    "gold": 50
    },
    "time": 30,
    "icon": "ghost",
@@ -40,7 +40,7 @@
    "desc": "Az új, időkorlátos idézések 50%-kal tovább maradnak meg az alapértékhez képest.",
    "cost": {
     "wood": 100,
-    "stone": 100
+    "gold": 100
    },
    "time": 45,
    "icon": "rune",
@@ -64,7 +64,7 @@
    "carry": 8,
    "node_amount": 120
   },
-  "stone": {
+  "gold": {
    "name": "Arany",
    "color": [
     236,

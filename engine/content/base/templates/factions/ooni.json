@@ -187,7 +187,7 @@
     "workers": 18,
     "gather_ratio": {
      "wood": 0.64,
-     "stone": 0.23,
+     "gold": 0.23,
      "meteor": 0.13
     },
     "lantern": "oon_papirlampas",
@@ -288,7 +288,7 @@
    },
    "gatherers": {
     "wood": "oon_favago",
-    "stone": "oon_tanuki",
+    "gold": "oon_tanuki",
     "meteor": "oon_tanuki"
    },
    "morale": {
@@ -311,7 +311,7 @@
     }
    },
    "ally_cost": {
-    "stone": 150,
+    "gold": 150,
     "meteor": 50
    }
   }

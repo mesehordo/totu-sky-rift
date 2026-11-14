@@ -739,7 +739,7 @@ int g_unit(lua_State* L) {
   const sim::Position* p = s.world().get<sim::Position>(e);
   const sim::Movement* m = s.world().get<sim::Movement>(e);
   if (!h || !p || h->hp <= 0) return 0;
-  lua_createtable(L, 0, 7);
+  lua_createtable(L, 0, 9);
   lua_pushinteger(L, e); lua_setfield(L, -2, "id");
   lua_pushinteger(L, h->owner); lua_setfield(L, -2, "owner");
   push_fixed(L, p->x); lua_setfield(L, -2, "x");
@@ -747,6 +747,10 @@ int g_unit(lua_State* L) {
   lua_pushinteger(L, h->hp); lua_setfield(L, -2, "hp");
   lua_pushinteger(L, h->max); lua_setfield(L, -2, "max");
   lua_pushboolean(L, m && m->moving); lua_setfield(L, -2, "moving");
+  const bool eco = s.rules() != nullptr;   // a gazdasági komponensek csak szabályokkal vannak regisztrálva
+  lua_pushboolean(L, eco && s.world().get<sim::Building>(e) != nullptr); lua_setfield(L, -2, "building");
+  const sim::Worker* wk = eco ? s.world().get<sim::Worker>(e) : nullptr;
+  lua_pushboolean(L, wk && wk->state == sim::Worker::Idle); lua_setfield(L, -2, "idle");
   return 1;
 }
 
@@ -838,13 +842,13 @@ uint16_t check_def(lua_State* L, sim::Sim& s, int i) {
   return d;
 }
 
-// Game.player(owner) → {wood, stone, meteor, supply_used, supply_cap, ascended, path, defeated}
+// Game.player(owner) → {wood, gold, meteor, supply_used, supply_cap, ascended, path, defeated}
 int g_player(lua_State* L) {
   sim::Sim& s = need_sim(L);
   const sim::PlayerState& p = s.player(check_owner(L, 1));
-  lua_createtable(L, 0, 9);
+  lua_createtable(L, 0, 10);
   lua_pushinteger(L, p.resource(sim::kWood)); lua_setfield(L, -2, "wood");
-  lua_pushinteger(L, p.resource(sim::kStone)); lua_setfield(L, -2, "stone");
+  lua_pushinteger(L, p.resource(sim::kGold)); lua_setfield(L, -2, "gold");
   lua_pushinteger(L, p.resource(sim::kMeteor)); lua_setfield(L, -2, "meteor");
   lua_pushinteger(L, p.supply_used); lua_setfield(L, -2, "supply_used");
   lua_pushinteger(L, p.supply_cap); lua_setfield(L, -2, "supply_cap");
@@ -852,6 +856,7 @@ int g_player(lua_State* L) {
   lua_pushstring(L, p.path.c_str()); lua_setfield(L, -2, "path");
   lua_pushboolean(L, p.defeated); lua_setfield(L, -2, "defeated");
   lua_pushstring(L, p.ally.c_str()); lua_setfield(L, -2, "ally");
+  lua_pushstring(L, p.faction.c_str()); lua_setfield(L, -2, "faction");
   return 1;
 }
 
@@ -881,8 +886,11 @@ int g_train(lua_State* L) {
 
 int g_research(lua_State* L) {
   sim::Sim& s = need_sim(L);
-  lua_pushboolean(L, s.research(check_owner(L, 1), luaL_checkstring(L, 2)));
-  return 1;
+  std::string err;
+  const bool ok = s.research(check_owner(L, 1), luaL_checkstring(L, 2), &err);
+  lua_pushboolean(L, ok);
+  lua_pushstring(L, err.c_str());
+  return 2;
 }
 
 // Game.build(owner, épület, x, y): egy munkás építeni a (x, y) csempe közelébe
@@ -911,7 +919,7 @@ int g_attack(lua_State* L) {
   return 1;
 }
 
-// Game.gather(munkás, "wood" | "stone" | "meteor"): a legközelebbi ilyen lelőhelyre
+// Game.gather(munkás, "wood" | "gold" | "meteor"): a legközelebbi ilyen lelőhelyre
 int g_gather(lua_State* L) {
   sim::Sim& s = need_sim(L);
   lua_pushboolean(L, s.gather_nearest(check_id(L, 1), sim::resource_index(luaL_checkstring(L, 2))));
@@ -970,6 +978,45 @@ int g_faction_ai(lua_State* L) {
     }
   }
   lua_setfield(L, -2, "army");
+  // a főnép teljes terve (az adatvezérelt gépnek, `ai_nep.lua`): sorrendek, létszámok, nyersanyagarány, sablonok
+  auto strings = [&](const char* key) {
+    lua_newtable(L);
+    int k = 0;
+    if (const content::Value* a = ai->find(key); a && a->is_array()) {
+      for (const auto& x : a->items()) {
+        if (!x.is_string()) continue;
+        lua_pushstring(L, x.text().c_str());
+        lua_rawseti(L, -2, ++k);
+      }
+    }
+    lua_setfield(L, -2, key);
+  };
+  strings("build_order");
+  strings("research_order");
+  strings("path_pref");
+  lua_pushinteger(L, ai->find("workers") ? ai->find("workers")->as_int().value_or(14) : 14);
+  lua_setfield(L, -2, "workers");
+  lua_pushinteger(L, ai->find("attack_supply") ? ai->find("attack_supply")->as_int().value_or(16) : 16);
+  lua_setfield(L, -2, "attack_supply");
+  lua_newtable(L);   // gather = {{"wood", 62}, …} – százalékban, a sablon sorrendjében
+  i = 0;
+  if (const content::Value* g = ai->find("gather_ratio"); g && g->is_object()) {
+    for (const auto& [res, v] : g->members()) {
+      lua_createtable(L, 2, 0);
+      lua_pushstring(L, res.c_str());
+      lua_rawseti(L, -2, 1);
+      lua_pushinteger(L, (int64_t{v.as_fixed().value_or(core::Fixed{}).raw()} * 100) >> 16);
+      lua_rawseti(L, -2, 2);
+      lua_rawseti(L, -2, ++i);
+    }
+  }
+  lua_setfield(L, -2, "gather");
+  for (const char* key : {"hq", "worker", "supply_building"}) {
+    if (const content::Value* v = fa->find(key); v && v->is_string()) {
+      lua_pushstring(L, v->text().c_str());
+      lua_setfield(L, -2, key);
+    }
+  }
   return 1;
 }
 

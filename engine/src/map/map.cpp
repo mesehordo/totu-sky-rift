@@ -188,7 +188,7 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
   }
 
   // pályaobjektumok (M6): "objects": {"starts": [[x, y], …], "trees": {"rows": [...]} (`T` = fa),
-  // "resources": [{"kind": "stone", "x": …, "y": …, "size": 2, "amount": …}, …]}
+  // "resources": [{"kind": "gold", "x": …, "y": …, "size": 2, "amount": …}, …]}
   if (const content::Value* ob = doc.find("objects"); ob && ob->is_object()) {
     auto int_of = [](const content::Value* v, long long def) { return (v ? v->as_int() : std::nullopt).value_or(def); };
     if (const content::Value* st = ob->find("starts"); st && st->is_array()) {

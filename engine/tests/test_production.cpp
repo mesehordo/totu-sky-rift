@@ -49,10 +49,10 @@ TEST_CASE("termelés: telepes – fizetés, létszám azonnal, 12 s múlva a fő
   sim::Sim& s = *m.sim;
   const uint16_t settler = def_of("urs_telepes");
   const sim::EntityId hq = hq_of(s, 1);
-  const int64_t wood = s.player(1).res[sim::kWood], stone = s.player(1).res[sim::kStone];
+  const int64_t wood = s.player(1).res[sim::kWood], stone = s.player(1).res[sim::kGold];
   std::string why;
   CHECK(s.train(1, settler, 0, &why));
-  CHECK(s.player(1).res[sim::kStone] == stone - 20000 && s.player(1).res[sim::kWood] <= wood - 30000 + 8000);
+  CHECK(s.player(1).res[sim::kGold] == stone - 20000 && s.player(1).res[sim::kWood] <= wood - 30000 + 8000);
   CHECK(s.player(1).supply_used == 6);
   m.run(359);
   CHECK(count_units(s, 1, settler) == 5);
@@ -73,7 +73,7 @@ TEST_CASE("termelés: a sor legfeljebb 5, visszavonás teljes visszatérítésse
   const uint16_t settler = def_of("urs_telepes");
   const sim::EntityId hq = hq_of(s, 1);
   s.add_resources(1, sim::kWood, 2000);
-  s.add_resources(1, sim::kStone, 2000);
+  s.add_resources(1, sim::kGold, 2000);
   std::string why;
   for (int i = 0; i < 5; ++i) CHECK(s.train(1, settler, 0, &why));
   CHECK(!s.train(1, settler, 0, &why) && why == "a gyártósor megtelt");
@@ -106,7 +106,7 @@ TEST_CASE("termelés: gyülekezőpont – pontra megy, fára küldve gyűjt; ké
   const uint16_t settler = def_of("urs_telepes");
   const sim::EntityId hq = hq_of(s, 1);
   s.add_resources(1, sim::kWood, 2000);
-  s.add_resources(1, sim::kStone, 2000);
+  s.add_resources(1, sim::kGold, 2000);
   sim::Command r;
   r.kind = sim::Command::Kind::Rally;
   r.units = {hq};
@@ -144,7 +144,7 @@ TEST_CASE("termelés: kutatás a sorban; hős egyszer, legfeljebb három; determ
   if (!m.ok) return;
   sim::Sim& s = *m.sim;
   s.add_resources(1, sim::kWood, 3000);
-  s.add_resources(1, sim::kStone, 3000);
+  s.add_resources(1, sim::kGold, 3000);
   s.add_resources(1, sim::kMeteor, 1000);
   const sim::EntityId forge = s.place_building(def_of("urs_runakovacs"), 1, 12, 13, true);
   std::string why;

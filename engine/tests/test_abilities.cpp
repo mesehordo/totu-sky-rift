@@ -198,7 +198,7 @@ TEST_CASE("fegyverbe (önerősítés munkásnak): csak a Népfelkeléssel; a gy�
   CHECK(w != sim::kNoEntity);
   CHECK(!use(s, w, "fegyverbe"));   // kutatás nélkül nem
   s.add_resources(1, sim::kWood, 2000);
-  s.add_resources(1, sim::kStone, 2000);
+  s.add_resources(1, sim::kGold, 2000);
   s.add_resources(1, sim::kMeteor, 2000);
   std::string err;
   CHECK(s.research(1, "urs_nepfelkeles", &err));

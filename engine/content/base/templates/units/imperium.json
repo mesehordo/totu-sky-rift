@@ -18,7 +18,7 @@
   "Cost": {
    "resources": {
     "wood": 30,
-    "stone": 20
+    "gold": 20
    },
    "supply": 1,
    "time": 12
@@ -74,7 +74,7 @@
   "Cost": {
    "resources": {
     "wood": 35,
-    "stone": 30
+    "gold": 30
    },
    "supply": 2,
    "time": 17
@@ -134,7 +134,7 @@
   "Cost": {
    "resources": {
     "wood": 65,
-    "stone": 15
+    "gold": 15
    },
    "supply": 2,
    "time": 19
@@ -190,7 +190,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 50,
+    "gold": 50,
     "meteor": 75,
     "wood": 30
    },
@@ -258,7 +258,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 120,
+    "gold": 120,
     "meteor": 25,
     "wood": 60
    },
@@ -323,7 +323,7 @@
    "resources": {
     "meteor": 75,
     "wood": 65,
-    "stone": 35
+    "gold": 35
    },
    "supply": 3,
    "time": 28
@@ -386,7 +386,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 270,
+    "gold": 270,
     "meteor": 100,
     "wood": 130
    },
@@ -458,7 +458,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 60,
+    "gold": 60,
     "meteor": 30
    },
    "supply": 2,
@@ -516,7 +516,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 160,
+    "gold": 160,
     "meteor": 120
    },
    "supply": 5,
@@ -610,7 +610,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 40
@@ -685,7 +685,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 45
@@ -729,7 +729,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 180,
+    "gold": 180,
     "meteor": 40,
     "wood": 70
    },
@@ -840,7 +840,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 45
@@ -929,7 +929,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 80,
+    "gold": 80,
     "meteor": 40
    },
    "supply": 3,
@@ -995,7 +995,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 50
+    "gold": 50
    },
    "supply": 2,
    "time": 30
@@ -1015,11 +1015,11 @@
   "Worker": {
    "builds": false,
    "gathers": [
-    "stone",
+    "gold",
     "meteor"
    ],
    "carry": {
-    "stone": 30,
+    "gold": 30,
     "meteor": 20
    }
   }

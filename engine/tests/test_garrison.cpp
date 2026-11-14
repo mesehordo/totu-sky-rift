@@ -43,7 +43,7 @@ int64_t next_hit(Match& m, sim::EntityId target, int limit = 300) {
 void research_now(Match& m, uint8_t owner, const char* id) {
   sim::Sim& s = *m.sim;
   s.add_resources(owner, sim::kWood, 5000);
-  s.add_resources(owner, sim::kStone, 5000);
+  s.add_resources(owner, sim::kGold, 5000);
   s.add_resources(owner, sim::kMeteor, 5000);
   std::string err;
   CHECK(s.research(owner, id, &err));

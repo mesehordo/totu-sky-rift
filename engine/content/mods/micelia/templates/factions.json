@@ -136,7 +136,7 @@
     "workers": 20,
     "gather_ratio": {
      "wood": 0.54,
-     "stone": 0.22,
+     "gold": 0.22,
      "meteor": 0.24
     },
     "build_order": [

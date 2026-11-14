@@ -1,0 +1,1120 @@
+{
+ "ability:after_slow": {
+  "hianyzik": "rts/entities.py:1403 Gőztúlnyomás: az önerősítés után lassulás (slow_after); a motor nem olvassa – nincs megvalósítva"
+ },
+ "ability:ally": {
+  "halott": "csak a generátor címkéje (tools/allies.py:447); a régi játék a képességnél nem olvassa, a szövetségi zár az egységen/épületen van"
+ },
+ "ability:amount": {
+  "teszt": "gyógyítás (önműködő): a rúnapap 0,8 s-onként 10 életerőt ad a legsebesültebb közeli élőlénynek, gépnek nem"
+ },
+ "ability:bounces": {
+  "hianyzik": "rts/entities.py:1354 a célzott lövés saját bounces értéke (bumerang: 2) a lövedékbe kerül; a motor a lövedékfajta bounces-át használja (boomerang: 1), a képesség kulcsát nem olvassa"
+ },
+ "ability:buff": {
+  "teszt": "Eskü-riadó (főépület-képesség): minden munkás Fegyverbe! 30 s-ig, kutatás nélkül; 240 s újratöltés"
+ },
+ "ability:building_damage": {
+  "hianyzik": "rts/entities.py:1480-1487 nova: épületekre külön sebzés (Mészbombás manó); a motor nem olvassa – nincs megvalósítva"
+ },
+ "ability:buildings": {
+  "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
+ },
+ "ability:burrow": {
+  "hianyzik": "rts/entities.py:1542 croftian beásás-kapcsoló (sebesülten, ellenség közelében); a motor nem olvassa – nincs megvalósítva"
+ },
+ "ability:color": {
+  "megjelenites": "hatás színe (add_fx), csak megjelenítés"
+ },
+ "ability:cooldown": {
+  "teszt": "vérszomj és roham (önerősítés): ideiglenes, újratöltéssel; a berserker többet üt és többet kap"
+ },
+ "ability:cost": {
+  "teszt": "Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz"
+ },
+ "ability:count": {
+  "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
+ },
+ "ability:damage": {
+  "teszt": "taposás és medveüvöltés (csapás körben): varázssebzés a körben, kábítás, illetve félelem"
+ },
+ "ability:desc": {
+  "megjelenites": "leírás szövege"
+ },
+ "ability:detect": {
+  "hianyzik": "rts/game.py:1324 passzív képesség detect sugara felfedi a rejtetteket (A Kórus szeme); a motor csak a Vision.detect-et olvassa, a képességét nem – nincs megvalósítva"
+ },
+ "ability:dps": {
+  "teszt": "Hjalmar hóvihara (területi mező): 5 s-ig, 0,5 s-onként 8 varázssebzés és lassítás a körben"
+ },
+ "ability:drop_work": {
+  "teszt": "fegyverbe (önerősítés munkásnak): csak a Népfelkeléssel; a gyűjtést abbahagyja, a riadó után visszamegy"
+ },
+ "ability:duration": {
+  "teszt": "vérszomj és roham (önerősítés): ideiglenes, újratöltéssel; a berserker többet üt és többet kap"
+ },
+ "ability:effect": {
+  "teszt": "Huk: Áradás – a tó egy csempével kitágul, a tavon gyógyít, a végén visszahúzódik (az épület alatt nem)"
+ },
+ "ability:energy": {
+  "teszt": "hősök (az M6-ban szint nélkül, az 1. szinten): energia, Ragna, Hjalmar és Bjarka képességei"
+ },
+ "ability:faith": {
+  "hianyzik": "rts/entities.py:287-298 egységképesség Áhítat-ára a játékostól; a motor csak az épület-/főépület-képességnél vonja le (Napáldás próbája megvan), egységképességnél (napkitores, nap_kegyelme, huk idézések) nem"
+ },
+ "ability:heal": {
+  "teszt": "Huk: Áradás – a tó egy csempével kitágul, a tavon gyógyít, a végén visszahúzódik (az épület alatt nem)"
+ },
+ "ability:heal_tags": {
+  "hianyzik": "rts/entities.py:1425 önműködő gyógyítás célcímkéi (h_livia_horgony: mech); a motor beégetve csak organic-ot gyógyít – nincs megvalósítva"
+ },
+ "ability:hotkey": {
+  "megjelenites": "gyorsbillentyű (kliens)"
+ },
+ "ability:hp_cost": {
+  "hianyzik": "rts/entities.py:289-300 a képesség életerőbe kerül (nem használható, ha hp <= hp_cost+5); a motor nem olvassa – nincs megvalósítva"
+ },
+ "ability:hq_hp": {
+  "hianyzik": "rts/game.py:1685-1690 főépület-képesség a főépület életerejéből fizet; a motorban megvan (garrison.cpp:403-405), de nincs próba"
+ },
+ "ability:icon": {
+  "megjelenites": "ikon"
+ },
+ "ability:into": {
+  "teszt": "Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz"
+ },
+ "ability:land_damage": {
+  "teszt": "ugrás (blink): a pont felé legfeljebb a hatótávig, szabad helyre; a landolás megsebzi a közelieket"
+ },
+ "ability:land_radius": {
+  "teszt": "ugrás (blink): a pont felé legfeljebb a hatótávig, szabad helyre; a landolás megsebzi a közelieket"
+ },
+ "ability:large": {
+  "hianyzik": "rts/game.py:2961 lélekidézés: nagy testű holttestből ez az egység; a raise típus nincs megvalósítva"
+ },
+ "ability:levels": {
+  "teszt": "hős: képességtanulás – az n. szint a 2n − 1. hősszinttől, a végső a 6.-tól; a szintváltozat erősebb"
+ },
+ "ability:lifetime": {
+  "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
+ },
+ "ability:max": {
+  "hianyzik": "rts/game.py:1909 ikrarakás: egyszerre legfeljebb max ikra; a motorban megvan (hukucha.cpp:311), de nincs próba"
+ },
+ "ability:meteor": {
+  "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
+ },
+ "ability:modifiers": {
+  "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
+ },
+ "ability:mount": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "ability:mult": {
+  "teszt": "Huk: Gyöngyérés – az épület kétszer gyorsabban kutat"
+ },
+ "ability:name": {
+  "megjelenites": "megnevezés"
+ },
+ "ability:no_weak": {
+  "hianyzik": "rts/game.py:966 önerősítés alatt nem gyenge semmi ellen (napfolt, hejba); a motor a képességnél nem olvassa (csak a Rules.no_weak-et) – nincs megvalósítva"
+ },
+ "ability:poison": {
+  "hianyzik": "rts/entities.py:1354 a célzott lövés mérge [dps, idő] (savkopes); a motor a képesség poison kulcsát nem adja a lövedéknek – nincs megvalósítva"
+ },
+ "ability:projectile": {
+  "teszt": "horgonyszigony és zuhanó csapás (célzott lövés): varázssebzés, kábítás, illetve lassítás; újratöltés"
+ },
+ "ability:radius": {
+  "teszt": "taposás és medveüvöltés (csapás körben): varázssebzés a körben, kábítás, illetve félelem"
+ },
+ "ability:range": {
+  "teszt": "célzott lövés messziről: a használó előbb odamegy; más parancs megszakítja"
+ },
+ "ability:range_research": {
+  "hianyzik": "rts/entities.py:1387 ugrás hatótáva kutatással nő (bekaugras: huk_ugrolabak +5); a motor nem olvassa – nincs megvalósítva"
+ },
+ "ability:reveal": {
+  "hianyzik": "rts/game.py:1697 főépület-képesség felfedi a pont körét (gp_napcsova); a motor beolvassa (AbilityDef::reveal), de sehol nem használja – nincs megvalósítva"
+ },
+ "ability:rider": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "ability:riders": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "ability:self_destruct": {
+  "hianyzik": "rts/entities.py:1491 a nova megöli a használóját (robbanó atka, Mészbombás manó); a motor nem olvassa – nincs megvalósítva"
+ },
+ "ability:self_hp": {
+  "teszt": "Aurethi Túlhajtás: az épülő épület hátralévő idejének fele azonnal; a Fabrikátor a max életereje 40%-át veszti"
+ },
+ "ability:share": {
+  "teszt": "Aurethi Túlhajtás: az épülő épület hátralévő idejének fele azonnal; a Fabrikátor a max életereje 40%-át veszti"
+ },
+ "ability:slow": {
+  "teszt": "Hjalmar hóvihara (területi mező): 5 s-ig, 0,5 s-onként 8 varázssebzés és lassítás a körben"
+ },
+ "ability:small": {
+  "hianyzik": "rts/game.py:2962 lélekidézés: kis testű holttestből ez az egység; a raise típus nincs megvalósítva"
+ },
+ "ability:splash": {
+  "hianyzik": "rts/entities.py:1354 a célzott lövés területi sebzése (tuzkopes); a motor a képesség splash kulcsát nem adja a lövedéknek – nincs megvalósítva"
+ },
+ "ability:split_kills": {
+  "teszt": "Micéliák osztódás: split_kills ölés után kettéválik (fél-fél életerő, az iker a spórák felét kapja)"
+ },
+ "ability:spores": {
+  "hianyzik": "rts/entities.py:291-302 a képesség spórába kerül (nem használható kevesebbel); a motor gyűjti a spórát, de a képesség nem vonja le és nem feltétel – nincs megvalósítva"
+ },
+ "ability:sprite": {
+  "megjelenites": "hatás-sprite"
+ },
+ "ability:stun": {
+  "teszt": "taposás és medveüvöltés (csapás körben): varázssebzés a körben, kábítás, illetve félelem"
+ },
+ "ability:target": {
+  "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
+ },
+ "ability:target_placement": {
+  "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
+ },
+ "ability:time": {
+  "teszt": "Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz"
+ },
+ "ability:type": {
+  "teszt": "képességek: a tartalom – az Ursanok 16 képessége és a hősöké, típus, szint, elem, idézett egység"
+ },
+ "ability:ultimate": {
+  "teszt": "hős: képességtanulás – az n. szint a 2n − 1. hősszinttől, a végső a 6.-tól; a szintváltozat erősebb"
+ },
+ "ability:unit": {
+  "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
+ },
+ "ability:via": {
+  "teszt": "Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz"
+ },
+ "ability_type:anchor_rescue": {
+  "teszt": "Aurethi Lélekhorgony: a gép helyén horgony (15%), teljesen helyreállva újra az egység; a mentő elviszi"
+ },
+ "ability_type:area": {
+  "teszt": "Hjalmar hóvihara (területi mező): 5 s-ig, 0,5 s-onként 8 varázssebzés és lassítás a körben"
+ },
+ "ability_type:aura": {
+  "teszt": "harci kürt (ének) és aurák: a körzet saját egységei erősebbek; egyszerre egy ének; az aura nem halmozódik"
+ },
+ "ability_type:autoheal": {
+  "teszt": "gyógyítás (önműködő): a rúnapap 0,8 s-onként 10 életerőt ad a legsebesültebb közeli élőlénynek, gépnek nem"
+ },
+ "ability_type:blink": {
+  "teszt": "ugrás (blink): a pont felé legfeljebb a hatótávig, szabad helyre; a landolás megsebzi a közelieket"
+ },
+ "ability_type:bolt": {
+  "teszt": "horgonyszigony és zuhanó csapás (célzott lövés): varázssebzés, kábítás, illetve lassítás; újratöltés"
+ },
+ "ability_type:bpower": {
+  "teszt": "Huk: Áradás – a tó egy csempével kitágul, a tavon gyógyít, a végén visszahúzódik (az épület alatt nem)"
+ },
+ "ability_type:chant": {
+  "teszt": "ének csak auraként (D43): a kürtös maga is ×1,15, nem ×1,3225"
+ },
+ "ability_type:dismount": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "ability_type:garrison": {
+  "teszt": "helyőrség: beszállás a szabad helyekig, bent rejtve és sebezhetetlenül; kiszállás az épület köré"
+ },
+ "ability_type:gpower": {
+  "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
+ },
+ "ability_type:lay_mine": {
+  "teszt": "Huk: ikra-akna – a pontra rakva, ellenség érkezésekor ebihalak kelnek ki (tavon 5, máshol 3), az akna elfogy"
+ },
+ "ability_type:merge": {
+  "teszt": "Micéliák összeolvadás: 3 pöfeteg → óriáspöfeteg, átlagolt életerő-aránnyal; messziről előbb összegyűlnek"
+ },
+ "ability_type:morph": {
+  "teszt": "Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz"
+ },
+ "ability_type:mount": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "ability_type:nova": {
+  "teszt": "taposás és medveüvöltés (csapás körben): varázssebzés a körben, kábítás, illetve félelem"
+ },
+ "ability_type:overdrive": {
+  "teszt": "Aurethi Túlhajtás: az épülő épület hátralévő idejének fele azonnal; a Fabrikátor a max életereje 40%-át veszti"
+ },
+ "ability_type:passive": {
+  "atfedes": "passzív jelölő; érdemi kulcsa a split_kills a Micélia-modulban (spec_key)",
+  "teszt": "Micéliák osztódás: split_kills ölés után kettéválik (fél-fél életerő, az iker a spórák felét kapja)"
+ },
+ "ability_type:raise": {
+  "hianyzik": "rts/game.py:2955-2965 lélekidézés: holttestből kis/nagy szellemegység (small/large); a motorban a 'raise' típus ismeretlen (AbilityDef::Type::Unknown), egyik népmodul sem kezeli – nincs megvalósítva"
+ },
+ "ability_type:self_buff": {
+  "teszt": "vérszomj és roham (önerősítés): ideiglenes, újratöltéssel; a berserker többet üt és többet kap"
+ },
+ "ability_type:summon": {
+  "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
+ },
+ "ability_type:toggle": {
+  "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
+ },
+ "ability_type:ward": {
+  "teszt": "Ooni Védőfény: az 5 csempés körben 50 ideiglenes pajzs 10 s-ig; energia és újratöltés"
+ },
+ "building:ally": {
+  "atfedes": "Requirements 'ally' feltétel",
+  "teszt": "szövetség: kész Diplomácia csarnoka kell, egyszer, véglegesen, az ára levonódik; előtte a kisnép elemei zárva"
+ },
+ "building:altar": {
+  "hianyzik": "rts/ai.py:558 – a gép az oltárból képez hőst; a motor a Mechanics.altar kulcsot nem olvassa, a gépi hősképzés nincs"
+ },
+ "building:armor": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "building:attack": {
+  "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
+ },
+ "building:attack.cooldown": {
+  "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
+ },
+ "building:attack.damage": {
+  "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
+ },
+ "building:attack.projectile": {
+  "teszt": "lövedékek (D40): a nyíl követi a célt; a szikla a kilövéskori helyre esik, és területre sebez"
+ },
+ "building:attack.range": {
+  "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
+ },
+ "building:attack.targets": {
+  "hianyzik": "rts/entities.py:112 – a torony földi/légi célzása; a motorban megvan (can_hit), próba nincs"
+ },
+ "building:aura": {
+  "hianyzik": "rts/heroes.py:~315 – épület-aura (páncél, lőtáv, gyógyulás a körben); a motor az épület Aura komponensét nem olvassa"
+ },
+ "building:core": {
+  "teszt": "Micéliák lerakás: a nem mag épület csak egy kapcsolt saját épület link_radius-án belül"
+ },
+ "building:cost": {
+  "teszt": "építés: Ursan – fizetés, belépés, haladás és életerő, kilépés, vissza a gyűjtéshez, létszám"
+ },
+ "building:creep_radius": {
+  "teszt": "Croftianok mélység: a Kaptár köre (creep_radius + fél méret), csak építhető terepen; az ursan nem kap"
+ },
+ "building:desc": {
+  "megjelenites": "leírás"
+ },
+ "building:detect": {
+  "teszt": "lopakodás: a rejtett egységet csak a felfedő vagy a nagyon közeli ellenség látja"
+ },
+ "building:diplomacy": {
+  "teszt": "szövetség: kész Diplomácia csarnoka kell, egyszer, véglegesen, az ára levonódik; előtte a kisnép elemei zárva"
+ },
+ "building:dropoff": {
+  "teszt": "építés: leadóhely a fánál, nincs pénz, megszakítás 75%-kal, mozgásparancs visszaadja a tervet"
+ },
+ "building:field_radius": {
+  "teszt": "Micéliák mező: a kapcsolt épületek field_radius-án belül a faji gyógyulás háromszoros"
+ },
+ "building:foundation_free": {
+  "hianyzik": "rts/game.py:2767 – a foundation_free épület alapozás nélkül is teljes életerős; a motor (imperium.cpp) nem olvassa, minden nem lapkő épületet felez"
+ },
+ "building:foundation_tile": {
+  "teszt": "Aurethi alapozás: a kész lapkő alapozás marad; rajta teljes, nélküle fél életerő és 0,2%/s kopás 50%-ig"
+ },
+ "building:garrison": {
+  "teszt": "helyőrség: beszállás a szabad helyekig, bent rejtve és sebezhetetlenül; kiszállás az épület köré"
+ },
+ "building:hidden": {
+  "megjelenites": "az építési menüből kihagyja (rts/hud.py:462)"
+ },
+ "building:hp": {
+  "teszt": "építés: Ursan – fizetés, belépés, haladás és életerő, kilépés, vissza a gyűjtéshez, létszám"
+ },
+ "building:lantern": {
+  "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
+ },
+ "building:larva": {
+  "hianyzik": "rts/entities.py:1671 – a croftian Kaptár lárvákat tart, a képzés lárvát fogyaszt; a motor a Producer.larva kulcsot nem olvassa"
+ },
+ "building:larva_time": {
+  "hianyzik": "rts/entities.py:1743 – a lárva visszanövési ideje; a motorban nincs"
+ },
+ "building:light_heal": {
+  "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
+ },
+ "building:light_radius": {
+  "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
+ },
+ "building:link_radius": {
+  "teszt": "Micéliák lerakás: a nem mag épület csak egy kapcsolt saját épület link_radius-án belül"
+ },
+ "building:mine": {
+  "teszt": "Szürke elfek Napfúró: 0,4 passzív + mellette álló munkások, carry / (gather_time + 7,4); Napáldás ×1,5"
+ },
+ "building:name": {
+  "megjelenites": "név"
+ },
+ "building:no_creep": {
+  "teszt": "Croftianok építés: csak saját mélységre; a no_creep épület (Kaptár) bárhová"
+ },
+ "building:no_light": {
+  "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
+ },
+ "building:no_pond": {
+  "teszt": "Huk: a főépület tavon áll (2 csempés perem); épület csak saját tóra; a tavacska tóvá válik"
+ },
+ "building:no_power": {
+  "teszt": "Szürke elfek energiamező: a nem `no_power` épület csak kész Napobeliszk 6,5 csempés körébe kerülhet"
+ },
+ "building:no_sprite": {
+  "megjelenites": "csak a sprite-generálás jelzője"
+ },
+ "building:on_resource": {
+  "hianyzik": "rts/game.py:2240 – a Napfúró/Fertőzött tárna csak a megadott lelőhelyre épül; a motor a Placement.on_resource kulcsot nem olvassa, lelőhelyre egyáltalán nem enged építeni (build.cpp: foglalt hely)"
+ },
+ "building:packable": {
+  "teszt": "Wullof vándorszekér: a csomagolható épület szekér lesz, letelepítve munkás nélkül, 8 s alatt kész"
+ },
+ "building:parallel": {
+  "hianyzik": "rts/entities.py:1750 – a parallel épület a teljes sort egyszerre gyártja; a motor a Producer.parallel kulcsot nem olvassa"
+ },
+ "building:path": {
+  "atfedes": "Paths.<irány>.building / Requirements 'path'",
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "building:pond_tile": {
+  "teszt": "Huk: a főépület tavon áll (2 csempés perem); épület csak saját tóra; a tavacska tóvá válik"
+ },
+ "building:power_radius": {
+  "teszt": "Szürke elfek energiamező: a nem `no_power` épület csak kész Napobeliszk 6,5 csempés körébe kerülhet"
+ },
+ "building:powers": {
+  "teszt": "főépület-képességek: terület (Ordan villáma, épületet is), idézés (Ősök hívása), szél; költség és célpont"
+ },
+ "building:pray_slots": {
+  "teszt": "Szürke elfek Áhítat: a szentély 4 helye – 5 tétlen munkásból 4 fohászkodik, 0,3 / s fejenként"
+ },
+ "building:produces": {
+  "teszt": "termelés: telepes – fizetés, létszám azonnal, 12 s múlva a főépület alatt jelenik meg"
+ },
+ "building:regen_aura": {
+  "hianyzik": "rts/heroes.py:328 – a gyógyító épület (Tápgomba) 6 csempén belül regen_add-ot ad; a motor az Aura.regen kulcsot nem olvassa"
+ },
+ "building:requires": {
+  "atfedes": "Requirements.all",
+  "teszt": "építés: lerakhatóság – terep, víz, szirt és szint, foglalt hely, pálya széle, előfeltétel"
+ },
+ "building:requires_research": {
+  "atfedes": "Requirements.all (research)",
+  "teszt": "Ursanok: minden épület felépíthető (a telepes bentről építi), a feltételeivel; a hős legfeljebb három"
+ },
+ "building:researches": {
+  "teszt": "termelés: kutatás a sorban; hős egyszer, legfeljebb három; determinisztikus"
+ },
+ "building:rift_source": {
+  "teszt": "Égkő-fény: az Égkő 5 csempés körében a támadó varázsló +1 lőtávot, a hős 1,5-szörös energiát kap"
+ },
+ "building:shape": {
+  "megjelenites": "rajzalak"
+ },
+ "building:shield": {
+  "teszt": "harc: pajzs előbb nyel, és a késleltetés után visszatöltődik"
+ },
+ "building:shield_reactor": {
+  "teszt": "Aurethi Reaktorpajzs: a pajzs csak Lélekreaktor 6 csempéjén belül vagy Égkő-fényben töltődik"
+ },
+ "building:sight": {
+  "teszt": "lopakodás: a rejtett egységet csak a felfedő vagy a nagyon közeli ellenség látja"
+ },
+ "building:size": {
+  "teszt": "építés: lerakhatóság – terep, víz, szirt és szint, foglalt hely, pálya széle, előfeltétel"
+ },
+ "building:spike_tile": {
+  "teszt": "Croftianok mérgező tüske: nem akadály; az ellenséget lassítja (×0,6) és mérgezi (4 / s), a croftiant nem"
+ },
+ "building:sprite": {
+  "megjelenites": "sprite"
+ },
+ "building:supply": {
+  "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
+ },
+ "building:time": {
+  "teszt": "építés: Ursan – fizetés, belépés, haladás és életerő, kilépés, vissza a gyűjtéshez, létszám"
+ },
+ "building:torii": {
+  "teszt": "Ooni Torii-kapupár: belépés, 2 s várakozás rejtve, átkelés a párhoz; utána 8 s töltés; a pár elestével kijönnek"
+ },
+ "building:wall": {
+  "megjelenites": "a fal rajza a szomszédok szerint (rts/ui.py:3205)"
+ },
+ "effect_stat:<effect-kulcs> add": {
+  "atfedes": "Modifier.value (Modifiers[].value; az irány effects[].add → rules.cpp:915)",
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "effect_stat:<effect-kulcs> stat": {
+  "atfedes": "Modifier.path (Modifiers[].path; az irány effects[].stat → kStat, rules.cpp:899)",
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "effect_stat:<effect-kulcs> tags": {
+  "atfedes": "Modifier.filter_tags (Modifiers[].filter.tags; modifier_matches)",
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "effect_stat:armor": {
+  "atfedes": "Modifiers path Health.armor",
+  "teszt": "fejlődési irány: a berserker-ág vérszomja (sebesülten erősebb), a rúna-ág épületpáncélja és tornya"
+ },
+ "effect_stat:carry_pct": {
+  "hianyzik": "Kutatás: a munkás rakománya +% (rts/entities.py:376); a motorban megvan, de nincs próba (Worker.carry_pct, economy.cpp:67)"
+ },
+ "effect_stat:damage": {
+  "atfedes": "Modifiers path Attack.damage",
+  "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
+ },
+ "effect_stat:energy": {
+  "hianyzik": "Kutatás: max energia + (rts/entities.py:78); a motorban megvan, de nincs próba (Energy.max, abilities.cpp:818); az irány-effects kStat térképéből hiányzik"
+ },
+ "effect_stat:hp": {
+  "atfedes": "Modifiers path Health.max",
+  "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
+ },
+ "effect_stat:range": {
+  "hianyzik": "Kutatás/irány: lőtáv + (rts/entities.py:122); a motorban megvan, de nincs próba (Attack.range, combat.cpp:73)"
+ },
+ "effect_stat:regen": {
+  "atfedes": "Modifiers path Health.regen",
+  "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
+ },
+ "effect_stat:shield": {
+  "hianyzik": "Kutatás: max pajzs + (rts/entities.py:76); a motorban megvan, de nincs próba (Health.shield, economy.cpp:83, combat.cpp:593)"
+ },
+ "effect_stat:sight": {
+  "hianyzik": "Kutatás/irány: látótáv + (rts/entities.py:105); a motorban megvan, de nincs próba (Vision.sight, combat.cpp:617)"
+ },
+ "effect_stat:speed_pct": {
+  "hianyzik": "Kutatás/irány: sebesség +% (rts/entities.py:380); a motorban megvan, de nincs próba (Movement.speed_pct, navmove.cpp:342)"
+ },
+ "faction:accent": {
+  "megjelenites": "a nép kiemelőszíne (felület, épületrajz)"
+ },
+ "faction:ai": {
+  "teszt": "adatvezérelt gép (`ai_nep.lua`): minden főnép a saját terve szerint épít, kiképez, kutat"
+ },
+ "faction:ally": {
+  "teszt": "szövetség: kész Diplomácia csarnoka kell, egyszer, véglegesen, az ára levonódik; előtte a kisnép elemei zárva"
+ },
+ "faction:ally_cost": {
+  "teszt": "szövetség: kész Diplomácia csarnoka kell, egyszer, véglegesen, az ára levonódik; előtte a kisnép elemei zárva"
+ },
+ "faction:ally_pack": {
+  "atfedes": "a csomag elemei Requirements 'ally' feltétellel zárva",
+  "teszt": "kisnépek: mind a 13 csomagja – épületek felépíthetők, egységek képezhetők, kutatások elkészülnek"
+ },
+ "faction:ascension": {
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "faction:bounty": {
+  "teszt": "Wullof vadászzsákmány: ölésért a költség / darab × 0,2 × 0,5 fa; erdei rejtőzés fa mellett, 3 s nyugalom után"
+ },
+ "faction:bounty_res": {
+  "teszt": "Wullof vadászzsákmány: ölésért a költség / darab × 0,2 × 0,5 fa; erdei rejtőzés fa mellett, 3 s nyugalom után"
+ },
+ "faction:build_boost": {
+  "teszt": "Ooni Taiko-dobos: mellette 10/s-mal töltődik (0 → 50 5 s alatt), és × 1,5-tel épül az épület"
+ },
+ "faction:builder": {
+  "teszt": "építés: Ursan – fizetés, belépés, haladás és életerő, kilépés, vissza a gyűjtéshez, létszám"
+ },
+ "faction:buildings": {
+  "teszt": "népi lefedettség: minden főnép listája betöltve (egység, épület, kutatás), munkással és főépülettel"
+ },
+ "faction:camps": {
+  "teszt": "táborok: a Vadon táborai a kezdőhelyektől távol; a tábor együtt riad, pórázon tér vissza, kiirtva zsákmányt dob"
+ },
+ "faction:color": {
+  "megjelenites": "a nép színe"
+ },
+ "faction:creep_rot": {
+  "teszt": "Croftianok rothadás: a mélységen álló fa a Kaptár 9 csempés körében 0,06 × 2,5, azon kívül 0,06 fa / s"
+ },
+ "faction:desc": {
+  "megjelenites": "leírás szövege"
+ },
+ "faction:faith": {
+  "teszt": "Szürke elfek Áhítat: a szentély 4 helye – 5 tétlen munkásból 4 fohászkodik, 0,3 / s fejenként"
+ },
+ "faction:forest_stealth": {
+  "teszt": "Wullof vadászzsákmány: ölésért a költség / darab × 0,2 × 0,5 fa; erdei rejtőzés fa mellett, 3 s nyugalom után"
+ },
+ "faction:foundation": {
+  "teszt": "Aurethi alapozás: a kész lapkő alapozás marad; rajta teljes, nélküle fél életerő és 0,2%/s kopás 50%-ig"
+ },
+ "faction:gatherers": {
+  "teszt": "Aurethi Égkő-fény: a gépek +1 életerő/s (a faji 0,25/s mellett); a gyűjtők: követ és meteoritot csak az Arató"
+ },
+ "faction:hidden": {
+  "megjelenites": "a népválasztó listából kihagyja (rts/data.py:70)"
+ },
+ "faction:hq": {
+  "teszt": "gazdaság: meccsindítás – főépület, 5 telepes a pálya közepe felé, gyűjtésre indulnak"
+ },
+ "faction:id": {
+  "atfedes": "a sablon azonosítója (faction_<id>)",
+  "teszt": "tartalom: az alaptartalom (21 faj) betölthető és érvényes"
+ },
+ "faction:infest": {
+  "teszt": "Croftianok fertőzés: a croftian ölte szerves ellenség a mélységen 30%-kal 6 s múlva Karmosként kel ki"
+ },
+ "faction:mechanic": {
+  "atfedes": "Faction.mechanic választja a népmodult",
+  "teszt": "Szürke elfek energiamező: a nem `no_power` épület csak kész Napobeliszk 6,5 csempés körébe kerülhet"
+ },
+ "faction:morale": {
+  "teszt": "Ooni harci kedv: sérüléstől fogy, hét társ eleste megtöri (sebzés ×0,7, sebesség ×1,2), töltődve 50-nél helyreáll"
+ },
+ "faction:name": {
+  "megjelenites": "a nép neve"
+ },
+ "faction:network_supply": {
+  "teszt": "Micéliák fonalgráf és létszám: kapcsolt kész épületenként + network_supply; a leszakadt nem ad"
+ },
+ "faction:neutral": {
+  "teszt": "táborok: a Vadon táborai a kezdőhelyektől távol; a tábor együtt riad, pórázon tér vissza, kiirtva zsákmányt dob"
+ },
+ "faction:order": {
+  "megjelenites": "a népválasztó sorrendje (rts/data.py:71)"
+ },
+ "faction:pack_bonus": {
+  "teszt": "Wullof falkaszellem: a ±4 csempés négyzet társai (legfeljebb 4) – sebzés ×(1 + 0,1 n), sebesség ×(1 + 0,02 n)"
+ },
+ "faction:paths": {
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "faction:pond": {
+  "teszt": "Huk: a főépület tavon áll (2 csempés perem); épület csak saját tóra; a tavacska tóvá válik"
+ },
+ "faction:pond_affinity": {
+  "teszt": "Huk: tavon a saját nép ×1,3, más ×0,7; a tóval körülvett épület 1,6-szor gyorsabban épül; Gyöngyház-pajzs"
+ },
+ "faction:pond_build_bonus": {
+  "teszt": "Huk: tavon a saját nép ×1,3, más ×0,7; a tóval körülvett épület 1,6-szor gyorsabban épül; Gyöngyház-pajzs"
+ },
+ "faction:regen": {
+  "teszt": "Aurethi Égkő-fény: a gépek +1 életerő/s (a faji 0,25/s mellett); a gyűjtők: követ és meteoritot csak az Arató"
+ },
+ "faction:repair": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "faction:researches": {
+  "teszt": "népi lefedettség: minden főnép listája betöltve (egység, épület, kutatás), munkással és főépülettel"
+ },
+ "faction:resource_names": {
+  "megjelenites": "a nyersanyag népi neve a felületen (rts/game.py:86)"
+ },
+ "faction:rift": {
+  "teszt": "Szürke elfek Égkő-fény: az energiatöltés ×2,0 (a közös ×1,5 helyett) az Égkő 5 csempés körében"
+ },
+ "faction:self_build": {
+  "halott": "a régi kód a nép kulcsát nem olvassa; csak a letelepített szekér épület-attribútuma (rts/game.py:2845)"
+ },
+ "faction:shield_zone": {
+  "teszt": "Aurethi Reaktorpajzs: a pajzs csak Lélekreaktor 6 csempéjén belül vagy Égkő-fényben töltődik"
+ },
+ "faction:soul_anchor": {
+  "teszt": "Aurethi Lélekhorgony: a gép helyén horgony (15%), teljesen helyreállva újra az egység; a mentő elviszi"
+ },
+ "faction:spell_resource": {
+  "teszt": "Croftianok varázserő: spell_resource hp – a képesség energiája életerőből fizet (legalább 1 marad)"
+ },
+ "faction:spike_immune": {
+  "teszt": "Croftianok mérgező tüske: nem akadály; az ellenséget lassítja (×0,6) és mérgezi (4 / s), a croftiant nem"
+ },
+ "faction:start_gather": {
+  "teszt": "gazdaság: meccsindítás – főépület, 5 telepes a pálya közepe felé, gyűjtésre indulnak"
+ },
+ "faction:start_units": {
+  "teszt": "gazdaság: meccsindítás – főépület, 5 telepes a pálya közepe felé, gyűjtésre indulnak"
+ },
+ "faction:style": {
+  "megjelenites": "épületrajz-stílus"
+ },
+ "faction:summons_permanent": {
+  "teszt": "Croftianok idézés: summons_permanent – az idézés nem jár le; hősönként legfeljebb 4 (a legrégebbi pusztul)"
+ },
+ "faction:supply_building": {
+  "teszt": "adatvezérelt gép (`ai_nep.lua`): minden főnép a saját terve szerint épít, kiképez, kutat"
+ },
+ "faction:supply_desc": {
+  "megjelenites": "a létszámforrás szöveges neve"
+ },
+ "faction:supply_unit": {
+  "hianyzik": "rts/ai.py:171 – a gép létszámhiánynál létszámegységet (emu, szemhordozó) képez és karámot épít; a motor nem olvassa, az ai_nep.lua csak supply_building-et ismer"
+ },
+ "faction:tagline": {
+  "megjelenites": "rövid jelmondat"
+ },
+ "faction:units": {
+  "teszt": "népi lefedettség: minden főnép listája betöltve (egység, épület, kutatás), munkással és főépülettel"
+ },
+ "faction:unpack_time": {
+  "teszt": "Wullof vándorszekér: a csomagolható épület szekér lesz, letelepítve munkás nélkül, 8 s alatt kész"
+ },
+ "faction:wagon": {
+  "teszt": "Wullof vándorszekér: a csomagolható épület szekér lesz, letelepítve munkás nélkül, 8 s alatt kész"
+ },
+ "faction:warp_in": {
+  "teszt": "Szürke elfek behívás: a gyülekezőpont mezőadójánál jelenik meg az új egység"
+ },
+ "faction:worker": {
+  "teszt": "gazdaság: meccsindítás – főépület, 5 telepes a pálya közepe felé, gyűjtésre indulnak"
+ },
+ "item:bonus": {
+  "atfedes": "Item.Modifiers (viselt tárgy)",
+  "teszt": "tárgyak: 6 hely; főzet (teljes életerőnél nem), tóm (örökre), viselt (páncél, életerő aránya marad), eldobás, felvétel"
+ },
+ "item:desc": {
+  "megjelenites": "leírás"
+ },
+ "item:energy": {
+  "hianyzik": "rts/heroes.py – az energiafőzet energiát tölt; a motor olvassa (ItemDef.energy), de nincs próba"
+ },
+ "item:heal": {
+  "teszt": "tárgyak: 6 hely; főzet (teljes életerőnél nem), tóm (örökre), viselt (páncél, életerő aránya marad), eldobás, felvétel"
+ },
+ "item:icon": {
+  "megjelenites": "ikon"
+ },
+ "item:kind": {
+  "teszt": "tárgyak: 6 hely; főzet (teljes életerőnél nem), tóm (örökre), viselt (páncél, életerő aránya marad), eldobás, felvétel"
+ },
+ "item:name": {
+  "megjelenites": "név"
+ },
+ "item:perm": {
+  "teszt": "tárgyak: 6 hely; főzet (teljes életerőnél nem), tóm (örökre), viselt (páncél, életerő aránya marad), eldobás, felvétel"
+ },
+ "item:rarity": {
+  "teszt": "táborok: a Vadon táborai a kezdőhelyektől távol; a tábor együtt riad, pórázon tér vissza, kiirtva zsákmányt dob"
+ },
+ "item:xp": {
+  "hianyzik": "rts/heroes.py – a tudás könyve tapasztalatot ad; a motor olvassa (ItemDef.xp), de nincs próba"
+ },
+ "mechanic:creep": {
+  "teszt": "Croftianok mélység: a Kaptár köre (creep_radius + fél méret), csak építhető terepen; az ursan nem kap"
+ },
+ "mechanic:lantern": {
+  "teszt": "Ooni lámpásfény: csak fénybe építhető; a fényben a sebesült ooni gyógyul (30 tickenként +2), a harci kedv legalább 30"
+ },
+ "mechanic:network": {
+  "teszt": "Micéliák fonalgráf és létszám: kapcsolt kész épületenként + network_supply; a leszakadt nem ad"
+ },
+ "mechanic:pond": {
+  "teszt": "Huk: a főépület tavon áll (2 csempés perem); épület csak saját tóra; a tavacska tóvá válik"
+ },
+ "mechanic:power": {
+  "teszt": "Szürke elfek energiamező: a nem `no_power` épület csak kész Napobeliszk 6,5 csempés körébe kerülhet"
+ },
+ "mechanic:standard": {
+  "atfedes": "az új sémában a nép kulcsai kifejezetten (Faction.builder, repair, demolish) írják le, amit a 'standard' alapértelmezésként adott",
+  "teszt": "lebontás (D38): a kész épület 70%-kal bontható az Ursanoknál, az Aurethi Birodalomnál nem"
+ },
+ "modifier:armor_add": {
+  "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
+ },
+ "modifier:damage_mult": {
+  "teszt": "vérszomj és roham (önerősítés): ideiglenes, újratöltéssel; a berserker többet üt és többet kap"
+ },
+ "modifier:range_add": {
+  "teszt": "dárdafal és telepítés (kapcsoló): nem mozdul, erősebben üt; a telepített ostromszán messzebbre lő"
+ },
+ "modifier:ranged_taken_mult": {
+  "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
+ },
+ "modifier:regen_add": {
+  "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
+ },
+ "modifier:speed_mult": {
+  "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
+ },
+ "path:building": {
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "path:desc": {
+  "megjelenites": "leírás"
+ },
+ "path:effects": {
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "path:extra_buildings": {
+  "halott": "a régi játék kódja nem olvassa"
+ },
+ "path:name": {
+  "megjelenites": "név"
+ },
+ "path:rules": {
+  "teszt": "fejlődési irány: a berserker-ág vérszomja (sebesülten erősebb), a rúna-ág épületpáncélja és tornya"
+ },
+ "path:tagline": {
+  "megjelenites": "jelmondat"
+ },
+ "path:units": {
+  "atfedes": "az irány egységeit a Requirements zárja",
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "research:ally": {
+  "atfedes": "Requirements.all {ally}",
+  "teszt": "kisnépek: mind a 13 csomagja – épületek felépíthetők, egységek képezhetők, kutatások elkészülnek"
+ },
+ "research:cost": {
+  "atfedes": "Cost.resources",
+  "teszt": "termelés: kutatás a sorban; hős egyszer, legfeljebb három; determinisztikus"
+ },
+ "research:desc": {
+  "megjelenites": "leírás szövege"
+ },
+ "research:effects": {
+  "atfedes": "Modifiers (path/op/value/filter)",
+  "teszt": "Ursanok: kutatás-hatások – Vasszigony, Népfelkelés (a telepesre), Rúnapajzs (épület), Telegi edzés"
+ },
+ "research:exclusive": {
+  "hianyzik": "rts/game.py:3565-3569 kizáró csoport: egy csoportból csak egy kutatás; az adatban Exclusive (imperium.json), de a motor nem olvassa – nincs megvalósítva"
+ },
+ "research:icon": {
+  "megjelenites": "ikon"
+ },
+ "research:name": {
+  "megjelenites": "megnevezés"
+ },
+ "research:requires": {
+  "atfedes": "Requirements.all {building}",
+  "teszt": "Ursanok: minden kutatás elkészül a feltételeivel; a 2. és 3. fokozat sorban, a 3. felemelkedés után"
+ },
+ "research:requires_ascended": {
+  "atfedes": "Requirements.all {ascended}",
+  "teszt": "Ursanok: minden kutatás elkészül a feltételeivel; a 2. és 3. fokozat sorban, a 3. felemelkedés után"
+ },
+ "research:requires_research": {
+  "atfedes": "Requirements.all {research}",
+  "teszt": "Ursanok: minden kutatás elkészül a feltételeivel; a 2. és 3. fokozat sorban, a 3. felemelkedés után"
+ },
+ "research:rules": {
+  "atfedes": "Rules (RuleSet)",
+  "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
+ },
+ "research:time": {
+  "atfedes": "Cost.time",
+  "teszt": "termelés: kutatás a sorban; hős egyszer, legfeljebb három; determinisztikus"
+ },
+ "rule:bounty_gold": {
+  "hianyzik": "Wullof Zsákmányszerzés: a vadászzsákmány × bounty_gold kőben/aranyban is (rts/game.py:1236); a motorban megvan, de nincs próba (combat.cpp:564)"
+ },
+ "rule:build_boost_mult": {
+  "teszt": "Ooni Vörös dojó irány: a Taiko-dobos építésgyorsítása × 1,75 (`build_boost_mult`); Vérszomj: ölésenként +20 életerő"
+ },
+ "rule:convert_kills": {
+  "hianyzik": "Croftian irány: az ölt ellenség esélyre saját egységként átáll (rts/game.py:1211); a motorban nincs megvalósítva"
+ },
+ "rule:creep_regen_mult": {
+  "teszt": "Croftianok mélység: földi egység ×1,3 gyors, gyógyulása ×3; a repülő és az idegen nem kap"
+ },
+ "rule:detect_all": {
+  "hianyzik": "Wullof kutatás: minden saját egység N csempés észlelő (rts/game.py:1329); a motorban nincs megvalósítva"
+ },
+ "rule:drum_mult": {
+  "hianyzik": "Ooni Harci dobok: a dobos harci kedv-töltése × drum_mult (rts/game.py:1999); a motorban megvan, de nincs próba (ooni.cpp:362; a Harci dobok próba csak a morale_hurt_mult-ot méri)"
+ },
+ "rule:energy_regen_ids": {
+  "teszt": "Szürke elfek Napszemű papok: a Napszóró energiája × 1,5-tel töltődik (`energy_regen_ids`), másé nem"
+ },
+ "rule:faith_rate": {
+  "teszt": "Szürke elfek fohász-parancs (`elves.pray`): a munkások a szentélyhez mennek és fohászkodnak; Arany fohász 0,4 / s"
+ },
+ "rule:forest_stealth": {
+  "hianyzik": "Szabályként (elf irány, címkeszűrővel) erdei rejtőzés (rts/game.py:1307-1308, rule_tags); a motor csak a népi forest_stealth jelzőt olvassa (rules.cpp:837, Wullof-próba fedi), a Rules/irány-formát nem"
+ },
+ "rule:garrison_dmg": {
+  "teszt": "helyőrség-íj: az üres Hosszúház nem lő, bent 2 egységgel 5 + 2 × 4 = 13 sebzést; az Őrtorony 12 + 4 / fő"
+ },
+ "rule:heal_on_kill": {
+  "hianyzik": "Wullof irány: címkés egység ölésenként életerőt kap (rts/game.py:1201); a motorban nincs megvalósítva (csak az ooni kill_heal)"
+ },
+ "rule:kill_heal": {
+  "teszt": "Ooni Vörös dojó irány: a Taiko-dobos építésgyorsítása × 1,75 (`build_boost_mult`); Vérszomj: ölésenként +20 életerő"
+ },
+ "rule:kokutya_guard": {
+  "teszt": "Ooni őrök: a Kőkutya (hűséggel +2) és a bekapcsolt Kapuőrzés (+3) páncélt ad a 2,5 csempén belüli épületnek, legfeljebb 6"
+ },
+ "rule:lantern_magic": {
+  "teszt": "Ooni kutatások: Lámpásmágia (fényben varázssebzés ×1,2), Messzefény (+2 fénysugár)"
+ },
+ "rule:larva_add": {
+  "hianyzik": "Croftian kutatás: a lárva-maximum + larva_add (rts/entities.py:1738); a motorban nincs megvalósítva"
+ },
+ "rule:larva_mult": {
+  "hianyzik": "Croftian kutatás: a lárva-idő / larva_mult (rts/entities.py:1743); a motorban nincs megvalósítva"
+ },
+ "rule:light_add": {
+  "teszt": "Ooni kutatások: Lámpásmágia (fényben varázssebzés ×1,2), Messzefény (+2 fénysugár)"
+ },
+ "rule:low_hp_rage": {
+  "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
+ },
+ "rule:moon": {
+  "hianyzik": "Wullof Holdtölte: időszakosan (period/dur) a sebzés × mult (rts/game.py:307, 1098); a motorban nincs megvalósítva"
+ },
+ "rule:morale_hurt_mult": {
+  "teszt": "Ooni Harci dobok: a sérülés harci kedv-vesztesége × 0,6 – fél életerő és hét társ eleste után sem törik meg"
+ },
+ "rule:network_supply_add": {
+  "teszt": "Micéliák létszám: a szabály network_supply_add (az Óriásliget iránya: +2) kapcsolt épületenként hozzáadódik"
+ },
+ "rule:no_weak": {
+  "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
+ },
+ "rule:pack_bonus": {
+  "hianyzik": "Szabályként (Aurethi irány) falkabónusz (rts/game.py:764: rules vagy faction); a motor csak a népi pack_bonus-t olvassa (rules.cpp:822, Wullof-próba fedi), az irány-szabályt nem"
+ },
+ "rule:poison_attacks": {
+  "hianyzik": "Croftian kutatás: a címkés támadás a szerves célt mérgezi (rts/game.py:1074); a motorban nincs megvalósítva"
+ },
+ "rule:pond_dmg": {
+  "hianyzik": "Huk Tavak útja: saját tavon a sebzés × pond_dmg (rts/game.py:1101); a motorban megvan, de nincs próba (hukucha.cpp:245-255)"
+ },
+ "rule:pond_size": {
+  "hianyzik": "Huk kutatás: a tavacska mérete pond_size (rts/game.py:2436, 2468); a motorban nincs megvalósítva"
+ },
+ "rule:power_add": {
+  "teszt": "Szürke elfek Rezonancia: a mezőadók köre +2 csempe (`Rules.power_add`)"
+ },
+ "rule:rage": {
+  "teszt": "fejlődési irány: a berserker-ág vérszomja (sebesülten erősebb), a rúna-ág épületpáncélja és tornya"
+ },
+ "rule:raise_from_kills": {
+  "hianyzik": "Aurethi irány: ölt szerves ellenségből esélyre ideiglenes szellemlégiós kel (rts/game.py:1205); a motorban nincs megvalósítva"
+ },
+ "rule:rot_cap": {
+  "hianyzik": "Croftian kutatás: a rothadás másodpercenkénti korlátja (rts/game.py:1793); a motor a rothadást megvalósítja, de ezt a szabályt nem olvassa"
+ },
+ "rule:rot_mult": {
+  "hianyzik": "Croftian kutatás: a rothadás üteme × rot_mult (rts/game.py:1803); a motor nem olvassa"
+ },
+ "rule:spike_max": {
+  "hianyzik": "Croftian kutatás: a tüskék legnagyobb száma (rts/game.py:2500); a motorban nincs megvalósítva"
+ },
+ "rule:spike_mult": {
+  "hianyzik": "Croftian Bénító méreg: a tüske hatása × spike_mult (rts/game.py:2555, 2581); a motor nem olvassa"
+ },
+ "rule:spike_size": {
+  "hianyzik": "Croftian kutatás: a tüske lerakási mérete n×n (rts/game.py:2510); a motorban nincs megvalósítva"
+ },
+ "rule:summon_life_mult": {
+  "hianyzik": "Huk kutatás: az idézések élettartama × summon_life_mult (rts/game.py:1707, entities.py:1530); a motorban nincs megvalósítva"
+ },
+ "rule:supply_add": {
+  "teszt": "kutatási szabályok: Kiadós tanya (+4 létszám tanyánként), Medve-ösztön (40% alatt ×1,2), Tüskés pajzsfal"
+ },
+ "rule:torii_pairs": {
+  "teszt": "Ooni Torii lerakás: a pár második kapuja csak látott helyre (fény nélkül is); legfeljebb `torii_pairs` pár (Kettős kapu: 2)"
+ },
+ "rule:train_time_mult": {
+  "hianyzik": "Croftian kutatás: a címkés egység képzési ideje × mult (rts/game.py:3541); a motorban nincs megvalósítva"
+ },
+ "unit:abilities": {
+  "teszt": "pajzsfal (kapcsoló): fél sebesség, a távolsági sebzés 40%-a, +2 páncél; a közelharc ellen csak a páncél"
+ },
+ "unit:ability_path": {
+  "teszt": "Croftianok átváltozás: a Karmos a páncél irányon a költségért Gubóvá, 18 s múlva Páncélbogárrá lesz"
+ },
+ "unit:ability_research": {
+  "teszt": "fegyverbe (önerősítés munkásnak): csak a Népfelkeléssel; a gyűjtést abbahagyja, a riadó után visszamegy"
+ },
+ "unit:ally": {
+  "atfedes": "Requirements 'ally' feltétel",
+  "teszt": "szövetség: kész Diplomácia csarnoka kell, egyszer, véglegesen, az ára levonódik; előtte a kisnép elemei zárva"
+ },
+ "unit:always_hidden": {
+  "teszt": "lopakodás: a rejtett egységet csak a felfedő vagy a nagyon közeli ellenség látja"
+ },
+ "unit:armor": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:attack": {
+  "teszt": "harc: célválasztás, visszaütés, a munkás nem üt vissza, póráz, állás, támadó mozgás, halál"
+ },
+ "unit:attack.bonus": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:attack.cooldown": {
+  "teszt": "harc: célválasztás, visszaütés, a munkás nem üt vissza, póráz, állás, támadó mozgás, halál"
+ },
+ "unit:attack.damage": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:attack.poison": {
+  "teszt": "fegyver-elemek: mérgező és lassító fegyver; az elem a hozzárendelés szerint (a kézi felülírással)"
+ },
+ "unit:attack.projectile": {
+  "teszt": "lövedékek (D40): a nyíl követi a célt; a szikla a kilövéskori helyre esik, és területre sebez"
+ },
+ "unit:attack.range": {
+  "teszt": "magaslat (D33): lefelé +10% sebzés és nagyobb lőtáv; felfelé a nyíl hibázhat, a mágia nem"
+ },
+ "unit:attack.slow": {
+  "teszt": "fegyver-elemek: mérgező és lassító fegyver; az elem a hozzárendelés szerint (a kézi felülírással)"
+ },
+ "unit:attack.splash": {
+  "teszt": "lövedékek (D40): a nyíl követi a célt; a szikla a kilövéskori helyre esik, és területre sebez"
+ },
+ "unit:attack.targets": {
+  "hianyzik": "rts/entities.py:112 – a fegyver földi/légi célzása; a motor megvalósítja (combat.cpp can_hit), de nincs próba, ami légi célt vagy annak tiltását gyakorolná"
+ },
+ "unit:builds": {
+  "hianyzik": "rts/entities.py:372 – a 'builds: false' munkás nem építhet; a motor a Worker.builds kulcsot nem olvassa"
+ },
+ "unit:carry": {
+  "teszt": "gazdaság: aranyhordás a Hadtáppal és nélküle; Gather, Stop és mozgásparancs"
+ },
+ "unit:cost": {
+  "teszt": "termelés: telepes – fizetés, létszám azonnal, 12 s múlva a főépület alatt jelenik meg"
+ },
+ "unit:count": {
+  "hianyzik": "rts/game.py:3094 – képzéskor 'count' darab egység jön (Karmos: 2), létszám/darab; a motor Cost.count-ot csak zsákmány/XP osztónak használja, a képzés 1 egységet ad"
+ },
+ "unit:death_burst": {
+  "hianyzik": "rts/game.py:1249 – halálkor a sugárban varázssebzés az ellenséges egységeknek; a motor az Attack.death_burst kulcsot nem olvassa"
+ },
+ "unit:deploy": {
+  "atfedes": "telepítő kapcsoló-képesség (a Legacy.deploy telepítési/csomagolási idejét a motor nem olvassa)",
+  "teszt": "dárdafal és telepítés (kapcsoló): nem mozdul, erősebben üt; a telepített ostromszán messzebbre lő"
+ },
+ "unit:desc": {
+  "megjelenites": "leírás"
+ },
+ "unit:energy": {
+  "teszt": "hősök (az M6-ban szint nélkül, az 1. szinten): energia, Ragna, Hjalmar és Bjarka képességei"
+ },
+ "unit:find_items": {
+  "teszt": "Ooni Tanuki tárgylelet: a bányászott rakományok némelyikénél tárgy kerül a földre (2%)"
+ },
+ "unit:flying": {
+  "teszt": "látótér: látótáv, felderítettség, a magaslatra lentről csak közelről, fentről messzebbre, a repülő mindent"
+ },
+ "unit:gathers": {
+  "teszt": "Aurethi Égkő-fény: a gépek +1 életerő/s (a faji 0,25/s mellett); a gyűjtők: követ és meteoritot csak az Arató"
+ },
+ "unit:growth": {
+  "teszt": "hős: tapasztalat ölésért (képlet, osztozás 12 csempén belül), szintlépés (+pont, növekedés, +25% életerő)"
+ },
+ "unit:hero": {
+  "teszt": "termelés: kutatás a sorban; hős egyszer, legfeljebb három; determinisztikus"
+ },
+ "unit:hero_abilities": {
+  "atfedes": "Hero.abilities",
+  "teszt": "hős: képességtanulás – az n. szint a 2n − 1. hősszinttől, a végső a 6.-tól; a szintváltozat erősebb"
+ },
+ "unit:hidden": {
+  "megjelenites": "az építési/képzési menüből kihagyja (rts/hud.py:375, 462)"
+ },
+ "unit:hp": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:lifetime": {
+  "atfedes": "az idéző képesség Spec.lifetime-ja adja (Lifetime.seconds nem olvasott)",
+  "teszt": "rúnakő (idézés pontra) és aurája: a pap a pont mellé megy, a kő 45 s-ig áll, a körzetben +2 páncél, +1 életerő/s"
+ },
+ "unit:mine_stealth": {
+  "hianyzik": "rts/game.py:1298 – 3 s támadás nélkül a nem repülő egység a sugáron kívül rejtett; a motor a Vision.mine_stealth kulcsot nem olvassa"
+ },
+ "unit:mine_trigger": {
+  "teszt": "Huk: ikra-akna – a pontra rakva, ellenség érkezésekor ebihalak kelnek ki (tavon 5, máshol 3), az akna elfogy"
+ },
+ "unit:name": {
+  "megjelenites": "név"
+ },
+ "unit:no_corpse": {
+  "megjelenites": "csak halál-animációs tetem (rts/game.py:148, 1261)"
+ },
+ "unit:path": {
+  "atfedes": "Requirements 'path' / Paths.units – irányhoz kötött egység",
+  "teszt": "felemelkedés és fejlődési irány: 3 különböző fajta kész épület; az irány egyszer, hatással és zárral"
+ },
+ "unit:per_building": {
+  "teszt": "Wullof: az emu létszámot ad (6), Emukarámonként legfeljebb 5; a falka-képzés 3 egységet ad"
+ },
+ "unit:radius": {
+  "teszt": "navigáció: NAV-MAMMOTH – a nagy egység csak a széles résen fér át, a kicsi a közelin"
+ },
+ "unit:requires": {
+  "atfedes": "Requirements.all",
+  "teszt": "Ursanok: minden egység képezhető a saját épületéből a feltételeivel (vagy képességgel idézhető)"
+ },
+ "unit:requires_research": {
+  "atfedes": "Requirements.all (research)",
+  "teszt": "Ursanok: minden egység képezhető a saját épületéből a feltételeivel (vagy képességgel idézhető)"
+ },
+ "unit:shape": {
+  "megjelenites": "rajzalak"
+ },
+ "unit:shield": {
+  "teszt": "harc: pajzs előbb nyel, és a késleltetés után visszatöltődik"
+ },
+ "unit:shield_delay": {
+  "teszt": "harc: pajzs előbb nyel, és a késleltetés után visszatöltődik"
+ },
+ "unit:shield_slot": {
+  "halott": "a régi játék nem olvassa, csak a tools/factions_new.py generátor írja"
+ },
+ "unit:shield_zone": {
+  "teszt": "Huk: tavon a saját nép ×1,3, más ×0,7; a tóval körülvett épület 1,6-szor gyorsabban épül; Gyöngyház-pajzs"
+ },
+ "unit:sight": {
+  "teszt": "látótér: látótáv, felderítettség, a magaslatra lentről csak közelről, fentről messzebbre, a repülő mindent"
+ },
+ "unit:spawn_group": {
+  "teszt": "Wullof: az emu létszámot ad (6), Emukarámonként legfeljebb 5; a falka-képzés 3 egységet ad"
+ },
+ "unit:speed": {
+  "teszt": "Wullof falkaszellem: a ±4 csempés négyzet társai (legfeljebb 4) – sebzés ×(1 + 0,1 n), sebesség ×(1 + 0,02 n)"
+ },
+ "unit:sprite": {
+  "megjelenites": "sprite"
+ },
+ "unit:summoned": {
+  "teszt": "népi lefedettség: minden főnép minden egysége képezhető a feltételeivel (vagy képességgel idézhető)"
+ },
+ "unit:supply": {
+  "teszt": "termelés: telepes – fizetés, létszám azonnal, 12 s múlva a főépület alatt jelenik meg"
+ },
+ "unit:tags": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:tap_wood": {
+  "teszt": "Wullof felültetés (a Bölénylovaglással) és leszállás; javítás; kéregcsapolás (fánként egy csapoló)"
+ },
+ "unit:time": {
+  "teszt": "termelés: telepes – fizetés, létszám azonnal, 12 s múlva a főépület alatt jelenik meg"
+ },
+ "unit:type_bonus": {
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:type_nostrength": {
+  "hianyzik": "rts/game.py:956 – a támadó típusszorzója nem érvényesül; a motor az Attack.type_nostrength kulcsot nem olvassa"
+ },
+ "unit:unit_supply": {
+  "atfedes": "Supply.provides az egységen",
+  "teszt": "Wullof: az emu létszámot ad (6), Emukarámonként legfeljebb 5; a falka-képzés 3 egységet ad"
+ },
+ "unit:utype": {
+  "atfedes": "Identity.class",
+  "teszt": "harc: a régi sebzésképlet – típusszorzó, címkebónusz, páncél, tört sebzés"
+ },
+ "unit:worker": {
+  "teszt": "gazdaság: meccsindítás – főépület, 5 telepes a pálya közepe felé, gyűjtésre indulnak"
+ },
+ "unit:xp": {
+  "teszt": "hős: tapasztalat ölésért (képlet, osztozás 12 csempén belül), szintlépés (+pont, növekedés, +25% életerő)"
+ }
+}

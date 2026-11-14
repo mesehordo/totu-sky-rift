@@ -26,7 +26,7 @@ constexpr int kMaxLevel = 2;
 // Pályaobjektumok (M6, ADR-007 3. pont): kezdőhelyek, fák, nyersanyag-lelőhelyek. A pálya csak leírja őket; a
 // szimuláció a meccs indításakor hozza létre belőlük az entitásokat (a fák és a lelőhelyek akadályok a navrácsban).
 struct MapResource {
-  std::string kind;           // a nyersanyag azonosítója (`game.json` → `resources`), pl. `stone`, `meteor`
+  std::string kind;           // a nyersanyag azonosítója (`game.json` → `resources`), pl. `gold`, `meteor`
   int x = 0, y = 0;           // a bal felső csempe
   int size = 2;               // négyzetes, csempében
   int amount = -1;            // -1: a nyersanyag `node_amount` értéke

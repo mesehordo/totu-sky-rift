@@ -32,7 +32,7 @@
    "time": 14,
    "resources": {
     "wood": 50,
-    "stone": 15
+    "gold": 15
    }
   },
   "Attack": {
@@ -96,7 +96,7 @@
    "time": 32,
    "resources": {
     "wood": 200,
-    "stone": 100
+    "gold": 100
    }
   },
   "Attack": {
@@ -170,7 +170,7 @@
    "time": 18,
    "resources": {
     "wood": 65,
-    "stone": 25
+    "gold": 25
    }
   },
   "Attack": {
@@ -229,7 +229,7 @@
    "time": 20,
    "resources": {
     "wood": 70,
-    "stone": 25
+    "gold": 25
    }
   },
   "Attack": {
@@ -290,7 +290,7 @@
    "time": 36,
    "resources": {
     "wood": 180,
-    "stone": 90,
+    "gold": 90,
     "meteor": 40
    }
   },
@@ -350,7 +350,7 @@
    "time": 12,
    "resources": {
     "wood": 40,
-    "stone": 25
+    "gold": 25
    }
   },
   "Attack": {

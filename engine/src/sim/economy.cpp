@@ -207,7 +207,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
         const EntityId u = spawn_unit(def, owner, bp.x + core::cos(a) * rx, bp.y + core::sin(a) * ry);
         const EntityDef& ud = rules_->defs[def];
         if (!ud.worker) continue;
-        const int kinds[4] = {f.start_gather, kStone, kWood, kMeteor};
+        const int kinds[4] = {f.start_gather, kGold, kWood, kMeteor};
         for (const int kind : kinds) {
           if (!(ud.gathers & (1u << kind))) continue;
           const EntityId r = nearest_resource(kind, bp.x, bp.y, Fixed::from_int(16), kNoEntity);
@@ -286,7 +286,7 @@ void Sim::stop(EntityId e) {
 void Sim::income(uint8_t owner, int kind, int32_t amount) {
   PlayerState& p = players_[owner];
   int64_t milli = int64_t{amount} * 1000;
-  if (kind == kStone && upkeep_) milli = int64_t{amount} * rules_->upkeep_permille(p.supply_used);   // Hadtáp
+  if (kind == kGold && upkeep_) milli = int64_t{amount} * rules_->upkeep_permille(p.supply_used);   // Hadtáp
   p.res[static_cast<size_t>(kind)] += milli;
   p.gathered[static_cast<size_t>(kind)] += milli;
 }

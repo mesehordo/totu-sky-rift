@@ -652,3 +652,11 @@ A pálya leírása szintenként (1–5) kisnép-tábort kérhet: `"camps": {"1":
 - **Vörös dojó irány** (Ooni, `Paths.voros.rules.build_boost_mult`; a régi G 1494): a Taiko-dobos melletti építés × 1,75 (× 1,5 helyett).
 - **Vérszomj** (Ooni kutatás, `Rules.kill_heal`; a régi G 1222): az oni harcosok (Oni harcos, Tomboló oni, Ō-oni, Kőhajító) ölésenként 20 életerőt kapnak vissza.
 **Tesztek:** 233 (2 új); a hash-ek változatlanok.
+
+## 2026-11-14 – M7: a kő mostantól arany; adatvezérelt gép; golden M7; leltár-kapu
+
+- **A kő → arany (a tulajdonos kérése, a kánon szerint: fa, arany, meteorit):** a nyersanyag azonosítója `stone` → `gold` mindenhol a motorban (sablonok, `game.json`, tesztpályák, Lua: `Game.player(p).gold`, `Game.gather(w, "gold")`), a kódban `kStone` → `kGold`. A kiírt név már eddig is „Arany” volt. A rögzített hash-ek változatlanok (az azonosító nem része az állapotnak); a golden M6 újra rögzítve (a pálya leírása a felvételben). A régi Python-referencia (`rts/`, `data/`) érintetlen.
+- **Adatvezérelt gép** (`content/base/scripts/ai_nep.lua`): bármely főnép a saját `Faction.ai` terve szerint – munkások a nyersanyagarány szerint (a tétlen munkás újra gyűjt), építési sorrend (ami nem építhető, átlépi; létszámépület nem kétszer egymás után; ha épület kell, a sereg vár), kiképzés a hadrend szerint, kutatási sorrend (ha a kutató épület a kiképzéssel foglalt, minden második körben a kiképzés szünetel), kedvelt irány, szövetség, támadóhullámok. Lua: `Game.faction_ai` a teljes tervvel, `Game.unit(id).building` / `.idle`, `Game.research` második visszatérő értéke a hibaok. A Huk'ucha tóásása és a Croftian mélységi gyűjtése népi gépi viselkedés – az M9-é.
+- **Golden M7** (`tests/data/golden_m7.trep`, `totu_sim m7golden`): Szürke elfek – Wullof, két adatvezérelt gép, 12 perc, 144 ellenőrzőpont. CTest: `golden_replay_m7`.
+- **Leltár-kapu** (`tools/leltar_kapu.py`, `docs/alap/leltar_kapu.json`): a tartalmi leltár mind a 361 sora besorolva – teszt 218, átfedés 35, megjelenítés 38, halott 4, **hiányzik 66** (megvalósítandó vagy próba nélküli; a lista a kapufájlban és `python tools/leltar_kapu.py` kimenetén). A CI (`leltar` feladat) azt ellenőrzi, hogy minden sor be van sorolva és a hivatkozott próbák léteznek; a kapu (`--gate`) akkor teljesül, ha a „hiányzik” sorok elfogynak.
+**Tesztek:** 234 (1 új, `test_match.cpp`); 6 CTest.

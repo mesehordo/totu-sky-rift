@@ -322,7 +322,7 @@ class Module final : public FactionModule {
       const int slots = num(mine ? mine->find("slots") : nullptr, Fixed::from_int(3)).floor_int();
       EntityId node = kNoEntity;   // a lábnyom alatti lelőhely
       s.world_.pool<ResourceNode>().each([&](EntityId ne, const ResourceNode& n) {
-        if (node || n.amount <= 0 || (n.kind != kStone && n.kind != kMeteor)) return;
+        if (node || n.amount <= 0 || (n.kind != kGold && n.kind != kMeteor)) return;
         if (n.tx < b->tx + b->w && n.tx + n.size > b->tx && n.ty < b->ty + b->h && n.ty + n.size > b->ty) node = ne;
       });
       if (!node) continue;

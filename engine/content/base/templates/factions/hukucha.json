@@ -169,7 +169,7 @@
     "workers": 18,
     "gather_ratio": {
      "wood": 0.6,
-     "stone": 0.27,
+     "gold": 0.27,
      "meteor": 0.13
     },
     "pond": true,
@@ -271,7 +271,7 @@
     "faith": "Tóének"
    },
    "ally_cost": {
-    "stone": 150,
+    "gold": 150,
     "meteor": 50
    }
   }

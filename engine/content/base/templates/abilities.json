@@ -2353,7 +2353,7 @@
    "via": "cro_guboj",
    "time": 18,
    "cost": {
-    "stone": 75,
+    "gold": 75,
     "meteor": 25,
     "wood": 50
    },

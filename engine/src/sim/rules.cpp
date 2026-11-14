@@ -8,7 +8,7 @@ namespace totu::sim {
 
 namespace {
 
-constexpr const char* kResIds[kResources] = {"wood", "stone", "meteor", "faith"};
+constexpr const char* kResIds[kResources] = {"wood", "gold", "meteor", "faith"};
 
 Fixed fixed_of(const content::Value* v, Fixed def) {
   if (!v) return def;

@@ -9,7 +9,7 @@
   "Cost": {
    "resources": {
     "wood": 165,
-    "stone": 35
+    "gold": 35
    },
    "time": 60
   },
@@ -35,7 +35,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 185,
+    "gold": 185,
     "wood": 65
    },
    "time": 70
@@ -64,7 +64,7 @@
    "resources": {
     "meteor": 75,
     "wood": 65,
-    "stone": 35
+    "gold": 35
    },
    "time": 60
   },
@@ -87,7 +87,7 @@
    "resources": {
     "meteor": 75,
     "wood": 100,
-    "stone": 50
+    "gold": 50
    },
    "time": 60
   },

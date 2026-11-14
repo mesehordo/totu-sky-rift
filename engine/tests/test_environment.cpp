@@ -81,7 +81,7 @@ TEST_CASE("kutatás (D24): Rúnapengék +2 közelharci sebzés, Medvebunda +1 p�
   CHECK(first_hit(s, b1, spawn(s, "urs_pajzshordozo", 2, 128, 170)) == 18000);
   s.place_building(def_of("urs_runakovacs"), 1, 12, 13, true);
   s.add_resources(1, sim::kWood, 1000);
-  s.add_resources(1, sim::kStone, 1000);
+  s.add_resources(1, sim::kGold, 1000);
   std::string err;
   CHECK(s.research(1, "urs_runapengek", &err));
   m.run(content_once().rules->research("urs_runapengek")->time_ticks + 2);
@@ -97,7 +97,7 @@ TEST_CASE("kutatás (D24): Rúnapengék +2 közelharci sebzés, Medvebunda +1 p�
   CHECK(before > 1500);
   t.place_building(def_of("urs_runakovacs"), 1, 12, 13, true);
   t.add_resources(1, sim::kWood, 1000);
-  t.add_resources(1, sim::kStone, 1000);
+  t.add_resources(1, sim::kGold, 1000);
   CHECK(t.research(1, "urs_medvebunda", &err));
   a.run(content_once().rules->research("urs_medvebunda")->time_ticks + 2);
   const auto v2 = spawn(t, "urs_berserker", 1, 128, 190);

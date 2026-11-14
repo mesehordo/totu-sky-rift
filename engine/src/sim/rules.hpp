@@ -22,8 +22,8 @@ using core::Fixed;
 
 constexpr int kTickHz = 30;
 constexpr int kResources = 4;   // a nyersanyagok rögzített sorrendje
-enum Res : uint8_t { kWood = 0, kStone = 1, kMeteor = 2, kFaith = 3 };
-const char* resource_id(int r);           // "wood", "stone", "meteor", "faith"
+enum Res : uint8_t { kWood = 0, kGold = 1, kMeteor = 2, kFaith = 3 };
+const char* resource_id(int r);           // "wood", "gold", "meteor", "faith"
 int resource_index(const std::string& id);   // -1, ha ismeretlen
 constexpr uint16_t kNoDef = 0xFFFF;
 

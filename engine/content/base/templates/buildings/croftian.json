@@ -10,7 +10,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 205,
+    "gold": 205,
     "wood": 195
    },
    "time": 70
@@ -34,7 +34,7 @@
   "Dropoff": {
    "resources": [
     "wood",
-    "stone",
+    "gold",
     "meteor"
    ]
   },
@@ -84,7 +84,7 @@
   "Cost": {
    "resources": {
     "wood": 65,
-    "stone": 20
+    "gold": 20
    },
    "time": 20
   },
@@ -123,7 +123,7 @@
   "Cost": {
    "resources": {
     "wood": 50,
-    "stone": 25
+    "gold": 25
    },
    "time": 20
   },
@@ -146,7 +146,7 @@
   "Dropoff": {
    "resources": [
     "wood",
-    "stone",
+    "gold",
     "meteor"
    ]
   },
@@ -174,7 +174,7 @@
   "Cost": {
    "resources": {
     "wood": 140,
-    "stone": 40
+    "gold": 40
    },
    "time": 40
   },
@@ -212,7 +212,7 @@
   "Cost": {
    "resources": {
     "wood": 165,
-    "stone": 85
+    "gold": 85
    },
    "time": 40
   },
@@ -259,7 +259,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 135,
+    "gold": 135,
     "meteor": 75,
     "wood": 65
    },
@@ -311,7 +311,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 150,
+    "gold": 150,
     "meteor": 100,
     "wood": 100
    },
@@ -353,7 +353,7 @@
   "Cost": {
    "resources": {
     "wood": 100,
-    "stone": 25
+    "gold": 25
    },
    "time": 25
   },
@@ -434,7 +434,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 150,
+    "gold": 150,
     "wood": 100
    },
    "time": 45
@@ -475,7 +475,7 @@
   "Cost": {
    "resources": {
     "wood": 150,
-    "stone": 80
+    "gold": 80
    },
    "time": 45
   },
@@ -515,7 +515,7 @@
   "Cost": {
    "resources": {
     "wood": 160,
-    "stone": 140
+    "gold": 140
    },
    "time": 45
   },
@@ -555,7 +555,7 @@
   "Cost": {
    "resources": {
     "wood": 180,
-    "stone": 120
+    "gold": 120
    },
    "time": 45
   },
@@ -606,7 +606,7 @@
   },
   "Placement": {
    "on_resource": [
-    "stone",
+    "gold",
     "meteor"
    ],
    "no_creep": true
@@ -672,7 +672,7 @@
   "Cost": {
    "resources": {
     "wood": 20,
-    "stone": 10
+    "gold": 10
    },
    "time": 2
   },

@@ -562,7 +562,7 @@ void Sim::die(EntityId e) {
         const int64_t gain = (cost * 1000 * kf->bounty.raw() >> 16) / 2 / vd.count;   // ezred
         players_[ko].res[kf->bounty_res] += gain;
         const Fixed bg = rules_of(ko).bounty_gold;
-        if (bg.raw() > 0) income(ko, kStone, static_cast<int32_t>((gain * bg.raw() >> 16) / 1000));
+        if (bg.raw() > 0) income(ko, kGold, static_cast<int32_t>((gain * bg.raw() >> 16) / 1000));
       }
     }
   }

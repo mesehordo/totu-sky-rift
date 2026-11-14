@@ -136,3 +136,30 @@ TEST_CASE("gépi szövetség (KIS-1): előírt kisnép, egyébként az `ally_pre
   });
   CHECK(tokla_building);
 }
+
+TEST_CASE("adatvezérelt gép (`ai_nep.lua`): minden főnép a saját terve szerint épít, kiképez, kutat") {
+  const std::string src = read_file(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "scripts" / "ai_nep.lua");
+  size_t researched = 0;
+  for (const auto& f : content_once().rules->factions) {
+    if (f.ally || f.neutral) continue;
+    Match m("ECO-ALAP", true, true, {f.id, "ursan"});
+    sim::Sim& s = *m.sim;
+    script::ScriptHost ai("ai", 20261113);
+    CHECK(ai.run("ai_players", "AI_PLAYERS = {1}"));
+    CHECK(ai.run("ai_nep.lua", src));
+    s.add_hooks(&ai);
+    ai.start(s);
+    m.run(8 * 60 * 30);
+    for (const auto& msg : ai.messages()) std::printf("  napló: %s\n", msg.c_str());
+    const auto& pl = s.player(1);
+    std::printf("  %s: %d épület, %d egység, %zu kutatás, felemelkedett: %d, irány: %s, szövetség: %s\n", f.id.c_str(),
+                count_kind(s, 1, true), count_kind(s, 1, false), pl.researched.size(), pl.ascended ? 1 : 0,
+                pl.path.empty() ? "-" : pl.path.c_str(), pl.ally.empty() ? "-" : pl.ally.c_str());
+    // a kis pályán a kő 8 perc alatt elfogy; a tóásás (Huk'ucha) és a mélységi gyűjtés (Croftian) népi gépi viselkedése
+    // az M9-é – itt a közös terv fut minden népen
+    CHECK(count_kind(s, 1, true) >= 4);
+    CHECK(count_kind(s, 1, false) >= 8);
+    researched += pl.researched.size();
+  }
+  CHECK(researched >= 3);
+}

@@ -181,7 +181,7 @@
     "workers": 20,
     "gather_ratio": {
      "wood": 0.36,
-     "stone": 0.5,
+     "gold": 0.5,
      "meteor": 0.14
     },
     "build_order": [
@@ -280,13 +280,13 @@
     "buildings": 3
    },
    "ally_cost": {
-    "stone": 150,
+    "gold": 150,
     "meteor": 50
    },
    "foundation": {
     "size": 2,
     "cost": {
-     "stone": 10
+     "gold": 10
     },
     "unfounded_hp": 0.5,
     "decay": {
@@ -296,7 +296,7 @@
    },
    "builder": "stay_single",
    "gatherers": {
-    "stone": "imp_arato",
+    "gold": "imp_arato",
     "meteor": "imp_arato"
    },
    "rift": {

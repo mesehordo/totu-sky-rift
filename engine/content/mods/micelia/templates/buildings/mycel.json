@@ -11,7 +11,7 @@
   "Cost": {
    "resources": {
     "wood": 255,
-    "stone": 70
+    "gold": 70
    },
    "time": 45
   },
@@ -40,7 +40,7 @@
   "Dropoff": {
    "resources": [
     "wood",
-    "stone",
+    "gold",
     "meteor"
    ]
   },
@@ -108,7 +108,7 @@
   "Cost": {
    "resources": {
     "wood": 165,
-    "stone": 35
+    "gold": 35
    },
    "time": 36
   },
@@ -147,7 +147,7 @@
   "Cost": {
    "resources": {
     "wood": 140,
-    "stone": 85
+    "gold": 85
    },
    "time": 40
   },
@@ -191,7 +191,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 125,
+    "gold": 125,
     "meteor": 50
    },
    "time": 45
@@ -241,7 +241,7 @@
    "resources": {
     "meteor": 75,
     "wood": 65,
-    "stone": 35
+    "gold": 35
    },
    "time": 45
   },
@@ -288,7 +288,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 150,
+    "gold": 150,
     "meteor": 75,
     "wood": 100
    },
@@ -335,7 +335,7 @@
   "Cost": {
    "resources": {
     "wood": 215,
-    "stone": 35
+    "gold": 35
    },
    "time": 45
   },
@@ -375,7 +375,7 @@
   "Cost": {
    "resources": {
     "wood": 180,
-    "stone": 60
+    "gold": 60
    },
    "time": 45
   },
@@ -418,7 +418,7 @@
   "Cost": {
    "resources": {
     "wood": 240,
-    "stone": 100
+    "gold": 100
    },
    "time": 45
   },

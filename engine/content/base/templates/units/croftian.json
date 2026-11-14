@@ -71,7 +71,7 @@
   "Cost": {
    "resources": {
     "wood": 30,
-    "stone": 20
+    "gold": 20
    },
    "count": 2,
    "supply": 1,
@@ -131,7 +131,7 @@
   "Cost": {
    "resources": {
     "wood": 55,
-    "stone": 25
+    "gold": 25
    },
    "supply": 2,
    "time": 19
@@ -194,7 +194,7 @@
    "resources": {
     "wood": 150,
     "meteor": 50,
-    "stone": 50
+    "gold": 50
    },
    "supply": 3,
    "time": 30
@@ -258,7 +258,7 @@
    "resources": {
     "wood": 80,
     "meteor": 75,
-    "stone": 20
+    "gold": 20
    },
    "supply": 2,
    "time": 28
@@ -320,7 +320,7 @@
    "resources": {
     "wood": 140,
     "meteor": 50,
-    "stone": 35
+    "gold": 35
    },
    "supply": 2,
    "time": 26
@@ -377,7 +377,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 190,
+    "gold": 190,
     "meteor": 100,
     "wood": 160
    },
@@ -467,7 +467,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 40
@@ -512,7 +512,7 @@
   },
   "Cost": {
    "resources": {
-    "stone": 75,
+    "gold": 75,
     "meteor": 25,
     "wood": 50
    },
@@ -614,7 +614,7 @@
   "Cost": {
    "resources": {
     "wood": 60,
-    "stone": 40
+    "gold": 40
    },
    "supply": 0,
    "time": 20
@@ -682,7 +682,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 45
@@ -757,7 +757,7 @@
    "resources": {
     "wood": 210,
     "meteor": 40,
-    "stone": 70
+    "gold": 70
    },
    "supply": 5,
    "time": 45
@@ -806,7 +806,7 @@
   "Cost": {
    "resources": {
     "wood": 30,
-    "stone": 15
+    "gold": 15
    },
    "supply": 1,
    "time": 8
@@ -872,7 +872,7 @@
   "Cost": {
    "resources": {
     "wood": 45,
-    "stone": 25
+    "gold": 25
    },
    "supply": 1,
    "time": 12
@@ -931,7 +931,7 @@
   "Cost": {
    "resources": {
     "wood": 120,
-    "stone": 120,
+    "gold": 120,
     "meteor": 40
    },
    "supply": 4,
@@ -1005,7 +1005,7 @@
   "Cost": {
    "resources": {
     "wood": 90,
-    "stone": 70
+    "gold": 70
    },
    "supply": 2,
    "time": 22

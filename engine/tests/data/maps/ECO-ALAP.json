@@ -87,22 +87,22 @@
   },
   "resources": [
    {
-    "kind": "stone",
+    "kind": "gold",
     "x": 8,
     "y": 8
    },
    {
-    "kind": "stone",
+    "kind": "gold",
     "x": 30,
     "y": 8
    },
    {
-    "kind": "stone",
+    "kind": "gold",
     "x": 8,
     "y": 23
    },
    {
-    "kind": "stone",
+    "kind": "gold",
     "x": 30,
     "y": 23
    },

@@ -330,7 +330,7 @@ TEST_CASE("Ooni Tanuki tárgylelet: a bányászott rakományok némelyikénél t
   m.run(30 * 240);
   int items = 0;
   s.world().pool<sim::GroundItem>().each([&](sim::EntityId, const sim::GroundItem&) { ++items; });
-  std::printf("  lelet: %d tárgy, %lld kő\n", items, static_cast<long long>(s.player(1).gathered[sim::kStone]));
+  std::printf("  lelet: %d tárgy, %lld kő\n", items, static_cast<long long>(s.player(1).gathered[sim::kGold]));
   CHECK(items >= 1);
 }
 
