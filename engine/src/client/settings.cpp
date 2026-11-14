@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/settings.hpp"
 
+#include <charconv>
 #include <algorithm>
 #include <cstdio>
 #include <filesystem>
@@ -158,8 +159,17 @@ bool settings_from_json(std::string_view text, Settings* out, std::vector<std::s
   }
   if (const Value* v = o.find("resolution")) {
     int w = 0, h = 0;
-    if (v->is_string() && std::sscanf(v->text().c_str(), "%dx%d", &w, &h) == 2 && w >= 640 && h >= 400 && w <= 16384 &&
-        h <= 16384) {
+    bool parsed = false;   // „SZÉLxMAG” (std::from_chars: hordozható, az MSVC sem kifogásolja)
+    if (v->is_string()) {
+      const std::string& t = v->text();
+      const auto x = t.find('x');
+      if (x != std::string::npos) {
+        const auto r1 = std::from_chars(t.data(), t.data() + x, w);
+        const auto r2 = std::from_chars(t.data() + x + 1, t.data() + t.size(), h);
+        parsed = r1.ec == std::errc{} && r1.ptr == t.data() + x && r2.ec == std::errc{} && r2.ptr == t.data() + t.size();
+      }
+    }
+    if (parsed && w >= 640 && h >= 400 && w <= 16384 && h <= 16384) {
       s.width = w;
       s.height = h;
     } else {
