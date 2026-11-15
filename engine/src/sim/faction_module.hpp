@@ -67,6 +67,10 @@ class FactionModule {
   virtual bool ability_affordable(Sim&, EntityId, const AbilityDef&) { return true; }
   virtual void ability_paid(Sim&, EntityId, const AbilityDef&) {}
   virtual bool has_ability_costs() const { return false; }
+  // csak olvasó lekérdezések a felületnek (M9, HUD; az állapotot nem változtatják): a harci kedv (egész egységben),
+  // és egy fohászhely (szentély) mellett most fohászkodó munkások száma (-1: nem ez a modul kezeli)
+  virtual bool morale(Sim&, EntityId, int32_t* /*value*/, int32_t* /*max*/, bool* /*broken*/) { return false; }
+  virtual int prayers(Sim&, EntityId /*shrine*/) { return -1; }
 };
 
 // a modulok rögzített sorrendben (src/sim/factions/registry.cpp)

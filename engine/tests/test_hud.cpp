@@ -5,6 +5,9 @@
 // parancs-API-n (sim::Command → a munkamenet lépése) hajtódnak végre, és a szimuláció állapotán ellenőrizzük őket.
 #include <cstdio>
 #include <cstdlib>
+#include <filesystem>
+#include <fstream>
+#include <iterator>
 #include <memory>
 #include <set>
 #include <string>
@@ -14,6 +17,7 @@
 #include "client/hud_model.hpp"
 #include "client/session.hpp"
 #include "content/json.hpp"
+#include "render/font.hpp"
 
 using namespace totu;
 using client::HudModel;
@@ -344,4 +348,210 @@ TEST_CASE("HUD kijelölés és karakterlap: összevonás, stabil sorrend, hős, 
   m.hud.sel_changed = false;
   m.click(m.hud.layout().sel_cells[1]);
   CHECK(m.hud.sel_changed && m.hud.sel.size() == 5);
+}
+
+TEST_CASE("HUD karakterlap M9: Ooni harci kedv, veteran fokozat, type_bonus, epuletkepesseg ujratoltese, fohaszhelyek") {
+  // Ooni: a harci egység harci kedve a pillanatképben, a karakterlapon a második sáv
+  {
+    HudMatch m("ooni");
+    CHECK(m.ok);
+    if (!m.ok) return;
+    const sim::Rules& r = *m.s.rules();
+    const client::SnapUnit* hq = m.hq();
+    CHECK(hq);
+    if (!hq) return;
+    uint16_t fighter = sim::kNoDef;
+    for (uint16_t d = 0; d < r.defs.size() && fighter == sim::kNoDef; ++d) {
+      const sim::EntityDef& ed = r.defs[d];
+      if (ed.faction == "ooni" && !ed.building && !ed.worker && !ed.hero && ed.attack.has && !ed.has_tag("summoned")) fighter = d;
+    }
+    CHECK(fighter != sim::kNoDef);
+    if (fighter == sim::kNoDef) return;
+    const sim::EntityId e = m.s.sim().spawn_unit(fighter, 1, core::Fixed::from_int(static_cast<int>(hq->x / 32) + 4),
+                                                 core::Fixed::from_int(static_cast<int>(hq->y / 32) + 3));
+    m.step();
+    const client::SnapUnit* u = m.snap->find(e);
+    CHECK(u && u->morale > 0 && u->morale_max > 0 && u->morale == u->morale_max && !u->broken);
+    if (u) {
+      bool has = false;
+      for (const auto& b : m.hud.char_bars(*u)) {
+        has = has || (b.tip_title == m.s.display_name("hud.morale") &&
+                      b.label == std::to_string(u->morale) + "/" + std::to_string(u->morale_max) && b.frac > 0.99f);
+      }
+      CHECK(has);                            // harci kedv sáv: érték/max
+      CHECK(m.hud.rank_name(*u).empty());    // újonc
+    }
+    // előléptetés: a sim::Veteran fokozata a pillanatképben és a típus sorában
+    m.s.sim().world().add(e, sim::Veteran{0, 1});
+    m.step();
+    u = m.snap->find(e);
+    CHECK(u && u->rank == 1 && m.hud.rank_name(*u) == m.s.display_name("hud.rank.veteran"));
+    bool none = !m.own(true).empty();   // a munkásnak nincs harci kedve
+    for (const auto id : m.own(true)) none = none && m.snap->find(id)->morale < 0;
+    CHECK(none);
+  }
+  // type_bonus: a sablon saját szorzója az „erős ez ellen” sorban (a régi counters)
+  {
+    HudMatch m("croftian");
+    CHECK(m.ok);
+    if (!m.ok) return;
+    const sim::Rules& r = *m.s.rules();
+    uint16_t tb = sim::kNoDef;
+    for (uint16_t d = 0; d < r.defs.size() && tb == sim::kNoDef; ++d) {
+      if (r.defs[d].attack.has && !r.defs[d].attack.type_bonus.empty() && !r.defs[d].building) tb = d;
+    }
+    CHECK(tb != sim::kNoDef);
+    if (tb != sim::kNoDef) {
+      client::SnapUnit fake;
+      fake.def = tb;
+      fake.kind = client::SnapUnit::kUnit;
+      const std::string key = m.hud.unit_type(fake);
+      const auto cs = m.hud.counters(fake, key.empty() ? "kozelharcos" : key);
+      const auto& tbf = r.defs[tb].attack.type_bonus.front();
+      bool found = false;
+      for (const auto& kv : cs.first) found = found || (kv.first == tbf.first && kv.second + 1e-4f >= static_cast<float>(tbf.second.raw()) / 65536.0f);
+      CHECK(found);
+    }
+  }
+  // épületképesség újratöltése: a főépület Caster.ready → a parancsrács helyének `cd`-je
+  bool tested_power = false;
+  for (const char* fac : {"ursan", "ooni", "croftian", "hukucha", "elves", "micelia"}) {
+    if (tested_power) break;
+    HudMatch m(fac);
+    if (!m.ok) continue;
+    const client::SnapUnit* hq = m.hq();
+    if (!hq || m.s.rules()->defs[hq->def].powers.empty()) continue;
+    const sim::EntityId hid = hq->id;
+    const uint16_t pw = m.s.rules()->defs[hq->def].powers.front();
+    const sim::AbilityDef& a = m.s.rules()->abilities[pw];
+    auto* c = m.s.sim().world().get<sim::Caster>(hid);
+    CHECK(c);
+    if (!c) break;
+    const int32_t cd = a.cooldown > 0 ? a.cooldown : 1800;
+    c->ready = {{pw, m.s.sim().tick() + 1 + cd / 2}};
+    m.step();
+    m.hud.sel = {hid};
+    m.hud.cmd_page.clear();
+    float got = -1;
+    for (const auto& sl : m.hud.command_card()) {
+      if (sl && sl->id == "bp:" + a.id) got = sl->cd;
+    }
+    CHECK(got > 0.4f && got < 0.6f);   // félig töltött
+    CHECK(m.snap->find(hid) && m.hud.power_cd(*m.snap->find(hid), pw) == got);
+    tested_power = true;
+  }
+  CHECK(tested_power);
+  // fohászhelyek (elves): a szentély foglalt / összes helye a parancsrácsban (a régi pray_info)
+  {
+    HudMatch m("elves");
+    CHECK(m.ok);
+    if (!m.ok) return;
+    const sim::Rules& r = *m.s.rules();
+    uint16_t shrine = sim::kNoDef;
+    for (uint16_t d = 0; d < r.defs.size() && shrine == sim::kNoDef; ++d) {
+      const content::Value* me = r.defs[d].raw ? r.defs[d].raw->find("Mechanics") : nullptr;
+      if (r.defs[d].faction == "elves" && me && me->is_object() && me->find("pray_slots")) shrine = d;
+    }
+    CHECK(shrine != sim::kNoDef);
+    const client::SnapUnit* hq = m.hq();
+    if (shrine == sim::kNoDef || !hq) return;
+    const sim::EntityId b = m.s.sim().place_building(shrine, 1, hq->tx + hq->w + 3, hq->ty, true);
+    CHECK(b != sim::kNoEntity);
+    m.step(2);
+    const client::SnapUnit* bu = m.snap->find(b);
+    CHECK(bu && bu->prayers >= 0);
+    if (!bu) return;
+    const auto ps = m.hud.pray_slots(*bu);
+    CHECK(ps.second == 4 && ps.first == bu->prayers);
+    // egy tétlen munkás a szentély mellett: fohászkodik (a népmodul csak olvasó lekérdezése)
+    const int btx = bu->tx, bty = bu->ty, bw = bu->w;
+    const uint16_t wdef = m.snap->find(m.own(true).front())->def;
+    m.s.sim().spawn_unit(wdef, 1, core::Fixed::from_int(btx + bw) + core::Fixed::from_ratio(1, 2),
+                         core::Fixed::from_int(bty) + core::Fixed::from_ratio(1, 2));
+    m.step(2);
+    bu = m.snap->find(b);
+    CHECK(bu && bu->prayers >= 1);
+    m.hud.sel = {b};
+    m.hud.cmd_page.clear();
+    bool slot = false;
+    for (const auto& sl : m.hud.command_card()) {
+      if (sl && sl->id == "pray_info") slot = sl->passive && bu && sl->label.find(std::to_string(bu->prayers) + "/4") != std::string::npos;
+    }
+    CHECK(slot);
+  }
+}
+
+TEST_CASE("HUD minimap M9: terepszinek, csapatszinu jelek, a latott resz kerete") {
+  HudMatch m("ursan");
+  CHECK(m.ok);
+  if (!m.ok) return;
+  const int mw = m.s.map().width(), mh = m.s.map().height();
+  const auto cols = HudModel::minimap_terrain(m.s.map(), m.s.terrain());
+  CHECK(cols.size() == static_cast<size_t>(mw) * static_cast<size_t>(mh));
+  // a régi MINI_COLS: fű (68, 110, 52), víz (38, 74, 120) – a terep árnyalatával szorozva
+  bool ok_cols = true;
+  const auto& tt = m.s.terrain().terrains();
+  for (int y = 0; y < mh; ++y) {
+    for (int x = 0; x < mw; ++x) {
+      const auto& t = tt[m.s.map().terrain(x, y)];
+      std::array<uint8_t, 3> want{};
+      if (t.art.row == "grass") want = {68, 110, 52};
+      else if (t.art.row == "water") want = {38, 74, 120};
+      else continue;
+      for (size_t k = 0; k < 3; ++k) want[k] = static_cast<uint8_t>(want[k] * t.art.tint[k] / 255);
+      ok_cols = ok_cols && cols[static_cast<size_t>(y) * static_cast<size_t>(mw) + static_cast<size_t>(x)] == want;
+    }
+  }
+  CHECK(ok_cols);
+  const auto marks = m.hud.minimap_marks();
+  const client::Rect& mm = m.hud.layout().minimap;
+  int b1 = 0, units = 0, res = 0, last = 0;
+  bool inside = true, order = true, big = true;
+  for (const auto& k : marks) {
+    inside = inside && k.x >= -1 && k.y >= -1 && k.x + k.w <= static_cast<float>(mm.w) + 3 && k.y + k.h <= static_cast<float>(mm.h) + 3;
+    order = order && static_cast<int>(k.kind) >= last;   // lelőhely → épület → egység
+    last = static_cast<int>(k.kind);
+    if (k.kind == client::MiniMark::Building) {
+      b1 += k.col == m.hud.player_color(1) ? 1 : 0;
+      big = big && k.w >= 3 && k.h >= 3;
+    }
+    units += k.kind == client::MiniMark::Unit ? 1 : 0;
+    res += k.kind == client::MiniMark::Resource ? 1 : 0;
+  }
+  CHECK(inside && order && big);
+  CHECK(b1 >= 1 && units >= 1 && res >= 1);   // a saját épület csapatszínnel
+  CHECK(m.hud.player_color(1) != m.hud.player_color(2));
+  // a látott rész kerete: a minimapre vágva
+  const float W = static_cast<float>(mw * 32), H = static_cast<float>(mh * 32);
+  const client::Rect v = m.hud.minimap_view(W / 4, H / 4, W / 2, H / 2);
+  CHECK(std::abs(v.x - (mm.x + mm.w / 4)) <= 1 && std::abs(v.w - mm.w / 2) <= 1);
+  const client::Rect c = m.hud.minimap_view(-W, -H, W * 1.5f, H * 1.5f);
+  CHECK(c.x == mm.x && c.y == mm.y && c.right() <= mm.right() && c.bottom() <= mm.bottom());
+  CHECK(m.hud.minimap_view(W * 2, H * 2, 100, 100).w == 0);   // kívül: nincs keret
+}
+
+TEST_CASE("HUD betu M9: a kis jelek (pont, kettospont) nem halvanyak a sutesben") {
+  std::ifstream in(std::filesystem::path(TOTU_ASSETS_DIR) / "fonts" / "egszakadas_rovaskonyv_text.ttf", std::ios::binary);
+  const std::vector<uint8_t> ttf((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+  for (const float px : {15.0f, 18.0f, 21.0f, 25.0f}) {   // a HUD méretei (em → képpont)
+    render::FontBake f;
+    CHECK(render::bake_font(ttf, px, f));
+    auto peak = [&](uint32_t cp) {
+      const render::Glyph* g = f.find(cp);
+      if (!g) return 0;
+      int mx = 0;
+      const int w = f.atlas.width, h = f.atlas.height;
+      const int x0 = static_cast<int>(g->u0 * static_cast<float>(w) + 0.5f), x1 = static_cast<int>(g->u1 * static_cast<float>(w) + 0.5f);
+      const int y0 = static_cast<int>(g->v0 * static_cast<float>(h) + 0.5f), y1 = static_cast<int>(g->v1 * static_cast<float>(h) + 0.5f);
+      for (int y = y0; y < y1; ++y) {
+        for (int x = x0; x < x1; ++x) {
+          mx = std::max<int>(mx, f.atlas.rgba[(static_cast<size_t>(y) * static_cast<size_t>(w) + static_cast<size_t>(x)) * 4 + 3]);
+        }
+      }
+      return mx;
+    };
+    CHECK(peak('.') >= 200);   // korábban ~55/255: elmosódott
+    CHECK(peak(':') >= 200);
+    CHECK(peak('H') == 255);   // a teljes fedettségű betű nem változik
+  }
 }

@@ -8187,6 +8187,50 @@ msgctxt "hud.rel.enemy"
 msgid "Ellenfél"
 msgstr ""
 
+msgctxt "hud.bar.energy"
+msgid "Energia / mana"
+msgstr ""
+
+msgctxt "hud.bar.energy.tip"
+msgid "A képességek ára; lassan töltődik."
+msgstr ""
+
+msgctxt "hud.bar.shield"
+msgid "Pajzs"
+msgstr ""
+
+msgctxt "hud.bar.shield.tip"
+msgid "Előbb a pajzs fogy, és magától töltődik."
+msgstr ""
+
+msgctxt "hud.morale"
+msgid "Harci kedv"
+msgstr ""
+
+msgctxt "hud.morale.tip"
+msgid "Sérüléstől és a társak halálától fogy; ha elfogy, az egység megtörik (−30% sebzés, +20% sebesség). A Taiko-dobos közelében gyorsan töltődik, lámpásfényben nem esik 30 alá."
+msgstr ""
+
+msgctxt "hud.morale.broken"
+msgid "MEGTÖRT"
+msgstr ""
+
+msgctxt "hud.rank.veteran"
+msgid "Veterán"
+msgstr ""
+
+msgctxt "hud.rank.elite"
+msgid "Elit"
+msgstr ""
+
+msgctxt "hud.pray.title"
+msgid "{} – {} hely"
+msgstr ""
+
+msgctxt "hud.pray.max"
+msgid " Összesen legfeljebb {} munkás számít."
+msgstr ""
+
 msgctxt "hud.quests"
 msgid "Küldetések"
 msgstr ""

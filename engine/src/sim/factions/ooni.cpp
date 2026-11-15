@@ -242,6 +242,15 @@ class Module final : public FactionModule {
     return m && m->broken ? broken_speed_ : Fixed::from_int(1);
   }
 
+  bool morale(Sim& s, EntityId e, int32_t* value, int32_t* max, bool* broken) override {   // csak olvas (HUD)
+    const Morale* m = s.world().get<Morale>(e);
+    if (!m) return false;
+    *value = std::max(0, m->value / 1000);
+    *max = max_;
+    *broken = m->broken != 0;
+    return true;
+  }
+
   void on_death(Sim& s, EntityId v, EntityId killer, uint8_t) override {
     if (!load(s)) return;
     // Vérszomj (kutatás, `kill_heal`; a régi G 1222): az oni harcos ölésenként életerőt kap vissza

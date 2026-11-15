@@ -229,7 +229,19 @@ void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
   }
   u.shield_max = d.shield;
   if (const auto* v = w.get<sim::Vital>(e)) u.shield = v->shield / 1000;
-  if (d.building) return;
+  if (d.building) {
+    if (const auto* c = w.get<sim::Caster>(e)) u.ready = c->ready;   // a főépület-képességek újratöltése
+    if (u.owner >= 1 && u.complete) u.prayers = static_cast<int16_t>(std::clamp(sim_->prayers_at(e), -1, 999));
+    return;
+  }
+  if (const auto* vt = w.get<sim::Veteran>(e)) u.rank = vt->rank;
+  int32_t mv = 0, mm = 0;
+  bool br = false;
+  if (sim_->morale_of(e, &mv, &mm, &br)) {   // Ooni harci kedv (a népmodul csak olvasó lekérdezése)
+    u.morale = mv;
+    u.morale_max = mm;
+    u.broken = br;
+  }
   u.energy_max = sim_->stat(e, "Energy.max", Fixed::from_int(d.energy_max)).floor_int();
   if (const auto* c = w.get<sim::Caster>(e)) {
     u.energy = c->energy / 1000;
