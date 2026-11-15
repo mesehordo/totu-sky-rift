@@ -218,9 +218,17 @@ bool save_settings(const std::string& path, const Settings& s, std::string* erro
     }
   }
   std::filesystem::rename(tmp, p, ec);
-  if (ec) {   // néhány rendszeren a meglévő fájlra nem lehet átnevezni
-    std::filesystem::remove(p, ec);
+  if (ec) {   // néhány rendszeren a meglévő fájlra nem lehet átnevezni: a régi előbb tartalékba (H-19: nem vész el)
+    const std::filesystem::path bak = p.string() + ".bak";
+    std::error_code e2;
+    std::filesystem::remove(bak, e2);
+    std::filesystem::rename(p, bak, e2);
     std::filesystem::rename(tmp, p, ec);
+    if (ec) {
+      if (!e2) std::filesystem::rename(bak, p, e2);   // vissza a régi
+    } else {
+      std::filesystem::remove(bak, e2);
+    }
   }
   if (ec) {
     if (error) *error = "a beállításfájl nem írható: " + path;

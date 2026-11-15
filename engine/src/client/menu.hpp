@@ -16,6 +16,7 @@
 
 #include "client/i18n.hpp"
 #include "client/settings.hpp"
+#include "map/map.hpp"
 #include "sim/sim.hpp"
 
 namespace totu::client {
@@ -34,7 +35,8 @@ struct MapInfo {
   int order = 1000000;   // a régi menü sorrendje (`order`); ha nincs, a végére, név szerint
 };
 // a mappa kezdőhelyes pályái (név szerint rendezve); a kezdőhely nélküli (próba)pályák kimaradnak
-std::vector<MapInfo> scan_maps(const std::string& dir);
+// H-65: terep-táblával a teljes pályaellenőrzés (Map::from_json) is lefut, a hibás pálya nem választható
+std::vector<MapInfo> scan_maps(const std::string& dir, const map::TerrainTable* terrain = nullptr);
 
 struct FactionInfo {
   std::string id;         // pl. "ursan" (a MatchSetup ezt várja)

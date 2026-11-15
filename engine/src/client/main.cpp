@@ -198,7 +198,9 @@ struct AtlasDemo {
                                         {160, 60, 200, 255}, {240, 130, 30, 255}, {40, 200, 200, 255}, {235, 235, 235, 255}};
     for (const auto& u : units) {
       const auto& s = *sheets[static_cast<size_t>(u.sheet)];
-      const auto& a = s.anims.at("walk");
+      if (s.anims.empty()) continue;
+      const auto wi = s.anims.find("walk");
+      const auto& a = wi != s.anims.end() ? wi->second : s.anims.begin()->second;
       const int dir = (u.phase + static_cast<int>(t * 0.5)) % s.directions;
       const int col = a.start + static_cast<int>(t * a.fps + u.phase) % a.frames;
       atlas.draw(batch, s, dir, col, u.x, u.y, 0.5f / s.scale, teams[u.team]);

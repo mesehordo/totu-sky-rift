@@ -9,6 +9,7 @@
 #include "check.hpp"
 #include "match_util.hpp"
 #include "core/rng.hpp"
+#include "script/host.hpp"
 #include "sim/replay.hpp"
 
 #include <optional>
@@ -22,6 +23,13 @@ namespace {
 const sim::Rules& R() { return *content_once().rules; }
 uint16_t def_of(const char* id) { return R().def(id); }
 Fixed fx(int a, int b) { return Fixed::from_ratio(a, b); }
+
+std::string last_log(const script::ScriptHost& h) {
+  if (h.messages().empty()) return {};
+  const std::string& m = h.messages().back();
+  const auto p = m.find("] ");
+  return p == std::string::npos ? m : m.substr(p + 2);
+}
 
 sim::EntityId put(sim::Sim& s, const char* id, uint8_t owner, int x10, int y10) {
   const auto e = s.spawn_unit(def_of(id), owner, fx(x10, 10), fx(y10, 10));
@@ -303,4 +311,37 @@ TEST_CASE("hibajegyzek H-86 H-87: a teljes 32 bites RNG-tartomany es a tul nagy 
   CHECK(varied);
   CHECK(Fixed::from_ratio(int64_t{1} << 48, 1) == Fixed::max());
   CHECK(Fixed::from_ratio(-(int64_t{1} << 48), 1) == Fixed::min());
+}
+
+TEST_CASE("hibajegyzek H-73 H-74: sok idozito egy tickben sorrendben fut, a darabszam korlatos") {
+  script::ScriptHost h("idozito", 5);
+  CHECK(h.run("i", R"(
+    function on_start()
+      S.n = 0 S.rend = true S.utolso = 0
+      for i = 1, 3000 do Game.after(5, "fut", i) end
+      S.tul = pcall(function() for i = 1, 70000 do Game.after(100, "fut", 0) end end)
+    end
+    function fut(i, id)
+      if i > 0 then
+        S.n = S.n + 1
+        if i < S.utolso then S.rend = false end
+        S.utolso = i
+      end
+    end
+  )"));
+  sim::Sim s(5);
+  s.add_hooks(&h);
+  h.start(s);
+  for (int i = 0; i < 8; ++i) s.step();
+  CHECK(h.run("e", "log(S.n, S.rend, S.tul)"));
+  CHECK(last_log(h) == "3000 true false");
+}
+
+TEST_CASE("hibajegyzek H-22: a tabor szintkulcsa csak egesz szam lehet") {
+  const auto& c = content_once();
+  const auto good = content::parse(R"({"width": 8, "height": 8, "terrain": {"rle": "grass*64"}, "camps": {"1": "pinguu"}})");
+  const auto bad = content::parse(R"({"width": 8, "height": 8, "terrain": {"rle": "grass*64"}, "camps": {"1hibas": "pinguu"}})");
+  std::vector<std::string> e1, e2;
+  CHECK(good && map::Map::from_json(*good, c.terrain, e1).has_value());
+  CHECK(bad && !map::Map::from_json(*bad, c.terrain, e2).has_value());
 }

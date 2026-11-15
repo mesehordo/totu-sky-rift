@@ -50,6 +50,8 @@ struct ScriptHost::Impl {
   };
   std::vector<Timer> timers;   // (tick, id) szerint növekvő
   uint64_t next_timer = 1;
+  size_t timer_bytes = 0;      // a függő időzítők kezelő- és adatmérete (H-73: a Lua-kereten kívüli memória korlátja)
+  static constexpr size_t kMaxTimers = 1u << 16, kMaxTimerBytes = 16u << 20;
 
   void message(std::string text) {
     if (messages.size() < kMaxMessages) {
@@ -809,6 +811,11 @@ int g_after(lua_State* L) {
   t.id = I.next_timer++;
   t.handler.assign(h, len);
   t.payload = to_string(w);
+  const size_t tb = t.handler.size() + t.payload.size();
+  if (I.timers.size() >= Impl::kMaxTimers || I.timer_bytes + tb > Impl::kMaxTimerBytes) {
+    return luaL_error(L, "túl sok függő időzítő");   // H-73
+  }
+  I.timer_bytes += tb;
   auto it = std::upper_bound(I.timers.begin(), I.timers.end(), t.tick,
                              [](int64_t tick, const Impl::Timer& x) { return tick < x.tick; });
   I.timers.insert(it, std::move(t));
@@ -824,6 +831,7 @@ int g_cancel(lua_State* L) {
   if (it == I.timers.end()) {
     lua_pushboolean(L, 0);
   } else {
+    I.timer_bytes -= it->handler.size() + it->payload.size();
     I.timers.erase(it);
     lua_pushboolean(L, 1);
   }
@@ -1274,9 +1282,19 @@ void ScriptHost::on_tick(sim::Sim& s) {
   I.sim = &s;
   I.protect("on_tick", [&](lua_State* st) {
     // 1. a lejárt időzítők (tick, azonosító) sorrendben
-    while (!I.timers.empty() && I.timers.front().tick <= s.tick() && !I.exhausted) {
-      Impl::Timer t = std::move(I.timers.front());
-      I.timers.erase(I.timers.begin());
+    // H-74: a lejártak egyszerre kerülnek ki (az új időzítő legalább 1 tick múlva jár le, így a köteg nem bővül)
+    const auto due_end = std::upper_bound(I.timers.begin(), I.timers.end(), s.tick(),
+                                          [](int64_t tick, const Impl::Timer& x) { return tick < x.tick; });
+    std::vector<Impl::Timer> due(std::make_move_iterator(I.timers.begin()), std::make_move_iterator(due_end));
+    I.timers.erase(I.timers.begin(), due_end);
+    for (size_t di = 0; di < due.size(); ++di) {
+      if (I.exhausted) {   // a maradék visszakerül az elejére (ezek a legkorábbiak)
+        I.timers.insert(I.timers.begin(), std::make_move_iterator(due.begin() + static_cast<std::ptrdiff_t>(di)),
+                        std::make_move_iterator(due.end()));
+        break;
+      }
+      Impl::Timer t = std::move(due[di]);
+      I.timer_bytes -= t.handler.size() + t.payload.size();
       I.push_global(t.handler.c_str());
       if (!lua_isfunction(st, -1)) {
         lua_pop(st, 1);
@@ -1361,13 +1379,17 @@ bool ScriptHost::load(core::ByteReader& r) {
   const uint64_t st = r.u64(), inc = r.u64();
   const uint64_t next_timer = r.u64();
   const uint32_t n = r.u32();
+  if (n > Impl::kMaxTimers) return false;   // H-75: sérült darabszám
   std::vector<Impl::Timer> timers;
+  size_t tbytes = 0;
   for (uint32_t i = 0; i < n && r.ok(); ++i) {
     Impl::Timer t;
     t.tick = r.i64();
     t.id = r.u64();
     t.handler = r.str();
     t.payload = r.str();
+    tbytes += t.handler.size() + t.payload.size();
+    if (tbytes > Impl::kMaxTimerBytes) return false;
     timers.push_back(std::move(t));
   }
   const std::string s_bytes = r.str();
@@ -1401,6 +1423,7 @@ bool ScriptHost::load(core::ByteReader& r) {
   I.rng.restore(st, inc);
   I.next_timer = next_timer;
   I.timers = std::move(timers);
+  I.timer_bytes = tbytes;
   return true;
 }
 

@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <algorithm>
+#include <charconv>
 #include <limits>
 
 #include "core/hash.hpp"
@@ -183,7 +184,9 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
   // kisnép-táborok (TABOR-1): "camps": {"1": "pinguu", "4": "tokla"} – szintenként (1–5) melyik nép tábora; a többi a Vadoné
   if (const content::Value* cp = doc.find("camps"); cp && cp->is_object()) {
     for (const auto& [lvl, who] : cp->members()) {
-      const int l = std::atoi(lvl.c_str());
+      int l = 0;   // H-22: csak a teljes, számjegyekből álló kulcs érvényes
+      const auto [pe, pec] = std::from_chars(lvl.data(), lvl.data() + lvl.size(), l);
+      if (pec != std::errc{} || pe != lvl.data() + lvl.size()) l = 0;
       if (l < 1 || l > 5 || !who.is_string()) errors.push_back("camps: szint (1–5) → kisnép kell");
       else m.objects_.camp_peoples.emplace_back(l, who.text());
     }

@@ -505,11 +505,13 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       ++drawn_;
       continue;
     }
-    if (atlas && v.sheet >= 0) {
+    if (atlas && v.sheet >= 0 && !atlas->data().sheets[static_cast<size_t>(v.sheet)].anims.empty()) {
       const auto& s = atlas->data().sheets[static_cast<size_t>(v.sheet)];
-      if (!v.walk) {
-        v.walk = &s.anims.at("walk");
-        v.idle = &s.anims.at("idle");
+      if (!v.walk) {   // H-69: a hiányzó animáció helyett a másik, végül az első (modolt atlasz)
+        const auto wi = s.anims.find("walk"), ii = s.anims.find("idle");
+        const auto* any = &s.anims.begin()->second;
+        v.walk = wi != s.anims.end() ? &wi->second : ii != s.anims.end() ? &ii->second : any;
+        v.idle = ii != s.anims.end() ? &ii->second : v.walk;
       }
       const auto& a = v.moving ? *v.walk : *v.idle;
       const int frame = static_cast<int>(time * a.fps + static_cast<double>(u.id)) % std::max(1, a.frames);

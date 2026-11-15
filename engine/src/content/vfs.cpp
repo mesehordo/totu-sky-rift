@@ -50,13 +50,30 @@ std::optional<std::string> slurp(const fs::path& p) {
   ss << in.rdbuf();
   return ss.str();
 }
+// H-66: a fizikai (szimbolikus hivatkozásokat feloldó) út is a réteg gyökere alatt van
+bool inside(const fs::path& root, const fs::path& p) {
+  std::error_code ec;
+  const fs::path r = fs::weakly_canonical(root, ec);
+  if (ec) return false;
+  const fs::path c = fs::weakly_canonical(p, ec);
+  if (ec) return false;
+  auto ri = r.begin(), ci = c.begin();
+  for (; ri != r.end(); ++ri, ++ci) {
+    if (ci == c.end() || *ri != *ci) return false;
+  }
+  return true;
+}
+bool usable(const fs::path& root, const fs::path& p) {
+  std::error_code ec;
+  return fs::is_regular_file(p, ec) && inside(root, p);
+}
 }  // namespace
 
 bool Vfs::exists(const std::string& rel) const {
   if (!safe(rel)) return false;
   for (const auto& l : layers_) {
     std::error_code ec;
-    if (fs::is_regular_file(l.second / to_path(rel), ec)) return true;
+    if (usable(l.second, l.second / to_path(rel))) return true;
   }
   return false;
 }
@@ -66,7 +83,8 @@ std::optional<std::string> Vfs::read_text(const std::string& rel) const {
   for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) {
     std::error_code ec;
     const fs::path p = it->second / to_path(rel);
-    if (fs::is_regular_file(p, ec)) return slurp(p);
+    if (!usable(it->second, p)) continue;
+    if (auto t = slurp(p)) return t;   // H-67: az olvashatatlan felső fájl helyett az alsó réteg
   }
   return std::nullopt;
 }
@@ -77,7 +95,7 @@ std::vector<std::pair<std::string, std::string>> Vfs::read_all(const std::string
   for (const auto& l : layers_) {
     std::error_code ec;
     const fs::path p = l.second / to_path(rel);
-    if (fs::is_regular_file(p, ec)) {
+    if (usable(l.second, p)) {
       if (auto t = slurp(p)) out.emplace_back(l.first, std::move(*t));
     }
   }
@@ -94,6 +112,7 @@ std::vector<std::string> Vfs::list(const std::string& rel_dir, const std::string
     for (fs::recursive_directory_iterator it(dir, ec), end; !ec && it != end; it.increment(ec)) {
       if (!it->is_regular_file(ec)) continue;
       const fs::path& p = it->path();
+      if (!inside(l.second, p)) continue;   // H-66
       if (!extension.empty() && to_utf8(p.extension()) != extension) continue;
       std::string rel = to_utf8(fs::relative(p, l.second, ec));
       if (!ec) names.insert(std::move(rel));

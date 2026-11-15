@@ -14,6 +14,8 @@
 #include <random>
 #include <vector>
 
+#include "content/loader.hpp"
+#include "content/vfs.hpp"
 #include "render/font.hpp"
 #include "render/image.hpp"
 
@@ -475,7 +477,18 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
     if (rc) *rc = 1;
     return false;
   }
-  Menu menu(st, loc, scan_maps(o.maps_dir), scan_factions(o.content));
+  map::TerrainTable terrain;   // H-65: a pályák teljes ellenőrzéséhez (betöltési hibánál csak a szerkezeti szűrés)
+  bool terrain_ok = false;
+  {
+    content::Vfs vfs;
+    vfs.add_layer("totu", std::filesystem::path(o.content) / "base");
+    content::ContentSet set;
+    content::ContentLoader loader(vfs, std::filesystem::path(o.content) / "schema");
+    const auto rep = loader.load(set);
+    std::vector<std::string> errs = rep.errors;
+    terrain_ok = terrain.load(set, errs) && errs.empty();
+  }
+  Menu menu(st, loc, scan_maps(o.maps_dir, terrain_ok ? &terrain : nullptr), scan_factions(o.content));
   menu.set_logo_aspect(view.logo_aspect());
   if (o.start != MenuScreen::Main) menu.go(o.start);
   view.colorblind_ = st.colorblind;

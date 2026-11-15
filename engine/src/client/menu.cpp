@@ -86,7 +86,7 @@ std::string map_text(const Locale& loc, const MapInfo& m, const char* field, con
 }  // namespace
 
 // --- tartalom -------------------------------------------------------------------------------------------------------
-std::vector<MapInfo> scan_maps(const std::string& dir) {
+std::vector<MapInfo> scan_maps(const std::string& dir, const map::TerrainTable* terrain) {
   std::vector<MapInfo> out;
   std::error_code ec;
   for (const auto& e : std::filesystem::directory_iterator(dir, ec)) {
@@ -96,6 +96,10 @@ std::vector<MapInfo> scan_maps(const std::string& dir) {
     const content::Value* ob = doc->find("objects");
     const content::Value* st = ob ? ob->find("starts") : nullptr;
     if (!st || !st->is_array() || st->items().empty()) continue;
+    if (terrain) {
+      std::vector<std::string> errs;
+      if (!map::Map::from_json(*doc, *terrain, errs)) continue;
+    }
     MapInfo m;
     m.path = e.path().string();
     m.name = e.path().stem().string();
