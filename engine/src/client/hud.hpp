@@ -50,7 +50,8 @@ class Hud {
   using Col = std::array<uint8_t, 3>;
   Font& font(int size);
   const Img* image(const std::string& rel);                         // assets/<rel>.png (nincs: nullptr)
-  const Img* portrait(const std::string& id, Col team);             // portré a csapatszín-maszkkal
+  const Img* portrait(const std::string& id);                      // portré (csapatszín-maszk nélkül, M9)
+  void team_badge(const Rect& r, Col team);                         // csapatszínű sarokjel a portrén
   // rajzoló alapelemek
   void rect(float x, float y, float w, float h, Col c, uint8_t a = 255);
   void rect(const Rect& r, Col c, uint8_t a = 255) { rect(float(r.x), float(r.y), float(r.w), float(r.h), c, a); }
@@ -107,6 +108,7 @@ class Hud {
   std::string fid_;                 // a játékos népe (a kinézethez)
   int map_w_ = 1, map_h_ = 1;
   bool ready_ = false;
+  Img mini_;                        // a minimap terepképe (M9)
 };
 
 }  // namespace totu::client

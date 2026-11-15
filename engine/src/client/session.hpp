@@ -64,6 +64,11 @@ struct SnapUnit {
   // átmeneti állapotok vége (tick), a régi EFFECT_INFO sorrendjében: ég, mérgezett, fagyott, lelassult, átázott, gúzsba
   // kötve, alszik, kábult, megrémült, elvakult, elnémítva, megjelölt, páncéltörés
   std::array<int64_t, 13> afflict{};
+  // M9: a karakterlap további sorai (a régi `rts/hud.py` szerint)
+  uint8_t rank = 0;                          // előléptetés fokozata (sim::Veteran; 0 újonc, 1 veterán, 2 elit)
+  int32_t morale = -1, morale_max = 0;       // Ooni harci kedv (-1: nincs)
+  bool broken = false;                       // megtört (a harci kedv elfogyott)
+  int16_t prayers = -1;                      // fohászhely: a most fohászkodó munkások száma (-1: nem fohászhely)
 };
 
 // a játékos állapota a felületnek

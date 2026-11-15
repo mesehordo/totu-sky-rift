@@ -954,6 +954,9 @@ class Sim {
   EntityId drop_ground_item(uint16_t item, Fixed x, Fixed y);
   bool give_item(EntityId hero, uint16_t item);              // a leltárba (tele: false)
   Fixed stat(EntityId e, const char* path, Fixed base);      // a kutatással és a hős bónuszaival (D24)
+  // csak olvasó lekérdezések a felületnek (M9, HUD) a népmodulokon át: harci kedv (Ooni), fohászkodók egy szentélynél
+  bool morale_of(EntityId e, int32_t* value, int32_t* max, bool* broken);
+  int prayers_at(EntityId shrine);                           // -1: nem fohászhely
   // Wullof (M7 3. lépés): javítás, összecsomagolás vándorszekérré és letelepítés
   bool order_repair(const std::vector<EntityId>& units, EntityId building);
   EntityId pack_building(EntityId building);                 // a szekér (vagy kNoEntity)

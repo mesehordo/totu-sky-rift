@@ -7,6 +7,10 @@
 
 namespace totu::render {
 
+namespace {
+constexpr int kFaintPeak = 160;   // ennél halványabb csúcsú glif: a kis jel, normálandó
+}
+
 std::vector<uint32_t> utf8_codepoints(std::string_view s) {
   std::vector<uint32_t> out;
   for (size_t i = 0; i < s.size();) {
@@ -74,6 +78,22 @@ bool bake_font(const std::vector<uint8_t>& ttf, float px, FontBake& out) {
   const int ok = stbtt_PackFontRanges(&pc, ttf.data(), 0, &range, 1);
   stbtt_PackEnd(&pc);
   if (!ok) return false;
+  // a kis jelek (`.`, `:`, `,`, `'`) képpontnál kisebbek: hinting nélkül szürkére mosódnának (a `.` csúcsa ~55/255
+  // volt). A régi játék (FreeType, hintinggel) teljes képpontra illesztette őket; itt a halvány glif alfáját a
+  // csúcsára normáljuk – a teljes fedettségű betűk nem változnak.
+  for (const stbtt_packedchar& p : packed) {
+    int peak = 0;
+    for (int y = p.y0; y < p.y1; ++y) {
+      for (int x = p.x0; x < p.x1; ++x) peak = std::max<int>(peak, alpha[static_cast<size_t>(y) * static_cast<size_t>(w) + static_cast<size_t>(x)]);
+    }
+    if (peak <= 0 || peak >= kFaintPeak) continue;
+    for (int y = p.y0; y < p.y1; ++y) {
+      for (int x = p.x0; x < p.x1; ++x) {
+        uint8_t& a = alpha[static_cast<size_t>(y) * static_cast<size_t>(w) + static_cast<size_t>(x)];
+        a = static_cast<uint8_t>(std::min(255, a * 255 / peak));
+      }
+    }
+  }
   out.atlas.width = w;
   out.atlas.height = h;
   out.atlas.rgba.assign(static_cast<size_t>(w) * h * 4, 0);

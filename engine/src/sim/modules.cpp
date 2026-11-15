@@ -76,6 +76,20 @@ bool Sim::mod_inert(EntityId e) {
   return false;
 }
 
+bool Sim::morale_of(EntityId e, int32_t* value, int32_t* max, bool* broken) {
+  for (auto& x : modules_) {
+    if (x->morale(*this, e, value, max, broken)) return true;
+  }
+  return false;
+}
+
+int Sim::prayers_at(EntityId shrine) {
+  for (auto& x : modules_) {
+    if (const int n = x->prayers(*this, shrine); n >= 0) return n;
+  }
+  return -1;
+}
+
 bool Sim::mod_can_train(EntityId b, uint16_t def) {
   for (auto& x : modules_) {
     if (!x->can_train(*this, b, def)) return false;

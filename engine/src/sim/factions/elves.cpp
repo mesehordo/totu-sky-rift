@@ -235,6 +235,17 @@ class Module final : public FactionModule {
     return mine / common;
   }
 
+  int prayers(Sim& s, EntityId shrine) override {   // csak olvas (HUD: foglalt fohászhelyek)
+    const Health* h = s.world_.get<Health>(shrine);
+    if (!h || !shrine_of(s, h->owner, shrine)) return -1;
+    std::vector<std::pair<EntityId, int>> per;
+    if (assign_prayers(s, h->owner, &per) < 0) return -1;
+    for (const auto& [e, n] : per) {
+      if (e == shrine) return n;
+    }
+    return 0;
+  }
+
   void tick(Sim& s) override {
     if (s.tick_ % 30 == 0) refresh_power(s);
     // ellátatlan épület: a sora áll, nem lő
@@ -266,24 +277,22 @@ class Module final : public FactionModule {
     });
   }
 
-  // Áhítat (MECH-FAITH): 15 tickenként
-  void faith(Sim& s) {
-    for (int o = 1; o <= Sim::kMaxPlayers; ++o) {
-      const auto owner = static_cast<uint8_t>(o);
-      const FactionDef* f = faction(s, owner);
-      const content::Value* fa = f ? sub(f->raw, "Faction", "faith") : nullptr;
-      if (!fa || !fa->is_object()) continue;
-      const Fixed base = num(fa->find("rate"), Fixed::from_ratio(3, 10));
-      const Fixed rate = std::max(base, research_rule(s, owner, "faith_rate", false, base));   // Arany fohász
-      const int maxn = num(fa->find("max"), Fixed::from_int(8)).floor_int();
-      std::vector<std::pair<EntityId, int>> shrines;   // szentély, szabad hely
-      s.world_.pool<Building>().each([&](EntityId e, const Building& b) {
-        const Health* h = s.world_.get<Health>(e);
-        const int slots = pray_slots(s.rules_->defs[b.def]);
-        if (b.complete && h && h->owner == owner && h->hp > 0 && slots > 0) shrines.emplace_back(e, slots);
-      });
-      if (shrines.empty()) continue;
-      int active = 0;
+  // Áhítat (MECH-FAITH): a fohászkodók kiosztása a szentélyekre (azonosító szerinti sorrendben, a `max` felső
+  // korláttal); csak olvas. `per_shrine`: szentélyenként a fohászkodók száma. Visszaadja az összeset (-1: nincs áhítat).
+  static int assign_prayers(Sim& s, uint8_t owner, std::vector<std::pair<EntityId, int>>* per_shrine) {
+    const FactionDef* f = faction(s, owner);
+    const content::Value* fa = f ? sub(f->raw, "Faction", "faith") : nullptr;
+    if (!fa || !fa->is_object()) return -1;
+    const int maxn = num(fa->find("max"), Fixed::from_int(8)).floor_int();
+    struct Shrine { EntityId e; int free, used; };
+    std::vector<Shrine> shrines;   // szentély, szabad hely, foglalt
+    s.world_.pool<Building>().each([&](EntityId e, const Building& b) {
+      const Health* h = s.world_.get<Health>(e);
+      const int slots = pray_slots(s.rules_->defs[b.def]);
+      if (b.complete && h && h->owner == owner && h->hp > 0 && slots > 0) shrines.push_back({e, slots, 0});
+    });
+    int active = 0;
+    if (!shrines.empty()) {
       s.world_.pool<Worker>().each([&](EntityId e, const Worker& w) {   // azonosító szerinti sorrendben
         if (active >= maxn) return;
         const Health* h = s.world_.get<Health>(e);
@@ -293,14 +302,32 @@ class Module final : public FactionModule {
           return;
         }
         const Position& p = *s.world_.get<Position>(e);
-        for (auto& [sh, free] : shrines) {
-          if (free <= 0 || rect_gap(p.x, p.y, *s.world_.get<Building>(sh)) > kPrayReach) continue;
-          --free;
+        for (Shrine& sh : shrines) {
+          if (sh.free <= 0 || rect_gap(p.x, p.y, *s.world_.get<Building>(sh.e)) > kPrayReach) continue;
+          --sh.free;
+          ++sh.used;
           ++active;
           break;
         }
       });
-      if (!active) continue;
+    }
+    if (per_shrine) {
+      for (const Shrine& sh : shrines) per_shrine->emplace_back(sh.e, sh.used);
+    }
+    return active;
+  }
+
+  // Áhítat (MECH-FAITH): 15 tickenként
+  void faith(Sim& s) {
+    for (int o = 1; o <= Sim::kMaxPlayers; ++o) {
+      const auto owner = static_cast<uint8_t>(o);
+      const FactionDef* f = faction(s, owner);
+      const content::Value* fa = f ? sub(f->raw, "Faction", "faith") : nullptr;
+      if (!fa || !fa->is_object()) continue;
+      const Fixed base = num(fa->find("rate"), Fixed::from_ratio(3, 10));
+      const Fixed rate = std::max(base, research_rule(s, owner, "faith_rate", false, base));   // Arany fohász
+      const int active = assign_prayers(s, owner, nullptr);
+      if (active <= 0) continue;
       // aktívonként rate × 0,5 s (ezredben)
       const int64_t milli = (int64_t{active} * rate.raw() * 1000 >> 16) / 2;
       s.players_[owner].res[kFaith] += milli;

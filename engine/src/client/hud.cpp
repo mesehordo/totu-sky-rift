@@ -85,27 +85,15 @@ const Hud::Img* Hud::image(const std::string& rel) {
   return it->second.ok ? &it->second : nullptr;
 }
 
-const Hud::Img* Hud::portrait(const std::string& id, Col team) {
-  char key[96];
-  std::snprintf(key, sizeof key, "#portre/%s/%d,%d,%d", id.c_str(), team[0], team[1], team[2]);
+const Hud::Img* Hud::portrait(const std::string& id) {
+  // a tulajdonos döntése (M9): a portré nem színeződik át csapatszínre; a csapatot a sarokjel mutatja (team_badge)
+  const std::string key = "#portre/" + id;
   auto it = images_.find(key);
   if (it == images_.end()) {
     Img im;
-    const auto dir = std::filesystem::path(assets_) / "portraits";
-    if (dev_ && std::filesystem::is_regular_file(dir / (id + ".png"))) {
-      if (auto png = render::load_png((dir / (id + ".png")).string())) {
-        // a csapatszín-maszk (<id>_csapatszin.png) a játékos színére festve, a portrérá
-        if (auto mask = render::load_png((dir / (id + "_csapatszin.png")).string());
-            mask && mask->width == png->width && mask->height == png->height) {
-          for (size_t i = 0; i + 3 < png->rgba.size(); i += 4) {
-            const float a = mask->rgba[i + 3] / 255.0f;
-            for (size_t c = 0; c < 3; ++c) {
-              const float m = mask->rgba[i + c] / 255.0f * team[c];
-              png->rgba[i + c] = static_cast<uint8_t>(png->rgba[i + c] * (1 - a) + m * a);
-            }
-            png->rgba[i + 3] = std::max(png->rgba[i + 3], mask->rgba[i + 3]);
-          }
-        }
+    const auto p = std::filesystem::path(assets_) / "portraits" / (id + ".png");
+    if (dev_ && std::filesystem::is_regular_file(p)) {
+      if (auto png = render::load_png(p.string())) {
         render::premultiply(*png);
         im.tex = dev_->create_array_from(*png, false);
         im.w = png->width;
@@ -116,6 +104,14 @@ const Hud::Img* Hud::portrait(const std::string& id, Col team) {
     it = images_.emplace(key, im).first;
   }
   return it->second.ok ? &it->second : nullptr;
+}
+
+void Hud::team_badge(const Rect& r, Col team) {
+  // kis, csapatszínű téglalap a portré bal alsó sarkában (sötét szegéllyel)
+  const int bw = std::max(6, r.w / 6), bh = std::max(4, r.h / 10);
+  const Rect b{r.x + 3, r.bottom() - bh - 3, bw, bh};
+  rect(b.inflate(2, 2), {0, 0, 0}, 200);
+  rect(b, team);
 }
 
 Hud::Theme Hud::theme() const {
@@ -140,6 +136,25 @@ void Hud::sync(World& world, Session& session, int w, int h) {
   map_w_ = world.map().width();
   map_h_ = world.map().height();
   model_.set_map_size(map_w_, map_h_);
+  if (!mini_.ok && dev_) {   // a minimap terepképe (a pálya a betöltés után nem változik)
+    const auto cols = HudModel::minimap_terrain(world.map(), session.terrain());
+    render::Image im;
+    im.width = map_w_;
+    im.height = map_h_;
+    im.rgba.resize(cols.size() * 4);
+    for (size_t i = 0; i < cols.size(); ++i) {
+      im.rgba[i * 4] = cols[i][0];
+      im.rgba[i * 4 + 1] = cols[i][1];
+      im.rgba[i * 4 + 2] = cols[i][2];
+      im.rgba[i * 4 + 3] = 255;
+    }
+    if (!cols.empty()) {
+      mini_.tex = dev_->create_array_from(im, false);
+      mini_.w = map_w_;
+      mini_.h = map_h_;
+      mini_.ok = true;
+    }
+  }
   if (model_.sel_changed) {   // a HUD módosította a kijelölést
     world.set_selection(model_.sel);
     model_.sel_changed = false;
@@ -248,7 +263,8 @@ void Hud::text(render::SpriteBatch& batch, int size, float x, float y, const std
     if (!gl) continue;
     if (gl->x1 > gl->x0) {
       render::SpriteInstance in;
-      in.x = pen + gl->x0; in.y = base + gl->y0; in.w = gl->x1 - gl->x0; in.h = gl->y1 - gl->y0;
+      // a toll egész képpontra: a tört helyzetű kis jel (: .) a szűréstől elmosódna
+      in.x = std::round(pen) + gl->x0; in.y = base + gl->y0; in.w = gl->x1 - gl->x0; in.h = gl->y1 - gl->y0;
       in.u0 = gl->u0; in.v0 = gl->v0; in.u1 = gl->u1; in.v1 = gl->v1;
       in.tint[0] = r; in.tint[1] = g; in.tint[2] = b; in.tint[3] = a;
       batch.draw(f.tex, nullptr, in);
@@ -430,7 +446,7 @@ void Hud::def_icon(uint16_t def, const Rect& r, Col team) {
                 static_cast<uint8_t>(top[2] * (1 - t) + 12 * t)};
     rect(static_cast<float>(r.x), static_cast<float>(r.y + i), static_cast<float>(r.w), static_cast<float>(std::min(2, r.h - i)), c);
   }
-  if (const Img* im = portrait(d.id, team)) {
+  if (const Img* im = portrait(d.id)) {
     blit_fit(*im, r);
   } else {   // még nincs grafika: a név kezdőbetűi
     const std::string nm = model_.name((d.building ? "building." : "unit.") + d.id + ".name");
@@ -556,25 +572,10 @@ void Hud::draw_minimap(const HudFrame& f) {
   const HudLayout& L = model_.layout();
   const Rect& r = L.minimap;
   const Snapshot* s = model_.snap();
-  rect(r, {22, 34, 22});
-  const float sx = static_cast<float>(r.w) / static_cast<float>(map_w_ * 32), sy = static_cast<float>(r.h) / static_cast<float>(map_h_ * 32);
+  if (mini_.ok) blit(mini_, static_cast<float>(r.x), static_cast<float>(r.y), static_cast<float>(r.w), static_cast<float>(r.h));
+  else rect(r, {22, 34, 22});
   const float x0 = static_cast<float>(r.x), y0 = static_cast<float>(r.y);
-  for (const SnapUnit& u : s->units) {
-    if (u.kind == SnapUnit::kShot) continue;
-    if (u.kind == SnapUnit::kResource) {
-      const Col c = u.res == sim::kWood ? Col{30, 80, 35} : shade(model_.res_color(u.res), 0.8f);
-      rect(x0 + static_cast<float>(u.tx) * 32 * sx, y0 + static_cast<float>(u.ty) * 32 * sy,
-           std::max(1.0f, static_cast<float>(u.w) * 32 * sx), std::max(1.0f, static_cast<float>(u.h) * 32 * sy), c);
-    } else if (u.kind == SnapUnit::kBuilding && u.hp > 0) {
-      rect(x0 + static_cast<float>(u.tx) * 32 * sx, y0 + static_cast<float>(u.ty) * 32 * sy,
-           std::max(3.0f, static_cast<float>(u.w) * 32 * sx), std::max(3.0f, static_cast<float>(u.h) * 32 * sy),
-           model_.player_color(u.owner));
-    }
-  }
-  for (const SnapUnit& u : s->units) {
-    if (u.kind != SnapUnit::kUnit || u.hp <= 0) continue;
-    rect(x0 + u.x * sx - 1, y0 + u.y * sy - 1, 2, 2, shade(model_.player_color(u.owner), 1.2f));
-  }
+  for (const MiniMark& mk : model_.minimap_marks()) rect(x0 + mk.x, y0 + mk.y, mk.w, mk.h, mk.col);
   if (s->fog && s->fog->size() == static_cast<size_t>(map_w_) * static_cast<size_t>(map_h_)) {   // köd: soronként szakaszok
     const float cw = static_cast<float>(r.w) / static_cast<float>(map_w_), ch = static_cast<float>(r.h) / static_cast<float>(map_h_);
     for (int y = 0; y < map_h_; ++y) {
@@ -592,10 +593,9 @@ void Hud::draw_minimap(const HudFrame& f) {
       }
     }
   }
-  if (f.cam_w > 0) {   // a látott rész
-    const Rect cr{static_cast<int>(x0 + f.cam_x * sx), static_cast<int>(y0 + f.cam_y * sy), static_cast<int>(f.cam_w * sx),
-                  static_cast<int>(f.cam_h * sy)};
-    outline(cr, {255, 255, 255});
+  if (f.cam_w > 0) {   // a látott rész (a minimapre vágva)
+    const Rect cr = model_.minimap_view(f.cam_x, f.cam_y, f.cam_w, f.cam_h);
+    if (cr.w > 0) outline(cr, {255, 255, 255});
   }
 }
 
@@ -642,8 +642,9 @@ void Hud::draw_char_sheet() {
   if (!d) return;
   const bool own = e->owner == model_.player;
   const Col team = model_.player_color(e->owner);
-  if (const Img* im = portrait(d->id, team)) blit_fit(*im, pr);
+  if (const Img* im = portrait(d->id)) blit_fit(*im, pr);
   else def_icon(e->def, pr, team);
+  team_badge(pr, team);   // melyik csapat tagja
   outline(pr, own ? Col{200, 170, 100} : Col{220, 90, 80});
   if (d->hero) corner_label(pr, std::to_string(e->hero_level), {255, 230, 150}, fname, "tr");
   if (e->life_until > 0) {
@@ -676,6 +677,13 @@ void Hud::draw_char_sheet() {
   else if (e->kind == SnapUnit::kBuilding) typ = e->complete ? model_.tr("building_kind") : model_.tr("building_progress", {std::to_string(e->progress / 10)});
   else if (d->hero) typ = model_.tr("hero_level", {std::to_string(e->hero_level)});
   else typ = d->worker ? model_.tr("worker") : (!tkey.empty() ? model_.type_info(tkey).first : model_.tr("unit"));
+  if (const std::string rk = model_.rank_name(*e); !rk.empty()) {   // előléptetés (sim::Veteran)
+    typ += " • " + rk;
+    for (int k = 0; k < e->rank && k < 3; ++k) {   // csíkok a portré bal alsó sarkában
+      const float cx = static_cast<float>(pr.x + 4), cy = static_cast<float>(pr.bottom() - 6 - std::max(4, pr.h / 10) - 6 - 5 * k), cw = static_cast<float>(std::max(10, P / 6));
+      polygon({{cx, cy}, {cx + cw / 2, cy - 4}, {cx + cw, cy}, {cx + cw, cy + 2}, {cx + cw / 2, cy - 2}, {cx, cy + 2}}, {255, 214, 110});
+    }
+  }
   size_t n_sel = 0;
   for (const sim::EntityId id : model_.sel) n_sel += model_.unit(id) ? 1u : 0u;
   if (n_sel > 1 && tw(ftiny, typ + "  (" + std::to_string(n_sel) + ")") <= w) typ += "  (" + std::to_string(n_sel) + ")";
@@ -688,17 +696,12 @@ void Hud::draw_char_sheet() {
   hbar(static_cast<float>(hb.x), static_cast<float>(hb.y), static_cast<float>(hb.w), static_cast<float>(hb.h),
        static_cast<float>(e->hp) / static_cast<float>(std::max(1, e->max_hp)), {80, 210, 80},
        std::to_string(e->hp) + "/" + std::to_string(e->max_hp));
-  struct Bar { float frac; Col c; std::string lab; };
-  std::vector<Bar> second;
-  if (e->energy_max > 0) second.push_back({static_cast<float>(e->energy) / static_cast<float>(e->energy_max), {150, 100, 255},
-                                           std::to_string(e->energy) + "/" + std::to_string(e->energy_max)});
-  if (e->shield_max > 0) second.push_back({static_cast<float>(e->shield) / static_cast<float>(e->shield_max), {90, 170, 255},
-                                           std::to_string(e->shield) + "/" + std::to_string(e->shield_max)});
+  const std::vector<CharBar> second = model_.char_bars(*e);   // energia, pajzs, harci kedv
   if (!second.empty()) hbar(static_cast<float>(mb.x), static_cast<float>(mb.y), static_cast<float>(mb.w), static_cast<float>(mb.h),
-                            second[0].frac, second[0].c, second[0].lab);
+                            second[0].frac, second[0].col, second[0].label);
   const float bh = static_cast<float>(std::max(6, mb.h / 2 + 1));
-  for (size_t i = 1; i < second.size(); ++i) {   // ha energia és pajzs is van: a pajzs az adatoszlopba kerül
-    hbar(x, y, w, bh + 4, second[i].frac, second[i].c, second[i].lab);
+  for (size_t i = 1; i < second.size(); ++i) {   // a további sávok az adatoszlopba kerülnek
+    hbar(x, y, w, bh + 4, second[i].frac, second[i].col, second[i].label);
     y += bh + 7;
   }
   if (d->hero && e->kind == SnapUnit::kUnit) {   // tapasztalat
@@ -877,6 +880,7 @@ void Hud::draw_sel_grid() {
     const int hb = std::max(3, py_round(4 * L.s));
     rect(static_cast<float>(r.x + 2), static_cast<float>(r.bottom() - hb - 2), static_cast<float>(r.w - 4), static_cast<float>(hb), {0, 0, 0});
     rect(static_cast<float>(r.x + 2), static_cast<float>(r.bottom() - hb - 2), static_cast<float>(r.w - 4) * avg, static_cast<float>(hb), col);
+    team_badge({r.x, r.y, r.w, r.h - hb - 2}, model_.player_color(e0->owner));   // a csapat jele (az életsáv fölött)
     if (avg <= 0.35f) outline(r, {200, 70, 50});   // veszélyben: visszafogott piros keret
     if (c.kind == SelCell::Group && alive > 1) {
       corner_label({r.x, r.y, r.w, r.h - hb - 2}, std::to_string(alive) + "×", {255, 255, 255}, L.font.key);

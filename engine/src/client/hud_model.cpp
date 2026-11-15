@@ -814,6 +814,19 @@ CommandCard HudModel::command_card() {
         const int ri = rules_->research_index(rid);
         if (ri >= 0) items.push_back(entry_slot(HudSlot::Research, sim::kNoDef, ri));
       }
+      if (const auto ps = pray_slots(*b0); ps.second > 0) {   // fohászhelyek: foglalt / összes (a régi pray_info)
+        const sim::FactionDef* f = faction_of(player);
+        const content::Value* fa = f && f->raw ? path_of(f->raw.get(), {"Faction", "faith"}) : nullptr;
+        std::string fn = text_of(path_of(fa, {"name"}));
+        if (fn.empty()) fn = res_name(sim::kFaith);
+        const std::string cnt = std::to_string(ps.first) + "/" + std::to_string(ps.second);
+        HudSlot s = make_slot("pray_info", "heal", fn + ": " + cnt, {});
+        s.passive = true;
+        s.tip_title = tr("pray.title", {fn, cnt});
+        const auto mx = path_of(fa, {"max"}) ? path_of(fa, {"max"})->as_int() : std::nullopt;
+        s.tip_text = text_of(path_of(fa, {"desc"})) + tr("pray.max", {std::to_string(mx.value_or(8))});
+        items.push_back(std::move(s));
+      }
       for (const uint16_t pw : d0.powers) {
         const sim::AbilityDef& a = rules_->abilities[pw];
         const bool ok = can_afford(a.cost) && (!a.hq_hp || b0->hp > a.hq_hp + 50);
@@ -831,6 +844,7 @@ CommandCard HudModel::command_card() {
                               });
         s.enabled = ok;
         s.active = mode.kind == HudMode::GCast && mode.ability == a.id && mode.ent == b0->id;
+        s.cd = power_cd(*b0, pw);   // az épületképesség újratöltése (Caster.ready)
         for (int k = 0; k < sim::kResources; ++k) {
           if (a.cost[static_cast<size_t>(k)]) {
             s.cost = std::to_string(a.cost[static_cast<size_t>(k)]);
@@ -1313,6 +1327,13 @@ std::pair<std::vector<std::pair<std::string, float>>, std::vector<std::pair<std:
       for (const auto& [k, v] : it->second) strong.emplace_back(k, fl(v));
     }
   }
+  if (d && d->attack.has) {   // a sablon saját `type_bonus`-a (a mátrixnál erősebb szorzó; a régi `counters`)
+    for (const auto& [k, v] : d->attack.type_bonus) {
+      auto it = std::find_if(strong.begin(), strong.end(), [&k = k](const auto& p) { return p.first == k; });
+      if (it == strong.end()) strong.emplace_back(k, fl(v));
+      else it->second = std::max(it->second, fl(v));
+    }
+  }
   for (const auto& [a, m] : rules_->type_matrix) {
     if (const auto it = m.find(key); it != m.end()) weak.emplace_back(a, fl(it->second));
   }
@@ -1399,6 +1420,105 @@ std::string HudModel::status_text(const SnapUnit& u) const {
     bits.push_back(u.order < 10 ? tr(std::string("st.") + kOrder[u.order]) : std::string());
   }
   return join(bits);
+}
+
+// ---------------------------------------------------------------- M9: karakterlap, minimap
+std::vector<CharBar> HudModel::char_bars(const SnapUnit& u) const {
+  std::vector<CharBar> out;
+  const auto frac = [](int32_t a, int32_t b) { return static_cast<float>(a) / static_cast<float>(std::max(1, b)); };
+  const auto nn = [](int32_t a, int32_t b) { return std::to_string(a) + "/" + std::to_string(b); };
+  if (u.energy_max > 0) out.push_back({frac(u.energy, u.energy_max), {150, 100, 255}, nn(u.energy, u.energy_max), tr("bar.energy"), tr("bar.energy.tip")});
+  if (u.shield_max > 0) out.push_back({frac(u.shield, u.shield_max), {90, 170, 255}, nn(u.shield, u.shield_max), tr("bar.shield"), tr("bar.shield.tip")});
+  if (u.kind == SnapUnit::kUnit && u.morale >= 0) {   // Ooni harci kedv (a régi: MEGTÖRT, ha elfogyott)
+    out.push_back({frac(u.morale, u.morale_max), u.broken ? std::array<uint8_t, 3>{230, 120, 60} : std::array<uint8_t, 3>{240, 190, 80},
+                   u.broken ? tr("morale.broken") : nn(u.morale, u.morale_max), tr("morale"), tr("morale.tip")});
+  }
+  return out;
+}
+
+std::string HudModel::rank_name(const SnapUnit& u) const {
+  if (u.kind != SnapUnit::kUnit || u.rank == 0 || !rules_ || rules_->ranks.empty()) return {};
+  const size_t i = std::min<size_t>(u.rank, rules_->ranks.size()) - 1;
+  return tr("rank." + rules_->ranks[i].id);
+}
+
+float HudModel::power_cd(const SnapUnit& b, uint16_t ability) const {
+  if (!snap_ || !rules_ || ability >= rules_->abilities.size()) return 0.0f;
+  int64_t ready = 0;
+  for (const auto& [a, tk] : b.ready) {
+    if (a == ability) ready = tk;
+  }
+  const int32_t cd = rules_->abilities[ability].cooldown > 0 ? rules_->abilities[ability].cooldown : 60 * 30;   // a régi: 60 s
+  return std::clamp(static_cast<float>(ready - snap_->tick) / static_cast<float>(cd), 0.0f, 1.0f);
+}
+
+std::pair<int, int> HudModel::pray_slots(const SnapUnit& b) const {
+  const sim::EntityDef* d = def_of(b);
+  if (!d || b.kind != SnapUnit::kBuilding || !b.complete || b.owner != player || !has_faith()) return {0, 0};
+  const content::Value* v = path_of(d->raw.get(), {"Mechanics", "pray_slots"});
+  const int total = v ? static_cast<int>(v->as_int().value_or(0)) : 0;
+  if (total <= 0) return {0, 0};
+  return {std::clamp<int>(b.prayers, 0, total), total};
+}
+
+std::vector<std::array<uint8_t, 3>> HudModel::minimap_terrain(const map::Map& m, const map::TerrainTable& t) {
+  // a régi MINI_COLS a csempesor (art.row) szerint, a terep árnyalatával szorozva; a homok a régiben nem volt
+  static const std::map<std::string, std::array<uint8_t, 3>> kRow = {
+      {"grass", {68, 110, 52}}, {"dirt", {118, 98, 66}}, {"water", {38, 74, 120}}, {"rock", {78, 74, 72}}, {"sand", {176, 160, 112}}};
+  std::vector<std::array<uint8_t, 3>> pal;
+  for (const map::TerrainType& tt : t.terrains()) {
+    const auto it = kRow.find(tt.art.row);
+    std::array<uint8_t, 3> c = it != kRow.end() ? it->second : kRow.at("grass");
+    for (size_t k = 0; k < 3; ++k) c[k] = static_cast<uint8_t>(c[k] * tt.art.tint[k] / 255);
+    pal.push_back(c);
+  }
+  std::vector<std::array<uint8_t, 3>> out(static_cast<size_t>(m.width()) * static_cast<size_t>(m.height()), kRow.at("grass"));
+  for (int y = 0; y < m.height(); ++y) {
+    for (int x = 0; x < m.width(); ++x) {
+      const uint16_t tr = m.terrain(x, y);
+      if (tr < pal.size()) out[static_cast<size_t>(y) * static_cast<size_t>(m.width()) + static_cast<size_t>(x)] = pal[tr];
+    }
+  }
+  return out;
+}
+
+std::vector<MiniMark> HudModel::minimap_marks() const {
+  std::vector<MiniMark> out;
+  if (!snap_) return out;
+  const Rect& r = L_.minimap;
+  const float sx = static_cast<float>(r.w) / static_cast<float>(map_w_ * kTile), sy = static_cast<float>(r.h) / static_cast<float>(map_h_ * kTile);
+  const auto shade = [](std::array<uint8_t, 3> c, float k) {
+    for (auto& v : c) v = static_cast<uint8_t>(std::clamp(static_cast<float>(v) * k, 0.0f, 255.0f));
+    return c;
+  };
+  for (int pass = 0; pass < 3; ++pass) {   // a régi rajzolási sorrend: lelőhelyek (az alapképen), épületek, egységek
+    for (const SnapUnit& u : snap_->units) {
+      const float tx = static_cast<float>(u.tx * kTile), ty = static_cast<float>(u.ty * kTile);
+      const float tw = static_cast<float>(u.w * kTile), th = static_cast<float>(u.h * kTile);
+      if (pass == 0 && u.kind == SnapUnit::kResource) {
+        out.push_back({MiniMark::Resource, tx * sx, ty * sy, std::max(1.0f, tw * sx), std::max(1.0f, th * sy),
+                       u.res == sim::kWood ? std::array<uint8_t, 3>{30, 80, 35} : shade(res_color(u.res), 0.8f)});
+      } else if (pass == 1 && u.kind == SnapUnit::kBuilding && u.hp > 0) {
+        out.push_back({MiniMark::Building, tx * sx, ty * sy, std::max(3.0f, tw * sx), std::max(3.0f, th * sy), player_color(u.owner)});
+      } else if (pass == 2 && u.kind == SnapUnit::kUnit && u.hp > 0) {
+        out.push_back({MiniMark::Unit, u.x * sx - 1, u.y * sy - 1, 2, 2, shade(player_color(u.owner), 1.2f)});
+      }
+    }
+  }
+  return out;
+}
+
+Rect HudModel::minimap_view(float cam_x, float cam_y, float cam_w, float cam_h) const {
+  const Rect& r = L_.minimap;
+  const float sx = static_cast<float>(r.w) / static_cast<float>(map_w_ * kTile), sy = static_cast<float>(r.h) / static_cast<float>(map_h_ * kTile);
+  const int x0 = static_cast<int>(std::floor(static_cast<float>(r.x) + cam_x * sx));
+  const int y0 = static_cast<int>(std::floor(static_cast<float>(r.y) + cam_y * sy));
+  const int x1 = static_cast<int>(std::floor(static_cast<float>(r.x) + (cam_x + cam_w) * sx));
+  const int y1 = static_cast<int>(std::floor(static_cast<float>(r.y) + (cam_y + cam_h) * sy));
+  // a régi a minimapre vágva rajzolta a keretet
+  const int cx0 = std::max(x0, r.x), cy0 = std::max(y0, r.y), cx1 = std::min(x1, r.right()), cy1 = std::min(y1, r.bottom());
+  if (cx1 <= cx0 || cy1 <= cy0) return {};
+  return {cx0, cy0, cx1 - cx0, cy1 - cy0};
 }
 
 }  // namespace totu::client

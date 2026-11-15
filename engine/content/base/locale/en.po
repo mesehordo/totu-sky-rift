@@ -8188,6 +8188,50 @@ msgctxt "hud.rel.enemy"
 msgid "Ellenfél"
 msgstr "Enemy"
 
+msgctxt "hud.bar.energy"
+msgid "Energia / mana"
+msgstr "Energy / mana"
+
+msgctxt "hud.bar.energy.tip"
+msgid "A képességek ára; lassan töltődik."
+msgstr "The cost of abilities; slowly recharges."
+
+msgctxt "hud.bar.shield"
+msgid "Pajzs"
+msgstr "Shield"
+
+msgctxt "hud.bar.shield.tip"
+msgid "Előbb a pajzs fogy, és magától töltődik."
+msgstr "The shield is depleted first and recharges by itself."
+
+msgctxt "hud.morale"
+msgid "Harci kedv"
+msgstr "Morale"
+
+msgctxt "hud.morale.tip"
+msgid "Sérüléstől és a társak halálától fogy; ha elfogy, az egység megtörik (−30% sebzés, +20% sebesség). A Taiko-dobos közelében gyorsan töltődik, lámpásfényben nem esik 30 alá."
+msgstr "Drops from wounds and the death of comrades; when it runs out, the unit breaks (−30% damage, +20% speed). Recovers quickly near a Taiko drummer; in lantern light it does not fall below 30."
+
+msgctxt "hud.morale.broken"
+msgid "MEGTÖRT"
+msgstr "BROKEN"
+
+msgctxt "hud.rank.veteran"
+msgid "Veterán"
+msgstr "Veteran"
+
+msgctxt "hud.rank.elite"
+msgid "Elit"
+msgstr "Elite"
+
+msgctxt "hud.pray.title"
+msgid "{} – {} hely"
+msgstr "{} – {} slots"
+
+msgctxt "hud.pray.max"
+msgid " Összesen legfeljebb {} munkás számít."
+msgstr " At most {} workers count in total."
+
 msgctxt "hud.quests"
 msgid "Küldetések"
 msgstr "Objectives"

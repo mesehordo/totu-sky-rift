@@ -20,6 +20,8 @@
 
 #include "client/hud_layout.hpp"
 #include "client/session.hpp"
+#include "map/map.hpp"
+#include "map/terrain.hpp"
 
 namespace totu::client {
 
@@ -64,6 +66,20 @@ struct HudMode {
   uint16_t def = sim::kNoDef;
   sim::EntityId ent = 0;
   bool operator==(const HudMode&) const = default;
+};
+
+// a karakterlap egy sávja a portré alatt / az adatoszlopban (energia, pajzs, harci kedv)
+struct CharBar {
+  float frac = 0;
+  std::array<uint8_t, 3> col{};
+  std::string label, tip_title, tip_text;
+};
+
+// a minimap egy jele (a minimap-téglalap bal felső sarkától, képpontban)
+struct MiniMark {
+  enum Kind : uint8_t { Resource, Building, Unit } kind = Unit;
+  float x = 0, y = 0, w = 0, h = 0;
+  std::array<uint8_t, 3> col{};
 };
 
 // a karakterlap átmeneti állapota (név, hátralévő mp, szín, magyarázat)
@@ -144,6 +160,16 @@ class HudModel {
   std::pair<std::vector<std::pair<std::string, float>>, std::vector<std::pair<std::string, float>>> counters(
       const SnapUnit& u, const std::string& key) const;
   std::vector<HudEffect> active_effects(const SnapUnit& u) const;
+  // M9: a második sáv(ok) sorrendben: energia, pajzs, Ooni harci kedv (az első a portré alá, a többi az adatoszlopba)
+  std::vector<CharBar> char_bars(const SnapUnit& u) const;
+  std::string rank_name(const SnapUnit& u) const;                     // előléptetés: "" | Veterán | Elit
+  float power_cd(const SnapUnit& b, uint16_t ability) const;          // épületképesség újratöltésének aránya (0..1)
+  std::pair<int, int> pray_slots(const SnapUnit& b) const;            // fohászhelyek: (foglalt, összes); összes 0: nincs
+  // minimap (a régi `ui.draw_minimap`): a terep színei csempénként (sorfolytonosan), a jelek (lelőhely, épület,
+  // egység csapatszínnel) és a látott rész kerete a minimapre vágva (képernyő-koordinátában)
+  static std::vector<std::array<uint8_t, 3>> minimap_terrain(const map::Map& m, const map::TerrainTable& t);
+  std::vector<MiniMark> minimap_marks() const;
+  Rect minimap_view(float cam_x, float cam_y, float cam_w, float cam_h) const;
   std::string status_text(const SnapUnit& u) const;
   std::string res_name(int k) const;
   std::array<uint8_t, 3> res_color(int k) const;
