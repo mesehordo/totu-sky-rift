@@ -185,7 +185,7 @@ TEST_CASE("M8 felulet – menü: egyéni csata – legalább két résztvevő; a
   CHECK(differs);
 }
 
-TEST_CASE("M8 felulet – meccs: az egyéni csata beállítása elindul az adatvezérelt géppel (`ai_nep.lua`)") {
+TEST_CASE("M8 felulet – meccs: az egyéni csata beállítása elindul a gépi ellenféllel (nehézség, személyiség)") {
   client::Settings st;
   Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
   m.skirmish().map = 1;
