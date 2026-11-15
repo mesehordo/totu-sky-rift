@@ -94,12 +94,12 @@ void World::select_box(float x0, float y0, float x1, float y1) {
   selected_building_ = 0;
   if (!cur_) return;
   for (const SnapUnit& u : cur_->units) {
-    if (u.owner != 1 || u.hp <= 0 || u.kind != SnapUnit::kUnit) continue;
+    if (u.owner != session_.local_player() || u.hp <= 0 || u.kind != SnapUnit::kUnit) continue;
     if (u.x >= x0 - 8 && u.x <= x1 + 8 && u.y >= y0 - 8 && u.y <= y1 + 8) selected_.push_back(u.id);
   }
   if (!selected_.empty()) return;
   for (const SnapUnit& u : cur_->units) {   // egység nélkül: a pont alatti saját épület
-    if (u.owner != 1 || u.hp <= 0 || u.kind != SnapUnit::kBuilding) continue;
+    if (u.owner != session_.local_player() || u.hp <= 0 || u.kind != SnapUnit::kBuilding) continue;
     const float bx = static_cast<float>(u.tx) * kTilePx, by = static_cast<float>(u.ty) * kTilePx;
     if (x0 >= bx && x0 < bx + static_cast<float>(u.w) * kTilePx && y0 >= by && y0 < by + static_cast<float>(u.h) * kTilePx) {
       selected_building_ = u.id;
@@ -159,7 +159,7 @@ sim::EntityId World::enemy_at(float wx, float wy) const {
   sim::EntityId best = 0;
   float best_d = 1e9f;
   for (const SnapUnit& u : cur_->units) {
-    if (u.owner == 1 || u.owner == 0 || u.hp <= 0 || u.kind == SnapUnit::kShot || u.kind == SnapUnit::kResource) continue;
+    if (u.owner == session_.local_player() || u.owner == 0 || u.hp <= 0 || u.kind == SnapUnit::kShot || u.kind == SnapUnit::kResource) continue;
     float d;
     if (u.kind == SnapUnit::kBuilding) {
       const float x0 = static_cast<float>(u.tx) * kTilePx, y0 = static_cast<float>(u.ty) * kTilePx;
@@ -181,7 +181,7 @@ sim::EntityId World::enemy_at(float wx, float wy) const {
 sim::EntityId World::garrison_at(float wx, float wy) const {
   if (!cur_) return 0;
   for (const SnapUnit& u : cur_->units) {
-    if (u.kind != SnapUnit::kBuilding || u.owner != 1 || u.slots == 0 || !u.complete || u.hp <= 0) continue;
+    if (u.kind != SnapUnit::kBuilding || u.owner != session_.local_player() || u.slots == 0 || !u.complete || u.hp <= 0) continue;
     const float x0 = static_cast<float>(u.tx) * kTilePx, y0 = static_cast<float>(u.ty) * kTilePx;
     const float x1 = x0 + static_cast<float>(u.w) * kTilePx, y1 = y0 + static_cast<float>(u.h) * kTilePx;
     if (wx >= x0 && wx < x1 && wy >= y0 && wy < y1) return u.id;
@@ -276,7 +276,7 @@ void World::draw_garrison(render::SpriteBatch& batch, const render::Texture& whi
     rect(cx - 4.0f, by - 4.0f, 8.0f, 4.0f, r, g, b);
   };
   for (const SnapUnit& u : cur_->units) {
-    if (u.kind != SnapUnit::kBuilding || u.owner != 1 || u.slots == 0 || !u.complete) continue;
+    if (u.kind != SnapUnit::kBuilding || u.owner != session_.local_player() || u.slots == 0 || !u.complete) continue;
     const float x0 = static_cast<float>(u.tx) * kTilePx, y0 = static_cast<float>(u.ty) * kTilePx;
     const float bw = static_cast<float>(u.w) * kTilePx, bh = static_cast<float>(u.h) * kTilePx;
     if (u.garrison > 0) {   // jel az épületen: kis zászló a bal felső sarokban
@@ -309,7 +309,7 @@ std::vector<uint16_t> World::buildable_defs(const std::string& faction) const {
   const sim::Rules* r = session_.rules();
   if (!r) return out;
   for (size_t i = 0; i < r->defs.size(); ++i) {
-    const bool ally = cur_ && !cur_->players[1].ally.empty() && r->defs[i].faction == cur_->players[1].ally;   // D26
+    const bool ally = cur_ && !cur_->players[session_.local_player()].ally.empty() && r->defs[i].faction == cur_->players[session_.local_player()].ally;   // D26
     if (r->defs[i].building && (r->defs[i].faction == faction || ally) && r->defs[i].fw > 0) out.push_back(static_cast<uint16_t>(i));
   }
   return out;

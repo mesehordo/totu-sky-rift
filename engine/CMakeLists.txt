@@ -121,7 +121,7 @@ add_test(NAME core COMMAND totu_tests)
 
 # --- ablak nélküli szimulációs futtató és az M2 kapu: a golden visszajátszás minden rendszeren egyezik -----------
 # --- hálózat (M10): az ENet-átvitel és a modlock-ujjlenyomat; a lockstep-logika a magban (socket nélkül próbálható) ---
-add_library(totu_net STATIC src/net/enet_transport.cpp src/net/content_hash.cpp)
+add_library(totu_net STATIC src/net/enet_transport.cpp src/net/content_hash.cpp src/net/relay_server.cpp)
 target_link_libraries(totu_net PUBLIC totu_core totu_enet PRIVATE totu_options)
 add_executable(totu_relay src/tools/totu_relay.cpp src/tools/nav_tools.cpp)
 target_link_libraries(totu_relay PRIVATE totu_net totu_options)
@@ -171,8 +171,8 @@ if(TOTU_CLIENT)
               src/render/atlas.cpp src/render/terrain_view.cpp src/render/lighting.cpp src/render/effects.cpp)
   target_link_libraries(totu_render PUBLIC totu_core totu_image totu_assets PRIVATE totu_options)
   add_executable(totu src/client/main.cpp src/client/world.cpp src/client/session.cpp src/client/hud.cpp
-                      src/client/i18n.cpp src/client/settings.cpp src/client/menu.cpp src/client/menu_view.cpp src/client/hud_layout.cpp src/client/hud_model.cpp)
-  target_link_libraries(totu PRIVATE totu_core totu_render totu_options SDL3::SDL3 Threads::Threads)
+                      src/client/i18n.cpp src/client/settings.cpp src/client/menu.cpp src/client/menu_view.cpp src/client/hud_layout.cpp src/client/hud_model.cpp src/client/net_play.cpp)
+  target_link_libraries(totu PRIVATE totu_core totu_net totu_render totu_options SDL3::SDL3 Threads::Threads)
   target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets"
                                           TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                           TOTU_MAPS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content/base/maps")

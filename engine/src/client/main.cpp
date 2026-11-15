@@ -38,13 +38,18 @@
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
 #include <string>
 #include <vector>
 
 #include "core/platform_info.hpp"
+#include "net/content_hash.hpp"
+#include "net/relay_server.hpp"
 #include "client/hud.hpp"
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
+#include "client/net_play.hpp"
 #include "client/settings.hpp"
 #include "client/world.hpp"
 #include "render/atlas.hpp"
@@ -93,6 +98,12 @@ struct Options {
   bool menu = false;                 // M8: a főmenü
   client::MenuScreen menu_screen = client::MenuScreen::Main;
   std::string maps = TOTU_MAPS_DIR;
+  // M10: többjátékos (lockstep relével): gazda (`--host <port>`, a relé a játékban fut) vagy csatlakozó
+  // (`--join <cím:port>`); a lobbiban a `--faction` népet választja, és késznek jelentkezik
+  int host_port = 0, seats = 2;
+  std::string join, faction = "ursan", name = "jatekos";
+  bool observe = false;
+  int rejoin = 0;
 };
 
 // a bemutató: népenként egy egységtípus (a sprite-lapok közül az első 8 csapatmaszkos), N egység rácsban
@@ -294,6 +305,13 @@ int main(int argc, char** argv) {
                                                                                         : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
+    else if (a == "--host") o.host_port = static_cast<int>(std::strtol(next(), nullptr, 10));
+    else if (a == "--join") o.join = next();
+    else if (a == "--seats") o.seats = static_cast<int>(std::strtol(next(), nullptr, 10));
+    else if (a == "--faction") o.faction = next();
+    else if (a == "--name") o.name = next();
+    else if (a == "--observe") o.observe = true;
+    else if (a == "--rejoin") o.rejoin = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--battle-demo") o.battle_demo = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--look") {
       char* end = nullptr;
@@ -324,6 +342,7 @@ int main(int argc, char** argv) {
       }
     }
   }
+  std::setvbuf(stdout, nullptr, _IONBF, 0);   // a kimenet azonnal (Windowson az SDL-indító kilépéskor nem üríti)
   print_version();
   if (!SDL_Init(SDL_INIT_VIDEO)) {
     std::fprintf(stderr, "SDL_Init hiba: %s\n", SDL_GetError());
@@ -384,6 +403,8 @@ int main(int argc, char** argv) {
     demo.units = (o.atlas.empty() && o.world.empty()) ? o.demo : 0;
     AtlasDemo adem;
     client::Session session;
+    net::RelayServer host_relay;   // M10: a gazda reléje (a SimRunner előtt jön létre, utána szűnik meg)
+    client::NetPlay netplay;
     client::SimRunner runner(session);
     client::World world(session, runner);
     {
@@ -444,7 +465,72 @@ int main(int argc, char** argv) {
         std::fprintf(stderr, "%s\n", err.c_str());
         rc = 1;
       } else if (!o.world.empty()) {
-        if (!session.load(o.content, o.world, 20261112, &err) || !terrain.init(dev, o.assets, &err)) {
+        const bool net_game = o.host_port > 0 || !o.join.empty();
+        // M10: a hálózati meccs a lobbin át (konzolon; a menübeli lobbi később), utána a munkamenet átveszi
+        auto start_net = [&]() -> bool {
+          if (!session.load_content(o.content, &err)) return false;
+          const uint64_t ch = net::content_hash({o.content});
+          std::string host = "127.0.0.1";
+          int port = o.host_port;
+          if (o.host_port > 0) {
+            sim::Replay desc;
+            desc.seed = static_cast<uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());
+            std::ifstream in(o.world, std::ios::binary);
+            desc.map.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+            desc.factions.assign(static_cast<size_t>(std::clamp(o.seats, 1, 8)), o.faction);
+            if (!host_relay.start(desc, session.terrain_ptr(), session.rules(), ch, std::clamp(o.seats, 1, 8),
+                                  static_cast<uint16_t>(o.host_port), &err)) {
+              return false;
+            }
+            host_relay.spawn();
+            std::printf("gazda: a relé a %d. porton, %d hely\n", o.host_port, o.seats);
+          } else {
+            const size_t c = o.join.rfind(':');
+            host = c == std::string::npos ? o.join : o.join.substr(0, c);
+            port = c == std::string::npos ? 47800 : static_cast<int>(std::strtol(o.join.c_str() + c + 1, nullptr, 10));
+          }
+          if (!netplay.connect(host, static_cast<uint16_t>(port), session.terrain_ptr(), session.rules(), ch, o.name,
+                               o.observe, static_cast<uint8_t>(std::clamp(o.rejoin, 0, 8)), &err)) {
+            return false;
+          }
+          bool asked = false;
+          std::vector<net::LobbySeat> shown;
+          const auto t0 = std::chrono::steady_clock::now();
+          while (!netplay.client().ready()) {
+            netplay.pump();
+            net::Client& nc = netplay.client();
+            if (nc.rejected()) { err = "a relé elutasította: " + nc.reject_reason(); return false; }
+            if (!nc.error().empty()) { err = nc.error(); return false; }
+            if (netplay.lost()) { err = "megszakadt a kapcsolat a relével"; return false; }
+            if (nc.joined() && !asked && nc.slot() > 0) {
+              netplay.pick(o.faction);
+              netplay.set_ready(true);
+              asked = true;
+            }
+            if (nc.lobby() != shown) {
+              shown = nc.lobby();
+              std::printf("lobbi:");
+              for (size_t i = 0; i < shown.size(); ++i) {
+                std::printf(" [%zu: %s %s%s]", i + 1, shown[i].taken ? shown[i].name.c_str() : "-", shown[i].faction.c_str(),
+                            shown[i].ready ? " kész" : "");
+              }
+              std::printf("\n");
+            }
+            SDL_Event e;
+            while (SDL_PollEvent(&e)) {
+              if (e.type == SDL_EVENT_QUIT) { err = "kilépés a lobbiból"; return false; }
+            }
+            if (std::chrono::steady_clock::now() - t0 > std::chrono::minutes(10)) { err = "a meccs nem indult el"; return false; }
+            SDL_Delay(10);
+          }
+          session.adopt(*netplay.client().match());
+          session.set_local_player(netplay.client().slot() > 0 ? netplay.client().slot() : 1);
+          runner.set_source(&netplay);
+          std::printf("a meccs indul: %d. hely\n", netplay.client().slot());
+          return true;
+        };
+        const bool loaded = net_game ? start_net() : session.load(o.content, o.world, 20261112, &err);
+        if (!loaded || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
           rc = 1;
         } else {
@@ -452,7 +538,9 @@ int main(int argc, char** argv) {
           if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           // meccs (M6), ha a pályán vannak kezdőhelyek; különben a bemutató seregei
-          if (session.has_starts()) {
+          if (net_game) {
+            if (netplay.client().slot() == 0) session.set_reveal_all(true);   // a megfigyelő mindent lát
+          } else if (session.has_starts()) {
             const bool started = have_cfg ? session.start_match(match_cfg.setup, match_cfg.ai, "ai_nep.lua", &err)
                                           : session.start_match({"ursan", "ursan"}, true, &err);
             if (!started) {   // N-04: a sikertelen indítás nem fut tovább részben felépített meccsként
@@ -462,7 +550,7 @@ int main(int argc, char** argv) {
           } else {
             session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           }
-          session.set_reveal_all(!o.fog);
+          if (!net_game || netplay.client().slot() > 0) session.set_reveal_all(!o.fog);
           if (o.battle_demo > 0 && session.has_starts()) session.battle_demo(o.battle_demo);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
@@ -472,6 +560,7 @@ int main(int argc, char** argv) {
           px.rgba = {255, 255, 255, 255};
           white = dev.create_array_from(px, false);
           if (session.has_starts() && !hud.init(dev, o.assets, &err)) std::fprintf(stderr, "HUD: %s\n", err.c_str());
+          hud.model().player = session.local_player();
           const float mw = static_cast<float>(world.map().width()) * client::World::kTilePx;
           const float mh = static_cast<float>(world.map().height()) * client::World::kTilePx;
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
@@ -571,7 +660,7 @@ int main(int argc, char** argv) {
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_Q && session.rules()) {   // telepes képzése (ideiglenes)
           sim::Command c;
           c.kind = sim::Command::Kind::Train;
-          c.owner = 1;
+          c.owner = session.local_player();
           c.def = "urs_telepes";
           runner.post(c);
         }
@@ -761,7 +850,7 @@ int main(int argc, char** argv) {
         }
         // ideiglenes kijelzés (a HUD az M6 9. lépésében): az 1. játékos nyersanyagai és létszáma a címsorban
         if (frame % 15 == 0 && session.has_starts()) {
-          if (const client::SnapPlayer* pl = world.player(1); pl && pl->active) {
+          if (const client::SnapPlayer* pl = world.player(session.local_player()); pl && pl->active) {
             char title[160];
             std::snprintf(title, sizeof title, "TOTU: Sky Rift – fa %d · arany %d · meteorit %d · létszám %d/%d",
                           pl->res[0], pl->res[1], pl->res[2], pl->supply_used, pl->supply_cap);
@@ -815,6 +904,12 @@ int main(int argc, char** argv) {
       ++frame;
     }
     runner.stop();
+    if ((o.host_port > 0 || !o.join.empty()) && have_world) {   // M10: a hálózati meccs összegzése (a próbákhoz és a hibakereséshez)
+      std::printf("hálózat: %lld forduló, tick %lld, hash 0x%016llx, szinkronhiba: %zu\n",
+                  static_cast<long long>(netplay.client().turns()),
+                  static_cast<long long>(session.sim().tick()), static_cast<unsigned long long>(session.sim().hash()),
+                  netplay.client().desyncs().size());
+    }
     runner.take_tick_ms(sim_times);
     if (o.bench && times.size() > 10) {
       times.erase(times.begin(), times.begin() + 10);   // bemelegedés

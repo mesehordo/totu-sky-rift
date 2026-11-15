@@ -144,6 +144,12 @@ class Client {
   bool joined() const { return joined_; }
   // a megérkezett fordulók lefuttatása (legfeljebb `max_turns`), a parancsok és a hash-ek elküldése
   int update(int max_turns = 1 << 30);
+  // tickenkénti léptetés (a játékkliens szimulációs szálához): van-e megerősített következő tick; a tick parancsai
+  // (a forduló első tickjén); a lépés után a hash (a forduló végén megy el)
+  bool tick_ready() const { return match_ && (in_turn_ > 0 || !turns_.empty()); }
+  std::vector<sim::Command> begin_tick();
+  void end_tick(uint64_t hash);
+  void flush_local();
   std::vector<Bytes> take_outbox();
 
   bool ready() const { return match_ != nullptr; }
@@ -168,6 +174,7 @@ class Client {
   std::optional<sim::Replay> desc_;
   std::unique_ptr<sim::MatchInstance> match_;
   int64_t done_ = 0;                                   // lefuttatott fordulók
+  int in_turn_ = 0;                                    // a folyamatban lévő forduló lefutott tickjei
   std::deque<std::pair<int64_t, std::vector<sim::Command>>> turns_;   // megérkezett, még le nem futott
   std::vector<sim::Command> local_;
   std::vector<Bytes> out_;

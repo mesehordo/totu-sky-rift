@@ -31,17 +31,56 @@ const SnapUnit* Snapshot::find(sim::EntityId id) const {
 }
 
 bool Session::load(const std::string& content_dir, const std::string& map_path, uint64_t seed, std::string* error) {
+  if (!load_content(content_dir, error)) return false;
+  seed_ = seed;
+  std::vector<std::string> errors;
+  std::ifstream in(map_path, std::ios::binary);
+  const std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
+  const auto doc = content::parse(text);
+  if (doc) own_map_ = map::Map::from_json(*doc, terrain_, errors);
+  if (!own_map_) {
+    if (error) *error = "a pálya nem tölthető be: " + map_path + (errors.empty() ? "" : " – " + errors.front());
+    return false;
+  }
+  map_ = &*own_map_;
+  nav_ = std::make_unique<map::NavGrid>(*map_, terrain_, nav_config_);
+  pf_ = std::make_unique<map::Pathfinder>(*nav_);
+  own_sim_ = std::make_unique<sim::Sim>(seed);
+  sim_ = own_sim_.get();
+  sim_->attach_navigation(pf_.get());
+  return true;
+}
+
+void Session::adopt(sim::MatchInstance& match) {
+  ais_.clear();
+  ai_.reset();
+  own_sim_.reset();
+  pf_.reset();
+  nav_.reset();
+  own_map_.reset();
+  last_.reset();
+  fog_.reset();
+  remembered_.clear();
+  map_ = match.map.get();
+  sim_ = match.sim.get();
+}
+
+bool Session::load_content(const std::string& content_dir, std::string* error) {
   // az előző meccs állapota nem marad meg (H-61: teljes felfedés; H-62: gépek; H-63: szabályok)
   ais_.clear();
   ai_.reset();
-  sim_.reset();
+  own_sim_.reset();
+  sim_ = nullptr;
+  pf_.reset();
+  nav_.reset();
+  own_map_.reset();
+  map_ = nullptr;
   rules_.reset();
   reveal_all_ = false;
   last_.reset();
   fog_.reset();
   remembered_.clear();
   content_dir_ = content_dir;
-  seed_ = seed;
   {   // a nevek (hu.po): msgctxt "kulcs" után az msgid "szöveg"
     std::ifstream po(std::filesystem::path(content_dir) / "base" / "locale" / "hu.po", std::ios::binary);
     std::string line, ctx;
@@ -83,18 +122,6 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
     }
     nav_config_ = map::NavConfig::from_json(game->find("navigation"), rerr);   // H-90: a game.json navigációs beállítása
   }
-  std::ifstream in(map_path, std::ios::binary);
-  const std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
-  const auto doc = content::parse(text);
-  if (doc) map_ = map::Map::from_json(*doc, terrain_, errors);
-  if (!map_) {
-    if (error) *error = "a pálya nem tölthető be: " + map_path + (errors.empty() ? "" : " – " + errors.front());
-    return false;
-  }
-  nav_ = std::make_unique<map::NavGrid>(*map_, terrain_, nav_config_);
-  pf_ = std::make_unique<map::Pathfinder>(*nav_);
-  sim_ = std::make_unique<sim::Sim>(seed);
-  sim_->attach_navigation(pf_.get());
   return true;
 }
 
@@ -222,7 +249,7 @@ void Session::update_fog() {
   }
   constexpr int kSight = 8;
   sim_->world().pool<sim::Health>().each([&](sim::EntityId e, const sim::Health& hh) {
-    if (hh.owner != 1 || hh.hp <= 0) return;
+    if (hh.owner != local_ || hh.hp <= 0) return;
     const auto* p = sim_->world().get<sim::Position>(e);
     if (!p) return;
     const int cx = static_cast<int>(p->x.raw() >> 16), cy = static_cast<int>(p->y.raw() >> 16);
@@ -312,7 +339,7 @@ void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
 std::shared_ptr<const Snapshot> Session::snapshot() {
   if (last_ && last_->tick == sim_->tick()) return last_;
   if (sim_->rules()) {   // meccs: a köd az 1. játékos látóteréből (a szimulációé)
-    const sim::PlayerState& p1 = sim_->player(1);
+    const sim::PlayerState& p1 = sim_->player(local_);
     if (!fog_ || sim_->tick() % 6 == 0) {
       auto f = std::make_shared<std::vector<uint8_t>>(p1.visible.size(), 0);
       for (size_t i = 0; i < f->size(); ++i) (*f)[i] = p1.visible[i] ? 255 : (p1.explored[i] ? 128 : 0);
@@ -397,12 +424,12 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     // D41: ami nem az 1. játékosé, az a ködben nem látszik (egység, lövedék); az épület és a lelőhely a legutóbb
     // látott állapotában
     const auto tile_of = [](float px) { return static_cast<int>(std::floor(px / 32.0f)); };
-    if (u.kind == SnapUnit::kUnit && u.owner != 1) {
-      if (!reveal_all_ && (match ? !sim_->is_visible(1, e) : !tile_visible(tile_of(u.x), tile_of(u.y)))) return;
+    if (u.kind == SnapUnit::kUnit && u.owner != local_) {
+      if (!reveal_all_ && (match ? !sim_->is_visible(local_, e) : !tile_visible(tile_of(u.x), tile_of(u.y)))) return;
     } else if (u.kind == SnapUnit::kShot) {
       if (!tile_visible(tile_of(u.x), tile_of(u.y))) return;
     } else if (u.kind == SnapUnit::kBuilding || u.kind == SnapUnit::kResource) {
-      if (u.kind == SnapUnit::kResource || u.owner != 1) {
+      if (u.kind == SnapUnit::kResource || u.owner != local_) {
         if (rect_visible(u.tx, u.ty, u.w, u.h)) {
           remembered_[e] = u;
         } else {
@@ -487,17 +514,19 @@ double SimRunner::now() const {
   return std::chrono::duration<double>(std::chrono::steady_clock::now() - kEpoch).count();
 }
 
-void SimRunner::run_one() {
+bool SimRunner::run_one() {
   std::vector<sim::Command> cmds;
   {
     std::lock_guard<std::mutex> lock(mu_);
-    cmds.swap(pending_);
     if (!cur_) cur_ = s_.snapshot();
+    if (!source_) cmds.swap(pending_);
   }
+  if (source_ && !source_->begin(cmds)) return false;   // hálózat: a következő tick még nincs megerősítve
   fx_scratch_.clear();
   const auto t0 = std::chrono::steady_clock::now();
   auto snap = s_.step(cmds, fx_scratch_);
   const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+  if (source_) source_->end(s_.sim().hash());
   auto pub = std::make_shared<Snapshot>(*snap);   // a közzététel ideje a futtató órája szerint
   pub->published = now();
   std::lock_guard<std::mutex> lock(mu_);
@@ -505,6 +534,7 @@ void SimRunner::run_one() {
   cur_ = std::move(pub);
   if (fx_.size() < 16384) fx_.insert(fx_.end(), fx_scratch_.begin(), fx_scratch_.end());
   if (tick_ms_.size() < 1000000) tick_ms_.push_back(ms);
+  return true;
 }
 
 void SimRunner::step_sync() { run_one(); }
@@ -520,6 +550,8 @@ void SimRunner::loop() {
       continue;
     }
     run_one();
+    // hálózati lemaradás (pl. visszatérés után): több tick egy ütemben, amíg utol nem éri (legfeljebb 4×)
+    for (int k = 0; source_ && k < 3 && source_->backlog() > 2; ++k) run_one();
     const auto t = clock::now();
     if (t < next) {
       std::this_thread::sleep_until(next);
@@ -550,6 +582,10 @@ void SimRunner::stop() {
 }
 
 void SimRunner::post(sim::Command c) {
+  if (source_) {   // hálózat: a lockstep-kliens küldi el (a végrehajtás tickjét a relé adja)
+    source_->submit(std::move(c));
+    return;
+  }
   std::lock_guard<std::mutex> lock(mu_);
   pending_.push_back(std::move(c));
 }

@@ -367,6 +367,7 @@ void Client::on_message(const Bytes& data) {
       if (m->map) m->sim->restore_obstacles(*m->map);
       match_ = std::move(m);
       done_ = next;
+      in_turn_ = 0;
       turns_.clear();
       break;
     }
@@ -419,38 +420,56 @@ void Client::submit(sim::Command c) {
   local_.push_back(std::move(c));
 }
 
+std::vector<sim::Command> Client::begin_tick() {
+  if (!tick_ready()) return {};
+  if (in_turn_ > 0) return {};
+  auto [t, cs] = std::move(turns_.front());
+  turns_.pop_front();
+  if (t != done_) {   // kimaradt forduló: ez nem fordulhat elő megbízható átvitelen
+    error_ = "kimaradt forduló";
+    return {};
+  }
+  return std::move(cs);
+}
+
+void Client::end_tick(uint64_t hash) {
+  if (++in_turn_ < kTicksPerTurn) return;
+  in_turn_ = 0;
+  if (slot_ > 0) {
+    core::ByteWriter w;
+    w.u8(static_cast<uint8_t>(Msg::Hash));
+    w.i64(done_);
+    w.u64(hash);
+    out_.push_back(bytes_of(w));
+  }
+  ++done_;
+  flush_local();
+}
+
+void Client::flush_local() {
+  if (local_.empty()) return;
+  core::ByteWriter w;
+  w.u8(static_cast<uint8_t>(Msg::Cmds));
+  w.i64(done_ + kDelayTurns);
+  for (auto& c : local_) c.tick = (done_ + kDelayTurns) * kTicksPerTurn;
+  write_cmds(w, local_);
+  out_.push_back(bytes_of(w));
+  local_.clear();
+}
+
 int Client::update(int max_turns) {
   if (!match_) return 0;
   sim::Sim& s = *match_->sim;
   int ran = 0;
-  while (ran < max_turns && !turns_.empty()) {
-    auto [t, cs] = std::move(turns_.front());
-    turns_.pop_front();
-    if (t != done_) {   // kimaradt forduló: ez nem fordulhat elő megbízható átvitelen
-      error_ = "kimaradt forduló";
-      return ran;
+  while (ran < max_turns && tick_ready() && error_.empty()) {
+    for (int i = 0; i < kTicksPerTurn && error_.empty(); ++i) {
+      for (const auto& c : begin_tick()) s.queue(c);
+      s.step();
+      end_tick(s.hash());
     }
-    for (const auto& c : cs) s.queue(c);
-    for (int i = 0; i < kTicksPerTurn; ++i) s.step();
-    if (slot_ > 0) {
-      core::ByteWriter w;
-      w.u8(static_cast<uint8_t>(Msg::Hash));
-      w.i64(t);
-      w.u64(s.hash());
-      out_.push_back(bytes_of(w));
-    }
-    ++done_;
     ++ran;
   }
-  if (!local_.empty()) {
-    core::ByteWriter w;
-    w.u8(static_cast<uint8_t>(Msg::Cmds));
-    w.i64(done_ + kDelayTurns);
-    for (auto& c : local_) c.tick = (done_ + kDelayTurns) * kTicksPerTurn;
-    write_cmds(w, local_);
-    out_.push_back(bytes_of(w));
-    local_.clear();
-  }
+  flush_local();
   return ran;
 }
 

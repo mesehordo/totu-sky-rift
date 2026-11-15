@@ -22,6 +22,7 @@
 
 #include "map/pathfinder.hpp"
 #include "script/host.hpp"
+#include "sim/replay.hpp"
 #include "sim/sim.hpp"
 
 namespace totu::client {
@@ -106,6 +107,12 @@ struct Snapshot {
 class Session {
  public:
   bool load(const std::string& content_dir, const std::string& map_path, uint64_t seed, std::string* error);
+  // csak a tartalom (terep, szabályok, nevek) – a hálózati meccs előtt (M10)
+  bool load_content(const std::string& content_dir, std::string* error);
+  // kívül (a hálózati kliensben) felépített meccs átvétele: a pálya és a szimuláció ott él, a munkamenet csak
+  // hivatkozik rájuk (a `match` a munkamenetnél tovább él)
+  void adopt(sim::MatchInstance& match);
+  const map::TerrainTable* terrain_ptr() const { return &terrain_; }
   // bemutató seregek: játékosonként `per_player` egység a pálya két oldalán
   void spawn_demo(int players, int per_player);
   void order_demo_attack();   // mindkét sereg a másik felé indul (méréshez, képpróbához)
@@ -121,6 +128,9 @@ class Session {
   std::string display_name(const std::string& key) const;
   // köd nélkül (--nofog): minden látszik, a pillanatkép nem szűr (D41)
   void set_reveal_all(bool on) { reveal_all_ = on; }
+  // a helyi játékos (M10: hálózaton a kapott hely): az ő szemével látszik a köd, az ő egységei választhatók
+  void set_local_player(uint8_t p) { local_ = p; }
+  uint8_t local_player() const { return local_; }
   // képpróba (M6 5. lépés): két vegyes ursan sereg a pálya közepe két oldalán, támadó mozgással egymásnak
   void battle_demo(int per_side);
 
@@ -138,10 +148,12 @@ class Session {
   void hud_fields(sim::EntityId e, SnapUnit& u);   // a HUD adatai (M8): energia, pajzs, páncél, parancs, állapotok
   map::TerrainTable terrain_;
   std::optional<sim::Rules> rules_;   // a szimuláció előtt jön létre, utána szűnik meg
-  std::optional<map::Map> map_;
+  std::optional<map::Map> own_map_;
+  map::Map* map_ = nullptr;   // a saját vagy az átvett (hálózati) meccsé
   std::unique_ptr<map::NavGrid> nav_;
   std::unique_ptr<map::Pathfinder> pf_;
-  std::unique_ptr<sim::Sim> sim_;
+  std::unique_ptr<sim::Sim> own_sim_;
+  sim::Sim* sim_ = nullptr;
   std::unique_ptr<script::ScriptHost> ai_;
   std::vector<std::unique_ptr<script::ScriptHost>> ais_;   // M9: az új gépi ellenfél játékosonként
   std::string content_dir_;
@@ -153,9 +165,21 @@ class Session {
   // látta (a lerombolt is ott marad, amíg újra oda nem lát)
   std::map<sim::EntityId, SnapUnit> remembered_;
   bool reveal_all_ = false;
+  uint8_t local_ = 1;
   map::NavConfig nav_config_;   // a game.json `navigation` része (H-90)
   bool tile_visible(int x, int y) const;
   bool rect_visible(int x, int y, int w, int h) const;
+};
+
+// A szimuláció tickforrása (M10): hálózati játékban a lockstep-kliens dönti el, léphet-e a következő tick, és milyen
+// parancsokkal; a lépés után megkapja az állapothash-t. Helyi játékban nincs forrás.
+class TickSource {
+ public:
+  virtual ~TickSource() = default;
+  virtual bool begin(std::vector<sim::Command>& cmds) = 0;   // false: a következő tick még nincs megerősítve
+  virtual void end(uint64_t hash) = 0;
+  virtual void submit(sim::Command c) = 0;                    // a helyi játékos parancsa
+  virtual int backlog() const = 0;                            // a megérkezett, még le nem futott fordulók
 };
 
 class SimRunner {
@@ -170,6 +194,7 @@ class SimRunner {
   bool threaded() const { return thread_.joinable(); }
   void step_sync();                  // szinkron mód: egy tick a hívó szálán
   void post(sim::Command c);         // a következő tickben hajtódik végre (c.tick-et a futtató állítja)
+  void set_source(TickSource* src) { source_ = src; }   // hálózati játék (a start előtt)
   void set_paused(bool p) { paused_.store(p); }   // szünet: a szimuláció nem lép (a kép tovább rajzolódik)
   bool paused() const { return paused_.load(); }
 
@@ -181,8 +206,9 @@ class SimRunner {
   static constexpr double kTickSeconds = 1.0 / 30.0;
 
  private:
-  void run_one();
+  bool run_one();
   void loop();
+  TickSource* source_ = nullptr;
   Session& s_;
   std::thread thread_;
   std::atomic<bool> stop_{false};
