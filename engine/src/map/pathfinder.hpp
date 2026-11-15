@@ -52,6 +52,8 @@ class Pathfinder {
   void add_obstacle(TileRect r);
   void remove_obstacle(TileRect r);
   void terrain_changed(TileRect r);
+  // sok akadály egyszerre (meccsindítás, betöltés): ugyanaz az eredmény, mint egyenként, de a hierarchia egyszer épül
+  void add_obstacles(const std::vector<TileRect>& rs);
 
   static NavCell cell_of(Fixed x, Fixed y);              // csempe-koordinátából navcella
   static std::pair<Fixed, Fixed> center_of(NavCell c);   // a navcella közepe csempe-koordinátában

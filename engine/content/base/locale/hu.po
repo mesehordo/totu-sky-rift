@@ -3,6 +3,166 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Name: Magyar\n"
 
+msgctxt "map.csatamezo.name"
+msgid "Csatamező"
+msgstr ""
+
+msgctxt "map.csatamezo.desc"
+msgid "Csapatpálya (4–4): két hosszú vonal, középen nyílt csatatér. A régi csaták romjai között Tűz-elf és Daresh táborok."
+msgstr ""
+
+msgctxt "map.csillag.name"
+msgid "Csillag"
+msgstr ""
+
+msgctxt "map.csillag.desc"
+msgid "Öt sziklakar ágazik a középből – öt völgy, öt bázis. A karok tövében Ghoblin-bányák."
+msgstr ""
+
+msgctxt "map.egszakadas_kratere.name"
+msgid "Az Égszakadás krátere"
+msgstr ""
+
+msgctxt "map.egszakadas_kratere.desc"
+msgid "Óriáskráter a világ közepén, tele csillagérccel; sziklafal védi, nyolc kapuval. A fal előtt Mhonyo és Shrissh-matah őrhelyek."
+msgstr ""
+
+msgctxt "map.fent_es_lent.name"
+msgid "Fent és lent"
+msgstr ""
+
+msgctxt "map.fent_es_lent.desc"
+msgid "Csapatpálya (2–2): az északi és a déli szövetség között folyó, gázlókkal. A gázlóknál Niil-elf révészek."
+msgstr ""
+
+msgctxt "map.gyuruhegy.name"
+msgid "Gyűrűhegy"
+msgstr ""
+
+msgctxt "map.gyuruhegy.desc"
+msgid "Sziklagyűrű öleli a pálya kincses közepét, négy kapuval. A gyűrű előtt Tokla harangkapuk. Döntés: befelé a kincsért, vagy kint, a szomszéd bővítései felé?"
+msgstr ""
+
+msgctxt "map.harmas_folyo.name"
+msgid "Hármas folyó"
+msgstr ""
+
+msgctxt "map.harmas_folyo.desc"
+msgid "Három folyó három szektorra osztja a pályát; minden ágon két gázló. Döntés: a szomszéd felé nyitott, Galóca őrizte gazdag lelőhely, vagy a biztos, de szegényebb saját szektor?"
+msgstr ""
+
+msgctxt "map.haromko.name"
+msgid "Háromkő"
+msgstr ""
+
+msgctxt "map.haromko.desc"
+msgid "Három sziklatorony a közép körül; a meteor a háromszög közepén. Döntés: a középső meteor, vagy a tornyok tövében, Shrissh-matah rúnavárak között húzódó kerülő?"
+msgstr ""
+
+msgctxt "map.hasadek.name"
+msgid "Hasadék"
+msgstr ""
+
+msgctxt "map.hasadek.desc"
+msgid "Középen sziklás hasadék, két szűk hágóval. Döntés: mindkét hágót őrzöd, vagy az egyiket elzárod, és a másikon mész át teljes erővel?"
+msgstr ""
+
+msgctxt "map.hatszog.name"
+msgid "Hatszög"
+msgstr ""
+
+msgctxt "map.hatszog.desc"
+msgid "Hat bázis körben, a szomszédok között patakok – szabad mindenki-mindenki ellen. A patakok mentén gazdag, de két szomszéd által is elérhető lelőhelyek."
+msgstr ""
+
+msgctxt "map.het_ut.name"
+msgid "Hét Út"
+msgstr ""
+
+msgctxt "map.het_ut.desc"
+msgid "Hét bázis, hét út a középső kráter felé – a wullof dalok szerint itt találkoznak a vándorok. Az utak mentén szellemtotemek."
+msgstr ""
+
+msgctxt "map.jeghid.name"
+msgid "Jéghíd"
+msgstr ""
+
+msgctxt "map.jeghid.desc"
+msgid "Befagyott tó a pálya közepén; a partok mentén és a szárazföldi hidakon át lehet támadni. A partokon Pinguu és Tokla táborok – a mélyben a vadon lényei."
+msgstr ""
+
+msgctxt "map.keresztut.name"
+msgid "Keresztút"
+msgstr ""
+
+msgctxt "map.keresztut.desc"
+msgid "Négy tó között kereszt alakú utak – a kereszteződésben a meteor. A tavak között Mhonyo kovácsműhelyek; a gazdag lelőhely a szomszéd felé nyitott."
+msgstr ""
+
+msgctxt "map.ket_part.name"
+msgid "Két part"
+msgstr ""
+
+msgctxt "map.ket_part.desc"
+msgid "Kis, gyors pálya: egy folyó választja el a bázisokat, három gázlóval. Döntés: a középső gázlót tartod, vagy a szélsőkön kerülsz a Zhan-zhama tanyák mellett?"
+msgstr ""
+
+msgctxt "map.kraterfold.name"
+msgid "Kráterföld"
+msgstr ""
+
+msgctxt "map.kraterfold.desc"
+msgid "Nyílt síkság, a közepén gazdag meteorkráterrel. Döntés: a kráter gyors elfoglalása, vagy a daresh-táborok őrizte, gazdag oldalsó lelőhelyek?"
+msgstr ""
+
+msgctxt "map.labirintus.name"
+msgid "Labirintus"
+msgstr ""
+
+msgctxt "map.labirintus.desc"
+msgid "Sziklafalak útvesztője – a felderítés itt életet ment. A zugokban Pinguu és Tokla táborok."
+msgstr ""
+
+msgctxt "map.mocsarvidek.name"
+msgid "Mocsárvidék"
+msgstr ""
+
+msgctxt "map.mocsarvidek.desc"
+msgid "Csapatpálya (3–3): ingoványos középföld, sok kis tó. A tavak között Nila-uchana és Niil-elf telepek."
+msgstr ""
+
+msgctxt "map.negy_sarok.name"
+msgid "Négy sarok"
+msgstr ""
+
+msgctxt "map.negy_sarok.desc"
+msgid "Klasszikus négyes: a sarkokban bázisok, középen nyílt csatatér kráterrel. Döntés: korai terjeszkedés a kakasudvarok felé, vagy azonnal a kráter?"
+msgstr ""
+
+msgctxt "map.nyolc_tuz.name"
+msgid "Nyolc tűz"
+msgstr ""
+
+msgctxt "map.nyolc_tuz.desc"
+msgid "Nyolc tábortűz egy nagy körben – a legnagyobb mindenki-mindenki ellen pálya. A szomszédok között gazdag, őrzött lelőhelyek."
+msgstr ""
+
+msgctxt "map.osi_erdo.name"
+msgid "Ősi erdő"
+msgstr ""
+
+msgctxt "map.osi_erdo.desc"
+msgid "Sűrű rengeteg, keskeny ösvények – lesállásokhoz és rajtaütésekhez. Döntés: utat vágsz az erdőn át, vagy a Tendüür-ligetek mellett kerülsz?"
+msgstr ""
+
+msgctxt "map.tavak_videke.name"
+msgid "Tavak vidéke"
+msgstr ""
+
+msgctxt "map.tavak_videke.desc"
+msgid "Apró tavak és gázlók szabdalt vidéke; sok kis csata, sok kerülőút. A tóparton Nila-uchana és Niil-elf táborok, a szomszédok között gazdag lelőhely."
+msgstr ""
+
 msgctxt "unit.dar_fullanclandzsas.name"
 msgid "Fullánclándzsás"
 msgstr ""

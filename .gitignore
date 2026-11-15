@@ -50,4 +50,5 @@ __pycache__/
 !/tools/gen_fixed_tables.py
 !/tools/fejlesztoi_kornyezet.ps1
 !/tools/leltar_kapu.py
+!/tools/palya_export.py
 /novellak/

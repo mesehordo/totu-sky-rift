@@ -174,12 +174,13 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     playing.push_back(static_cast<uint8_t>(i + 1));
   }
   // nyersanyagok: előbb a lelőhelyek, majd a fák (a pálya sorrendjében)
+  std::vector<map::TileRect> obstacles;
   auto add_node = [&](int kind, int x, int y, int size, int amount) {
     const EntityId e = world_.create();
     world_.add(e, Position{Fixed::from_int(x) + half(size), Fixed::from_int(y) + half(size)});
     world_.add(e, ResourceNode{static_cast<uint8_t>(kind), static_cast<int16_t>(x), static_cast<int16_t>(y),
                                static_cast<int16_t>(size), amount});
-    if (nav_) nav_->add_obstacle({x, y, size, size});
+    obstacles.push_back({x, y, size, size});
   };
   for (const map::MapResource& r : m.objects().resources) {
     const int kind = resource_index(r.kind);
@@ -187,6 +188,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     add_node(kind, r.x, r.y, r.size, r.amount >= 0 ? r.amount : rules_->resources[static_cast<size_t>(kind)].node_amount);
   }
   for (const auto& [x, y] : m.objects().trees) add_node(kWood, x, y, 1, rules_->resources[kWood].node_amount);
+  if (nav_) nav_->add_obstacles(obstacles);   // egyszerre: a nagy erdős pályákon is gyors indulás
   // játékosonként a főépület és a kezdő egységek (a régi játék szerint: a pálya közepe felé, ívben)
   const Fixed cx = half(m.width()), cy = half(m.height());
   for (const uint8_t owner : playing) {
@@ -231,8 +233,10 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
 void Sim::restore_obstacles(map::Map& m) {
   map_ = &m;
   if (!nav_ || !rules_) return;
-  world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { nav_->add_obstacle({n.tx, n.ty, n.size, n.size}); });
-  world_.pool<Building>().each([&](EntityId, const Building& b) { nav_->add_obstacle({b.tx, b.ty, b.w, b.h}); });
+  std::vector<map::TileRect> obstacles;
+  world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { obstacles.push_back({n.tx, n.ty, n.size, n.size}); });
+  world_.pool<Building>().each([&](EntityId, const Building& b) { obstacles.push_back({b.tx, b.ty, b.w, b.h}); });
+  nav_->add_obstacles(obstacles);
   // nincs újratervezés: a mentett utak a mentés pillanatának akadályaival készültek, érvényesek (ugyanúgy folytatódik)
   // a mentett pályaváltozások (D35: eső → sár, hó → jég) újraalkalmazása a friss (még változatlan) pályán; a
   // jelöltlistát (`mud_patches_`/`ice_patches_`) a betöltés már feltöltötte ugyanabban a sorrendben

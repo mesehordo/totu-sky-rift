@@ -3,6 +3,166 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Name: English\n"
 
+msgctxt "map.csatamezo.name"
+msgid "Csatamező"
+msgstr "Battlefield"
+
+msgctxt "map.csatamezo.desc"
+msgid "Csapatpálya (4–4): két hosszú vonal, középen nyílt csatatér. A régi csaták romjai között Tűz-elf és Daresh táborok."
+msgstr "Team map (4v4): two long lines facing each other across an open battlefield."
+
+msgctxt "map.csillag.name"
+msgid "Csillag"
+msgstr "Star"
+
+msgctxt "map.csillag.desc"
+msgid "Öt sziklakar ágazik a középből – öt völgy, öt bázis. A karok tövében Ghoblin-bányák."
+msgstr "Five rocky arms branch out from the centre – five valleys, five bases."
+
+msgctxt "map.egszakadas_kratere.name"
+msgid "Az Égszakadás krátere"
+msgstr "The Skyfall Crater"
+
+msgctxt "map.egszakadas_kratere.desc"
+msgid "Óriáskráter a világ közepén, tele csillagérccel; sziklafal védi, nyolc kapuval. A fal előtt Mhonyo és Shrissh-matah őrhelyek."
+msgstr "A giant crater full of star-ore at the heart of the world; guarded by cliffs with eight gates."
+
+msgctxt "map.fent_es_lent.name"
+msgid "Fent és lent"
+msgstr "North versus South"
+
+msgctxt "map.fent_es_lent.desc"
+msgid "Csapatpálya (2–2): az északi és a déli szövetség között folyó, gázlókkal. A gázlóknál Niil-elf révészek."
+msgstr "Team map (2v2): a river with fords between the northern and southern alliances."
+
+msgctxt "map.gyuruhegy.name"
+msgid "Gyűrűhegy"
+msgstr "Ring Mountain"
+
+msgctxt "map.gyuruhegy.desc"
+msgid "Sziklagyűrű öleli a pálya kincses közepét, négy kapuval. A gyűrű előtt Tokla harangkapuk. Döntés: befelé a kincsért, vagy kint, a szomszéd bővítései felé?"
+msgstr "A ring of cliffs guards the rich centre, with four gates."
+
+msgctxt "map.harmas_folyo.name"
+msgid "Hármas folyó"
+msgstr "Three Rivers"
+
+msgctxt "map.harmas_folyo.desc"
+msgid "Három folyó három szektorra osztja a pályát; minden ágon két gázló. Döntés: a szomszéd felé nyitott, Galóca őrizte gazdag lelőhely, vagy a biztos, de szegényebb saját szektor?"
+msgstr "Three rivers cut the map into three sectors, each with two fords."
+
+msgctxt "map.haromko.name"
+msgid "Háromkő"
+msgstr "Three Stones"
+
+msgctxt "map.haromko.desc"
+msgid "Három sziklatorony a közép körül; a meteor a háromszög közepén. Döntés: a középső meteor, vagy a tornyok tövében, Shrissh-matah rúnavárak között húzódó kerülő?"
+msgstr "Three rock towers around the centre; the meteor sits in the middle of the triangle."
+
+msgctxt "map.hasadek.name"
+msgid "Hasadék"
+msgstr "The Rift"
+
+msgctxt "map.hasadek.desc"
+msgid "Középen sziklás hasadék, két szűk hágóval. Döntés: mindkét hágót őrzöd, vagy az egyiket elzárod, és a másikon mész át teljes erővel?"
+msgstr "A rocky rift in the middle with two narrow passes – hold the passes, hold the map."
+
+msgctxt "map.hatszog.name"
+msgid "Hatszög"
+msgstr "Hexagon"
+
+msgctxt "map.hatszog.desc"
+msgid "Hat bázis körben, a szomszédok között patakok – szabad mindenki-mindenki ellen. A patakok mentén gazdag, de két szomszéd által is elérhető lelőhelyek."
+msgstr "Six bases in a circle with streams between neighbours – a true free-for-all."
+
+msgctxt "map.het_ut.name"
+msgid "Hét Út"
+msgstr "Seven Roads"
+
+msgctxt "map.het_ut.desc"
+msgid "Hét bázis, hét út a középső kráter felé – a wullof dalok szerint itt találkoznak a vándorok. Az utak mentén szellemtotemek."
+msgstr "Seven bases, seven roads leading to the central crater."
+
+msgctxt "map.jeghid.name"
+msgid "Jéghíd"
+msgstr "Ice Bridge"
+
+msgctxt "map.jeghid.desc"
+msgid "Befagyott tó a pálya közepén; a partok mentén és a szárazföldi hidakon át lehet támadni. A partokon Pinguu és Tokla táborok – a mélyben a vadon lényei."
+msgstr "A frozen lake in the centre; attack along the shores or across the land bridges."
+
+msgctxt "map.keresztut.name"
+msgid "Keresztút"
+msgstr "Crossroads"
+
+msgctxt "map.keresztut.desc"
+msgid "Négy tó között kereszt alakú utak – a kereszteződésben a meteor. A tavak között Mhonyo kovácsműhelyek; a gazdag lelőhely a szomszéd felé nyitott."
+msgstr "Cross-shaped roads between four lakes – the meteor waits at the crossing."
+
+msgctxt "map.ket_part.name"
+msgid "Két part"
+msgstr "Two Shores"
+
+msgctxt "map.ket_part.desc"
+msgid "Kis, gyors pálya: egy folyó választja el a bázisokat, három gázlóval. Döntés: a középső gázlót tartod, vagy a szélsőkön kerülsz a Zhan-zhama tanyák mellett?"
+msgstr "Small, fast map: a river splits the bases, with three fords."
+
+msgctxt "map.kraterfold.name"
+msgid "Kráterföld"
+msgstr "Crater Fields"
+
+msgctxt "map.kraterfold.desc"
+msgid "Nyílt síkság, a közepén gazdag meteorkráterrel. Döntés: a kráter gyors elfoglalása, vagy a daresh-táborok őrizte, gazdag oldalsó lelőhelyek?"
+msgstr "Open plains with a rich meteor crater in the middle."
+
+msgctxt "map.labirintus.name"
+msgid "Labirintus"
+msgstr "Labyrinth"
+
+msgctxt "map.labirintus.desc"
+msgid "Sziklafalak útvesztője – a felderítés itt életet ment. A zugokban Pinguu és Tokla táborok."
+msgstr "A maze of cliff walls – scouting saves lives here."
+
+msgctxt "map.mocsarvidek.name"
+msgid "Mocsárvidék"
+msgstr "Marshlands"
+
+msgctxt "map.mocsarvidek.desc"
+msgid "Csapatpálya (3–3): ingoványos középföld, sok kis tó. A tavak között Nila-uchana és Niil-elf telepek."
+msgstr "Team map (3v3): a boggy middle ground full of small pools."
+
+msgctxt "map.negy_sarok.name"
+msgid "Négy sarok"
+msgstr "Four Corners"
+
+msgctxt "map.negy_sarok.desc"
+msgid "Klasszikus négyes: a sarkokban bázisok, középen nyílt csatatér kráterrel. Döntés: korai terjeszkedés a kakasudvarok felé, vagy azonnal a kráter?"
+msgstr "A classic for four: bases in the corners, an open battlefield and crater in the middle."
+
+msgctxt "map.nyolc_tuz.name"
+msgid "Nyolc tűz"
+msgstr "Eight Fires"
+
+msgctxt "map.nyolc_tuz.desc"
+msgid "Nyolc tábortűz egy nagy körben – a legnagyobb mindenki-mindenki ellen pálya. A szomszédok között gazdag, őrzött lelőhelyek."
+msgstr "Eight campfires in a great circle – the biggest free-for-all map."
+
+msgctxt "map.osi_erdo.name"
+msgid "Ősi erdő"
+msgstr "Elder Forest"
+
+msgctxt "map.osi_erdo.desc"
+msgid "Sűrű rengeteg, keskeny ösvények – lesállásokhoz és rajtaütésekhez. Döntés: utat vágsz az erdőn át, vagy a Tendüür-ligetek mellett kerülsz?"
+msgstr "A dense old forest with narrow trails – made for ambushes and raids."
+
+msgctxt "map.tavak_videke.name"
+msgid "Tavak vidéke"
+msgstr "Lakelands"
+
+msgctxt "map.tavak_videke.desc"
+msgid "Apró tavak és gázlók szabdalt vidéke; sok kis csata, sok kerülőút. A tóparton Nila-uchana és Niil-elf táborok, a szomszédok között gazdag lelőhely."
+msgstr "Land broken by many small lakes; many skirmishes, many detours."
+
 msgctxt "unit.dar_fullanclandzsas.name"
 msgid "Fullánclándzsás"
 msgstr ""

@@ -225,6 +225,30 @@ void Pathfinder::add_obstacle(TileRect r) {
   update_area(r);
 }
 
+void Pathfinder::add_obstacles(const std::vector<TileRect>& rs) {
+  if (rs.empty()) return;
+  // a klasztercímkék csak a rács végállapotától függenek: elég az érintett klasztereket a végén egyszer újracímkézni
+  const int cap = nav_.config().clearance_cap;
+  std::vector<uint8_t> dirty(static_cast<size_t>(ccx_ * ccy_), 0);
+  for (const TileRect& r : rs) {
+    nav_.add_obstacle(r);
+    const int x0 = std::max(0, r.x * kNavPerTile - cap - 1), y0 = std::max(0, r.y * kNavPerTile - cap - 1);
+    const int x1 = std::min(nav_.width() - 1, (r.x + r.w) * kNavPerTile + cap);
+    const int y1 = std::min(nav_.height() - 1, (r.y + r.h) * kNavPerTile + cap);
+    for (int cy = y0 / cs_; cy <= y1 / cs_; ++cy) {
+      for (int cx = x0 / cs_; cx <= x1 / cs_; ++cx) dirty[static_cast<size_t>(cy * ccx_ + cx)] = 1;
+    }
+  }
+  for (int g = 0; g < nav_.classes(); ++g) {
+    for (int s = 0; s < sizes_; ++s) {
+      for (int c = 0; c < ccx_ * ccy_; ++c) {
+        if (dirty[static_cast<size_t>(c)]) label_cluster(g, s, c);
+      }
+      rebuild_graph(g, s);
+    }
+  }
+}
+
 void Pathfinder::remove_obstacle(TileRect r) {
   nav_.remove_obstacle(r);
   update_area(r);

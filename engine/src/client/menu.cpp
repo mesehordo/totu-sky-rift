@@ -76,6 +76,13 @@ int index_of(const T (&arr)[N], T v) {
 
 int wrap_index(int i, int dir, int n) { return ((i < 0 ? 0 : i + dir) % n + n) % n; }
 
+// a pálya neve / leírása a .po-ból (`map.<fájlnév>.name|desc`); ha nincs, a fájlnév / a `_leiras`
+std::string map_text(const Locale& loc, const MapInfo& m, const char* field, const std::string& fallback) {
+  const std::string key = "map." + m.name + "." + field;
+  std::string s = loc.tr(key);
+  return s == key ? fallback : s;
+}
+
 }  // namespace
 
 // --- tartalom -------------------------------------------------------------------------------------------------------
@@ -337,18 +344,21 @@ void Menu::layout_skirmish() {
   panels_.push_back({lp, 200, false});
   text(lp.x + k(10), lp.y + k(6), lw - k(20), tr("ui.skirmish.map"), MenuText::Med, MenuText::Gold);
   const int nmaps = static_cast<int>(std::min<size_t>(maps_.size(), 10));
+  // 10-nél több pályánál görgetett ablak: a kiválasztott pálya körül (a szélső sorra kattintva tovább gördül)
+  const int first = std::clamp(static_cast<int>(sk_.map) - nmaps / 2, 0, static_cast<int>(maps_.size()) - nmaps);
   for (int i = 0; i < nmaps; ++i) {
-    const MapInfo& m = maps_[static_cast<size_t>(i)];
+    const int idx = first + i;
+    const MapInfo& m = maps_[static_cast<size_t>(idx)];
     MenuWidget& mw = add(MenuWidget::Kind::MapRow, {lx + k(6), top + k(32) + static_cast<float>(i) * k(26), lw - k(12), k(24)},
-                         "[" + std::to_string(m.players) + "]  " + m.name, MenuAct::PickMap, i);
-    mw.selected = static_cast<size_t>(i) == sk_.map;
+                         "[" + std::to_string(m.players) + "]  " + map_text(loc_, m, "name", m.name), MenuAct::PickMap, idx);
+    mw.selected = static_cast<size_t>(idx) == sk_.map;
   }
   float ty = top + k(32) + static_cast<float>(nmaps) * k(26) + k(10);
   if (maps_.empty()) {
     text(lp.x + k(10), ty, lw - k(20), tr("ui.skirmish.no_map"), MenuText::Small, MenuText::Warn);
   } else {
     const MapInfo& md = maps_[sk_.map];
-    text(lp.x + k(10), ty, lw - k(20), md.name, MenuText::Med, MenuText::Gold);
+    text(lp.x + k(10), ty, lw - k(20), map_text(loc_, md, "name", md.name), MenuText::Med, MenuText::Gold);
     ty += k(24);
     text(lp.x + k(10), ty, lw - k(20),
          loc_.tr("ui.skirmish.map_info", {{"n", std::to_string(md.players)}, {"w", std::to_string(md.width)},
@@ -356,7 +366,7 @@ void Menu::layout_skirmish() {
          MenuText::Tiny, MenuText::Dim);
     ty += k(22);
     const int lines = std::max(1, static_cast<int>((lp.y + lp.h - ty - k(6)) / k(18)));
-    text(lp.x + k(10), ty, lw - k(20), md.desc, MenuText::Tiny, MenuText::Text, false, lines);
+    text(lp.x + k(10), ty, lw - k(20), map_text(loc_, md, "desc", md.desc), MenuText::Tiny, MenuText::Text, false, lines);
   }
   // ---- játékoshelyek: #, résztvevő, nép, szín (a régi oszlopok közül, ami a MatchSetup-ban megvan)
   const float weights[] = {24, 167, 156, 122};

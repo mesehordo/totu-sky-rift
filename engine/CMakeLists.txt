@@ -88,7 +88,7 @@ enable_testing()
 add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp tests/test_content.cpp tests/test_loader.cpp tests/test_sim.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
-  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp tests/test_elements.cpp tests/test_heroes.cpp tests/test_wullof.cpp tests/test_allies.cpp tests/test_capture.cpp tests/test_roster.cpp tests/test_kozos_kepessegek.cpp tests/test_leltar_maradek.cpp tests/test_lefedettseg.cpp tests/factions/test_imperium.cpp tests/factions/test_ooni.cpp tests/factions/test_croftian.cpp tests/factions/test_hukucha.cpp tests/factions/test_elves.cpp tests/factions/test_micelia.cpp tests/test_menu.cpp tests/test_hud.cpp src/client/session.cpp
+  tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp tests/test_elements.cpp tests/test_heroes.cpp tests/test_wullof.cpp tests/test_allies.cpp tests/test_capture.cpp tests/test_roster.cpp tests/test_kozos_kepessegek.cpp tests/test_leltar_maradek.cpp tests/test_lefedettseg.cpp tests/factions/test_imperium.cpp tests/factions/test_ooni.cpp tests/factions/test_croftian.cpp tests/factions/test_hukucha.cpp tests/factions/test_elves.cpp tests/factions/test_micelia.cpp tests/test_menu.cpp tests/test_hud.cpp tests/test_palyak.cpp src/client/session.cpp
   src/client/session.cpp src/client/i18n.cpp src/client/settings.cpp src/client/menu.cpp src/client/hud_layout.cpp src/client/hud_model.cpp)
 target_include_directories(totu_tests PRIVATE tests)   # a népmodulok próbái (tests/factions) a közös segédekhez
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
@@ -144,6 +144,6 @@ if(TOTU_CLIENT)
   target_link_libraries(totu PRIVATE totu_core totu_render totu_options SDL3::SDL3 Threads::Threads)
   target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets"
                                           TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
-                                          TOTU_MAPS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/data/maps")
+                                          TOTU_MAPS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content/base/maps")
   add_test(NAME client_version COMMAND totu --version)
 endif()
