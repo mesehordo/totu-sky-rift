@@ -45,6 +45,9 @@ struct Replay {
   // csomagon belüli útvonal), így a visszajátszás a gép kódjával együtt önálló
   std::vector<AiSlot> ai;
   std::vector<ScriptFile> ai_files;
+  // H-15 (6-os változat, ha bármelyik eltér az alapértéktől): a meccsbeállítás többi része
+  bool upkeep = true, camps = false;
+  uint8_t fog = 0, daytime = 2;   // MatchSetup::Fog, MatchSetup::Daytime
   std::vector<Checkpoint> checkpoints;
 };
 

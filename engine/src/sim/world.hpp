@@ -34,6 +34,10 @@ concept Serializable = requires(const T& t, core::ByteWriter& w, core::ByteReade
   { T::load(r) } -> std::same_as<T>;
 };
 
+// a betöltés felső korlátai (sérült mentés ellen): darabszám és a legnagyobb azonosító (H-35: a 0 sosem jön létre)
+constexpr uint32_t kMaxLoadCount = 1u << 22;
+constexpr EntityId kMaxEntityId = 0xFFFF0000u;
+
 class PoolBase {
  public:
   virtual ~PoolBase() = default;
@@ -43,6 +47,7 @@ class PoolBase {
   virtual void save(core::ByteWriter& w) const = 0;
   virtual bool load(core::ByteReader& r) = 0;
   virtual void clear() = 0;
+  virtual bool ids_within(const std::vector<EntityId>& alive) const = 0;
 };
 
 template <class T>
@@ -92,6 +97,7 @@ class Pool final : public PoolBase {
   bool load(core::ByteReader& r) override {
     clear();
     const uint32_t n = r.u32();
+    if (n > kMaxLoadCount) return false;   // H-91: sérült darabszám
     if constexpr (Serializable<T>) {
       for (uint32_t i = 0; i < n && r.ok(); ++i) {
         const EntityId id = r.u32();
@@ -105,6 +111,10 @@ class Pool final : public PoolBase {
     return r.ok();
   }
   void clear() override { ids_.clear(); data_.clear(); }
+  // H-34: minden komponens élő entitáshoz tartozik (mindkét lista rendezett)
+  bool ids_within(const std::vector<EntityId>& alive) const override {
+    return std::includes(alive.begin(), alive.end(), ids_.begin(), ids_.end());
+  }
 
   // Bejárás azonosító szerint növekvő sorrendben: f(EntityId, T&).
   template <class F>
@@ -124,6 +134,7 @@ class Pool final : public PoolBase {
 class World {
  public:
   EntityId create() {
+    if (last_id_ >= kMaxEntityId) last_id_ = kMaxEntityId - 1;   // H-35: soha nem fordul át 0-ra (gyakorlatban elérhetetlen)
     const EntityId id = ++last_id_;
     alive_.push_back(id);   // növekvő, tehát rendezett marad
     return id;
@@ -199,13 +210,22 @@ class World {
     pending_.clear();
     last_id_ = r.u32();
     const uint32_t n = r.u32();
+    if (n > kMaxLoadCount || last_id_ > kMaxEntityId) return false;   // H-91, H-35: sérült darabszám, kifutó azonosító
     alive_.clear();
     for (uint32_t i = 0; i < n && r.ok(); ++i) alive_.push_back(r.u32());
     if (r.u32() != pools_.size()) return false;
     for (size_t i = 0; i < pools_.size(); ++i) {
       if (r.str() != names_[i] || !pools_[i]->load(r)) return false;
     }
-    return r.ok() && std::is_sorted(alive_.begin(), alive_.end());
+    if (!r.ok()) return false;
+    // H-10: szigorúan növekvő, nem 0, legfeljebb az utolsó kiosztott azonosító; H-34: árva komponens nincs
+    for (size_t i = 0; i < alive_.size(); ++i) {
+      if (alive_[i] == 0 || alive_[i] > last_id_ || (i > 0 && alive_[i] <= alive_[i - 1])) return false;
+    }
+    for (const auto& p : pools_) {
+      if (!p->ids_within(alive_)) return false;
+    }
+    return true;
   }
   EntityId last_id() const { return last_id_; }
   const std::vector<std::string>& component_names() const { return names_; }

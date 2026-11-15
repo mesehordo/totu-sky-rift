@@ -8,6 +8,7 @@
 
 #include "check.hpp"
 #include "match_util.hpp"
+#include "sim/replay.hpp"
 
 #include <optional>
 
@@ -211,4 +212,61 @@ TEST_CASE("hibajegyzek H-03: a fofepuletnel kisebb palya elutasitva, osszeomlas 
   setup.factions = {"ursan", "ursan"};
   std::string err;
   CHECK(!s.setup_match(*mp, setup, &err));
+}
+
+TEST_CASE("hibajegyzek H-27 H-28 H-29: a hash a nepet, a fuggo parancsokat es a palya-blokkolast is tartalmazza") {
+  Match a("BUILD-ALAP"), b("BUILD-ALAP");
+  CHECK(a.sim->hash() == b.sim->hash());
+  b.sim->player_mut(2).faction = "wullof";   // csak a nép más
+  CHECK(a.sim->hash() != b.sim->hash());
+  b.sim->player_mut(2).faction = a.sim->player(2).faction;
+  CHECK(a.sim->hash() == b.sim->hash());
+  auto c = cmd(sim::Command::Kind::Stop, 0, b.sim->tick() + 100);   // jövőbeli parancs a sorban
+  b.sim->queue(c);
+  CHECK(a.sim->hash() != b.sim->hash());
+  Match d("BUILD-ALAP"), e("BUILD-ALAP");
+  auto blk = cmd(sim::Command::Kind::Block, 0, e.sim->tick());
+  blk.rx = 20; blk.ry = 2; blk.rw = 2; blk.rh = 2; blk.flag = 1;
+  e.sim->queue(blk);
+  d.run(1);
+  e.run(1);
+  CHECK(d.sim->hash() != e.sim->hash());
+}
+
+TEST_CASE("hibajegyzek H-98 H-33 H-10: a serult mentes elutasitva, az allapot valtozatlan") {
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  m.run(30);
+  const uint64_t h0 = s.hash();
+  auto good = s.save();
+  auto bad = good;
+  bad.resize(bad.size() / 2);   // csonka mentés
+  CHECK(!s.load(bad));
+  CHECK(s.hash() == h0);
+  auto noise = good;
+  for (size_t i = 40; i < noise.size(); i += 97) noise[i] ^= 0x5A;   // szétszórt bájthibák
+  if (!s.load(noise)) CHECK(s.hash() == h0);
+  CHECK(s.load(good) && s.hash() == h0);
+}
+
+TEST_CASE("hibajegyzek H-15 H-88 H-06: a visszajatszas a teljes meccsbeallitast hordozza; a tul hosszu elutasitva") {
+  sim::Replay r;
+  r.seed = 3;
+  r.ticks = 30;
+  r.checkpoint_every = 10;
+  r.factions = {"ursan", "wullof"};
+  r.upkeep = false;
+  r.camps = true;
+  r.fog = 2;
+  r.daytime = 0;
+  const auto back = sim::decode(sim::encode(r));
+  CHECK(back.has_value());
+  if (back) CHECK(!back->upkeep && back->camps && back->fog == 2 && back->daytime == 0);
+  sim::Replay big = r;
+  big.ticks = 30LL * 3600 * 30 * 100;   // 100 óra
+  CHECK(!sim::decode(sim::encode(big)).has_value());
+  sim::Replay empty;   // üres felvétel: nincs ellenőrzőpont, nincs összeomlás
+  empty.ticks = 0;
+  empty.checkpoint_every = 1;
+  CHECK(sim::decode(sim::encode(empty)).has_value());
 }

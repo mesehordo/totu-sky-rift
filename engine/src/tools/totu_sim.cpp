@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
     if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
     std::printf("rögzítve: %s – %lld tick, %zu parancs, %zu ellenőrzőpont, végső hash 0x%016llx (%.1f ms)\n", argv[2],
                 static_cast<long long>(r.ticks), r.commands.size(), r.checkpoints.size(),
-                static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
+                static_cast<unsigned long long>(r.checkpoints.empty() ? 0 : r.checkpoints.back().hash), ms);
     return 0;
   }
   if (argc >= 4 && std::strcmp(argv[1], "scripted") == 0) {
@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
     if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
     std::printf("rögzítve: %s – %lld tick, %zu ellenőrzőpont, végső hash 0x%016llx (%.1f ms)\n", argv[2],
                 static_cast<long long>(r.ticks), r.checkpoints.size(),
-                static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
+                static_cast<unsigned long long>(r.checkpoints.empty() ? 0 : r.checkpoints.back().hash), ms);
     return 0;
   }
   const char* content = arg_str(argc, argv, "--content", TOTU_CONTENT_DIR);
@@ -159,7 +159,7 @@ int main(int argc, char** argv) {
     if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
     std::printf("rögzítve: %s – %lld tick, %zu parancs, %zu ellenőrzőpont, végső hash 0x%016llx (%.1f ms)\n", argv[2],
                 static_cast<long long>(r.ticks), r.commands.size(), r.checkpoints.size(),
-                static_cast<unsigned long long>(r.checkpoints.back().hash), ms);
+                static_cast<unsigned long long>(r.checkpoints.empty() ? 0 : r.checkpoints.back().hash), ms);
     return 0;
   }
   if (argc >= 2 && std::strcmp(argv[1], "bench") == 0) {
@@ -200,7 +200,7 @@ int main(int argc, char** argv) {
     if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
     std::printf("rögzítve: %s – %lld tick, %zu ellenőrzőpont, végső hash 0x%016llx\n", argv[2],
                 static_cast<long long>(r.ticks), r.checkpoints.size(),
-                static_cast<unsigned long long>(r.checkpoints.back().hash));
+                static_cast<unsigned long long>(r.checkpoints.empty() ? 0 : r.checkpoints.back().hash));
     return 0;
   }
   if (argc >= 4 && std::strcmp(argv[1], "m7golden") == 0) {   // golden M7: vegyes népek, az adatvezérelt gép (ai_nep.lua)
@@ -225,7 +225,7 @@ int main(int argc, char** argv) {
     if (!write_file(argv[2], sim::encode(r))) { std::fprintf(stderr, "nem írható: %s\n", argv[2]); return 2; }
     std::printf("rögzítve: %s – %lld tick, %zu ellenőrzőpont, végső hash 0x%016llx\n", argv[2],
                 static_cast<long long>(r.ticks), r.checkpoints.size(),
-                static_cast<unsigned long long>(r.checkpoints.back().hash));
+                static_cast<unsigned long long>(r.checkpoints.empty() ? 0 : r.checkpoints.back().hash));
     return 0;
   }
   if (argc >= 2 && std::strcmp(argv[1], "aibatch") == 0) {   // M9 kapu: tömeges gép–gép meccsek, elakadás-észlelés
@@ -308,7 +308,7 @@ int main(int argc, char** argv) {
     }
     if (v.ok) {
       std::printf("EGYEZIK: %zu ellenőrzőpont, végső hash 0x%016llx\n", v.checked,
-                  static_cast<unsigned long long>(r->checkpoints.back().hash));
+                  static_cast<unsigned long long>(r->checkpoints.empty() ? 0 : r->checkpoints.back().hash));
       return 0;
     }
     std::printf("ELTÉR: %s", v.error.c_str());

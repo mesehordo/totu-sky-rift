@@ -271,6 +271,15 @@ void Sim::restore_obstacles(map::Map& m) {
   world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { obstacles.push_back({n.tx, n.ty, n.size, n.size}); });
   world_.pool<Building>().each([&](EntityId, const Building& b) { obstacles.push_back({b.tx, b.ty, b.w, b.h}); });
   nav_->add_obstacles(obstacles);
+  for (const auto& op : nav_ops_) {   // a mentett Block/Gate parancsok, a kiadás sorrendjében (H-29)
+    const map::TileRect rc{op[1], op[2], op[3], op[4]};
+    if (op[0] == 0) {
+      if (op[5] != 0) nav_->add_obstacle(rc);
+      else nav_->remove_obstacle(rc);
+    } else {
+      nav_->set_gate(rc, static_cast<uint8_t>(op[5]));
+    }
+  }
   // nincs újratervezés: a mentett utak a mentés pillanatának akadályaival készültek, érvényesek (ugyanúgy folytatódik)
   // a mentett pályaváltozások (D35: eső → sár, hó → jég) újraalkalmazása a friss (még változatlan) pályán; a
   // jelöltlistát (`mud_patches_`/`ice_patches_`) a betöltés már feltöltötte ugyanabban a sorrendben

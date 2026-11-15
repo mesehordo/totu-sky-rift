@@ -101,6 +101,7 @@ void Sim::navigation_changed() {
 
 void Sim::nav_block(int x, int y, int w, int h, bool add) {
   if (!nav_) return;
+  nav_ops_.push_back({0, x, y, w, h, add ? 1 : 0});   // H-29: a hash és a mentés része
   if (add) nav_->add_obstacle({x, y, w, h});
   else nav_->remove_obstacle({x, y, w, h});
   navigation_changed();
@@ -108,6 +109,7 @@ void Sim::nav_block(int x, int y, int w, int h, bool add) {
 
 void Sim::nav_gate(int x, int y, int w, int h, uint8_t mask) {
   if (!nav_) return;
+  nav_ops_.push_back({1, x, y, w, h, mask});
   nav_->set_gate({x, y, w, h}, mask);
   navigation_changed();
 }

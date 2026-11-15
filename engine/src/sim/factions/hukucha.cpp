@@ -54,6 +54,7 @@ struct PondMap {
     p.w = r.i32(); p.h = r.i32();
     const std::string s = r.str();
     p.owner.assign(s.begin(), s.end());
+    if (p.w < 0 || p.h < 0 || p.owner.size() != static_cast<size_t>(p.w) * static_cast<size_t>(p.h)) p = PondMap{};   // H-92: sérült méret
     return p;
   }
 };
@@ -83,7 +84,7 @@ struct PondFlood {
     for (uint32_t k = 0; k < n && r.ok(); ++k) {
       const int32_t i = r.i32();
       const uint8_t o = r.u8();
-      f.tiles.emplace_back(i, o);
+      if (i >= 0) f.tiles.emplace_back(i, o);   // H-93: érvénytelen csempeindex kimarad
     }
     return f;
   }
@@ -424,6 +425,7 @@ class Module final : public FactionModule {
         });
         for (const auto& [i, to] : f->tiles) {
           const auto k = static_cast<size_t>(i);
+          if (k >= p->owner.size() || k >= built.size()) continue;   // H-93
           if (to == owner && !built[k] && p->owner[k] == owner) p->owner[k] = 0;
         }
         std::erase_if(f->tiles, [&](const std::pair<int32_t, uint8_t>& t) { return t.second == owner; });

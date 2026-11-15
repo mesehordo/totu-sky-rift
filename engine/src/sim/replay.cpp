@@ -34,9 +34,12 @@ std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Re
       h = hosts.back().get();
       s.add_hooks(h);
     }
-    h->run(f.name, f.source);
+    if (!h->run(f.name, f.source)) return {};   // H-08: a hibás szkript a visszajátszás hibája
   }
-  for (auto& h : hosts) h->start(s);
+  for (auto& h : hosts) {
+    h->start(s);
+    if (h->errors() > 0) return {};   // H-08: az on_start hibája is
+  }
   return hosts;
 }
 
@@ -80,9 +83,17 @@ bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::Terra
     setup.factions = r.factions;
     setup.weather = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.weather, 3));
     setup.ai = r.ai;
+    setup.upkeep = r.upkeep;
+    setup.camps = r.camps;
+    setup.fog = static_cast<MatchSetup::Fog>(std::min<uint8_t>(r.fog, 2));
+    setup.daytime = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.daytime, 2));
     if (!s.setup_match(*navigation.map, setup, &error)) return false;
   }
   const auto hosts = attach_scripts(s, r);
+  if (hosts.empty() && !r.scripts.empty()) {
+    error = "a visszajátszás szkriptje hibás";
+    return false;
+  }
   std::vector<std::unique_ptr<script::ScriptHost>> ais;
   if (!r.ai.empty()) {   // M9: a gépi játékosok a beágyazott csomagokból
     std::vector<script::AiPackage> pkgs;
@@ -110,6 +121,7 @@ bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::Terra
 }
 
 int format_of(const Replay& r) {
+  if (!r.factions.empty() && (!r.upkeep || r.camps || r.fog != 0 || r.daytime != 2)) return 6;
   if (!r.ai.empty()) return 5;
   if (!r.factions.empty()) return 4;
   for (const auto& c : r.commands) {
@@ -201,6 +213,12 @@ std::vector<uint8_t> encode(const Replay& r) {
     w.u32(static_cast<uint32_t>(r.ai_files.size()));
     for (const auto& f : r.ai_files) { w.str(f.mod); w.str(f.name); w.str(f.source); }
   }
+  if (format >= 6) {
+    w.u8(r.upkeep ? 1 : 0);
+    w.u8(r.camps ? 1 : 0);
+    w.u8(r.fog);
+    w.u8(r.daytime);
+  }
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -215,12 +233,13 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 5) return std::nullopt;
+  if (version < 1 || version > 6) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
   r.checkpoint_every = rd.i64();
-  if (r.ticks < 0 || r.checkpoint_every <= 0) return std::nullopt;
+  // H-88: legfeljebb 24 óra (30 Hz); az ellenőrzőpontok sűrűsége ésszerű
+  if (r.ticks < 0 || r.ticks > 24LL * 3600 * 30 || r.checkpoint_every <= 0 || r.checkpoint_every > r.ticks + 1) return std::nullopt;
   const uint32_t n = rd.u32();
   for (uint32_t i = 0; i < n && rd.ok(); ++i) {
     auto c = load_command(rd, version >= 4 ? 4 : version >= 3 ? 3 : 1);
@@ -263,6 +282,12 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
       f.source = rd.str();
       r.ai_files.push_back(std::move(f));
     }
+  }
+  if (version >= 6) {
+    r.upkeep = rd.u8() != 0;
+    r.camps = rd.u8() != 0;
+    r.fog = rd.u8();
+    r.daytime = rd.u8();
   }
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {

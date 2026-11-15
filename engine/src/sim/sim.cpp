@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "sim/sim.hpp"
 
+#include "map/map.hpp"
+#include "map/pathfinder.hpp"
+
 #include <algorithm>
 #include <chrono>
 
@@ -343,6 +346,10 @@ uint64_t Sim::hash() const {
   h.add_u64(combat_rng_.state());
   h.add_u64(combat_rng_.increment());
   for (const SimHooks* k : hooks_) h.add_u64(k->hash());   // csatlakozó nélkül a hash az M2-es marad
+  if (!nav_ops_.empty()) {   // H-29: a parancsból jött pálya-blokkolások és kapuk (üresen a hash a korábbi)
+    h.add_u64(nav_ops_.size());
+    for (const auto& op : nav_ops_) for (const int32_t v : op) h.add_i64(v);
+  }
   if (rules_) {   // M6: a játékosállapot (szabályok nélkül a hash a korábbi marad)
     h.add_u64(upkeep_);
     h.add_u64(static_cast<uint8_t>(fog_));
@@ -380,9 +387,16 @@ uint64_t Sim::hash() const {
     h.add_i64(weather_.intensity.raw());
     h.add_u64(weather_rng_.state()); h.add_u64(weather_rng_.increment());
     h.add_u64(mud_patches_.size());
-    for (const auto& t : mud_patches_) h.add_u64(t.converted);
+    for (const auto& t : mud_patches_) { h.add_u64(t.converted); h.add_i64(t.x); h.add_i64(t.y); h.add_u64(t.orig_terrain); }   // H-30
     h.add_u64(ice_patches_.size());
-    for (const auto& t : ice_patches_) h.add_u64(t.converted);
+    for (const auto& t : ice_patches_) { h.add_u64(t.converted); h.add_i64(t.x); h.add_i64(t.y); h.add_u64(t.orig_terrain); }
+    for (const PlayerState& p : players_) h.add_bytes(p.faction);   // H-27: a játékos népe
+    if (!pending_.empty()) {   // H-28: a még végre nem hajtott parancsok (ugyanaz a kódolás, mint a mentésben)
+      core::ByteWriter pw;
+      for (const auto& c : pending_) save_command(pw, c, 4);
+      h.add_u64(pending_.size());
+      h.add_bytes(std::string_view(reinterpret_cast<const char*>(pw.data().data()), pw.data().size()));
+    }
     if (!corpses_.empty()) {   // holttestek (üresen a hash a korábbi marad)
       h.add_u64(corpses_.size());
       for (const Corpse& c : corpses_) { h.add_u64(c.def); h.add_u64(c.owner); h.add_i64(c.x.raw()); h.add_i64(c.y.raw()); h.add_i64(c.tick); }
@@ -465,7 +479,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(14);   // séma (14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(15);   // séma (15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -522,6 +536,8 @@ std::vector<uint8_t> Sim::save() const {
     w.u32(static_cast<uint32_t>(corpses_.size()));
     for (const Corpse& c : corpses_) { w.u32(c.def); w.u8(c.owner); w.i32(c.x.raw()); w.i32(c.y.raw()); w.i64(c.tick); }
   }
+  w.u32(static_cast<uint32_t>(nav_ops_.size()));   // 15: a Block/Gate parancsok (H-29)
+  for (const auto& op : nav_ops_) for (const int32_t v : op) w.i32(v);
   return w.data();
 }
 
@@ -552,11 +568,19 @@ std::vector<AiSlot> Sim::saved_ai_slots(const std::vector<uint8_t>& data) {
   return read_ai_slots(r);
 }
 
+// H-98: a betöltés mind-vagy-semmi – hibánál az előző állapot marad
 bool Sim::load(const std::vector<uint8_t>& data) {
+  const std::vector<uint8_t> backup = save();
+  if (load_impl(data)) return true;
+  load_impl(backup);
+  return false;
+}
+
+bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 14) return false;
+  if (schema < 3 || schema > 15) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r);
     if (!r.ok()) return false;
@@ -569,6 +593,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   if (!world_.load(r)) return false;
   pending_.clear();
   const uint32_t n = r.u32();
+  if (n > (1u << 20)) return false;   // sérült darabszám
   for (uint32_t i = 0; i < n; ++i) {
     auto c = load_command(r, schema >= 4 ? 4 : 3);
     if (!c) return false;
@@ -597,7 +622,9 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       p.ally = schema >= 10 ? r.str() : std::string();
       p.reveals.clear();
       if (schema >= 12) {
-        p.reveals.resize(r.u32());
+        const uint32_t nrv = r.u32();
+        if (nrv > 64) return false;   // H-32: sérült darabszám
+        p.reveals.resize(nrv);
         for (auto& rv : p.reveals) for (int32_t& v : rv) v = r.i32();
       }
       p.ascended = r.u8() != 0;
@@ -611,6 +638,9 @@ bool Sim::load(const std::vector<uint8_t>& data) {
         }
       }
       const std::string vis = r.str(), exp = r.str();
+      if (vis.size() != exp.size() || (map_ && !vis.empty() && vis.size() != static_cast<size_t>(map_->width()) * static_cast<size_t>(map_->height()))) {
+        return false;   // H-33: a látótér mérete a pályáé
+      }
       p.visible.assign(vis.begin(), vis.end());
       p.explored.assign(exp.begin(), exp.end());
       p.research_mods.clear();
@@ -667,7 +697,29 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       }
     }
   }
-  return r.ok() && r.at_end();
+  nav_ops_.clear();
+  if (schema >= 15) {
+    const uint32_t no = r.u32();
+    if (no > (1u << 16)) return false;
+    for (uint32_t i = 0; i < no && r.ok(); ++i) {
+      std::array<int32_t, 6> op{};
+      for (int32_t& v : op) v = r.i32();
+      nav_ops_.push_back(op);
+    }
+  }
+  if (!r.ok() || !r.at_end()) return false;
+  // H-99, H-100: a betöltött sablon- és navigációs indexek érvényesek
+  bool valid = true;
+  if (rules_) {
+    const size_t nd = rules_->defs.size();
+    world_.pool<Unit>().each([&](EntityId, const Unit& u) { valid = valid && u.def < nd; });
+    world_.pool<Building>().each([&](EntityId, const Building& b) { valid = valid && b.def < nd; });
+  }
+  if (nav_) {
+    const int grids = nav_->nav().classes();
+    world_.pool<Body>().each([&](EntityId, const Body& b) { valid = valid && b.grid < grids; });
+  }
+  return valid;
 }
 
 }  // namespace totu::sim

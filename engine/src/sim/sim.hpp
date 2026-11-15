@@ -1008,6 +1008,7 @@ class Sim {
   std::vector<std::unique_ptr<FactionModule>> modules_;
   std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
   bool match_started_ = false;   // a setup_match egyszer fut (H-26)
+  std::vector<std::array<int32_t, 6>> nav_ops_;   // a Block/Gate parancsok (fajta, x, y, w, h, jelző/maszk) – hash, mentés (H-29)
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
@@ -1030,6 +1031,7 @@ class Sim {
  public:
   void apply(const Command& c);
   bool owned_by(EntityId e, uint8_t owner);   // él, és ez a tulajdonosa (H-01)
+  bool load_impl(const std::vector<uint8_t>& data);
   void report_deaths();
   void nav_request(EntityId e, Fixed x, Fixed y);
   void nav_paths();
