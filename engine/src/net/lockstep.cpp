@@ -53,7 +53,45 @@ Relay::Relay(sim::Replay match, const map::TerrainTable* terrain, const sim::Rul
   desc_.checkpoints.clear();
   desc_.ticks = 0;
   desc_.checkpoint_every = 1;   // a dekódoló ellenőrzi (H-88): a hossz 0
-  match_ = sim::start_match(desc_, terrain_, rules_, error_);
+  if (static_cast<int>(desc_.factions.size()) < seats_) error_ = "kevesebb nép, mint emberi hely";
+  lobby_.resize(static_cast<size_t>(seats_));
+  for (int i = 0; i < seats_ && error_.empty(); ++i) lobby_[static_cast<size_t>(i)].faction = desc_.factions[static_cast<size_t>(i)];
+}
+
+bool Relay::can_start() const {
+  if (started_ || !error_.empty() || lobby_.empty()) return false;
+  for (const auto& l : lobby_) {
+    if (!l.taken || !l.ready) return false;
+  }
+  return true;
+}
+
+void Relay::send_lobby() {
+  core::ByteWriter w;
+  w.u8(static_cast<uint8_t>(Msg::Lobby));
+  w.u8(static_cast<uint8_t>(lobby_.size()));
+  for (const auto& l : lobby_) {
+    w.u8(l.taken ? 1 : 0);
+    w.str(l.name);
+    w.str(l.faction);
+    w.u8(l.ready ? 1 : 0);
+  }
+  broadcast(bytes_of(w));
+}
+
+void Relay::send_welcome(PeerId p, uint8_t slot, bool state_follows) {
+  core::ByteWriter w;
+  w.u8(static_cast<uint8_t>(Msg::Welcome));
+  w.u8(slot);
+  w.u8(state_follows ? 1 : 0);
+  w.str(as_str(sim::encode(desc_)));
+  send(p, bytes_of(w));
+  if (!state_follows) return;
+  core::ByteWriter s;
+  s.u8(static_cast<uint8_t>(Msg::State));
+  s.i64(closed_);
+  s.str(as_str(match_->sim->save()));
+  send(p, bytes_of(s));
 }
 
 Relay::~Relay() = default;
@@ -81,10 +119,20 @@ void Relay::reject(PeerId p, const std::string& why) {
 
 std::vector<std::pair<PeerId, Bytes>> Relay::take_outbox() { return std::exchange(out_, {}); }
 
-void Relay::on_disconnect(PeerId peer) { peers_.erase(peer); }
+void Relay::on_disconnect(PeerId peer) {
+  const auto it = peers_.find(peer);
+  if (it == peers_.end()) return;
+  const uint8_t slot = it->second.slot;
+  peers_.erase(it);
+  if (slot > 0 && !started_) {   // a lobbiban a hely felszabadul
+    lobby_[slot - 1u] = LobbySeat{false, {}, lobby_[slot - 1u].faction, false};
+    send_lobby();
+  }
+  if (slot > 0) last_hash_.erase(slot);
+}
 
 void Relay::on_message(PeerId peer, const Bytes& data) {
-  if (!match_ || data.empty() || data.size() > kMaxMessage) return;
+  if (!error_.empty() || data.empty() || data.size() > kMaxMessage) return;
   core::ByteReader r(data);
   const auto kind = static_cast<Msg>(r.u8());
   if (kind == Msg::Hello) {
@@ -117,18 +165,21 @@ void Relay::on_message(PeerId peer, const Bytes& data) {
       }
     }
     peers_[peer] = Peer{slot, true};
-    core::ByteWriter w;
-    w.u8(static_cast<uint8_t>(Msg::Welcome));
-    w.u8(slot);
-    w.str(as_str(sim::encode(desc_)));
-    send(peer, bytes_of(w));
-    if (started_) {   // visszatérés vagy megfigyelő: a mostani állapot, utána a következő fordulók
-      core::ByteWriter s;
-      s.u8(static_cast<uint8_t>(Msg::State));
-      s.i64(closed_);
-      s.str(as_str(match_->sim->save()));
-      send(peer, bytes_of(s));
+    if (started_) {   // visszatérés vagy megfigyelő: a meccs leírása és a mostani állapot
+      send_welcome(peer, slot, true);
+      if (slot > 0) last_hash_[slot] = closed_ - 1;
+      return;
     }
+    core::ByteWriter w;
+    w.u8(static_cast<uint8_t>(Msg::Joined));
+    w.u8(slot);
+    send(peer, bytes_of(w));
+    if (slot > 0) {
+      lobby_[slot - 1u].taken = true;
+      lobby_[slot - 1u].name = name.substr(0, 32);
+      lobby_[slot - 1u].ready = false;
+    }
+    send_lobby();
     return;
   }
   const auto it = peers_.find(peer);
@@ -145,10 +196,34 @@ void Relay::on_message(PeerId peer, const Bytes& data) {
       c.owner = p.slot;   // csak a saját nevében (H-01)
       dst.push_back(std::move(c));
     }
+  } else if (kind == Msg::Pick || kind == Msg::Ready) {
+    if (started_ || p.slot == 0) return;
+    LobbySeat& l = lobby_[p.slot - 1u];
+    if (kind == Msg::Pick) {
+      const std::string f = r.str();
+      const sim::FactionDef* fd = rules_ ? rules_->faction(f) : nullptr;
+      if (!r.ok() || !fd || fd->neutral || fd->ally) return;   // csak játszható nép
+      l.faction = f;
+      l.ready = false;
+    } else {
+      const uint8_t v = r.u8();
+      if (!r.ok()) return;
+      l.ready = v != 0;
+    }
+    send_lobby();
+  } else if (kind == Msg::Chat) {
+    const std::string text = r.str();
+    if (!r.ok() || text.empty()) return;
+    core::ByteWriter w;
+    w.u8(static_cast<uint8_t>(Msg::ChatOut));
+    w.u8(p.slot);
+    w.str(text.substr(0, 400));
+    broadcast(bytes_of(w));
   } else if (kind == Msg::Hash) {
     const int64_t turn = r.i64();
     const uint64_t h = r.u64();
     if (!r.ok() || p.slot == 0) return;
+    if (turn > last_hash_[p.slot] && turn < closed_) last_hash_[p.slot] = turn;
     const auto hit = hashes_.find(turn);
     if (hit != hashes_.end() && hit->second != h) {
       const DesyncInfo d{turn, p.slot};
@@ -164,18 +239,19 @@ void Relay::on_message(PeerId peer, const Bytes& data) {
   }
 }
 
-void Relay::start(int64_t now_ms) {
-  if (started_ || !match_) return;
+bool Relay::start(int64_t now_ms) {
+  if (started_ || !error_.empty()) return false;
+  for (int i = 0; i < seats_; ++i) desc_.factions[static_cast<size_t>(i)] = lobby_[static_cast<size_t>(i)].faction;
+  match_ = sim::start_match(desc_, terrain_, rules_, error_);
+  if (!match_) return false;
   started_ = true;
   next_close_ms_ = now_ms;
-  for (const auto& [id, p] : peers_) {   // az indulás előtt bejött megfigyelő a kezdőállapotot kapja
-    if (!p.joined || p.slot != 0) continue;
-    core::ByteWriter s;
-    s.u8(static_cast<uint8_t>(Msg::State));
-    s.i64(closed_);
-    s.str(as_str(match_->sim->save()));
-    send(id, bytes_of(s));
+  for (const auto& [id, p] : peers_) {   // a játékosok a leírásból maguk építik fel; a megfigyelő állapotot kap
+    if (!p.joined) continue;
+    send_welcome(id, p.slot, p.slot == 0);
+    if (p.slot > 0) last_hash_[p.slot] = -1;
   }
+  return true;
 }
 
 void Relay::close_turn() {
@@ -204,6 +280,14 @@ void Relay::advance(int64_t now_ms) {
   if (!started_) return;
   int guard = 0;
   while (now_ms >= next_close_ms_ && guard++ < 50) {   // lemaradásnál egyszerre legfeljebb 5 s
+    // a lassú kliens bevárása: ha valamelyik túl sok fordulóval lemaradt, a relé nem zár újat (0 A.D., OpenRA)
+    int64_t slowest = closed_;
+    for (const auto& [slot, t] : last_hash_) slowest = std::min(slowest, t + 1);
+    stalled_ = closed_ - slowest > kMaxLagTurns;
+    if (stalled_) {
+      next_close_ms_ = now_ms + kTurnMs;
+      return;
+    }
     close_turn();
     next_close_ms_ += kTurnMs;
   }
@@ -233,18 +317,42 @@ void Client::on_message(const Bytes& data) {
   core::ByteReader r(data);
   const auto kind = static_cast<Msg>(r.u8());
   switch (kind) {
+    case Msg::Joined:
+      slot_ = r.u8();
+      joined_ = r.ok();
+      break;
+    case Msg::Lobby: {
+      const uint8_t n = r.u8();
+      std::vector<LobbySeat> ls(n);
+      for (auto& l : ls) {
+        l.taken = r.u8() != 0;
+        l.name = r.str();
+        l.faction = r.str();
+        l.ready = r.u8() != 0;
+      }
+      if (r.ok()) lobby_ = std::move(ls);
+      break;
+    }
+    case Msg::ChatOut: {
+      ChatLine c;
+      c.from = r.u8();
+      c.text = r.str();
+      if (r.ok() && chats_.size() < 1000) chats_.push_back(std::move(c));
+      break;
+    }
     case Msg::Welcome: {
       const uint8_t slot = r.u8();
+      const bool follows = r.u8() != 0;
       const auto desc = sim::decode(as_bytes(r.str()));
       if (!r.ok() || !desc) {
         error_ = "hibás meccsleírás";
         return;
       }
       slot_ = slot;
+      joined_ = true;
       desc_ = *desc;
-      if (!observer_ && rejoin_ == 0) {   // új meccs: azonnal felépül (a State-et nem várja)
-        match_ = sim::start_match(*desc_, terrain_, rules_, error_);
-      }
+      wait_state_ = follows;
+      if (!follows) match_ = sim::start_match(*desc_, terrain_, rules_, error_);   // új meccs: azonnal felépül
       break;
     }
     case Msg::State: {
@@ -282,6 +390,27 @@ void Client::on_message(const Bytes& data) {
     default:
       break;
   }
+}
+
+void Client::pick(const std::string& faction) {
+  core::ByteWriter w;
+  w.u8(static_cast<uint8_t>(Msg::Pick));
+  w.str(faction);
+  out_.push_back(bytes_of(w));
+}
+
+void Client::set_ready(bool ready) {
+  core::ByteWriter w;
+  w.u8(static_cast<uint8_t>(Msg::Ready));
+  w.u8(ready ? 1 : 0);
+  out_.push_back(bytes_of(w));
+}
+
+void Client::chat(const std::string& text) {
+  core::ByteWriter w;
+  w.u8(static_cast<uint8_t>(Msg::Chat));
+  w.str(text);
+  out_.push_back(bytes_of(w));
 }
 
 void Client::submit(sim::Command c) {

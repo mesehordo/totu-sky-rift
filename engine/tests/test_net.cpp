@@ -75,6 +75,14 @@ struct Net {
   }
   // a relé leáll, a kliensek utolérik
   void drain() { tick(latency * 4 + 200, false); }
+  // mindenki kész, a meccs indul
+  bool begin() {
+    for (auto& [id, c] : clients) c->set_ready(true);
+    tick(latency * 3 + 100);
+    if (!relay.can_start() || !relay.start(now)) return false;
+    tick(latency * 2 + 100);
+    return true;
+  }
 };
 
 sim::EntityId unit_of(sim::Sim& s, uint8_t owner) {
@@ -93,10 +101,11 @@ TEST_CASE("halozat: ket kliens es a rele 150 ms kesessel ugyanazt szamolja, a pa
   auto& a = n.join(1);
   auto& b = n.join(2);
   n.tick(400);
+  CHECK(a.joined() && b.joined() && !a.ready());
+  CHECK(n.begin());
   if (!a.ready()) std::printf("  relé: %s; kliens: %s / %s\n", n.relay.error().c_str(), a.error().c_str(), a.reject_reason().c_str());
   CHECK(a.ready() && b.ready() && a.slot() == 1 && b.slot() == 2);
   if (!a.ready() || !b.ready()) return;
-  n.relay.start(n.now);
   n.tick(1000);
   const auto u = unit_of(*a.sim(), 1);
   const auto p0 = *a.sim()->world().get<sim::Position>(u);
@@ -126,7 +135,7 @@ TEST_CASE("halozat: szinkronhiba-eszleles, modlock, betelt hely") {
   auto& a = n.join(1);
   auto& b = n.join(2);
   n.tick(200);
-  n.relay.start(n.now);
+  CHECK(n.begin());
   n.tick(500);
   b.sim()->kill(unit_of(*b.sim(), 2));   // a 2. kliens állapota eltér
   n.tick(800);
@@ -145,7 +154,7 @@ TEST_CASE("halozat: kilepes es visszateres mentesbol, megfigyelo") {
   auto& a = n.join(1);
   n.join(2);
   n.tick(300);
-  n.relay.start(n.now);
+  CHECK(n.begin());
   n.tick(2000);
   n.leave(2);
   n.tick(1500);   // a meccs megy tovább nélküle
@@ -199,6 +208,7 @@ TEST_CASE("halozat: valodi UDP (ENet, helyi gep) - rele es ket kliens, modlock-u
       for (auto& e : s->ep.poll(0)) {
         if (e.kind == net::NetEvent::Kind::Connect && !s->said) {
           s->ep.send(e.peer, s->c->hello());
+          s->c->set_ready(true);
           s->said = true;
         } else if (e.kind == net::NetEvent::Kind::Message) {
           s->c->on_message(e.data);
@@ -209,12 +219,12 @@ TEST_CASE("halozat: valodi UDP (ENet, helyi gep) - rele es ket kliens, modlock-u
       s->ep.flush();
     }
   };
-  for (int i = 0; i < 400 && relay.connected_players() < 2; ++i) {
+  for (int i = 0; i < 400 && !relay.can_start(); ++i) {
     pump(false);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
   }
-  CHECK(relay.connected_players() == 2);
-  relay.start(0);
+  CHECK(relay.connected_players() == 2 && relay.can_start());
+  CHECK(relay.start(0));
   for (t = 0; t <= 3000; t += 10) pump(true);   // 30 forduló, a valódi idő helyett lépésenként
   for (int i = 0; i < 400 && (sides[0]->c->turns() < relay.turns() || sides[1]->c->turns() < relay.turns()); ++i) {
     pump(false);
@@ -227,4 +237,69 @@ TEST_CASE("halozat: valodi UDP (ENet, helyi gep) - rele es ket kliens, modlock-u
   if (sides[0]->c->sim() && sides[1]->c->sim()) {
     CHECK(sides[0]->c->sim()->hash() == relay.sim().hash() && sides[1]->c->sim()->hash() == relay.sim().hash());
   }
+}
+
+TEST_CASE("halozat: lobbi - nepvalasztas, kesz-jelzes, cseveges, a kilepo helye felszabadul") {
+  Net n(40);
+  auto& a = n.join(1);
+  auto& b = n.join(2);
+  n.tick(200);
+  CHECK(a.lobby().size() == 2 && a.lobby()[0].taken && a.lobby()[1].taken);
+  CHECK(a.lobby()[0].faction == "ursan" && a.lobby()[1].faction == "wullof");
+  b.pick("croftian");
+  b.pick("vadon");          // a semleges nem választható
+  b.pick("nincs_ilyen");
+  a.chat("szia");
+  n.tick(200);
+  CHECK(a.lobby()[1].faction == "croftian" && b.lobby()[1].faction == "croftian");
+  CHECK(!b.chats().empty() && b.chats().back().from == 1 && b.chats().back().text == "szia");
+  a.set_ready(true);
+  n.tick(200);
+  CHECK(a.lobby()[0].ready && !a.lobby()[1].ready && !n.relay.can_start());
+  n.leave(2);
+  n.tick(200);
+  CHECK(!a.lobby()[1].taken);
+  auto& c = n.join(3);
+  n.tick(200);
+  CHECK(c.slot() == 2);
+  c.set_ready(true);
+  n.tick(200);
+  CHECK(n.relay.can_start() && n.relay.start(n.now));
+  n.tick(300);
+  CHECK(a.ready() && c.ready());
+  CHECK(n.relay.sim().player(2).faction == "croftian");   // a választott nép a meccsben
+}
+
+TEST_CASE("halozat: a rele bevarja a lemarado klienst") {
+  Net n(30);
+  auto& a = n.join(1);
+  n.join(2);
+  n.tick(150);
+  CHECK(n.begin());
+  // az 1. kliens „lefagy”: nem futtat fordulót, így nem küld hash-t
+  for (int i = 0; i < 300; ++i) {
+    n.now += 10;
+    n.relay.advance(n.now);
+    for (auto& [p, bb] : n.relay.take_outbox()) n.wire.push_back({n.now + n.latency, p, false, std::move(bb)});
+    for (auto& [id, c] : n.clients) {
+      if (id != 1) c->update();
+      for (auto& bb : c->take_outbox()) n.wire.push_back({n.now + n.latency, id, true, std::move(bb)});
+    }
+    std::vector<Net::Packet> due;
+    std::erase_if(n.wire, [&](Net::Packet& p) {
+      if (p.at > n.now) return false;
+      due.push_back(std::move(p));
+      return true;
+    });
+    for (auto& p : due) {
+      if (p.to_relay) n.relay.on_message(p.peer, p.data);
+      else if (auto it = n.clients.find(p.peer); it != n.clients.end()) it->second->on_message(p.data);
+    }
+  }
+  CHECK(n.relay.stalled());
+  CHECK(n.relay.turns() <= a.turns() + net::kMaxLagTurns + 2);
+  n.tick(1500);   // újra fut: utoléri, a relé folytatja
+  CHECK(!n.relay.stalled());
+  n.drain();
+  CHECK(a.turns() == n.relay.turns() && a.sim()->hash() == n.relay.sim().hash());
 }

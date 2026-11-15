@@ -783,3 +783,8 @@ A külső kódvizsgálat (2026-11-15; újraellenőrzött változat: 4 tétel má
 
 **ENet 1.3.18** a `third_party/enet` alatt (MIT, a hivatalos címke változatlan fájljai, SHA-256 a README-ben; a tulajdonos jóváhagyta). `totu_enet` könyvtár; POSIX-on a modern hálózati függvények jelzőivel. **`net/enet_transport`:** megbízható, sorrendtartó csatorna, partnerazonosítókkal; a csomagkorlát 64 MB (a visszatéréskor küldött mentés miatt). **`net/content_hash`:** a modlock ujjlenyomata (a tartalom minden fájlja, rendezett útvonallal, sorvég-függetlenül). **`totu_relay`:** fej nélküli dedikált relé (`--map`, `--factions`, `--seats`, `--port`, `--seed`); a meccs akkor indul, amikor minden hely betelt, és a szinkronhibát kiírja. Próba: relé és két kliens valódi UDP-n a helyi gépen, egyező hash-sel.
 **Tesztek:** 341.
+
+## 2026-11-15 – M10 3.: lobbi és a lassú kliens bevárása
+
+**Lobbi:** a csatlakozó előbb helyet kap (`Joined`), a helyek állapota mindenkinek megy (`Lobby`: név, nép, kész). A játékos csak játszható népet választhat (a semlegest és a kisnépet nem), a népváltás törli a kész-jelzést, és a lobbiban kilépő helye felszabadul. Csevegés (`Chat` → `ChatOut`, 400 karakterig). A meccs akkor indítható, ha minden hely betelt és mindenki kész (`can_start`); a relé az indításkor építi fel a meccset a választott népekkel, a játékosok a leírásból maguk, a megfigyelő mentést kap. **Bevárás:** ha egy kliens 25 fordulónál (2,5 s) többel lemaradt, a relé nem zár újat; a fordulóhossz rögzített (ADR-009 pontosítva). A `totu_relay` akkor indít, amikor mindenki kész. Próbák: lobbi (népválasztás, tiltott nép, csevegés, felszabaduló hely, a választott nép a meccsben) és a lefagyó kliens bevárása.
+**Tesztek:** 343.

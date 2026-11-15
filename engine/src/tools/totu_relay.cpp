@@ -90,8 +90,11 @@ int main(int argc, char** argv) {
       if (e.kind == net::NetEvent::Kind::Message) relay.on_message(e.peer, e.data);
       else if (e.kind == net::NetEvent::Kind::Disconnect) relay.on_disconnect(e.peer);
     }
-    if (!relay.started() && relay.connected_players() == seats) {
-      relay.start(now_ms());
+    if (relay.can_start()) {   // minden hely betelt, és mindenki kész
+      if (!relay.start(now_ms())) {
+        std::fprintf(stderr, "a meccs nem indítható: %s\n", relay.error().c_str());
+        return 1;
+      }
       std::printf("a meccs indul\n");
     }
     relay.advance(now_ms());

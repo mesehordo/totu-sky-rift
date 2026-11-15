@@ -40,6 +40,25 @@ enum class Msg : uint8_t {
   Hash = 6,      // kliens → relé: az állapothash egy forduló végén
   Desync = 7,    // relé → kliens: szinkronhiba (forduló, játékos)
   State = 8,     // relé → kliens: mentés (újracsatlakozás, megfigyelő); utána a következő fordulóktól
+  Joined = 9,    // relé → kliens: a lobbiban kapott hely (0 = megfigyelő)
+  Lobby = 10,    // relé → mindenki: a helyek (név, nép, kész)
+  Pick = 11,     // kliens → relé: népválasztás a lobbiban
+  Ready = 12,    // kliens → relé: kész / nem kész
+  Chat = 13,     // kliens → relé: üzenet
+  ChatOut = 14,  // relé → mindenki: üzenet (küldő helye, szöveg)
+};
+
+constexpr int kMaxLagTurns = 25;   // ennél több forduló lemaradásnál a relé bevárja a lassú klienst (2,5 s)
+
+struct LobbySeat {
+  bool taken = false;
+  std::string name, faction;
+  bool ready = false;
+  friend bool operator==(const LobbySeat&, const LobbySeat&) = default;
+};
+struct ChatLine {
+  uint8_t from = 0;   // 0 = megfigyelő
+  std::string text;
 };
 
 struct DesyncInfo {
@@ -51,22 +70,25 @@ struct DesyncInfo {
 // --- relé -------------------------------------------------------------------------------------------------------
 class Relay {
  public:
-  // `match`: a meccs leírása (mag, pálya, népek, gépek, szkriptek); `seats`: az emberi helyek (1..seats); a
-  // `content_hash` a modlock (a tartalom és a szabályok ujjlenyomata)
+  // `match`: a meccs leírása (mag, pálya, alapértelmezett népek helyenként, gépek, szkriptek); `seats`: az emberi
+  // helyek (1..seats, a lobbiban választanak népet); a `content_hash` a modlock (a tartalom ujjlenyomata)
   Relay(sim::Replay match, const map::TerrainTable* terrain, const sim::Rules* rules, uint64_t content_hash, int seats);
   ~Relay();
-  bool ok() const { return match_ != nullptr; }
+  bool ok() const { return error_.empty(); }
   const std::string& error() const { return error_; }
 
   void on_message(PeerId peer, const Bytes& data);
   void on_disconnect(PeerId peer);
-  void start(int64_t now_ms);           // a meccs indul (a gazda dönt: mindenki bent van)
+  bool can_start() const;               // minden hely betelt, és mindenki kész
+  bool start(int64_t now_ms);           // a meccs indul (a gazda dönt); hibánál false és error()
   void advance(int64_t now_ms);         // az esedékes fordulók lezárása és továbbítása
   std::vector<std::pair<PeerId, Bytes>> take_outbox();
 
   bool started() const { return started_; }
   int64_t turns() const { return closed_; }   // lezárt fordulók száma
   sim::Sim& sim() { return *match_->sim; }
+  const std::vector<LobbySeat>& lobby() const { return lobby_; }
+  bool stalled() const { return stalled_; }
   const std::vector<DesyncInfo>& desyncs() const { return desyncs_; }
   int connected_players() const;
 
@@ -79,6 +101,8 @@ class Relay {
   void broadcast(const Bytes& b);
   void close_turn();
   void reject(PeerId p, const std::string& why);
+  void send_lobby();
+  void send_welcome(PeerId p, uint8_t slot, bool state_follows);
 
   sim::Replay desc_;
   const map::TerrainTable* terrain_;
@@ -95,6 +119,9 @@ class Relay {
   std::map<int64_t, std::vector<sim::Command>> pending_;   // forduló → parancsok
   std::map<int64_t, uint64_t> hashes_;                     // a relé saját hash-e fordulónként (az utolsó 256)
   std::vector<DesyncInfo> desyncs_;
+  std::vector<LobbySeat> lobby_;
+  std::map<uint8_t, int64_t> last_hash_;   // hely → az utolsó beküldött hash fordulója
+  bool stalled_ = false;
 };
 
 // --- kliens -----------------------------------------------------------------------------------------------------
@@ -108,6 +135,13 @@ class Client {
   void on_message(const Bytes& data);
   // a helyi játékos parancsa (a tulajdonos és a tick a küldéskor kerül bele)
   void submit(sim::Command c);
+  // lobbi
+  void pick(const std::string& faction);
+  void set_ready(bool ready);
+  void chat(const std::string& text);
+  const std::vector<LobbySeat>& lobby() const { return lobby_; }
+  const std::vector<ChatLine>& chats() const { return chats_; }
+  bool joined() const { return joined_; }
   // a megérkezett fordulók lefuttatása (legfeljebb `max_turns`), a parancsok és a hash-ek elküldése
   int update(int max_turns = 1 << 30);
   std::vector<Bytes> take_outbox();
@@ -139,6 +173,10 @@ class Client {
   std::vector<Bytes> out_;
   std::vector<DesyncInfo> desyncs_;
   std::string reject_, error_;
+  std::vector<LobbySeat> lobby_;
+  std::vector<ChatLine> chats_;
+  bool joined_ = false;
+  bool wait_state_ = false;
 };
 
 }  // namespace totu::net

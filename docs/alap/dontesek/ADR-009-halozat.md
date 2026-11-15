@@ -27,7 +27,8 @@ hash), és egy tick 1600 egységnél is belefér a keretbe. Így a lockstep olcs
    folyamat) csak sorba rendezi és továbbítja a parancsokat. Ugyanazt a szimulációt maga is futtatja (fej nélkül):
    így ellenőrzi a hash-t, és újracsatlakozáskor állapotot küld.
 2. **Fordulók:** 1 forduló = 3 tick (100 ms, 30 Hz mellett); a parancs az N+2. fordulóban hajtódik végre (mint a régi
-   játékban és az AoE-ben); a fordulóhossz a mért késéshez igazodhat (gyorsan emel, lassan csökkent).
+   játékban és az AoE-ben). A fordulóhossz rögzített (a játékidő így nem változik); a lassú klienst a relé bevárja
+   (25 forduló, azaz 2,5 s lemaradás felett nem zár újat – 0 A.D., OpenRA).
 3. **Szinkronhiba-észlelés:** a kliensek fordulónként küldik az állapothash-t; a relé összeveti, eltérésnél jelez, és
    menti a mentést és a visszajátszást a hibakereséshez.
 4. **Újracsatlakozás:** a relé mentést küld (a meglévő, mind-vagy-semmi `Sim::save`/`load`), utána a fordulók
