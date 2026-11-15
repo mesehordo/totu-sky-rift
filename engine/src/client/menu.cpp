@@ -103,9 +103,12 @@ std::vector<MapInfo> scan_maps(const std::string& dir) {
     if (const content::Value* v = doc->find("width")) m.width = static_cast<int>(v->as_int().value_or(0));
     if (const content::Value* v = doc->find("height")) m.height = static_cast<int>(v->as_int().value_or(0));
     if (const content::Value* v = doc->find("_leiras"); v && v->is_string()) m.desc = v->text();
+    if (const content::Value* v = doc->find("order")) m.order = static_cast<int>(v->as_int().value_or(m.order));
     out.push_back(std::move(m));
   }
-  std::sort(out.begin(), out.end(), [](const MapInfo& a, const MapInfo& b) { return a.name < b.name; });
+  std::sort(out.begin(), out.end(), [](const MapInfo& a, const MapInfo& b) {   // a régi sorrend, azon belül név
+    return a.order != b.order ? a.order < b.order : a.name < b.name;
+  });
   return out;
 }
 

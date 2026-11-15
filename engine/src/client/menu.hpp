@@ -31,6 +31,7 @@ struct MenuRect {
 struct MapInfo {
   std::string path, name, desc;   // a név a fájlnévből, a leírás a `_leiras` mezőből
   int players = 0, width = 0, height = 0;
+  int order = 1000000;   // a régi menü sorrendje (`order`); ha nincs, a végére, név szerint
 };
 // a mappa kezdőhelyes pályái (név szerint rendezve); a kezdőhely nélküli (próba)pályák kimaradnak
 std::vector<MapInfo> scan_maps(const std::string& dir);
