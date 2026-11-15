@@ -1007,6 +1007,7 @@ class Sim {
   bool mod_ability_costs() const;
   std::vector<std::unique_ptr<FactionModule>> modules_;
   std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
+  bool match_started_ = false;   // a setup_match egyszer fut (H-26)
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre

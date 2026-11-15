@@ -453,7 +453,10 @@ int main(int argc, char** argv) {
           if (session.has_starts()) {
             const bool started = have_cfg ? session.start_match(match_cfg.setup, match_cfg.ai, "ai_nep.lua", &err)
                                           : session.start_match({"ursan", "ursan"}, true, &err);
-            if (!started) std::fprintf(stderr, "meccs: %s\n", err.c_str());
+            if (!started) {   // N-04: a sikertelen indítás nem fut tovább részben felépített meccsként
+              std::fprintf(stderr, "meccs: %s\n", err.c_str());
+              rc = 1;
+            }
           } else {
             session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           }

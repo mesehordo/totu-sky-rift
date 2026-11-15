@@ -9,6 +9,8 @@
 #include "check.hpp"
 #include "match_util.hpp"
 
+#include <optional>
+
 using namespace totu;
 using namespace totu::testing;
 using core::Fixed;
@@ -138,4 +140,75 @@ TEST_CASE("hibajegyzek H-97: a tul nagy koltseg nem fordul negativba") {
     for (const int32_t c : d.cost) ok = ok && c >= 0 && c <= 1000000;
   }
   CHECK(ok);
+}
+
+namespace {
+
+std::optional<map::Map> tiny_map(const std::string& extra_objects) {
+  std::vector<std::string> err;
+  const std::string text = std::string(R"({"width": 24, "height": 16, "terrain": {"rows": [)") + [] {
+    std::string rows;
+    for (int y = 0; y < 16; ++y) rows += std::string(y ? "," : "") + "\"........................\"";
+    return rows;
+  }() + "]}, \"objects\": {" + extra_objects + "}}";
+  const auto doc = content::parse(text);
+  if (!doc) return std::nullopt;
+  return map::Map::from_json(*doc, content_once().terrain, err);
+}
+
+}  // namespace
+
+TEST_CASE("hibajegyzek H-25 H-26 H-38 H-36: a meccsinditas elott minden feltetel; hibanal a vilag erintetlen, masodszor nem indul") {
+  {   // két játékos ugyanazon a kezdőhelyen: elutasítva, a világ üres marad
+    auto mp = tiny_map(R"("starts": [[6, 8], [6, 8]], "resources": [{"kind": "gold", "x": 14, "y": 3, "size": 2}])");
+    CHECK(mp.has_value());
+    map::NavGrid nav(*mp, content_once().terrain);
+    map::Pathfinder pf(nav);
+    sim::Sim s(1);
+    s.attach_navigation(&pf);
+    s.attach_rules(&R());
+    sim::MatchSetup setup;
+    setup.factions = {"ursan", "wullof"};
+    std::string err;
+    CHECK(!s.setup_match(*mp, setup, &err));
+    std::printf("  %s\n", err.c_str());
+    size_t n = 0;
+    s.world().pool<sim::Health>().each([&](sim::EntityId, const sim::Health&) { ++n; });
+    s.world().pool<sim::ResourceNode>().each([&](sim::EntityId, const sim::ResourceNode&) { ++n; });
+    CHECK(n == 0);
+  }
+  // rendes indulás; az üres (0) lelőhely nem kerül a világba; a második indítás elutasítva
+  auto mp = tiny_map(R"("starts": [[5, 8], [19, 8]], "resources": [{"kind": "gold", "x": 11, "y": 2, "size": 2, "amount": 0}, {"kind": "gold", "x": 11, "y": 12, "size": 2}])");
+  CHECK(mp.has_value());
+  map::NavGrid nav(*mp, content_once().terrain);
+  map::Pathfinder pf(nav);
+  sim::Sim s(1);
+  s.attach_navigation(&pf);
+  s.attach_rules(&R());
+  sim::MatchSetup setup;
+  setup.factions = {"ursan", "wullof"};
+  std::string err;
+  CHECK(s.setup_match(*mp, setup, &err));
+  int nodes = 0;
+  s.world().pool<sim::ResourceNode>().each([&](sim::EntityId, const sim::ResourceNode&) { ++nodes; });
+  CHECK(nodes == 1);
+  CHECK(!s.setup_match(*mp, setup, &err));
+}
+
+TEST_CASE("hibajegyzek H-03: a fofepuletnel kisebb palya elutasitva, osszeomlas nelkul") {
+  std::vector<std::string> errs;
+  const auto doc = content::parse(R"({"width": 2, "height": 2, "terrain": {"rows": ["..", ".."]}, "objects": {"starts": [[0, 0], [1, 1]]}})");
+  CHECK(doc.has_value());
+  auto mp = map::Map::from_json(*doc, content_once().terrain, errs);
+  CHECK(mp.has_value());
+  if (!mp) return;
+  map::NavGrid nav(*mp, content_once().terrain);
+  map::Pathfinder pf(nav);
+  sim::Sim s(1);
+  s.attach_navigation(&pf);
+  s.attach_rules(&R());
+  sim::MatchSetup setup;
+  setup.factions = {"ursan", "ursan"};
+  std::string err;
+  CHECK(!s.setup_match(*mp, setup, &err));
 }

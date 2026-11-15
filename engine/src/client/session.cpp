@@ -31,6 +31,15 @@ const SnapUnit* Snapshot::find(sim::EntityId id) const {
 }
 
 bool Session::load(const std::string& content_dir, const std::string& map_path, uint64_t seed, std::string* error) {
+  // az előző meccs állapota nem marad meg (H-61: teljes felfedés; H-62: gépek; H-63: szabályok)
+  ais_.clear();
+  ai_.reset();
+  sim_.reset();
+  rules_.reset();
+  reveal_all_ = false;
+  last_.reset();
+  fog_.reset();
+  remembered_.clear();
   content_dir_ = content_dir;
   seed_ = seed;
   {   // a nevek (hu.po): msgctxt "kulcs" után az msgid "szöveg"
@@ -51,8 +60,12 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
   content::Vfs vfs;
   vfs.add_layer("totu", std::filesystem::path(content_dir) / "base");
   content::ContentSet set;
-  content::ContentLoader(vfs, std::filesystem::path(content_dir) / "schema").load(set);
-  std::vector<std::string> errors;
+  const auto report = content::ContentLoader(vfs, std::filesystem::path(content_dir) / "schema").load(set);
+  std::vector<std::string> errors = report.errors;   // H-07/H-68: a tartalomhiba nem marad csendben
+  if (!errors.empty()) {
+    if (error) *error = "tartalomhiba: " + errors.front();
+    return false;
+  }
   if (!terrain_.load(set, errors)) {
     if (error) *error = errors.empty() ? "terepadat" : errors.front();
     return false;
@@ -63,6 +76,12 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
     const auto game = content::parse(gtext);
     std::vector<std::string> rerr;
     if (game) rules_ = sim::Rules::load(*game, set, rerr);
+    if (!game || !rules_ || !rerr.empty()) {   // H-07: a hibás szabályadat hiba, nem csendes folytatás
+      rules_.reset();
+      if (error) *error = "a játékszabályok hibásak: " + (rerr.empty() ? std::string("game.json") : rerr.front());
+      return false;
+    }
+    nav_config_ = map::NavConfig::from_json(game->find("navigation"), rerr);   // H-90: a game.json navigációs beállítása
   }
   std::ifstream in(map_path, std::ios::binary);
   const std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
@@ -72,7 +91,7 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
     if (error) *error = "a pálya nem tölthető be: " + map_path + (errors.empty() ? "" : " – " + errors.front());
     return false;
   }
-  nav_ = std::make_unique<map::NavGrid>(*map_, terrain_);
+  nav_ = std::make_unique<map::NavGrid>(*map_, terrain_, nav_config_);
   pf_ = std::make_unique<map::Pathfinder>(*nav_);
   sim_ = std::make_unique<sim::Sim>(seed);
   sim_->attach_navigation(pf_.get());
@@ -147,9 +166,13 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
     if (src.empty() || !ai_->run("ai_players", players) || !ai_->run(ai_script, src)) {
       if (error) *error = "a gép szkriptje nem tölthető be";
       ai_.reset();
-    } else {
-      sim_->add_hooks(ai_.get());
-      ai_->start(*sim_);
+      return false;   // H-05: hibás gépi szkript – sikertelen indítás
+    }
+    sim_->add_hooks(ai_.get());
+    ai_->start(*sim_);
+    if (ai_->errors() > 0) {   // H-76: az on_start hibája is sikertelen indítás
+      if (error) *error = "a gép szkriptje hibát jelzett az indításkor";
+      return false;
     }
   }
   last_.reset();

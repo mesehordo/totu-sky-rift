@@ -152,6 +152,31 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     return false;
   };
   if (!rules_) return fail("nincsenek szabályadatok (attach_rules)");
+  // előbb minden feltétel, csak utána bármilyen változás (H-25: hibánál a világ érintetlen; H-26: egyszer)
+  if (match_started_) return fail("a meccs már elindult");
+  {
+    const auto& st = m.objects().starts;
+    std::vector<std::pair<int, int>> used;
+    for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
+      if (setup.factions[i].empty()) continue;
+      const FactionDef* f = rules_->faction(setup.factions[i]);
+      if (!f) return fail("ismeretlen nép: " + setup.factions[i]);
+      if (i >= st.size()) return fail("a pályán kevesebb a kezdőhely, mint a játékos");
+      if (std::find(used.begin(), used.end(), st[i]) != used.end()) return fail("két játékos ugyanazon a kezdőhelyen");   // H-38
+      used.push_back(st[i]);
+      if (f->hq == kNoDef) return fail("a népnek nincs főépülete: " + f->id);
+      const EntityDef& hq = rules_->defs[f->hq];
+      if (std::max(1, hq.fw) > m.width() || std::max(1, hq.fh) > m.height()) return fail("a pálya kisebb a főépületnél");   // H-03
+      for (const auto& [def, n] : f->start_units) {
+        if (n < 0 || n > 200) return fail("túl sok kezdőegység: " + f->id);   // H-89
+      }
+    }
+    for (const map::MapResource& r : m.objects().resources) {
+      const int kind = resource_index(r.kind);
+      if (kind < 0 || rules_->resources[static_cast<size_t>(kind)].special) return fail("ismeretlen lelőhely: " + r.kind);
+    }
+  }
+  match_started_ = true;
   upkeep_ = setup.upkeep;
   fog_ = setup.fog;
   map_ = &m;
@@ -184,8 +209,9 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   };
   for (const map::MapResource& r : m.objects().resources) {
     const int kind = resource_index(r.kind);
-    if (kind < 0 || rules_->resources[static_cast<size_t>(kind)].special) return fail("ismeretlen lelőhely: " + r.kind);
-    add_node(kind, r.x, r.y, r.size, r.amount >= 0 ? r.amount : rules_->resources[static_cast<size_t>(kind)].node_amount);
+    const int amount = r.amount >= 0 ? r.amount : rules_->resources[static_cast<size_t>(kind)].node_amount;
+    if (amount <= 0) continue;   // H-36: az üres lelőhely nem foglal helyet
+    add_node(kind, r.x, r.y, r.size, amount);
   }
   for (const auto& [x, y] : m.objects().trees) add_node(kWood, x, y, 1, rules_->resources[kWood].node_amount);
   if (nav_) nav_->add_obstacles(obstacles);   // egyszerre: a nagy erdős pályákon is gyors indulás
@@ -199,6 +225,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     const auto [sx, sy] = starts[owner - 1u];
     const int tx = std::clamp(sx - w / 2, 0, m.width() - w), ty = std::clamp(sy - h / 2, 0, m.height() - h);
     const EntityId b = place_building(f.hq, owner, tx, ty, true);
+    if (b == kNoEntity) return fail("a főépület nem helyezhető el");   // H-03 (az előzetes ellenőrzés után nem fordul elő)
     const Position bp = *world_.get<Position>(b);
     const core::Angle base = core::atan2(cy - bp.y, cx - bp.x);
     for (const auto& [def, n] : f.start_units) {
@@ -206,7 +233,10 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
         // a régi képlet: szög + (k − n/2) × 0,35 rad; 0,35 rad = 3651 szögegység (2^16 = 360°)
         const core::Angle a = base + core::Angle::from_units((2 * k - n) * 3651 / 2);
         const Fixed rx = half(w) + Fixed::from_ratio(40, 32), ry = half(h) + Fixed::from_ratio(40, 32);
-        const EntityId u = spawn_unit(def, owner, bp.x + core::cos(a) * rx, bp.y + core::sin(a) * ry);
+        // H-39: a pálya szélénél a pályán belül marad
+        const Fixed ux = std::clamp(bp.x + core::cos(a) * rx, Fixed::from_ratio(1, 2), Fixed::from_int(m.width()) - Fixed::from_ratio(1, 2));
+        const Fixed uy = std::clamp(bp.y + core::sin(a) * ry, Fixed::from_ratio(1, 2), Fixed::from_int(m.height()) - Fixed::from_ratio(1, 2));
+        const EntityId u = spawn_unit(def, owner, ux, uy);
         const EntityDef& ud = rules_->defs[def];
         if (!ud.worker) continue;
         const int kinds[4] = {f.start_gather, kGold, kWood, kMeteor};

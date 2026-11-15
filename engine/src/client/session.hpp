@@ -153,6 +153,7 @@ class Session {
   // látta (a lerombolt is ott marad, amíg újra oda nem lát)
   std::map<sim::EntityId, SnapUnit> remembered_;
   bool reveal_all_ = false;
+  map::NavConfig nav_config_;   // a game.json `navigation` része (H-90)
   bool tile_visible(int x, int y) const;
   bool rect_visible(int x, int y, int w, int h) const;
 };
