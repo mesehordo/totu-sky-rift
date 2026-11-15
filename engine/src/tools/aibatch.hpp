@@ -3,10 +3,12 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "map/terrain.hpp"
+#include "script/ai.hpp"
 #include "sim/rules.hpp"
 
 namespace totu::tools {
@@ -18,6 +20,9 @@ struct AiBatchMatch {
   int64_t ticks = 12 * 60 * 30;
   bool camps = false;
   std::string script_name, script_source;   // a gép szkriptje (minden játékosnak)
+  // M9: az új gépi ellenfél (ha meg van adva, a szkript helyett): az AI-csomag és játékosonként a beállítás
+  std::shared_ptr<const script::AiPackage> package;
+  std::vector<sim::AiSlot> ai;
 };
 
 struct AiBatchResult {
@@ -27,6 +32,7 @@ struct AiBatchResult {
   uint8_t winner = 0, stalled_player = 0;
   int64_t end_tick = 0, stall_tick = 0;
   size_t script_errors = 0;
+  std::string first_script_error;
   struct Player {
     int64_t gathered = 0;
     int units = 0, buildings = 0, researched = 0;

@@ -322,6 +322,7 @@ uint64_t Sim::hash() const {
       }
       h.add_u64(p.ascended);
       h.add_u64(p.defeated);
+      if (p.cheat_gather) h.add_u64(0x4F52554C54ULL);   // (csak ha be van kapcsolva: a korábbi hash-ek maradnak)
       h.add_u64(p.fallen.size());
       for (const auto& [fd, hs] : p.fallen) { h.add_u64(fd); hs.hash(h); }
       h.add_bytes(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
@@ -425,7 +426,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(12);   // séma (12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(13);   // séma (13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -452,6 +453,7 @@ std::vector<uint8_t> Sim::save() const {
       for (const auto& rv : p.reveals) for (const int32_t v : rv) w.i32(v);
       w.u8(p.ascended ? 1 : 0);
       w.u8(p.defeated ? 1 : 0);
+      w.u8(p.cheat_gather ? 1 : 0);
       w.u32(static_cast<uint32_t>(p.fallen.size()));
       for (const auto& [fd, hs] : p.fallen) { w.u32(fd); hs.save(w); }
       w.str(std::string_view(reinterpret_cast<const char*>(p.visible.data()), p.visible.size()));
@@ -481,7 +483,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 12) return false;
+  if (schema < 3 || schema > 13) return false;
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);
@@ -521,6 +523,7 @@ bool Sim::load(const std::vector<uint8_t>& data) {
       }
       p.ascended = r.u8() != 0;
       p.defeated = schema >= 8 && r.u8() != 0;
+      p.cheat_gather = schema >= 13 && r.u8() != 0;
       p.fallen.clear();
       if (schema >= 9) {
         for (uint32_t i = 0, nf = r.u32(); i < nf && i < 64 && r.ok(); ++i) {

@@ -41,6 +41,10 @@ struct Replay {
   std::string map;                 // M4: a pálya (map.json szövege); üres = pálya és navigáció nélkül
   std::vector<std::string> factions;   // M6 (4-es változat): meccs a pálya kezdőhelyein, játékosonként a nép
   uint8_t weather = 1;                 // M6: MatchSetup::WeatherMode (0 ki, 1 hangulat, 2 hatással, 3 + pálya)
+  // M9 (5-ös változat): a gépi játékosok beállítása és az AI-csomagok fájljai (mod = a csomag azonosítója, name = a
+  // csomagon belüli útvonal), így a visszajátszás a gép kódjával együtt önálló
+  std::vector<AiSlot> ai;
+  std::vector<ScriptFile> ai_files;
   std::vector<Checkpoint> checkpoints;
 };
 
@@ -62,7 +66,8 @@ struct VerifyResult {
 };
 VerifyResult verify(const Replay& r, const map::TerrainTable* terrain = nullptr, const Rules* rules = nullptr);
 
-// Szkript nélkül az 1-es, szkripttel a 2-es, pályával vagy M4-es parancsokkal a 3-as változat.
+// Szkript nélkül az 1-es, szkripttel a 2-es, pályával vagy M4-es parancsokkal a 3-as, meccsel a 4-es, gépi
+// játékosokkal az 5-ös változat.
 std::vector<uint8_t> encode(const Replay& r);
 std::optional<Replay> decode(const std::vector<uint8_t>& data);
 

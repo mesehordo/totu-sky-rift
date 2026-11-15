@@ -225,6 +225,9 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   vision_system();
   build_terrain_patches();
   for (int i = 0; i <= kMaxPlayers; ++i) rebuild_rules(static_cast<uint8_t>(i));
+  for (const AiSlot& a : setup.ai) {   // az „Őrült” gépi ellenfél egyetlen csalása (M9)
+    if (a.player >= 1 && a.player <= kMaxPlayers && a.difficulty == "orult") players_[a.player].cheat_gather = true;
+  }
   if (setup.camps) spawn_camps(m);   // a Vadon táborai (D25)
   for (auto& mod : modules_) mod->on_match_start(*this);
   return true;
@@ -287,10 +290,11 @@ void Sim::stop(EntityId e) {
   }
 }
 
-void Sim::income(uint8_t owner, int kind, int32_t amount) {
+void Sim::income(uint8_t owner, int kind, int32_t amount, bool gathering) {
   PlayerState& p = players_[owner];
   int64_t milli = int64_t{amount} * 1000;
   if (kind == kGold && upkeep_) milli = int64_t{amount} * rules_->upkeep_permille(p.supply_used);   // Hadtáp
+  if (gathering && p.cheat_gather) milli += milli / 2;   // „Őrült” gép: +50% gyűjtés (jelölt csalás)
   p.res[static_cast<size_t>(kind)] += milli;
   p.gathered[static_cast<size_t>(kind)] += milli;
 }
@@ -466,7 +470,7 @@ void Sim::economy_system() {
           if (!tp) world_.add(w.res, Tapped{e});
           else tp->by = e;
           if (--w.timer > 0) return;
-          income(hp->owner, kWood, d.tap_amount);
+          income(hp->owner, kWood, d.tap_amount, true);
           n = world_.get<ResourceNode>(w.res);
           n->amount -= std::max(1, (Fixed::from_int(d.tap_amount) * d.tap_drain).floor_int());
           w.timer = std::max(1, d.tap_ticks);
@@ -497,7 +501,7 @@ void Sim::economy_system() {
         const EntityId drop = nearest_dropoff(hp->owner, w.carry_kind, pos->x, pos->y, exclude);
         if (drop == kNoEntity) return;   // nincs leadóhely: vár
         if (in_reach(e, drop)) {
-          income(hp->owner, w.carry_kind, w.carry);
+          income(hp->owner, w.carry_kind, w.carry, true);
           w.carry = 0;
           w.bad_drop = 0;
           w.state = Worker::Go;

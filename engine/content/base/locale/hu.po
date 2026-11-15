@@ -8435,3 +8435,79 @@ msgctxt "ui.pause.quit"
 msgid "Kilépés (Q)"
 msgstr ""
 
+
+msgctxt "ui.skirmish.col.difficulty"
+msgid "Nehézség"
+msgstr ""
+
+msgctxt "ui.skirmish.col.personality"
+msgid "Személyiség"
+msgstr ""
+
+msgctxt "ui.ai.diff.kezdo"
+msgid "Kezdő"
+msgstr ""
+
+msgctxt "ui.ai.diff.konnyu"
+msgid "Könnyű"
+msgstr ""
+
+msgctxt "ui.ai.diff.normal"
+msgid "Normál"
+msgstr ""
+
+msgctxt "ui.ai.diff.nehez"
+msgid "Nehéz"
+msgstr ""
+
+msgctxt "ui.ai.diff.mester"
+msgid "Mester"
+msgstr ""
+
+msgctxt "ui.ai.diff.orult"
+msgid "Őrült (csaló)"
+msgstr ""
+
+msgctxt "ui.ai.pers.vedekezo"
+msgid "Védekező"
+msgstr ""
+
+msgctxt "ui.ai.pers.tamado"
+msgid "Támadó"
+msgstr ""
+
+msgctxt "ui.ai.pers.kiegyenlitett"
+msgid "Kiegyenlített"
+msgstr ""
+
+msgctxt "ui.ai.pers.gyors_roham"
+msgid "Gyors roham"
+msgstr ""
+
+msgctxt "ui.ai.pers.terjeszkedo"
+msgid "Terjeszkedő"
+msgstr ""
+
+msgctxt "ui.ai.pers.technologus"
+msgid "Technológus"
+msgstr ""
+
+msgctxt "ui.ai.pers.portyazo"
+msgid "Portyázó"
+msgstr ""
+
+msgctxt "ui.ai.pers.ostromlo"
+msgid "Ostromló"
+msgstr ""
+
+msgctxt "ui.ai.pers.csapatjatekos"
+msgid "Csapatjátékos"
+msgstr ""
+
+msgctxt "ui.ai.pers.alkalmazkodo"
+msgid "Alkalmazkodó"
+msgstr ""
+
+msgctxt "ui.ai.pers.nepe_szerinti"
+msgid "Népe szerinti"
+msgstr ""

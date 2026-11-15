@@ -2,6 +2,7 @@
 // A szkriptréteg megvalósítása (M3). Lásd host.hpp. A Lua C++-ként fordul (lua_build.cpp), ezért a lua.h-t
 // közvetlenül, extern "C" nélkül használjuk, és a Lua-hibák C++-kivételként futnak át ezen a kódon.
 #include "script/host.hpp"
+#include "script/host_internal.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -39,6 +40,7 @@ struct ScriptHost::Impl {
   std::vector<std::string> messages;
   size_t errors = 0;
   int s_ref = LUA_NOREF;     // az S tábla a registryben
+  detail::AiState ai;        // gépi játékos (M9)
 
   struct Timer {
     int64_t tick = 0;
@@ -1140,6 +1142,17 @@ uint64_t stream_for(const std::string& name) {
 
 }  // namespace
 
+// --- a gépi ellenfél API-jának (ai_api.cpp) ------------------------------------------------------------------------
+namespace detail {
+AiState& ai_state(lua_State* L) { return impl(L).ai; }
+sim::Sim& sim_of(lua_State* L) { return need_sim(L); }
+core::Fixed fixed_arg(lua_State* L, int idx, const char* what) { return to_fixed(L, idx, what); }
+void push_fixed_value(lua_State* L, core::Fixed f) { push_fixed(L, f); }
+sim::EntityId id_arg(lua_State* L, int idx) { return check_id(L, idx); }
+void make_readonly(lua_State* L) { wrap_readonly(L); }
+int faction_ai(lua_State* L) { return g_faction_ai(L); }
+}  // namespace detail
+
 // --- Impl tagfüggvények --------------------------------------------------------------------------------------------
 
 template <class F>
@@ -1389,6 +1402,21 @@ bool ScriptHost::load(core::ByteReader& r) {
   return true;
 }
 
+void ScriptHost::enable_ai(uint8_t player, const std::string& difficulty, const std::string& personality) {
+  Impl& I = *impl_;
+  if (!I.L) return;
+  I.ai.owner = player;
+  I.ai.difficulty = difficulty;
+  I.ai.personality = personality;
+  I.protect("AI tábla", [](lua_State* st) {
+    detail::open_ai_api(st);
+    lua_pushnil(st);
+    lua_setglobal(st, "Game");   // a teljes (csaló) API nem érhető el
+  });
+}
+
+uint64_t ScriptHost::command_digest() const { return impl_->ai.digest; }
+uint64_t ScriptHost::command_count() const { return impl_->ai.count; }
 const std::string& ScriptHost::name() const { return impl_->name; }
 const std::vector<std::string>& ScriptHost::messages() const { return impl_->messages; }
 size_t ScriptHost::errors() const { return impl_->errors; }

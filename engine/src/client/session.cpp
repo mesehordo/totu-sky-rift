@@ -10,6 +10,7 @@
 #include <map>
 
 #include "content/loader.hpp"
+#include "script/ai.hpp"
 
 namespace totu::client {
 
@@ -124,7 +125,19 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   sim_->attach_rules(&*rules_);
   if (!sim_->setup_match(*map_, setup, error)) return false;
   if (setup.fog == sim::MatchSetup::Fog::None) reveal_all_ = true;
-  if (!ai.empty()) {   // a szkriptelt ellenfél (Lua; determinisztikus, a hash és a mentés része)
+  if (!setup.ai.empty()) {   // M9: az új gépi ellenfél – gépi játékosonként saját Lua-állapot (AI-csomag a VFS-ből)
+    content::Vfs vfs;
+    vfs.add_layer("totu", std::filesystem::path(content_dir_) / "base");
+    std::vector<script::AiPackage> pkgs;
+    for (const auto& a : setup.ai) {
+      if (std::any_of(pkgs.begin(), pkgs.end(), [&](const script::AiPackage& p) { return p.id == a.ai; })) continue;
+      auto pkg = script::load_ai_package(vfs, a.ai, error);
+      if (!pkg) return false;
+      pkgs.push_back(std::move(*pkg));
+    }
+    ais_ = script::attach_ais(*sim_, setup.ai, pkgs, seed_, true, error);
+    if (ais_.empty()) return false;
+  } else if (!ai.empty()) {   // a szkriptelt ellenfél (Lua; determinisztikus, a hash és a mentés része)
     std::ifstream in(std::filesystem::path(content_dir_) / "base" / "scripts" / ai_script, std::ios::binary);
     const std::string src{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
     std::string players = "AI_PLAYERS = {";

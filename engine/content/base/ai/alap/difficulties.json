@@ -1,0 +1,9 @@
+{
+  "_leiras": "Nehézségek (GEPI_ELLENFEL.md 1. pont). think: a menedzserek alapütemezése (tick); tasks: egy tickben futó menedzserek legfeljebb; builds: egyszerre épülő épületek; abilities: képességhasználat; micro: 0 nincs, 1 a sebesültek visszahúzása, 2 fókuszlövés is; raid: portyázhat-e; learn: a tanulás üteme (0 = nem tanul); attack_delay: az első támadás idejének szorzója (%); workers: a munkáslétszám szorzója (%); scout: az első felderítés ideje (s). Az „Őrült” a Mester, a szimuláció +50% gyűjtésével (az egyetlen, nyíltan jelölt csalás).",
+  "kezdo":  {"name": "Kezdő",  "think": 90, "tasks": 2, "builds": 1, "abilities": false, "micro": 0, "raid": false, "learn": 0,   "attack_delay": 160, "workers": 70,  "scout": 240},
+  "konnyu": {"name": "Könnyű", "think": 60, "tasks": 3, "builds": 1, "abilities": false, "micro": 0, "raid": true,  "learn": 0,   "attack_delay": 130, "workers": 85,  "scout": 150},
+  "normal": {"name": "Normál", "think": 30, "tasks": 5, "builds": 2, "abilities": true,  "micro": 1, "raid": true,  "learn": 40,  "attack_delay": 100, "workers": 100, "scout": 90},
+  "nehez":  {"name": "Nehéz",  "think": 20, "tasks": 7, "builds": 2, "abilities": true,  "micro": 2, "raid": true,  "learn": 80,  "attack_delay": 90,  "workers": 105, "scout": 75},
+  "mester": {"name": "Mester", "think": 15, "tasks": 9, "builds": 3, "abilities": true,  "micro": 2, "raid": true,  "learn": 100, "attack_delay": 85,  "workers": 110, "scout": 60},
+  "orult":  {"name": "Őrült",  "think": 15, "tasks": 9, "builds": 3, "abilities": true,  "micro": 2, "raid": true,  "learn": 100, "attack_delay": 85,  "workers": 110, "scout": 60, "cheat_gather": 50}
+}

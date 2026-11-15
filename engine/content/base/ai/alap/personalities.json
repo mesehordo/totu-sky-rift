@@ -1,0 +1,89 @@
+{
+  "_leiras": "Személyiségek (GEPI_ELLENFEL.md 1. pont): ugyanaz a kód, más paraméterek. ratio: gazdaság/hadsereg/védelem/kutatás aránya; workers: munkáslétszám (%); first_attack: az első támadás legkorábban (s); advantage: kellő túlerő (%); wave: a támadóhullám mérete (%); mix: egységmix-súlyok egységosztályonként (%); retreat: visszavonulási küszöb (az ellenség helyi ereje a saját %-ában); raid: portyázási hajlam (%); expand: további telepek; towers, walls: védőépületek; garrison: helyőrség veszélyben; hero, ability: hős- és képességhasználat (%); night, weather: a napszak és az időjárás kihasználása (%); learn, learn_max: a tanulás ereje és korlátja (%); adaptive: stílusváltás a felderítés alapján; assist: a szövetségest segíti. A hiányzó mező a kozos.lua alapértéke.",
+  "vedekezo": {
+    "name": "Védekező",
+    "ratio": {"economy": 30, "army": 25, "defense": 35, "research": 10},
+    "workers": 100, "first_attack": 720, "advantage": 160, "wave": 150, "wave_growth": 3,
+    "mix": {"kozelharcos": 100, "landzsas": 140, "lovesz": 140, "lovas": 60, "orias": 80, "varazslo": 80, "repulo": 60, "ostrom": 20},
+    "retreat": 120, "raid": 0, "expand": 0, "towers": 4, "walls": 6, "garrison": 1,
+    "hero": 50, "ability": 60, "night": 0, "weather": 0, "learn": 100, "learn_max": 60
+  },
+  "tamado": {
+    "name": "Támadó",
+    "ratio": {"economy": 25, "army": 55, "defense": 5, "research": 15},
+    "workers": 90, "first_attack": 240, "advantage": 100, "wave": 100, "wave_growth": 2,
+    "mix": {"kozelharcos": 140, "landzsas": 80, "lovesz": 100, "lovas": 130, "orias": 100, "varazslo": 60, "repulo": 80, "ostrom": 40},
+    "retreat": 220, "raid": 20, "raid_time": 300, "expand": 0, "towers": 0, "walls": 0,
+    "hero": 60, "ability": 60, "night": 20, "weather": 0
+  },
+  "kiegyenlitett": {
+    "name": "Kiegyenlített",
+    "ratio": {"economy": 35, "army": 35, "defense": 12, "research": 18},
+    "workers": 100, "first_attack": 420, "advantage": 130, "wave": 100, "wave_growth": 2,
+    "mix": {"kozelharcos": 100, "landzsas": 100, "lovesz": 100, "lovas": 100, "orias": 100, "varazslo": 70, "repulo": 70, "ostrom": 50},
+    "retreat": 160, "raid": 10, "expand": 1, "expand_time": 480, "towers": 1, "walls": 0,
+    "hero": 50, "ability": 50
+  },
+  "gyors_roham": {
+    "name": "Gyors roham",
+    "ratio": {"economy": 15, "army": 75, "defense": 0, "research": 10},
+    "workers": 60, "first_attack": 150, "advantage": 0, "wave": 60, "wave_growth": 1,
+    "mix": {"kozelharcos": 160, "landzsas": 100, "lovesz": 100, "lovas": 120, "orias": 20, "varazslo": 20, "repulo": 20, "ostrom": 10},
+    "retreat": 300, "raid": 0, "expand": 0, "towers": 0, "walls": 0,
+    "hero": 10, "ability": 30
+  },
+  "terjeszkedo": {
+    "name": "Terjeszkedő",
+    "ratio": {"economy": 55, "army": 25, "defense": 10, "research": 10},
+    "workers": 130, "first_attack": 840, "advantage": 140, "wave": 180, "wave_growth": 4,
+    "mix": {"kozelharcos": 100, "landzsas": 100, "lovesz": 100, "lovas": 100, "orias": 110, "varazslo": 70, "repulo": 70, "ostrom": 60},
+    "retreat": 150, "raid": 0, "expand": 3, "expand_time": 180, "towers": 1, "walls": 0,
+    "hero": 40, "ability": 50
+  },
+  "technologus": {
+    "name": "Technológus",
+    "ratio": {"economy": 30, "army": 25, "defense": 10, "research": 35},
+    "workers": 100, "first_attack": 660, "advantage": 130, "wave": 120, "wave_growth": 2,
+    "mix": {"kozelharcos": 70, "landzsas": 70, "lovesz": 80, "lovas": 80, "orias": 160, "varazslo": 160, "repulo": 120, "ostrom": 120},
+    "retreat": 150, "raid": 0, "expand": 1, "expand_time": 600, "towers": 1, "walls": 0,
+    "hero": 100, "ability": 100
+  },
+  "portyazo": {
+    "name": "Portyázó",
+    "ratio": {"economy": 30, "army": 50, "defense": 5, "research": 15},
+    "workers": 90, "first_attack": 600, "advantage": 150, "wave": 120, "wave_growth": 2,
+    "mix": {"kozelharcos": 80, "landzsas": 80, "lovesz": 120, "lovas": 180, "orias": 60, "varazslo": 70, "repulo": 160, "ostrom": 20},
+    "retreat": 130, "raid": 90, "raid_time": 180, "raid_size": 4, "expand": 1, "expand_time": 600, "towers": 0, "walls": 0,
+    "hero": 50, "ability": 60, "night": 60, "weather": 20
+  },
+  "ostromlo": {
+    "name": "Ostromló",
+    "ratio": {"economy": 30, "army": 45, "defense": 5, "research": 20},
+    "workers": 100, "first_attack": 540, "advantage": 120, "wave": 130, "wave_growth": 2,
+    "mix": {"kozelharcos": 100, "landzsas": 100, "lovesz": 80, "lovas": 70, "orias": 160, "varazslo": 60, "repulo": 50, "ostrom": 300},
+    "retreat": 180, "raid": 0, "expand": 0, "towers": 1, "walls": 0,
+    "hero": 50, "ability": 50
+  },
+  "csapatjatekos": {
+    "name": "Csapatjátékos",
+    "ratio": {"economy": 35, "army": 35, "defense": 15, "research": 15},
+    "workers": 100, "first_attack": 480, "advantage": 120, "wave": 100, "wave_growth": 2,
+    "mix": {"kozelharcos": 100, "landzsas": 120, "lovesz": 120, "lovas": 90, "orias": 90, "varazslo": 120, "repulo": 70, "ostrom": 50},
+    "retreat": 160, "raid": 0, "expand": 1, "expand_time": 540, "towers": 2, "walls": 0,
+    "hero": 50, "ability": 60, "assist": 1
+  },
+  "alkalmazkodo": {
+    "name": "Alkalmazkodó",
+    "ratio": {"economy": 35, "army": 35, "defense": 12, "research": 18},
+    "workers": 100, "first_attack": 420, "advantage": 130, "wave": 100, "wave_growth": 2,
+    "mix": {"kozelharcos": 100, "landzsas": 100, "lovesz": 100, "lovas": 100, "orias": 100, "varazslo": 70, "repulo": 70, "ostrom": 50},
+    "retreat": 160, "raid": 10, "expand": 1, "expand_time": 480, "towers": 1, "walls": 0,
+    "hero": 50, "ability": 60, "learn": 200, "learn_max": 100, "adaptive": 1
+  },
+  "nepe_szerinti": {
+    "name": "Népe szerinti",
+    "base": "kiegyenlitett",
+    "factions": {"wullof": "portyazo", "ursan": "vedekezo", "croftian": "terjeszkedo", "ooni": "technologus", "hukucha": "tamado", "imperium": "kiegyenlitett", "elves": "vedekezo"},
+    "overrides": {"wullof": {"night": 100}, "hukucha": {"weather": 100}}
+  }
+}

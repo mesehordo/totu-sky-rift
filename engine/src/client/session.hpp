@@ -143,6 +143,7 @@ class Session {
   std::unique_ptr<map::Pathfinder> pf_;
   std::unique_ptr<sim::Sim> sim_;
   std::unique_ptr<script::ScriptHost> ai_;
+  std::vector<std::unique_ptr<script::ScriptHost>> ais_;   // M9: az új gépi ellenfél játékosonként
   std::string content_dir_;
   std::map<std::string, std::string> names_;
   uint64_t seed_ = 0;

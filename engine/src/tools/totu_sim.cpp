@@ -5,6 +5,7 @@
 //   totu_sim navgolden <ki.trep> <pálya.json> [--seed S] [--ticks T]  golden M4: pálya, alakzatok, kapu, építés
 //   totu_sim bench [--players 8] [--units 200] [--size 256] [--ticks 1800]   mozgásmérés (M4 kapu: p99 <= 40 ms)
 //   totu_sim verify <be.trep>                                         visszajátszás ellenőrzése (kilépési kód 0 = egyezik)
+//   totu_sim aibatch [--ai alap] [--count 100] [--minutes 12] [--map …]   tömeges gép–gép meccsek (M9 kapu)
 // A pályás parancsok a tartalmat (terepfajták) a --content <mappa> helyről töltik (alapérték: a forrásfa tartalma).
 // A forgatókönyv két sereg csatája: mindkét fél N egysége a pálya két szélén jelenik meg, és rendszeres
 // mozgásparancsokat kap; a parancsokat a visszajátszás rögzíti, így az ellenőrzés a forgatókönyv nélkül is fut.
@@ -12,6 +13,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
+#include <memory>
 #include <fstream>
 #include <iterator>
 #include <optional>
@@ -236,8 +239,24 @@ int main(int argc, char** argv) {
     const char* script_arg = arg_str(argc, argv, "--script", nullptr);
     const std::string map_path = map_arg ? map_arg : std::string(content) + "/../tests/data/maps/ECO-ALAP.json";
     const std::string script_path = script_arg ? script_arg : std::string(content) + "/base/scripts/ai_nep.lua";
-    const auto src = read_file(script_path.c_str());
-    if (src.empty()) { std::fprintf(stderr, "nem olvasható: %s\n", script_path.c_str()); return 2; }
+    // M9: `--ai <csomag>` – az új gépi ellenfél; `--difficulty`, `--personality`: rögzített érték, vagy „mix”
+    // (alapérték): meccsenként és játékosonként sorra minden nehézség és személyiség
+    const char* ai_arg = arg_str(argc, argv, "--ai", nullptr);
+    const std::string diff_arg = arg_str(argc, argv, "--difficulty", "mix");
+    const std::string pers_arg = arg_str(argc, argv, "--personality", "mix");
+    std::shared_ptr<const script::AiPackage> package;
+    std::vector<std::string> personalities;
+    if (ai_arg) {
+      content::Vfs vfs;
+      vfs.add_layer("totu", std::filesystem::path(content) / "base");
+      std::string err;
+      auto pkg = script::load_ai_package(vfs, ai_arg, &err);
+      if (!pkg) { std::fprintf(stderr, "%s\n", err.c_str()); return 2; }
+      personalities = script::ai_personalities(*pkg);
+      package = std::make_shared<const script::AiPackage>(std::move(*pkg));
+    }
+    const auto src = ai_arg ? std::vector<uint8_t>{} : read_file(script_path.c_str());
+    if (!ai_arg && src.empty()) { std::fprintf(stderr, "nem olvasható: %s\n", script_path.c_str()); return 2; }
     std::vector<std::string> fs;
     for (const auto& f : rules->factions) {
       if (!f.ally && !f.neutral) fs.push_back(f.id);
@@ -252,6 +271,19 @@ int main(int argc, char** argv) {
       m.camps = i % 2 == 1;
       m.script_name = script_path.substr(script_path.find_last_of("/\\") + 1);
       m.script_source.assign(src.begin(), src.end());
+      if (package) {
+        m.package = package;
+        const auto& diffs = script::ai_difficulties();
+        for (uint8_t p = 1; p <= m.factions.size(); ++p) {
+          sim::AiSlot a;
+          a.player = p;
+          a.ai = package->id;
+          const size_t k = static_cast<size_t>(i) + static_cast<size_t>(p - 1) * 3, kp = static_cast<size_t>(i) + static_cast<size_t>(p - 1) * 5;
+          a.difficulty = diff_arg == "mix" ? diffs[k % diffs.size()] : diff_arg;
+          a.personality = pers_arg == "mix" && !personalities.empty() ? personalities[kp % personalities.size()] : pers_arg;
+          m.ai.push_back(std::move(a));
+        }
+      }
       ms.push_back(std::move(m));
     }
     const auto res = tools::run_ai_batch(ms, terrain, *rules, threads);

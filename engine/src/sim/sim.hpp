@@ -705,6 +705,7 @@ struct PlayerState {
   std::vector<std::array<int32_t, 4>> reveals;
   bool ascended = false;
   bool defeated = false;                     // minden épülete elpusztult (M6 9. lépés)
+  bool cheat_gather = false;                 // „Őrült” gépi ellenfél (M9): +50% gyűjtés – nyíltan jelölt csalás
   // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
   std::vector<uint8_t> visible, explored;
   int32_t resource(int r) const { return static_cast<int32_t>(res[static_cast<size_t>(r)] / 1000); }
@@ -712,6 +713,16 @@ struct PlayerState {
   std::vector<Modifier> research_mods;
   // elesett hősök állapota (D25, HOS-1): újraképzéskor (újraélesztés) visszaáll
   std::vector<std::pair<uint16_t, HeroState>> fallen;
+};
+
+// Gépi játékos (M9; GEPI_ELLENFEL.md): a meccsbeállítás és a visszajátszás része. A gép Lua-állapotát a
+// script/ai.hpp `attach_ais` hozza létre; a szimuláció ebből csak az „Őrült” szint csalását (+50% gyűjtés) veszi.
+struct AiSlot {
+  uint8_t player = 0;                        // 1..8
+  std::string ai = "alap";                   // az `ai/<azonosító>/` csomag
+  std::string difficulty = "normal";         // kezdo | konnyu | normal | nehez | mester | orult
+  std::string personality = "kiegyenlitett"; // a csomag `personalities.json` kulcsa
+  friend bool operator==(const AiSlot&, const AiSlot&) = default;
 };
 
 struct MatchSetup {
@@ -723,6 +734,7 @@ struct MatchSetup {
   enum class Daytime : uint8_t { Off = 0, Mood = 1, Effect = 2 } daytime = Daytime::Effect;
   enum class WeatherMode : uint8_t { Off = 0, Mood = 1, Effect = 2, EffectTerrain = 3 } weather = WeatherMode::Mood;
   bool camps = false;                  // a Vadon táborai (D25; az egyéni csata kliense bekapcsolja)
+  std::vector<AiSlot> ai;              // gépi játékosok (M9)
 };
 
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
@@ -1145,7 +1157,8 @@ class Sim {
   bool pay(uint8_t owner, const std::array<int32_t, kResources>& cost);
   void refund(uint8_t owner, const std::array<int32_t, kResources>& cost, int32_t permille);
   map::Map* map_ = nullptr;
-  void income(uint8_t owner, int kind, int32_t amount);
+  // `gathering`: gyűjtésből (az „Őrült” gép +50%-a csak erre)
+  void income(uint8_t owner, int kind, int32_t amount, bool gathering = false);
   EntityId nearest_resource(int kind, Fixed x, Fixed y, Fixed max_dist, EntityId exclude);
   EntityId nearest_dropoff(uint8_t owner, int kind, Fixed x, Fixed y, EntityId exclude);
   bool in_reach(EntityId unit, EntityId target);

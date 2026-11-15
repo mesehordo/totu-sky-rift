@@ -48,7 +48,14 @@ struct SlotSetup {
   enum class Kind : uint8_t { Human = 0, Ai = 1, Closed = 2 };
   Kind kind = Kind::Closed;
   std::string faction = "random";
+  // gépi helyen (M9): az alap gép nehézsége és személyisége
+  std::string difficulty = "normal";
+  std::string personality = "kiegyenlitett";
 };
+
+// az alap gépi ellenfél (`content/base/ai/alap`) nehézségei és személyiségei a lenyílókhoz (a csomag sorrendjében)
+const std::vector<std::string>& ai_difficulty_ids();
+const std::vector<std::string>& ai_personality_ids();
 
 struct SkirmishSetup {
   size_t map = 0;
@@ -61,7 +68,8 @@ struct SkirmishSetup {
   SkirmishSetup();
 };
 
-// a meccs indításához: a pálya, a MatchSetup (a véletlen népek feloldva) és a gépi játékosok (1-től)
+// a meccs indításához: a pálya, a MatchSetup (a véletlen népek feloldva; a gépi helyek a `setup.ai`-ban, M9) és a
+// gépi játékosok (1-től)
 struct MatchConfig {
   std::string map_path;
   sim::MatchSetup setup;
@@ -81,6 +89,8 @@ enum class MenuAct : uint8_t {
   PickMap,       // arg: a pálya indexe
   SlotKind,      // lenyíló; arg: a hely
   SlotFaction,   // lenyíló; arg: a hely
+  SlotDifficulty,    // lenyíló; arg: a hely (M9)
+  SlotPersonality,   // lenyíló; arg: a hely (M9)
   Option,        // lenyíló; arg: 0 köd, 1 napszak, 2 időjárás, 3 táborok, 4 hadtáp
   Cycle,         // beállítás léptetése; arg: a sor
   OpenSound, OpenKeys,

@@ -8436,3 +8436,79 @@ msgctxt "ui.pause.quit"
 msgid "Kilépés (Q)"
 msgstr "Quit (Q)"
 
+
+msgctxt "ui.skirmish.col.difficulty"
+msgid "Nehézség"
+msgstr "Difficulty"
+
+msgctxt "ui.skirmish.col.personality"
+msgid "Személyiség"
+msgstr "Personality"
+
+msgctxt "ui.ai.diff.kezdo"
+msgid "Kezdő"
+msgstr "Beginner"
+
+msgctxt "ui.ai.diff.konnyu"
+msgid "Könnyű"
+msgstr "Easy"
+
+msgctxt "ui.ai.diff.normal"
+msgid "Normál"
+msgstr "Normal"
+
+msgctxt "ui.ai.diff.nehez"
+msgid "Nehéz"
+msgstr "Hard"
+
+msgctxt "ui.ai.diff.mester"
+msgid "Mester"
+msgstr "Master"
+
+msgctxt "ui.ai.diff.orult"
+msgid "Őrült (csaló)"
+msgstr "Insane (cheats)"
+
+msgctxt "ui.ai.pers.vedekezo"
+msgid "Védekező"
+msgstr "Defensive"
+
+msgctxt "ui.ai.pers.tamado"
+msgid "Támadó"
+msgstr "Aggressive"
+
+msgctxt "ui.ai.pers.kiegyenlitett"
+msgid "Kiegyenlített"
+msgstr "Balanced"
+
+msgctxt "ui.ai.pers.gyors_roham"
+msgid "Gyors roham"
+msgstr "Rush"
+
+msgctxt "ui.ai.pers.terjeszkedo"
+msgid "Terjeszkedő"
+msgstr "Expander"
+
+msgctxt "ui.ai.pers.technologus"
+msgid "Technológus"
+msgstr "Technologist"
+
+msgctxt "ui.ai.pers.portyazo"
+msgid "Portyázó"
+msgstr "Raider"
+
+msgctxt "ui.ai.pers.ostromlo"
+msgid "Ostromló"
+msgstr "Besieger"
+
+msgctxt "ui.ai.pers.csapatjatekos"
+msgid "Csapatjátékos"
+msgstr "Team player"
+
+msgctxt "ui.ai.pers.alkalmazkodo"
+msgid "Alkalmazkodó"
+msgstr "Adaptive"
+
+msgctxt "ui.ai.pers.nepe_szerinti"
+msgid "Népe szerinti"
+msgstr "By people"

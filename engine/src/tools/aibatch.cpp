@@ -64,21 +64,32 @@ AiBatchResult run_ai_match(const AiBatchMatch& m, const map::TerrainTable& terra
   sim::MatchSetup setup;
   setup.factions = m.factions;
   setup.camps = m.camps;
+  if (m.package) setup.ai = m.ai;
   std::string err;
   if (!s.setup_match(*mp, setup, &err)) {
     res.error = "a meccs nem indult: " + err;
     return res;
   }
-  script::ScriptHost ai("ai", m.seed);
-  std::string players = "AI_PLAYERS = {";
-  for (size_t i = 0; i < m.factions.size(); ++i) players += (i ? ", " : "") + std::to_string(i + 1);
-  players += "}";
-  if (!ai.run("ai_players", players) || !ai.run(m.script_name, m.script_source)) {
-    res.error = "a gép szkriptje hibás";
-    return res;
+  std::vector<std::unique_ptr<script::ScriptHost>> hosts;
+  if (m.package) {   // M9: játékosonként saját Lua-állapot, a beállítása szerint
+    hosts = script::attach_ais(s, m.ai, {*m.package}, m.seed, true, &err);
+    if (hosts.empty()) {
+      res.error = "a gép nem indult: " + err;
+      return res;
+    }
+  } else {
+    hosts.push_back(std::make_unique<script::ScriptHost>("ai", m.seed));
+    script::ScriptHost& ai = *hosts.back();
+    std::string players = "AI_PLAYERS = {";
+    for (size_t i = 0; i < m.factions.size(); ++i) players += (i ? ", " : "") + std::to_string(i + 1);
+    players += "}";
+    if (!ai.run("ai_players", players) || !ai.run(m.script_name, m.script_source)) {
+      res.error = "a gép szkriptje hibás";
+      return res;
+    }
+    s.add_hooks(&ai);
+    ai.start(s);
   }
-  s.add_hooks(&ai);
-  ai.start(s);
   std::vector<PlayerTrack> tr(m.factions.size() + 1);
   constexpr int64_t kStall = 3 * 60 * 30;   // 3 perc haladás nélkül
   for (int64_t t = 0; t < m.ticks; ++t) {
@@ -116,7 +127,17 @@ AiBatchResult run_ai_match(const AiBatchMatch& m, const map::TerrainTable& terra
     pr.defeated = pl.defeated;
     res.players.push_back(pr);
   }
-  res.script_errors = ai.errors();
+  for (const auto& h : hosts) {
+    res.script_errors += h->errors();
+    if (h->errors() > 0 && res.first_script_error.empty()) {
+      for (const auto& msg : h->messages()) {
+        if (msg.find("hiba") != std::string::npos) {
+          res.first_script_error = msg;
+          break;
+        }
+      }
+    }
+  }
   res.ok = res.error.empty() && res.stalled_player == 0 && res.script_errors == 0;
   return res;
 }
@@ -136,6 +157,7 @@ std::vector<AiBatchResult> run_ai_batch(const std::vector<AiBatchMatch>& matches
                   r.ok ? "rendben" : "HIBA", r.error.empty() ? (r.stalled_player ? "elakadt" : r.winner ? "győztes van" : "lejárt")
                                                              : r.error.c_str(),
                   r.stalled_player ? (" (" + std::to_string(r.stalled_player) + ". játékos, " + std::to_string(r.stall_tick / 30) + " s)").c_str() : "");
+      if (!r.first_script_error.empty()) std::printf("     %s\n", r.first_script_error.c_str());
       std::fflush(stdout);
     }
   };

@@ -141,6 +141,18 @@ std::vector<FactionInfo> scan_factions(const std::string& content_dir) {
 }
 
 // --- egyéni csata ---------------------------------------------------------------------------------------------------
+const std::vector<std::string>& ai_difficulty_ids() {
+  static const std::vector<std::string> d = {"kezdo", "konnyu", "normal", "nehez", "mester", "orult"};
+  return d;
+}
+
+const std::vector<std::string>& ai_personality_ids() {
+  static const std::vector<std::string> p = {"vedekezo",     "tamado",   "kiegyenlitett", "gyors_roham",
+                                             "terjeszkedo",  "technologus", "portyazo",   "ostromlo",
+                                             "csapatjatekos", "alkalmazkodo", "nepe_szerinti"};
+  return p;
+}
+
 SkirmishSetup::SkirmishSetup() {
   slots[0].kind = SlotSetup::Kind::Human;
   slots[1].kind = SlotSetup::Kind::Ai;
@@ -172,7 +184,14 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
     if (!known) f = factions[static_cast<size_t>(splitmix(rng) % factions.size())].id;   // véletlen nép
     c.setup.factions.push_back(f);
     ++participants;
-    if (kind == SlotSetup::Kind::Ai) c.ai.push_back(static_cast<int>(i) + 1);
+    if (kind == SlotSetup::Kind::Ai) {
+      c.ai.push_back(static_cast<int>(i) + 1);
+      sim::AiSlot a;   // M9: az alap gép a hely nehézségével és személyiségével
+      a.player = static_cast<uint8_t>(i + 1);
+      a.difficulty = sl.difficulty;
+      a.personality = sl.personality;
+      c.setup.ai.push_back(std::move(a));
+    }
   }
   if (participants < 2) return fail("ui.skirmish.need_two");
   c.setup.fog = s.fog;
@@ -371,15 +390,16 @@ void Menu::layout_skirmish() {
     const int lines = std::max(1, static_cast<int>((lp.y + lp.h - ty - k(6)) / k(18)));
     text(lp.x + k(10), ty, lw - k(20), map_text(loc_, md, "desc", md.desc), MenuText::Tiny, MenuText::Text, false, lines);
   }
-  // ---- játékoshelyek: #, résztvevő, nép, szín (a régi oszlopok közül, ami a MatchSetup-ban megvan)
-  const float weights[] = {24, 167, 156, 122};
+  // ---- játékoshelyek: #, résztvevő, nép, gépi nehézség és személyiség (M9), szín
+  const float weights[] = {24, 128, 128, 104, 136, 72};
+  constexpr int kCols = 6;
   const float gap = k(4);
   float sum = 0;
   for (float wt : weights) sum += wt;
-  const float sc = std::min((W - x0 - k(30) - gap * 3) / sum, 1.6f * u_);
-  float cx[4], cw[4];
+  const float sc = std::min((W - x0 - k(30) - gap * (kCols - 1)) / sum, 1.6f * u_);
+  float cx[kCols], cw[kCols];
   float x = x0;
-  for (int i = 0; i < 4; ++i) {
+  for (int i = 0; i < kCols; ++i) {
     cx[i] = x;
     cw[i] = std::floor(weights[i] * sc);
     x += cw[i] + gap;
@@ -387,9 +407,12 @@ void Menu::layout_skirmish() {
   const float row_y0 = top + k(36), row_h = k(34), dh = k(27);
   const MenuRect slots{x0 - k(10), top, W - x0 - k(14), row_y0 + 8 * row_h + k(8) - top};
   panels_.push_back({slots, 200, false});
-  const char* heads[] = {"ui.skirmish.col.num", "ui.skirmish.col.participant", "ui.skirmish.col.faction",
-                         "ui.skirmish.col.color"};
-  for (int i = 0; i < 4; ++i) text(cx[i], slots.y + k(10), cw[i], tr(heads[i]), MenuText::Small, MenuText::Gold);
+  const char* heads[] = {"ui.skirmish.col.num",        "ui.skirmish.col.participant", "ui.skirmish.col.faction",
+                         "ui.skirmish.col.difficulty", "ui.skirmish.col.personality", "ui.skirmish.col.color"};
+  for (int i = 0; i < kCols; ++i) text(cx[i], slots.y + k(10), cw[i], tr(heads[i]), MenuText::Small, MenuText::Gold);
+  std::vector<std::string> diffs, perss;
+  for (const auto& d : ai_difficulty_ids()) diffs.push_back(tr(("ui.ai.diff." + d).c_str()));
+  for (const auto& p : ai_personality_ids()) perss.push_back(tr(("ui.ai.pers." + p).c_str()));
   const int n = maps_.empty() ? 0 : maps_[sk_.map].players;
   std::vector<std::string> facs = {tr("ui.skirmish.random")};
   for (const FactionInfo& f : factions_) facs.push_back(loc_.name(f.name_key));
@@ -416,7 +439,22 @@ void Menu::layout_skirmish() {
       if (factions_[j].id == sl.faction) fac.current = static_cast<int>(j) + 1;
     }
     fac.enabled = active && (i == 0 || sl.kind != SlotSetup::Kind::Closed);
-    MenuWidget& col = add(MenuWidget::Kind::Dropdown, {cx[3], y, cw[3], dh}, "", MenuAct::None, i);
+    const bool ai = active && i > 0 && sl.kind == SlotSetup::Kind::Ai;
+    MenuWidget& dif = add(MenuWidget::Kind::Dropdown, {cx[3], y, cw[3], dh}, "", MenuAct::SlotDifficulty, i);
+    dif.options = ai ? diffs : std::vector<std::string>{"–"};
+    dif.current = 0;
+    for (size_t j = 0; ai && j < ai_difficulty_ids().size(); ++j) {
+      if (ai_difficulty_ids()[j] == sl.difficulty) dif.current = static_cast<int>(j);
+    }
+    dif.enabled = ai;
+    MenuWidget& per = add(MenuWidget::Kind::Dropdown, {cx[4], y, cw[4], dh}, "", MenuAct::SlotPersonality, i);
+    per.options = ai ? perss : std::vector<std::string>{"–"};
+    per.current = 0;
+    for (size_t j = 0; ai && j < ai_personality_ids().size(); ++j) {
+      if (ai_personality_ids()[j] == sl.personality) per.current = static_cast<int>(j);
+    }
+    per.enabled = ai;
+    MenuWidget& col = add(MenuWidget::Kind::Dropdown, {cx[5], y, cw[5], dh}, "", MenuAct::None, i);
     col.options = {loc_.tr((st_.colorblind ? "ui.color_safe." : "ui.color.") + std::to_string(i))};
     col.enabled = false;
     col.team = i;
@@ -619,6 +657,8 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
       break;
     case MenuAct::SlotKind:
     case MenuAct::SlotFaction:
+    case MenuAct::SlotDifficulty:
+    case MenuAct::SlotPersonality:
     case MenuAct::Option:
       open_dd_ = w.act;
       open_dd_arg_ = w.arg;
@@ -658,6 +698,12 @@ void Menu::choose(MenuAct act, int arg, int index) {
     if (arg >= 0 && arg < 8) {
       sk_.slots[static_cast<size_t>(arg)].faction =
           index <= 0 || static_cast<size_t>(index) > factions_.size() ? "random" : factions_[static_cast<size_t>(index - 1)].id;
+    }
+  } else if (act == MenuAct::SlotDifficulty || act == MenuAct::SlotPersonality) {
+    const auto& ids = act == MenuAct::SlotDifficulty ? ai_difficulty_ids() : ai_personality_ids();
+    if (arg > 0 && arg < 8 && index >= 0 && static_cast<size_t>(index) < ids.size()) {
+      SlotSetup& sl = sk_.slots[static_cast<size_t>(arg)];
+      (act == MenuAct::SlotDifficulty ? sl.difficulty : sl.personality) = ids[static_cast<size_t>(index)];
     }
   } else if (act == MenuAct::Option) {
     switch (arg) {

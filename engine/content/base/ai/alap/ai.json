@@ -1,0 +1,11 @@
+{
+  "name": "Alap",
+  "desc": "A beépített gépi ellenfél (M9): menedzserek, feladatlisták, ütemezett futás; személyiségek és nehézségek adatból, tanulás a meccsen belül.",
+  "factions": ["*"],
+  "entry": "main.lua",
+  "defaults": {
+    "difficulty": "normal",
+    "personality": "kiegyenlitett",
+    "campaign_personality": "nepe_szerinti"
+  }
+}

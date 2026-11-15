@@ -6,6 +6,7 @@
 
 #include "content/json.hpp"
 #include "map/pathfinder.hpp"
+#include "script/ai.hpp"
 #include "script/host.hpp"
 
 namespace totu::sim {
@@ -78,9 +79,24 @@ bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::Terra
     MatchSetup setup;
     setup.factions = r.factions;
     setup.weather = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.weather, 3));
+    setup.ai = r.ai;
     if (!s.setup_match(*navigation.map, setup, &error)) return false;
   }
   const auto hosts = attach_scripts(s, r);
+  std::vector<std::unique_ptr<script::ScriptHost>> ais;
+  if (!r.ai.empty()) {   // M9: a gépi játékosok a beágyazott csomagokból
+    std::vector<script::AiPackage> pkgs;
+    for (const auto& f : r.ai_files) {
+      auto it = std::find_if(pkgs.begin(), pkgs.end(), [&](const script::AiPackage& p) { return p.id == f.mod; });
+      if (it == pkgs.end()) {
+        pkgs.push_back(script::AiPackage{f.mod, {}});
+        it = pkgs.end() - 1;
+      }
+      it->files[f.name] = f.source;
+    }
+    ais = script::attach_ais(s, r.ai, pkgs, r.seed, true, &error);
+    if (ais.empty()) return false;
+  }
   for (const auto& c : r.commands) s.queue(c);
   for (int64_t t = 0; t < r.ticks; ++t) {
     s.step();
@@ -88,11 +104,13 @@ bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::Terra
   }
   if (messages) {
     for (const auto& h : hosts) messages->insert(messages->end(), h->messages().begin(), h->messages().end());
+    for (const auto& h : ais) messages->insert(messages->end(), h->messages().begin(), h->messages().end());
   }
   return true;
 }
 
 int format_of(const Replay& r) {
+  if (!r.ai.empty()) return 5;
   if (!r.factions.empty()) return 4;
   for (const auto& c : r.commands) {
     if (c.needs_v4()) return 4;
@@ -177,6 +195,12 @@ std::vector<uint8_t> encode(const Replay& r) {
     for (const auto& f : r.factions) w.str(f);
     w.u8(r.weather);
   }
+  if (format >= 5) {
+    w.u32(static_cast<uint32_t>(r.ai.size()));
+    for (const auto& a : r.ai) { w.u8(a.player); w.str(a.ai); w.str(a.difficulty); w.str(a.personality); }
+    w.u32(static_cast<uint32_t>(r.ai_files.size()));
+    for (const auto& f : r.ai_files) { w.str(f.mod); w.str(f.name); w.str(f.source); }
+  }
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -191,7 +215,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 4) return std::nullopt;
+  if (version < 1 || version > 5) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -219,6 +243,26 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
     const uint32_t nf = rd.u32();
     for (uint32_t i = 0; i < nf && i < 8 && rd.ok(); ++i) r.factions.push_back(rd.str());
     r.weather = rd.u8();
+  }
+  if (version >= 5) {
+    const uint32_t na = rd.u32();
+    for (uint32_t i = 0; i < na && i < 8 && rd.ok(); ++i) {
+      AiSlot a;
+      a.player = rd.u8();
+      a.ai = rd.str();
+      a.difficulty = rd.str();
+      a.personality = rd.str();
+      r.ai.push_back(std::move(a));
+    }
+    const uint32_t nf = rd.u32();
+    if (nf > 10000) return std::nullopt;
+    for (uint32_t i = 0; i < nf && rd.ok(); ++i) {
+      ScriptFile f;
+      f.mod = rd.str();
+      f.name = rd.str();
+      f.source = rd.str();
+      r.ai_files.push_back(std::move(f));
+    }
   }
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {
