@@ -154,6 +154,36 @@ bool Sim::order_build(EntityId e, uint16_t def, int tx, int ty, std::string* err
   return true;
 }
 
+bool Sim::place_beside(EntityId u, Fixed x, Fixed y, Fixed radius) {
+  Position* p = world_.get<Position>(u);
+  const Body* b = world_.get<Body>(u);
+  if (!p || !b || !nav_ || !map_ || b->grid < 0) return false;
+  static constexpr int kDir[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
+  const Fixed step = radius + radius + Fixed::from_raw(64);
+  for (int ring = 1; ring <= 3; ++ring) {
+    for (const auto& dv : kDir) {
+      const Fixed cx = x + step * Fixed::from_int(dv[0] * ring);
+      const Fixed cy = y + step * Fixed::from_int(dv[1] * ring);
+      if (cx < radius || cy < radius || cx > Fixed::from_int(map_->width()) - radius || cy > Fixed::from_int(map_->height()) - radius) continue;
+      const auto cell = map::Pathfinder::cell_of(cx, cy);
+      if (!nav_->passable(b->grid, b->size, cell.x, cell.y)) continue;
+      bool taken = false;
+      world_.pool<Body>().each([&](EntityId o, const Body& ob) {
+        if (taken || o == u) return;
+        const Position* op = world_.get<Position>(o);
+        const Fixed rr = radius + ob.radius;
+        if (op && core::length_sq_raw(op->x - cx, op->y - cy) < int64_t{rr.raw()} * rr.raw()) taken = true;
+      });
+      if (taken) continue;
+      p->x = cx;
+      p->y = cy;
+      if (Movement* m = world_.get<Movement>(u)) { m->tx = cx; m->ty = cy; m->moving = false; }
+      return true;
+    }
+  }
+  return false;
+}
+
 void Sim::place_at_free(EntityId u, Fixed x, Fixed y) {
   Position* p = world_.get<Position>(u);
   const Body* b = world_.get<Body>(u);

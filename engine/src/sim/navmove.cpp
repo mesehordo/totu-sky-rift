@@ -191,7 +191,7 @@ void Sim::nav_bucket_move(EntityId e, Fixed ox, Fixed oy, Fixed nx, Fixed ny) {
   const int nbx = std::clamp(tile_of(nx) / kBucket, 0, nav_bw_ - 1), nby = std::clamp(tile_of(ny) / kBucket, 0, nav_bh_ - 1);
   if (obx == nbx && oby == nby) return;
   auto& from = buckets_[static_cast<size_t>(oby * nav_bw_ + obx)];
-  from.erase(std::find(from.begin(), from.end(), e));
+  if (const auto it = std::find(from.begin(), from.end(), e); it != from.end()) from.erase(it);   // H-52
   buckets_[static_cast<size_t>(nby * nav_bw_ + nbx)].push_back(e);
 }
 
@@ -248,6 +248,10 @@ bool Sim::nav_shove(EntityId blocker, Fixed vx, Fixed vy, Fixed px, Fixed py) {
     // bal oldali merőleges: (-vy, vx)
     const Fixed ox = Fixed::from_int(-side) * vy * shift / len, oy = Fixed::from_int(side) * vx * shift / len;
     const Fixed tx = pos->x + ox, ty = pos->y + oy;
+    if (map_ && (tx < bb->radius || ty < bb->radius || tx > Fixed::from_int(map_->width()) - bb->radius ||
+                 ty > Fixed::from_int(map_->height()) - bb->radius)) {
+      continue;   // H-51: a pályán belül (a repülő is)
+    }
     if (bb->grid >= 0) {
       const map::NavCell c = map::Pathfinder::cell_of(tx, ty);
       const Health* bh = world_.get<Health>(blocker);

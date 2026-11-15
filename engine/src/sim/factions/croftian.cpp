@@ -501,12 +501,12 @@ class Module final : public FactionModule {
       if (!afford) continue;
       const int32_t need = s.rules()->defs[into_def].supply;
       if (p.supply_used - d.supply + need > p.supply_cap) continue;
-      s.pay(h->owner, cost);
       const Position pos = *s.world().get<Position>(e);
       const uint8_t owner = h->owner;
-      s.kill(e);
-      const EntityId cocoon = s.spawn_unit(via_def, owner, pos.x, pos.y);
+      const EntityId cocoon = s.spawn_unit(via_def, owner, pos.x, pos.y);   // H-79: előbb a gubó, csak utána fizet és tűnik el
       if (cocoon == kNoEntity) continue;
+      s.pay(owner, cost);
+      s.kill(e);
       s.world().add(cocoon, CroCocoon{into_def, s.tick() + time});
       any = true;
     }
@@ -708,6 +708,7 @@ class Module final : public FactionModule {
     const uint16_t def = vu->def;
     const EntityId u = s.spawn_unit(def, ko, x, y);
     if (u == kNoEntity) return;
+    s.player_mut(ko).supply_used += vd.supply;   // H-80: a tick közbeni további átállítás már ezzel számol
     s.place_at_free(u, x, y);
     if (Health* uh = s.world().get<Health>(u)) {
       uh->hp = std::max(1, (Fixed::from_int(uh->max) * num(ck->find("hp"), Fixed::from_ratio(7, 20))).floor_int());
@@ -771,7 +772,8 @@ class Module final : public FactionModule {
       }
       ++cc.larva_t;
       const Fixed lt = num(d.raw ? path2(d.raw.get(), "Producer", "larva_time") : nullptr, Fixed::from_int(10));
-      const Fixed need = lt * Fixed::from_int(kTickHz) / rule_mult(s, h->owner, fdef(s, h->owner), "larva_mult");
+      const Fixed lm = rule_mult(s, h->owner, fdef(s, h->owner), "larva_mult");   // H-81: nem lehet 0 (és negatív sem)
+      const Fixed need = lt * Fixed::from_int(kTickHz) / std::max(lm, Fixed::from_ratio(1, 100));
       if (Fixed::from_int(cc.larva_t) >= need) {
         cc.larva_t = 0;
         ++cc.larva;

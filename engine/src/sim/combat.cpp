@@ -291,8 +291,10 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
     }
     const int64_t eff = int64_t{h->hp} * 1000 - (vt ? vt->deficit : 0) - dmg;
     if (eff <= 0) {
-      if (std::find(dying_.begin(), dying_.end(), t) == dying_.end()) dying_.push_back(t);
-      killer_[t] = {src, owner};   // a tapasztalathoz (D25)
+      if (std::find(dying_.begin(), dying_.end(), t) == dying_.end()) {   // H-44: az első halálos találaté (mint a régiben)
+        dying_.push_back(t);
+        killer_[t] = {src, owner};   // a tapasztalathoz (D25)
+      }
     } else {
       h->hp = static_cast<int32_t>((eff + 999) / 1000);
       if (vt) vt->deficit = static_cast<int32_t>(int64_t{h->hp} * 1000 - eff);
@@ -441,6 +443,7 @@ void Sim::shot_system() {
     };
     bool done = false;
     if (pk.line && !s.returning) {   // dárda: egyenesen, az első ellenség az útjában
+      const Fixed px0 = pos.x, py0 = pos.y;   // H-49: a tick teljes szakasza számít (gyors lövedék sem szúr át)
       pos.x = pos.x + s.dx * speed;
       pos.y = pos.y + s.dy * speed;
       s.travelled = s.travelled + speed;
@@ -455,7 +458,15 @@ void Sim::shot_system() {
         if (const Building* b = world_.get<Building>(o)) d = rect_gap(pos.x, pos.y, b->tx, b->ty, b->w, b->h);
         else if (const Unit* u = world_.get<Unit>(o)) {
           if (rules_->defs[u->def].flying && !(s.src_def < rules_->defs.size() && rules_->defs[s.src_def].attack.air)) return;
-          d = core::length(op->x - pos.x, op->y - pos.y) - rules_->defs[u->def].radius - Fixed::from_ratio(1, 5);
+          const int64_t vx = (pos.x - px0).raw(), vy = (pos.y - py0).raw();
+          const int64_t len2 = vx * vx + vy * vy;
+          Fixed cx = pos.x, cy = pos.y;   // a szakasz egységhez legközelebbi pontja
+          if (len2 > 0) {
+            const int64_t dot = std::clamp<int64_t>((op->x - px0).raw() * vx + (op->y - py0).raw() * vy, 0, len2);
+            cx = px0 + Fixed::from_raw(static_cast<int32_t>(vx * dot / len2));
+            cy = py0 + Fixed::from_raw(static_cast<int32_t>(vy * dot / len2));
+          }
+          d = core::length(op->x - cx, op->y - cy) - rules_->defs[u->def].radius - Fixed::from_ratio(1, 5);
         } else {
           return;
         }
@@ -688,7 +699,9 @@ void Sim::match_combat_system() {
         break;
       }
       case Combat::AttackMove: {
-        if (c.target && (!can_hit(e, c.target) || !is_visible(h->owner, c.target) || gap(e, c.target) > sight * Fixed::from_ratio(8, 5))) {
+        const Health* amh = c.target ? world_.get<Health>(c.target) : nullptr;   // H-47: gazdát váltott célpont nem ellenség
+        if (c.target && (!amh || !hostile(h->owner, amh->owner) || !can_hit(e, c.target) || !is_visible(h->owner, c.target) ||
+                         gap(e, c.target) > sight * Fixed::from_ratio(8, 5))) {
           c.target = 0;
           c.moving = 0;
         }
@@ -711,7 +724,8 @@ void Sim::match_combat_system() {
       }
       case Combat::Hold: {
         halt(e);
-        if (c.target && (!can_hit(e, c.target) || !is_visible(h->owner, c.target) ||
+        const Health* hth = c.target ? world_.get<Health>(c.target) : nullptr;   // H-48
+        if (c.target && (!hth || !hostile(h->owner, hth->owner) || !can_hit(e, c.target) || !is_visible(h->owner, c.target) ||
                          gap(e, c.target) > attack_range(e, c.target) + kRangeSlack)) {
           c.target = 0;
         }

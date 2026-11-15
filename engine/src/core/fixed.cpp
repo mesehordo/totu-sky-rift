@@ -21,6 +21,7 @@ Fixed Fixed::from_ratio(int64_t num, int64_t den) {
   const uint64_t d = den < 0 ? 0 - static_cast<uint64_t>(den) : static_cast<uint64_t>(den);
   // q = round(n * 2^16 / d) – az egész és a tört részt külön számolva, hogy ne csorduljon túl
   const uint64_t whole = n / d, rem = n % d;
+  if (whole > (std::numeric_limits<uint64_t>::max() >> (kFracBits + 1))) return neg ? min() : max();   // H-87: telítés
   uint64_t q = whole << kFracBits;
   const uint64_t frac_num = rem << kFracBits;   // rem < d; a szimulációs állandóknál d << 2^47
   q += frac_num / d;

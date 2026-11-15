@@ -2,6 +2,8 @@
 #include "map/map.hpp"
 
 #include <cstdlib>
+#include <algorithm>
+#include <limits>
 
 #include "core/hash.hpp"
 
@@ -190,7 +192,10 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
   // pályaobjektumok (M6): "objects": {"starts": [[x, y], …], "trees": {"rows": [...]} (`T` = fa),
   // "resources": [{"kind": "gold", "x": …, "y": …, "size": 2, "amount": …}, …]}
   if (const content::Value* ob = doc.find("objects"); ob && ob->is_object()) {
-    auto int_of = [](const content::Value* v, long long def) { return (v ? v->as_int() : std::nullopt).value_or(def); };
+    // H-37: az int tartományára szorítva (a túl nagy érték így a határellenőrzésen bukik el, nem tekeredik érvényesbe)
+    auto int_of = [](const content::Value* v, long long def) {
+      return std::clamp<long long>((v ? v->as_int() : std::nullopt).value_or(def), std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+    };
     if (const content::Value* st = ob->find("starts"); st && st->is_array()) {
       for (const auto& p : st->items()) {
         if (!p.is_array() || p.items().size() != 2) {

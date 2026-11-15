@@ -161,6 +161,14 @@ bool Sim::ability_ready(EntityId e, const Caster& c, const AbilityDef& a) {
   return mod_ability_affordable(e, a);
 }
 
+// H-96: a fel- és leszállás is a képesség energia-, várakozási és életerő-feltételeivel (az egység utána megszűnik,
+// így a költés nem kell; varázslói komponens nélkül csak az ár nélküli képesség)
+bool Sim::mount_ready(EntityId e, uint16_t ab) {
+  const AbilityDef& a = rules_->abilities[ab];
+  if (const Caster* c = world_.get<Caster>(e)) return ability_ready(e, *c, a);
+  return a.energy <= 0 && a.cooldown <= 0 && a.hp_cost <= 0;
+}
+
 void Sim::ability_spend(Caster& c, uint16_t ability, const AbilityDef& a) {
   c.energy -= a.energy * 1000;
   set_ready(c, ability, tick_ + a.cooldown);
@@ -555,7 +563,7 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
     }
     case T::Mount:   // felültetés: a bölény mellé álló harcos (a hatótávon belül)
       for (const EntityId e : us) {
-        if (!incapacitated(e) && mount_up(e, ab)) return true;
+        if (!incapacitated(e) && mount_ready(e, ab) && mount_up(e, ab)) return true;
       }
       return false;
     case T::Capture:   // elfoglalás, megszállás (D30): célzott épület
@@ -576,7 +584,7 @@ bool Sim::use_ability(const std::vector<EntityId>& units, const std::string& id,
     }
     case T::Dismount: {
       bool any = false;
-      for (const EntityId e : us) any = dismount(e, ab) || any;
+      for (const EntityId e : us) any = (mount_ready(e, ab) && dismount(e, ab)) || any;
       return any;
     }
     case T::Summon:

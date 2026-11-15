@@ -130,6 +130,7 @@ EntityId Sim::pack_building(EntityId b) {
     }
   }
   if (world_.get<Garrison>(b)) unload(b);
+  if (world_.get<Occupants>(b)) evict(b);   // H-56: a megszállók is kiszállnak
   const uint16_t def = bd->def;
   const uint8_t owner = bh->owner;
   const Fixed cx = Fixed::from_int(bd->tx) + Fixed::from_ratio(bd->w, 2), cy = Fixed::from_int(bd->ty) + Fixed::from_ratio(bd->h, 2);
@@ -151,7 +152,7 @@ EntityId Sim::pack_building(EntityId b) {
 bool Sim::order_unpack(EntityId u, int tx, int ty) {
   Wagon* wg = world_.get<Wagon>(u);
   const Health* h = world_.get<Health>(u);
-  if (!wg || !h || wg->building == kNoDef || !can_place(0, wg->building, tx, ty)) return false;
+  if (!wg || !h || wg->building == kNoDef || !can_place(h->owner, wg->building, tx, ty)) return false;   // H-58: a saját feltételeivel
   wg->unpacking = 1;
   wg->tx = static_cast<int16_t>(tx);
   wg->ty = static_cast<int16_t>(ty);
@@ -202,6 +203,7 @@ bool Sim::dismount(EntityId e, uint16_t ab) {
   const uint16_t rider = mt && mt->rider != kNoDef ? mt->rider : a.rider;
   if (a.mount == kNoDef || rider == kNoDef) return false;
   const int64_t frac = int64_t{h.hp} * 1000 / std::max(1, h.max);
+  if (h.hp <= 0 || world_.doomed(e) || std::find(dying_.begin(), dying_.end(), e) != dying_.end()) return false;   // H-60: a már halálra jelölt nem válik le
   kill(e);
   int k = 0;
   for (const uint16_t d : {a.mount, rider}) {   // a régi: ± 10 képpontra oldalt, szabad helyre
@@ -247,7 +249,8 @@ void Sim::wullof_system() {
     RepairOrder& o = *world_.get<RepairOrder>(e);
     Health* bh = world_.alive(o.building) ? world_.get<Health>(o.building) : nullptr;
     const Building* bd = bh ? world_.get<Building>(o.building) : nullptr;
-    if (!bh || !bd || bh->hp <= 0 || bh->hp >= bh->max || !bd->complete) {
+    const Health* wh = world_.get<Health>(e);
+    if (!bh || !bd || bh->hp <= 0 || bh->hp >= bh->max || !bd->complete || !wh || wh->owner != bh->owner) {   // H-57: csak a sajátot
       world_.pool<RepairOrder>().remove(e);
       continue;
     }

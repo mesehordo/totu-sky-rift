@@ -41,7 +41,9 @@ class Pcg32 {
   // Egyenletes egész a [lo, hi] zárt tartományban.
   int32_t range(int32_t lo, int32_t hi) {
     if (hi <= lo) return lo;
-    const auto span = static_cast<uint32_t>(static_cast<int64_t>(hi) - lo + 1);
+    const int64_t wide = static_cast<int64_t>(hi) - lo + 1;
+    if (wide > int64_t{0xFFFFFFFF}) return static_cast<int32_t>(next());   // H-86: a teljes 32 bites tartomány
+    const auto span = static_cast<uint32_t>(wide);
     return static_cast<int32_t>(lo + static_cast<int64_t>(below(span)));
   }
 

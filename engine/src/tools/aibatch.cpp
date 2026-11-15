@@ -35,9 +35,13 @@ int64_t progress_sig(sim::Sim& s, uint8_t p) {
   const auto& pl = s.player(p);
   int64_t sig = 0;
   for (int r = 0; r < sim::kResources; ++r) sig += pl.gathered[static_cast<size_t>(r)] / 1000;
-  int64_t things = 0;
-  s.world().pool<sim::Health>().each([&](sim::EntityId, const sim::Health& h) { things += h.owner == p && h.hp > 0 ? 1 : 0; });
-  return sig * 1000003 + things * 131 + static_cast<int64_t>(pl.researched.size());
+  int64_t things = 0, hp = 0;   // H-09: az életerő-összeg is (harc, építés, gyógyulás)
+  s.world().pool<sim::Health>().each([&](sim::EntityId, const sim::Health& h) {
+    if (h.owner != p || h.hp <= 0) return;
+    ++things;
+    hp += h.hp;
+  });
+  return sig * 1000003 + things * 131 + hp * 7919 + static_cast<int64_t>(pl.researched.size());
 }
 
 }  // namespace
@@ -107,6 +111,7 @@ AiBatchResult run_ai_match(const AiBatchMatch& m, const map::TerrainTable& terra
       if (sig != k.last_sig) {
         k.last_sig = sig;
         k.last_change = s.tick();
+        if (res.stalled_player == p) res.stalled_player = 0;   // H-09: újra halad
       } else if (s.tick() - k.last_change >= kStall && res.stalled_player == 0) {   // elakadt
         res.stalled_player = p;
         res.stall_tick = s.tick();

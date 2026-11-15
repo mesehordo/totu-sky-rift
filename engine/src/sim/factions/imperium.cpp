@@ -350,7 +350,11 @@ class Module final : public FactionModule {
     int64_t bd = 0;
     for (const EntityId u : units) {
       const Health* h = s.world().get<Health>(u);
-      if (!h || h->owner != owner || s.world().get<ImpRescue>(u)) continue;
+      // H-82: csak élő, nem cselekvőképtelen, nem bent lévő egység
+      if (!h || h->hp <= 0 || h->owner != owner || !s.world().get<Unit>(u) || s.world().doomed(u) || s.world().get<ImpRescue>(u) ||
+          s.incapacitated(u) || s.sheltered(u) || u == anchor) {
+        continue;
+      }
       const Position& p = *s.world().get<Position>(u);
       const int64_t d = core::length_sq_raw(p.x - ap.x, p.y - ap.y);
       if (best == kNoEntity || d < bd || (d == bd && u < best)) {
@@ -358,8 +362,7 @@ class Module final : public FactionModule {
         bd = d;
       }
     }
-    if (best == kNoEntity) return false;
-    s.interrupt(best);
+    if (best == kNoEntity || !s.interrupt(best)) return false;   // H-83: a parancsot nem fogadó (bent építő) nem ment
     ImpRescue r;
     r.anchor = anchor;
     r.x = x;

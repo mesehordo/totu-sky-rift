@@ -217,9 +217,11 @@ bool Sim::use_item(EntityId e, int slot) {
     h->hp = std::min(h->max, h->hp + it.heal);
   }
   if (it.energy > 0) {
+    // H-16: a régi szerint csak a tisztán energiás tárgy utasítható el (a vegyes a gyógyítás után már elfogy)
     const int32_t cap = stat(e, "Energy.max", Fixed::from_int(rules_->defs[world_.get<Unit>(e)->def].energy_max)).floor_int() * 1000;
-    if (!c || c->energy >= cap) return false;
-    c->energy = std::min(cap, c->energy + it.energy * 1000);
+    const bool other = it.heal > 0 || it.xp > 0 || it.perm_hp || it.perm_damage;
+    if ((!c || c->energy >= cap) && !other) return false;
+    if (c) c->energy = std::max(c->energy, std::min(cap, c->energy + it.energy * 1000));
   }
   hs->items[static_cast<size_t>(slot)] = kNoItem;
   if (it.xp > 0) add_xp(e, it.xp * 1000);
@@ -426,8 +428,11 @@ void Sim::camp_system() {
           c->order = Combat::None;
           c->target = 0;
         }
-        const int32_t heal = std::max(1, (Fixed::from_int(h.max) * rules_->camps.regen_pct).floor_int() / kTickHz);
-        if (tick_ % 1 == 0) h.hp = std::min(h.max, h.hp + heal);
+        // H-78: a másodpercenkénti gyógyulás egyenletesen szétosztva a tickekre (kis életerőnél sem 30/s)
+        const int64_t per_s = std::max(1, (Fixed::from_int(h.max) * rules_->camps.regen_pct).floor_int());
+        const int64_t t = tick_ % kTickHz;
+        const int32_t heal = static_cast<int32_t>(per_s * (t + 1) / kTickHz - per_s * t / kTickHz);
+        h.hp = std::min(h.max, h.hp + heal);
         if (home < Fixed::from_ratio(1, 2)) {
           m.returning = 0;
           halt(e);

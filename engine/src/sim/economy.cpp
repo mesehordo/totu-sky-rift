@@ -587,6 +587,7 @@ int Sim::winner() const {
 
 void Sim::supply_system() {
   std::array<int32_t, kMaxPlayers + 1> cap{}, used{};
+  std::array<int64_t, kMaxPlayers + 1> part{};   // ezredrész-létszám (H-04)
   const auto& hp = world_.pool<Health>();
   world_.pool<Building>().each([&](EntityId e, const Building& b) {
     const Health* h = hp.get(e);
@@ -599,9 +600,12 @@ void Sim::supply_system() {
   world_.pool<Unit>().each([&](EntityId e, const Unit& u) {
     const Health* h = hp.get(e);
     if (!h || h->hp <= 0 || h->owner > kMaxPlayers) return;
-    used[h->owner] += rules_->defs[u.def].supply;
+    const EntityDef& ud = rules_->defs[u.def];
+    if (ud.count > 1 && ud.spawn_unit == kNoDef) part[h->owner] += int64_t{ud.supply} * 1000 / ud.count;   // H-04: a pár tagja a fele (a régi supply/count)
+    else used[h->owner] += ud.supply;
     cap[h->owner] += rules_->defs[u.def].supply_provides;   // létszámot adó egység (Wullof emu)
   });
+  for (int i = 0; i <= kMaxPlayers; ++i) used[static_cast<size_t>(i)] += static_cast<int32_t>((part[static_cast<size_t>(i)] + 999) / 1000);
   world_.pool<Producer>().each([&](EntityId e, const Producer& pr) {   // a sorban lévő egységek is (MECH-SUPPLY)
     const Health* h = hp.get(e);
     if (!h || h->owner > kMaxPlayers) return;

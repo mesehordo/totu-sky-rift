@@ -8,6 +8,7 @@
 
 #include "check.hpp"
 #include "match_util.hpp"
+#include "core/rng.hpp"
 #include "sim/replay.hpp"
 
 #include <optional>
@@ -269,4 +270,37 @@ TEST_CASE("hibajegyzek H-15 H-88 H-06: a visszajatszas a teljes meccsbeallitast 
   empty.ticks = 0;
   empty.checkpoint_every = 1;
   CHECK(sim::decode(sim::encode(empty)).has_value());
+}
+
+TEST_CASE("hibajegyzek H-04 H-13: a csoportos egyseg letszama a regi szerint, a tarsak nem kerulnek egymasra") {
+  Match m("BUILD-ALAP", true, true, {"croftian", "wullof"});
+  sim::Sim& s = *m.sim;
+  m.run(1);
+  const int32_t before = s.player(1).supply_used;
+  sim::Producer pr;
+  const auto a = s.spawn_group(def_of("cro_karmos"), 1, fx(120, 10), fx(120, 10), &pr);
+  CHECK(a != sim::kNoEntity);
+  std::vector<sim::EntityId> pair;
+  s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit& u) {
+    if (u.def == def_of("cro_karmos") && s.world().get<sim::Health>(e)->owner == 1) pair.push_back(e);
+  });
+  CHECK(pair.size() == 2);
+  if (pair.size() == 2) {
+    const auto& p0 = *s.world().get<sim::Position>(pair[0]);
+    const auto& p1 = *s.world().get<sim::Position>(pair[1]);
+    const Fixed rr = R().defs[def_of("cro_karmos")].radius * Fixed::from_int(2);
+    CHECK(core::length(p0.x - p1.x, p0.y - p1.y) >= rr);   // H-13
+  }
+  m.run(2);
+  CHECK(s.player(1).supply_used - before == 1);   // H-04: a pár együtt 1 (Cost.supply / Cost.count)
+}
+
+TEST_CASE("hibajegyzek H-86 H-87: a teljes 32 bites RNG-tartomany es a tul nagy hanyados telitese") {
+  core::Pcg32 rng(7, 1);
+  bool varied = false;
+  const int32_t first = rng.range(INT32_MIN, INT32_MAX);
+  for (int i = 0; i < 8; ++i) varied = varied || rng.range(INT32_MIN, INT32_MAX) != first;
+  CHECK(varied);
+  CHECK(Fixed::from_ratio(int64_t{1} << 48, 1) == Fixed::max());
+  CHECK(Fixed::from_ratio(-(int64_t{1} << 48), 1) == Fixed::min());
 }

@@ -437,7 +437,11 @@ bool Sim::use_power(uint8_t owner, EntityId b, const std::string& id, Fixed x, F
     }
   } else if (a.effect == "levy") {   // mozgósítás: minden (nem bent lévő) munkás megkapja az önerősítést
     const int bi = rules_->ability_index(a.buff);
-    if (bi < 0) return false;
+    if (bi < 0) {   // H-94: a kifizetett ár vissza
+      refund(owner, a.cost, 1000);
+      if (a.hq_hp > 0) hh->hp += a.hq_hp;
+      return false;
+    }
     std::vector<EntityId> ws;
     world_.pool<Worker>().each([&](EntityId e, const Worker&) {
       const Health* h = world_.get<Health>(e);
@@ -659,6 +663,7 @@ void Sim::occupation_system() {
       world_.pool<Unit>().each([&](EntityId t, const Unit& tu) {
         const Health* th = world_.get<Health>(t);
         if (!th || th->hp <= 0 || !hostile(owner, th->owner) || sheltered(t)) return;   // a megszálló az épületből lát
+        if (const Stealth* sx = world_.get<Stealth>(t); sx && sx->hidden && !(sx->detected & (1u << owner))) return;   // H-46: a rejtettet nem
         if (rules_->defs[tu.def].flying ? !a.air : !a.ground) return;
         const Position& tp = *world_.get<Position>(t);
         const Fixed g = rect_gap(tp.x, tp.y, box) - rules_->defs[tu.def].radius;

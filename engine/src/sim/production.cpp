@@ -67,6 +67,9 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
   }
   if (p.supply_used + d.supply > p.supply_cap) return fail("elérted a létszámkorlátot");
   if (d.per_building != kNoDef) {   // épületenkénti darabkorlát (pl. Emukarámonként 5 emu)
+    // H-43: a csoportos képzés (Cost.count, falka) a tényleges darabszámmal számít
+    const uint16_t sdef = d.spawn_unit != kNoDef ? d.spawn_unit : def;
+    const int grp = d.spawn_unit != kNoDef ? d.spawn_count : d.count;
     int nb = 0, have = 0;
     world_.pool<Building>().each([&](EntityId be, const Building& bb) {
       const Health* bh2 = world_.get<Health>(be);
@@ -74,14 +77,14 @@ bool Sim::train(uint8_t owner, uint16_t def, EntityId building, std::string* err
     });
     world_.pool<Unit>().each([&](EntityId ue, const Unit& uu) {
       const Health* uh = world_.get<Health>(ue);
-      if (uu.def == def && uh && uh->owner == owner && uh->hp > 0) ++have;
+      if ((uu.def == def || uu.def == sdef) && uh && uh->owner == owner && uh->hp > 0) ++have;
     });
     world_.pool<Producer>().each([&](EntityId pe, const Producer& pr) {
       const Health* ph = world_.get<Health>(pe);
       if (!ph || ph->owner != owner) return;
-      for (const QueueItem& qi : pr.queue) have += !qi.research && qi.def == def ? 1 : 0;
+      for (const QueueItem& qi : pr.queue) have += !qi.research && qi.def == def ? grp : 0;
     });
-    if (have >= nb * d.per_building_max) return fail("elérted az épületenkénti darabkorlátot");
+    if (have + grp > nb * d.per_building_max) return fail("elérted az épületenkénti darabkorlátot");
   }
   if (cands.empty()) return fail(blocked ? "nincs szabad lárva" : "a gyártósor megtelt");
   std::sort(cands.begin(), cands.end());   // a legrövidebb sor; egyenlőnél a kisebb azonosító
@@ -201,10 +204,11 @@ EntityId Sim::spawn_group(uint16_t def, uint8_t owner, Fixed x, Fixed y, Produce
   const Fixed rx = pr->rx, ry = pr->ry;
   const EntityId rt = pr->rally_target;
   EntityId first = kNoEntity;
+  const Fixed sr = rules_->defs[sdef].radius;
   for (int k = 0; k < count; ++k) {
     const EntityId u = spawn_unit(sdef, owner, x, y);
     if (u == kNoEntity) continue;
-    if (k > 0) place_at_free(u, x, y);
+    if (k > 0 && !place_beside(u, x, y, sr)) place_at_free(u, x, y);   // H-13: a csoporttársak ne kerüljenek egymásra
     if (first == kNoEntity) first = u;
     if (rally && !(rt && order_gather(u, rt))) order_move(u, rx, ry);
   }
@@ -227,7 +231,8 @@ bool Sim::finish_item(EntityId be, const QueueItem& item) {
     rebuild_rules(owner);
     return true;
   }
-  const EntityDef& d = rules_->defs[item.def];
+  const EntityDef& gd = rules_->defs[item.def];
+  const EntityDef& d = rules_->defs[gd.spawn_unit != kNoDef ? gd.spawn_unit : item.def];   // H-42: a ténylegesen születő egység mérete
   // a régi játék helyjelöltjei: a lábnyom körül, az oldalak csempéinek közepén és a sarkokban, a gyülekezőponthoz
   // (anélkül lefelé) legközelebbi szabad hely
   const Fixed tx = pr->has_rally ? pr->rx : Fixed::from_int(b->tx) + Fixed::from_ratio(b->w, 2);
@@ -252,6 +257,7 @@ bool Sim::finish_item(EntityId be, const QueueItem& item) {
   std::stable_sort(cand.begin(), cand.end(), [&](const auto& a, const auto& c) {
     return core::length_sq_raw(a.first - tx, a.second - ty) < core::length_sq_raw(c.first - tx, c.second - ty);
   });
+  if (!nav_ || !map_) return spawn_group(item.def, owner, cand.front().first, cand.front().second, pr) != kNoEntity;   // H-41: navigáció nélkül
   const map::TerrainTable& table = nav_->nav().table();
   const auto air = table.movement_class("air");
   const uint8_t mc = d.flying && air ? *air : table.movement_class("land").value_or(0);
@@ -309,6 +315,7 @@ void Sim::production_system() {
     const Building* b = world_.get<Building>(e);
     const Health* h = world_.get<Health>(e);
     if (!pr || !b || !h || !b->complete || h->hp <= 0 || pr->queue.empty()) continue;
+    if (occupied_against(e, h->owner)) continue;   // H-40: megszállt épületben a sor sem halad
     if (rules_->defs[b->def].parallel) {   // a teljes sor egyszerre (a régi E 1750)
       for (size_t i = 0; i < pr->queue.size();) {
         QueueItem& q = pr->queue[i];

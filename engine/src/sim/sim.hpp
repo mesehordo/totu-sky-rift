@@ -1159,6 +1159,8 @@ class Sim {
   void supply_system();
   void enter_construction(EntityId worker, EntityId building);
   void leave_construction(EntityId building, bool hurt);
+  bool mount_ready(EntityId e, uint16_t ab);   // H-96
+  bool place_beside(EntityId unit, Fixed x, Fixed y, Fixed radius);   // (x, y) körül az első járható, más testtől szabad hely (H-13)
   void place_at_free(EntityId unit, Fixed x, Fixed y);   // a legközelebbi szabad helyre (épület alól, kilépéskor)
   void build_order_step(EntityId e, Worker& w);
   // Új parancs előtt: a tervezett (még le nem rakott) építés költsége vissza; false, ha a munkás bent épít (a bent

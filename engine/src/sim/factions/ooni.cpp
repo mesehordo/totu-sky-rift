@@ -158,7 +158,7 @@ class Module final : public FactionModule {
   }
 
   Fixed build_rate_mult(Sim& s, EntityId b) override {   // Taiko-dobos a közelben
-    if (!load(s) || drum_unit_ == kNoDef) return Fixed::from_int(1);
+    if (!load(s) || boost_unit_ == kNoDef) return Fixed::from_int(1);   // H-77: a gyorsító egység jelzője
     const Health* h = s.world().get<Health>(b);
     const Position* p = s.world().get<Position>(b);
     if (!h || !p || !owner_ooni(s, h->owner)) return Fixed::from_int(1);
