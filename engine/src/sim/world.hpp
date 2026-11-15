@@ -144,6 +144,7 @@ class World {
   // Törlés a tick végén (a bejárások addig érintetlenek).
   void destroy(EntityId id) { if (alive(id)) pending_.push_back(id); }
   // a tick végén törlődik (már nem cselekvőképes: ugyanabban a tickben ne bontsák, csomagolják, vegyék fel kétszer)
+  const std::vector<EntityId>& doomed_list() const { return pending_; }
   bool doomed(EntityId id) const { return std::find(pending_.begin(), pending_.end(), id) != pending_.end(); }
 
   // A tick végén: a törlésre jelölt entitások és minden komponensük eltávolítása.

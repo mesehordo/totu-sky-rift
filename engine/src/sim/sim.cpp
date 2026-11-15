@@ -479,7 +479,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(15);   // séma (15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(16);   // séma (16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -538,6 +538,11 @@ std::vector<uint8_t> Sim::save() const {
   }
   w.u32(static_cast<uint32_t>(nav_ops_.size()));   // 15: a Block/Gate parancsok (H-29)
   for (const auto& op : nav_ops_) for (const int32_t v : op) w.i32(v);
+  // 16 (C-103): a tickek között (szkript, próba) megölt entitás a következő tick végén törlődik – a mentésben is
+  w.u32(static_cast<uint32_t>(world_.doomed_list().size()));
+  for (const EntityId id : world_.doomed_list()) w.u32(id);
+  w.u32(static_cast<uint32_t>(died_.size()));
+  for (const auto& [id, o] : died_) { w.u32(id); w.u8(o); }
   return w.data();
 }
 
@@ -580,7 +585,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 15) return false;
+  if (schema < 3 || schema > 16) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r);
     if (!r.ok()) return false;
@@ -705,6 +710,23 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
       std::array<int32_t, 6> op{};
       for (int32_t& v : op) v = r.i32();
       nav_ops_.push_back(op);
+    }
+  }
+  died_.clear();
+  if (schema >= 16) {
+    const uint32_t nd = r.u32();
+    if (nd > kMaxLoadCount) return false;
+    for (uint32_t i = 0; i < nd && r.ok(); ++i) {
+      const EntityId id = r.u32();
+      if (!world_.alive(id)) return false;
+      world_.destroy(id);
+    }
+    const uint32_t nk = r.u32();
+    if (nk > kMaxLoadCount) return false;
+    for (uint32_t i = 0; i < nk && r.ok(); ++i) {
+      const EntityId id = r.u32();
+      const uint8_t o = r.u8();
+      died_.emplace_back(id, o);
     }
   }
   if (!r.ok() || !r.at_end()) return false;

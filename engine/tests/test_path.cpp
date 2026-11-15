@@ -2,6 +2,8 @@
 // Az útkereső tesztjei (M4, 2. lépés): NAV-DIAG, NAV-UNREACH, NAV-HIGH tesztpályák, a hierarchikus elérhetőség
 // egyezése a teljes bejárással (véletlen akadálysorozatban is), indulás akadályból, repülő, rögzített út-hash.
 #include <chrono>
+#include <cmath>
+#include <cstdio>
 #include <deque>
 #include <filesystem>
 #include <fstream>
@@ -326,4 +328,53 @@ TEST_CASE("útkereső: kapuk – csapatonkénti elérhetőség = teljes bejárá
     }
   }
   CHECK(same);
+}
+
+// C-113, C-114: a hierarchikus és a teljes rácson futó keresés ugyanazt találja (elérhetőség), az út a csapat
+// kapuin át is szabályos (minden szakasz látóvonala a csapat szemével), és a hossza közel azonos
+TEST_CASE("utkereso C-113 C-114: hierarchikus = teljes racs, kapukkal, csapatonkent") {
+  map::Map m(64, 64, *terrain().terrain("grass"));
+  map::NavGrid nav(m, terrain());
+  map::Pathfinder pf(nav);
+  const int g = grid(nav, "land");
+  core::Pcg32 rng(113, 7);
+  for (int k = 0; k < 14; ++k) {
+    map::TileRect r{rng.range(0, 60), rng.range(0, 60), rng.range(6, 40), 1};
+    if (rng.chance(1, 2)) std::swap(r.w, r.h);
+    pf.add_obstacle(r);
+    pf.set_gate({rng.range(0, 61), rng.range(0, 61), rng.range(1, 3), rng.range(1, 3)}, static_cast<uint8_t>(rng.range(1, 255)));
+  }
+  auto len = [](Fixed sx, Fixed sy, const map::PathResult& r) {
+    double t = 0, x = sx.to_double(), y = sy.to_double();
+    for (const auto& [wx, wy] : r.waypoints) {
+      t += std::hypot(wx.to_double() - x, wy.to_double() - y);
+      x = wx.to_double();
+      y = wy.to_double();
+    }
+    return t;
+  };
+  int same = 0, legal = 0, close = 0, n = 0;
+  for (int k = 0; k < 60; ++k) {
+    const Fixed sx = T(rng.range(0, 63), 5), sy = T(rng.range(0, 63), 5), gx = T(rng.range(0, 63), 5), gy = T(rng.range(0, 63), 5);
+    for (const int team : {-1, 0, 3}) {
+      const NavCell sc = map::Pathfinder::cell_of(sx, sy);
+      if (!pf.passable(g, 0, sc.x, sc.y, team)) continue;
+      ++n;
+      const auto h = pf.find_path(g, 0, sx, sy, gx, gy, team);
+      const auto f = pf.find_path_flat(g, 0, sx, sy, gx, gy, team);
+      same += h.found == f.found && h.goal_reachable == f.goal_reachable;
+      bool ok = true;
+      NavCell prev = sc;
+      for (const auto& [wx, wy] : h.waypoints) {
+        const NavCell c = map::Pathfinder::cell_of(wx, wy);
+        ok = ok && pf.line_of_sight(g, 0, prev, c, team);
+        prev = c;
+      }
+      legal += ok;
+      close += !h.goal_reachable || len(sx, sy, h) <= len(sx, sy, f) * 1.25 + 2.0;
+    }
+  }
+  std::printf("  %d keresés: azonos elérhetőség %d, szabályos út %d, közel azonos hossz %d\n", n, same, legal, close);
+  CHECK(n > 100);
+  CHECK(same == n && legal == n && close == n);
 }

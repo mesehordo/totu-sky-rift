@@ -305,6 +305,18 @@ TEST_CASE("M9 gep – determinizmus: két gép, mentésből folytatva és vissza
   CHECK(v.ok);
 }
 
+// C-105, C-106: a gépi (Lua) meccs állapothash-e rögzített – a CI minden rendszeren (Windows, Linux, macOS) ugyanezt várja
+TEST_CASE("M9 gep – platformhash: ket gep 90 s meccse rogzitett hash-sel") {
+  const std::vector<sim::AiSlot> slots = {slot(1, "nehez", "tamado"), slot(2, "mester", "vedekezo")};
+  AiMatch a("kraterfold", {"ursan", "wullof"}, slots);
+  CHECK(a.ok);
+  if (!a.ok) return;
+  a.run(90 * 30);
+  std::printf("  gépi meccs hash (90 s): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
+  CHECK(a.sim->hash() == 0x2436175581eca23aULL);
+  CHECK(a.errors() == 0);
+}
+
 TEST_CASE("M9 gep – mindenszemelyiseg: minden személyiség és nehézség elakadás és hiba nélkül (rövidített)") {
   const auto pers = script::ai_personalities(package());
   const auto& diffs = script::ai_difficulties();
