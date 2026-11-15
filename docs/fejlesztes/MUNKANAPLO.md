@@ -723,3 +723,5 @@ Karakterlap a régi szerint: Ooni harci kedv sávja (`Sim::morale_of`, csak olva
 
 `tools/palya_export.py` (a régi `rts/mapgen.py` `generate()`-jével, a pálya azonosítójának crc32-magjával, bájtra determinisztikusan) → `engine/content/base/maps/<id>.json` (terep, éghajlat – forest→temperate, winter→snowy, wasteland→desert, swamp→swampy –, táborok, kezdőhelyek, fák, lelőhelyek: `stone`→`gold`); a nevek a .po-kban (`map.<id>.*`, hu, en). A menü pályalistája görgethető (eddig csak 10 látszott), a régi `order` szerint rendez, alapból a `content/base/maps`-ot mutatja. **Gyorsítás:** `Pathfinder::add_obstacles()` – az akadályok egyszerre, a klaszterek egyszer címkéződnek újra (a meccsindítás a nagy erdős pályákon 4–5 s helyett azonnali; az eredmény azonos). Próbák: `test_palyak.cpp` (betöltés, kezdőhely környéke és nyersanyaga, egyenlő arany bázisonként, kezdőhelyek egymásból elérhetők, meccs indul). Gép–gép a Kráterföld pályán, a régi `ai_nep.lua`-val, 15 perc: 100-ból 98 rendben (2 megállás – az új M9-gép kapuja dönt).
 **Tesztek:** 308.
+
+**A tulajdonos döntése:** a hó-terep nem lassít (a régi játék szerint; `speed` 0,85 → 1,0).
