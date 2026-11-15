@@ -271,28 +271,88 @@ int a_map(lua_State* L) {
 }
 
 // AI.resources("gold") → a felderített csempéken álló lelőhelyek {id, x, y, amount?}; a készlet csak ha most látszik
+// N-03: a gép a lelőhelyekről csak azt tudja, amit utoljára látott – a köd mögött kimerült (eltűnt) lelőhely a listában
+// marad, amíg a helyét újra nem látja. Az emlékezet a gép saját állapotában (`S._ismert`: azonosító → {k, tx, ty,
+// xr, yr, a}), így a mentés és a hash része; a kimenet azonosító szerint rendezett (determinisztikus).
 int a_resources(lua_State* L) {
   Sim& s = sim_of(L);
   const uint8_t p = me(L);
   const int kind = sim::resource_index(luaL_checkstring(L, 1));
-  lua_newtable(L);
-  lua_Integer n = 0;
-  if (kind < 0) return 1;
+  lua_rawgeti(L, LUA_REGISTRYINDEX, saved_table_ref(L));   // S
+  lua_getfield(L, -1, "_ismert");
+  if (!lua_istable(L, -1)) {
+    lua_pop(L, 1);
+    lua_newtable(L);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -3, "_ismert");
+  }
+  const int mem = lua_gettop(L);
+  // frissítés: a felderített csempén álló lelőhelyek (a fák nélkül); a láthatóakról a pontos készlet
   std::vector<std::pair<EntityId, sim::ResourceNode>> nodes;
   s.world().pool<sim::ResourceNode>().each([&](EntityId e, const sim::ResourceNode& r) {
-    if (r.kind == kind && r.amount > 0 && r.size > 1) nodes.emplace_back(e, r);   // lelőhelyek (a fák nélkül)
+    if (r.size > 1) nodes.emplace_back(e, r);
   });
   for (const auto& [e, r] : nodes) {
     if (!tile_flag(s, p, r.tx, r.ty, true)) continue;
+    const bool seen = tile_flag(s, p, r.tx, r.ty, false);
+    lua_rawgeti(L, mem, static_cast<lua_Integer>(e));
+    const bool had = lua_istable(L, -1);
+    lua_pop(L, 1);
+    if (seen && r.amount <= 0) {
+      lua_pushnil(L);
+      lua_rawseti(L, mem, static_cast<lua_Integer>(e));
+      continue;
+    }
+    if (!seen && had) continue;   // ködben: a régi tudás marad
     const sim::Position* pos = s.world().get<sim::Position>(e);
     if (!pos) continue;
-    lua_createtable(L, 0, 4);
-    set_int(L, "id", e);
-    push_fixed_value(L, pos->x); lua_setfield(L, -2, "x");
-    push_fixed_value(L, pos->y); lua_setfield(L, -2, "y");
-    if (tile_flag(s, p, r.tx, r.ty, false)) set_int(L, "amount", r.amount);
-    lua_rawseti(L, -2, ++n);
+    lua_createtable(L, 0, 6);
+    set_int(L, "k", r.kind);
+    set_int(L, "tx", r.tx);
+    set_int(L, "ty", r.ty);
+    set_int(L, "xr", pos->x.raw());
+    set_int(L, "yr", pos->y.raw());
+    set_int(L, "a", seen ? r.amount : -1);
+    lua_rawseti(L, mem, static_cast<lua_Integer>(e));
   }
+  // az ismertek azonosító szerint; ami eltűnt, és a helye most látható, az elfelejtődik
+  std::vector<lua_Integer> ids;
+  lua_pushnil(L);
+  while (lua_next(L, mem) != 0) {
+    if (lua_isinteger(L, -2)) ids.push_back(lua_tointeger(L, -2));
+    lua_pop(L, 1);
+  }
+  std::sort(ids.begin(), ids.end());
+  lua_newtable(L);
+  const int out = lua_gettop(L);
+  lua_Integer n = 0;
+  auto field = [&](const char* k) {
+    lua_getfield(L, -1, k);
+    const lua_Integer v = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return v;
+  };
+  for (const lua_Integer id : ids) {
+    lua_rawgeti(L, mem, id);
+    const lua_Integer k = field("k"), tx = field("tx"), ty = field("ty"), xr = field("xr"), yr = field("yr"), a = field("a");
+    lua_pop(L, 1);
+    const auto e = static_cast<EntityId>(id);
+    const bool gone = !s.world().alive(e) || !s.world().get<sim::ResourceNode>(e);
+    if (gone && tile_flag(s, p, static_cast<int>(tx), static_cast<int>(ty), false)) {
+      lua_pushnil(L);
+      lua_rawseti(L, mem, id);
+      continue;
+    }
+    if (k != kind) continue;
+    lua_createtable(L, 0, 4);
+    set_int(L, "id", id);
+    push_fixed_value(L, core::Fixed::from_raw(static_cast<int32_t>(xr))); lua_setfield(L, -2, "x");
+    push_fixed_value(L, core::Fixed::from_raw(static_cast<int32_t>(yr))); lua_setfield(L, -2, "y");
+    if (a >= 0 && tile_flag(s, p, static_cast<int>(tx), static_cast<int>(ty), false)) set_int(L, "amount", a);
+    lua_rawseti(L, out, ++n);
+  }
+  lua_replace(L, mem - 1);   // az eredmény a veremben a S helyére
+  lua_settop(L, mem - 1);
   return 1;
 }
 
@@ -482,7 +542,26 @@ int a_gather(lua_State* L) {
   const std::string kind = luaL_checkstring(L, 2);
   bool ok = false;
   const int k = sim::resource_index(kind);
-  for (const EntityId e : ids) ok = (k >= 0 && s.gather_nearest(e, k)) || ok;
+  // N-02: csak felderített lelőhelyet választ (a munkáshoz legközelebbit; egyenlőnél a kisebb azonosítót)
+  const uint8_t p = me(L);
+  std::vector<std::pair<EntityId, std::pair<core::Fixed, core::Fixed>>> cand;
+  if (k >= 0) {
+    s.world().pool<sim::ResourceNode>().each([&](EntityId e, const sim::ResourceNode& r) {
+      if (r.kind != k || r.amount <= 0 || !tile_flag(s, p, r.tx, r.ty, true)) return;
+      if (const sim::Position* pos = s.world().get<sim::Position>(e)) cand.push_back({e, {pos->x, pos->y}});
+    });
+  }
+  for (const EntityId e : ids) {
+    const sim::Position* wp = s.world().get<sim::Position>(e);
+    if (!wp) continue;
+    EntityId best = sim::kNoEntity;
+    int64_t bd = 0;
+    for (const auto& [n, xy] : cand) {
+      const int64_t d = core::length_sq_raw(xy.first - wp->x, xy.second - wp->y);
+      if (best == sim::kNoEntity || d < bd || (d == bd && n < best)) best = n, bd = d;
+    }
+    if (best != sim::kNoEntity && s.interrupt(e)) ok = s.order_gather(e, best) || ok;
+  }
   record(L, "gather|" + ids_text(ids) + "|" + kind);
   lua_pushboolean(L, ok);
   return 1;
@@ -520,7 +599,9 @@ int a_target(lua_State* L) {
 int a_stop(lua_State* L) {
   Sim& s = sim_of(L);
   const auto ids = own_ids(L, s, 1);
-  for (const EntityId e : ids) s.stop(e);
+  for (const EntityId e : ids) {   // N-01: mint a játékos Stop parancsa (javítás, elfoglalás, beszállás, varázslás is leáll)
+    if (s.interrupt(e)) s.stop(e);
+  }
   record(L, "stop|" + ids_text(ids));
   return 0;
 }

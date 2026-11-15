@@ -38,5 +38,6 @@ sim::EntityId id_arg(lua_State* L, int idx);
 void make_readonly(lua_State* L);                             // a verem tetején lévő táblát csak olvashatóvá teszi
 int faction_ai(lua_State* L);                                 // a Game.faction_ai megvalósítása
 void open_ai_api(lua_State* L);                               // az AI tábla (ai_api.cpp)
+int saved_table_ref(lua_State* L);                            // az S tábla (a szkript mentett állapota) regiszterhivatkozása
 
 }  // namespace totu::script::detail

@@ -161,7 +161,7 @@ TEST_CASE("M9 gep – betoltes: az alap AI-csomag, 6 nehézség, 11 személyisé
   }
 }
 
-TEST_CASE("M9 gep – AIFOG: a köd mögötti ellenséges állapot nem változtat a gép parancsain") {
+TEST_CASE("M9 gep – AIFOG: a köd mögötti ellenséges állapot és lelőhely nem változtat a gép parancsain") {
   AiMatch a("kraterfold", {"ursan", "ursan"}, {slot(2, "mester", "kiegyenlitett")});
   AiMatch b("kraterfold", {"ursan", "ursan"}, {slot(2, "mester", "kiegyenlitett")});
   CHECK(a.ok && b.ok);
@@ -172,6 +172,24 @@ TEST_CASE("M9 gep – AIFOG: a köd mögötti ellenséges állapot nem változta
   b.sim->world().pool<sim::Health>().each([&](sim::EntityId, sim::Health& h) {
     if (h.owner == 1 && h.hp > 2) h.hp /= 2;
   });
+  // N-02/N-03: a b meccsből eltűnik egy, a 2. játékos által fel nem derített aranylelőhely
+  sim::EntityId hidden_node = sim::kNoEntity;
+  int hx = 0, hy = 0;
+  {
+    const auto& ex = b.sim->player(2).explored;
+    const int w = b.map->width();
+    b.sim->world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode& r) {
+      if (hidden_node != sim::kNoEntity || r.kind != sim::kGold || r.size < 2) return;
+      if (!ex.empty() && ex[static_cast<size_t>(r.ty * w + r.tx)]) return;
+      hidden_node = e, hx = r.tx, hy = r.ty;
+    });
+  }
+  CHECK(hidden_node != sim::kNoEntity);
+  b.sim->remove_resource(hidden_node);
+  auto node_seen = [&]() {
+    const auto& ex = a.sim->player(2).explored;
+    return !ex.empty() && ex[static_cast<size_t>(hy * a.map->width() + hx)] != 0;
+  };
   int64_t seen_at = -1;
   bool same = true;
   for (int t = 0; t < 8 * 60 * 30 && seen_at < 0; ++t) {
@@ -180,6 +198,7 @@ TEST_CASE("M9 gep – AIFOG: a köd mögötti ellenséges állapot nem változta
     a.sim->world().pool<sim::Health>().each([&](sim::EntityId e, const sim::Health& h) {
       if (seen_at < 0 && h.owner == 1 && h.hp > 0 && a.sim->is_visible(2, e)) seen_at = a.sim->tick();
     });
+    if (seen_at < 0 && node_seen()) seen_at = a.sim->tick();   // a rejtett lelőhely helyét felderítette
     if (seen_at < 0 && a.ais[0]->command_digest() != b.ais[0]->command_digest()) same = false;
   }
   std::printf("  az első látott ellenség: %lld. tick; a gép parancsai addig: %llu\n", static_cast<long long>(seen_at),

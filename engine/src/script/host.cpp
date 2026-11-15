@@ -1133,6 +1133,7 @@ void build_environment(lua_State* L) {
   lua_setglobal(L, "S");
 }
 
+
 uint64_t stream_for(const std::string& name) {
   core::StateHash h;
   h.add_bytes("totu-script");
@@ -1145,6 +1146,7 @@ uint64_t stream_for(const std::string& name) {
 // --- a gépi ellenfél API-jának (ai_api.cpp) ------------------------------------------------------------------------
 namespace detail {
 AiState& ai_state(lua_State* L) { return impl(L).ai; }
+int saved_table_ref(lua_State* L) { return impl(L).s_ref; }
 sim::Sim& sim_of(lua_State* L) { return need_sim(L); }
 core::Fixed fixed_arg(lua_State* L, int idx, const char* what) { return to_fixed(L, idx, what); }
 void push_fixed_value(lua_State* L, core::Fixed f) { push_fixed(L, f); }
