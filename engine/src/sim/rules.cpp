@@ -17,7 +17,7 @@ Fixed fixed_of(const content::Value* v, Fixed def) {
 
 int32_t int_of(const content::Value* v, int32_t def) {
   if (!v) return def;
-  if (const auto i = v->as_int()) return static_cast<int32_t>(*i);
+  if (const auto i = v->as_int()) return static_cast<int32_t>(std::clamp<long long>(*i, INT32_MIN, INT32_MAX));   // H-97: nem csordul át
   if (const auto f = v->as_fixed()) return f->floor_int();
   return def;
 }
@@ -37,7 +37,7 @@ void read_res_map(const content::Value* obj, std::array<int32_t, kResources>& ou
   if (!obj || !obj->is_object()) return;
   for (const auto& [k, v] : obj->members()) {
     const int r = resource_index(k);
-    if (r >= 0) out[static_cast<size_t>(r)] = int_of(&v, 0);
+    if (r >= 0) out[static_cast<size_t>(r)] = std::clamp(int_of(&v, 0), 0, 1000000);   // H-97: költség/készlet 0..1 000 000
   }
 }
 

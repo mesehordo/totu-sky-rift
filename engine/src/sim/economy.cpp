@@ -70,7 +70,7 @@ int32_t Sim::carry_cap(const EntityDef& d, int kind, uint8_t owner) const {
 }
 
 EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
-  if (!rules_ || def >= rules_->defs.size()) return kNoEntity;
+  if (!rules_ || def >= rules_->defs.size() || owner > kMaxPlayers) return kNoEntity;   // H-23: a tulajdonos 0..8
   const EntityDef& d = rules_->defs[def];
   const EntityId e = world_.create();
   const int32_t hp = std::max(1, research_stat(owner, "Health.max", Fixed::from_int(d.hp), d).floor_int());
@@ -121,7 +121,7 @@ EntityId Sim::spawn_unit(uint16_t def, uint8_t owner, Fixed x, Fixed y) {
 }
 
 EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool complete) {
-  if (!rules_ || def >= rules_->defs.size()) return kNoEntity;
+  if (!rules_ || def >= rules_->defs.size() || owner > kMaxPlayers) return kNoEntity;   // H-24: a tulajdonos 0..8
   const EntityDef& d = rules_->defs[def];
   const int w = std::max(1, d.fw), h = std::max(1, d.fh);
   if (map_ && (tx < 0 || ty < 0 || tx + w > map_->width() || ty + h > map_->height())) return kNoEntity;   // csak a térképre

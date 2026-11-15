@@ -136,8 +136,12 @@ bool Sim::order_build(EntityId e, uint16_t def, int tx, int ty, std::string* err
   const EntityDef& d = rules_->defs[def];
   if (!d.building || (d.faction != p.faction && (p.ally.empty() || d.faction != p.ally))) return fail("ezt a nép nem építheti");   // + a szövetséges kisnépé (D26)
   if (!can_place(hp->owner, def, tx, ty, error)) return false;
-  if (w->state == Worker::Build) refund(hp->owner, rules_->defs[w->build_def].cost, 1000);   // az előző terv vissza
-  if (!pay(hp->owner, d.cost)) return fail("nincs elég nyersanyag");
+  const bool replacing = w->state == Worker::Build;
+  if (replacing) refund(hp->owner, rules_->defs[w->build_def].cost, 1000);   // az előző terv vissza
+  if (!pay(hp->owner, d.cost)) {
+    if (replacing) pay(hp->owner, rules_->defs[w->build_def].cost);   // H-11: a régi terv marad, az ára is (vissza)
+    return fail("nincs elég nyersanyag");
+  }
   // ha gyűjtött, az építés után oda megy vissza (a régi játék szerint)
   if (w->state == Worker::Go || w->state == Worker::Work || w->state == Worker::Return) w->resume = w->res;
   else if (w->state != Worker::Build && w->state != Worker::Construct) w->resume = 0;
@@ -350,7 +354,7 @@ void Sim::construction_system() {
 }
 
 bool Sim::demolish(EntityId e) {
-  if (!rules_ || !world_.alive(e)) return false;
+  if (!rules_ || !world_.alive(e) || world_.doomed(e)) return false;   // H-14: egy tickben kétszer nem
   const Building* b = world_.get<Building>(e);
   const Health* h = world_.get<Health>(e);
   if (!b || !h || !b->complete || h->hp <= 0 || h->owner == 0 || h->owner > kMaxPlayers) return false;
@@ -396,7 +400,7 @@ bool Sim::interrupt(EntityId e) {
 }
 
 bool Sim::cancel_build(EntityId e) {
-  if (!rules_ || !world_.alive(e)) return false;
+  if (!rules_ || !world_.alive(e) || world_.doomed(e)) return false;   // H-14: egy tickben kétszer nem
   const Building* b = world_.get<Building>(e);
   const Health* h = world_.get<Health>(e);
   if (!b || !h || b->complete) return false;

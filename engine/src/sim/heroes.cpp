@@ -258,7 +258,7 @@ void Sim::item_system() {
     Fetch* f = world_.get<Fetch>(e);
     const Health* h = world_.get<Health>(e);
     if (!f || !h || h->hp <= 0) continue;
-    const GroundItem* g = world_.alive(f->item) ? world_.get<GroundItem>(f->item) : nullptr;
+    const GroundItem* g = world_.alive(f->item) && !world_.doomed(f->item) ? world_.get<GroundItem>(f->item) : nullptr;   // H-12
     if (!g) {
       world_.pool<Fetch>().remove(e);
       continue;

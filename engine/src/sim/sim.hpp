@@ -1028,6 +1028,7 @@ class Sim {
  // belső felület – a népmodulok (src/sim/factions) is használják (ADR-008)
  public:
   void apply(const Command& c);
+  bool owned_by(EntityId e, uint8_t owner);   // él, és ez a tulajdonosa (H-01)
   void report_deaths();
   void nav_request(EntityId e, Fixed x, Fixed y);
   void nav_paths();

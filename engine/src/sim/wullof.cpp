@@ -120,6 +120,7 @@ EntityId Sim::pack_building(EntityId b) {
   const Building* bd = world_.get<Building>(b);
   const Health* bh = world_.get<Health>(b);
   if (!bd || !bh || !bd->complete || bh->hp <= 0 || bh->owner == 0 || bh->owner > kMaxPlayers) return kNoEntity;
+  if (world_.doomed(b)) return kNoEntity;   // H-55: egy épületből egy szekér (a második csomagolás ugyanabban a tickben)
   const FactionDef* f = rules_->faction(players_[bh->owner].faction);
   if (!f || f->wagon == kNoDef || !rules_->defs[bd->def].packable) return kNoEntity;
   if (Producer* pr = world_.get<Producer>(b)) {   // a sora visszavonva (teljes visszatérítés)
@@ -163,7 +164,7 @@ bool Sim::mount_up(EntityId bison, uint16_t ab) {
   const AbilityDef& a = rules_->abilities[ab];
   const Position bp = *world_.get<Position>(bison);
   const Health bh = *world_.get<Health>(bison);
-  if (a.into == kNoDef) return false;
+  if (a.into == kNoDef || bh.hp <= 0 || world_.doomed(bison)) return false;   // H-59: az elfogyasztott bölény nem ül fel újra
   EntityId rider = kNoEntity;
   int64_t best = 0;
   world_.pool<Unit>().each([&](EntityId o, const Unit& u) {   // a legközelebbi lovas a hatótávon belül

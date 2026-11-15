@@ -62,7 +62,46 @@ bool Sim::kill(EntityId e) {
   return true;
 }
 
-void Sim::apply(const Command& c) {
+// H-01: a játékos parancsa (tulajdonos 1..8) csak a saját egységeire és épületeire hat; a 0-s tulajdonosú (rendszer:
+// szkript, próba, régi visszajátszás) parancs változatlanul.
+bool Sim::owned_by(EntityId e, uint8_t owner) {
+  if (!world_.alive(e)) return false;
+  const Health* h = world_.get<Health>(e);
+  return h && h->owner == owner;
+}
+
+void Sim::apply(const Command& raw) {
+  Command filtered;
+  const Command* cp = &raw;
+  if (raw.owner >= 1 && raw.owner <= kMaxPlayers) {
+    // (a Spawn tulajdonosa a létrejövő egység gazdája – forgatókönyv-parancs; a Block/Gate pálya-parancs: ezeket a hálózati
+    // réteg nem fogadja el játékostól, itt változatlanok)
+    if (raw.kind == Command::Kind::Spawn || raw.kind == Command::Kind::Block || raw.kind == Command::Kind::Gate) {
+      cp = &raw;
+    } else {
+    filtered = raw;
+    filtered.units.erase(std::remove_if(filtered.units.begin(), filtered.units.end(),
+                                        [&](EntityId e) { return !owned_by(e, raw.owner); }),
+                         filtered.units.end());
+    switch (raw.kind) {   // a saját épületre/egységre szóló célpontok
+      case Command::Kind::CancelBuild:
+      case Command::Kind::Demolish:
+      case Command::Kind::CancelQueue:
+      case Command::Kind::Unload:
+      case Command::Kind::Pack:
+      case Command::Kind::Power:
+        if (!owned_by(raw.target, raw.owner)) return;
+        break;
+      case Command::Kind::Train:
+        if (raw.target && !owned_by(raw.target, raw.owner)) return;
+        break;
+      default:
+        break;
+    }
+    cp = &filtered;
+    }
+  }
+  const Command& c = *cp;
   switch (c.kind) {
     case Command::Kind::Spawn: {
       const EntityId e = spawn(c);
@@ -77,7 +116,7 @@ void Sim::apply(const Command& c) {
       for (const EntityId e : c.units) {
         if (interrupt(e)) units.push_back(e);
       }
-      order_group_move(units, c.x, c.y, static_cast<Formation>(c.formation));
+      order_group_move(units, c.x, c.y, static_cast<Formation>(c.formation < kFormationCount ? c.formation : 0));   // H-53
       break;
     }
     case Command::Kind::Gather:
