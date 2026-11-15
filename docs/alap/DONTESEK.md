@@ -12,7 +12,7 @@ Minden kérdésnél: tény → lehetőségek → **javaslat** → mit befolyáso
 | D1 | FELÜLÍRVA (2026-11-12) a D18-cal: a motor **C++20**, nulláról – [ADR-002](dontesek/ADR-002-uj-motor.md); a korábbi C#-döntés (ADR-001) az OpenBSD/FreeBSD-követelmény miatt elesett |
 | D2 | ELDÖNTVE (2026-11-12, [ADR-003](dontesek/ADR-003-megjelenito.md)): saját vékony RHI, első háttér OpenGL 3.3 core, második SDL3 GPU (Vulkan/Metal/D3D12). Korábban: **raylib-cs** (raylib, zlib), **OpenGL 3.3 alap**; 4.x csak opcionális magas grafikai profilban, játékszabályt nem érinthet. Rajzolási próba 2026-11-12: 1600 egység mind látható p99 10,5 ms, 2400 egység p99 15,8 ms (RX 550) – **megerősítve** |
 | D3 | MÓDOSÍTVA (2026-11-12): minden rendszer, amin a 0 A.D. fut – Windows, Linux, macOS (Intel, Apple Silicon), FreeBSD, OpenBSD |
-| D4 | ÚJRANYITVA (2026-11-12): az M10 előtt döntendő; javaslat: lockstep relészerverrel ([UJ_MOTOR_TERV.md](UJ_MOTOR_TERV.md) 6. pont). Korábban: szerverautoritatív LAN |
+| D4 | ELDÖNTVE (2026-11-15, [ADR-009](dontesek/ADR-009-halozat.md)): determinisztikus **lockstep relével** (a relé maga is futtatja a szimulációt: hash-ellenőrzés, újracsatlakozás), ENet-átvitel; a tanulmány szerverautoritatív javaslata helyett (a C++ motor determinisztikus, minden rendszeren egyező hash-sel). Korábban: szerverautoritatív LAN |
 | D5 | ELDÖNTVE (2026-11-11): az internetes mód közvetlenül a szerverautoritatív LAN után |
 | D6 | ELDÖNTVE (2026-11-11): 30 Hz marad |
 | D7 | ELDÖNTVE (2026-11-11): 8 × 200 pop, lépcsőkben; 2000–2400 csak terheléses próba |

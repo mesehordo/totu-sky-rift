@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -13,6 +14,12 @@
 
 namespace totu::map {
 class TerrainTable;
+class Map;
+class NavGrid;
+class Pathfinder;
+}
+namespace totu::script {
+class ScriptHost;
 }
 
 namespace totu::sim {
@@ -50,6 +57,24 @@ struct Replay {
   uint8_t fog = 0, daytime = 2;   // MatchSetup::Fog, MatchSetup::Daytime
   std::vector<Checkpoint> checkpoints;
 };
+
+// Egy visszajátszás (vagy hálózati meccs, M10) leírásából felépített, futtatható meccs: a pálya, a navigáció, a
+// szkriptek és a gépek a szimulációval együtt élnek. A parancsok nélkül épül (a hívó adja őket a `sim`-nek).
+struct MatchInstance {
+  MatchInstance();
+  ~MatchInstance();
+  MatchInstance(const MatchInstance&) = delete;
+  MatchInstance& operator=(const MatchInstance&) = delete;
+  std::unique_ptr<Sim> sim;
+  std::unique_ptr<map::Map> map;
+  std::unique_ptr<map::NavGrid> nav;
+  std::unique_ptr<map::Pathfinder> pf;
+  std::vector<std::unique_ptr<script::ScriptHost>> hosts, ais;
+  std::vector<std::string> messages() const;   // a szkriptek és a gépek naplója
+};
+// `load_state`: mentésből folytatott meccs (újracsatlakozás) – a meccsindítás és az on_start nélkül
+std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTable* terrain, const Rules* rules,
+                                           std::string& error, bool load_state = false);
 
 // Felvétel: a megadott parancsokkal végigfuttatja a szimulációt, és rögzíti az ellenőrzőpontokat.
 // Pályás visszajátszáshoz (map nem üres) a terepfajták és mozgásosztályok táblája kell (a tartalomból).

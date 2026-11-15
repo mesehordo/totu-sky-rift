@@ -22,7 +22,7 @@ Checkpoint make_checkpoint(const Sim& s) {
 }
 
 // A szkriptek betöltése: modonként egy állapot, a megadás sorrendjében csatlakoztatva, majd az on_start.
-std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Replay& r) {
+std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Replay& r, bool started) {
   std::vector<std::unique_ptr<script::ScriptHost>> hosts;
   for (const auto& f : r.scripts) {
     script::ScriptHost* h = nullptr;
@@ -36,6 +36,7 @@ std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Re
     }
     if (!h->run(f.name, f.source)) return {};   // H-08: a hibás szkript a visszajátszás hibája
   }
+  if (started) return hosts;
   for (auto& h : hosts) {
     h->start(s);
     if (h->errors() > 0) return {};   // H-08: az on_start hibája is
@@ -43,58 +44,87 @@ std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Re
   return hosts;
 }
 
-// A pálya és a navigáció a futás idejére (a szimuláció csak hivatkozik rájuk).
-struct Navigation {
-  std::optional<map::Map> map;
-  std::unique_ptr<map::NavGrid> nav;
-  std::unique_ptr<map::Pathfinder> pf;
-};
-
-bool attach_map(Sim& s, const Replay& r, const map::TerrainTable* terrain, Navigation& nav, std::string& error) {
-  if (r.map.empty()) return true;
-  if (!terrain) {
-    error = "a pályás visszajátszáshoz terepadat kell";
-    return false;
+bool run(Sim*& s, std::unique_ptr<MatchInstance>& m, const Replay& r, std::vector<Checkpoint>& out,
+         const map::TerrainTable* terrain, std::string& error, std::vector<std::string>* messages = nullptr,
+         const Rules* rules = nullptr) {
+  m = start_match(r, terrain, rules, error);
+  if (!m) return false;
+  s = m->sim.get();
+  for (const auto& c : r.commands) s->queue(c);
+  for (int64_t t = 0; t < r.ticks; ++t) {
+    s->step();
+    if (s->tick() % r.checkpoint_every == 0 || s->tick() == r.ticks) out.push_back(make_checkpoint(*s));
   }
-  std::vector<std::string> errors;
-  const auto doc = content::parse(r.map);
-  if (doc) nav.map = map::Map::from_json(*doc, *terrain, errors);
-  if (!nav.map) {
-    error = "hibás pálya a visszajátszásban" + (errors.empty() ? std::string() : ": " + errors.front());
-    return false;
+  if (messages) {
+    const auto ms = m->messages();
+    messages->insert(messages->end(), ms.begin(), ms.end());
   }
-  nav.nav = std::make_unique<map::NavGrid>(*nav.map, *terrain);
-  nav.pf = std::make_unique<map::Pathfinder>(*nav.nav);
-  s.attach_navigation(nav.pf.get());
   return true;
 }
 
-bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::TerrainTable* terrain, std::string& error,
-         std::vector<std::string>* messages = nullptr, const Rules* rules = nullptr) {
-  Navigation navigation;
-  if (!attach_map(s, r, terrain, navigation, error)) return false;
+}  // namespace
+
+MatchInstance::MatchInstance() = default;
+MatchInstance::~MatchInstance() {
+  // a szkriptek és a gépek a szimulációra hivatkoznak: előbb ők, utána a szimuláció, végül a pálya
+  ais.clear();
+  hosts.clear();
+  sim.reset();
+}
+
+std::vector<std::string> MatchInstance::messages() const {
+  std::vector<std::string> out;
+  for (const auto& h : hosts) out.insert(out.end(), h->messages().begin(), h->messages().end());
+  for (const auto& h : ais) out.insert(out.end(), h->messages().begin(), h->messages().end());
+  return out;
+}
+
+std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTable* terrain, const Rules* rules,
+                                           std::string& error, bool load_state) {
+  auto m = std::make_unique<MatchInstance>();
+  m->sim = std::make_unique<Sim>(r.seed);
+  Sim& s = *m->sim;
+  if (!r.map.empty()) {
+    if (!terrain) {
+      error = "a pályás visszajátszáshoz terepadat kell";
+      return nullptr;
+    }
+    std::vector<std::string> errors;
+    const auto doc = content::parse(r.map);
+    std::optional<map::Map> mp;
+    if (doc) mp = map::Map::from_json(*doc, *terrain, errors);
+    if (!mp) {
+      error = "hibás pálya a visszajátszásban" + (errors.empty() ? std::string() : ": " + errors.front());
+      return nullptr;
+    }
+    m->map = std::make_unique<map::Map>(std::move(*mp));
+    m->nav = std::make_unique<map::NavGrid>(*m->map, *terrain);
+    m->pf = std::make_unique<map::Pathfinder>(*m->nav);
+    s.attach_navigation(m->pf.get());
+  }
   if (!r.factions.empty()) {   // M6: meccs a szabályadatokkal
-    if (!rules || !navigation.map) {
+    if (!rules || !m->map) {
       error = "a meccs-visszajátszáshoz pálya és szabályadat kell";
-      return false;
+      return nullptr;
     }
     s.attach_rules(rules);
-    MatchSetup setup;
-    setup.factions = r.factions;
-    setup.weather = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.weather, 3));
-    setup.ai = r.ai;
-    setup.upkeep = r.upkeep;
-    setup.camps = r.camps;
-    setup.fog = static_cast<MatchSetup::Fog>(std::min<uint8_t>(r.fog, 2));
-    setup.daytime = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.daytime, 2));
-    if (!s.setup_match(*navigation.map, setup, &error)) return false;
+    if (!load_state) {
+      MatchSetup setup;
+      setup.factions = r.factions;
+      setup.weather = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.weather, 3));
+      setup.ai = r.ai;
+      setup.upkeep = r.upkeep;
+      setup.camps = r.camps;
+      setup.fog = static_cast<MatchSetup::Fog>(std::min<uint8_t>(r.fog, 2));
+      setup.daytime = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.daytime, 2));
+      if (!s.setup_match(*m->map, setup, &error)) return nullptr;
+    }
   }
-  const auto hosts = attach_scripts(s, r);
-  if (hosts.empty() && !r.scripts.empty()) {
+  m->hosts = attach_scripts(s, r, load_state);
+  if (m->hosts.empty() && !r.scripts.empty()) {
     error = "a visszajátszás szkriptje hibás";
-    return false;
+    return nullptr;
   }
-  std::vector<std::unique_ptr<script::ScriptHost>> ais;
   if (!r.ai.empty()) {   // M9: a gépi játékosok a beágyazott csomagokból
     std::vector<script::AiPackage> pkgs;
     for (const auto& f : r.ai_files) {
@@ -105,20 +135,13 @@ bool run(Sim& s, const Replay& r, std::vector<Checkpoint>& out, const map::Terra
       }
       it->files[f.name] = f.source;
     }
-    ais = script::attach_ais(s, r.ai, pkgs, r.seed, true, &error);
-    if (ais.empty()) return false;
+    m->ais = script::attach_ais(s, r.ai, pkgs, r.seed, !load_state, &error);
+    if (m->ais.empty()) return nullptr;
   }
-  for (const auto& c : r.commands) s.queue(c);
-  for (int64_t t = 0; t < r.ticks; ++t) {
-    s.step();
-    if (s.tick() % r.checkpoint_every == 0 || s.tick() == r.ticks) out.push_back(make_checkpoint(s));
-  }
-  if (messages) {
-    for (const auto& h : hosts) messages->insert(messages->end(), h->messages().begin(), h->messages().end());
-    for (const auto& h : ais) messages->insert(messages->end(), h->messages().begin(), h->messages().end());
-  }
-  return true;
+  return m;
 }
+
+namespace {
 
 int format_of(const Replay& r) {
   if (!r.factions.empty() && (!r.upkeep || r.camps || r.fog != 0 || r.daytime != 2)) return 6;
@@ -145,26 +168,29 @@ Replay record(uint64_t seed, int64_t ticks, std::vector<Command> commands, int64
   r.commands = std::move(commands);
   r.scripts = std::move(scripts);
   r.map = std::move(map);
-  Sim s(seed);
+  Sim* s = nullptr;
+  std::unique_ptr<MatchInstance> m;
   std::string error;
-  run(s, r, r.checkpoints, terrain, error);
+  run(s, m, r, r.checkpoints, terrain, error);
   return r;
 }
 
 Replay record_match(Replay r, const map::TerrainTable& terrain, const Rules& rules) {
   r.checkpoint_every = r.checkpoint_every > 0 ? r.checkpoint_every : 30;
   r.checkpoints.clear();
-  Sim s(r.seed);
+  Sim* s = nullptr;
+  std::unique_ptr<MatchInstance> m;
   std::string error;
-  run(s, r, r.checkpoints, &terrain, error, nullptr, &rules);
+  run(s, m, r, r.checkpoints, &terrain, error, nullptr, &rules);
   return r;
 }
 
 VerifyResult verify(const Replay& r, const map::TerrainTable* terrain, const Rules* rules) {
   VerifyResult v;
-  Sim s(r.seed);
+  Sim* s = nullptr;
+  std::unique_ptr<MatchInstance> m;
   std::vector<Checkpoint> got;
-  if (!run(s, r, got, terrain, v.error, &v.script_messages, rules)) return v;
+  if (!run(s, m, r, got, terrain, v.error, &v.script_messages, rules)) return v;
   if (got.size() != r.checkpoints.size()) {
     v.error = "eltérő számú ellenőrzőpont";
     return v;
