@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // M10 hálózat: lockstep relével, memóriabeli átvitellel (késleltetés, kilépés, visszatérés, szinkronhiba, modlock,
 // megfigyelő).
+#include <chrono>
 #include <cstdio>
+#include <thread>
 #include <map>
 #include <memory>
 #include <string>
@@ -9,6 +11,8 @@
 
 #include "check.hpp"
 #include "match_util.hpp"
+#include "net/content_hash.hpp"
+#include "net/enet_transport.hpp"
 #include "net/lockstep.hpp"
 
 using namespace totu;
@@ -160,4 +164,67 @@ TEST_CASE("halozat: kilepes es visszateres mentesbol, megfigyelo") {
   CHECK(back.sim()->hash() == n.relay.sim().hash() && obs.sim()->hash() == n.relay.sim().hash());
   CHECK(a.sim()->hash() == n.relay.sim().hash());
   CHECK(n.relay.desyncs().empty());
+}
+
+TEST_CASE("halozat: valodi UDP (ENet, helyi gep) - rele es ket kliens, modlock-ujjlenyomat") {
+  const uint64_t ch = net::content_hash({TOTU_CONTENT_DIR});
+  CHECK(ch != 0 && ch == net::content_hash({TOTU_CONTENT_DIR}));
+  net::Relay relay(desc(), &content_once().terrain, &*content_once().rules, ch, 2);
+  net::EnetEndpoint server;
+  std::string err;
+  const uint16_t port = 47913;
+  CHECK(server.listen(port, 8, &err));
+  struct Side {
+    net::EnetEndpoint ep;
+    std::unique_ptr<net::Client> c;
+    bool said = false;
+  };
+  std::vector<std::unique_ptr<Side>> sides;
+  for (int i = 0; i < 2; ++i) {
+    auto s = std::make_unique<Side>();
+    CHECK(s->ep.connect("127.0.0.1", port, &err));
+    s->c = std::make_unique<net::Client>(&content_once().terrain, &*content_once().rules, ch, "udp");
+    sides.push_back(std::move(s));
+  }
+  int64_t t = 0;
+  auto pump = [&](bool relay_runs) {
+    for (auto& e : server.poll(0)) {
+      if (e.kind == net::NetEvent::Kind::Message) relay.on_message(e.peer, e.data);
+      else if (e.kind == net::NetEvent::Kind::Disconnect) relay.on_disconnect(e.peer);
+    }
+    if (relay_runs) relay.advance(t);
+    for (auto& [p, b] : relay.take_outbox()) server.send(p, b);
+    server.flush();
+    for (auto& s : sides) {
+      for (auto& e : s->ep.poll(0)) {
+        if (e.kind == net::NetEvent::Kind::Connect && !s->said) {
+          s->ep.send(e.peer, s->c->hello());
+          s->said = true;
+        } else if (e.kind == net::NetEvent::Kind::Message) {
+          s->c->on_message(e.data);
+        }
+      }
+      s->c->update();
+      for (auto& b : s->c->take_outbox()) s->ep.send(1, b);
+      s->ep.flush();
+    }
+  };
+  for (int i = 0; i < 400 && relay.connected_players() < 2; ++i) {
+    pump(false);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+  }
+  CHECK(relay.connected_players() == 2);
+  relay.start(0);
+  for (t = 0; t <= 3000; t += 10) pump(true);   // 30 forduló, a valódi idő helyett lépésenként
+  for (int i = 0; i < 400 && (sides[0]->c->turns() < relay.turns() || sides[1]->c->turns() < relay.turns()); ++i) {
+    pump(false);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2));
+  }
+  std::printf("  UDP: relé %lld forduló, kliensek %lld / %lld\n", static_cast<long long>(relay.turns()),
+              static_cast<long long>(sides[0]->c->turns()), static_cast<long long>(sides[1]->c->turns()));
+  CHECK(sides[0]->c->ready() && sides[1]->c->ready());
+  CHECK(sides[0]->c->turns() == relay.turns() && sides[1]->c->turns() == relay.turns());
+  if (sides[0]->c->sim() && sides[1]->c->sim()) {
+    CHECK(sides[0]->c->sim()->hash() == relay.sim().hash() && sides[1]->c->sim()->hash() == relay.sim().hash());
+  }
 }

@@ -37,6 +37,24 @@ else()
   target_compile_options(totu_lua PRIVATE -w -ffp-contract=off)
 endif()
 
+# --- ENet 1.3.18 (MIT, változatlan forrás): megbízható UDP a hálózati réteg alatt (ADR-009) ---------------------
+add_library(totu_enet STATIC third_party/enet/callbacks.c third_party/enet/compress.c third_party/enet/host.c
+            third_party/enet/list.c third_party/enet/packet.c third_party/enet/peer.c third_party/enet/protocol.c
+            third_party/enet/unix.c third_party/enet/win32.c)
+target_include_directories(totu_enet SYSTEM PUBLIC third_party/enet/include)
+if(WIN32)
+  target_link_libraries(totu_enet PUBLIC ws2_32 winmm)
+else()
+  # minden támogatott POSIX-rendszeren (Linux, macOS, FreeBSD, OpenBSD) megvannak
+  target_compile_definitions(totu_enet PRIVATE HAS_FCNTL=1 HAS_POLL=1 HAS_GETADDRINFO=1 HAS_GETNAMEINFO=1
+                             HAS_INET_PTON=1 HAS_INET_NTOP=1 HAS_MSGHDR_FLAGS=1 HAS_SOCKLEN_T=1)
+endif()
+if(MSVC)
+  target_compile_options(totu_enet PRIVATE /W0)
+else()
+  target_compile_options(totu_enet PRIVATE -w)
+endif()
+
 # --- mag: grafika nélküli, minden rendszeren tesztelt könyvtár --------------------------------------------------
 add_library(totu_core
   src/core/platform_info.cpp
@@ -98,10 +116,17 @@ target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
 find_package(Threads REQUIRED)   # a szimulációs szál (M6) – a kliens és a tesztek
-target_link_libraries(totu_tests PRIVATE totu_core totu_image totu_assets totu_options Threads::Threads)
+target_link_libraries(totu_tests PRIVATE totu_core totu_net totu_image totu_assets totu_options Threads::Threads)
 add_test(NAME core COMMAND totu_tests)
 
 # --- ablak nélküli szimulációs futtató és az M2 kapu: a golden visszajátszás minden rendszeren egyezik -----------
+# --- hálózat (M10): az ENet-átvitel és a modlock-ujjlenyomat; a lockstep-logika a magban (socket nélkül próbálható) ---
+add_library(totu_net STATIC src/net/enet_transport.cpp src/net/content_hash.cpp)
+target_link_libraries(totu_net PUBLIC totu_core totu_enet PRIVATE totu_options)
+add_executable(totu_relay src/tools/totu_relay.cpp src/tools/nav_tools.cpp)
+target_link_libraries(totu_relay PRIVATE totu_net totu_options)
+target_compile_definitions(totu_relay PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
+
 add_executable(totu_sim src/tools/totu_sim.cpp src/tools/nav_tools.cpp src/tools/aibatch.cpp)
 target_link_libraries(totu_sim PRIVATE totu_core totu_options)
 target_compile_definitions(totu_sim PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
