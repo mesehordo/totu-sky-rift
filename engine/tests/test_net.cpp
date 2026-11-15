@@ -38,13 +38,20 @@ struct Net {
   struct Packet { int64_t at; net::PeerId peer; bool to_relay; net::Bytes data; };
   std::vector<Packet> wire;
   int64_t now = 0, latency;
+  std::map<net::PeerId, int64_t> extra;   // partnerenkénti többletkésés (egyirányú, ms)
   explicit Net(int64_t lat, int seats = 2)
       : relay(desc(), &content_once().terrain, &*content_once().rules, kContent, seats), latency(lat) {}
+  Net(int64_t lat, sim::Replay d, int seats)
+      : relay(std::move(d), &content_once().terrain, &*content_once().rules, kContent, seats), latency(lat) {}
+  int64_t lat_of(net::PeerId p) const {
+    const auto it = extra.find(p);
+    return latency + (it == extra.end() ? 0 : it->second);
+  }
 
   net::Client& join(net::PeerId id, uint64_t content = kContent, bool observer = false, uint8_t rejoin = 0) {
     clients[id] = std::make_unique<net::Client>(&content_once().terrain, &*content_once().rules, content,
                                                 "j" + std::to_string(id), observer, rejoin);
-    wire.push_back({now + latency, id, true, clients[id]->hello()});
+    wire.push_back({now + lat_of(id), id, true, clients[id]->hello()});
     return *clients[id];
   }
   void leave(net::PeerId id) {
@@ -56,10 +63,10 @@ struct Net {
     for (int64_t k = 0; k < ms; k += 10) {
       now += 10;
       if (relay_runs) relay.advance(now);
-      for (auto& [p, b] : relay.take_outbox()) wire.push_back({now + latency, p, false, std::move(b)});
+      for (auto& [p, b] : relay.take_outbox()) wire.push_back({now + lat_of(p), p, false, std::move(b)});
       for (auto& [id, c] : clients) {
         c->update();
-        for (auto& b : c->take_outbox()) wire.push_back({now + latency, id, true, std::move(b)});
+        for (auto& b : c->take_outbox()) wire.push_back({now + lat_of(id), id, true, std::move(b)});
       }
       std::vector<Packet> due;
       std::erase_if(wire, [&](Packet& p) {
@@ -140,6 +147,15 @@ TEST_CASE("halozat: szinkronhiba-eszleles, modlock, betelt hely") {
   b.sim()->kill(unit_of(*b.sim(), 2));   // a 2. kliens állapota eltér
   n.tick(800);
   CHECK(!n.relay.desyncs().empty() && n.relay.desyncs().front().player == 2);
+  // a relé visszajátszása (a hibakereséshez) kódolható, és újrafuttatva a relé állapotát adja
+  const sim::Replay rp = n.relay.replay();
+  const auto dec = sim::decode(sim::encode(rp));
+  CHECK(dec.has_value());
+  if (dec) {
+    const sim::Replay rec = sim::record_match(*dec, content_once().terrain, *content_once().rules);
+    CHECK(!rec.checkpoints.empty() && rec.checkpoints.back().hash == n.relay.sim().hash());
+  }
+  CHECK(a.replay().ticks == a.turns() * net::kTicksPerTurn);
   CHECK(!a.desyncs().empty());
   auto& wrong = n.join(3, 0xbad);
   n.tick(200);
@@ -302,4 +318,54 @@ TEST_CASE("halozat: a rele bevarja a lemarado klienst") {
   CHECK(!n.relay.stalled());
   n.drain();
   CHECK(a.turns() == n.relay.turns() && a.sim()->hash() == n.relay.sim().hash());
+}
+
+TEST_CASE("halozat: nyolc kliens a nyolcfos palyan, eltero kesesekkel, mindenki parancsol") {
+  sim::Replay d;
+  d.seed = 808;
+  d.map = read_file(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps" / "nyolc_tuz.json");
+  d.factions = {"ursan", "wullof", "croftian", "elves", "imperium", "hukucha", "ooni", "ursan"};
+  Net n(20, d, 8);
+  CHECK(n.relay.ok());
+  for (net::PeerId i = 1; i <= 8; ++i) {
+    n.join(i);
+    n.extra[i] = static_cast<int64_t>(i) * 12;   // 32..116 ms egyirányú késés
+  }
+  n.tick(800);
+  CHECK(n.relay.connected_players() == 8);
+  CHECK(n.begin());
+  bool all = true;
+  for (auto& [id, c] : n.clients) all = all && c->ready();
+  CHECK(all);
+  if (!all) return;
+  int stalls = 0;
+  for (int sec = 0; sec < 20; ++sec) {   // 20 s játék: mindenki másodpercenként mozgat egy egységet
+    for (auto& [id, c] : n.clients) {
+      sim::Sim& s = *c->sim();
+      sim::EntityId u = sim::kNoEntity;
+      s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit&) {
+        if (u == sim::kNoEntity && s.world().get<sim::Health>(e)->owner == c->slot()) u = e;
+      });
+      if (u == sim::kNoEntity) continue;
+      const auto& p = *s.world().get<sim::Position>(u);
+      sim::Command cm;
+      cm.kind = sim::Command::Kind::Move;
+      cm.units = {u};
+      cm.x = p.x + Fixed::from_int(sec % 2 == 0 ? 3 : -3);
+      cm.y = p.y;
+      c->submit(cm);
+    }
+    for (int k = 0; k < 100; ++k) {
+      n.tick(10);
+      stalls += n.relay.stalled() ? 1 : 0;
+    }
+  }
+  n.drain();
+  bool same = true;
+  for (auto& [id, c] : n.clients) same = same && c->turns() == n.relay.turns() && c->sim()->hash() == n.relay.sim().hash();
+  std::printf("  8 kliens: %lld forduló 20 s alatt (ideális 200), bevárás: %d × 10 ms\n",
+              static_cast<long long>(n.relay.turns()), stalls);
+  CHECK(same);
+  CHECK(n.relay.desyncs().empty());
+  CHECK(n.relay.turns() >= 190);
 }

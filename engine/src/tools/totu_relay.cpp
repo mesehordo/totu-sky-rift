@@ -45,7 +45,7 @@ std::vector<std::string> split(const std::string& s) {
 }  // namespace
 
 int main(int argc, char** argv) {
-  std::string map_path, content = TOTU_CONTENT_DIR;
+  std::string map_path, content = TOTU_CONTENT_DIR, dump = "szinkronhiba";
   std::vector<std::string> factions;
   int seats = 2, port = 47800;
   uint64_t seed = 1;
@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
     else if (k == "--port") port = std::atoi(v.c_str());
     else if (k == "--seed") seed = std::strtoull(v.c_str(), nullptr, 10);
     else if (k == "--content") content = v;
+    else if (k == "--dump") dump = v;
   }
   if (map_path.empty() || factions.size() < 2 || seats < 1 || seats > 8 || port <= 0 || port > 65535) {
     std::fprintf(stderr, "használat: totu_relay --map <pálya.json> --factions a,b [--seats N] [--port P] [--seed S]\n");
@@ -76,6 +77,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::printf("relé: %d. port, %d hely, %zu nép (a meccs akkor indul, amikor mindenki kész)\n", port, seats, factions.size());
+  server.set_dump_dir(dump);   // szinkronhibánál a relé mentése és visszajátszása
   server.run_blocking();
   const auto ds = server.desyncs();
   for (const auto& d : ds) std::printf("SZINKRONHIBA: %lld. forduló, %d. játékos\n", static_cast<long long>(d.turn), d.player);

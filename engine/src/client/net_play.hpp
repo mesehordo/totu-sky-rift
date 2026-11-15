@@ -25,6 +25,7 @@ class NetPlay : public TickSource {
   void set_ready(bool ready);
   void chat(const std::string& text);
   bool lost() const { return lost_; }   // a relé kapcsolata megszakadt
+  void set_dump_dir(std::string dir) { dump_dir_ = std::move(dir); }   // szinkronhibánál ide ment
 
   // a kliens állapota (a lobbiban a fő szálról, a pump mellett olvasható)
   net::Client& client() { return *client_; }
@@ -42,6 +43,8 @@ class NetPlay : public TickSource {
   std::unique_ptr<net::Client> client_;
   net::PeerId relay_ = 0;
   bool said_ = false, lost_ = false;
+  std::string dump_dir_;
+  bool dumped_ = false;
 };
 
 }  // namespace totu::client

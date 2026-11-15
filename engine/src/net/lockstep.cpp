@@ -262,6 +262,7 @@ void Relay::close_turn() {
     pending_.erase(it);
   }
   for (auto& c : cs) c.tick = t * kTicksPerTurn;
+  if (history_.size() < (1u << 22)) history_.insert(history_.end(), cs.begin(), cs.end());
   core::ByteWriter w;
   w.u8(static_cast<uint8_t>(Msg::Turn));
   w.i64(t);
@@ -274,6 +275,23 @@ void Relay::close_turn() {
   hashes_[t] = s.hash();
   while (!hashes_.empty() && hashes_.begin()->first < t - kHashKeep) hashes_.erase(hashes_.begin());
   ++closed_;
+}
+
+namespace {
+sim::Replay replay_of(sim::Replay r, const std::vector<sim::Command>& cmds, int64_t ticks) {
+  r.commands = cmds;
+  r.ticks = ticks;
+  r.checkpoint_every = std::max<int64_t>(1, std::min<int64_t>(30, ticks));
+  r.checkpoints.clear();
+  return r;
+}
+}  // namespace
+
+sim::Replay Relay::replay() const { return replay_of(desc_, history_, closed_ * kTicksPerTurn); }
+
+sim::Replay Client::replay() const {
+  if (!desc_ || from_state_) return {};
+  return replay_of(*desc_, history_, done_ * kTicksPerTurn + in_turn_);
 }
 
 void Relay::advance(int64_t now_ms) {
@@ -368,6 +386,7 @@ void Client::on_message(const Bytes& data) {
       match_ = std::move(m);
       done_ = next;
       in_turn_ = 0;
+      from_state_ = true;
       turns_.clear();
       break;
     }
@@ -379,6 +398,9 @@ void Client::on_message(const Bytes& data) {
       std::vector<sim::Command> cs;
       if (!read_cmds(r, cs)) return;
       if (t < done_ + static_cast<int64_t>(turns_.size())) return;   // már megvan (a mentés utánit várjuk)
+      for (const auto& c : cs) {
+        if (slot_ > 0 && c.owner == slot_ && own_turns_.size() < 100000) own_turns_.push_back(t);
+      }
       turns_.emplace_back(t, std::move(cs));
       break;
     }
@@ -429,6 +451,7 @@ std::vector<sim::Command> Client::begin_tick() {
     error_ = "kimaradt forduló";
     return {};
   }
+  if (history_.size() < (1u << 22)) history_.insert(history_.end(), cs.begin(), cs.end());
   return std::move(cs);
 }
 

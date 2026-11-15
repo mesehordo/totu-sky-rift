@@ -126,6 +126,11 @@ target_link_libraries(totu_net PUBLIC totu_core totu_enet PRIVATE totu_options)
 add_executable(totu_relay src/tools/totu_relay.cpp src/tools/nav_tools.cpp)
 target_link_libraries(totu_relay PRIVATE totu_net totu_options)
 target_compile_definitions(totu_relay PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
+add_executable(totu_netbench src/tools/totu_netbench.cpp src/tools/nav_tools.cpp)
+target_link_libraries(totu_netbench PRIVATE totu_net totu_options)
+target_compile_definitions(totu_netbench PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content")
+# NET-LOSS (rövid): két kliens 3% veszteséggel és 60 ms RTT-vel valódi UDP-n – szinkronhiba nélkül
+add_test(NAME net_loss_rovid COMMAND totu_netbench --clients 2 --loss 3 --rtt 60 --seconds 4 --port 47990)
 
 add_executable(totu_sim src/tools/totu_sim.cpp src/tools/nav_tools.cpp src/tools/aibatch.cpp)
 target_link_libraries(totu_sim PRIVATE totu_core totu_options)

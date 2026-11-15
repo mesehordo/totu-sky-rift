@@ -29,6 +29,9 @@ class RelayServer {
   void run_blocking();   // a hívó szálán (dedikált relé); minden játékos kilépése után tér vissza
   void spawn();          // saját szálon (a játék gazdája)
   void stop();
+  void hold(bool on) { hold_.store(on); }
+  // szinkronhibánál ide kerül a relé mentése és visszajátszása (üres: nem ment)
+  void set_dump_dir(std::string dir) { dump_dir_ = std::move(dir); }   // a fordulózárás szünetel (mérés, hibakeresés); az átvitel fut tovább
   bool started() const { return started_.load(); }
   bool finished() const { return finished_.load(); }
   std::vector<DesyncInfo> desyncs();
@@ -39,10 +42,16 @@ class RelayServer {
   std::unique_ptr<Relay> relay_;
   EnetEndpoint ep_;
   std::thread thread_;
-  std::atomic<bool> stop_{false}, started_{false}, finished_{false};
+  std::atomic<bool> stop_{false}, started_{false}, finished_{false}, hold_{false};
   std::atomic<int64_t> turns_{0};
   std::mutex mu_;
   std::vector<DesyncInfo> desyncs_;
+  std::string dump_dir_;
+  size_t dumped_ = 0;
 };
+
+// szinkronhiba-mentés: `<dir>/szinkronhiba_<forduló>_<ki>.tsav` (állapot) és `.trep` (visszajátszás); az írt fájlok
+bool dump_desync(const std::string& dir, const std::string& who, int64_t turn, const std::vector<uint8_t>& state,
+                 const sim::Replay& replay);
 
 }  // namespace totu::net

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/net_play.hpp"
 
+#include "net/relay_server.hpp"
+
 namespace totu::client {
 
 bool NetPlay::connect(const std::string& host, uint16_t port, const map::TerrainTable* terrain, const sim::Rules* rules,
@@ -64,6 +66,11 @@ void NetPlay::end(uint64_t hash) {
   std::lock_guard<std::mutex> lock(mu_);
   client_->end_tick(hash);
   pump_locked();
+  if (!dumped_ && !dump_dir_.empty() && !client_->desyncs().empty() && client_->sim()) {   // az első szinkronhibánál
+    dumped_ = true;
+    net::dump_desync(dump_dir_, "jatekos" + std::to_string(client_->slot()), client_->desyncs().front().turn,
+                     client_->sim()->save(), client_->replay());
+  }
 }
 
 void NetPlay::submit(sim::Command c) {

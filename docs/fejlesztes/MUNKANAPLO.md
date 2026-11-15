@@ -793,3 +793,20 @@ A külső kódvizsgálat (2026-11-15; újraellenőrzött változat: 4 tétel má
 
 **Helyi játékos:** a munkamenet és a világnézet a helyi játékos szemével lát (köd, kijelölés, HUD); hálózaton ez a kapott hely, helyben 1. **`Session::load_content` / `adopt`:** a hálózati kliens építi fel a meccset (a közös `start_match`-csel), a munkamenet csak átveszi. **`TickSource`:** a SimRunner hálózatban a lockstep-klienstől kérdezi, léphet-e (`begin_tick`/`end_tick`, a hash a forduló végén megy); a helyi parancs a kliensen át a relének megy; lemaradásnál ütemenként legfeljebb 4 tick. **`net::RelayServer`:** a relé saját szálon (a gazda a játékban futtatja; a `totu_relay` is ezt használja). **Kapcsolók:** `--host <port>` (`--seats`), `--join <cím:port>`, `--faction`, `--name`, `--observe`, `--rejoin <hely>`; a lobbi egyelőre konzolos (a menübeli lobbi a csata-képernyővel közös nézet lesz, az elrendezést a tulajdonos adja meg). A kliens stdout-ja puffereletlen (Windowson a kilépéskor nem ürült). Próba: két valódi kliens a helyi gépen (gazda ursan, vendég wullof): lobbi, indulás, szinkronhiba nélkül; a vendég kilépése után a gazda tovább játszik.
 **Felírva:** az „Egyéni csata” neve mostantól **Csata** (angolul Skirmish); a többjátékos és a csata beállító felülete pontosan ugyanúgy néz ki.
+
+## 2026-11-15 – M10 5.: NET-LOSS mérés, 8 kliens, szinkronhiba-mentés
+
+**`totu_netbench`:** relé és N kliens valódi UDP-n (ENet) a helyi gépen; közöttük veszteséges, késleltető proxy (ENet-foglalatokkal, mindkét irányban); kliensenként saját szál (a valóságban külön gép – egy szálon a 8 szimuláció egymással versengett, és hamis lemaradást mutatott). Mér: fordulók az ideálishoz képest, parancskésés (beküldéstől a saját parancs visszaérkezéséig), kliens-lemaradás; ellenőrzi a szinkront. CTest: `net_loss_rovid` (2 kliens, 3%, 60 ms).
+**Eredmény (8 s, nyolcfős pálya):** minden esetben teljes fordulószám (≥ 100%), szinkronhiba nincs, a hash egyezik.
+
+| kliens | veszteség | RTT | parancskésés átlag / p95 / max (ms) |
+|---|---|---|---|
+| 2 | 0% | 20–200 ms | 232–303 / 253–317 / 317 |
+| 2 | 5% | 200 ms | 331 / 474 / 493 |
+| 8 | 0% | 20 ms | 270 / 300 / 310 |
+| 8 | 2% | 100 ms | 294 / 441 / 926 |
+| 8 | 5% | 100 ms | 336 / 742 / 1617 |
+| 8 | 5% | 200 ms | 424 / 835 / 1506 |
+
+A parancskésés alapja ~250–300 ms (2 forduló késleltetés + a fordulóhatár); a veszteség csak a ritka újraküldésnél nő meg. **8 kliens memóriabeli próbája:** a nyolcfős pályán, 32–116 ms eltérő késéssel, mindenki parancsol: 202 forduló 20 s alatt, bevárás nélkül. **Szinkronhiba-mentés:** a relé és a kliens a meccs visszajátszását (leírás + minden forduló parancsa) és az állapotát az első szinkronhibánál elmenti (`szinkronhiba_<forduló>_<ki>.tsav/.trep`; a játékban a felhasználói mappába, a `totu_relay`-nél `--dump`); próba: a relé visszajátszása újrafuttatva pontosan a relé állapotát adja. A relé fordulózárása szüneteltethető (`hold`) a mérés végén.
+**Tesztek:** 344 + 9 CTest.

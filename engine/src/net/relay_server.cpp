@@ -2,6 +2,8 @@
 #include "net/relay_server.hpp"
 
 #include <chrono>
+#include <filesystem>
+#include <fstream>
 
 namespace totu::net {
 
@@ -28,13 +30,17 @@ void RelayServer::loop_once() {
     else if (e.kind == NetEvent::Kind::Disconnect) relay_->on_disconnect(e.peer);
   }
   if (relay_->can_start() && relay_->start(now_ms())) started_.store(true);
-  relay_->advance(now_ms());
+  if (!hold_.load()) relay_->advance(now_ms());
   for (auto& [p, b] : relay_->take_outbox()) ep_.send(p, b);
   ep_.flush();
   turns_.store(relay_->turns());
   {
     std::lock_guard<std::mutex> lock(mu_);
     desyncs_ = relay_->desyncs();
+  }
+  if (!dump_dir_.empty() && relay_->desyncs().size() > dumped_) {   // egyszer, az első szinkronhibánál
+    dumped_ = relay_->desyncs().size();
+    if (dumped_ == 1) dump_desync(dump_dir_, "rele", relay_->desyncs().front().turn, relay_->sim().save(), relay_->replay());
   }
   if (relay_->started() && relay_->connected_players() == 0) finished_.store(true);
 }
@@ -52,6 +58,23 @@ void RelayServer::spawn() {
 void RelayServer::stop() {
   stop_.store(true);
   if (thread_.joinable()) thread_.join();
+}
+
+bool dump_desync(const std::string& dir, const std::string& who, int64_t turn, const std::vector<uint8_t>& state,
+                 const sim::Replay& replay) {
+  std::error_code ec;
+  std::filesystem::create_directories(dir, ec);
+  const std::string base = (std::filesystem::path(dir) / ("szinkronhiba_" + std::to_string(turn) + "_" + who)).string();
+  std::ofstream s(base + ".tsav", std::ios::binary);
+  s.write(reinterpret_cast<const char*>(state.data()), static_cast<std::streamsize>(state.size()));
+  bool ok = static_cast<bool>(s);
+  if (!replay.map.empty() || !replay.commands.empty()) {
+    const auto rb = sim::encode(replay);
+    std::ofstream r(base + ".trep", std::ios::binary);
+    r.write(reinterpret_cast<const char*>(rb.data()), static_cast<std::streamsize>(rb.size()));
+    ok = ok && static_cast<bool>(r);
+  }
+  return ok;
 }
 
 std::vector<DesyncInfo> RelayServer::desyncs() {

@@ -489,6 +489,12 @@ int main(int argc, char** argv) {
             host = c == std::string::npos ? o.join : o.join.substr(0, c);
             port = c == std::string::npos ? 47800 : static_cast<int>(std::strtol(o.join.c_str() + c + 1, nullptr, 10));
           }
+          if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {   // szinkronhibánál ide kerül a mentés és a visszajátszás
+            const std::string dump = (std::filesystem::path(pref) / "szinkronhiba").string();
+            SDL_free(pref);
+            host_relay.set_dump_dir(dump);
+            netplay.set_dump_dir(dump);
+          }
           if (!netplay.connect(host, static_cast<uint16_t>(port), session.terrain_ptr(), session.rules(), ch, o.name,
                                o.observe, static_cast<uint8_t>(std::clamp(o.rejoin, 0, 8)), &err)) {
             return false;

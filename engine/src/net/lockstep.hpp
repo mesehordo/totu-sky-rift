@@ -89,6 +89,8 @@ class Relay {
   sim::Sim& sim() { return *match_->sim; }
   const std::vector<LobbySeat>& lobby() const { return lobby_; }
   bool stalled() const { return stalled_; }
+  // a meccs eddigi visszajátszása (a leírás és minden lezárt forduló parancsa) – szinkronhiba esetén a hibakereséshez
+  sim::Replay replay() const;
   const std::vector<DesyncInfo>& desyncs() const { return desyncs_; }
   int connected_players() const;
 
@@ -121,6 +123,7 @@ class Relay {
   std::vector<DesyncInfo> desyncs_;
   std::vector<LobbySeat> lobby_;
   std::map<uint8_t, int64_t> last_hash_;   // hely → az utolsó beküldött hash fordulója
+  std::vector<sim::Command> history_;      // minden lezárt forduló parancsa (visszajátszáshoz)
   bool stalled_ = false;
 };
 
@@ -162,8 +165,14 @@ class Client {
   sim::Sim* sim() { return match_ ? match_->sim.get() : nullptr; }
   sim::MatchInstance* match() { return match_.get(); }
   const std::vector<DesyncInfo>& desyncs() const { return desyncs_; }
+  const std::vector<int64_t>& own_turns() const { return own_turns_; }   // a saját parancsot hozó fordulók (méréshez)
+  // a kliens visszajátszása (az elejétől futott meccsnél; mentésből folytatottnál üres) – szinkronhiba esetén
+  sim::Replay replay() const;
 
  private:
+  std::vector<int64_t> own_turns_;
+  std::vector<sim::Command> history_;
+  bool from_state_ = false;
   const map::TerrainTable* terrain_;
   const sim::Rules* rules_;
   uint64_t content_hash_;
