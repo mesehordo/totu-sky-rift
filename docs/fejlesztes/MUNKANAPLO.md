@@ -713,3 +713,8 @@ A referencia a CI Mesa-képére cserélve (az M8 HUD-ja: alsó sáv a régi elre
 ## 2026-11-14 – M9 indul: tömeges gép–gép futtató
 
 `totu_sim aibatch [--count N] [--minutes M] [--threads T] [--map pálya] [--script gép.lua]`: minden főnépi pár sorra, változó maggal (minden második meccs táborokkal), párhuzamos szálakon; játékosonként gyűjtés, egységek, épületek, kutatások; **elakadás**, ha egy még játszó játékos haladása 3 percig nem változik és nincs győztes. CTest: `ai_batch_rovid` (7 meccs, 4 perc). Alapvonal a mostani `ai_nep.lua`-val az ECO-ALAP pályán: 100 meccsből 98 rendben, 2-ben az elf gép a 8–11. percben megállt – a kis pálya nyersanyaga (5 lelőhely) elfogy; a kapuhoz a régi 20 csatapálya átvétele folyamatban (külön ág), az új M9-gép is külön ágon készül.
+
+## 2026-11-15 – M8 maradék: karakterlap, minimap, betű, portré-jelölés
+
+Karakterlap a régi szerint: Ooni harci kedv sávja (`Sim::morale_of`, csak olvasó népmodul-horog), veterán/elit fokozat, `type_bonus` az „erős ez ellen” sorban, épületképesség-újratöltés a parancsrácson, fohászhelyek (`Sim::prayers_at`; az elf kiosztás közös segédbe emelve, változatlan sorrenddel). Minimap a régi színeivel (fű, föld, víz, szikla; homok saját), lelőhely/épület/egység jelek, köd, a látott rész kerete. A halvány `.` és `:` a betűsütés hibája volt (hinting nélkül szürke) – a 160 alatti csúcs-alfájú glifek normálva, a toll egész képpontra kerekítve. **A tulajdonos döntése:** a portrékon nincs csapatszín-maszk; a csapatot egy kis csapatszínű, sötét szegélyű téglalap jelzi a portré bal alsó sarkában (karakterlap, kijelölés-rács). A szövetséges-lista nevekhez/csapatokhoz a `MatchSetup` még nem ad adatot.
+**Tesztek:** 304 (3 új); 7 CTest. A képpróbák referenciái a CI után frissítendők.
