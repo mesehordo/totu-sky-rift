@@ -764,5 +764,5 @@ A külső kódvizsgálat (2026-11-15; újraellenőrzött változat: 4 tétel má
 ## 2026-11-15 – Hibajegyzék, 6. csomag: szkript, VFS, kliens
 
 **VFS:** a fizikai (szimbolikus hivatkozást feloldó) út is a réteg gyökere alatt kell legyen (H-66); az olvashatatlan felső fájl helyett az alsó réteg jön (H-67). **Szkriptgazda:** a függő időzítők száma (≤ 65 536) és mérete (≤ 16 MB) korlátos (H-73), a lejártak egy kötegben kerülnek ki a sorból (H-74, a sorrend változatlan), a sérült mentés időzítőlistája korlátos (H-75). **Kliens:** a hiányzó `walk`/`idle` animáció helyett a másik, végül az első (H-69); a beállításmentés a régi fájlt tartalékba teszi, és hibánál visszaállítja (H-19); a menü csak a teljes pályaellenőrzésen (`Map::from_json`) átmenő pályát kínálja (H-65). **Pálya:** a `camps` szintkulcsa csak teljes egész szám (H-22).
-**Nem változott:** H-95 – a célkövető lövedék gazdaváltáskor is becsapódik, mint a régi játékban (döntésre vár).
+**Nem változott:** H-95 – a célkövető lövedék gazdaváltáskor is becsapódik, mint a régi játékban (a tulajdonos döntése, 2026-11-15: maradjon így).
 **Tesztek:** 330.

@@ -490,7 +490,7 @@ void Sim::shot_system() {
           s.ax = sp->x;
           s.ay = sp->y;
         }
-      } else if (pk.homing && target_ok(s.target)) {
+      } else if (pk.homing && target_ok(s.target)) {   // gazdaváltás után is becsapódik (H-95, a régi szerint – szándékos)
         const Position& tp = *world_.get<Position>(s.target);
         s.ax = tp.x;
         s.ay = tp.y;
