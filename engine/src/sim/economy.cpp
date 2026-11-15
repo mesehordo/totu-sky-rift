@@ -225,6 +225,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   vision_system();
   build_terrain_patches();
   for (int i = 0; i <= kMaxPlayers; ++i) rebuild_rules(static_cast<uint8_t>(i));
+  ai_slots_ = setup.ai;
   for (const AiSlot& a : setup.ai) {   // az „Őrült” gépi ellenfél egyetlen csalása (M9)
     if (a.player >= 1 && a.player <= kMaxPlayers && a.difficulty == "orult") players_[a.player].cheat_gather = true;
   }

@@ -734,3 +734,5 @@ Karakterlap a régi szerint: Ooni harci kedv sávja (`Sim::morale_of`, csak olva
 **Nyitott (későbbi):** a gépi beállítás a mentésbe (most a `MatchSetup`-ban és a visszajátszásban); a „magasabb nehézség többnyire nyer” és a „tanuló gép a második félidőben jobb” mérés; csapatok hiányában a Csapatjátékos a kisnép-szövetségest használja; a Croftian saját gazdasági viselkedése. A gép parancsai a hook pontján közvetlenül, determinisztikusan hívják a szimulációt – lockstep hálózatnál minden kliens ugyanígy futtatja a gépet, a parancsait nem kell küldeni.
 **Tesztek:** 316; 8 CTest.
 A **kapu** (helyben, a fő ágon): `totu_sim aibatch --ai alap --difficulty mix --personality mix --count 100 --minutes 12 --map kraterfold` – **100 meccs, 0 hibás vagy elakadt**.
+
+**A tulajdonos döntése:** a gépi beállítás a mentés része (14-es séma, a fejléc után: játékos, csomag, nehézség, személyiség); `Sim::saved_ai_slots(mentés)` betöltés NÉLKÜL kiolvassa, hogy a gépeket a betöltés előtt ugyanúgy létre lehessen hozni; `Sim::ai_slots()`. A próba a gépeket már a mentésből olvasott beállítással hozza létre.

@@ -1006,6 +1006,7 @@ class Sim {
   void mod_ability_paid(EntityId e, const AbilityDef& a);
   bool mod_ability_costs() const;
   std::vector<std::unique_ptr<FactionModule>> modules_;
+  std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 
   void queue(Command c);                 // a parancs a saját tickjében hajtódik végre
@@ -1018,6 +1019,11 @@ class Sim {
 
   std::vector<uint8_t> save() const;     // teljes mentés (a még végre nem hajtott parancsokkal)
   bool load(const std::vector<uint8_t>& data);
+  // a meccs gépi játékosainak beállítása (a `setup_match`-ből; a mentés része, a 14-es sémától)
+  const std::vector<AiSlot>& ai_slots() const { return ai_slots_; }
+  // a mentés gépi beállítása betöltés NÉLKÜL: a gépeket (a szkriptcsatlakozókat) a betöltés előtt kell létrehozni,
+  // ugyanebben a sorrendben; régebbi mentésnél üres
+  static std::vector<AiSlot> saved_ai_slots(const std::vector<uint8_t>& data);
 
  // belső felület – a népmodulok (src/sim/factions) is használják (ADR-008)
  public:

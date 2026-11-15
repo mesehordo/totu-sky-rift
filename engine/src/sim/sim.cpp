@@ -426,7 +426,14 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(13);   // séma (13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(14);   // séma (14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
+  for (const AiSlot& a : ai_slots_) {
+    w.u8(a.player);
+    w.str(a.ai);
+    w.str(a.difficulty);
+    w.str(a.personality);
+  }
   w.i64(tick_);
   w.u64(combat_rng_.state());
   w.u64(combat_rng_.increment());
@@ -479,11 +486,44 @@ std::vector<uint8_t> Sim::save() const {
   return w.data();
 }
 
+namespace {
+
+std::vector<AiSlot> read_ai_slots(core::ByteReader& r) {
+  std::vector<AiSlot> out;
+  const uint32_t n = r.u32();
+  for (uint32_t i = 0; i < n && i < Sim::kMaxPlayers && r.ok(); ++i) {
+    AiSlot a;
+    a.player = r.u8();
+    a.ai = r.str();
+    a.difficulty = r.str();
+    a.personality = r.str();
+    out.push_back(std::move(a));
+  }
+  if (n > Sim::kMaxPlayers || !r.ok()) out.clear();
+  return out;
+}
+
+}  // namespace
+
+std::vector<AiSlot> Sim::saved_ai_slots(const std::vector<uint8_t>& data) {
+  core::ByteReader r(data);
+  if (r.str() != "totu-sim") return {};
+  const uint32_t schema = r.u32();
+  if (schema < 14) return {};
+  return read_ai_slots(r);
+}
+
 bool Sim::load(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 13) return false;
+  if (schema < 3 || schema > 14) return false;
+  if (schema >= 14) {
+    ai_slots_ = read_ai_slots(r);
+    if (!r.ok()) return false;
+  } else {
+    ai_slots_.clear();
+  }
   tick_ = r.i64();
   const uint64_t st = r.u64(), inc = r.u64();
   combat_rng_.restore(st, inc);

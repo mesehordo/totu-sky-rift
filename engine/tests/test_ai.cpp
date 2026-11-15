@@ -256,7 +256,10 @@ TEST_CASE("M9 gep – determinizmus: két gép, mentésből folytatva és vissza
   const auto saved = a.sim->save();
   a.run(2 * 60 * 30);
   // folytatás mentésből: új szimuláció, meccsindítás nélkül, ugyanazokkal a gépekkel (on_start nélkül)
-  AiMatch c("kraterfold", {"ursan", "wullof"}, slots, 20261115, false, true);
+  // a gépek beállítása magából a mentésből (betöltés előtt kiolvasva)
+  const auto saved_slots = sim::Sim::saved_ai_slots(saved);
+  CHECK(saved_slots == slots);
+  AiMatch c("kraterfold", {"ursan", "wullof"}, saved_slots, 20261115, false, true);
   CHECK(c.ok);
   if (!c.ok) return;
   CHECK(c.sim->load(saved));
