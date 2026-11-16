@@ -320,4 +320,60 @@ std::string dump(const Value& v) {
   return out;
 }
 
+namespace {
+void pretty_into(std::string& out, const Value& v, int depth) {
+  const bool container = v.type() == Value::Type::Array || v.type() == Value::Type::Object;
+  if (!container) {
+    dump_into(out, v);
+    return;
+  }
+  std::string flat;
+  dump_into(flat, v);
+  if (flat.size() + static_cast<size_t>(depth) * 2 <= 100) {   // rövid: egy sorban, a tömör alak szóközökkel
+    std::string spaced;
+    bool in_str = false, esc = false;
+    for (const char c : flat) {
+      spaced.push_back(c);
+      if (in_str) {
+        if (esc) esc = false;
+        else if (c == '\\') esc = true;
+        else if (c == '"') in_str = false;
+        continue;
+      }
+      if (c == '"') in_str = true;
+      else if (c == ',' || c == ':') spaced.push_back(' ');
+    }
+    out += spaced;
+    return;
+  }
+  const std::string ind(static_cast<size_t>(depth + 1) * 2, ' '), end_ind(static_cast<size_t>(depth) * 2, ' ');
+  if (v.type() == Value::Type::Array) {
+    out += "[\n";
+    for (size_t i = 0; i < v.items().size(); ++i) {
+      out += ind;
+      pretty_into(out, v.items()[i], depth + 1);
+      out += i + 1 < v.items().size() ? ",\n" : "\n";
+    }
+    out += end_ind + "]";
+  } else {
+    out += "{\n";
+    for (size_t i = 0; i < v.members().size(); ++i) {
+      out += ind;
+      dump_string(out, v.members()[i].first);
+      out += ": ";
+      pretty_into(out, v.members()[i].second, depth + 1);
+      out += i + 1 < v.members().size() ? ",\n" : "\n";
+    }
+    out += end_ind + "}";
+  }
+}
+}  // namespace
+
+std::string dump_pretty(const Value& v) {
+  std::string out;
+  pretty_into(out, v, 0);
+  out += "\n";
+  return out;
+}
+
 }  // namespace totu::content

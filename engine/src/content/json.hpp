@@ -74,5 +74,8 @@ struct ParseError {
 std::optional<Value> parse(std::string_view text, ParseError* error = nullptr);
 // Tömör, determinisztikus kiírás (kulcssorrend megtartva).
 std::string dump(const Value& v);
+// Olvasható, kanonikus kiírás (M11, a szerkesztő mentése): 2 szóközös behúzás, a rövid (≤ 100 karakteres) tömb vagy
+// objektum egy sorban; a kulcssorrend megmarad. A kiírás – beolvasás – kiírás ugyanazt a szöveget adja.
+std::string dump_pretty(const Value& v);
 
 }  // namespace totu::content
