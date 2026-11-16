@@ -221,6 +221,9 @@ void Sim::apply(const Command& raw) {
     case Command::Kind::Module:
       mod_command(c);
       break;
+    case Command::Kind::Mission:
+      for (SimHooks* k : hooks_) k->on_command(*this, c);
+      break;
   }
 }
 
@@ -346,6 +349,7 @@ uint64_t Sim::hash() const {
   h.add_u64(combat_rng_.state());
   h.add_u64(combat_rng_.increment());
   for (const SimHooks* k : hooks_) h.add_u64(k->hash());   // csatlakozó nélkül a hash az M2-es marad
+  if (!auto_defeat_) h.add_u64(0x6d697373696f6e);   // M11: küldetés (üresen a hash a korábbi)
   if (!nav_ops_.empty()) {   // H-29: a parancsból jött pálya-blokkolások és kapuk (üresen a hash a korábbi)
     h.add_u64(nav_ops_.size());
     for (const auto& op : nav_ops_) for (const int32_t v : op) h.add_i64(v);
@@ -450,7 +454,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 31 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 32 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -479,7 +483,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(16);   // séma (16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(17);   // séma (17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -543,6 +547,7 @@ std::vector<uint8_t> Sim::save() const {
   for (const EntityId id : world_.doomed_list()) w.u32(id);
   w.u32(static_cast<uint32_t>(died_.size()));
   for (const auto& [id, o] : died_) { w.u32(id); w.u8(o); }
+  w.u8(auto_defeat_ ? 1 : 0);   // 17 (M11)
   return w.data();
 }
 
@@ -585,7 +590,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 16) return false;
+  if (schema < 3 || schema > 17) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r);
     if (!r.ok()) return false;
@@ -729,6 +734,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
       died_.emplace_back(id, o);
     }
   }
+  auto_defeat_ = schema >= 17 ? r.u8() != 0 : true;
   if (!r.ok() || !r.at_end()) return false;
   // H-99, H-100: a betöltött sablon- és navigációs indexek érvényesek
   bool valid = true;

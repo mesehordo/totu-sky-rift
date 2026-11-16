@@ -161,6 +161,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
       if (setup.factions[i].empty()) continue;
       const FactionDef* f = rules_->faction(setup.factions[i]);
       if (!f) return fail("ismeretlen nép: " + setup.factions[i]);
+      if (!setup.bases) continue;   // M11: küldetés – kezdőhely és főépület nem kell
       if (i >= st.size()) return fail("a pályán kevesebb a kezdőhely, mint a játékos");
       if (std::find(used.begin(), used.end(), st[i]) != used.end()) return fail("két játékos ugyanazon a kezdőhelyen");   // H-38
       used.push_back(st[i]);
@@ -189,13 +190,15 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
     if (setup.factions[i].empty()) continue;
     if (!rules_->faction(setup.factions[i])) return fail("ismeretlen nép: " + setup.factions[i]);
-    if (i >= starts.size()) return fail("a pályán kevesebb a kezdőhely, mint a játékos");
+    if (setup.bases && i >= starts.size()) return fail("a pályán kevesebb a kezdőhely, mint a játékos");
     PlayerState& p = players_[i + 1];
     p = PlayerState{};
     p.faction = setup.factions[i];
     p.active = true;
     const FactionDef& f = *rules_->faction(p.faction);
-    for (int r = 0; r < kResources; ++r) p.res[static_cast<size_t>(r)] = int64_t{f.start_resources[static_cast<size_t>(r)]} * 1000;
+    for (int r = 0; r < kResources; ++r) {   // küldetésben a nyersanyagot a küldetés adja
+      p.res[static_cast<size_t>(r)] = setup.bases ? int64_t{f.start_resources[static_cast<size_t>(r)]} * 1000 : 0;
+    }
     playing.push_back(static_cast<uint8_t>(i + 1));
   }
   // nyersanyagok: előbb a lelőhelyek, majd a fák (a pálya sorrendjében)
@@ -217,7 +220,9 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   if (nav_) nav_->add_obstacles(obstacles);   // egyszerre: a nagy erdős pályákon is gyors indulás
   // játékosonként a főépület és a kezdő egységek (a régi játék szerint: a pálya közepe felé, ívben)
   const Fixed cx = half(m.width()), cy = half(m.height());
+  auto_defeat_ = setup.bases;
   for (const uint8_t owner : playing) {
+    if (!setup.bases) break;   // M11: küldetés – a kezdő egységeket a küldetés helyezi el
     const FactionDef& f = *rules_->faction(players_[owner].faction);
     if (f.hq == kNoDef) return fail("a népnek nincs főépülete: " + f.id);
     const EntityDef& hq = rules_->defs[f.hq];
@@ -619,7 +624,7 @@ void Sim::supply_system() {
   });
   for (int i = 1; i <= kMaxPlayers; ++i) {
     PlayerState& p = players_[static_cast<size_t>(i)];
-    if (p.active && !p.defeated && buildings[static_cast<size_t>(i)] == 0) p.defeated = true;
+    if (auto_defeat_ && p.active && !p.defeated && buildings[static_cast<size_t>(i)] == 0) p.defeated = true;
   }
   for (int i = 1; i <= kMaxPlayers; ++i) cap[static_cast<size_t>(i)] += mod_supply(static_cast<uint8_t>(i));
   for (int i = 0; i <= kMaxPlayers; ++i) {

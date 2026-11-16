@@ -21,6 +21,9 @@ class Pathfinder;
 namespace totu::script {
 class ScriptHost;
 }
+namespace totu::sim {
+class MissionHost;
+}
 
 namespace totu::sim {
 
@@ -55,6 +58,9 @@ struct Replay {
   // H-15 (6-os változat, ha bármelyik eltér az alapértéktől): a meccsbeállítás többi része
   bool upkeep = true, camps = false;
   uint8_t fog = 0, daytime = 2;   // MatchSetup::Fog, MatchSetup::Daytime
+  // M11 (7-es változat): a küldetés leírása (mission.json szövege); vele a meccs kezdőbázis nélkül indul, a népek a
+  // küldetés játékosaiból
+  std::string mission;
   std::vector<Checkpoint> checkpoints;
 };
 
@@ -69,6 +75,7 @@ struct MatchInstance {
   std::unique_ptr<map::Map> map;
   std::unique_ptr<map::NavGrid> nav;
   std::unique_ptr<map::Pathfinder> pf;
+  std::unique_ptr<MissionHost> mission;   // M11: a küldetés (ha van) – a szkriptek előtt csatolva
   std::vector<std::unique_ptr<script::ScriptHost>> hosts, ais;
   std::vector<std::string> messages() const;   // a szkriptek és a gépek naplója
 };

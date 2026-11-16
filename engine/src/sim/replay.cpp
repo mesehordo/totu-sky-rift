@@ -8,6 +8,7 @@
 #include "map/pathfinder.hpp"
 #include "script/ai.hpp"
 #include "script/host.hpp"
+#include "sim/mission.hpp"
 
 namespace totu::sim {
 
@@ -70,6 +71,7 @@ MatchInstance::~MatchInstance() {
   ais.clear();
   hosts.clear();
   sim.reset();
+  mission.reset();
 }
 
 std::vector<std::string> MatchInstance::messages() const {
@@ -102,7 +104,23 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
     m->pf = std::make_unique<map::Pathfinder>(*m->nav);
     s.attach_navigation(m->pf.get());
   }
-  if (!r.factions.empty()) {   // M6: meccs a szabályadatokkal
+  std::shared_ptr<const MissionDef> mdef;
+  std::vector<std::string> factions = r.factions;
+  if (!r.mission.empty()) {   // M11: a küldetés leírása (a népek a küldetés játékosaiból)
+    std::vector<std::string> errs;
+    auto md = MissionDef::parse(r.mission, rules, errs);
+    if (!md) {
+      error = "hibás küldetés" + (errs.empty() ? std::string() : ": " + errs.front());
+      return nullptr;
+    }
+    mdef = std::make_shared<const MissionDef>(std::move(*md));
+    factions.clear();
+    for (const auto& p : mdef->players) {
+      if (factions.size() < p.slot) factions.resize(p.slot);
+      factions[p.slot - 1u] = p.faction;
+    }
+  }
+  if (!factions.empty()) {   // M6: meccs a szabályadatokkal
     if (!rules || !m->map) {
       error = "a meccs-visszajátszáshoz pálya és szabályadat kell";
       return nullptr;
@@ -110,7 +128,8 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
     s.attach_rules(rules);
     if (!load_state) {
       MatchSetup setup;
-      setup.factions = r.factions;
+      setup.factions = factions;
+      setup.bases = !mdef;
       setup.weather = static_cast<MatchSetup::WeatherMode>(std::min<uint8_t>(r.weather, 3));
       setup.ai = r.ai;
       setup.upkeep = r.upkeep;
@@ -119,6 +138,11 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       setup.daytime = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.daytime, 2));
       if (!s.setup_match(*m->map, setup, &error)) return nullptr;
     }
+  }
+  if (mdef) {   // a küldetés a szkriptek előtt csatolva (a betöltésnél ugyanebben a sorrendben)
+    m->mission = std::make_unique<MissionHost>(mdef);
+    s.add_hooks(m->mission.get());
+    if (!load_state) m->mission->start(s);
   }
   m->hosts = attach_scripts(s, r, load_state);
   if (m->hosts.empty() && !r.scripts.empty()) {
@@ -144,6 +168,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
 namespace {
 
 int format_of(const Replay& r) {
+  if (!r.mission.empty()) return 7;
   if (!r.factions.empty() && (!r.upkeep || r.camps || r.fog != 0 || r.daytime != 2)) return 6;
   if (!r.ai.empty()) return 5;
   if (!r.factions.empty()) return 4;
@@ -245,6 +270,7 @@ std::vector<uint8_t> encode(const Replay& r) {
     w.u8(r.fog);
     w.u8(r.daytime);
   }
+  if (format >= 7) w.str(r.mission);
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -259,7 +285,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 6) return std::nullopt;
+  if (version < 1 || version > 7) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -315,6 +341,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
     r.fog = rd.u8();
     r.daytime = rd.u8();
   }
+  if (version >= 7) r.mission = rd.str();
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {
     Checkpoint c;

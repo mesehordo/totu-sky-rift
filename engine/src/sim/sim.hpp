@@ -735,6 +735,9 @@ struct MatchSetup {
   enum class WeatherMode : uint8_t { Off = 0, Mood = 1, Effect = 2, EffectTerrain = 3 } weather = WeatherMode::Mood;
   bool camps = false;                  // a Vadon táborai (D25; az egyéni csata kliense bekapcsolja)
   std::vector<AiSlot> ai;              // gépi játékosok (M9)
+  // M11: küldetés – a kezdőbázis (főépület, kezdő egységek) nélkül, és a „nincs épülete = kiesett” szabály ki
+  // (a győzelmet és a bukást a küldetés dönti el)
+  bool bases = true;
 };
 
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
@@ -788,7 +791,10 @@ struct Command {
                               // M7 9. lépés: ChooseAlly (`owner`, `def` a kisnép)
                               ChooseAlly = 30,
                               // népi parancs (`def` a neve; a népmodul kezeli)
-                              Module = 31 };
+                              Module = 31,
+                              // M11: küldetésparancs (a csatlakozók kapják – pl. párbeszéd-választás: `def` a párbeszéd,
+                              // `rx` a válasz sorszáma)
+                              Mission = 32 };
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -832,6 +838,7 @@ class SimHooks {
   virtual uint64_t hash() const = 0;
   virtual void save(core::ByteWriter& w) const = 0;
   virtual bool load(core::ByteReader& r) = 0;
+  virtual void on_command(Sim&, const Command&) {}                   // M11: a csatlakozónak szóló parancs (Mission)
 };
 
 class Sim {
@@ -1008,6 +1015,7 @@ class Sim {
   std::vector<std::unique_ptr<FactionModule>> modules_;
   std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
   bool match_started_ = false;   // a setup_match egyszer fut (H-26)
+  bool auto_defeat_ = true;      // M11: a „nincs épülete = kiesett” szabály (küldetésben ki; mentés 17)
   std::vector<std::array<int32_t, 6>> nav_ops_;   // a Block/Gate parancsok (fajta, x, y, w, h, jelző/maszk) – hash, mentés (H-29)
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 

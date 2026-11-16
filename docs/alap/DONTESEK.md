@@ -420,3 +420,14 @@ A tulajdonos döntése: a végleges kezelőfelület (HUD, menük, beállítások
 nincs új harmadik féltől származó függőség, és mind a négy CI-rendszeren biztosan fordul. A kinézet a D42 szerint a régi
 Python-játéké; a felület logikája (elrendezés, parancsrács, kijelölés, menü-állapotgép, beállítások) GL nélkül tesztelhető.
 A kapu: a régi `test_hud.py` pontjai C++-próbaként zöldek.
+
+### D45 – Az M11 küldetésrendszere és szerkesztője · ELDÖNTVE (2026-11-15)
+
+A tulajdonos döntése ([ADR-010](dontesek/ADR-010-kuldetesek.md)), a WC3, a 0 A.D. és az AoE2 mintája alapján:
+1. **Saját, játékba épített szerkesztő** (terep, objektumok, régiók, kamerapontok, triggerek, párbeszéd), a motor
+   rajzolójával – a tanulmány Tiled-javaslata helyett; a modderek is ezt kapják, külső program nélkül.
+2. **Triggerek: adat + Lua.** A szerkesztő adatalapú, ellenőrizhető triggereket épít (esemény → feltétel → akció,
+   JSON), ezeket a motor futtatja; a hivatalos hadjárat és a haladók a homokozott Luát is használhatják.
+3. **Párbeszéd: saját JSON** (beszélő, portré, szövegkulcs a .po-ból, válaszok, feltétel, változó).
+4. **Mintaküldetés:** történetfüggetlen kipróbáló pálya, amely minden elemet bemutat; a hadjárat küldetései a
+   jóváhagyott tervlapok után.
