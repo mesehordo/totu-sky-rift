@@ -7,6 +7,7 @@
 #include "check.hpp"
 #include "client/editor_doc.hpp"
 #include "client/editor_ui.hpp"
+#include "client/data_editor.hpp"
 #include "client/trigger_editor.hpp"
 #include "match_util.hpp"
 #include "sim/mission.hpp"
@@ -214,4 +215,92 @@ TEST_CASE("szerkeszto: trigger-szerkeszto - uj trigger, esemeny, feltetel, akcio
   // mondatszerű leírás
   const auto ev = content::parse(R"({"type": "enter_region", "region": "kapu", "owner": 1})");
   CHECK(client::TriggerEditor::describe(0, *ev, "Belépés") == "Belépés (region = kapu, owner = 1)");
+}
+
+TEST_CASE("szerkeszto: adatszerkeszto - cel, valtozo, parbeszed valaszokkal, atvezeto lepesekkel") {
+  client::EditorDoc d;
+  std::string err;
+  CHECK(d.create(tmpdir("adat"), base() + "/maps/kraterfold.json", "adat", &err));
+  CHECK(d.add_point("kp", 20, 20, true, 1.5));
+  client::DataEditor de;
+  de.init(&*content_once().rules);
+  de.open = true;
+  auto relayout = [&] { de.layout(1280, 720, d); };
+  auto click = [&](const client::Rect& r) {
+    CHECK(de.mouse_down(d, static_cast<float>(r.x + 2), static_cast<float>(r.y + 2), false));
+    relayout();
+  };
+  auto tool = [&](int id) {
+    for (const auto& b : de.tools) if (b.id == id) { click(b.r); return; }
+    CHECK(false);
+  };
+  auto type_into = [&](int field_index, const std::string& text) {
+    click(de.fields[static_cast<size_t>(field_index)].r);
+    CHECK(de.field.open);
+    de.field.text.clear();
+    de.text_input(text);
+    de.key(d, client::TriggerEditor::kEnter);
+    relayout();
+  };
+  relayout();
+  // célok
+  tool(11);
+  CHECK(de.sel1 == 0 && d.mission().find("objectives")->items().size() == 1);
+  type_into(2, "mission.uj.cel");
+  CHECK(d.mission().find("objectives")->items()[0].find("text")->text() == "mission.uj.cel");
+  click(de.fields[1].r);   // kind: felugró lista
+  de.text_input("second");
+  de.key(d, client::TriggerEditor::kEnter);
+  relayout();
+  CHECK(d.mission().find("objectives")->items()[0].find("kind")->text() == "secondary");
+  // változók
+  click(de.tabs[client::DataEditor::kVariables].r);
+  tool(11);
+  type_into(0, "arany_jutalom");
+  type_into(1, "250");
+  CHECK(d.mission().find("variables")->find("arany_jutalom") && d.mission().find("variables")->find("arany_jutalom")->text() == "250");
+  // párbeszéd: két csomópont, válasz a másodikra
+  click(de.tabs[client::DataEditor::kDialogues].r);
+  tool(11);
+  type_into(0, "bevezeto");
+  tool(21);
+  CHECK(de.sel2 == 1);
+  click(de.list2[0].r);
+  relayout();
+  for (const auto& b : de.list3) if (b.id == 31) { click(b.r); break; }   // új válasz az első csomópontra
+  CHECK(de.sel3 == 0);
+  click(de.fields[1].r);   // next
+  de.text_input("n2");
+  de.key(d, client::TriggerEditor::kEnter);
+  relayout();
+  const content::Value* bev = d.mission().find("dialogues")->find("bevezeto");
+  CHECK(bev && bev->find("nodes")->items().size() == 2);
+  CHECK(bev->find("nodes")->items()[0].find("choices")->items()[0].find("next")->text() == "n2");
+  // átvezető: új lépés, a típusa kamera, a pontja kp
+  click(de.tabs[client::DataEditor::kCutscenes].r);
+  tool(11);
+  tool(21);
+  CHECK(de.sel2 == 1);
+  click(de.fields[1].r);   // type
+  de.text_input("camera");
+  de.key(d, client::TriggerEditor::kEnter);
+  relayout();
+  click(de.fields[2].r);   // point
+  de.text_input("kp");
+  de.key(d, client::TriggerEditor::kEnter);
+  relayout();
+  const content::Value* cut = d.mission().find("cutscenes")->find("atvezeto1");
+  CHECK(cut && cut->find("steps")->items()[1].find("type")->text() == "camera" && cut->find("steps")->items()[1].find("point")->text() == "kp");
+  CHECK(cut->find("steps")->items()[1].find("t")->text() == "30");
+  // az egész érvényes, és mentve–betöltve ugyanaz
+  const auto errs = d.validate(&*content_once().rules, &content_once().terrain);
+  for (const auto& e : errs) std::printf("  %s\n", e.c_str());
+  CHECK(errs.empty());
+  CHECK(d.save(&err));
+  client::EditorDoc e;
+  CHECK(e.open(d.dir(), base() + "/maps", &err) && e.mission() == d.mission());
+  // törlés és visszavonás
+  tool(12);
+  CHECK(!d.mission().find("cutscenes")->find("atvezeto1"));
+  CHECK(d.undo() && d.mission().find("cutscenes")->find("atvezeto1"));
 }

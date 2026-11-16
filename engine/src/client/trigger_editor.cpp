@@ -155,7 +155,7 @@ std::vector<std::string> TriggerEditor::options_for(const EditorDoc& d, ParamKin
   }
   std::sort(out.begin(), out.end());
   out.erase(std::unique(out.begin(), out.end()), out.end());
-  if (p.optional) out.insert(out.begin(), "—");
+  if (p.optional) out.insert(out.begin(), "-");
   return out;
 }
 
@@ -242,7 +242,7 @@ void TriggerEditor::layout(int w, int h, const EditorDoc& d) {
           const std::string val = sval(*v, tsp->params[i].key);
           param_buttons.push_back(Button{Rect{params_box.x + static_cast<int>(i % cols) * (bw + kPad),
                                               params_box.y + static_cast<int>(i / cols) * (kRowH + 4), bw, kRowH},
-                                         std::string(tsp->params[i].key) + ": " + (val.empty() ? "—" : val), static_cast<int>(i)});
+                                         std::string(tsp->params[i].key) + ": " + (val.empty() ? "-" : val), static_cast<int>(i)});
         }
       }
     }
@@ -340,7 +340,7 @@ void TriggerEditor::choose(EditorDoc& d, const std::string& value) {
   edit(d, [&](Value& ts) {
     Value* c = current(ts, sec, ln);
     if (!c) return;
-    if (value == "—") c->erase(p.key);
+    if (value == "-") c->erase(p.key);
     else if (p.kind == K::Player) c->set(p.key, Value::number(value));
     else c->set(p.key, Value::string(value));
   });

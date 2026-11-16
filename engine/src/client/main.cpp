@@ -112,6 +112,7 @@ struct Options {
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
   std::string editor;    // M11: a szerkesztő (a küldetés mappája)
   bool trigger_editor = false;   // képpróbához: a trigger-szerkesztő nyitva indul
+  int data_editor = -1;          // képpróbához: az adatszerkesztő nyitva, ezzel a füllel
 };
 
 // a bemutató: népenként egy egységtípus (a sprite-lapok közül az első 8 csapatmaszkos), N egység rácsban
@@ -316,6 +317,7 @@ int main(int argc, char** argv) {
     else if (a == "--mission") o.mission = next();
     else if (a == "--editor") o.editor = next();
     else if (a == "--trigger-editor") o.trigger_editor = true;
+    else if (a == "--data-editor") o.data_editor = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--host") o.host_port = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--join") o.join = next();
     else if (a == "--seats") o.seats = static_cast<int>(std::strtol(next(), nullptr, 10));
@@ -423,6 +425,7 @@ int main(int argc, char** argv) {
     client::EditorDoc edoc;                             // M11: a szerkesztő dokumentuma és felülete
     client::EditorUi eui;
     client::TriggerEditor tedit;   // F4
+    client::DataEditor dedit;      // F5
     bool editor_on = false, editor_test = false;
     int editor_built = -1;
     std::vector<std::string> editor_problems;
@@ -570,6 +573,13 @@ int main(int argc, char** argv) {
           if (!session.load_content(o.content, &err) || !edoc.open(o.editor, o.maps, &err)) return false;
           eui.init(*session.terrain_ptr(), *session.rules());
           tedit.init(session.rules());
+          dedit.init(session.rules());
+          if (o.data_editor >= 0) {
+            dedit.open = true;
+            dedit.tab = std::clamp(o.data_editor, 0, 3);
+            dedit.sel1 = 0;
+            dedit.sel2 = dedit.tab >= 2 ? 1 : -1;
+          }
           tedit.open = o.trigger_editor;
           if (tedit.open) tedit.trigger = 0;
           mission_match = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.rules(), err);
@@ -732,11 +742,36 @@ int main(int argc, char** argv) {
             }
             continue;
           }
-          if (!editor_test && ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat && ev.key.key == SDLK_F4) {
-            tedit.open = !tedit.open;   // a trigger-szerkesztő (WC3: F4)
-            if (tedit.open) SDL_StartTextInput(win);
+          if (!editor_test && ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat && (ev.key.key == SDLK_F4 || ev.key.key == SDLK_F5)) {
+            const bool f4 = ev.key.key == SDLK_F4;   // F4: triggerek (WC3), F5: célok, változók, párbeszédek, átvezetők
+            (f4 ? tedit.open : dedit.open) = !(f4 ? tedit.open : dedit.open);
+            (f4 ? dedit.open : tedit.open) = false;
+            if (tedit.open || dedit.open) SDL_StartTextInput(win);
             else SDL_StopTextInput(win);
             continue;
+          }
+          if (!editor_test && dedit.open) {   // az adatszerkesztő elfogyasztja a bemenetet
+            int tw = 0, th = 0;
+            SDL_GetWindowSizeInPixels(win, &tw, &th);
+            dedit.layout(tw, th, edoc);
+            if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) dedit.mouse_down(edoc, ev.button.x, ev.button.y, ev.button.button == SDL_BUTTON_RIGHT);
+            else if (ev.type == SDL_EVENT_MOUSE_WHEEL) dedit.wheel(ev.wheel.mouse_x, ev.wheel.mouse_y, ev.wheel.y > 0 ? 1 : -1);
+            else if (ev.type == SDL_EVENT_TEXT_INPUT) dedit.text_input(ev.text.text);
+            else if (ev.type == SDL_EVENT_KEY_DOWN) {
+              const bool ctrl2 = (SDL_GetModState() & SDL_KMOD_CTRL) != 0;
+              if (ctrl2 && ev.key.key == SDLK_Z) edoc.undo();
+              else if (ctrl2 && ev.key.key == SDLK_Y) edoc.redo();
+              else if (ctrl2 && ev.key.key == SDLK_S) eui.status = edoc.save(&err) ? "editor.saved" : err;
+              else {
+                const int k = ev.key.key == SDLK_RETURN || ev.key.key == SDLK_KP_ENTER ? client::TriggerEditor::kEnter
+                              : ev.key.key == SDLK_ESCAPE    ? client::TriggerEditor::kEscape
+                              : ev.key.key == SDLK_BACKSPACE ? client::TriggerEditor::kBackspace : 0;
+                if (k) dedit.key(edoc, k);
+              }
+              if (!dedit.open) SDL_StopTextInput(win);
+            }
+            eui.revision++;
+            if (ev.type != SDL_EVENT_QUIT) continue;
           }
           if (!editor_test && tedit.open) {   // a nyitott ablak elfogyasztja a bemenetet
             int tw = 0, th = 0;
@@ -1049,6 +1084,12 @@ int main(int argc, char** argv) {
             SDL_GetMouseState(&tmx, &tmy);
             tedit.layout(ww, wh, edoc);
             client::draw_trigger_editor(hud, tedit, edoc, tmx, tmy, [&](const std::string& k) { return locale.tr(k); });
+          }
+          if (dedit.open) {
+            float dmx = 0, dmy = 0;
+            SDL_GetMouseState(&dmx, &dmy);
+            dedit.layout(ww, wh, edoc);
+            client::draw_data_editor(hud, dedit, dmx, dmy, [&](const std::string& k) { return locale.tr(k); });
           }
           batch.end();
         } else if (session.has_starts() && session.rules()) {   // a HUD (M8; a képernyő vetítésében)

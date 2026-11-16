@@ -9,6 +9,7 @@
 #include "client/editor_doc.hpp"
 #include "client/editor_ui.hpp"
 #include "client/hud.hpp"
+#include "client/data_editor.hpp"
 #include "client/trigger_editor.hpp"
 #include "client/world.hpp"
 
@@ -19,5 +20,7 @@ void draw_editor(Hud& hud, const EditorUi& ui, const EditorDoc& doc, const Camer
                  const Translate& tr, const std::vector<std::string>& problems);
 // a trigger-szerkesztő ablaka (F4)
 void draw_trigger_editor(Hud& hud, const TriggerEditor& te, const EditorDoc& doc, float mx, float my, const Translate& tr);
+// a küldetés adatai (F5): célok, változók, párbeszédek, átvezetők
+void draw_data_editor(Hud& hud, const DataEditor& de, float mx, float my, const Translate& tr);
 
 }  // namespace totu::client

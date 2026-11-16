@@ -8812,3 +8812,55 @@ msgstr "Start timer"
 msgctxt "editor.t.a.objective"
 msgid "Cél állapota"
 msgstr "Set objective"
+
+msgctxt "editor.data.objectives"
+msgid "Célok"
+msgstr "Objectives"
+
+msgctxt "editor.data.variables"
+msgid "Változók"
+msgstr "Variables"
+
+msgctxt "editor.data.dialogues"
+msgid "Párbeszédek"
+msgstr "Dialogues"
+
+msgctxt "editor.data.cutscenes"
+msgid "Átvezetők"
+msgstr "Cutscenes"
+
+msgctxt "editor.data.add"
+msgid "Új"
+msgstr "New"
+
+msgctxt "editor.data.remove"
+msgid "Törlés"
+msgstr "Delete"
+
+msgctxt "editor.data.add_node"
+msgid "Új csomópont"
+msgstr "New node"
+
+msgctxt "editor.data.add_step"
+msgid "Új lépés"
+msgstr "New step"
+
+msgctxt "editor.data.remove2"
+msgid "Törlés (2)"
+msgstr "Delete (2)"
+
+msgctxt "editor.data.add_choice"
+msgid "Új válasz"
+msgstr "New choice"
+
+msgctxt "editor.data.remove_choice"
+msgid "Válasz törlése"
+msgstr "Delete choice"
+
+msgctxt "editor.data.node_fields"
+msgid "A csomópont"
+msgstr "The node"
+
+msgctxt "editor.trig.close5"
+msgid "Bezár (F5)"
+msgstr "Close (F5)"

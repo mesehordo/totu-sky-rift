@@ -8811,3 +8811,55 @@ msgstr ""
 msgctxt "editor.t.a.objective"
 msgid "Cél állapota"
 msgstr ""
+
+msgctxt "editor.data.objectives"
+msgid "Célok"
+msgstr ""
+
+msgctxt "editor.data.variables"
+msgid "Változók"
+msgstr ""
+
+msgctxt "editor.data.dialogues"
+msgid "Párbeszédek"
+msgstr ""
+
+msgctxt "editor.data.cutscenes"
+msgid "Átvezetők"
+msgstr ""
+
+msgctxt "editor.data.add"
+msgid "Új"
+msgstr ""
+
+msgctxt "editor.data.remove"
+msgid "Törlés"
+msgstr ""
+
+msgctxt "editor.data.add_node"
+msgid "Új csomópont"
+msgstr ""
+
+msgctxt "editor.data.add_step"
+msgid "Új lépés"
+msgstr ""
+
+msgctxt "editor.data.remove2"
+msgid "Törlés (2)"
+msgstr ""
+
+msgctxt "editor.data.add_choice"
+msgid "Új válasz"
+msgstr ""
+
+msgctxt "editor.data.remove_choice"
+msgid "Válasz törlése"
+msgstr ""
+
+msgctxt "editor.data.node_fields"
+msgid "A csomópont"
+msgstr ""
+
+msgctxt "editor.trig.close5"
+msgid "Bezár (F5)"
+msgstr ""

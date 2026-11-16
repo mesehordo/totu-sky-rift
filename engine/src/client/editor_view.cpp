@@ -199,4 +199,49 @@ void draw_trigger_editor(Hud& hud, const TriggerEditor& te, const EditorDoc& doc
   }
 }
 
+void draw_data_editor(Hud& hud, const DataEditor& de, float mx, float my, const Translate& tr) {
+  if (!de.open) return;
+  const int S = 12, F = 14;
+  auto box = [&](const Rect& r, uint8_t g, uint8_t a) {
+    hud.ui_rect(static_cast<float>(r.x), static_cast<float>(r.y), static_cast<float>(r.w), static_cast<float>(r.h), g, g, static_cast<uint8_t>(g * 9 / 10), a);
+  };
+  auto button = [&](const DataEditor::Button& b, std::string s) {
+    while (s.size() > 1 && hud.ui_text_w(S, s) > static_cast<float>(b.r.w - 12)) {   // a doboz szélességére vágva
+      s.pop_back();
+      while (!s.empty() && (static_cast<unsigned char>(s.back()) & 0xC0) == 0x80) s.pop_back();
+    }
+    const bool hot = b.r.contains(mx, my);
+    box(b.r, b.active ? 80 : hot ? 56 : 38, 255);
+    hud.ui_outline(b.r, b.active ? 220 : 100, b.active ? 190 : 90, b.active ? 110 : 70);
+    hud.ui_text(S, static_cast<float>(b.r.x + 6), static_cast<float>(b.r.y) + (static_cast<float>(b.r.h) - hud.ui_line_h(S)) / 2, s, 240, 236, 214);
+  };
+  box(de.window, 20, 245);
+  hud.ui_outline(de.window, 200, 170, 110, 2);
+  for (const auto& b : de.tabs) button(b, tr(b.label));
+  for (const auto& b : de.tools) button(b, tr(b.label));
+  box(de.list1_box, 30, 255);
+  for (const auto& b : de.list1) button(b, b.label);
+  if (de.list2_box.w > 0) {
+    box(de.list2_box, 28, 255);
+    for (const auto& b : de.list2) button(b, b.label);
+  }
+  box(de.fields_box, 26, 255);
+  for (const auto& b : de.fields) {
+    std::string s = b.label;
+    if (de.field.open && de.field.param == b.id) s = b.label.substr(0, b.label.find(':')) + ": " + de.field.text + "_";
+    button(b, s);
+  }
+  for (const auto& b : de.list3) button(b, b.id < 100 ? tr(b.label) : b.label);
+  if (!de.status.empty()) {
+    hud.ui_text(S, static_cast<float>(de.fields_box.x + 6), static_cast<float>(de.fields_box.bottom() - 18), tr(de.status), 255, 150, 120);
+  }
+  if (de.popup.open) {
+    box(de.popup_box, 16, 250);
+    hud.ui_outline(de.popup_box, 230, 200, 130, 2);
+    hud.ui_text(F, static_cast<float>(de.popup_box.x + 8), static_cast<float>(de.popup_box.y + 8),
+                de.popup.title + (de.popup.filter.empty() ? std::string() : "   [" + de.popup.filter + "]"), 255, 214, 120);
+    for (const auto& b : de.popup_items) button(b, b.label);
+  }
+}
+
 }  // namespace totu::client
