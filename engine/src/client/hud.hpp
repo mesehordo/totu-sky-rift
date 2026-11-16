@@ -91,6 +91,7 @@ class Hud {
   void draw_tooltip(const HudFrame& f);
   void draw_path_choice(const HudFrame& f);
   void draw_result(const HudFrame& f);
+  void draw_mission(const HudFrame& f);   // M11: átvezető-sáv, felirat, párbeszéd, üzenetek
   struct Theme { Col base, light, dark, accent, fill; };
   Theme theme() const;
 

@@ -27,6 +27,10 @@
 #include "content/json.hpp"
 #include "sim/sim.hpp"
 
+namespace totu::sim {
+class MissionHost;
+}
+
 namespace totu::script {
 
 struct Limits {
@@ -49,6 +53,8 @@ class ScriptHost final : public sim::SimHooks {
   // Csak olvasható globális tábla JSON-adatból (pl. sablonok). A számok egészként, ha egészek, különben
   // a fixpontos érték pontos lebegőpontos alakjában jelennek meg.
   void set_shared(const std::string& name, const content::Value& data);
+  // M11: a küldetés szkriptje a `Mission` táblán át éri el a trigger-motort (akció, változó, cél, névvel adott egységek)
+  void set_mission(sim::MissionHost* mission);
 
   // Egy szkriptfájl felső szintjének futtatása (függvények megadása). false: hiba, az üzenet a naplóban.
   bool run(const std::string& chunk_name, const std::string& source);

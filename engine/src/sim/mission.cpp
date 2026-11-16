@@ -5,8 +5,12 @@
 #include <iterator>
 #include <set>
 
+#include <filesystem>
+#include <fstream>
+
 #include "core/bytes.hpp"
 #include "core/hash.hpp"
+#include "sim/replay.hpp"
 #include "sim/rules.hpp"
 
 namespace totu::sim {
@@ -939,6 +943,46 @@ bool MissionHost::load(core::ByteReader& r) {
     messages_.push_back(std::move(m));
   }
   return r.ok();
+}
+
+std::optional<Replay> load_mission_package(const std::string& mission_dir, const std::string& maps_dir, uint64_t seed,
+                                           std::string* error) {
+  namespace fs = std::filesystem;
+  auto slurp = [](const fs::path& p, std::string& out) {
+    std::ifstream in(p, std::ios::binary);
+    if (!in) return false;
+    out.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+    return true;
+  };
+  Replay r;
+  r.seed = seed;
+  if (!slurp(fs::path(mission_dir) / "mission.json", r.mission)) {
+    if (error) *error = "nincs mission.json: " + mission_dir;
+    return std::nullopt;
+  }
+  const auto doc = content::parse(r.mission);
+  if (!doc || !doc->is_object()) {
+    if (error) *error = "hibás mission.json";
+    return std::nullopt;
+  }
+  const std::string map = str(*doc, "map");
+  if (map.empty() || map.find("..") != std::string::npos) {
+    if (error) *error = "a küldetés pályája hiányzik vagy érvénytelen";
+    return std::nullopt;
+  }
+  if (!slurp(fs::path(mission_dir) / map, r.map) && !slurp(fs::path(maps_dir) / map, r.map)) {
+    if (error) *error = "a küldetés pályája nem található: " + map;
+    return std::nullopt;
+  }
+  if (const std::string script = str(*doc, "script"); !script.empty()) {
+    std::string src;
+    if (script.find("..") != std::string::npos || !slurp(fs::path(mission_dir) / script, src)) {
+      if (error) *error = "a küldetés szkriptje nem található: " + script;
+      return std::nullopt;
+    }
+    r.scripts.push_back(ScriptFile{"mission", script, std::move(src)});
+  }
+  return r;
 }
 
 }  // namespace totu::sim

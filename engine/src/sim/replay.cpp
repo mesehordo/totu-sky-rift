@@ -23,7 +23,8 @@ Checkpoint make_checkpoint(const Sim& s) {
 }
 
 // A szkriptek betöltése: modonként egy állapot, a megadás sorrendjében csatlakoztatva, majd az on_start.
-std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Replay& r, bool started) {
+std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Replay& r, bool started,
+                                                                MissionHost* mission = nullptr) {
   std::vector<std::unique_ptr<script::ScriptHost>> hosts;
   for (const auto& f : r.scripts) {
     script::ScriptHost* h = nullptr;
@@ -33,6 +34,7 @@ std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Re
     if (!h) {
       hosts.push_back(std::make_unique<script::ScriptHost>(f.mod, r.seed));
       h = hosts.back().get();
+      if (f.mod == "mission") h->set_mission(mission);   // M11: a küldetés szkriptje (`Mission` tábla)
       s.add_hooks(h);
     }
     if (!h->run(f.name, f.source)) return {};   // H-08: a hibás szkript a visszajátszás hibája
@@ -144,7 +146,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
     s.add_hooks(m->mission.get());
     if (!load_state) m->mission->start(s);
   }
-  m->hosts = attach_scripts(s, r, load_state);
+  m->hosts = attach_scripts(s, r, load_state, m->mission.get());
   if (m->hosts.empty() && !r.scripts.empty()) {
     error = "a visszajátszás szkriptje hibás";
     return nullptr;

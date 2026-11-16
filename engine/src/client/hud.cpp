@@ -509,13 +509,71 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, const H
   mx_ = f.mx;
   my_ = f.my;
   if (!ready_ || !model_.snap() || !model_.rules()) return;
+  model_.mission_choices.clear();
+  if (model_.snap()->mission.letterbox) {   // átvezető: csak a sáv és a felirat (a WC3 szerint a felület eltűnik)
+    draw_mission(f);
+    return;
+  }
   draw_bottom(f);
   draw_topbar(f);
   draw_quests();
   draw_clock(f);
   if (model_.path_pending()) draw_path_choice(f);
   else draw_tooltip(f);
+  draw_mission(f);
   draw_result(f);
+}
+
+void Hud::draw_mission(const HudFrame& f) {
+  const SnapMission& m = model_.snap()->mission;
+  if (!m.active) return;
+  const HudLayout& L = model_.layout();
+  const float W = static_cast<float>(f.w), H = static_cast<float>(f.h);
+  const int F = L.font.small, B = L.font.res;
+  if (m.letterbox) {
+    const float bar = std::floor(H * 0.12f);
+    rect(0, 0, W, bar, {0, 0, 0});
+    rect(0, H - bar, W, bar, {0, 0, 0});
+    if (!m.subtitle.empty()) {
+      const std::string who = m.sub_speaker.empty() ? std::string() : model_.name("unit." + m.sub_speaker + ".name");
+      const std::string line = (who.empty() || who == "unit." + m.sub_speaker + ".name" ? std::string() : who + ": ") + model_.name(m.subtitle);
+      stext(B, W / 2 - tw(B, line) / 2, H - bar + (bar - line_h(B)) / 2, line, {240, 236, 214});
+    }
+    return;
+  }
+  // üzenetek (felül középen)
+  float my = static_cast<float>(L.topbar.y + L.topbar.h) + 8;
+  for (const auto& msg : m.messages) {
+    const std::string t = model_.name(msg);
+    stext(F, W / 2 - tw(F, t) / 2, my, t, {255, 230, 150});
+    my += line_h(F) + 2;
+  }
+  // párbeszéd (az alsó sáv fölött): portré, név, szöveg, válaszok
+  if (m.dialogue.empty()) return;
+  const float bw = std::min(W - 40, 640.0f), x = W / 2 - bw / 2;
+  const float lh = line_h(F) + 2;
+  const float bh = 96 + lh * static_cast<float>(m.choices.size());
+  const float y = static_cast<float>(L.hud.y) - bh - 10;
+  const Rect box{static_cast<int>(x), static_cast<int>(y), static_cast<int>(bw), static_cast<int>(bh)};
+  rect(box, {12, 10, 8}, 225);
+  outline(box, {200, 170, 110});
+  const Rect pr{box.x + 8, box.y + 8, 80, 80};
+  if (const Img* p = portrait(m.portrait)) blit_fit(*p, pr);
+  else well(pr);
+  outline(pr, {90, 80, 60});
+  const float tx = static_cast<float>(pr.x + pr.w + 10), tw_ = bw - static_cast<float>(pr.w) - 28;
+  const std::string who = model_.name("unit." + m.speaker + ".name");
+  stext(B, tx, static_cast<float>(box.y + 6), who, {255, 214, 120});
+  wrap(model_.name(m.text), tx, static_cast<float>(box.y + 8) + line_h(B), tw_, F, {240, 236, 214}, 4);
+  float cy = static_cast<float>(box.y + 92);
+  for (size_t i = 0; i < m.choices.size(); ++i) {
+    const Rect cr{static_cast<int>(tx), static_cast<int>(cy), static_cast<int>(tw_), static_cast<int>(lh)};
+    const bool hot = cr.contains(mx_, my_);
+    if (hot) rect(cr, {60, 50, 30}, 200);
+    stext(F, tx + 4, cy, std::to_string(i + 1) + ". " + model_.name(m.choices[i]), hot ? Col{255, 240, 180} : Col{220, 210, 170});
+    model_.mission_choices.push_back(cr);
+    cy += lh;
+  }
 }
 
 void Hud::draw_bottom(const HudFrame& f) {
@@ -1032,6 +1090,19 @@ void Hud::draw_quests() {
   polygon({{cx - k + 1, cy - std::floor(k / 2) + 1}, {cx + k + 1, cy - std::floor(k / 2) + 1}, {cx + 1, cy + k + 1}}, {0, 0, 0});
   polygon({{cx - k, cy - std::floor(k / 2)}, {cx + k, cy - std::floor(k / 2)}, {cx, cy + k}}, {220, 210, 170});
   y += line_h(fr) + 2;
+  if (model_.snap()->mission.active) {   // M11: a küldetés céljai (kész: zöld pipa, elbukott: piros)
+    for (const auto& o : model_.snap()->mission.objectives) {
+      const Col col = o.state == 2 ? Col{150, 235, 150} : o.state == 3 ? Col{235, 110, 90} : Col{240, 236, 214};
+      const Rect r{static_cast<int>(x), static_cast<int>(y + (lh - box) / 2 - 1), static_cast<int>(box), static_cast<int>(box)};
+      outline({r.x + 1, r.y + 1, r.w, r.h}, {0, 0, 0});
+      outline(r, col);
+      if (o.state == 2) rect(static_cast<float>(r.x + 2), static_cast<float>(r.y + 2), static_cast<float>(r.w - 4), static_cast<float>(r.h - 4), col);
+      const std::string t = model_.name(o.text) + (o.kind == 1 ? " " + model_.tr("quest.optional") : std::string());
+      stext(F, x + box + 8, y, t, col);
+      y += lh;
+    }
+    return;
+  }
   const bool done = model_.snap()->winner == model_.player;
   const Col col = done ? Col{150, 235, 150} : Col{240, 236, 214};
   const Rect r{static_cast<int>(x), static_cast<int>(y + (lh - box) / 2 - 1), static_cast<int>(box), static_cast<int>(box)};
@@ -1150,8 +1221,9 @@ void Hud::draw_path_choice(const HudFrame& f) {
 void Hud::draw_result(const HudFrame& f) {
   const Snapshot* s = model_.snap();
   const SnapPlayer& me = s->players[std::min<size_t>(model_.player, sim::Sim::kMaxPlayers)];
-  if (s->winner == 0 && !me.defeated) return;
-  const bool won = s->winner == model_.player;
+  const bool mission = s->mission.active;
+  if (mission ? s->mission.result == 0 : (s->winner == 0 && !me.defeated)) return;
+  const bool won = mission ? s->mission.result == 1 : s->winner == model_.player;
   const std::string msg = won ? model_.tr("win") : model_.tr("lose");
   const float H = static_cast<float>(f.h), W = static_cast<float>(f.w);
   rect(0, H / 2 - 40, W, 80, {10, 8, 6}, 200);

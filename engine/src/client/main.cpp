@@ -46,6 +46,7 @@
 #include "core/platform_info.hpp"
 #include "net/content_hash.hpp"
 #include "net/relay_server.hpp"
+#include "sim/mission.hpp"
 #include "client/hud.hpp"
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
@@ -104,6 +105,7 @@ struct Options {
   std::string join, faction = "ursan", name = "jatekos";
   bool observe = false;
   int rejoin = 0;
+  std::string mission;   // M11: küldetés indítása (a küldetés mappája)
 };
 
 // a bemutató: népenként egy egységtípus (a sprite-lapok közül az első 8 csapatmaszkos), N egység rácsban
@@ -305,6 +307,7 @@ int main(int argc, char** argv) {
                                                                                         : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
+    else if (a == "--mission") o.mission = next();
     else if (a == "--host") o.host_port = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--join") o.join = next();
     else if (a == "--seats") o.seats = static_cast<int>(std::strtol(next(), nullptr, 10));
@@ -355,6 +358,7 @@ int main(int argc, char** argv) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 #endif
   // M8: a felhasználói beállítások (platformfüggetlen helyen) és a nyelvek (a locale mappák .po fájljai)
+  if (!o.mission.empty() && o.world.empty()) o.world = o.mission;   // a világnézet ága (a pályát a küldetés adja)
   const bool menu_mode = o.menu || (o.world.empty() && o.atlas.empty() && o.demo == 0 && !o.bench);
   client::Settings settings;
   std::string settings_file;
@@ -405,6 +409,9 @@ int main(int argc, char** argv) {
     client::Session session;
     net::RelayServer host_relay;   // M10: a gazda reléje (a SimRunner előtt jön létre, utána szűnik meg)
     client::NetPlay netplay;
+    std::unique_ptr<sim::MatchInstance> mission_match;   // M11: a küldetés meccse (a munkamenet csak hivatkozik rá)
+    std::string mission_cam;                            // az utolsó követett kameraparancs
+    float pan_x0 = 0, pan_y0 = 0, pan_x1 = 0, pan_y1 = 0, pan_t = 1, pan_len = 0;
     client::SimRunner runner(session);
     client::World world(session, runner);
     {
@@ -535,7 +542,16 @@ int main(int argc, char** argv) {
           std::printf("a meccs indul: %d. hely\n", netplay.client().slot());
           return true;
         };
-        const bool loaded = net_game ? start_net() : session.load(o.content, o.world, 20261112, &err);
+        auto start_mission = [&]() -> bool {   // M11: a küldetéscsomagból (mission.json + pálya + szkript)
+          if (!session.load_content(o.content, &err)) return false;
+          auto desc = sim::load_mission_package(o.mission, o.maps, 20261116, &err);
+          if (!desc) return false;
+          mission_match = sim::start_match(*desc, session.terrain_ptr(), session.rules(), err);
+          if (!mission_match) return false;
+          session.adopt(*mission_match);
+          return true;
+        };
+        const bool loaded = net_game ? start_net() : !o.mission.empty() ? start_mission() : session.load(o.content, o.world, 20261112, &err);
         if (!loaded || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
           rc = 1;
@@ -546,6 +562,8 @@ int main(int argc, char** argv) {
           // meccs (M6), ha a pályán vannak kezdőhelyek; különben a bemutató seregei
           if (net_game) {
             if (netplay.client().slot() == 0) session.set_reveal_all(true);   // a megfigyelő mindent lát
+          } else if (mission_match) {
+            // a küldetés már elindult (a start_match)
           } else if (session.has_starts()) {
             const bool started = have_cfg ? session.start_match(match_cfg.setup, match_cfg.ai, "ai_nep.lua", &err)
                                           : session.start_match({"ursan", "ursan"}, true, &err);
@@ -642,6 +660,41 @@ int main(int argc, char** argv) {
             game_paused = false;
           }
           continue;
+        }
+        if (have_world && session.rules()) {   // M11: küldetés – átvezető (kihagyás), párbeszéd-válasz
+          const client::Snapshot* ms = world.snapshot();
+          if (ms && ms->mission.active) {
+            if (ms->mission.letterbox || ms->mission.cutscene) {
+              if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE && !ev.key.repeat) {
+                sim::Command c;
+                c.kind = sim::Command::Kind::Mission;
+                c.owner = session.local_player();
+                c.def = "__skip";
+                runner.post(c);
+              }
+              if (ms->mission.letterbox && ev.type != SDL_EVENT_QUIT) continue;   // a bemenet tiltva
+            }
+            int pick = -1;
+            if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
+              const auto& rs = hud.model().mission_choices;
+              for (size_t i = 0; i < rs.size(); ++i) {
+                if (rs[i].contains(ev.button.x, ev.button.y)) pick = static_cast<int>(i);
+              }
+            }
+            if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key >= SDLK_1 && ev.key.key <= SDLK_9 &&
+                static_cast<size_t>(ev.key.key - SDLK_1) < ms->mission.choices.size()) {
+              pick = static_cast<int>(ev.key.key - SDLK_1);
+            }
+            if (pick >= 0 && !ms->mission.choices.empty()) {
+              sim::Command c;
+              c.kind = sim::Command::Kind::Mission;
+              c.owner = session.local_player();
+              c.def = ms->mission.dialogue;
+              c.rx = pick;
+              runner.post(c);
+              continue;
+            }
+          }
         }
         if (hud_on && hud_event(hud.model(), ev, cam, world)) continue;   // a HUD elfogyasztotta
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE && !ev.key.repeat) {
@@ -748,6 +801,25 @@ int main(int argc, char** argv) {
         } else {
           world.update();
           alpha = world.live_alpha();
+        }
+        if (const client::Snapshot* ms = world.snapshot(); ms && ms->mission.active && ms->mission.camera != mission_cam) {
+          // M11: az átvezető kameraparancsa – a kamera a pontra úszik (0 tick: azonnal)
+          mission_cam = ms->mission.camera;
+          if (!mission_cam.empty()) {
+            if (ms->mission.cam_zoom > 0) cam.zoom = std::clamp(ms->mission.cam_zoom, 1.0f, 2.0f);
+            pan_x0 = cam.x;
+            pan_y0 = cam.y;
+            pan_x1 = ms->mission.cam_x * client::World::kTilePx - static_cast<float>(w) / 2 / cam.zoom;
+            pan_y1 = ms->mission.cam_y * client::World::kTilePx - static_cast<float>(h) / 2 / cam.zoom;
+            pan_len = static_cast<float>(ms->mission.cam_ticks) / 30.0f;
+            pan_t = 0;
+          }
+        }
+        if (pan_t < 1) {
+          pan_t = pan_len <= 0 ? 1.0f : std::min(1.0f, pan_t + 1.0f / 60.0f / pan_len);
+          const float e = pan_t * pan_t * (3 - 2 * pan_t);   // simított
+          cam.x = pan_x0 + (pan_x1 - pan_x0) * e;
+          cam.y = pan_y0 + (pan_y1 - pan_y0) * e;
         }
         const double t = fixed ? static_cast<double>(frame) / 60.0
                                : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();

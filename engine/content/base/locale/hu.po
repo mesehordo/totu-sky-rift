@@ -8511,3 +8511,63 @@ msgstr ""
 msgctxt "ui.ai.pers.nepe_szerinti"
 msgid "Népe szerinti"
 msgstr ""
+
+msgctxt "hud.quest.optional"
+msgid "(mellékcél)"
+msgstr ""
+
+msgctxt "mission.proba.name"
+msgid "Próbaküldetés"
+msgstr ""
+
+msgctxt "mission.proba.desc"
+msgid "A küldetésrendszer minden elemét bemutató próbapálya."
+msgstr ""
+
+msgctxt "mission.proba.o_kapu"
+msgid "Érd el a kaput"
+msgstr ""
+
+msgctxt "mission.proba.o_orseg"
+msgid "Győzd le a kapu őrségét"
+msgstr ""
+
+msgctxt "mission.proba.o_titok"
+msgid "Fedezd fel a farkasok táborát"
+msgstr ""
+
+msgctxt "mission.proba.d1"
+msgid "A kapu túloldalán őrök várnak. Nem engednek át harc nélkül."
+msgstr ""
+
+msgctxt "mission.proba.d2"
+msgid "Hogyan induljunk?"
+msgstr ""
+
+msgctxt "mission.proba.d3"
+msgid "Akkor hát indulás."
+msgstr ""
+
+msgctxt "mission.proba.c_elore"
+msgid "Előre, egyenesen!"
+msgstr ""
+
+msgctxt "mission.proba.c_ovatos"
+msgid "Óvatosan, kerülővel."
+msgstr ""
+
+msgctxt "mission.proba.s1"
+msgid "A kráter peremén a csapat a kapu felé néz."
+msgstr ""
+
+msgctxt "mission.proba.m_bator"
+msgid "Az óvatosság kifizetődik: +100 arany."
+msgstr ""
+
+msgctxt "mission.proba.m_kapu"
+msgid "Elérted a kaput! Erősítés érkezett, az őrség támad."
+msgstr ""
+
+msgctxt "mission.proba.m_segitseg"
+msgid "A felderítők megjelölték a kaput."
+msgstr ""

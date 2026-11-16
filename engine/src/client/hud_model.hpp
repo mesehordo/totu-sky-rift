@@ -109,6 +109,7 @@ class HudModel {
 
   // ---- állapot (a régi UI-mezők)
   uint8_t player = 1;
+  std::vector<Rect> mission_choices;   // M11: a párbeszéd válaszgombjai (a rajzolás tölti; a hívó kattintásra parancsot küld)
   std::vector<sim::EntityId> sel;
   bool sel_changed = false;                   // a HUD módosította a kijelölést (a hívó átveszi)
   std::string cmd_page;                       // "" | "build" | "learn"

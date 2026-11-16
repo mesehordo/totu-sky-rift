@@ -2,6 +2,10 @@
 // A szkriptréteg megvalósítása (M3). Lásd host.hpp. A Lua C++-ként fordul (lua_build.cpp), ezért a lua.h-t
 // közvetlenül, extern "C" nélkül használjuk, és a Lua-hibák C++-kivételként futnak át ezen a kódon.
 #include "script/host.hpp"
+
+#include <charconv>
+
+#include "sim/mission.hpp"
 #include "script/host_internal.hpp"
 
 #include <algorithm>
@@ -36,6 +40,7 @@ struct ScriptHost::Impl {
   bool exhausted = false;    // a tick utasításkerete elfogyott
   core::Pcg32 rng{0, 0};
   sim::Sim* sim = nullptr;   // csak eseménykezelés közben nem üres
+  sim::MissionHost* mission = nullptr;   // M11: a küldetés (a `Mission` táblához)
   ModuleLoader loader;
   std::vector<std::string> messages;
   size_t errors = 0;
@@ -1047,6 +1052,114 @@ int g_winner(lua_State* L) {
   return 1;
 }
 
+// --- M11: a küldetés Lua-hídja (`Mission`) -------------------------------------------------------------------------
+// Lua-érték → JSON-érték (az akciók leírásához): egész kulcsú, hézagmentes tábla tömb, a többi objektum
+content::Value to_value(lua_State* L, int idx, int depth) {
+  idx = lua_absindex(L, idx);
+  if (depth > 16) return content::Value::null();
+  switch (lua_type(L, idx)) {
+    case LUA_TBOOLEAN: return content::Value::boolean(lua_toboolean(L, idx) != 0);
+    case LUA_TNUMBER: {
+      if (lua_isinteger(L, idx)) return content::Value::number(std::to_string(lua_tointeger(L, idx)));
+      char buf[64];
+      const auto r = std::to_chars(buf, buf + sizeof buf, static_cast<double>(lua_tonumber(L, idx)));
+      return content::Value::number(std::string(buf, r.ptr));
+    }
+    case LUA_TSTRING: {
+      size_t n = 0;
+      const char* p = lua_tolstring(L, idx, &n);
+      return content::Value::string(std::string(p, n));
+    }
+    case LUA_TTABLE: {
+      const lua_Integer len = static_cast<lua_Integer>(lua_rawlen(L, idx));
+      bool array = len > 0;
+      lua_pushnil(L);
+      int keys = 0;
+      while (lua_next(L, idx) != 0) {
+        ++keys;
+        if (!lua_isinteger(L, -2)) array = false;
+        lua_pop(L, 1);
+      }
+      if (array && keys == len) {
+        content::Value v = content::Value::array();
+        for (lua_Integer i = 1; i <= len; ++i) {
+          lua_rawgeti(L, idx, i);
+          v.push(to_value(L, -1, depth + 1));
+          lua_pop(L, 1);
+        }
+        return v;
+      }
+      content::Value v = content::Value::object();
+      std::vector<std::string> names;
+      lua_pushnil(L);
+      while (lua_next(L, idx) != 0) {
+        if (lua_type(L, -2) == LUA_TSTRING) names.emplace_back(lua_tostring(L, -2));
+        lua_pop(L, 1);
+      }
+      std::sort(names.begin(), names.end());   // determinisztikus sorrend
+      for (const auto& k : names) {
+        lua_getfield(L, idx, k.c_str());
+        v.set(k, to_value(L, -1, depth + 1));
+        lua_pop(L, 1);
+      }
+      return v;
+    }
+    default: return content::Value::null();
+  }
+}
+
+sim::MissionHost& need_mission(lua_State* L) {
+  Impl& I = impl(L);
+  if (!I.mission || !I.sim) luaL_error(L, "nincs futó küldetés (vagy eseménykezelésen kívül)");
+  return *I.mission;
+}
+
+int m_action(lua_State* L) {
+  sim::MissionHost& m = need_mission(L);
+  luaL_checktype(L, 1, LUA_TTABLE);
+  lua_pushboolean(L, m.run_action(*impl(L).sim, to_value(L, 1, 0)));
+  return 1;
+}
+
+int m_var(lua_State* L) {
+  lua_pushinteger(L, static_cast<lua_Integer>(need_mission(L).var(luaL_checkstring(L, 1))));
+  return 1;
+}
+
+int m_objective(lua_State* L) {
+  lua_pushinteger(L, need_mission(L).objective_state(luaL_checkstring(L, 1)));
+  return 1;
+}
+
+int m_units(lua_State* L) {
+  sim::MissionHost& m = need_mission(L);
+  sim::Sim& s = *impl(L).sim;
+  lua_newtable(L);
+  lua_Integer i = 0;
+  if (const auto* v = m.named(luaL_checkstring(L, 1))) {
+    for (const sim::EntityId e : *v) {
+      const sim::Health* h = s.world().alive(e) ? s.world().get<sim::Health>(e) : nullptr;
+      if (!h || h->hp <= 0) continue;
+      lua_pushinteger(L, static_cast<lua_Integer>(e));
+      lua_rawseti(L, -2, ++i);
+    }
+  }
+  return 1;
+}
+
+int m_result(lua_State* L) {
+  lua_pushinteger(L, static_cast<lua_Integer>(need_mission(L).result()));
+  return 1;
+}
+
+void open_mission(lua_State* L) {
+  static const luaL_Reg funcs[] = {{"action", m_action}, {"var", m_var},       {"objective", m_objective},
+                                   {"units", m_units},   {"result", m_result}, {nullptr, nullptr}};
+  luaL_newlib(L, funcs);
+  wrap_readonly(L);
+  lua_setglobal(L, "Mission");
+}
+
 void open_game(lua_State* L) {
   static const luaL_Reg funcs[] = {{"tick", g_tick},   {"spawn", g_spawn}, {"move", g_move},   {"kill", g_kill},
                                    {"unit", g_unit},   {"units", g_units}, {"count", g_count}, {"after", g_after},
@@ -1134,6 +1247,7 @@ void build_environment(lua_State* L) {
   open_math(L);
   create_readonly_meta(L);
   open_game(L);
+  open_mission(L);
 
   lua_newtable(L);
   lua_pushvalue(L, -1);
@@ -1232,6 +1346,8 @@ ScriptHost::~ScriptHost() {
 }
 
 void ScriptHost::set_module_loader(ModuleLoader loader) { impl_->loader = std::move(loader); }
+
+void ScriptHost::set_mission(sim::MissionHost* mission) { impl_->mission = mission; }
 
 void ScriptHost::set_shared(const std::string& name, const content::Value& data) {
   Impl& I = *impl_;

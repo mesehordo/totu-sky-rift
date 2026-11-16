@@ -67,7 +67,7 @@
      "actions": [{"type": "cutscene", "id": "nyitany"}, {"type": "timer", "id": "segitseg", "ticks": 600}]},
     {"id": "t_bevezeto", "event": {"type": "cutscene_end", "id": "nyitany"},
      "actions": [{"type": "dialogue", "id": "bevezeto"}]},
-    {"id": "t_bator", "event": {"type": "choice", "id": "bevezeto", "value": 0},
+    {"id": "t_ovatos", "event": {"type": "choice", "id": "bevezeto", "value": 1},
      "actions": [{"type": "resources", "player": 1, "gold": 100}, {"type": "message", "text": "mission.proba.m_bator"}]},
     {"id": "t_kapu", "event": {"type": "enter_region", "region": "kapu", "owner": 1},
      "actions": [

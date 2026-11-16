@@ -8,6 +8,7 @@
 
 #include "check.hpp"
 #include "match_util.hpp"
+#include "script/host.hpp"
 #include "sim/mission.hpp"
 #include "sim/replay.hpp"
 
@@ -104,9 +105,9 @@ TEST_CASE("kuldetes: vegigjatszas - atvezeto, parbeszed-valasztas, regio, erosit
   run(*m, 200);
   CHECK(h.dialogue().node == "n2");
   const int32_t gold = s.player(1).resource(sim::kGold);
-  s.queue(choose("bevezeto", 0, s.tick()));   // „Előre!”
+  s.queue(choose("bevezeto", 1, s.tick()));   // „Óvatosan” (+100 arany)
   run(*m, 2);
-  CHECK(h.var("bator") == 1 && h.dialogue().node == "n3");
+  CHECK(h.var("bator") == 0 && h.dialogue().node == "n3");
   CHECK(s.player(1).resource(sim::kGold) == gold + 100 && !h.messages().empty());
   run(*m, 50);
   CHECK(h.dialogue().dialogue.empty());
@@ -166,4 +167,31 @@ TEST_CASE("kuldetes: mentesbol folytatva es visszajatszva ugyanaz (valasztassal,
     if (!v.ok) std::printf("  %s\n", v.error.c_str());
     CHECK(v.ok && v.checked == 4);
   }
+}
+
+TEST_CASE("kuldetes: Lua-hid - a kuldetes szkriptje akciot futtat, valtozot es egysegeket olvas") {
+  sim::Replay r = mission_desc();
+  r.scripts.push_back({"mission", "proba.lua", R"(
+    function on_tick(t)
+      if t == 5 then
+        S.orseg = #Mission.units("orseg")
+        Mission.action{type = "set_var", var = "x", value = 7}
+        Mission.action{type = "objective", id = "o_kapu", state = "done"}
+        Mission.action{type = "spawn", def = "urs_pajzshordozo", owner = 1, count = 2, region = "otthon", name = "luas"}
+        S.x = Mission.var("x")
+        S.cel = Mission.objective("o_kapu")
+      end
+    end
+  )"});
+  auto m = start(r);
+  CHECK(m && m->mission && m->hosts.size() == 1);
+  if (!m || m->hosts.empty()) return;
+  run(*m, 10);
+  CHECK(m->hosts.front()->errors() == 0);
+  for (const auto& msg : m->hosts.front()->messages()) std::printf("  %s\n", msg.c_str());
+  CHECK(m->mission->var("x") == 7 && m->mission->objective_state("o_kapu") == 2);
+  CHECK(m->mission->named("luas") && m->mission->named("luas")->size() == 2);
+  CHECK(m->hosts.front()->run("ell", "log(S.orseg, S.x, S.cel)"));
+  const auto& ms = m->hosts.front()->messages();
+  CHECK(!ms.empty() && ms.back().find("3 7 2") != std::string::npos);
 }

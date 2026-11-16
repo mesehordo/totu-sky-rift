@@ -90,6 +90,25 @@ struct FxEvent {
   bool death = false;
 };
 
+// M11: a küldetés a felületnek (célok, párbeszéd, átvezető, üzenetek, eredmény); a szövegek fordítási kulcsok
+struct SnapMission {
+  bool active = false;
+  struct Objective {
+    std::string text;
+    uint8_t kind = 0, state = 1;   // kind: 0 elsődleges, 1 másodlagos; state: 1 aktív, 2 kész, 3 elbukott
+  };
+  std::vector<Objective> objectives;   // csak a látható
+  std::string dialogue, speaker, portrait, text;   // a futó párbeszéd (üres: nincs)
+  std::vector<std::string> choices;
+  bool cutscene = false, letterbox = false;
+  std::string camera;                  // az utolsó kameraparancs célpontja (azonosító)
+  float cam_x = 0, cam_y = 0, cam_zoom = 0;   // csempe; 0 nagyítás: változatlan
+  int32_t cam_ticks = 0;
+  std::string subtitle, sub_speaker;
+  std::vector<std::string> messages;
+  uint8_t result = 0;                  // 0 tart, 1 győzelem, 2 bukás
+};
+
 struct Snapshot {
   int64_t tick = 0;
   double published = 0;           // a közzététel ideje (a futtató órája szerint, másodperc) – a simításhoz
@@ -101,6 +120,7 @@ struct Snapshot {
   int winner = 0;                 // 0: a meccs tart
   int32_t night = 0;              // 0 nappal .. 1000 éjjel
   std::string weather;            // "" = derült
+  SnapMission mission;            // M11
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
 };
 
@@ -166,6 +186,7 @@ class Session {
   std::map<sim::EntityId, SnapUnit> remembered_;
   bool reveal_all_ = false;
   uint8_t local_ = 1;
+  sim::MissionHost* mission_ = nullptr;   // M11: az átvett meccs küldetése
   map::NavConfig nav_config_;   // a game.json `navigation` része (H-90)
   bool tile_visible(int x, int y) const;
   bool rect_visible(int x, int y, int w, int h) const;

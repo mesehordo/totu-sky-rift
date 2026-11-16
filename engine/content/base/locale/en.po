@@ -8512,3 +8512,63 @@ msgstr "Adaptive"
 msgctxt "ui.ai.pers.nepe_szerinti"
 msgid "Népe szerinti"
 msgstr "By people"
+
+msgctxt "hud.quest.optional"
+msgid "(mellékcél)"
+msgstr "(optional)"
+
+msgctxt "mission.proba.name"
+msgid "Próbaküldetés"
+msgstr "Test mission"
+
+msgctxt "mission.proba.desc"
+msgid "A küldetésrendszer minden elemét bemutató próbapálya."
+msgstr "A test map showing every element of the mission system."
+
+msgctxt "mission.proba.o_kapu"
+msgid "Érd el a kaput"
+msgstr "Reach the gate"
+
+msgctxt "mission.proba.o_orseg"
+msgid "Győzd le a kapu őrségét"
+msgstr "Defeat the gate guard"
+
+msgctxt "mission.proba.o_titok"
+msgid "Fedezd fel a farkasok táborát"
+msgstr "Discover the wolves' camp"
+
+msgctxt "mission.proba.d1"
+msgid "A kapu túloldalán őrök várnak. Nem engednek át harc nélkül."
+msgstr "Guards wait beyond the gate. They will not let us pass without a fight."
+
+msgctxt "mission.proba.d2"
+msgid "Hogyan induljunk?"
+msgstr "How shall we go?"
+
+msgctxt "mission.proba.d3"
+msgid "Akkor hát indulás."
+msgstr "Then let us go."
+
+msgctxt "mission.proba.c_elore"
+msgid "Előre, egyenesen!"
+msgstr "Forward, straight on!"
+
+msgctxt "mission.proba.c_ovatos"
+msgid "Óvatosan, kerülővel."
+msgstr "Carefully, the long way."
+
+msgctxt "mission.proba.s1"
+msgid "A kráter peremén a csapat a kapu felé néz."
+msgstr "On the crater's rim the party faces the gate."
+
+msgctxt "mission.proba.m_bator"
+msgid "Az óvatosság kifizetődik: +100 arany."
+msgstr "Caution pays off: +100 gold."
+
+msgctxt "mission.proba.m_kapu"
+msgid "Elérted a kaput! Erősítés érkezett, az őrség támad."
+msgstr "You reached the gate! Reinforcements arrived, the guard attacks."
+
+msgctxt "mission.proba.m_segitseg"
+msgid "A felderítők megjelölték a kaput."
+msgstr "The scouts have marked the gate."

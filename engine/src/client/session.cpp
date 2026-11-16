@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/session.hpp"
 
+#include "sim/mission.hpp"
+
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -63,6 +65,7 @@ void Session::adopt(sim::MatchInstance& match) {
   remembered_.clear();
   map_ = match.map.get();
   sim_ = match.sim.get();
+  mission_ = match.mission.get();
 }
 
 bool Session::load_content(const std::string& content_dir, std::string* error) {
@@ -75,6 +78,7 @@ bool Session::load_content(const std::string& content_dir, std::string* error) {
   nav_.reset();
   own_map_.reset();
   map_ = nullptr;
+  mission_ = nullptr;
   rules_.reset();
   reveal_all_ = false;
   last_.reset();
@@ -477,6 +481,41 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     s->winner = sim_->winner();
     s->night = sim_->night_permille();
     s->weather = sim_->weather_info().kind;
+  }
+  if (mission_) {   // M11: a küldetés a felületnek
+    SnapMission& m = s->mission;
+    const sim::MissionDef& d = mission_->def();
+    m.active = true;
+    for (const auto& o : d.objectives) {
+      const uint8_t st = mission_->objective_state(o.id);
+      if (st != 0) m.objectives.push_back({o.text, static_cast<uint8_t>(o.kind == 1 ? 1 : 0), st});
+    }
+    const auto& tv = mission_->dialogue();
+    if (const sim::MissionDialogue* md = d.dialogue(tv.dialogue)) {
+      if (const sim::DialogueNode* n = md->node(tv.node)) {
+        m.dialogue = md->id;
+        m.speaker = n->speaker;
+        m.portrait = n->portrait;
+        m.text = n->text;
+        for (const auto& c : n->choices) m.choices.push_back(c.text);
+      }
+    }
+    const auto& cv = mission_->cutscene();
+    m.cutscene = !cv.id.empty();
+    m.letterbox = cv.letterbox;
+    m.camera = cv.camera;
+    if (const sim::MissionPoint* p = d.point(cv.camera)) {
+      m.cam_x = static_cast<float>(p->x.to_double());
+      m.cam_y = static_cast<float>(p->y.to_double());
+      m.cam_zoom = static_cast<float>(p->zoom.to_double());
+    }
+    m.cam_ticks = cv.camera_ticks;
+    if (cv.subtitle_until >= sim_->tick()) {
+      m.subtitle = cv.subtitle;
+      m.sub_speaker = cv.speaker;
+    }
+    for (const auto& msg : mission_->messages()) m.messages.push_back(msg.text);
+    m.result = static_cast<uint8_t>(mission_->result());
   }
   std::sort(s->units.begin(), s->units.end(), [](const SnapUnit& a, const SnapUnit& b) { return a.id < b.id; });
   s->fog = fog_;
