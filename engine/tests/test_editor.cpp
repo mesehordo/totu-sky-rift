@@ -6,6 +6,7 @@
 
 #include "check.hpp"
 #include "client/editor_doc.hpp"
+#include "client/editor_ui.hpp"
 #include "match_util.hpp"
 #include "sim/mission.hpp"
 
@@ -102,4 +103,48 @@ TEST_CASE("szerkeszto: uj kuldetes egy palyara, mentes es megnyitas") {
   CHECK(e.open(out, base() + "/maps", &err) && e.mission() == d.mission());
   auto desc = sim::load_mission_package(out, base() + "/maps", 3, &err);
   CHECK(desc.has_value());
+}
+
+TEST_CASE("szerkeszto: felulet - eszkozvaltas, ecset huzassal, egyseg lerakasa, regio huzasa, visszavonas") {
+  client::EditorDoc d;
+  std::string err;
+  CHECK(d.open(base() + "/missions/proba", base() + "/maps", &err));
+  client::EditorUi ui;
+  ui.init(content_once().terrain, *content_once().rules);
+  ui.sync(d);
+  ui.layout(1280, 720);
+  CHECK(!ui.terrains.empty() && ui.tool_buttons.size() == 7);
+  // eszköz: régió (a gombjára kattintva)
+  const auto& rb = ui.tool_buttons[static_cast<size_t>(client::EditorUi::Tool::Regions)].r;
+  CHECK(ui.mouse_down(d, static_cast<float>(rb.x + 2), static_cast<float>(rb.y + 2), -1, -1, false));
+  CHECK(ui.tool == client::EditorUi::Tool::Regions);
+  const int rev = ui.revision;
+  CHECK(ui.mouse_down(d, 600, 300, 10.2, 10.7, false));
+  ui.mouse_move(d, 620, 320, 13.9, 12.1);
+  ui.mouse_up(d, 13.9, 12.1);
+  CHECK(ui.revision == rev + 1 && ui.status == "regio1");
+  // terep-ecset húzással: egy húzás több változás, de mind visszavonható
+  ui.key(d, '2', false);
+  CHECK(ui.tool == client::EditorUi::Tool::Terrain);
+  ui.layout(1280, 720);
+  const std::string map0 = d.map_text();
+  ui.mouse_down(d, 600, 300, 60, 20, false);
+  ui.mouse_move(d, 610, 300, 63, 20);
+  ui.mouse_up(d, 63, 20);
+  CHECK(d.map_text() != map0);
+  // egység: a 2. játékos népének palettája
+  ui.key(d, '4', false);
+  ui.layout(1280, 720);
+  const auto& ob = ui.owner_buttons[2].r;
+  ui.mouse_down(d, static_cast<float>(ob.x + 1), static_cast<float>(ob.y + 1), -1, -1, false);
+  const auto us = ui.units_of_owner();
+  CHECK(!us.empty() && us.front().first.rfind("wul_", 0) == 0);
+  ui.layout(1280, 720);
+  ui.mouse_down(d, 600, 300, 40.3, 40.6, false);
+  CHECK(ui.selected >= 0);
+  const int placed = ui.selected;
+  CHECK(ui.key(d, 127, false));   // Del: a kijelölt törlése
+  CHECK(d.unit_at(40.5, 40.5, 0.2) == -1);
+  CHECK(ui.key(d, 'z', true) && d.unit_at(40.5, 40.5, 0.2) == placed);
+  CHECK(d.validate(&*content_once().rules, &content_once().terrain).empty());
 }

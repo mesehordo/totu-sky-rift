@@ -8572,3 +8572,51 @@ msgstr "You reached the gate! Reinforcements arrived, the guard attacks."
 msgctxt "mission.proba.m_segitseg"
 msgid "A felderítők megjelölték a kaput."
 msgstr "The scouts have marked the gate."
+
+msgctxt "editor.tool.select"
+msgid "Kijelölés (1)"
+msgstr "Select (1)"
+
+msgctxt "editor.tool.terrain"
+msgid "Terep (2)"
+msgstr "Terrain (2)"
+
+msgctxt "editor.tool.trees"
+msgid "Erdő (3)"
+msgstr "Trees (3)"
+
+msgctxt "editor.tool.units"
+msgid "Egységek (4)"
+msgstr "Units (4)"
+
+msgctxt "editor.tool.regions"
+msgid "Régiók (5)"
+msgstr "Regions (5)"
+
+msgctxt "editor.tool.points"
+msgid "Pontok (6)"
+msgstr "Points (6)"
+
+msgctxt "editor.tool.cameras"
+msgid "Kamerák (7)"
+msgstr "Cameras (7)"
+
+msgctxt "editor.brush"
+msgid "Ecset"
+msgstr "Brush"
+
+msgctxt "editor.valid"
+msgid "Rendben"
+msgstr "Valid"
+
+msgctxt "editor.problems"
+msgid "Hibák"
+msgstr "Problems"
+
+msgctxt "editor.saved"
+msgid "Mentve (Ctrl+S)"
+msgstr "Saved (Ctrl+S)"
+
+msgctxt "editor.err.place"
+msgid "Ide nem rakható"
+msgstr "Cannot place here"

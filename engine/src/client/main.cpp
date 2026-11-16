@@ -51,6 +51,9 @@
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
 #include "client/net_play.hpp"
+#include "client/editor_doc.hpp"
+#include "client/editor_ui.hpp"
+#include "client/editor_view.hpp"
 #include "client/settings.hpp"
 #include "client/world.hpp"
 #include "render/atlas.hpp"
@@ -106,6 +109,7 @@ struct Options {
   bool observe = false;
   int rejoin = 0;
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
+  std::string editor;    // M11: a szerkesztő (a küldetés mappája)
 };
 
 // a bemutató: népenként egy egységtípus (a sprite-lapok közül az első 8 csapatmaszkos), N egység rácsban
@@ -308,6 +312,7 @@ int main(int argc, char** argv) {
     }
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
+    else if (a == "--editor") o.editor = next();
     else if (a == "--host") o.host_port = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--join") o.join = next();
     else if (a == "--seats") o.seats = static_cast<int>(std::strtol(next(), nullptr, 10));
@@ -358,7 +363,8 @@ int main(int argc, char** argv) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 #endif
   // M8: a felhasználói beállítások (platformfüggetlen helyen) és a nyelvek (a locale mappák .po fájljai)
-  if (!o.mission.empty() && o.world.empty()) o.world = o.mission;   // a világnézet ága (a pályát a küldetés adja)
+  if (!o.mission.empty() && o.world.empty()) o.world = o.mission;
+  if (!o.editor.empty() && o.world.empty()) o.world = o.editor;   // a világnézet ága (a pályát a küldetés adja)
   const bool menu_mode = o.menu || (o.world.empty() && o.atlas.empty() && o.demo == 0 && !o.bench);
   client::Settings settings;
   std::string settings_file;
@@ -411,6 +417,11 @@ int main(int argc, char** argv) {
     client::NetPlay netplay;
     std::unique_ptr<sim::MatchInstance> mission_match;   // M11: a küldetés meccse (a munkamenet csak hivatkozik rá)
     std::string mission_cam;                            // az utolsó követett kameraparancs
+    client::EditorDoc edoc;                             // M11: a szerkesztő dokumentuma és felülete
+    client::EditorUi eui;
+    bool editor_on = false, editor_test = false;
+    int editor_built = -1;
+    std::vector<std::string> editor_problems;
     float pan_x0 = 0, pan_y0 = 0, pan_x1 = 0, pan_y1 = 0, pan_t = 1, pan_len = 0;
     client::SimRunner runner(session);
     client::World world(session, runner);
@@ -551,7 +562,19 @@ int main(int argc, char** argv) {
           session.adopt(*mission_match);
           return true;
         };
-        const bool loaded = net_game ? start_net() : !o.mission.empty() ? start_mission() : session.load(o.content, o.world, 20261112, &err);
+        auto start_editor = [&]() -> bool {   // M11: a szerkesztő (WC3 World Editor mintájára)
+          if (!session.load_content(o.content, &err) || !edoc.open(o.editor, o.maps, &err)) return false;
+          eui.init(*session.terrain_ptr(), *session.rules());
+          mission_match = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.rules(), err);
+          if (!mission_match) return false;
+          session.adopt(*mission_match);
+          editor_on = true;
+          editor_built = 0;
+          editor_problems = edoc.validate(session.rules(), session.terrain_ptr());
+          return true;
+        };
+        const bool loaded = net_game ? start_net() : !o.editor.empty() ? start_editor()
+                            : !o.mission.empty() ? start_mission() : session.load(o.content, o.world, 20261112, &err);
         if (!loaded || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
           rc = 1;
@@ -560,7 +583,9 @@ int main(int argc, char** argv) {
           if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           // meccs (M6), ha a pályán vannak kezdőhelyek; különben a bemutató seregei
-          if (net_game) {
+          if (editor_on) {
+            session.set_reveal_all(true);   // a szerkesztőben a köd nem takar
+          } else if (net_game) {
             if (netplay.client().slot() == 0) session.set_reveal_all(true);   // a megfigyelő mindent lát
           } else if (mission_match) {
             // a küldetés már elindult (a start_match)
@@ -574,7 +599,7 @@ int main(int argc, char** argv) {
           } else {
             session.spawn_demo(2, o.demo > 0 ? o.demo : 60);
           }
-          if (!net_game || netplay.client().slot() > 0) session.set_reveal_all(!o.fog);
+          if (!editor_on && (!net_game || netplay.client().slot() > 0)) session.set_reveal_all(!o.fog);
           if (o.battle_demo > 0 && session.has_starts()) session.battle_demo(o.battle_demo);
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
@@ -583,7 +608,7 @@ int main(int argc, char** argv) {
           px.width = px.height = 1;
           px.rgba = {255, 255, 255, 255};
           white = dev.create_array_from(px, false);
-          if (session.has_starts() && !hud.init(dev, o.assets, &err)) std::fprintf(stderr, "HUD: %s\n", err.c_str());
+          if ((session.has_starts() || editor_on) && !hud.init(dev, o.assets, &err)) std::fprintf(stderr, "HUD: %s\n", err.c_str());
           hud.model().player = session.local_player();
           const float mw = static_cast<float>(world.map().width()) * client::World::kTilePx;
           const float mh = static_cast<float>(world.map().height()) * client::World::kTilePx;
@@ -618,7 +643,7 @@ int main(int argc, char** argv) {
             demo_hover_y = static_cast<float>(sy + 1) * client::World::kTilePx;
           }
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
-          if (!o.sync && o.screenshot.empty()) runner.start();
+          if (!o.sync && o.screenshot.empty() && !editor_on) runner.start();   // a szerkesztő előnézete áll
         }
       } else if (!o.atlas.empty() && o.demo > 0 && !adem.load(dev, o.atlas, o.demo, o.width, o.height, &err)) {
         std::fprintf(stderr, "%s\n", err.c_str());
@@ -632,7 +657,22 @@ int main(int argc, char** argv) {
     const auto start = std::chrono::steady_clock::now();
     while (running && (o.frames < 0 || frame < o.frames)) {
       SDL_Event ev;
-      const bool hud_on = have_world && session.has_starts() && session.rules();
+      // M11: a szerkesztő előnézete a dokumentum változása után újraépül (húzás közben nem)
+      if (editor_on && !editor_test && !eui.dragging && eui.revision != editor_built) {
+        std::string perr;
+        auto pm = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.rules(), perr);
+        editor_problems = edoc.validate(session.rules(), session.terrain_ptr());
+        if (pm) {
+          session.adopt(*pm);
+          mission_match = std::move(pm);
+          runner.reset_snapshots();
+          terrain.set_map(world.map(), world.terrain());
+        } else if (editor_problems.empty()) {
+          editor_problems.push_back(perr);
+        }
+        editor_built = eui.revision;
+      }
+      const bool hud_on = have_world && session.has_starts() && session.rules() && (!editor_on || editor_test);
       if (hud_on) {   // a HUD (M8): a pillanatkép és a kijelölés átvétele a bemenet előtt
         int hw = 0, hh = 0;
         SDL_GetWindowSizeInPixels(win, &hw, &hh);
@@ -660,6 +700,63 @@ int main(int argc, char** argv) {
             game_paused = false;
           }
           continue;
+        }
+        if (editor_on && have_world) {   // M11: a szerkesztő bemenete
+          const bool ctrl = (SDL_GetModState() & SDL_KMOD_CTRL) != 0;
+          if (ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat && ev.key.key == SDLK_F9) {   // kipróbálás innen / vissza
+            editor_test = !editor_test;
+            if (editor_test) {
+              std::string perr;
+              auto pm = sim::start_match(edoc.replay(20261116), session.terrain_ptr(), session.rules(), perr);
+              if (pm) {
+                session.adopt(*pm);
+                mission_match = std::move(pm);
+                runner.reset_snapshots();
+                session.set_reveal_all(false);
+                runner.start();
+              } else {
+                editor_test = false;
+                eui.status = perr;
+              }
+            } else {
+              runner.stop();
+              session.set_reveal_all(true);
+              editor_built = -1;   // a következő képkockában újraépül
+            }
+            continue;
+          }
+          if (!editor_test) {
+            float emx = 0, emy = 0;
+            SDL_GetMouseState(&emx, &emy);
+            const double ewx = (cam.x + emx / cam.zoom) / client::World::kTilePx, ewy = (cam.y + emy / cam.zoom) / client::World::kTilePx;
+            if (ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat && ctrl && ev.key.key == SDLK_S) {
+              eui.status = edoc.save(&err) ? "editor.saved" : err;
+              continue;
+            }
+            if (ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat) {
+              int k = 0;
+              if (ev.key.key >= SDLK_A && ev.key.key <= SDLK_Z) k = 'a' + static_cast<int>(ev.key.key - SDLK_A);
+              else if (ev.key.key >= SDLK_0 && ev.key.key <= SDLK_9) k = '0' + static_cast<int>(ev.key.key - SDLK_0);
+              else if (ev.key.key == SDLK_DELETE) k = 127;
+              else if (ev.key.key == SDLK_KP_PLUS || ev.key.key == SDLK_EQUALS) k = '+';
+              else if (ev.key.key == SDLK_KP_MINUS || ev.key.key == SDLK_MINUS) k = '-';
+              if (k && eui.key(edoc, k, ctrl)) continue;
+              if (ev.key.key == SDLK_ESCAPE) {
+                running = false;
+                continue;
+              }
+            }
+            if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && (ev.button.button == SDL_BUTTON_LEFT || ev.button.button == SDL_BUTTON_RIGHT)) {
+              eui.mouse_down(edoc, ev.button.x, ev.button.y, ewx, ewy, ev.button.button == SDL_BUTTON_RIGHT);
+              continue;
+            }
+            if (ev.type == SDL_EVENT_MOUSE_MOTION) eui.mouse_move(edoc, ev.motion.x, ev.motion.y, ewx, ewy);
+            if (ev.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+              eui.mouse_up(edoc, ewx, ewy);
+              continue;
+            }
+            if (ev.type != SDL_EVENT_MOUSE_WHEEL && ev.type != SDL_EVENT_QUIT) continue;   // a többi a kamerának (görgő)
+          }
         }
         if (have_world && session.rules()) {   // M11: küldetés – átvezető (kihagyás), párbeszéd-válasz
           const client::Snapshot* ms = world.snapshot();
@@ -900,7 +997,16 @@ int main(int argc, char** argv) {
         if (!o.fog) lighting.set_fog(0, 0, {});
         else if (fog_changed) lighting.set_fog(world.map().width(), world.map().height(), fogv);
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
-        if (session.has_starts() && session.rules()) {   // a HUD (M8; a képernyő vetítésében)
+        if (editor_on && !editor_test) {   // M11: a szerkesztő rétegei és palettája
+          int ww = 0, wh = 0;
+          SDL_GetWindowSizeInPixels(win, &ww, &wh);
+          eui.sync(edoc);
+          eui.layout(ww, wh);
+          batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
+          hud.begin_ui(batch, white);
+          client::draw_editor(hud, eui, edoc, cam, w, h, [&](const std::string& k) { return locale.tr(k); }, editor_problems);
+          batch.end();
+        } else if (session.has_starts() && session.rules()) {   // a HUD (M8; a képernyő vetítésében)
           client::HudFrame hf;
           hf.w = w;
           hf.h = h;

@@ -8571,3 +8571,51 @@ msgstr ""
 msgctxt "mission.proba.m_segitseg"
 msgid "A felderítők megjelölték a kaput."
 msgstr ""
+
+msgctxt "editor.tool.select"
+msgid "Kijelölés (1)"
+msgstr ""
+
+msgctxt "editor.tool.terrain"
+msgid "Terep (2)"
+msgstr ""
+
+msgctxt "editor.tool.trees"
+msgid "Erdő (3)"
+msgstr ""
+
+msgctxt "editor.tool.units"
+msgid "Egységek (4)"
+msgstr ""
+
+msgctxt "editor.tool.regions"
+msgid "Régiók (5)"
+msgstr ""
+
+msgctxt "editor.tool.points"
+msgid "Pontok (6)"
+msgstr ""
+
+msgctxt "editor.tool.cameras"
+msgid "Kamerák (7)"
+msgstr ""
+
+msgctxt "editor.brush"
+msgid "Ecset"
+msgstr ""
+
+msgctxt "editor.valid"
+msgid "Rendben"
+msgstr ""
+
+msgctxt "editor.problems"
+msgid "Hibák"
+msgstr ""
+
+msgctxt "editor.saved"
+msgid "Mentve (Ctrl+S)"
+msgstr ""
+
+msgctxt "editor.err.place"
+msgid "Ide nem rakható"
+msgstr ""

@@ -216,6 +216,11 @@ class SimRunner {
   void step_sync();                  // szinkron mód: egy tick a hívó szálán
   void post(sim::Command c);         // a következő tickben hajtódik végre (c.tick-et a futtató állítja)
   void set_source(TickSource* src) { source_ = src; }   // hálózati játék (a start előtt)
+  void reset_snapshots() {   // M11: a munkamenet új meccset vett át (szerkesztő-előnézet)
+    std::lock_guard<std::mutex> lock(mu_);
+    prev_.reset();
+    cur_.reset();
+  }
   void set_paused(bool p) { paused_.store(p); }   // szünet: a szimuláció nem lép (a kép tovább rajzolódik)
   bool paused() const { return paused_.load(); }
 

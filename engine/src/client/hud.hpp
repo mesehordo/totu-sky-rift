@@ -35,6 +35,16 @@ class Hud {
   // szöveg (a hívónak is): a bal felső sarok (x, y), betűméret (képpont), szín
   void text(render::SpriteBatch& batch, int size, float x, float y, const std::string& s, uint8_t r, uint8_t g,
             uint8_t b, uint8_t a = 255);
+  // M11: a szerkesztő ugyanezekkel az alapelemekkel rajzol (a hívó kezdi a köteget képernyő-vetítéssel)
+  void begin_ui(render::SpriteBatch& batch, const render::Texture& white) {
+    batch_ = &batch;
+    white_ = &white;
+  }
+  void ui_rect(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) { rect(x, y, w, h, {r, g, b}, a); }
+  void ui_outline(const Rect& rc, uint8_t r, uint8_t g, uint8_t b, int t = 1) { outline(rc, {r, g, b}, t); }
+  float ui_text_w(int size, const std::string& s) { return tw(size, s); }
+  float ui_line_h(int size) { return line_h(size); }
+  void ui_text(int size, float x, float y, const std::string& s, uint8_t r, uint8_t g, uint8_t b) { stext(size, x, y, s, {r, g, b}); }
 
  private:
   struct Font {
