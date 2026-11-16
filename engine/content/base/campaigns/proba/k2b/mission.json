@@ -1,0 +1,21 @@
+{
+  "id": "k2b",
+  "name": "campaign.proba.k2b",
+  "map": "kraterfold.json",
+  "players": [
+    {"slot": 1, "faction": "ursan", "human": true, "resources": {"wood": 100, "gold": 100}},
+    {"slot": 2, "faction": "wullof"}
+  ],
+  "regions": [{"id": "cel", "x": 40, "y": 22, "w": 8, "h": 8}],
+  "units": [
+    {"name": "ragna", "def": "urs_hos_ragna", "owner": 1, "x": 20, "y": 22}
+  ],
+  "variables": {"ut": 0},
+  "objectives": [{"id": "o_cel", "kind": "primary", "text": "campaign.proba.o_k2b"}],
+  "triggers": [
+    {"id": "t_start", "event": {"type": "start"}, "actions": [{"type": "message", "text": "campaign.proba.m_k2b"}]},
+    {"id": "t_cel", "event": {"type": "enter_region", "region": "cel", "unit": "ragna"},
+     "actions": [{"type": "objective", "id": "o_cel", "state": "done"}, {"type": "win"}]},
+    {"id": "t_bukas", "event": {"type": "unit_dies", "unit": "ragna"}, "actions": [{"type": "lose"}]}
+  ]
+}

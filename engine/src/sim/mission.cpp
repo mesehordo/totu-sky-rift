@@ -221,7 +221,7 @@ std::optional<MissionDef> MissionDef::parse(const std::string& text, const Rules
   if (const Value* us = d.find("units"); us && us->is_array()) {
     for (const auto& u : us->items()) {
       MissionUnit mu{str(u, "name"), str(u, "def"), static_cast<uint8_t>(std::clamp<int64_t>(num(u, "owner"), 0, Sim::kMaxPlayers)),
-                     fix(u, "x"), fix(u, "y")};
+                     fix(u, "x"), fix(u, "y"), u.find("hero") && u.find("hero")->is_object() ? u.find("hero") : nullptr};
       m.units.push_back(std::move(mu));
     }
   }
@@ -359,8 +359,56 @@ void MissionHost::start(Sim& s) {
       e = s.spawn_unit(d, u.owner, u.x, u.y);
       if (e != kNoEntity) s.place_at_free(e, u.x, u.y);
     }
+    if (e != kNoEntity && u.hero) apply_hero(s, e, *u.hero);   // hadjárat: az átvitt hős
     if (e != kNoEntity && !u.name.empty()) names_[u.name].push_back(e);
   }
+}
+
+content::Value export_hero(const Sim& s, EntityId e) {
+  Value v = Value::object();
+  const HeroState* hs = const_cast<Sim&>(s).world().get<HeroState>(e);
+  const Rules* r = s.rules();
+  if (!hs || !r) return v;
+  v.set("level", Value::number(std::to_string(hs->level)));
+  v.set("xp", Value::number(std::to_string(hs->xp)));
+  v.set("points", Value::number(std::to_string(hs->points)));
+  Value learned = Value::array();
+  for (const uint16_t a : hs->learned) {
+    if (a < r->abilities.size()) learned.push(Value::string(r->abilities[a].id));
+  }
+  v.set("learned", learned);
+  Value items = Value::array();
+  for (const uint16_t i : hs->items) items.push(Value::string(i != kNoItem && i < r->items.size() ? r->items[i].id : std::string()));
+  v.set("items", items);
+  v.set("perm_hp", Value::number(std::to_string(hs->perm_hp)));
+  v.set("perm_damage", Value::number(std::to_string(hs->perm_damage)));
+  return v;
+}
+
+bool apply_hero(Sim& s, EntityId e, const content::Value& hero) {
+  HeroState* hs = s.world().get<HeroState>(e);
+  const Rules* r = s.rules();
+  if (!hs || !r) return false;
+  hs->level = static_cast<uint8_t>(std::clamp<int64_t>(num(hero, "level", hs->level), 1, 30));
+  hs->xp = static_cast<int32_t>(std::clamp<int64_t>(num(hero, "xp", hs->xp), 0, 1LL << 30));
+  hs->points = static_cast<uint8_t>(std::clamp<int64_t>(num(hero, "points", hs->points), 0, 30));
+  if (const Value* l = hero.find("learned"); l && l->is_array()) {
+    hs->learned.clear();
+    for (const auto& a : l->items()) {
+      const int i = a.is_string() ? r->ability_index(a.text()) : -1;
+      if (i >= 0 && hs->learned.size() < 32) hs->learned.push_back(static_cast<uint16_t>(i));
+    }
+  }
+  if (const Value* it = hero.find("items"); it && it->is_array()) {
+    for (size_t k = 0; k < hs->items.size(); ++k) {
+      const int i = k < it->items().size() && it->items()[k].is_string() ? r->item_index(it->items()[k].text()) : -1;
+      hs->items[k] = i >= 0 ? static_cast<uint16_t>(i) : kNoItem;
+    }
+  }
+  hs->perm_hp = static_cast<int32_t>(std::clamp<int64_t>(num(hero, "perm_hp", 0), 0, 100000));
+  hs->perm_damage = static_cast<int32_t>(std::clamp<int64_t>(num(hero, "perm_damage", 0), 0, 100000));
+  s.hero_recalc(e, false);
+  return true;
 }
 
 int64_t MissionHost::var(const std::string& name) const {

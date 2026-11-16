@@ -46,6 +46,7 @@
 #include "core/platform_info.hpp"
 #include "net/content_hash.hpp"
 #include "net/relay_server.hpp"
+#include "sim/campaign.hpp"
 #include "sim/mission.hpp"
 #include "client/hud.hpp"
 #include "client/i18n.hpp"
@@ -111,6 +112,7 @@ struct Options {
   int rejoin = 0;
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
   std::string editor;    // M11: a szerkesztő (a küldetés mappája)
+  std::string campaign;  // M11: hadjárat (a hadjárat mappája; a profil a felhasználói mappában)
   bool trigger_editor = false;   // képpróbához: a trigger-szerkesztő nyitva indul
   int data_editor = -1;          // képpróbához: az adatszerkesztő nyitva, ezzel a füllel
 };
@@ -316,6 +318,7 @@ int main(int argc, char** argv) {
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
     else if (a == "--editor") o.editor = next();
+    else if (a == "--campaign") o.campaign = next();
     else if (a == "--trigger-editor") o.trigger_editor = true;
     else if (a == "--data-editor") o.data_editor = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--host") o.host_port = static_cast<int>(std::strtol(next(), nullptr, 10));
@@ -369,7 +372,8 @@ int main(int argc, char** argv) {
 #endif
   // M8: a felhasználói beállítások (platformfüggetlen helyen) és a nyelvek (a locale mappák .po fájljai)
   if (!o.mission.empty() && o.world.empty()) o.world = o.mission;
-  if (!o.editor.empty() && o.world.empty()) o.world = o.editor;   // a világnézet ága (a pályát a küldetés adja)
+  if (!o.editor.empty() && o.world.empty()) o.world = o.editor;
+  if (!o.campaign.empty() && o.world.empty()) o.world = o.campaign;   // a világnézet ága (a pályát a küldetés adja)
   const bool menu_mode = o.menu || (o.world.empty() && o.atlas.empty() && o.demo == 0 && !o.bench);
   client::Settings settings;
   std::string settings_file;
@@ -422,6 +426,24 @@ int main(int argc, char** argv) {
     client::NetPlay netplay;
     std::unique_ptr<sim::MatchInstance> mission_match;   // M11: a küldetés meccse (a munkamenet csak hivatkozik rá)
     std::string mission_cam;                            // az utolsó követett kameraparancs
+    std::optional<sim::CampaignDef> camp_def;           // M11: hadjárat
+    sim::CampaignState camp_state;
+    std::string camp_profile;
+    bool camp_over = false;
+    // küldetés indulásakor a kamera a helyi játékos első egységére (az átvezető kamerája később felülírja)
+    auto center_on_local = [&](client::Camera& c, int vw, int vh) {
+      if (!mission_match || !mission_match->sim) return;
+      sim::Sim& s = *mission_match->sim;
+      sim::EntityId best = sim::kNoEntity;
+      s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit&) {
+        const sim::Health* h = s.world().get<sim::Health>(e);
+        if (best == sim::kNoEntity && h && h->owner == session.local_player()) best = e;
+      });
+      if (const sim::Position* p = best != sim::kNoEntity ? s.world().get<sim::Position>(best) : nullptr) {
+        c.x = static_cast<float>(p->x.to_double()) * client::World::kTilePx - static_cast<float>(vw) / 2 / c.zoom;
+        c.y = static_cast<float>(p->y.to_double()) * client::World::kTilePx - static_cast<float>(vh) / 2 / c.zoom;
+      }
+    };
     client::EditorDoc edoc;                             // M11: a szerkesztő dokumentuma és felülete
     client::EditorUi eui;
     client::TriggerEditor tedit;   // F4
@@ -590,7 +612,34 @@ int main(int argc, char** argv) {
           editor_problems = edoc.validate(session.rules(), session.terrain_ptr());
           return true;
         };
-        const bool loaded = net_game ? start_net() : !o.editor.empty() ? start_editor()
+        auto start_campaign = [&]() -> bool {   // M11: a hadjárat (a profil folytatása, ha van)
+          if (!session.load_content(o.content, &err)) return false;
+          std::ifstream cin_(std::filesystem::path(o.campaign) / "campaign.json", std::ios::binary);
+          const std::string ctext{std::istreambuf_iterator<char>(cin_), std::istreambuf_iterator<char>()};
+          std::vector<std::string> cerrs;
+          camp_def = sim::CampaignDef::parse(ctext, cerrs);
+          if (!camp_def) {
+            err = cerrs.empty() ? "hibás hadjárat" : cerrs.front();
+            return false;
+          }
+          camp_state = sim::CampaignState::fresh(*camp_def);
+          if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
+            camp_profile = (std::filesystem::path(pref) / ("hadjarat_" + camp_def->id + ".json")).string();
+            SDL_free(pref);
+            std::ifstream pin(camp_profile, std::ios::binary);
+            const std::string ptext{std::istreambuf_iterator<char>(pin), std::istreambuf_iterator<char>()};
+            if (const auto pv = content::parse(ptext)) {
+              if (auto ps = sim::CampaignState::from_json(*pv); ps && ps->campaign == camp_def->id && !ps->current.empty()) camp_state = *ps;
+            }
+          }
+          auto desc = sim::prepare_mission(*camp_def, camp_state, o.campaign, o.maps, 20261116, &err);
+          if (!desc) return false;
+          mission_match = sim::start_match(*desc, session.terrain_ptr(), session.rules(), err);
+          if (!mission_match) return false;
+          session.adopt(*mission_match);
+          return true;
+        };
+        const bool loaded = net_game ? start_net() : !o.campaign.empty() ? start_campaign() : !o.editor.empty() ? start_editor()
                             : !o.mission.empty() ? start_mission() : session.load(o.content, o.world, 20261112, &err);
         if (!loaded || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
@@ -632,6 +681,7 @@ int main(int argc, char** argv) {
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
+          if (mission_match && !editor_on) center_on_local(cam, o.width, o.height);
           if (o.look_x >= 0 && o.look_y >= 0) {
             cam.x = o.look_x * client::World::kTilePx - static_cast<float>(o.width) / 2 / cam.zoom;
             cam.y = o.look_y * client::World::kTilePx - static_cast<float>(o.height) / 2 / cam.zoom;
@@ -831,6 +881,35 @@ int main(int argc, char** argv) {
             }
             if (ev.type != SDL_EVENT_MOUSE_WHEEL && ev.type != SDL_EVENT_QUIT) continue;   // a többi a kamerának (görgő)
           }
+        }
+        if (camp_def && have_world && ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat &&
+            (ev.key.key == SDLK_RETURN || ev.key.key == SDLK_KP_ENTER) && mission_match && mission_match->mission &&
+            mission_match->mission->result() == sim::MissionHost::Result::Won && !camp_over) {
+          // M11: a hadjárat következő küldetése (a szimulációs szál áll, amíg a meccs cserélődik)
+          runner.stop();
+          sim::finish_mission(*camp_def, camp_state, *mission_match);
+          if (!camp_profile.empty()) {
+            std::ofstream pout(camp_profile, std::ios::binary | std::ios::trunc);
+            pout << content::dump_pretty(camp_state.to_json());
+          }
+          if (camp_state.current.empty()) {
+            camp_over = true;
+          } else if (auto desc = sim::prepare_mission(*camp_def, camp_state, o.campaign, o.maps, 20261116, &err)) {
+            if (auto nm = sim::start_match(*desc, session.terrain_ptr(), session.rules(), err)) {
+              session.adopt(*nm);
+              mission_match = std::move(nm);
+              runner.reset_snapshots();
+              terrain.set_map(world.map(), world.terrain());
+              mission_cam.clear();
+              int cw = 0, ch = 0;
+              SDL_GetWindowSizeInPixels(win, &cw, &ch);
+              center_on_local(cam, cw, ch);
+            } else {
+              std::fprintf(stderr, "hadjárat: %s\n", err.c_str());
+            }
+          }
+          runner.start();
+          continue;
         }
         if (have_world && session.rules()) {   // M11: küldetés – átvezető (kihagyás), párbeszéd-válasz
           const client::Snapshot* ms = world.snapshot();
@@ -1104,6 +1183,10 @@ int main(int argc, char** argv) {
           hf.cam_h = static_cast<float>(h) / cam.zoom;
           batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
           hud.draw(batch, white, hf);
+          if (camp_def && mission_match && mission_match->mission && mission_match->mission->result() == sim::MissionHost::Result::Won) {
+            hud.text(batch, 18, static_cast<float>(w) / 2 - 170, static_cast<float>(h) / 2 + 48,
+                     locale.tr(camp_over ? "campaign.end" : "campaign.next"), 240, 230, 200);
+          }
           if (game_paused) {   // szünetmenü: sötétítés, cím, a két lehetőség
             render::SpriteInstance dim;
             dim.w = static_cast<float>(w);

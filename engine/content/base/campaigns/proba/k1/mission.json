@@ -1,0 +1,32 @@
+{
+  "id": "k1",
+  "name": "campaign.proba.k1",
+  "map": "kraterfold.json",
+  "players": [
+    {"slot": 1, "faction": "ursan", "human": true, "resources": {"wood": 100, "gold": 100}},
+    {"slot": 2, "faction": "wullof"}
+  ],
+  "regions": [{"id": "kapu", "x": 30, "y": 26, "w": 8, "h": 8}],
+  "units": [
+    {"name": "ragna", "def": "urs_hos_ragna", "owner": 1, "x": 20, "y": 22}
+  ],
+  "variables": {"ut": 0},
+  "objectives": [{"id": "o_kapu", "kind": "primary", "text": "mission.proba.o_kapu"}],
+  "dialogues": {
+    "valasztas": {
+      "nodes": [
+        {"id": "n1", "speaker": "urs_hos_ragna", "portrait": "urs_hos_ragna", "text": "campaign.proba.d_ut",
+         "choices": [
+           {"text": "campaign.proba.c_hegy", "var": "ut", "value": 1},
+           {"text": "campaign.proba.c_volgy", "var": "ut", "value": 2}
+         ]}
+      ]
+    }
+  },
+  "triggers": [
+    {"id": "t_start", "event": {"type": "start"}, "actions": [{"type": "dialogue", "id": "valasztas"}]},
+    {"id": "t_kapu", "event": {"type": "enter_region", "region": "kapu", "unit": "ragna"},
+     "actions": [{"type": "objective", "id": "o_kapu", "state": "done"}, {"type": "win"}]},
+    {"id": "t_bukas", "event": {"type": "unit_dies", "unit": "ragna"}, "actions": [{"type": "lose"}]}
+  ]
+}

@@ -36,7 +36,12 @@ struct MissionUnit {   // a pályára helyezett, névvel ellátható egység vag
   std::string def;
   uint8_t owner = 0;
   core::Fixed x, y;
+  const content::Value* hero = nullptr;   // hadjárat: az átvitt hős állapota (szint, tapasztalat, képességek, tárgyak)
 };
+
+// a hős állapota JSON-ban (a hadjárat viszi át küldetésről küldetésre) – és vissza
+content::Value export_hero(const Sim& s, EntityId e);
+bool apply_hero(Sim& s, EntityId e, const content::Value& hero);
 struct MissionPlayer {
   uint8_t slot = 0;
   std::string faction;

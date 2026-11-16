@@ -9,6 +9,7 @@
 #include "check.hpp"
 #include "match_util.hpp"
 #include "script/host.hpp"
+#include "sim/campaign.hpp"
 #include "sim/mission.hpp"
 #include "sim/replay.hpp"
 
@@ -194,4 +195,66 @@ TEST_CASE("kuldetes: Lua-hid - a kuldetes szkriptje akciot futtat, valtozot es e
   CHECK(m->hosts.front()->run("ell", "log(S.orseg, S.x, S.cel)"));
   const auto& ms = m->hosts.front()->messages();
   CHECK(!ms.empty() && ms.back().find("3 7 2") != std::string::npos);
+}
+
+namespace {
+// a k1 megnyerése a megadott választással; a hős közben tapasztalatot kap
+bool win_k1(sim::MatchInstance& m, int choice, int32_t xp_milli) {
+  sim::Sim& s = *m.sim;
+  run(m, 2);
+  if (m.mission->dialogue().dialogue != "valasztas") return false;
+  s.queue(choose("valasztas", choice, s.tick()));
+  run(m, 2);
+  const sim::EntityId ragna = m.mission->named("ragna")->front();
+  s.add_xp(ragna, xp_milli);
+  s.queue(order(sim::Command::Kind::Move, 1, {ragna}, Fixed::from_int(34), Fixed::from_int(30), s.tick()));
+  for (int i = 0; i < 2400 && m.mission->result() == sim::MissionHost::Result::None; ++i) run(m, 1);
+  return m.mission->result() == sim::MissionHost::Result::Won;
+}
+}  // namespace
+
+TEST_CASE("hadjarat: elagazas a dontes szerint, a hos atvitele, a profil mentese es visszaolvasasa") {
+  const std::string dir = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "campaigns" / "proba").string();
+  const std::string maps = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps").string();
+  std::vector<std::string> errs;
+  const auto def = sim::CampaignDef::parse(read_file(std::filesystem::path(dir) / "campaign.json"), errs);
+  for (const auto& e : errs) std::printf("  %s\n", e.c_str());
+  CHECK(def.has_value());
+  if (!def) return;
+  for (const int choice : {0, 1}) {   // 0: a hegyen át (ut = 1) → k2a; 1: a völgyön át (ut = 2) → k2b
+    sim::CampaignState st = sim::CampaignState::fresh(*def);
+    std::string err;
+    auto r1 = sim::prepare_mission(*def, st, dir, maps, 9, &err);
+    CHECK(r1.has_value());
+    if (!r1) return;
+    auto m1 = start(*r1);
+    CHECK(m1 && win_k1(*m1, choice, 300000));
+    const auto* hs1 = m1->sim->world().get<sim::HeroState>(m1->mission->named("ragna")->front());
+    CHECK(hs1 && hs1->level > 1);
+    // a vesztes vagy félbehagyott küldetés nem zár le
+    CHECK(sim::finish_mission(*def, st, *m1));
+    CHECK(st.current == (choice == 0 ? "k2a" : "k2b") && st.flags["ut"] == (choice == 0 ? 1 : 2));
+    CHECK(st.heroes.count("ragna") && st.done == std::vector<std::string>{"k1"});
+    // a profil JSON-ban oda-vissza
+    const auto back = sim::CampaignState::from_json(*content::parse(content::dump(st.to_json())));
+    CHECK(back && back->current == st.current && back->flags == st.flags && back->heroes.at("ragna") == st.heroes.at("ragna"));
+    // a következő küldetésben a hős ugyanazzal a szinttel és tapasztalattal indul, a döntés változója átjön
+    auto r2 = sim::prepare_mission(*def, *back, dir, maps, 9, &err);
+    CHECK(r2.has_value());
+    if (!r2) return;
+    auto m2 = start(*r2);
+    CHECK(m2 && m2->mission);
+    if (!m2) return;
+    const auto* hs2 = m2->sim->world().get<sim::HeroState>(m2->mission->named("ragna")->front());
+    CHECK(hs2 && hs2->level == hs1->level && hs2->xp == hs1->xp && hs2->points == hs1->points);
+    CHECK(m2->mission->var("ut") == (choice == 0 ? 1 : 2));
+    CHECK(m2->mission->def().id == (choice == 0 ? "k2a" : "k2b"));
+    // a hős a második küldetésben is a hőstulajdonságokkal (a hero_recalc után) – életereje nagyobb az alapnál
+    const auto* h2 = m2->sim->world().get<sim::Health>(m2->mission->named("ragna")->front());
+    CHECK(h2 && h2->max > 0);
+  }
+  // hibás hadjárat: ismeretlen következő küldetés
+  std::vector<std::string> e2;
+  CHECK(!sim::CampaignDef::parse(R"({"id": "x", "start": "a", "missions": [{"id": "a", "dir": "a", "next": [{"to": "nincs"}]}]})", e2));
+  CHECK(!e2.empty());
 }

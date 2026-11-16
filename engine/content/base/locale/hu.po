@@ -8863,3 +8863,55 @@ msgstr ""
 msgctxt "editor.trig.close5"
 msgid "Bezár (F5)"
 msgstr ""
+
+msgctxt "campaign.proba.name"
+msgid "Próbahadjárat"
+msgstr ""
+
+msgctxt "campaign.proba.k1"
+msgid "Az elágazás"
+msgstr ""
+
+msgctxt "campaign.proba.k2a"
+msgid "A hegyi út"
+msgstr ""
+
+msgctxt "campaign.proba.k2b"
+msgid "A völgyi út"
+msgstr ""
+
+msgctxt "campaign.proba.d_ut"
+msgid "Két út vezet tovább. Merre menjünk?"
+msgstr ""
+
+msgctxt "campaign.proba.c_hegy"
+msgid "A hegyen át."
+msgstr ""
+
+msgctxt "campaign.proba.c_volgy"
+msgid "A völgyön át."
+msgstr ""
+
+msgctxt "campaign.proba.o_k2a"
+msgid "Érd el a hágót"
+msgstr ""
+
+msgctxt "campaign.proba.o_k2b"
+msgid "Érd el a gázlót"
+msgstr ""
+
+msgctxt "campaign.proba.m_k2a"
+msgid "A hegyi úton hideg a szél."
+msgstr ""
+
+msgctxt "campaign.proba.m_k2b"
+msgid "A völgyben köd ül."
+msgstr ""
+
+msgctxt "campaign.next"
+msgid "Tovább a következő küldetésre (Enter)"
+msgstr ""
+
+msgctxt "campaign.end"
+msgid "A hadjárat véget ért."
+msgstr ""

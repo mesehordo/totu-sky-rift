@@ -8864,3 +8864,55 @@ msgstr "The node"
 msgctxt "editor.trig.close5"
 msgid "Bezár (F5)"
 msgstr "Close (F5)"
+
+msgctxt "campaign.proba.name"
+msgid "Próbahadjárat"
+msgstr "Test campaign"
+
+msgctxt "campaign.proba.k1"
+msgid "Az elágazás"
+msgstr "The fork"
+
+msgctxt "campaign.proba.k2a"
+msgid "A hegyi út"
+msgstr "The mountain road"
+
+msgctxt "campaign.proba.k2b"
+msgid "A völgyi út"
+msgstr "The valley road"
+
+msgctxt "campaign.proba.d_ut"
+msgid "Két út vezet tovább. Merre menjünk?"
+msgstr "Two roads lead on. Which way?"
+
+msgctxt "campaign.proba.c_hegy"
+msgid "A hegyen át."
+msgstr "Over the mountain."
+
+msgctxt "campaign.proba.c_volgy"
+msgid "A völgyön át."
+msgstr "Through the valley."
+
+msgctxt "campaign.proba.o_k2a"
+msgid "Érd el a hágót"
+msgstr "Reach the pass"
+
+msgctxt "campaign.proba.o_k2b"
+msgid "Érd el a gázlót"
+msgstr "Reach the ford"
+
+msgctxt "campaign.proba.m_k2a"
+msgid "A hegyi úton hideg a szél."
+msgstr "The wind is cold on the mountain road."
+
+msgctxt "campaign.proba.m_k2b"
+msgid "A völgyben köd ül."
+msgstr "Mist lies in the valley."
+
+msgctxt "campaign.next"
+msgid "Tovább a következő küldetésre (Enter)"
+msgstr "On to the next mission (Enter)"
+
+msgctxt "campaign.end"
+msgid "A hadjárat véget ért."
+msgstr "The campaign is over."

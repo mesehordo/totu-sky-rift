@@ -71,6 +71,7 @@ add_library(totu_core
   src/sim/factions/minor/daresh.cpp src/sim/factions/minor/galoca.cpp src/sim/factions/minor/ghoblin.cpp src/sim/factions/minor/mhonyo.cpp src/sim/factions/minor/niil_elf.cpp src/sim/factions/minor/nila_uchana.cpp src/sim/factions/minor/pinguu.cpp src/sim/factions/minor/shrissh_matah.cpp src/sim/factions/minor/tenduur.cpp src/sim/factions/minor/tokla.cpp src/sim/factions/minor/tuz_elf.cpp src/sim/factions/minor/zhan_zhama.cpp
   src/sim/replay.cpp
   src/sim/mission.cpp
+  src/sim/campaign.cpp
   src/net/lockstep.cpp
   src/sim/navmove.cpp
   src/sim/formation.cpp

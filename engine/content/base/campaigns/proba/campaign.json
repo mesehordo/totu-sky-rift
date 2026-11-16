@@ -1,0 +1,11 @@
+{
+  "id": "proba",
+  "name": "campaign.proba.name",
+  "start": "k1",
+  "missions": [
+    {"id": "k1", "dir": "k1", "carry": ["ragna"], "keep": ["ut"],
+     "next": [{"to": "k2a", "if": {"var": "ut", "op": "eq", "value": 1}}, {"to": "k2b"}]},
+    {"id": "k2a", "dir": "k2a", "carry": ["ragna"], "keep": ["ut"], "next": []},
+    {"id": "k2b", "dir": "k2b", "carry": ["ragna"], "keep": ["ut"], "next": []}
+  ]
+}
