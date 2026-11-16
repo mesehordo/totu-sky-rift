@@ -8619,3 +8619,195 @@ msgstr ""
 msgctxt "editor.err.place"
 msgid "Ide nem rakható"
 msgstr ""
+
+msgctxt "editor.trig.new"
+msgid "Új trigger"
+msgstr ""
+
+msgctxt "editor.trig.delete"
+msgid "Törlés"
+msgstr ""
+
+msgctxt "editor.trig.enabled"
+msgid "Engedélyezve"
+msgstr ""
+
+msgctxt "editor.trig.repeat"
+msgid "Ismétlődik"
+msgstr ""
+
+msgctxt "editor.trig.close"
+msgid "Bezár (F4)"
+msgstr ""
+
+msgctxt "editor.trig.not_number"
+msgid "Ide szám kell"
+msgstr ""
+
+msgctxt "editor.trig.section.event"
+msgid "Esemény"
+msgstr ""
+
+msgctxt "editor.trig.section.conditions"
+msgid "Feltételek"
+msgstr ""
+
+msgctxt "editor.trig.section.actions"
+msgid "Akciók"
+msgstr ""
+
+msgctxt "editor.t.start"
+msgid "A küldetés indulása"
+msgstr ""
+
+msgctxt "editor.t.time"
+msgid "Időpont"
+msgstr ""
+
+msgctxt "editor.t.enter_region"
+msgid "Belépés régióba"
+msgstr ""
+
+msgctxt "editor.t.leave_region"
+msgid "Kilépés régióból"
+msgstr ""
+
+msgctxt "editor.t.unit_dies"
+msgid "Egység elesik"
+msgstr ""
+
+msgctxt "editor.t.count"
+msgid "Darabszám"
+msgstr ""
+
+msgctxt "editor.t.always"
+msgid "Minden tickben"
+msgstr ""
+
+msgctxt "editor.t.dialogue_end"
+msgid "Párbeszéd vége"
+msgstr ""
+
+msgctxt "editor.t.choice"
+msgid "Válasz a párbeszédben"
+msgstr ""
+
+msgctxt "editor.t.objective_done"
+msgid "Cél teljesül"
+msgstr ""
+
+msgctxt "editor.t.timer"
+msgid "Időzítő lejár"
+msgstr ""
+
+msgctxt "editor.t.cutscene_end"
+msgid "Átvezető vége"
+msgstr ""
+
+msgctxt "editor.t.var"
+msgid "Változó"
+msgstr ""
+
+msgctxt "editor.t.alive"
+msgid "Él"
+msgstr ""
+
+msgctxt "editor.t.dead"
+msgid "Halott"
+msgstr ""
+
+msgctxt "editor.t.in_region"
+msgid "Régióban van"
+msgstr ""
+
+msgctxt "editor.t.objective"
+msgid "Cél"
+msgstr ""
+
+msgctxt "editor.t.resource"
+msgid "Nyersanyag"
+msgstr ""
+
+msgctxt "editor.t.tick"
+msgid "Játékidő (tick)"
+msgstr ""
+
+msgctxt "editor.t.dialogue"
+msgid "Párbeszéd indítása"
+msgstr ""
+
+msgctxt "editor.t.spawn"
+msgid "Egység létrehozása"
+msgstr ""
+
+msgctxt "editor.t.order"
+msgid "Parancs"
+msgstr ""
+
+msgctxt "editor.t.kill"
+msgid "Megölés"
+msgstr ""
+
+msgctxt "editor.t.remove"
+msgid "Eltávolítás"
+msgstr ""
+
+msgctxt "editor.t.reveal"
+msgid "Felfedés"
+msgstr ""
+
+msgctxt "editor.t.resources"
+msgid "Nyersanyag adása"
+msgstr ""
+
+msgctxt "editor.t.set_var"
+msgid "Változó beállítása"
+msgstr ""
+
+msgctxt "editor.t.add_var"
+msgid "Változó növelése"
+msgstr ""
+
+msgctxt "editor.t.enable"
+msgid "Trigger bekapcsolása"
+msgstr ""
+
+msgctxt "editor.t.disable"
+msgid "Trigger kikapcsolása"
+msgstr ""
+
+msgctxt "editor.t.cutscene"
+msgid "Átvezető indítása"
+msgstr ""
+
+msgctxt "editor.t.camera"
+msgid "Kamera"
+msgstr ""
+
+msgctxt "editor.t.message"
+msgid "Üzenet"
+msgstr ""
+
+msgctxt "editor.t.letterbox"
+msgid "Szélesvásznú sáv"
+msgstr ""
+
+msgctxt "editor.t.subtitle"
+msgid "Felirat"
+msgstr ""
+
+msgctxt "editor.t.win"
+msgid "Győzelem"
+msgstr ""
+
+msgctxt "editor.t.lose"
+msgid "Bukás"
+msgstr ""
+
+msgctxt "editor.t.a.timer"
+msgid "Időzítő indítása"
+msgstr ""
+
+msgctxt "editor.t.a.objective"
+msgid "Cél állapota"
+msgstr ""

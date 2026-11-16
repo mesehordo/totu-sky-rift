@@ -9,6 +9,7 @@
 #include "client/editor_doc.hpp"
 #include "client/editor_ui.hpp"
 #include "client/hud.hpp"
+#include "client/trigger_editor.hpp"
 #include "client/world.hpp"
 
 namespace totu::client {
@@ -16,5 +17,7 @@ namespace totu::client {
 using Translate = std::function<std::string(const std::string&)>;
 void draw_editor(Hud& hud, const EditorUi& ui, const EditorDoc& doc, const Camera& cam, int w, int h,
                  const Translate& tr, const std::vector<std::string>& problems);
+// a trigger-szerkesztő ablaka (F4)
+void draw_trigger_editor(Hud& hud, const TriggerEditor& te, const EditorDoc& doc, float mx, float my, const Translate& tr);
 
 }  // namespace totu::client

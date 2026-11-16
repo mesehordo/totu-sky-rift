@@ -113,4 +113,90 @@ void draw_editor(Hud& hud, const EditorUi& ui, const EditorDoc& doc, const Camer
   (void)h;
 }
 
+void draw_trigger_editor(Hud& hud, const TriggerEditor& te, const EditorDoc& doc, float mx, float my, const Translate& tr) {
+  if (!te.open) return;
+  // a típus neve; az akcióknak saját nevük lehet (pl. timer: esemény „lejár”, akció „indítás”)
+  auto type_name = [&](int section, const std::string& type) {
+    if (section == 2) {
+      const std::string a = tr("editor.t.a." + type);
+      if (a != "editor.t.a." + type) return a;
+    }
+    return tr("editor.t." + type);
+  };
+  const int S = 12, F = 14;
+  auto box = [&](const Rect& r, uint8_t g, uint8_t a) {
+    hud.ui_rect(static_cast<float>(r.x), static_cast<float>(r.y), static_cast<float>(r.w), static_cast<float>(r.h), g, g, static_cast<uint8_t>(g * 9 / 10), a);
+  };
+  auto label = [&](const Rect& r, const std::string& s, uint8_t cr, uint8_t cg, uint8_t cb) {
+    hud.ui_text(S, static_cast<float>(r.x + 6), static_cast<float>(r.y) + (static_cast<float>(r.h) - hud.ui_line_h(S)) / 2, s, cr, cg, cb);
+  };
+  auto button = [&](const Rect& r, const std::string& s, bool active) {
+    const bool hot = r.contains(mx, my);
+    box(r, active ? 80 : hot ? 56 : 38, 255);
+    hud.ui_outline(r, active ? 220 : 100, active ? 190 : 90, active ? 110 : 70);
+    label(r, s, 240, 236, 214);
+  };
+  box(te.window, 20, 245);
+  hud.ui_outline(te.window, 200, 170, 110, 2);
+  // eszközgombok (az engedélyezés és az ismétlés a kijelölt trigger állapotát mutatja)
+  const content::Value* ts = doc.mission().find("triggers");
+  const content::Value* cur = ts && ts->is_array() && te.trigger >= 0 && te.trigger < static_cast<int>(ts->items().size())
+                                  ? &ts->items()[static_cast<size_t>(te.trigger)] : nullptr;
+  for (const auto& b : te.buttons) {
+    bool active = false;
+    if (cur && b.id == 3) {
+      const content::Value* e = cur->find("enabled");
+      active = !e || !e->is_bool() || e->as_bool();
+    }
+    if (cur && b.id == 4) {
+      const content::Value* e = cur->find("repeat");
+      active = e && e->is_bool() && e->as_bool();
+    }
+    button(b.r, tr(b.label), active);
+  }
+  box(te.list_box, 30, 255);
+  for (const auto& it : te.list_items) button(it.r, it.label, it.id == te.trigger);
+  box(te.body_box, 26, 255);
+  for (const auto& r : te.rows) {
+    if (r.index < 0) {   // fejléc + jel
+      label(r.r, tr("editor.trig.section." + r.text) + "   [+]", 255, 214, 120);
+      continue;
+    }
+    const char* sec_key = r.section == 0 ? "event" : r.section == 1 ? "conditions" : "actions";
+    const content::Value* v = nullptr;
+    if (cur) {
+      if (r.section == 0) v = cur->find("event");
+      else if (const content::Value* l = cur->find(sec_key); l && l->is_array() && r.index < static_cast<int>(l->items().size())) {
+        v = &l->items()[static_cast<size_t>(r.index)];
+      }
+    }
+    const std::string text = v ? TriggerEditor::describe(r.section, *v, type_name(r.section, r.text)) : r.text;
+    if (r.selected) box(r.r, 70, 255);
+    else if (r.r.contains(mx, my)) box(r.r, 44, 255);
+    label(r.r, text, 230, 230, 220);
+  }
+  box(te.params_box, 30, 255);
+  for (const auto& b : te.param_buttons) {
+    std::string s = b.label;
+    if (te.field.open && te.field.param == b.id) s = b.label.substr(0, b.label.find(':')) + ": " + te.field.text + "_";
+    button(b.r, s, te.field.open && te.field.param == b.id);
+  }
+  if (!te.status.empty()) {
+    hud.ui_text(S, static_cast<float>(te.params_box.x + 6), static_cast<float>(te.params_box.bottom() - 18), tr(te.status), 255, 150, 120);
+  }
+  if (te.popup.open) {   // felugró lista szűrővel
+    box(te.popup_box, 16, 250);
+    hud.ui_outline(te.popup_box, 230, 200, 130, 2);
+    hud.ui_text(F, static_cast<float>(te.popup_box.x + 8), static_cast<float>(te.popup_box.y + 8),
+                te.popup.title + (te.popup.filter.empty() ? std::string() : "   [" + te.popup.filter + "]"), 255, 214, 120);
+    for (const auto& it : te.popup_items) {
+      std::string s = it.label;
+      const int psec = te.popup.target == -2 ? te.popup.section : te.section;
+      const std::string t = te.popup.target < 0 ? type_name(psec, it.label) : std::string();
+      if (!t.empty() && t != "editor.t." + it.label) s = t + "  (" + it.label + ")";
+      button(it.r, s, false);
+    }
+  }
+}
+
 }  // namespace totu::client

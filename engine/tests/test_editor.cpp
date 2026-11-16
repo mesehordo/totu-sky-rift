@@ -7,6 +7,7 @@
 #include "check.hpp"
 #include "client/editor_doc.hpp"
 #include "client/editor_ui.hpp"
+#include "client/trigger_editor.hpp"
 #include "match_util.hpp"
 #include "sim/mission.hpp"
 
@@ -147,4 +148,70 @@ TEST_CASE("szerkeszto: felulet - eszkozvaltas, ecset huzassal, egyseg lerakasa, 
   CHECK(d.unit_at(40.5, 40.5, 0.2) == -1);
   CHECK(ui.key(d, 'z', true) && d.unit_at(40.5, 40.5, 0.2) == placed);
   CHECK(d.validate(&*content_once().rules, &content_once().terrain).empty());
+}
+
+TEST_CASE("szerkeszto: trigger-szerkeszto - uj trigger, esemeny, feltetel, akcio, parameter, torles, visszavonas") {
+  client::EditorDoc d;
+  std::string err;
+  CHECK(d.create(tmpdir("trigger"), base() + "/maps/kraterfold.json", "tr", &err));
+  CHECK(d.add_region("kapu", 30, 26, 8, 8));
+  CHECK(d.place("urs_hos_ragna", 1, 20, 20, "hos") >= 0);
+  client::TriggerEditor te;
+  te.init(&*content_once().rules);
+  te.open = true;
+  te.layout(1280, 720, d);
+  auto click = [&](const client::Rect& r) {
+    CHECK(te.mouse_down(d, static_cast<float>(r.x + 2), static_cast<float>(r.y + 2), false));
+    te.layout(1280, 720, d);
+  };
+  auto pick = [&](const std::string& opt) {   // a felugró listában gépeléssel szűr, Enterrel választ
+    CHECK(te.popup.open);
+    te.text_input(opt);
+    CHECK(te.key(d, client::TriggerEditor::kEnter));
+    te.layout(1280, 720, d);
+  };
+  click(te.buttons[0].r);   // új trigger (esemény: start)
+  CHECK(te.trigger == 0 && te.list_items.size() == 1 && te.list_items[0].label == "t1");
+  // esemény: belépés régióba
+  click(te.rows[0].r);      // az esemény fejléce
+  pick("enter_region");
+  const content::Value& t0 = d.mission().find("triggers")->items()[0];
+  CHECK(t0.find("event")->find("type")->text() == "enter_region" && t0.find("event")->find("region")->text() == "kapu");
+  // feltétel: a hős él
+  for (const auto& r : te.rows) if (r.index < 0 && r.section == 1) { click(r.r); break; }
+  pick("alive");
+  CHECK(d.mission().find("triggers")->items()[0].find("conditions")->items()[0].find("unit")->text() == "hos");
+  // akció: üzenet, a szöveget beírva
+  for (const auto& r : te.rows) if (r.index < 0 && r.section == 2) { click(r.r); break; }
+  pick("message");
+  CHECK(te.section == 2 && te.line == 0 && !te.param_buttons.empty());
+  click(te.param_buttons[0].r);   // text
+  CHECK(te.field.open);
+  te.field.text.clear();
+  te.text_input("Szia, kapu!");
+  CHECK(te.key(d, client::TriggerEditor::kEnter));
+  te.layout(1280, 720, d);
+  CHECK(d.mission().find("triggers")->items()[0].find("actions")->items()[0].find("text")->text() == "Szia, kapu!");
+  // szám mező: nem szám → hiba, nem kerül be
+  click(te.param_buttons[1].r);   // ticks
+  te.text_input("abc");
+  te.key(d, client::TriggerEditor::kEnter);
+  CHECK(te.status == "editor.trig.not_number");
+  // a kész küldetés érvényes, és a motor futtatja
+  CHECK(d.validate(&*content_once().rules, &content_once().terrain).empty());
+  // az akció törlése és visszavonása
+  te.layout(1280, 720, d);
+  CHECK(te.key(d, client::TriggerEditor::kDelete));
+  CHECK(d.mission().find("triggers")->items()[0].find("actions")->items().empty());
+  CHECK(d.undo());
+  CHECK(d.mission().find("triggers")->items()[0].find("actions")->items().size() == 1);
+  // ismétlés kapcsoló, majd a trigger törlése
+  te.layout(1280, 720, d);
+  click(te.buttons[3].r);
+  CHECK(d.mission().find("triggers")->items()[0].find("repeat")->as_bool());
+  click(te.buttons[1].r);
+  CHECK(d.mission().find("triggers")->items().empty());
+  // mondatszerű leírás
+  const auto ev = content::parse(R"({"type": "enter_region", "region": "kapu", "owner": 1})");
+  CHECK(client::TriggerEditor::describe(0, *ev, "Belépés") == "Belépés (region = kapu, owner = 1)");
 }

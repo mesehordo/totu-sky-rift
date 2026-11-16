@@ -8620,3 +8620,195 @@ msgstr "Saved (Ctrl+S)"
 msgctxt "editor.err.place"
 msgid "Ide nem rakható"
 msgstr "Cannot place here"
+
+msgctxt "editor.trig.new"
+msgid "Új trigger"
+msgstr "New trigger"
+
+msgctxt "editor.trig.delete"
+msgid "Törlés"
+msgstr "Delete"
+
+msgctxt "editor.trig.enabled"
+msgid "Engedélyezve"
+msgstr "Enabled"
+
+msgctxt "editor.trig.repeat"
+msgid "Ismétlődik"
+msgstr "Repeats"
+
+msgctxt "editor.trig.close"
+msgid "Bezár (F4)"
+msgstr "Close (F4)"
+
+msgctxt "editor.trig.not_number"
+msgid "Ide szám kell"
+msgstr "A number is required"
+
+msgctxt "editor.trig.section.event"
+msgid "Esemény"
+msgstr "Event"
+
+msgctxt "editor.trig.section.conditions"
+msgid "Feltételek"
+msgstr "Conditions"
+
+msgctxt "editor.trig.section.actions"
+msgid "Akciók"
+msgstr "Actions"
+
+msgctxt "editor.t.start"
+msgid "A küldetés indulása"
+msgstr "Mission start"
+
+msgctxt "editor.t.time"
+msgid "Időpont"
+msgstr "Time"
+
+msgctxt "editor.t.enter_region"
+msgid "Belépés régióba"
+msgstr "Unit enters region"
+
+msgctxt "editor.t.leave_region"
+msgid "Kilépés régióból"
+msgstr "Unit leaves region"
+
+msgctxt "editor.t.unit_dies"
+msgid "Egység elesik"
+msgstr "Unit dies"
+
+msgctxt "editor.t.count"
+msgid "Darabszám"
+msgstr "Count"
+
+msgctxt "editor.t.always"
+msgid "Minden tickben"
+msgstr "Every tick"
+
+msgctxt "editor.t.dialogue_end"
+msgid "Párbeszéd vége"
+msgstr "Dialogue ends"
+
+msgctxt "editor.t.choice"
+msgid "Válasz a párbeszédben"
+msgstr "Dialogue choice"
+
+msgctxt "editor.t.objective_done"
+msgid "Cél teljesül"
+msgstr "Objective completed"
+
+msgctxt "editor.t.timer"
+msgid "Időzítő lejár"
+msgstr "Timer expires"
+
+msgctxt "editor.t.cutscene_end"
+msgid "Átvezető vége"
+msgstr "Cutscene ends"
+
+msgctxt "editor.t.var"
+msgid "Változó"
+msgstr "Variable"
+
+msgctxt "editor.t.alive"
+msgid "Él"
+msgstr "Is alive"
+
+msgctxt "editor.t.dead"
+msgid "Halott"
+msgstr "Is dead"
+
+msgctxt "editor.t.in_region"
+msgid "Régióban van"
+msgstr "Is in region"
+
+msgctxt "editor.t.objective"
+msgid "Cél"
+msgstr "Objective"
+
+msgctxt "editor.t.resource"
+msgid "Nyersanyag"
+msgstr "Resource"
+
+msgctxt "editor.t.tick"
+msgid "Játékidő (tick)"
+msgstr "Game time (tick)"
+
+msgctxt "editor.t.dialogue"
+msgid "Párbeszéd indítása"
+msgstr "Start dialogue"
+
+msgctxt "editor.t.spawn"
+msgid "Egység létrehozása"
+msgstr "Create units"
+
+msgctxt "editor.t.order"
+msgid "Parancs"
+msgstr "Issue order"
+
+msgctxt "editor.t.kill"
+msgid "Megölés"
+msgstr "Kill"
+
+msgctxt "editor.t.remove"
+msgid "Eltávolítás"
+msgstr "Remove"
+
+msgctxt "editor.t.reveal"
+msgid "Felfedés"
+msgstr "Reveal"
+
+msgctxt "editor.t.resources"
+msgid "Nyersanyag adása"
+msgstr "Give resources"
+
+msgctxt "editor.t.set_var"
+msgid "Változó beállítása"
+msgstr "Set variable"
+
+msgctxt "editor.t.add_var"
+msgid "Változó növelése"
+msgstr "Increase variable"
+
+msgctxt "editor.t.enable"
+msgid "Trigger bekapcsolása"
+msgstr "Enable trigger"
+
+msgctxt "editor.t.disable"
+msgid "Trigger kikapcsolása"
+msgstr "Disable trigger"
+
+msgctxt "editor.t.cutscene"
+msgid "Átvezető indítása"
+msgstr "Play cutscene"
+
+msgctxt "editor.t.camera"
+msgid "Kamera"
+msgstr "Camera"
+
+msgctxt "editor.t.message"
+msgid "Üzenet"
+msgstr "Message"
+
+msgctxt "editor.t.letterbox"
+msgid "Szélesvásznú sáv"
+msgstr "Letterbox"
+
+msgctxt "editor.t.subtitle"
+msgid "Felirat"
+msgstr "Subtitle"
+
+msgctxt "editor.t.win"
+msgid "Győzelem"
+msgstr "Victory"
+
+msgctxt "editor.t.lose"
+msgid "Bukás"
+msgstr "Defeat"
+
+msgctxt "editor.t.a.timer"
+msgid "Időzítő indítása"
+msgstr "Start timer"
+
+msgctxt "editor.t.a.objective"
+msgid "Cél állapota"
+msgstr "Set objective"
