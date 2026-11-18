@@ -431,3 +431,16 @@ A tulajdonos döntése ([ADR-010](dontesek/ADR-010-kuldetesek.md)), a WC3, a 0 A
 3. **Párbeszéd: saját JSON** (beszélő, portré, szövegkulcs a .po-ból, válaszok, feltétel, változó).
 4. **Mintaküldetés:** történetfüggetlen kipróbáló pálya, amely minden elemet bemutat; a hadjárat küldetései a
    jóváhagyott tervlapok után.
+
+### D46 – Az M12 iránya és az előtte álló irányítási csomag · ELDÖNTVE (2026-11-18)
+
+A tulajdonos döntése a két RTS-videó feldolgozása és a tervezési kézikönyv (2026-11-18) alapján:
+1. **M12 – a kézikönyv „B” útja:** győzelmi feltételek és választható tempóprofilok (pl. nyugodt építkezés, klasszikus,
+   gyors támadások, túlélés), mellettük egy **szűk, eldobható hadjárattérkép-prototípus** (3 pálya, 2 választható
+   sorrend, 1 tartós döntés, 1 következmény) külön szabályrétegben – a skirmish és a multiplayer nem örököl belőle
+   semmit. A teljes hadjárattérkép (tartományok, körök, seregek, csatagenerálás, automatikus kiértékelés – D20) csak
+   játékosteszt után. A D20 ezzel pontosítva: a két mód marad, a hadjárattérkép fokozatosan.
+2. **Az M12 előtt irányítási csomag** (a kézikönyv szerint P0): kontrollcsoportok (Ctrl+szám), Shift-parancssor, járőr,
+   vonalra mozgatás; az alakzatválasztás más billentyűre kerül.
+3. **Munkamód:** marad (commit és push a main-re, a tiltott-szó kapuval); az anti-slop audit (alapállapot, UI-stílus,
+   szöveg- és ikonleltár) és a helyi JSON-diagnosztika külön csomagként az M12 után.
