@@ -869,3 +869,17 @@ A tulajdonos négy anyagát néztem át: a tervezési kézikönyvet (1.0 és a k
 
 **`MatchSetup::victory`** (munkanevek – a játékbeli nevüket a tulajdonos adja, D20): **Hódítás** (a régi szabály), **Főváros** (a főépület elvesztése is vereség), **Dombkirály** (a pálya közepét – 8×8 csempe – egyedül, illetve szövetségeseivel tartó játékos `minutes` perc után nyer; vitatott dombon nem gyűlik), **Időkorlát** (`minutes` perc után a legtöbb pont: gyűjtés + 50/épület + 10/egység; egyenlőségnél a kisebb sorszám). **`MatchSetup::tempo`**: **Klasszikus** (változatlan), **Nyugodt építkezés** (10 perc béke a játékosok között – a `hostile` szerint; a Vadon továbbra is ellenséges), **Gyors támadások** (kétszeres kezdő nyersanyag), **Túlélés** (a játékosok nem harcolnak egymással; a 3. perctől 90 s-onként a Vadon hulláma a pálya egyik sarkából a legközelebbi játékosépület felé, egyre nagyobb; `minutes` perc után győzelem). Alapértelmezésben a hash és a mentés a korábbi (a rögzített hash-ek és a goldenek **változatlanok**); mentés 19, visszajátszás 8-as változat (a mód a meccsleírásban, így a hálózat is viszi). **Kliens:** a Csata-képernyőn két új lenyíló (Győzelem, Tempó; a beállítások négy oszlopban), a HUD az óra mellett mutatja a béke hátralévő idejét, a domb állását, az időkorlátot, illetve a hullámot és a túlélés idejét. **Átnevezés:** az „Egyéni csata” mostantól **Csata** (angolul Skirmish). Próbák: az alapmód hatástalan, Főváros, Dombkirály, Időkorlát, Nyugodt (nem harcolnak), Gyors (kétszeres nyersanyag), Túlélés (hullám, mentésből folytatva ugyanaz). Kép: `docs/fejlesztes/kepek/m12_csata_beallitas.png`.
 **Tesztek:** 364 + 9 CTest.
+
+## 2026-11-18 – M12: választható küldetéssorrend; átnevezés: hadjárat → küldetéssor (D47)
+
+**Fogalom (D47):** a hadjárat a területfoglaló térkép (D20/K3), a történetes pályák sora a **küldetéssor**. Az M11 része
+átnevezve: `sim/campaign` → `sim/chain` (`ChainDef`, `ChainState`, `ChainMission`), `content/base/campaigns` →
+`content/base/chains` (`chain.json`), `--campaign` → `--chain`, a profil `kuldetessor_<azonosító>.json`, a kulcsok
+`chain.*`; a menü „Hadjárat” pontja (`ui.main.campaign`) a területfoglaló térképé marad.
+**Választható sorrend (`pick`):** a küldetés `requires` listája (a felsoroltak teljesítve → megnyílik), térképhelye
+(`x`, `y`, 0–1) és neve; `available_missions`, `choose_mission`; győzelem után egy megnyílt küldetésnél az jön, többnél
+a választó képernyő (csomópontok, szaggatott vonal a feltételekhez, teljesítve/nyitva/zárva, kattintás); a választás
+közben mentett profil is folytatható. **Minta** (`chains/valaszto`): a táborban szövetségi döntés (`szov`), utána a
+nyugati hágó és a keleti gázló tetszőleges sorrendben; a következmény: szövetségben három segítő érkezik a kezdéskor.
+Próba: mindkét döntés és mindkét sorrend, zárt küldetés nem választható, a profil oda-vissza, a végén nincs több.
+Kép: `docs/fejlesztes/kepek/m12_kuldetesvalaszto.png`.

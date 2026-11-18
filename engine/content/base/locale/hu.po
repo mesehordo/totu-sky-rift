@@ -8864,56 +8864,56 @@ msgctxt "editor.trig.close5"
 msgid "Bezár (F5)"
 msgstr ""
 
-msgctxt "campaign.proba.name"
-msgid "Próbahadjárat"
+msgctxt "chain.proba.name"
+msgid "Próba-küldetéssor"
 msgstr ""
 
-msgctxt "campaign.proba.k1"
+msgctxt "chain.proba.k1"
 msgid "Az elágazás"
 msgstr ""
 
-msgctxt "campaign.proba.k2a"
+msgctxt "chain.proba.k2a"
 msgid "A hegyi út"
 msgstr ""
 
-msgctxt "campaign.proba.k2b"
+msgctxt "chain.proba.k2b"
 msgid "A völgyi út"
 msgstr ""
 
-msgctxt "campaign.proba.d_ut"
+msgctxt "chain.proba.d_ut"
 msgid "Két út vezet tovább. Merre menjünk?"
 msgstr ""
 
-msgctxt "campaign.proba.c_hegy"
+msgctxt "chain.proba.c_hegy"
 msgid "A hegyen át."
 msgstr ""
 
-msgctxt "campaign.proba.c_volgy"
+msgctxt "chain.proba.c_volgy"
 msgid "A völgyön át."
 msgstr ""
 
-msgctxt "campaign.proba.o_k2a"
+msgctxt "chain.proba.o_k2a"
 msgid "Érd el a hágót"
 msgstr ""
 
-msgctxt "campaign.proba.o_k2b"
+msgctxt "chain.proba.o_k2b"
 msgid "Érd el a gázlót"
 msgstr ""
 
-msgctxt "campaign.proba.m_k2a"
+msgctxt "chain.proba.m_k2a"
 msgid "A hegyi úton hideg a szél."
 msgstr ""
 
-msgctxt "campaign.proba.m_k2b"
+msgctxt "chain.proba.m_k2b"
 msgid "A völgyben köd ül."
 msgstr ""
 
-msgctxt "campaign.next"
+msgctxt "chain.next"
 msgid "Tovább a következő küldetésre (Enter)"
 msgstr ""
 
-msgctxt "campaign.end"
-msgid "A hadjárat véget ért."
+msgctxt "chain.end"
+msgid "A küldetéssor véget ért."
 msgstr ""
 
 msgctxt "editor.data.objects"
@@ -8974,4 +8974,60 @@ msgstr ""
 
 msgctxt "hud.mode.survival"
 msgid "Hullám {} · {}"
+msgstr ""
+
+msgctxt "chain.valaszto.name"
+msgid "Választós próba-küldetéssor"
+msgstr ""
+
+msgctxt "chain.valaszto.tabor"
+msgid "A tábor"
+msgstr ""
+
+msgctxt "chain.valaszto.nyugat"
+msgid "A nyugati hágó"
+msgstr ""
+
+msgctxt "chain.valaszto.kelet"
+msgid "A keleti gázló"
+msgstr ""
+
+msgctxt "chain.valaszto.d_szov"
+msgid "A farkasok szövetséget ajánlanak. Elfogadjuk?"
+msgstr ""
+
+msgctxt "chain.valaszto.c_igen"
+msgid "Elfogadjuk."
+msgstr ""
+
+msgctxt "chain.valaszto.c_nem"
+msgid "Egyedül megyünk."
+msgstr ""
+
+msgctxt "chain.valaszto.o_nyugat"
+msgid "Érd el a hágót"
+msgstr ""
+
+msgctxt "chain.valaszto.o_kelet"
+msgid "Érd el a gázlót"
+msgstr ""
+
+msgctxt "chain.valaszto.m_szov"
+msgid "A szövetségesek harcosokat küldtek."
+msgstr ""
+
+msgctxt "chain.valaszto.m_egyedul"
+msgid "Senki sem jött segíteni."
+msgstr ""
+
+msgctxt "chain.pick.title"
+msgid "KÜLDETÉSSOR"
+msgstr ""
+
+msgctxt "chain.pick.hint"
+msgid "Válassz küldetést (kattintás)"
+msgstr ""
+
+msgctxt "chain.pick.done"
+msgid "teljesítve"
 msgstr ""

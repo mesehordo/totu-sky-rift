@@ -1,6 +1,6 @@
 {
   "id": "proba",
-  "name": "campaign.proba.name",
+  "name": "chain.proba.name",
   "start": "k1",
   "missions": [
     {"id": "k1", "dir": "k1", "carry": ["ragna"], "keep": ["ut"],

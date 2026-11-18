@@ -46,7 +46,7 @@
 #include "core/platform_info.hpp"
 #include "net/content_hash.hpp"
 #include "net/relay_server.hpp"
-#include "sim/campaign.hpp"
+#include "sim/chain.hpp"
 #include "sim/mission.hpp"
 #include "client/hud.hpp"
 #include "client/i18n.hpp"
@@ -112,7 +112,7 @@ struct Options {
   int rejoin = 0;
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
   std::string editor;    // M11: a szerkesztő (a küldetés mappája)
-  std::string campaign;  // M11: hadjárat (a hadjárat mappája; a profil a felhasználói mappában)
+  std::string chain;  // M11: küldetéssor (a küldetéssor mappája; a profil a felhasználói mappában)
   bool trigger_editor = false;   // képpróbához: a trigger-szerkesztő nyitva indul
   int data_editor = -1;          // képpróbához: az adatszerkesztő nyitva, ezzel a füllel
 };
@@ -318,7 +318,7 @@ int main(int argc, char** argv) {
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
     else if (a == "--editor") o.editor = next();
-    else if (a == "--campaign") o.campaign = next();
+    else if (a == "--chain") o.chain = next();
     else if (a == "--trigger-editor") o.trigger_editor = true;
     else if (a == "--data-editor") o.data_editor = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--host") o.host_port = static_cast<int>(std::strtol(next(), nullptr, 10));
@@ -373,7 +373,7 @@ int main(int argc, char** argv) {
   // M8: a felhasználói beállítások (platformfüggetlen helyen) és a nyelvek (a locale mappák .po fájljai)
   if (!o.mission.empty() && o.world.empty()) o.world = o.mission;
   if (!o.editor.empty() && o.world.empty()) o.world = o.editor;
-  if (!o.campaign.empty() && o.world.empty()) o.world = o.campaign;   // a világnézet ága (a pályát a küldetés adja)
+  if (!o.chain.empty() && o.world.empty()) o.world = o.chain;   // a világnézet ága (a pályát a küldetés adja)
   const bool menu_mode = o.menu || (o.world.empty() && o.atlas.empty() && o.demo == 0 && !o.bench);
   client::Settings settings;
   std::string settings_file;
@@ -426,10 +426,17 @@ int main(int argc, char** argv) {
     client::NetPlay netplay;
     std::unique_ptr<sim::MatchInstance> mission_match;   // M11: a küldetés meccse (a munkamenet csak hivatkozik rá)
     std::string mission_cam;                            // az utolsó követett kameraparancs
-    std::optional<sim::CampaignDef> camp_def;           // M11: hadjárat
-    sim::CampaignState camp_state;
-    std::string camp_profile;
-    bool camp_over = false;
+    std::optional<sim::ChainDef> chain_def;           // M11: küldetéssor
+    sim::ChainState chain_state;
+    std::string chain_profile;
+    bool chain_over = false;
+    bool chain_pick = false;   // M12: a küldetésválasztó látszik (a játékos választ a megnyílt küldetések közül)
+    // a térkép egy csomópontjának téglalapja (képernyő-koordináta)
+    auto chain_node = [](const sim::ChainMission& m, int w, int h) {
+      const float pw = std::min(static_cast<float>(w) - 80.0f, 900.0f), ph = std::min(static_cast<float>(h) - 140.0f, 560.0f);
+      const float px = (static_cast<float>(w) - pw) / 2, py = (static_cast<float>(h) - ph) / 2;
+      return std::array<float, 4>{px + m.mx * pw - 100.0f, py + m.my * ph - 24.0f, 200.0f, 48.0f};
+    };
     // küldetés indulásakor a kamera a helyi játékos első egységére (az átvezető kamerája később felülírja)
     auto center_on_local = [&](client::Camera& c, int vw, int vh) {
       if (!mission_match || !mission_match->sim) return;
@@ -618,34 +625,43 @@ int main(int argc, char** argv) {
           editor_problems = edoc.validate(session.content_rules(), session.terrain_ptr());
           return true;
         };
-        auto start_campaign = [&]() -> bool {   // M11: a hadjárat (a profil folytatása, ha van)
+        auto start_chain = [&]() -> bool {   // M11: a küldetéssor (a profil folytatása, ha van)
           if (!session.load_content(o.content, &err)) return false;
-          std::ifstream cin_(std::filesystem::path(o.campaign) / "campaign.json", std::ios::binary);
+          std::ifstream cin_(std::filesystem::path(o.chain) / "chain.json", std::ios::binary);
           const std::string ctext{std::istreambuf_iterator<char>(cin_), std::istreambuf_iterator<char>()};
           std::vector<std::string> cerrs;
-          camp_def = sim::CampaignDef::parse(ctext, cerrs);
-          if (!camp_def) {
-            err = cerrs.empty() ? "hibás hadjárat" : cerrs.front();
+          chain_def = sim::ChainDef::parse(ctext, cerrs);
+          if (!chain_def) {
+            err = cerrs.empty() ? "hibás küldetéssor" : cerrs.front();
             return false;
           }
-          camp_state = sim::CampaignState::fresh(*camp_def);
+          chain_state = sim::ChainState::fresh(*chain_def);
           if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
-            camp_profile = (std::filesystem::path(pref) / ("hadjarat_" + camp_def->id + ".json")).string();
+            chain_profile = (std::filesystem::path(pref) / ("kuldetessor_" + chain_def->id + ".json")).string();
             SDL_free(pref);
-            std::ifstream pin(camp_profile, std::ios::binary);
+            std::ifstream pin(chain_profile, std::ios::binary);
             const std::string ptext{std::istreambuf_iterator<char>(pin), std::istreambuf_iterator<char>()};
             if (const auto pv = content::parse(ptext)) {
-              if (auto ps = sim::CampaignState::from_json(*pv); ps && ps->campaign == camp_def->id && !ps->current.empty()) camp_state = *ps;
+              if (auto ps = sim::ChainState::from_json(*pv); ps && ps->chain == chain_def->id) {
+                const auto av = sim::available_missions(*chain_def, *ps);
+                if (!ps->current.empty()) {
+                  chain_state = *ps;
+                } else if (!av.empty()) {   // választás közben mentett profil: a térkép, mögötte az első megnyílt küldetés
+                  chain_state = *ps;
+                  chain_state.current = av.front();
+                  chain_pick = true;
+                }
+              }
             }
           }
-          auto desc = sim::prepare_mission(*camp_def, camp_state, o.campaign, o.maps, 20261116, &err);
+          auto desc = sim::prepare_mission(*chain_def, chain_state, o.chain, o.maps, 20261116, &err);
           if (!desc) return false;
           mission_match = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err);
           if (!mission_match) return false;
           session.adopt(*mission_match);
           return true;
         };
-        const bool loaded = net_game ? start_net() : !o.campaign.empty() ? start_campaign() : !o.editor.empty() ? start_editor()
+        const bool loaded = net_game ? start_net() : !o.chain.empty() ? start_chain() : !o.editor.empty() ? start_editor()
                             : !o.mission.empty() ? start_mission() : session.load(o.content, o.world, 20261112, &err);
         if (!loaded || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
@@ -888,19 +904,59 @@ int main(int argc, char** argv) {
             if (ev.type != SDL_EVENT_MOUSE_WHEEL && ev.type != SDL_EVENT_QUIT) continue;   // a többi a kamerának (görgő)
           }
         }
-        if (camp_def && have_world && ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat &&
-            (ev.key.key == SDLK_RETURN || ev.key.key == SDLK_KP_ENTER) && mission_match && mission_match->mission &&
-            mission_match->mission->result() == sim::MissionHost::Result::Won && !camp_over) {
-          // M11: a hadjárat következő küldetése (a szimulációs szál áll, amíg a meccs cserélődik)
-          runner.stop();
-          sim::finish_mission(*camp_def, camp_state, *mission_match);
-          if (!camp_profile.empty()) {
-            std::ofstream pout(camp_profile, std::ios::binary | std::ios::trunc);
-            pout << content::dump_pretty(camp_state.to_json());
+        if (chain_def && chain_pick && have_world) {   // M12: a küldetésválasztó elnyeli a bemenetet
+          if (ev.type != SDL_EVENT_MOUSE_BUTTON_DOWN || ev.button.button != SDL_BUTTON_LEFT) {
+            if (ev.type == SDL_EVENT_QUIT) running = false;
+            continue;
           }
-          if (camp_state.current.empty()) {
-            camp_over = true;
-          } else if (auto desc = sim::prepare_mission(*camp_def, camp_state, o.campaign, o.maps, 20261116, &err)) {
+          int cw = 0, ch = 0;
+          SDL_GetWindowSizeInPixels(win, &cw, &ch);
+          std::string picked;
+          for (const auto& id : sim::available_missions(*chain_def, chain_state)) {
+            const auto r = chain_node(*chain_def->mission(id), cw, ch);
+            if (ev.button.x >= r[0] && ev.button.x < r[0] + r[2] && ev.button.y >= r[1] && ev.button.y < r[1] + r[3]) picked = id;
+          }
+          if (picked.empty() || !sim::choose_mission(*chain_def, chain_state, picked)) continue;
+          runner.stop();
+          if (!chain_profile.empty()) {
+            std::ofstream pout(chain_profile, std::ios::binary | std::ios::trunc);
+            pout << content::dump_pretty(chain_state.to_json());
+          }
+          chain_pick = false;
+          if (auto desc = sim::prepare_mission(*chain_def, chain_state, o.chain, o.maps, 20261116, &err)) {
+            if (auto nm = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err)) {
+              session.adopt(*nm);
+              mission_match = std::move(nm);
+              runner.reset_snapshots();
+              terrain.set_map(world.map(), world.terrain());
+              mission_cam.clear();
+              center_on_local(cam, cw, ch);
+            }
+          }
+          runner.start();
+          continue;
+        }
+        if (chain_def && have_world && ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat &&
+            (ev.key.key == SDLK_RETURN || ev.key.key == SDLK_KP_ENTER) && mission_match && mission_match->mission &&
+            mission_match->mission->result() == sim::MissionHost::Result::Won && !chain_over) {
+          // M11: a küldetéssor következő küldetése (a szimulációs szál áll, amíg a meccs cserélődik)
+          runner.stop();
+          sim::finish_mission(*chain_def, chain_state, *mission_match);
+          if (!chain_profile.empty()) {
+            std::ofstream pout(chain_profile, std::ios::binary | std::ios::trunc);
+            pout << content::dump_pretty(chain_state.to_json());
+          }
+          if (chain_state.current.empty()) {
+            chain_pick = !sim::available_missions(*chain_def, chain_state).empty();   // M12: választás a térképen
+            chain_over = !chain_pick;
+            if (chain_pick) chain_state.current = sim::available_missions(*chain_def, chain_state).front();   // csak a háttér
+            if (chain_pick) {
+              runner.start();
+              continue;
+            }
+          }
+          if (chain_over) {
+          } else if (auto desc = sim::prepare_mission(*chain_def, chain_state, o.chain, o.maps, 20261116, &err)) {
             if (auto nm = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err)) {
               session.adopt(*nm);
               mission_match = std::move(nm);
@@ -911,7 +967,7 @@ int main(int argc, char** argv) {
               SDL_GetWindowSizeInPixels(win, &cw, &ch);
               center_on_local(cam, cw, ch);
             } else {
-              std::fprintf(stderr, "hadjárat: %s\n", err.c_str());
+              std::fprintf(stderr, "küldetéssor: %s\n", err.c_str());
             }
           }
           runner.start();
@@ -1229,9 +1285,50 @@ int main(int argc, char** argv) {
           hf.cam_h = static_cast<float>(h) / cam.zoom;
           batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
           hud.draw(batch, white, hf);
-          if (camp_def && mission_match && mission_match->mission && mission_match->mission->result() == sim::MissionHost::Result::Won) {
+          if (chain_def && chain_pick) {   // M12: küldetésválasztó – vonalak a feltételekhez, csomópontok, cím
+            auto box = [&](float x, float y, float bw, float bh, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+              render::SpriteInstance q;
+              q.x = x;
+              q.y = y;
+              q.w = bw;
+              q.h = bh;
+              q.tint[0] = r;
+              q.tint[1] = g;
+              q.tint[2] = b;
+              q.tint[3] = a;
+              batch.draw(white, nullptr, q);
+            };
+            box(0, 0, static_cast<float>(w), static_cast<float>(h), 12, 14, 20, 255);
+            const auto av = sim::available_missions(*chain_def, chain_state);
+            auto has = [](const std::vector<std::string>& v, const std::string& x) { return std::find(v.begin(), v.end(), x) != v.end(); };
+            for (const auto& m : chain_def->missions) {
+              const auto b = chain_node(m, w, h);
+              for (const auto& req : m.needs) {
+                const auto a = chain_node(*chain_def->mission(req), w, h);
+                const float x0 = a[0] + a[2] / 2, y0 = a[1] + a[3] / 2, x1 = b[0] + b[2] / 2, y1 = b[1] + b[3] / 2;
+                const int n = static_cast<int>(std::hypot(x1 - x0, y1 - y0) / 6.0f);
+                for (int i = 0; i <= n; i += 2) {   // szaggatott vonal
+                  const float f = n > 0 ? static_cast<float>(i) / static_cast<float>(n) : 0.0f;
+                  box(x0 + (x1 - x0) * f - 2, y0 + (y1 - y0) * f - 2, 4, 4, 170, 150, 110, 220);
+                }
+              }
+            }
+            for (const auto& m : chain_def->missions) {
+              const auto b = chain_node(m, w, h);
+              const bool done = has(chain_state.done, m.id), open = has(av, m.id);
+              const bool hover = open && hf.mx >= b[0] && hf.mx < b[0] + b[2] && hf.my >= b[1] && hf.my < b[1] + b[3];
+              box(b[0] - 2, b[1] - 2, b[2] + 4, b[3] + 4, hover ? 250 : open ? 210 : 70, hover ? 220 : open ? 170 : 70,
+                  hover ? 120 : open ? 80 : 70, 255);
+              box(b[0], b[1], b[2], b[3], done ? 40 : 30, done ? 60 : 32, done ? 40 : 44, 255);
+              const uint8_t c = open || done ? 235 : 120;
+              hud.text(batch, 16, b[0] + 10, b[1] + 6, locale.tr(m.name.empty() ? m.id : m.name), c, c, c - 20);
+              if (done) hud.text(batch, 12, b[0] + 10, b[1] + 28, locale.tr("chain.pick.done"), 150, 200, 150);
+            }
+            hud.text(batch, 32, static_cast<float>(w) / 2 - 140, 24, locale.tr("chain.pick.title"), 240, 220, 160);
+            hud.text(batch, 16, static_cast<float>(w) / 2 - 170, static_cast<float>(h) - 40, locale.tr("chain.pick.hint"), 200, 200, 200);
+          } else if (chain_def && mission_match && mission_match->mission && mission_match->mission->result() == sim::MissionHost::Result::Won) {
             hud.text(batch, 18, static_cast<float>(w) / 2 - 170, static_cast<float>(h) / 2 + 48,
-                     locale.tr(camp_over ? "campaign.end" : "campaign.next"), 240, 230, 200);
+                     locale.tr(chain_over ? "chain.end" : "chain.next"), 240, 230, 200);
           }
           if (game_paused) {   // szünetmenü: sötétítés, cím, a két lehetőség
             render::SpriteInstance dim;

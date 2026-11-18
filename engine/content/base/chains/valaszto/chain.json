@@ -1,0 +1,56 @@
+{
+  "id": "valaszto",
+  "name": "chain.valaszto.name",
+  "start": "tabor",
+  "pick": true,
+  "missions": [
+    {
+      "id": "tabor",
+      "dir": "tabor",
+      "name": "chain.valaszto.tabor",
+      "x": 0.5,
+      "y": 0.75,
+      "carry": [
+        "ragna"
+      ],
+      "keep": [
+        "szov"
+      ],
+      "next": []
+    },
+    {
+      "id": "nyugat",
+      "dir": "nyugat",
+      "name": "chain.valaszto.nyugat",
+      "x": 0.25,
+      "y": 0.35,
+      "requires": [
+        "tabor"
+      ],
+      "carry": [
+        "ragna"
+      ],
+      "keep": [
+        "szov"
+      ],
+      "next": []
+    },
+    {
+      "id": "kelet",
+      "dir": "kelet",
+      "name": "chain.valaszto.kelet",
+      "x": 0.75,
+      "y": 0.35,
+      "requires": [
+        "tabor"
+      ],
+      "carry": [
+        "ragna"
+      ],
+      "keep": [
+        "szov"
+      ],
+      "next": []
+    }
+  ]
+}

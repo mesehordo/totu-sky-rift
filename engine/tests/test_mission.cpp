@@ -9,7 +9,7 @@
 #include "check.hpp"
 #include "match_util.hpp"
 #include "script/host.hpp"
-#include "sim/campaign.hpp"
+#include "sim/chain.hpp"
 #include "sim/mission.hpp"
 #include "sim/replay.hpp"
 
@@ -213,16 +213,16 @@ bool win_k1(sim::MatchInstance& m, int choice, int32_t xp_milli) {
 }
 }  // namespace
 
-TEST_CASE("hadjarat: elagazas a dontes szerint, a hos atvitele, a profil mentese es visszaolvasasa") {
-  const std::string dir = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "campaigns" / "proba").string();
+TEST_CASE("kuldetessor: elagazas a dontes szerint, a hos atvitele, a profil mentese es visszaolvasasa") {
+  const std::string dir = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "chains" / "proba").string();
   const std::string maps = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps").string();
   std::vector<std::string> errs;
-  const auto def = sim::CampaignDef::parse(read_file(std::filesystem::path(dir) / "campaign.json"), errs);
+  const auto def = sim::ChainDef::parse(read_file(std::filesystem::path(dir) / "chain.json"), errs);
   for (const auto& e : errs) std::printf("  %s\n", e.c_str());
   CHECK(def.has_value());
   if (!def) return;
   for (const int choice : {0, 1}) {   // 0: a hegyen át (ut = 1) → k2a; 1: a völgyön át (ut = 2) → k2b
-    sim::CampaignState st = sim::CampaignState::fresh(*def);
+    sim::ChainState st = sim::ChainState::fresh(*def);
     std::string err;
     auto r1 = sim::prepare_mission(*def, st, dir, maps, 9, &err);
     CHECK(r1.has_value());
@@ -236,7 +236,7 @@ TEST_CASE("hadjarat: elagazas a dontes szerint, a hos atvitele, a profil mentese
     CHECK(st.current == (choice == 0 ? "k2a" : "k2b") && st.flags["ut"] == (choice == 0 ? 1 : 2));
     CHECK(st.heroes.count("ragna") && st.done == std::vector<std::string>{"k1"});
     // a profil JSON-ban oda-vissza
-    const auto back = sim::CampaignState::from_json(*content::parse(content::dump(st.to_json())));
+    const auto back = sim::ChainState::from_json(*content::parse(content::dump(st.to_json())));
     CHECK(back && back->current == st.current && back->flags == st.flags && back->heroes.at("ragna") == st.heroes.at("ragna"));
     // a következő küldetésben a hős ugyanazzal a szinttel és tapasztalattal indul, a döntés változója átjön
     auto r2 = sim::prepare_mission(*def, *back, dir, maps, 9, &err);
@@ -253,9 +253,79 @@ TEST_CASE("hadjarat: elagazas a dontes szerint, a hos atvitele, a profil mentese
     const auto* h2 = m2->sim->world().get<sim::Health>(m2->mission->named("ragna")->front());
     CHECK(h2 && h2->max > 0);
   }
-  // hibás hadjárat: ismeretlen következő küldetés
+  // hibás küldetéssor: ismeretlen következő küldetés
   std::vector<std::string> e2;
-  CHECK(!sim::CampaignDef::parse(R"({"id": "x", "start": "a", "missions": [{"id": "a", "dir": "a", "next": [{"to": "nincs"}]}]})", e2));
+  CHECK(!sim::ChainDef::parse(R"({"id": "x", "start": "a", "missions": [{"id": "a", "dir": "a", "next": [{"to": "nincs"}]}]})", e2));
+  CHECK(!e2.empty());
+}
+
+namespace {
+// egy küldetés megnyerése: (ha van) a szövetségi válasz, aztán a hős a célrégióba
+bool win_leg(sim::MatchInstance& m, int choice, const char* region) {
+  sim::Sim& s = *m.sim;
+  run(m, 2);
+  if (choice >= 0) {
+    if (m.mission->dialogue().dialogue != "szovetseg") return false;
+    s.queue(choose("szovetseg", choice, s.tick()));
+    run(m, 2);
+  }
+  const sim::MissionRegion* r = m.mission->def().region(region);
+  if (!r) return false;
+  const sim::EntityId ragna = m.mission->named("ragna")->front();
+  s.queue(order(sim::Command::Kind::Move, 1, {ragna}, Fixed::from_int(r->x + r->w / 2), Fixed::from_int(r->y + r->h / 2), s.tick()));
+  for (int i = 0; i < 2400 && m.mission->result() == sim::MissionHost::Result::None; ++i) run(m, 1);
+  return m.mission->result() == sim::MissionHost::Result::Won;
+}
+}  // namespace
+
+TEST_CASE("M12 kuldetesvalaszto: ket valaszthato sorrend, tartos szovetsegi dontes es kovetkezmenye") {
+  const std::string dir = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "chains" / "valaszto").string();
+  const std::string maps = (std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps").string();
+  std::vector<std::string> errs;
+  const auto def = sim::ChainDef::parse(read_file(std::filesystem::path(dir) / "chain.json"), errs);
+  for (const auto& e : errs) std::printf("  %s\n", e.c_str());
+  CHECK(def && def->pick_mode);
+  if (!def) return;
+  for (const int choice : {0, 1}) {   // 0: szövetség (szov = 1), nyugat → kelet; 1: egyedül (szov = 2), kelet → nyugat
+    sim::ChainState st = sim::ChainState::fresh(*def);
+    CHECK(sim::available_missions(*def, st) == std::vector<std::string>{"tabor"});
+    CHECK(!sim::choose_mission(*def, st, "kelet"));   // még zárva
+    std::string err;
+    auto r1 = sim::prepare_mission(*def, st, dir, maps, 9, &err);
+    CHECK(r1.has_value());
+    if (!r1) return;
+    auto m1 = start(*r1);
+    CHECK(m1 && win_leg(*m1, choice, "kapu"));
+    CHECK(sim::finish_mission(*def, st, *m1));
+    // a tábor után mindkét út nyitva: a játékos választ (üres `current`)
+    CHECK(st.current.empty() && st.flags["szov"] == (choice == 0 ? 1 : 2));
+    CHECK(sim::available_missions(*def, st) == (std::vector<std::string>{"nyugat", "kelet"}));
+    const std::string first = choice == 0 ? "nyugat" : "kelet", second = choice == 0 ? "kelet" : "nyugat";
+    CHECK(sim::choose_mission(*def, st, first) && st.current == first);
+    // a profil a választás előtt is visszaolvasható
+    const auto back = sim::ChainState::from_json(*content::parse(content::dump(st.to_json())));
+    CHECK(back && back->current == first && back->done == st.done);
+    for (const std::string& leg : {first, second}) {
+      auto r = sim::prepare_mission(*def, st, dir, maps, 9, &err);
+      CHECK(r.has_value());
+      if (!r) return;
+      auto m = start(*r);
+      CHECK(m && m->mission);
+      if (!m) return;
+      run(*m, 2);
+      // a következmény: szövetségben segítők a kezdéskor, egyedül nincsenek
+      const auto* helpers = m->mission->named("segitok");
+      CHECK((helpers ? helpers->size() : 0u) == (choice == 0 ? 3u : 0u));
+      CHECK(m->mission->var("szov") == (choice == 0 ? 1 : 2));
+      CHECK(win_leg(*m, -1, "cel"));
+      CHECK(sim::finish_mission(*def, st, *m));
+      if (leg == first) CHECK(st.current == second);   // egy maradt: automatikusan az jön
+    }
+    CHECK(st.current.empty() && sim::available_missions(*def, st).empty() && st.done.size() == 3);
+  }
+  // hibás küldetéssor: ismeretlen feltétel-küldetés
+  std::vector<std::string> e2;
+  CHECK(!sim::ChainDef::parse(R"({"id": "x", "start": "a", "pick": true, "missions": [{"id": "a", "dir": "a", "requires": ["nincs"]}]})", e2));
   CHECK(!e2.empty());
 }
 

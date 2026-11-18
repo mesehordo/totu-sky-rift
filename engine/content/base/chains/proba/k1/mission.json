@@ -1,6 +1,6 @@
 {
   "id": "k1",
-  "name": "campaign.proba.k1",
+  "name": "chain.proba.k1",
   "map": "kraterfold.json",
   "players": [
     {"slot": 1, "faction": "ursan", "human": true, "resources": {"wood": 100, "gold": 100}},
@@ -15,10 +15,10 @@
   "dialogues": {
     "valasztas": {
       "nodes": [
-        {"id": "n1", "speaker": "urs_hos_ragna", "portrait": "urs_hos_ragna", "text": "campaign.proba.d_ut",
+        {"id": "n1", "speaker": "urs_hos_ragna", "portrait": "urs_hos_ragna", "text": "chain.proba.d_ut",
          "choices": [
-           {"text": "campaign.proba.c_hegy", "var": "ut", "value": 1},
-           {"text": "campaign.proba.c_volgy", "var": "ut", "value": 2}
+           {"text": "chain.proba.c_hegy", "var": "ut", "value": 1},
+           {"text": "chain.proba.c_volgy", "var": "ut", "value": 2}
          ]}
       ]
     }

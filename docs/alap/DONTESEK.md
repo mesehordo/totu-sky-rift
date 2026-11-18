@@ -444,3 +444,26 @@ A tulajdonos döntése a két RTS-videó feldolgozása és a tervezési kézikö
    vonalra mozgatás; az alakzatválasztás más billentyűre kerül.
 3. **Munkamód:** marad (commit és push a main-re, a tiltott-szó kapuval); az anti-slop audit (alapállapot, UI-stílus,
    szöveg- és ikonleltár) és a helyi JSON-diagnosztika külön csomagként az M12 után.
+
+### D47 – Hadjárat és küldetéssor: két külön rész · ELDÖNTVE (2026-11-18)
+
+A tulajdonos pontosítása: a **hadjárat** a játéknak az a része, ahol TOTU térképének egy részén területeket lehet
+elfoglalni (nagyjából, mint az Europa Universalisban), és egy terület elfoglalásakor **csata** (RTS-meccs) van – ez a
+D20/K3 hadjárattérképe. A történetes, egymás után következő pályák a **küldetéses rész**. Ezért:
+1. Az M11-ben „hadjárat(lánc)” néven készült rész neve **küldetéssor** (munkanév – a végleges nevet a tulajdonos adja):
+   a kódban `sim/chain` (`ChainDef`, `ChainState`), a tartalom `content/base/chains/`, a kliensben `--chain`, a profil
+   `kuldetessor_<azonosító>.json`, a fordítási kulcsok `chain.*`.
+2. Az M12 2. lépésében készült választható sorrend (`pick`: a megnyílt küldetések közül a játékos választ,
+   `requires` szerint; tartós döntés és következménye) a küldetéssor része marad – **nem** a D46 hadjárattérkép-prototípusa.
+3. A „hadjárat” szó (kód: `campaign`, menü: `ui.main.campaign`) a területfoglaló térképé; a D46 szűk prototípusa ennek
+   a része lesz (néhány tartomány, körök, sereg, támadáskor Csata, győzelemkor foglalás), külön szabályrétegben.
+
+### D48 – A hadjárat kisnépei és hősei · ELDÖNTVE (2026-11-18, tervezési elv)
+
+A tulajdonos szabályai a hadjárathoz (a területfoglaló térképhez, D47):
+1. **Kisnépek:** szövetségesnek csak akkor hívhatók be, ha a területüket a hadjárattérképen már elfoglaltuk. Ekkor a
+   hadjáratban **0 nyersanyagért „bérelhetők fel”** (maga a szövetség ingyenes), de az egységeik és az épületeik a
+   csatákban továbbra is nyersanyagba kerülnek.
+2. **Hősök:** a hadjárattérképen hősöket lehet képezni, **legfeljebb 3-at**; a hősök „gyalogolnak” a területeken (ők a
+   seregek vezetői a térképen). Így a hadjárat minden csatájában rögtön van egy hősünk, és a hős a hadjárat alatt
+   fejlődik (szint, tapasztalat, képességek, tárgyak – a küldetéssor hősátvitelének mintájára).
