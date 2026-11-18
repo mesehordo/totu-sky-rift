@@ -34,7 +34,25 @@ uniform vec4 u_fx;       // felhőárnyék, hőremegés, idő (s), szél
 uniform vec4 u_precip;   // fajta (0 nincs, 1 eső, 2 hó, 3 homok, 4 hamu), sűrűség, sebesség, csíkhossz
 uniform vec4 u_pcolor;   // a csapadék színe, fedése
 uniform vec4 u_pdir;     // esési irány (x, y), méret
+uniform vec4 u_blur;     // x: a teljes kép elmosása (szünet, 0..1); y: a köd stílusa (0 szürke – D41, 1 elmosott);
+                         // z: a köd határának szélessége (csempe / minta); w: a ködelmosás sugara (képpont)
 out vec4 o_color;
+
+// a jelenet elmosva: középpont + két gyűrű (6 + 6 minta), a sugár képpontban (a mintavevő lineáris)
+vec3 blur_scene(vec2 uv, float r) {
+  vec2 px1 = 1.0 / u_screen;
+  vec3 acc = texture(u_scene, uv).rgb * 0.16;
+  float w = 0.16;
+  for (int i = 0; i < 12; ++i) {
+    bool outer = i >= 6;
+    float a = float(i) * 1.0472 + (outer ? 0.5236 : 0.0);
+    float rr = outer ? r : r * 0.5;
+    float wi = outer ? 0.06 : 0.08;
+    acc += texture(u_scene, uv + vec2(cos(a), sin(a)) * rr * px1).rgb * wi;
+    w += wi;
+  }
+  return acc / w;
+}
 
 float hash12(vec2 p) {
   vec3 p3 = fract(vec3(p.xyx) * 0.1031);
@@ -92,6 +110,7 @@ void main() {
     uv += vec2(sin(world.y * 0.09 + time * 2.7), cos(world.x * 0.07 + time * 2.1)) * vec2(0.0012, 0.0008) * u_fx.y;
   }
   vec3 scene = texture(u_scene, uv).rgb;
+  if (u_blur.x > 0.0) scene = mix(scene, blur_scene(uv, 9.0), u_blur.x);   // szünet: a háttér elmosódik
   vec3 light = texture(u_light, uv).rgb;
   vec3 c = scene * light;
   if (u_post != 0) {
@@ -109,7 +128,7 @@ void main() {
     vec2 fuv = world / (u_cam.w * u_fogsize);
     // lágy átmenet (D41): mindhárom zóna (felfedezetlen, felderített, látott) között kb. 3 csempés, fokozatos határ –
     // a köd 5 × 5 mintás, ±1,5 csempés súlyozott átlagából
-    vec2 t = 0.75 / u_fogsize;
+    vec2 t = u_blur.z / u_fogsize;
     float fsum = 0.0, wsum = 0.0;
     for (int j = -2; j <= 2; ++j) {
       for (int i = -2; i <= 2; ++i) {
@@ -124,6 +143,9 @@ void main() {
     // felderített, de most nem látott (D41): szürkeárnyalatos és világos (jól látszik a táj); csak a felfedezetlen
     // teljesen fekete. A fényesség amúgy is megvan: plusz költség nincs.
     vec3 explored = vec3(lum * 0.8);
+    if (u_blur.y > 0.5 && f < 0.999) {   // elmosott köd: a felderített rész színes, de elmosott és kissé sötétebb
+      explored = blur_scene(uv, u_blur.w * (1.0 - smoothstep(0.5, 1.0, f))) * light * 0.78;
+    }
     vec3 unknown = vec3(0.02, 0.025, 0.035);
     vec3 known = mix(explored, c, smoothstep(0.5, 1.0, f));
     c = mix(unknown, known, smoothstep(0.0, 0.5, fw));
@@ -198,6 +220,7 @@ bool Lighting::init(Device& dev, std::string* error) {
   loc_precip_ = gl.GetUniformLocation(prog_.id, "u_precip");
   loc_pcolor_ = gl.GetUniformLocation(prog_.id, "u_pcolor");
   loc_pdir_ = gl.GetUniformLocation(prog_.id, "u_pdir");
+  loc_blur_ = gl.GetUniformLocation(prog_.id, "u_blur");
   shadow_prog_ = dev.create_program(kVertex, kShadowApply, error);
   if (!shadow_prog_.id) return false;
   loc_shadow_ = gl.GetUniformLocation(shadow_prog_.id, "u_shadow");
@@ -321,6 +344,7 @@ void Lighting::composite(int sw, int sh, float cam_x, float cam_y, float zoom, f
   gl.Uniform4f(loc_precip_, static_cast<float>(wl.precip), wl.density, wl.speed, wl.length);
   gl.Uniform4f(loc_pcolor_, wl.color[0], wl.color[1], wl.color[2], wl.color[3]);
   gl.Uniform4f(loc_pdir_, wl.fall_x, wl.fall_y, wl.size, 0.0f);
+  gl.Uniform4f(loc_blur_, std::clamp(blur_, 0.0f, 1.0f), fog_blur_ ? 1.0f : 0.0f, fog_soft_, fog_radius_);
   gl.ActiveTexture(gl::TEXTURE0);
   gl.BindTexture(gl::TEXTURE_2D, scene_.color.id);
   gl.ActiveTexture(gl::TEXTURE0 + 1);

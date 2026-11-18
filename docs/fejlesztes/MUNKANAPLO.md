@@ -903,3 +903,7 @@ A parancsrácson a kiképzés, építés vagy kutatás sikertelen kattintásakor
 ## 2026-11-18 – Összeomlás javítva: a HUD érvénytelen pillanatképet olvasott
 
 A HUD-modell nyers mutatót tartott a világ pillanatképére; ha egy képkocka alatt két szimulációs tick is lefutott (indulás, akadás, mérőmód), a régi pillanatkép felszabadult, és a rajzolás érvénytelen memóriát olvasott (összeomlás a `draw_mission`-ben; a `--bench` 10–300 képkockánál véletlenszerűen). A HUD most megtartja a pillanatképét a következő szinkronig (`World::snapshot_shared`). Ellenőrzés: 6 mérőfutás hiba nélkül.
+
+## 2026-11-19 – Köd: szélesebb határ, elmosott változat kipróbálva; szünetmenü bal oldalt, elmosott háttérrel
+
+A köd határa szélesebb (kb. 3 helyett kb. 6 csempés átmenet). Az elmosott köd (`--fog-blur`, a felderített rész színes, elmosott, kissé sötétebb) költsége 1080p-ben a mérési zajon belül (≤ 1 ms, RX 550); az alap a szürke marad (D41), amíg a tulajdonos dönt. A szünetmenü bal oldali panel a főmenü oldalsávjának stílusában, balról becsúszik, a játéktér mögötte elmosódik. Képek: `docs/quality/kepek/kod_osszevetes_*.jpg`, `utan_szunetmenu.jpg`.

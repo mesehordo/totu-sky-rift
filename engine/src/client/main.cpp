@@ -112,6 +112,8 @@ struct Options {
   int rejoin = 0;
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
   std::string editor;    // M11: a szerkesztő (a küldetés mappája)
+  bool fog_blur = false;   // a köd stílusa (a tulajdonos dönt: szürke – D41 – vagy elmosott)
+  float fog_soft = 1.5f;   // a köd határa: mintatávolság csempében (a tulajdonos kérése: szélesebb, kb. 6 csempe)
   std::string chain;  // M11: küldetéssor (a küldetéssor mappája; a profil a felhasználói mappában)
   bool trigger_editor = false;   // képpróbához: a trigger-szerkesztő nyitva indul
   int data_editor = -1;          // képpróbához: az adatszerkesztő nyitva, ezzel a füllel
@@ -321,6 +323,8 @@ int main(int argc, char** argv) {
     else if (a == "--content") o.content = next();
     else if (a == "--daytime") o.daytime = std::strtod(next(), nullptr);
     else if (a == "--nofog") o.fog = false;
+    else if (a == "--fog-blur") o.fog_blur = true;   // összehasonlító képhez: elmosott köd (a szürke helyett)
+    else if (a == "--fog-soft") o.fog_soft = std::clamp(std::strtof(next(), nullptr), 0.5f, 3.0f);
     else if (a == "--nopost") o.post = false;
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);
     else if (a == "--sync") o.sync = true;
@@ -770,6 +774,10 @@ int main(int argc, char** argv) {
     std::vector<double> times;
     bool running = rc == 0 && !menu_quit;
     bool game_paused = false;   // a játékon belüli szünetmenü (Esc, fogaskerék)
+    double pause_t = 0;           // a megnyitás ideje (a becsúszáshoz és az elmosáshoz)
+    bool pause_was = false;
+    float pause_slide = 0;
+    std::vector<client::Rect> pause_items;   // a menüpontok (folytatás, kilépés) a kattintáshoz
     auto frame_prev = std::chrono::steady_clock::now();   // AS-01: képkockaidő, FPS-kijelzés, képkocka-korlát
     float frame_dt = 0, fps_acc = 0;
     int fps_frames = 0, fps_shown = -1;
@@ -814,12 +822,17 @@ int main(int argc, char** argv) {
       }
       while (SDL_PollEvent(&ev)) {
         if (ev.type == SDL_EVENT_QUIT) running = false;
-        if (game_paused) {   // szünetmenü: Esc / Enter / kattintás = folytatás, Q = kilépés
+        if (game_paused) {   // szünetmenü: Esc / Enter = folytatás, Q = kilépés; kattintás a menüpontra, a panelen kívül folytatás
           if (ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat) {
             if (ev.key.key == SDLK_Q) running = false;
             else if (ev.key.key == SDLK_ESCAPE || ev.key.key == SDLK_RETURN) game_paused = false;
-          } else if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-            game_paused = false;
+          } else if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
+            int hit = -1;
+            for (size_t i = 0; i < pause_items.size(); ++i) {
+              if (pause_items[i].contains(ev.button.x, ev.button.y)) hit = static_cast<int>(i);
+            }
+            if (hit == 1) running = false;
+            else if (hit == 0 || pause_items.empty() || ev.button.x > static_cast<float>(pause_items[0].right()) + 40.0f) game_paused = false;
           }
           continue;
         }
@@ -1208,6 +1221,14 @@ int main(int argc, char** argv) {
         hud.model().paused = game_paused;   // szünetben nincs parancs (a régi őr)
       }
       runner.set_paused(game_paused);
+      {   // a szünetpanel becsúszása (0,22 mp; képpróbában azonnal)
+        const double now_s = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        if (game_paused && !pause_was) pause_t = now_s;
+        pause_was = game_paused;
+        pause_slide = !game_paused ? 0.0f
+                      : !o.screenshot.empty() ? 1.0f
+                                               : static_cast<float>(std::clamp((now_s - pause_t) / 0.22, 0.0, 1.0));
+      }
       const auto f0 = std::chrono::steady_clock::now();
       int w = 0, h = 0;
       SDL_GetWindowSizeInPixels(win, &w, &h);
@@ -1327,6 +1348,8 @@ int main(int argc, char** argv) {
         const auto& fogv = world.fog(&fog_changed);
         if (!o.fog) lighting.set_fog(0, 0, {});
         else if (fog_changed) lighting.set_fog(world.map().width(), world.map().height(), fogv);
+        lighting.set_fog_style(o.fog_blur, o.fog_soft, 6.0f * cam.zoom);
+        lighting.set_blur(game_paused ? pause_slide : 0.0f);
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
         if (editor_on && !editor_test) {   // M11: a szerkesztő rétegei és palettája
           int ww = 0, wh = 0;
@@ -1407,17 +1430,17 @@ int main(int argc, char** argv) {
             hud.text(batch, 18, static_cast<float>(w) / 2 - 170, static_cast<float>(h) / 2 + 48,
                      locale.tr(chain_over ? "chain.end" : "chain.next"), 240, 230, 200);
           }
-          if (game_paused) {   // szünetmenü: sötétítés, cím, a két lehetőség
+          if (game_paused) {   // szünetmenü: bal oldali panel, balról becsúszva; a játék háttere elmosódik (a fényezőben)
             render::SpriteInstance dim;
             dim.w = static_cast<float>(w);
             dim.h = static_cast<float>(h);
             dim.tint[0] = dim.tint[1] = dim.tint[2] = 0;
-            dim.tint[3] = 150;
+            dim.tint[3] = static_cast<uint8_t>(110 * pause_slide);
             batch.draw(white, nullptr, dim);
-            const float cx = static_cast<float>(w) / 2, cy = static_cast<float>(h) / 2;
-            hud.text(batch, 40, cx - 90, cy - 70, locale.tr("ui.pause.title"), 240, 220, 160);
-            hud.text(batch, 24, cx - 120, cy, locale.tr("ui.pause.resume"), 230, 230, 230);
-            hud.text(batch, 24, cx - 120, cy + 36, locale.tr("ui.pause.quit"), 230, 230, 230);
+            pause_items = hud.draw_pause(batch, white, hf, pause_slide, locale.tr("ui.pause.title"),
+                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.quit")});
+          } else {
+            pause_items.clear();
           }
           batch.end();
         }

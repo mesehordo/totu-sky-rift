@@ -1163,6 +1163,56 @@ void Hud::draw_clock(const HudFrame& f) {
   stext(FT, static_cast<float>(f.w - L.pad * 2) - tw(FT, sub), ty + th + 2, sub, {170, 170, 160});
 }
 
+std::vector<Rect> Hud::draw_pause(render::SpriteBatch& batch, const render::Texture& white, const HudFrame& f, float slide,
+                                  const std::string& title, const std::vector<std::string>& items) {
+  batch_ = &batch;
+  white_ = &white;
+  std::vector<Rect> out;
+  const float s = static_cast<float>(model_.layout().s);
+  const float H = static_cast<float>(f.h);
+  const float sw = std::round(std::max(260.0f, 330.0f * s));
+  const float e = 1.0f - (1.0f - slide) * (1.0f - slide) * (1.0f - slide);   // lassuló becsúszás
+  const float x0 = -sw * (1.0f - e);
+  for (int i = 0; i < 48; ++i) {   // a főmenü oldalsávja: függőleges átmenet, fent kicsit világosabb
+    const float g = 1 - static_cast<float>(i) / 48.0f;
+    const float y0 = std::floor(H * static_cast<float>(i) / 48.0f), y1 = std::floor(H * static_cast<float>(i + 1) / 48.0f);
+    rect(x0, y0, sw, y1 - y0, {static_cast<uint8_t>(16 + 14 * g), static_cast<uint8_t>(12 + 9 * g), static_cast<uint8_t>(18 + 10 * g)}, 232);
+  }
+  const Col frame{176, 138, 74}, dark{60, 42, 22}, gold{230, 190, 90};
+  rect(x0 + sw - 5, 0, 1, H, dark);
+  rect(x0 + sw - 4, 0, 2, H, frame);
+  rect(x0 + sw - 1, 0, 1, H, dark);
+  auto ornament = [&](float cy) {   // középről kifelé halványuló vonal, közepén arany rombusz
+    const float cx = x0 + sw / 2, half = (sw - 60 * s) / 2;
+    for (int i = 0; i < 12; ++i) {
+      const float x1 = half * static_cast<float>(i) / 12.0f, x2 = half * static_cast<float>(i + 1) / 12.0f;
+      const auto a = static_cast<uint8_t>(255 * (1 - static_cast<float>(i) / 12.0f));
+      rect(cx + x1, cy, x2 - x1, 1, frame, a);
+      rect(cx - x2, cy, x2 - x1, 1, frame, a);
+    }
+    rect(cx - 4 * s, cy - 4 * s, 8 * s, 8 * s, gold);
+  };
+  const int FT = model_.layout().font.name;
+  const int TT = std::max(FT + 8, static_cast<int>(std::lround(34 * s)));
+  const float ty = std::floor(H * 0.18f);
+  stext(TT, x0 + sw / 2 - tw(TT, title) / 2, ty, title, {240, 220, 160});
+  ornament(ty + line_h(TT) + 14 * s);
+  const int FI = std::max(FT, static_cast<int>(std::lround(24 * s)));
+  const float ih = line_h(FI) + 22 * s;
+  float y = ty + line_h(TT) + 40 * s;
+  for (const std::string& it : items) {
+    const Rect r{static_cast<int>(x0 + 20 * s), static_cast<int>(y), static_cast<int>(sw - 40 * s), static_cast<int>(ih)};
+    const bool hot = slide >= 1.0f && r.contains(mx_, my_);
+    if (hot) rect(r, {70, 56, 30}, 160);
+    stext(FI, static_cast<float>(r.centerx()) - tw(FI, it) / 2, static_cast<float>(r.y) + (ih - line_h(FI)) / 2, it,
+          hot ? Col{255, 236, 170} : Col{232, 226, 210});
+    out.push_back(r);
+    y += ih;
+  }
+  ornament(y + 10 * s);
+  return out;
+}
+
 void Hud::draw_heroes(const HudFrame& f) {
   // a régi `draw_portraits`: jobb felül, a felső sáv alatt egymás alatt legfeljebb 4 hős; arany keret (kijelölve
   // világosabb), portré, alul életerő (zöld) és energia (lila) csík, jobb felül szintjelvény, bal felül „+”, ha van

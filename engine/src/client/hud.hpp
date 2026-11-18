@@ -34,6 +34,10 @@ class Hud {
   void sync(World& world, Session& session, int w, int h);
   // képernyő-koordinátában (a hívó a képernyő vetítésével kezdi a köteget)
   void draw(render::SpriteBatch& batch, const render::Texture& white, const HudFrame& f);
+  // a szünetmenü (a tulajdonos kérése): bal oldali panel a főmenü oldalsávjának stílusában, balról becsúszva
+  // (`slide` 0..1); a menüpontok téglalapjai a kattintáshoz (ugyanabban a sorrendben, mint `items`)
+  std::vector<Rect> draw_pause(render::SpriteBatch& batch, const render::Texture& white, const HudFrame& f, float slide,
+                               const std::string& title, const std::vector<std::string>& items);
   // szöveg (a hívónak is): a bal felső sarok (x, y), betűméret (képpont), szín
   void text(render::SpriteBatch& batch, int size, float x, float y, const std::string& s, uint8_t r, uint8_t g,
             uint8_t b, uint8_t a = 255);

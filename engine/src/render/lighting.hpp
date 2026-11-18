@@ -42,6 +42,14 @@ class Lighting {
                    float strength, const std::function<void()>& extra = {});
   // 3. a köd csempénként (0 ismeretlen, 128 felderített, 255 látható); üres = nincs köd
   void set_fog(int map_w, int map_h, const std::vector<uint8_t>& fog);
+  // a köd stílusa: `blur` – a felderített rész elmosott (különben szürke, D41); `soft` – a határ mintatávolsága
+  // csempében (0,75: kb. 3 csempés átmenet, 1,5: kb. 6 csempés); `radius` – az elmosás sugara képpontban
+  void set_fog_style(bool blur, float soft, float radius) {
+    fog_blur_ = blur;
+    fog_soft_ = soft;
+    fog_radius_ = radius;
+  }
+  void set_blur(float b) { blur_ = b; }   // a teljes kép elmosása (szünetmenü), 0..1
   // 4. összetétel az ablakba: a jelenet × fény, a köddel; a kamera a köd világkoordinátáihoz kell
   //    `post` hamis: utófeldolgozás nélkül; `flash`: a villám felvillanása (0..1)
   void composite(int screen_w, int screen_h, float cam_x, float cam_y, float zoom, float tile_px,
@@ -53,7 +61,9 @@ class Lighting {
   gl::GLuint vao_ = 0;
   gl::GLint loc_scene_ = -1, loc_light_ = -1, loc_fog_ = -1, loc_use_fog_ = -1, loc_cam_ = -1, loc_screen_ = -1,
             loc_fogsize_ = -1, loc_post_ = -1, loc_grade_ = -1, loc_haze_ = -1, loc_fx_ = -1, loc_precip_ = -1,
-            loc_pcolor_ = -1, loc_pdir_ = -1;
+            loc_pcolor_ = -1, loc_pdir_ = -1, loc_blur_ = -1;
+  bool fog_blur_ = false;
+  float fog_soft_ = 0.75f, fog_radius_ = 6.0f, blur_ = 0.0f;
   RenderTarget scene_, light_, shadow_;
   Program shadow_prog_;
   gl::GLint loc_shadow_ = -1;
