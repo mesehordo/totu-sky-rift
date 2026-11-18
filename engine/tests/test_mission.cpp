@@ -258,3 +258,64 @@ TEST_CASE("hadjarat: elagazas a dontes szerint, a hos atvitele, a profil mentese
   CHECK(!sim::CampaignDef::parse(R"({"id": "x", "start": "a", "missions": [{"id": "a", "dir": "a", "next": [{"to": "nincs"}]}]})", e2));
   CHECK(!e2.empty());
 }
+
+TEST_CASE("objektumszerkeszto: modositott es szarmaztatott sablon a kuldetes sajat szabalyaiban") {
+  const sim::Rules& base = *content_once().rules;
+  const uint16_t bers = base.def("urs_berserker");
+  CHECK(bers != sim::kNoDef);
+  sim::Replay r = mission_desc();
+  auto doc = content::parse(r.mission);
+  CHECK(doc.has_value());
+  if (!doc) return;
+  const auto objs = content::parse(R"({
+    "urs_berserker": {"hp": 999, "damage": 42, "cost": {"gold": 7}},
+    "urs_vasfarkas": {"base": "urs_berserker", "hp": 1500, "armor": 6, "speed": 2.5, "range": 1.5, "supply": 3}
+  })");
+  doc->set("objects", *objs);
+  // a vasfarkas a küldetésben: a játékos kap egyet névvel
+  content::Value* units = doc->find("units");
+  content::Value u = content::Value::object();
+  u.set("name", content::Value::string("vas"));
+  u.set("def", content::Value::string("urs_vasfarkas"));
+  u.set("owner", content::Value::number("1"));
+  u.set("x", content::Value::number("22"));
+  u.set("y", content::Value::number("24"));
+  units->push(u);
+  r.mission = content::dump(*doc);
+  std::vector<std::string> errs;
+  CHECK(sim::MissionDef::parse(r.mission, &base, errs).has_value());
+  for (const auto& e : errs) std::printf("  %s\n", e.c_str());
+  auto m = start(r);
+  CHECK(m && m->rules);
+  if (!m || !m->rules) return;
+  const sim::Rules& mr = *m->rules;
+  CHECK(m->sim->rules() == &mr);
+  CHECK(mr.defs[bers].hp == 999 && mr.defs[bers].attack.damage == Fixed::from_int(42) && mr.defs[bers].cost[sim::kGold] == 7);
+  CHECK(base.defs[bers].hp != 999);   // a tartalom szabályai érintetlenek
+  const uint16_t vf = mr.def("urs_vasfarkas");
+  CHECK(vf != sim::kNoDef && vf == base.defs.size() && mr.def("urs_berserker") == bers);
+  CHECK(mr.defs[vf].hp == 1500 && mr.defs[vf].armor == 6 && mr.defs[vf].supply == 3 && mr.defs[vf].faction == "ursan");
+  CHECK(mr.defs[vf].speed == Fixed::from_ratio(25, 300));
+  const auto* vas = m->mission->named("vas");
+  CHECK(vas && vas->size() == 1);
+  if (vas && !vas->empty()) {
+    const auto* h = m->sim->world().get<sim::Health>(vas->front());
+    CHECK(h && h->max >= 1500);
+  }
+  // mentés és visszajátszás a felülírásokkal is
+  run(*m, 300);
+  const auto saved = m->sim->save();
+  run(*m, 300);
+  auto b = start(r, true);
+  CHECK(b && b->sim->load(saved));
+  if (b) {
+    b->sim->restore_obstacles(*b->map);
+    run(*b, 300);
+    CHECK(b->sim->hash() == m->sim->hash());
+  }
+  // hibás objektumok
+  for (const char* bad : {R"({"nincs_ilyen": {"hp": 5}})", R"({"x": {"base": "nincs_alap"}})", R"({"urs_mammut": {"base": "urs_berserker"}})"}) {
+    std::vector<std::string> e2;
+    CHECK(!sim::apply_objects(base, *content::parse(bad), e2) && !e2.empty());
+  }
+}

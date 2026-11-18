@@ -43,6 +43,14 @@ std::vector<std::pair<std::string, std::string>> EditorUi::units_of_owner() cons
     if (d.id.empty() || (!fac.empty() && d.faction != fac)) continue;
     out.emplace_back(d.id, d.id);   // a megjelenített nevet a rajzoló fordítja (unit./building.<id>.name)
   }
+  // a küldetés származtatott objektumai (az alap népe szerint)
+  if (const content::Value* ob = last_doc_ ? last_doc_->mission().find("objects") : nullptr; ob && ob->is_object()) {
+    for (const auto& [id, o] : ob->members()) {
+      const content::Value* b = o.find("base");
+      const uint16_t bd = b && b->is_string() ? rules_->def(b->text()) : sim::kNoDef;
+      if (bd != sim::kNoDef && (fac.empty() || rules_->defs[bd].faction == fac)) out.emplace_back(id, id);
+    }
+  }
   return out;
 }
 

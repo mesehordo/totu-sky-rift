@@ -270,7 +270,12 @@ std::optional<MissionDef> MissionDef::parse(const std::string& text, const Rules
   if (const Value* ts = d.find("triggers"); ts && ts->is_array()) {
     for (const auto& t : ts->items()) m.triggers.push_back(&t);
   }
-  // hivatkozások
+  // hivatkozások (a küldetés objektumai – az új sablonok is – érvényes sablonok)
+  std::unique_ptr<Rules> own;
+  if (const Value* ob = d.find("objects"); ob && rules) {
+    own = apply_objects(*rules, *ob, errors);
+    if (own) rules = own.get();
+  }
   Checker ck{m, rules, errors, {}, {}};
   for (const auto& u : m.units) {
     if (!u.name.empty()) ck.names.insert(u.name);
@@ -362,6 +367,71 @@ void MissionHost::start(Sim& s) {
     if (e != kNoEntity && u.hero) apply_hero(s, e, *u.hero);   // hadjárat: az átvitt hős
     if (e != kNoEntity && !u.name.empty()) names_[u.name].push_back(e);
   }
+}
+
+std::unique_ptr<Rules> apply_objects(const Rules& base, const content::Value& objects, std::vector<std::string>& errors) {
+  if (!objects.is_object()) {
+    errors.push_back("objects: objektum kell");
+    return nullptr;
+  }
+  auto r = std::make_unique<Rules>(base);
+  const size_t before = errors.size();
+  for (const auto& [id, o] : objects.members()) {
+    if (!o.is_object() || id.empty()) {
+      errors.push_back("objects." + id + ": objektum kell");
+      continue;
+    }
+    uint16_t d = r->def(id);
+    const std::string from = str(o, "base");
+    if (!from.empty()) {   // származtatott új sablon: az alap másolata az új azonosítóval, a végére
+      const uint16_t b = r->def(from);
+      if (b == kNoDef) {
+        errors.push_back("objects." + id + ": ismeretlen alap: " + from);
+        continue;
+      }
+      if (d != kNoDef) {
+        errors.push_back("objects." + id + ": az azonosító már létezik");
+        continue;
+      }
+      if (r->defs.size() >= kNoDef - 1) {
+        errors.push_back("objects: túl sok sablon");
+        break;
+      }
+      EntityDef nd = r->defs[b];
+      nd.id = id;
+      r->defs.push_back(std::move(nd));
+      d = static_cast<uint16_t>(r->defs.size() - 1);
+    } else if (d == kNoDef) {
+      errors.push_back("objects." + id + ": ismeretlen sablon (új sablonhoz `base` kell)");
+      continue;
+    }
+    EntityDef& e = r->defs[d];
+    auto clampi = [&](const char* k, int32_t lo, int32_t hi, int32_t& out) {
+      if (const Value* v = o.find(k)) out = static_cast<int32_t>(std::clamp<int64_t>(v->as_int().value_or(out), lo, hi));
+    };
+    clampi("hp", 1, 1000000, e.hp);
+    clampi("armor", -100, 1000, e.armor);
+    clampi("sight", 0, 64, e.sight);
+    clampi("supply", 0, 100, e.supply);
+    clampi("time", 1, 30 * 3600, e.time_ticks);
+    clampi("cooldown", 1, 30 * 60, e.attack.cooldown);
+    if (const Value* v = o.find("speed")) {   // csempe / s → csempe / tick
+      if (const auto f = v->as_fixed()) e.speed = std::clamp(*f, Fixed{}, Fixed::from_int(20)) / Fixed::from_int(30);
+    }
+    if (const Value* v = o.find("damage")) {
+      if (const auto f = v->as_fixed()) e.attack.damage = std::clamp(*f, Fixed{}, Fixed::from_int(100000));
+    }
+    if (const Value* v = o.find("range")) {
+      if (const auto f = v->as_fixed()) e.attack.range = std::clamp(*f, Fixed{}, Fixed::from_int(64));
+    }
+    if (const Value* c = o.find("cost"); c && c->is_object()) {
+      for (int k = 0; k < kResources; ++k) {
+        if (const Value* x = c->find(resource_id(k))) e.cost[static_cast<size_t>(k)] = static_cast<int32_t>(std::clamp<int64_t>(x->as_int().value_or(0), 0, 1000000));
+      }
+    }
+  }
+  if (errors.size() > before) return nullptr;
+  return r;
 }
 
 content::Value export_hero(const Sim& s, EntityId e) {

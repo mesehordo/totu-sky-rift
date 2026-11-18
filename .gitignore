@@ -52,3 +52,8 @@ __pycache__/
 !/tools/leltar_kapu.py
 !/tools/palya_export.py
 /novellak/
+
+# a helyi fordítási mappák (IDE / CMake) a repóban nem lehetnek
+/engine/build/
+/engine/build-ninja/
+/engine/build-*/

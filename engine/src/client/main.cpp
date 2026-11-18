@@ -525,7 +525,7 @@ int main(int argc, char** argv) {
             std::ifstream in(o.world, std::ios::binary);
             desc.map.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
             desc.factions.assign(static_cast<size_t>(std::clamp(o.seats, 1, 8)), o.faction);
-            if (!host_relay.start(desc, session.terrain_ptr(), session.rules(), ch, std::clamp(o.seats, 1, 8),
+            if (!host_relay.start(desc, session.terrain_ptr(), session.content_rules(), ch, std::clamp(o.seats, 1, 8),
                                   static_cast<uint16_t>(o.host_port), &err)) {
               return false;
             }
@@ -542,7 +542,7 @@ int main(int argc, char** argv) {
             host_relay.set_dump_dir(dump);
             netplay.set_dump_dir(dump);
           }
-          if (!netplay.connect(host, static_cast<uint16_t>(port), session.terrain_ptr(), session.rules(), ch, o.name,
+          if (!netplay.connect(host, static_cast<uint16_t>(port), session.terrain_ptr(), session.content_rules(), ch, o.name,
                                o.observe, static_cast<uint8_t>(std::clamp(o.rejoin, 0, 8)), &err)) {
             return false;
           }
@@ -586,7 +586,7 @@ int main(int argc, char** argv) {
           if (!session.load_content(o.content, &err)) return false;
           auto desc = sim::load_mission_package(o.mission, o.maps, 20261116, &err);
           if (!desc) return false;
-          mission_match = sim::start_match(*desc, session.terrain_ptr(), session.rules(), err);
+          mission_match = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err);
           if (!mission_match) return false;
           session.adopt(*mission_match);
           return true;
@@ -598,18 +598,18 @@ int main(int argc, char** argv) {
           dedit.init(session.rules());
           if (o.data_editor >= 0) {
             dedit.open = true;
-            dedit.tab = std::clamp(o.data_editor, 0, 3);
+            dedit.tab = std::clamp(o.data_editor, 0, 4);
             dedit.sel1 = 0;
             dedit.sel2 = dedit.tab >= 2 ? 1 : -1;
           }
           tedit.open = o.trigger_editor;
           if (tedit.open) tedit.trigger = 0;
-          mission_match = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.rules(), err);
+          mission_match = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.content_rules(), err);
           if (!mission_match) return false;
           session.adopt(*mission_match);
           editor_on = true;
           editor_built = 0;
-          editor_problems = edoc.validate(session.rules(), session.terrain_ptr());
+          editor_problems = edoc.validate(session.content_rules(), session.terrain_ptr());
           return true;
         };
         auto start_campaign = [&]() -> bool {   // M11: a hadjárat (a profil folytatása, ha van)
@@ -634,7 +634,7 @@ int main(int argc, char** argv) {
           }
           auto desc = sim::prepare_mission(*camp_def, camp_state, o.campaign, o.maps, 20261116, &err);
           if (!desc) return false;
-          mission_match = sim::start_match(*desc, session.terrain_ptr(), session.rules(), err);
+          mission_match = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err);
           if (!mission_match) return false;
           session.adopt(*mission_match);
           return true;
@@ -727,8 +727,8 @@ int main(int argc, char** argv) {
       // M11: a szerkesztő előnézete a dokumentum változása után újraépül (húzás közben nem)
       if (editor_on && !editor_test && !eui.dragging && eui.revision != editor_built) {
         std::string perr;
-        auto pm = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.rules(), perr);
-        editor_problems = edoc.validate(session.rules(), session.terrain_ptr());
+        auto pm = sim::start_match(edoc.replay(1), session.terrain_ptr(), session.content_rules(), perr);
+        editor_problems = edoc.validate(session.content_rules(), session.terrain_ptr());
         if (pm) {
           session.adopt(*pm);
           mission_match = std::move(pm);
@@ -774,7 +774,7 @@ int main(int argc, char** argv) {
             editor_test = !editor_test;
             if (editor_test) {
               std::string perr;
-              auto pm = sim::start_match(edoc.replay(20261116), session.terrain_ptr(), session.rules(), perr);
+              auto pm = sim::start_match(edoc.replay(20261116), session.terrain_ptr(), session.content_rules(), perr);
               if (pm) {
                 session.adopt(*pm);
                 mission_match = std::move(pm);
@@ -895,7 +895,7 @@ int main(int argc, char** argv) {
           if (camp_state.current.empty()) {
             camp_over = true;
           } else if (auto desc = sim::prepare_mission(*camp_def, camp_state, o.campaign, o.maps, 20261116, &err)) {
-            if (auto nm = sim::start_match(*desc, session.terrain_ptr(), session.rules(), err)) {
+            if (auto nm = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err)) {
               session.adopt(*nm);
               mission_match = std::move(nm);
               runner.reset_snapshots();

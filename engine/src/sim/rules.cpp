@@ -1017,12 +1017,19 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     }
   }
   if (errors.size() != before) return std::nullopt;
+  r.sorted_defs = r.defs.size();
   return r;
 }
 
 uint16_t Rules::def(const std::string& id) const {
-  const auto it = std::lower_bound(defs.begin(), defs.end(), id, [](const EntityDef& d, const std::string& v) { return d.id < v; });
-  return it != defs.end() && it->id == id ? static_cast<uint16_t>(it - defs.begin()) : kNoDef;
+  const size_t n = std::min(sorted_defs ? sorted_defs : defs.size(), defs.size());
+  const auto end = defs.begin() + static_cast<std::ptrdiff_t>(n);
+  const auto it = std::lower_bound(defs.begin(), end, id, [](const EntityDef& d, const std::string& v) { return d.id < v; });
+  if (it != end && it->id == id) return static_cast<uint16_t>(it - defs.begin());
+  for (size_t i = n; i < defs.size(); ++i) {   // M11: a küldetés származtatott sablonjai (kevés, a végén)
+    if (defs[i].id == id) return static_cast<uint16_t>(i);
+  }
+  return kNoDef;
 }
 
 const FactionDef* Rules::faction(const std::string& id) const {

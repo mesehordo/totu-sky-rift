@@ -364,7 +364,8 @@ struct Rules {
   std::array<int32_t, kResources> start_resources{};
   int32_t max_supply = 200;
   std::vector<std::pair<int32_t, int32_t>> upkeep_tiers;   // (felhasznált létszám felső határa, ezrelék)
-  std::vector<EntityDef> defs;                             // azonosító szerint rendezve
+  std::vector<EntityDef> defs;                             // azonosító szerint rendezve (az első `sorted_defs`)
+  size_t sorted_defs = 0;   // M11: a küldetés objektumai (származtatott sablonok) a rendezett rész után, a végén
   std::vector<FactionDef> factions;                        // azonosító szerint rendezve
   std::vector<ResearchDef> researches;                     // azonosító szerint rendezve
   static constexpr int kQueueMax = 5;                      // a termelési sor hossza (a régi játék szerint)

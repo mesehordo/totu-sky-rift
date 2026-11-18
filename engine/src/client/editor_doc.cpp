@@ -326,7 +326,7 @@ bool EditorDoc::remove_named(const std::string& key, const std::string& id) {
 
 bool EditorDoc::set_section(const std::string& key, const std::string& json, std::string* error) {
   static const char* kLists[] = {"players", "regions", "points", "cameras", "paths", "units", "objectives", "triggers"};
-  static const char* kObjects[] = {"variables", "dialogues", "cutscenes"};
+  static const char* kObjects[] = {"variables", "dialogues", "cutscenes", "objects"};
   const bool is_list = std::any_of(std::begin(kLists), std::end(kLists), [&](const char* k) { return key == k; });
   const bool is_obj = std::any_of(std::begin(kObjects), std::end(kObjects), [&](const char* k) { return key == k; });
   if (!is_list && !is_obj) {

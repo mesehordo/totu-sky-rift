@@ -66,6 +66,7 @@ void Session::adopt(sim::MatchInstance& match) {
   map_ = match.map.get();
   sim_ = match.sim.get();
   mission_ = match.mission.get();
+  match_rules_ = match.rules.get();
 }
 
 bool Session::load_content(const std::string& content_dir, std::string* error) {
@@ -79,6 +80,7 @@ bool Session::load_content(const std::string& content_dir, std::string* error) {
   own_map_.reset();
   map_ = nullptr;
   mission_ = nullptr;
+  match_rules_ = nullptr;
   rules_.reset();
   reveal_all_ = false;
   last_.reset();

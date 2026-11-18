@@ -8916,3 +8916,7 @@ msgstr "On to the next mission (Enter)"
 msgctxt "campaign.end"
 msgid "A hadjárat véget ért."
 msgstr "The campaign is over."
+
+msgctxt "editor.data.objects"
+msgid "Objektumok"
+msgstr "Objects"

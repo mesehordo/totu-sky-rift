@@ -74,6 +74,7 @@ MatchInstance::~MatchInstance() {
   hosts.clear();
   sim.reset();
   mission.reset();
+  rules.reset();
 }
 
 std::vector<std::string> MatchInstance::messages() const {
@@ -116,6 +117,15 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       return nullptr;
     }
     mdef = std::make_shared<const MissionDef>(std::move(*md));
+    if (const content::Value* ob = mdef->doc->find("objects"); ob && rules) {   // az objektumszerkesztő felülírásai
+      std::vector<std::string> oerrs;
+      m->rules = apply_objects(*rules, *ob, oerrs);
+      if (!m->rules) {
+        error = "hibás objektum: " + (oerrs.empty() ? std::string() : oerrs.front());
+        return nullptr;
+      }
+      rules = m->rules.get();
+    }
     factions.clear();
     for (const auto& p : mdef->players) {
       if (factions.size() < p.slot) factions.resize(p.slot);

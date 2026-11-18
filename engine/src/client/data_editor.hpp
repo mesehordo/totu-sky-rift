@@ -17,7 +17,7 @@ namespace totu::client {
 
 class DataEditor {
  public:
-  enum Tab { kObjectives = 0, kVariables, kDialogues, kCutscenes, kTabs };
+  enum Tab { kObjectives = 0, kVariables, kDialogues, kCutscenes, kObjects, kTabs };   // kObjects: objektumszerkesztő
   bool open = false;
   int tab = kObjectives;
   int sel1 = -1, sel2 = -1, sel3 = -1;   // elem; csomópont / lépés; válasz

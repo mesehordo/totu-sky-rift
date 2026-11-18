@@ -8915,3 +8915,7 @@ msgstr ""
 msgctxt "campaign.end"
 msgid "A hadjárat véget ért."
 msgstr ""
+
+msgctxt "editor.data.objects"
+msgid "Objektumok"
+msgstr ""

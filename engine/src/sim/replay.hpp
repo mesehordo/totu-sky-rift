@@ -76,6 +76,7 @@ struct MatchInstance {
   std::unique_ptr<map::NavGrid> nav;
   std::unique_ptr<map::Pathfinder> pf;
   std::unique_ptr<MissionHost> mission;   // M11: a küldetés (ha van) – a szkriptek előtt csatolva
+  std::unique_ptr<Rules> rules;           // M11: a küldetés saját szabályai (objektumszerkesztő), ha vannak
   std::vector<std::unique_ptr<script::ScriptHost>> hosts, ais;
   std::vector<std::string> messages() const;   // a szkriptek és a gépek naplója
 };

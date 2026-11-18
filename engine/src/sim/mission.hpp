@@ -39,6 +39,11 @@ struct MissionUnit {   // a pályára helyezett, névvel ellátható egység vag
   const content::Value* hero = nullptr;   // hadjárat: az átvitt hős állapota (szint, tapasztalat, képességek, tárgyak)
 };
 
+// Objektumszerkesztő (M11, ADR-010 2. pont): a küldetés `objects` része – sablononként felülírt értékek, illetve egy
+// alapból (`base`) származtatott új sablon. A szabályok másolatán (a küldetés saját szabályai); hibánál nullptr.
+// Mezők: hp, armor, sight, supply, time (tick), speed (csempe/s), damage, range (csempe), cooldown (tick), cost {…}.
+std::unique_ptr<Rules> apply_objects(const Rules& base, const content::Value& objects, std::vector<std::string>& errors);
+
 // a hős állapota JSON-ban (a hadjárat viszi át küldetésről küldetésre) – és vissza
 content::Value export_hero(const Sim& s, EntityId e);
 bool apply_hero(Sim& s, EntityId e, const content::Value& hero);

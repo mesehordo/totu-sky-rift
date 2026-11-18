@@ -143,7 +143,9 @@ class Session {
   // meccs a teljes beállítással (M8, az egyéni csata képernyője): a gépi játékosok a `scripts/<ai_script>` szkripttel
   // (az adatvezérelt `ai_nep.lua` bármely főnépnek); köd nélkül (Fog::None) a pillanatkép sem szűr
   bool start_match(const sim::MatchSetup& setup, const std::vector<int>& ai, const std::string& ai_script, std::string* error);
-  const sim::Rules* rules() const { return rules_ ? &*rules_ : nullptr; }
+  // a küldetés saját szabályai (objektumszerkesztő), ha az átvett meccsnek van; különben a tartalomé
+  const sim::Rules* rules() const { return match_rules_ ? match_rules_ : rules_ ? &*rules_ : nullptr; }
+  const sim::Rules* content_rules() const { return rules_ ? &*rules_ : nullptr; }   // a meccsindításhoz (felülírás nélkül)
   // a megjelenített név a magyar fordításból (`locale/hu.po`: msgctxt → msgid); ha nincs, maga a kulcs
   std::string display_name(const std::string& key) const;
   // köd nélkül (--nofog): minden látszik, a pillanatkép nem szűr (D41)
@@ -187,6 +189,7 @@ class Session {
   bool reveal_all_ = false;
   uint8_t local_ = 1;
   sim::MissionHost* mission_ = nullptr;   // M11: az átvett meccs küldetése
+  const sim::Rules* match_rules_ = nullptr;
   map::NavConfig nav_config_;   // a game.json `navigation` része (H-90)
   bool tile_visible(int x, int y) const;
   bool rect_visible(int x, int y, int w, int h) const;

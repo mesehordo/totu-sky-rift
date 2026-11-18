@@ -304,3 +304,60 @@ TEST_CASE("szerkeszto: adatszerkeszto - cel, valtozo, parbeszed valaszokkal, atv
   CHECK(!d.mission().find("cutscenes")->find("atvezeto1"));
   CHECK(d.undo() && d.mission().find("cutscenes")->find("atvezeto1"));
 }
+
+TEST_CASE("szerkeszto: objektumok ful - szarmaztatott egyseg, ertekek, ervenyes kuldetes, lerakhato") {
+  client::EditorDoc d;
+  std::string err;
+  CHECK(d.create(tmpdir("objektum"), base() + "/maps/kraterfold.json", "obj", &err));
+  client::DataEditor de;
+  de.init(&*content_once().rules);
+  de.open = true;
+  auto relayout = [&] { de.layout(1280, 720, d); };
+  auto click = [&](const client::Rect& r) {
+    CHECK(de.mouse_down(d, static_cast<float>(r.x + 2), static_cast<float>(r.y + 2), false));
+    relayout();
+  };
+  auto field_index = [&](const std::string& key) {
+    for (size_t i = 0; i < de.fields.size(); ++i) if (de.fields[i].label.rfind(key + ": ", 0) == 0) return static_cast<int>(i);
+    return -1;
+  };
+  auto type_into = [&](const std::string& key, const std::string& text) {
+    const int i = field_index(key);
+    CHECK(i >= 0);
+    if (i < 0) return;
+    click(de.fields[static_cast<size_t>(i)].r);
+    de.field.text.clear();
+    de.text_input(text);
+    de.key(d, client::TriggerEditor::kEnter);
+    relayout();
+  };
+  relayout();
+  click(de.tabs[client::DataEditor::kObjects].r);
+  for (const auto& b : de.tools) if (b.id == 11) { click(b.r); break; }
+  CHECK(de.sel1 == 0);
+  type_into("name", "urs_vasfarkas");
+  // az alap: a felugró listából
+  click(de.fields[static_cast<size_t>(field_index("base"))].r);
+  de.text_input("urs_berserker");
+  de.key(d, client::TriggerEditor::kEnter);
+  relayout();
+  type_into("hp", "1500");
+  type_into("speed", "2.5");
+  type_into("cost.gold", "90");
+  type_into("damage", "nem szam");   // tizedes mező: elutasítva
+  CHECK(de.status == "editor.trig.not_number");
+  const content::Value* o = d.mission().find("objects")->find("urs_vasfarkas");
+  CHECK(o != nullptr);
+  if (!o) return;
+  CHECK(o && o->find("base")->text() == "urs_berserker" && o->find("hp")->text() == "1500" && o->find("speed")->text() == "2.5");
+  CHECK(o->find("cost") && o->find("cost")->find("gold")->text() == "90" && !o->find("damage"));
+  // a származtatott egység lerakható, a küldetés érvényes, és a meccs a saját szabályaival indul
+  CHECK(d.place("urs_vasfarkas", 1, 20, 20, "vas") >= 0);
+  const auto errs = d.validate(&*content_once().rules, &content_once().terrain);
+  for (const auto& e : errs) std::printf("  %s\n", e.c_str());
+  CHECK(errs.empty());
+  std::string serr;
+  auto m = sim::start_match(d.replay(4), &content_once().terrain, &*content_once().rules, serr);
+  CHECK(m && m->rules && m->mission->named("vas") && m->mission->named("vas")->size() == 1);
+  if (m && m->rules) CHECK(m->rules->defs[m->rules->def("urs_vasfarkas")].cost[sim::kGold] == 90);
+}

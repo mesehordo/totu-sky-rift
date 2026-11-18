@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include "sim/rules.hpp"
+
 namespace totu::client {
 
 using content::Value;
@@ -50,6 +52,42 @@ std::string unique_item(const Value& a, const std::string& prefix) {
   }
 }
 
+// pontozott út (pl. "cost.gold") olvasása és írása
+const Value* get_path(const Value& v, const std::string& key) {
+  const size_t dot = key.find('.');
+  if (dot == std::string::npos) return v.find(key);
+  const Value* inner = v.find(key.substr(0, dot));
+  return inner && inner->is_object() ? inner->find(key.substr(dot + 1)) : nullptr;
+}
+void set_path(Value& v, const std::string& key, const Value* val) {   // val == nullptr: törlés
+  const size_t dot = key.find('.');
+  if (dot == std::string::npos) {
+    if (val) v.set(key, *val);
+    else v.erase(key);
+    return;
+  }
+  const std::string head = key.substr(0, dot), tail = key.substr(dot + 1);
+  Value* inner = v.find(head);
+  if (!inner || !inner->is_object()) {
+    if (!val) return;
+    v.set(head, Value::object());
+    inner = v.find(head);
+  }
+  if (val) inner->set(tail, *val);
+  else inner->erase(tail);
+  if (inner->members().empty()) v.erase(head);
+}
+bool decimal(const std::string& s) {
+  if (s.empty() || s == "-" || s == ".") return false;
+  bool dot = false;
+  for (size_t i = 0; i < s.size(); ++i) {
+    if (s[i] == '-' && i == 0) continue;
+    if (s[i] == '.' && !dot) { dot = true; continue; }
+    if (s[i] < '0' || s[i] > '9') return false;
+  }
+  return true;
+}
+
 std::vector<std::string> action_names() {
   std::vector<std::string> out;
   for (const auto& t : trigger_types(2)) out.emplace_back(t.type);
@@ -63,6 +101,7 @@ const char* DataEditor::section_key() const {
     case kObjectives: return "objectives";
     case kVariables: return "variables";
     case kDialogues: return "dialogues";
+    case kObjects: return "objects";
     default: return "cutscenes";
   }
 }
@@ -87,7 +126,7 @@ Value* DataEditor::target(Value& sec) const {
     return &sec.items()[static_cast<size_t>(sel1)];
   }
   Value* el = member_at(sec, sel1);
-  if (!el || tab == kVariables) return el;
+  if (!el || tab == kVariables || tab == kObjects) return el;
   if (sel2 < 0) return el;
   Value* list = el->find(tab == kDialogues ? "nodes" : "steps");
   if (!list || !list->is_array() || sel2 >= static_cast<int>(list->items().size())) return nullptr;
@@ -122,6 +161,14 @@ std::vector<ParamSpec> DataEditor::field_specs(const EditorDoc& d) const {
                 {"next", K::Enum, true, {}}, {"ticks", K::Int, true, {}}};
       }
       return {{"text", K::Text, false, {}}, {"next", K::Enum, true, {}}, {"var", K::Text, true, {}}, {"value", K::Int, true, {}}};
+    case kObjects:
+      if (sel1 < 0) return {};
+      // a WC3 objektumszerkesztőjének alapmezői (a tizedes mezők szövegként, számmá alakítva)
+      return {{"name", K::Text, false, {}},   {"base", K::Def, true, {}},       {"hp", K::Int, true, {}},
+              {"armor", K::Int, true, {}},    {"damage", K::Text, true, {}},    {"range", K::Text, true, {}},
+              {"cooldown", K::Int, true, {}}, {"speed", K::Text, true, {}},     {"sight", K::Int, true, {}},
+              {"supply", K::Int, true, {}},   {"time", K::Int, true, {}},       {"cost.gold", K::Int, true, {}},
+              {"cost.wood", K::Int, true, {}}, {"cost.meteor", K::Int, true, {}}};
     default: {
       if (sel1 < 0) return {};
       if (sel2 < 0) return {{"name", K::Text, false, {}}, {"length", K::Int, true, {}}};
@@ -182,10 +229,23 @@ void DataEditor::set_field(EditorDoc& d, const ParamSpec& p, const std::string& 
       *t = nv;
       return;
     }
-    if (value == "-" || (value.empty() && p.optional)) t->erase(key);
-    else if (p.kind == K::Int || p.kind == K::Player) t->set(key, Value::number(value.empty() ? "0" : value));
-    else if (p.kind == K::Bool) t->set(key, Value::boolean(value == "igen" || value == "true"));
-    else t->set(key, Value::string(value));
+    if (value == "-" || (value.empty() && p.optional)) {
+      set_path(*t, key, nullptr);
+    } else if (p.kind == K::Int || p.kind == K::Player) {
+      const Value v = Value::number(value.empty() ? "0" : value);
+      set_path(*t, key, &v);
+    } else if (p.kind == K::Bool) {
+      t->set(key, Value::boolean(value == "igen" || value == "true"));
+    } else if (tab == kObjects && (key == "damage" || key == "range" || key == "speed")) {
+      if (!decimal(value)) {
+        status = "editor.trig.not_number";
+        return;
+      }
+      const Value v = Value::number(value);
+      set_path(*t, key, &v);
+    } else {
+      t->set(key, Value::string(value));
+    }
   });
 }
 
@@ -203,6 +263,20 @@ void DataEditor::add(EditorDoc& d, int level) {
         created = static_cast<int>(sec.items().size()) - 1;
       } else if (tab == kVariables) {
         sec.set(unique_member(sec, "valtozo"), Value::number("0"));
+        created = static_cast<int>(sec.members().size()) - 1;
+      } else if (tab == kObjects) {   // új, származtatott sablon az első harcos egységből (az alap átírható)
+        std::string base_id;
+        if (rules_) {
+          for (const auto& def : rules_->defs) {
+            if (!def.building && !def.worker && !def.hero && !def.faction.empty()) {
+              base_id = def.id;
+              break;
+            }
+          }
+        }
+        Value o = Value::object();
+        o.set("base", Value::string(base_id));
+        sec.set(unique_member(sec, "uj_egyseg"), o);
         created = static_cast<int>(sec.members().size()) - 1;
       } else if (tab == kDialogues) {
         const auto v = content::parse(R"({"nodes": [{"id": "n1", "text": "uj_szoveg"}]})");
@@ -296,10 +370,11 @@ void DataEditor::layout(int w, int h, const EditorDoc& d) {
   trig_.init(rules_);
   window = Rect{std::max(0, w / 2 - 520), std::max(0, h / 2 - 330), std::min(w, 1040), std::min(h, 660)};
   tabs.clear();
-  const char* tab_keys[] = {"editor.data.objectives", "editor.data.variables", "editor.data.dialogues", "editor.data.cutscenes"};
-  for (int i = 0; i < kTabs; ++i) tabs.push_back(Button{Rect{window.x + kPad + i * 128, window.y + kPad, 120, 24}, tab_keys[i], i, i == tab});
+  const char* tab_keys[] = {"editor.data.objectives", "editor.data.variables", "editor.data.dialogues", "editor.data.cutscenes",
+                            "editor.data.objects"};
+  for (int i = 0; i < kTabs; ++i) tabs.push_back(Button{Rect{window.x + kPad + i * 104, window.y + kPad, 100, 24}, tab_keys[i], i, i == tab});
   tools.clear();
-  int tx = window.x + kPad + kTabs * 128 + 12;
+  int tx = window.x + kPad + kTabs * 104 + 12;
   auto tool = [&](const char* key, int id) {
     tools.push_back(Button{Rect{tx, window.y + kPad, 88, 24}, key, id});
     tx += 92;
@@ -330,6 +405,7 @@ void DataEditor::layout(int w, int h, const EditorDoc& d) {
       for (size_t i = 0; i < sec->members().size(); ++i) {
         std::string label = sec->members()[i].first;
         if (tab == kVariables) label += " = " + sec->members()[i].second.text();
+        if (tab == kObjects && !sval(sec->members()[i].second, "base").empty()) label += " (" + sval(sec->members()[i].second, "base") + ")";
         list1.push_back(Button{Rect{list1_box.x, list1_box.y + static_cast<int>(i) * kRowH, list1_box.w, kRowH - 2}, label,
                                static_cast<int>(i), static_cast<int>(i) == sel1});
       }
@@ -362,7 +438,8 @@ void DataEditor::layout(int w, int h, const EditorDoc& d) {
     } else if (tab == kVariables && key == "value" && t) {
       val = t->text();
     } else if (t) {
-      val = sval(*t, specs[i].key);
+      const Value* x = get_path(*t, key);
+      val = x ? (x->is_string() || x->is_number() ? x->text() : content::dump(*x)) : std::string();
     }
     fields.push_back(Button{Rect{fields_box.x, fy, fields_box.w, kRowH}, key + ": " + (val.empty() ? "-" : val), static_cast<int>(i),
                             field.open && field.param == static_cast<int>(i)});
