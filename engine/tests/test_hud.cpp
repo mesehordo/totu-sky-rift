@@ -611,3 +611,45 @@ TEST_CASE("HUD jatekebesseg: a regi lepcsok (50 ... 300 %), a szeleken megall") 
   CHECK(HudModel::next_speed(200, 1) == 300 && HudModel::next_speed(150, 1) == 200);
   CHECK(HudModel::next_speed(110, 1) == 125);   // a legközelebbi lépcsőről lép
 }
+
+TEST_CASE("HUD a regi jatek szerint: F2 hos (ujra: odaugras), Szokoz bazis, Tamadas er riasztas") {
+  HudMatch m("ursan");
+  CHECK(m.ok);
+  if (!m.ok) return;
+  const uint16_t hd = m.s.rules()->def("urs_hos_ragna");
+  CHECK(hd != sim::kNoDef);
+  if (hd == sim::kNoDef) return;
+  const client::SnapUnit* hq = m.hq();
+  CHECK(hq != nullptr);
+  if (!hq) return;
+  const float hqx = hq->x, hqy = hq->y;
+  m.s.sim().spawn_unit(hd, 1, core::Fixed::from_int(20), core::Fixed::from_int(20));
+  m.step(2);
+  CHECK(m.hud.my_heroes().size() == 1);
+  m.hud.sel.clear();
+  m.hud.jump = false;
+  m.key(HudModel::kKeyF2);
+  CHECK(m.hud.sel.size() == 1 && m.hud.sel[0] == m.hud.my_heroes()[0]->id && !m.hud.jump);
+  m.key(HudModel::kKeyF2);
+  CHECK(m.hud.jump);   // már kijelölve: odaugrás
+  // Szóköz: nincs riasztás → a bázis (főépület)
+  m.hud.jump = false;
+  m.key(HudModel::kKeySpace);
+  CHECK(m.hud.jump && m.hud.jump_x == hqx && m.hud.jump_y == hqy);
+  // riasztás: egy saját egység életereje csökken
+  m.hud.watch_alerts();
+  m.custom = *m.snap;
+  m.custom.tick += 1;
+  for (auto& u : m.custom.units) {
+    if (u.owner == 1 && u.kind == client::SnapUnit::kUnit) {
+      u.hp -= 5;
+      break;
+    }
+  }
+  m.bind(&m.custom);
+  m.hud.watch_alerts();
+  CHECK(!m.hud.notice_log.empty() && m.hud.notice_log.back().text == m.hud.tr("alert.attack"));
+  m.hud.jump = false;
+  m.key(HudModel::kKeySpace);
+  CHECK(m.hud.jump && (m.hud.jump_x != hqx || m.hud.jump_y != hqy));   // az utolsó riasztás helye
+}

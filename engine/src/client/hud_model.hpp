@@ -15,6 +15,7 @@
 #include <set>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -94,7 +95,7 @@ class HudModel {
  public:
   using NameFn = std::function<std::string(const std::string&)>;
   using PostFn = std::function<void(const sim::Command&)>;
-  static constexpr int kKeyEscape = 27, kKeyF8 = 0x108;
+  static constexpr int kKeyEscape = 27, kKeyF8 = 0x108, kKeyF2 = 0x102, kKeyF3 = 0x103, kKeyF4 = 0x104, kKeySpace = 0x120;
 
   // a forrásadatok (képkockánként); a `names` a megjelenített név a fordításból, a `post` a parancs-API
   void bind(const Snapshot* snap, const sim::Rules* rules, NameFn names, PostFn post);
@@ -134,10 +135,32 @@ class HudModel {
   int speed_change = 0;         // a kattintás/billentyű kérése (−1/+1); a főciklus alkalmazza és nullázza
   std::array<Rect, 2> speed_btn{};   // [0]: −, [1]: + (a rajzolás tölti ki)
   bool help_open = false;       // F1: a súgó panel
+ private:
+  std::unordered_map<sim::EntityId, int32_t> seen_hp_;   // a riasztáshoz: az előző pillanatkép életereje
+  int64_t seen_tick_ = -1;
+  double hero_click_t_ = -9;
+  sim::EntityId hero_click_id_ = 0;
+ public:
   static int next_speed(int pct, int dir);   // a régi lépcsők: 50, 75, 100, 125, 150, 200, 300
   // a kijelzett sor: bal oldalt, az alsó sáv fölött (a régi játék `draw_hud` üzenetsora); a legutóbbi 6, időbélyeggel
-  std::vector<std::pair<std::string, double>> notice_log;
-  void post_notice(std::string text);
+  struct Notice {
+    std::string text;
+    double t = 0;
+    std::array<uint8_t, 3> col{255, 160, 90};
+  };
+  std::vector<Notice> notice_log;
+  void post_notice(std::string text, std::array<uint8_t, 3> col = {255, 160, 90});
+  // a régi hősportrék (jobb felül, legfeljebb 4): a rajzolás tölti ki; kattintás kijelöl, dupla kattintás odaugrik
+  std::array<Rect, 4> hero_btn{};
+  std::array<sim::EntityId, 4> hero_ids{};
+  std::vector<const SnapUnit*> my_heroes() const;
+  void select_hero(size_t i);                 // F2/F3/F4 és a portré: már kijelölve → odaugrik
+  // a régi riasztás („Támadás ér!”, 12 mp-enként legfeljebb egy) és a Szóköz: az utolsó riasztás (10 mp-en belül)
+  // vagy a bázis; a pillanatképből (a saját egységek és épületek életerejének csökkenése)
+  void watch_alerts();
+  void jump_home_or_alert();
+  int64_t alert_tick = -1000000;
+  float alert_x = 0, alert_y = 0;
   bool jump = false;                          // kameraugrás kérése (világ-képpont)
   float jump_x = 0, jump_y = 0;
 

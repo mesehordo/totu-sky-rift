@@ -9096,3 +9096,11 @@ msgstr "Arrows / screen edge: camera   Wheel: zoom   + / − : game speed   Esc:
 msgctxt "hud.help.11"
 msgid "Felül: szövetségesek, erőforrások, fogaskerék = menü   F1: ez a súgó"
 msgstr "Top: allies, resources, gear = menu   F1: this help"
+
+msgctxt "hud.alert.attack"
+msgid "Támadás ér!"
+msgstr "We are under attack!"
+
+msgctxt "hud.help.12"
+msgid "F2/F3/F4: 1./2./3. hős (újra: odaugrás)   Szóköz: bázis / utolsó riasztás   Középső gomb: kamera húzása"
+msgstr "F2/F3/F4: 1st/2nd/3rd hero (again: jump)   Space: base / last alert   Middle button: drag camera"

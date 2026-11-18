@@ -57,6 +57,16 @@ a + / − billentyűvel – **csak egyjátékos módban**, hálózatban a gombok
 keret), a sorok a mostani irányításhoz igazítva (P + klikk: járőr, Alt+1..6: alakzat, Shift-sor). **Próba:**
 `HUD jatekebesseg`. **Kép:** `kepek/regi_jatek_hud_ursan.jpg` (a régi játék) ↔ `kepek/utan_sugo_es_sebesseg.jpg`.
 
+## 7. Hősportrék, F2–F4, Szóköz, riasztás, középső gomb, kezdőkamera (a régi játékkal összevetve)
+
+A régi `ui.py` szerint: **hősportrék** jobb felül, az fps-sor alatt egymás alatt (legfeljebb 4): arany keret (kijelölve
+világosabb), alul életerő- és energiacsík, jobb felül szintjelvény, bal felül pulzáló „+” elkölthető képességpontnál;
+kattintás kijelöl, dupla kattintás odaugrik. **F2/F3/F4:** az 1./2./3. hős, újra lenyomva odaugrás. **Szóköz:** az
+utolsó riasztás helye (10 mp-en belül), különben a bázis (főépület). **„Támadás ér!”** piros sor az üzenetsorban, ha
+egy saját kész egység vagy épület életereje csökken (12 mp-enként legfeljebb egy – a régi szabály; a pillanatképből,
+a szimuláció nem változik). **Középső gomb húzása:** kamera. **Kezdőkamera:** a bázisra (a régi `start_xy`).
+A súgó új sora ezekről. **Próba:** `HUD a regi jatek szerint: F2 hos …`. **Kép:** `kepek/utan_hosportre.jpg`.
+
 ## Döntésre vár
 
 AS-07

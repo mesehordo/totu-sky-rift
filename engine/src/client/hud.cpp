@@ -136,6 +136,7 @@ void Hud::sync(World& world, Session& session, int w, int h) {
   map_w_ = world.map().width();
   map_h_ = world.map().height();
   model_.set_map_size(map_w_, map_h_);
+  model_.watch_alerts();   // a régi „Támadás ér!” riasztás
   if (!mini_.ok && dev_) {   // a minimap terepképe (a pálya a betöltés után nem változik)
     const auto cols = HudModel::minimap_terrain(world.map(), session.terrain());
     render::Image im;
@@ -519,6 +520,7 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, const H
   draw_quests();
   draw_clock(f);
   draw_notice(f);
+  draw_heroes(f);
   if (model_.help_open) draw_help(f);
   if (model_.path_pending()) draw_path_choice(f);
   else draw_tooltip(f);
@@ -1160,6 +1162,52 @@ void Hud::draw_clock(const HudFrame& f) {
   stext(FT, static_cast<float>(f.w - L.pad * 2) - tw(FT, sub), ty + th + 2, sub, {170, 170, 160});
 }
 
+void Hud::draw_heroes(const HudFrame& f) {
+  // a régi `draw_portraits`: jobb felül, a felső sáv alatt egymás alatt legfeljebb 4 hős; arany keret (kijelölve
+  // világosabb), portré, alul életerő (zöld) és energia (lila) csík, jobb felül szintjelvény, bal felül „+”, ha van
+  // elkölthető képességpont
+  const HudLayout& L = model_.layout();
+  const float k = static_cast<float>(L.s);
+  const int size = std::max(42, static_cast<int>(std::lround(54 * k)));
+  const int pw = size + 4, ph = size + 13;
+  const int x = f.w - pw - std::max(8, static_cast<int>(std::lround(12 * k)));
+  int y = L.topbar.bottom() + std::max(20, static_cast<int>(std::lround(24 * k))) + static_cast<int>(line_h(L.font.tiny)) + 4;
+  model_.hero_ids.fill(0);
+  const auto hs = model_.my_heroes();
+  const int Ft = L.font.tiny;
+  for (size_t i = 0; i < model_.hero_btn.size(); ++i) {
+    model_.hero_btn[i] = {};
+    if (i >= hs.size()) continue;
+    const SnapUnit& h = *hs[i];
+    const Rect r{x, y, pw, ph};
+    model_.hero_btn[i] = r;
+    model_.hero_ids[i] = h.id;
+    const bool sel = model_.sel.size() == 1 && model_.sel[0] == h.id;
+    rect(r, sel ? Col{70, 58, 24} : Col{30, 26, 18});
+    outline(r, {230, 190, 90}, 1);
+    def_icon(h.def, Rect{r.x + 2, r.y + 2, size, size}, model_.player_color(h.owner));
+    rect(static_cast<float>(r.x + 2), static_cast<float>(r.bottom() - 9), static_cast<float>(r.w - 4), 7, {10, 10, 10});
+    rect(static_cast<float>(r.x + 2), static_cast<float>(r.bottom() - 9),
+         static_cast<float>(r.w - 4) * static_cast<float>(h.hp) / static_cast<float>(std::max(1, h.max_hp)), 3, {80, 210, 80});
+    if (h.energy_max > 0) {
+      rect(static_cast<float>(r.x + 2), static_cast<float>(r.bottom() - 5),
+           static_cast<float>(r.w - 4) * static_cast<float>(h.energy) / static_cast<float>(h.energy_max), 3, {150, 100, 255});
+    }
+    const Rect badge{r.right() - 16, r.y - 4, 20, 16};
+    rect(badge, {20, 16, 8});
+    outline(badge, {230, 190, 90}, 1);
+    const std::string lv = std::to_string(std::max<int>(1, h.hero_level));
+    stext(Ft, static_cast<float>(badge.centerx()) - tw(Ft, lv) / 2, static_cast<float>(badge.y) + 1, lv, {255, 230, 150});
+    if (h.hero_points > 0) {
+      const float pulse = 0.5f + 0.5f * std::sin(static_cast<float>(t_) * 5.0f);
+      const Rect pr{r.x - 3, r.y - 4, 16, 16};
+      rect(pr, {static_cast<uint8_t>(120 + 120 * pulse), 200, 80});
+      stext(Ft, static_cast<float>(pr.x) + 4, static_cast<float>(pr.y), "+", {10, 20, 0});
+    }
+    y += ph + 8;
+  }
+}
+
 void Hud::draw_help(const HudFrame& f) {
   // a régi `draw_help`: a felső sáv alatt, középen, legfeljebb 1000 (·s) széles sötét panel arany kerettel; cím, sorok
   const HudLayout& L = model_.layout();
@@ -1200,9 +1248,9 @@ void Hud::draw_notice(const HudFrame& f) {
   const float lh = line_h(F) + 4 * s;
   float y = static_cast<float>(L.hud.y) - lh - 6 * s;
   for (auto it = model_.notice_log.rbegin(); it != model_.notice_log.rend(); ++it) {
-    if (t_ < it->second || t_ - it->second > 8.0) continue;
-    rect(8 * s, y - 1, tw(F, it->first) + 10 * s, line_h(F) + 2, {0, 0, 0}, 140);
-    stext(F, 13 * s, y, it->first, {255, 160, 90});
+    if (t_ < it->t || t_ - it->t > 8.0) continue;
+    rect(8 * s, y - 1, tw(F, it->text) + 10 * s, line_h(F) + 2, {0, 0, 0}, 140);
+    stext(F, 13 * s, y, it->text, it->col);
     y -= lh;
   }
 }

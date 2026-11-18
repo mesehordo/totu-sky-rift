@@ -262,6 +262,10 @@ bool hud_event(client::HudModel& m, const SDL_Event& ev, const client::Camera& c
     if (k >= SDLK_1 && k <= SDLK_9) return '1' + static_cast<int>(k - SDLK_1);
     if (k == SDLK_ESCAPE) return client::HudModel::kKeyEscape;
     if (k == SDLK_F8) return client::HudModel::kKeyF8;
+    if (k == SDLK_F2) return client::HudModel::kKeyF2;
+    if (k == SDLK_F3) return client::HudModel::kKeyF3;
+    if (k == SDLK_F4) return client::HudModel::kKeyF4;
+    if (k == SDLK_SPACE) return client::HudModel::kKeySpace;
     return -1;
   };
   if (ev.type == SDL_EVENT_KEY_DOWN && !m.text_focus) {   // a régi játék: + / − sebesség, F1 súgó
@@ -459,10 +463,16 @@ int main(int argc, char** argv) {
       if (!sp || session.local_player() == 0) return;   // a megfigyelő (0) marad középen
       sim::Sim& s = *sp;
       sim::EntityId best = sim::kNoEntity;
-      s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit&) {
+      s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building&) {   // a régi: a bázis (start_xy)
         const sim::Health* h = s.world().get<sim::Health>(e);
         if (best == sim::kNoEntity && h && h->owner == session.local_player()) best = e;
       });
+      if (best == sim::kNoEntity) {
+        s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit&) {
+          const sim::Health* h = s.world().get<sim::Health>(e);
+          if (best == sim::kNoEntity && h && h->owner == session.local_player()) best = e;
+        });
+      }
       if (const sim::Position* p = best != sim::kNoEntity ? s.world().get<sim::Position>(best) : nullptr) {
         c.x = static_cast<float>(p->x.to_double()) * client::World::kTilePx - static_cast<float>(vw) / 2 / c.zoom;
         c.y = static_cast<float>(p->y.to_double()) * client::World::kTilePx - static_cast<float>(vh) / 2 / c.zoom;
@@ -763,6 +773,8 @@ int main(int argc, char** argv) {
     auto frame_prev = std::chrono::steady_clock::now();   // AS-01: képkockaidő, FPS-kijelzés, képkocka-korlát
     float frame_dt = 0, fps_acc = 0;
     int fps_frames = 0, fps_shown = -1;
+    bool mid_drag = false;   // a középső gombos kamerahúzás (a régi `mid_drag`)
+    float mid_mx = 0, mid_my = 0, mid_cx = 0, mid_cy = 0;
     long frame = 0;
     const auto start = std::chrono::steady_clock::now();
     while (running && (o.frames < 0 || frame < o.frames)) {
@@ -1035,6 +1047,23 @@ int main(int argc, char** argv) {
           else running = false;
         }
         if (!have_world) continue;
+        // a régi játék: a középső gomb húzása mozgatja a kamerát
+        if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_MIDDLE) {
+          mid_drag = true;
+          mid_mx = ev.button.x;
+          mid_my = ev.button.y;
+          mid_cx = cam.x;
+          mid_cy = cam.y;
+          continue;
+        }
+        if (ev.type == SDL_EVENT_MOUSE_BUTTON_UP && ev.button.button == SDL_BUTTON_MIDDLE) {
+          mid_drag = false;
+          continue;
+        }
+        if (ev.type == SDL_EVENT_MOUSE_MOTION && mid_drag) {
+          cam.x = mid_cx - (ev.motion.x - mid_mx) / cam.zoom;
+          cam.y = mid_cy - (ev.motion.y - mid_my) / cam.zoom;
+        }
         if (ev.type == SDL_EVENT_MOUSE_WHEEL) {
           const float old = cam.zoom;
           cam.zoom = std::clamp(cam.zoom * (ev.wheel.y > 0 ? 1.12f : 1.0f / 1.12f), 1.0f, 2.0f);

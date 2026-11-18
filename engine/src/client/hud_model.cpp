@@ -934,12 +934,12 @@ bool HudModel::input_blocked() const {
   return snap_ && (snap_->winner != 0 || self().defeated);
 }
 
-void HudModel::post_notice(std::string text) {
+void HudModel::post_notice(std::string text, std::array<uint8_t, 3> col) {
   notice = std::move(text);
   notice_t = t;
   // ugyanaz az üzenet nem ismétlődik egymás alatt, csak frissül; legfeljebb 6 sor (a régi játék szerint)
-  if (!notice_log.empty() && notice_log.back().first == notice) notice_log.pop_back();
-  notice_log.emplace_back(notice, t);
+  if (!notice_log.empty() && notice_log.back().text == notice) notice_log.pop_back();
+  notice_log.push_back({notice, t, col});
   if (notice_log.size() > 6) notice_log.erase(notice_log.begin());
 }
 
@@ -1153,6 +1153,14 @@ bool HudModel::key_down(int key, bool repeat, bool mods) {
     select_idle_worker();
     return true;
   }
+  if (key == kKeyF2 || key == kKeyF3 || key == kKeyF4) {   // a régi: 1./2./3. hős (újra: odaugrás)
+    select_hero(static_cast<size_t>(key - kKeyF2));
+    return true;
+  }
+  if (key == kKeySpace) {   // a régi: az utolsó riasztás vagy a bázis
+    jump_home_or_alert();
+    return true;
+  }
   const int slot = key_slot(key);
   if (slot < 0 || mods) return false;
   activate_slot(slot);   // W E R T / S D F G / X C V B – ugyanaz, mint a kattintás
@@ -1162,6 +1170,80 @@ bool HudModel::key_down(int key, bool repeat, bool mods) {
 void HudModel::key_up(int key) {
   if (key >= 'a' && key <= 'z') key -= 'a' - 'A';
   held_.erase(key);
+}
+
+std::vector<const SnapUnit*> HudModel::my_heroes() const {
+  std::vector<const SnapUnit*> out;
+  if (!snap_ || !rules_) return out;
+  for (const SnapUnit& u : snap_->units) {
+    if (u.owner == player && u.kind == SnapUnit::kUnit && u.hp > 0 && u.def < rules_->defs.size() && rules_->defs[u.def].hero) {
+      out.push_back(&u);
+    }
+  }
+  return out;
+}
+
+void HudModel::select_hero(size_t i) {
+  const auto hs = my_heroes();
+  if (i >= hs.size()) return;
+  if (sel.size() == 1 && sel[0] == hs[i]->id) {   // már ki van jelölve: odaugrás (a régi F2–F4 és a dupla kattintás)
+    jump = true;
+    jump_x = hs[i]->x;
+    jump_y = hs[i]->y;
+  }
+  sel = {hs[i]->id};
+  learn_mode = false;
+}
+
+void HudModel::watch_alerts() {
+  if (!snap_ || snap_->tick == seen_tick_) return;
+  const bool first = seen_tick_ < 0;
+  seen_tick_ = snap_->tick;
+  bool hit = false;
+  float hx = 0, hy = 0;
+  std::unordered_map<sim::EntityId, int32_t> now;
+  for (const SnapUnit& u : snap_->units) {
+    if (u.owner != player || (u.kind != SnapUnit::kUnit && u.kind != SnapUnit::kBuilding)) continue;
+    now[u.id] = u.hp;
+    const auto it = seen_hp_.find(u.id);
+    if (!first && !hit && it != seen_hp_.end() && u.hp < it->second && u.progress >= 1000) {
+      hit = true;
+      hx = u.x;
+      hy = u.y;
+    }
+  }
+  seen_hp_ = std::move(now);
+  if (hit && snap_->tick - alert_tick > 12 * 30) {   // a régi: 12 mp-enként legfeljebb egy riasztás
+    alert_tick = snap_->tick;
+    alert_x = hx;
+    alert_y = hy;
+    post_notice(tr("alert.attack"), {255, 90, 70});
+  }
+}
+
+void HudModel::jump_home_or_alert() {
+  if (!snap_) return;
+  if (snap_->tick - alert_tick < 10 * 30) {   // az utolsó riasztás 10 mp-en belül
+    jump = true;
+    jump_x = alert_x;
+    jump_y = alert_y;
+    return;
+  }
+  const sim::FactionDef* f = faction_of(player);
+  const SnapUnit* home = nullptr;
+  for (const SnapUnit& u : snap_->units) {   // a bázis: a főépület (vagy az első saját épület, egység)
+    if (u.owner != player || u.hp <= 0) continue;
+    if (u.kind == SnapUnit::kBuilding && f && u.def == f->hq) {
+      home = &u;
+      break;
+    }
+    if (!home && (u.kind == SnapUnit::kBuilding || u.kind == SnapUnit::kUnit)) home = &u;
+  }
+  if (home) {
+    jump = true;
+    jump_x = home->x;
+    jump_y = home->y;
+  }
 }
 
 int HudModel::next_speed(int pct, int dir) {
@@ -1176,6 +1258,9 @@ int HudModel::next_speed(int pct, int dir) {
 bool HudModel::over_hud(float x, float y) const {
   if (L_.hud.contains(x, y) || L_.topbar.contains(x, y) || L_.idle.contains(x, y)) return true;
   if (speed_btn[0].contains(x, y) || speed_btn[1].contains(x, y)) return true;
+  for (size_t i = 0; i < hero_btn.size(); ++i) {
+    if (hero_ids[i] != 0 && hero_btn[i].contains(x, y)) return true;
+  }
   if (has_faith() && L_.faith.contains(x, y)) return true;
   return false;
 }
@@ -1224,6 +1309,26 @@ bool HudModel::click(float x, float y, int button) {
   if (button == 1 && L_.gear.contains(x, y)) {
     menu_requested = true;
     return true;
+  }
+  for (size_t i = 0; i < hero_btn.size(); ++i) {   // hősportrék: kijelölés, dupla kattintás: odaugrás
+    if (hero_ids[i] != 0 && hero_btn[i].contains(x, y)) {
+      if (button == 1) {
+        const auto hs = my_heroes();
+        for (size_t k = 0; k < hs.size(); ++k) {
+          if (hs[k]->id != hero_ids[i]) continue;
+          if (hero_click_id_ == hero_ids[i] && t - hero_click_t_ < 0.35) {
+            jump = true;
+            jump_x = hs[k]->x;
+            jump_y = hs[k]->y;
+          }
+          sel = {hs[k]->id};
+          learn_mode = false;
+        }
+        hero_click_id_ = hero_ids[i];
+        hero_click_t_ = t;
+      }
+      return true;
+    }
   }
   for (int i = 0; i < 2; ++i) {   // sebesség −/+
     if (speed_btn[static_cast<size_t>(i)].contains(x, y)) {

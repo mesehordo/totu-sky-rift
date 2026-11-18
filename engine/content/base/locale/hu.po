@@ -9095,3 +9095,11 @@ msgstr ""
 msgctxt "hud.help.11"
 msgid "Felül: szövetségesek, erőforrások, fogaskerék = menü   F1: ez a súgó"
 msgstr ""
+
+msgctxt "hud.alert.attack"
+msgid "Támadás ér!"
+msgstr ""
+
+msgctxt "hud.help.12"
+msgid "F2/F3/F4: 1./2./3. hős (újra: odaugrás)   Szóköz: bázis / utolsó riasztás   Középső gomb: kamera húzása"
+msgstr ""
