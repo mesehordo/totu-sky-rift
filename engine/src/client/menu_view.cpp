@@ -90,7 +90,7 @@ class MenuView {
     u_ = m.scale();
     batch.begin(render::ortho(0, W_, H_, 0));
     background(batch, m.screen(), t);
-    if (m.screen() == MenuScreen::Main) sidebar(batch, m, mx, my);
+    if (m.sidebar_width() > 0) sidebar(batch, m, mx, my);
     for (const MenuPanel& p : m.panels()) panel(batch, p.r, p.alpha, p.gold_top);
     for (const MenuText& tx : m.texts()) label(batch, tx);
     const MenuWidget* open = m.open_dropdown();
@@ -259,7 +259,8 @@ class MenuView {
 
   // --- háttér, oldalsáv, panel ---
   void background(render::SpriteBatch& b, MenuScreen s, double t) {
-    const std::string path = s == MenuScreen::Main       ? main_bg_
+    const std::string path = s == MenuScreen::Main || s == MenuScreen::Settings || s == MenuScreen::Sound || s == MenuScreen::Keys
+                                 ? main_bg_   // az oldalsáv melletti képernyők: a főmenü háttere
                              : s == MenuScreen::Skirmish ? (std::filesystem::path(assets_) / "ui" / "bg" / "setup.png").string()
                                                          : (std::filesystem::path(assets_) / "ui" / "bg" / "options.png").string();
     auto it = bg_.find(path);
@@ -499,6 +500,8 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
     SDL_GetWindowSizeInPixels(win, &w, &h);
     SDL_GetWindowSize(win, &ww, &wh);
     const float px = ww > 0 ? static_cast<float>(w) / static_cast<float>(ww) : 1.0f;   // képpont / ablakpont
+    menu.set_time(fixed ? static_cast<double>(frame) / 60.0
+                        : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count());
     menu.layout(w, h);
     SDL_Event ev;
     Menu::Result res = Menu::Result::None;

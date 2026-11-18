@@ -7830,8 +7830,8 @@ msgid "BILLENTYŰKIOSZTÁS"
 msgstr "KEY BINDINGS"
 
 msgctxt "ui.keys.info"
-msgid "A parancsrács (4 × 3) billentyűi. Kattints egy mezőre, majd nyomd le az új betűt. Foglalt: P (szünet) és a számjegyek (csapatok)."
-msgstr "Keys of the command grid (4 × 3). Click a cell, then press the new letter. Reserved: P (pause) and the digits (control groups)."
+msgid "A parancsrács (4 × 3) billentyűi. Kattints egy mezőre, majd nyomd le az új betűt. Foglalt: P (járőr) és a számjegyek (csapatok)."
+msgstr "Keys of the command grid (4 × 3). Click a cell, then press the new letter. Reserved: P (patrol) and the digits (control groups)."
 
 msgctxt "ui.keys.default"
 msgid "Alapértelmezés"

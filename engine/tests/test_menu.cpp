@@ -2,6 +2,7 @@
 // Menük és beállítások (M8; a régi `rts/menu.py`, `rts/setup_screen.py`, `rts/i18n.py`, `rts/profiles.py` szerint):
 // a menü-állapotgép, az egyéni csata beállítása → MatchSetup, a beállításfájl írása és olvasása, a billentyűkiosztás
 // ütközése, a nyelvek a locale mappa .po fájljaiból és a nyelvváltás – mind grafikus kártya nélkül.
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
@@ -428,7 +429,7 @@ TEST_CASE("M8 felulet – nyelvek: a locale mappa .po fájljaiból; hiányzó sz
   press(m, MenuAct::Cycle, 0);   // a sor kód szerint: en, hu, xx → vissza az elejére
   CHECK(st.language == "en");
   CHECK(m.find(MenuAct::Cycle, 0)->label == "English");
-  CHECK(m.texts()[0].text == "SETTINGS");
+  CHECK(std::any_of(m.texts().begin(), m.texts().end(), [](const auto& t) { return t.title && t.text == "SETTINGS"; }));   // a cím (az oldalsáv szövegei előtte)
   std::error_code ec;
   std::filesystem::remove_all(dir, ec);
 }

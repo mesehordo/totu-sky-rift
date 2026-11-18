@@ -222,7 +222,13 @@ float Menu::base_scale(int w, int h) {
 
 float Menu::k(float v) const { return std::round(v * u_); }
 
+float Menu::anim() const {
+  const double a = std::clamp((now_ - anim_t_) / 0.14, 0.0, 1.0);
+  return static_cast<float>(1.0 - (1.0 - a) * (1.0 - a) * (1.0 - a));
+}
+
 void Menu::go(MenuScreen s) {
+  if (s != screen_) anim_t_ = now_;
   screen_ = s;
   open_ = -1;
   open_dd_ = MenuAct::None;
@@ -274,9 +280,9 @@ void Menu::text(float x, float y, float w, std::string s, MenuText::Font f, Menu
 
 void Menu::title(const std::string& s) {
   MenuText t;
-  t.x = static_cast<float>(w_) / 2;
+  t.x = area_w_ > 0 ? area_x_ + area_w_ / 2 : static_cast<float>(w_) / 2;
   t.y = k(14);
-  t.w = static_cast<float>(w_) - k(80);
+  t.w = (area_w_ > 0 ? area_w_ : static_cast<float>(w_)) - k(80);
   t.text = s;
   t.font = MenuText::Huge;
   t.color = MenuText::Gold;
@@ -286,7 +292,8 @@ void Menu::title(const std::string& s) {
 }
 
 void Menu::back_button() {
-  add(MenuWidget::Kind::Button, {k(36), static_cast<float>(h_) - k(76), k(190), k(50)}, tr("ui.back"), MenuAct::Back);
+  add(MenuWidget::Kind::Button, {(area_w_ > 0 ? area_x_ : 0) + k(36), static_cast<float>(h_) - k(76), k(190), k(50)},
+      tr("ui.back"), MenuAct::Back);
 }
 
 void Menu::layout(int w, int h) {
@@ -301,6 +308,7 @@ void Menu::layout(int w, int h) {
   texts_.clear();
   panels_.clear();
   sidebar_w_ = 0;
+  area_x_ = area_w_ = 0;
   logo_ = {};
   switch (screen_) {
     case MenuScreen::Main: layout_main(); break;
@@ -312,6 +320,23 @@ void Menu::layout(int w, int h) {
 }
 
 void Menu::layout_main() {
+  layout_sidebar(open_);
+}
+
+void Menu::side_area() {
+  // az oldalsáv a főmenü „Beállítások” pontjával kiemelve; mellette a képernyő, balról becsúszva
+  int sel = -1;
+  const auto& items = main_items();
+  for (size_t i = 0; i < items.size(); ++i) {
+    if (std::string(items[i].key) == "ui.main.settings") sel = static_cast<int>(i);
+  }
+  layout_sidebar(sel);
+  const float off = (1.0f - anim()) * k(60);
+  area_x_ = sidebar_w_ + k(8) - off;
+  area_w_ = std::max(k(200), static_cast<float>(w_) - sidebar_w_ - k(16));
+}
+
+void Menu::layout_sidebar(int highlight) {
   const float H = static_cast<float>(h_);
   const float sw = k(320);
   sidebar_w_ = sw;
@@ -333,7 +358,7 @@ void Menu::layout_main() {
     mw.sub = !g.subs.empty();
     mw.soon = g.soon;
     mw.enabled = !g.soon;
-    mw.selected = open_ == static_cast<int>(i);
+    mw.selected = highlight == static_cast<int>(i);
     if (g.soon) mw.tag = tr("ui.main.soon");
     item_y.push_back(y);
     y += ih + gap;
@@ -342,11 +367,11 @@ void Menu::layout_main() {
   const float foot = H - k(70);
   text(sw / 2, foot + k(10), sw - k(30), tr("ui.main.creator"), MenuText::Tiny, MenuText::Dim, true);
   text(sw / 2, foot + k(34), sw - k(30), std::string("v") + core::version(), MenuText::Tiny, MenuText::Dim, true);
-  if (open_ >= 0 && static_cast<size_t>(open_) < items.size()) {
+  if (screen_ == MenuScreen::Main && open_ >= 0 && static_cast<size_t>(open_) < items.size()) {
     const auto& subs = items[static_cast<size_t>(open_)].subs;
     const float pw = k(300);
     const float ph = static_cast<float>(subs.size()) * (ih + gap) + k(18);
-    const float px = sw + k(4);
+    const float px = sw + k(4) - (1.0f - anim()) * k(40);   // a régi: kicsúszik az oldalsáv mögül
     const float py = std::min(item_y[static_cast<size_t>(open_)] - k(9), H - ph - k(20));
     panels_.push_back({{px, py, pw, ph}, 228, true});
     for (size_t j = 0; j < subs.size(); ++j) {
@@ -501,10 +526,12 @@ void Menu::layout_skirmish() {
 }
 
 void Menu::layout_settings() {
-  const float W = static_cast<float>(w_), H = static_cast<float>(h_);
+  const float H = static_cast<float>(h_);
+  side_area();
   title(tr("ui.settings.title"));
   const float top = k(96);
-  const float pw = std::min(k(720), W - k(72));
+  const float pw = std::min(k(720), area_w_ - k(24));
+  const float W = 2 * area_x_ + area_w_;   // a panel a terület közepén
   const float step = std::max(k(20), std::min(k(54), std::floor((H - top - k(150)) / kSettingRows)));
   const float bh = std::max(1.0f, step - k(2));
   const MenuRect pr{W / 2 - pw / 2, top, pw, kSettingRows * step + k(60)};
@@ -538,10 +565,12 @@ void Menu::layout_settings() {
 }
 
 void Menu::layout_sound() {
-  const float W = static_cast<float>(w_), H = static_cast<float>(h_);
+  const float H = static_cast<float>(h_);
+  side_area();
   title(tr("ui.sound.title"));
   const float top = k(96);
-  const float pw = std::min(k(770), W - k(72));
+  const float pw = std::min(k(770), area_w_ - k(24));
+  const float W = 2 * area_x_ + area_w_;
   const float step = std::max(k(24), std::min(k(61), std::floor((H - top - k(120)) / static_cast<float>(kSoundCount))));
   const MenuRect pr{std::floor((W - pw) / 2), top, pw, step * static_cast<float>(kSoundCount) + k(25) + k(30)};
   panels_.push_back({pr, 215, false});
@@ -567,7 +596,9 @@ void Menu::layout_sound() {
 }
 
 void Menu::layout_keys() {
-  const float W = static_cast<float>(w_), H = static_cast<float>(h_);
+  const float H = static_cast<float>(h_);
+  side_area();
+  const float W = 2 * area_x_ + area_w_;
   title(tr("ui.keys.title"));
   const float top = k(96);
   const float cell = k(84), gap = k(12);
@@ -588,7 +619,7 @@ void Menu::layout_keys() {
   if (!message_.empty()) {
     text(W / 2, my, pr.w - k(48), message_, MenuText::Med, capture_ >= 0 ? MenuText::Light : MenuText::Gold, true, 2);
   }
-  add(MenuWidget::Kind::Button, {W - k(36 + 240), H - k(76), k(240), k(50)}, tr("ui.keys.default"), MenuAct::KeysDefault);
+  add(MenuWidget::Kind::Button, {area_x_ + area_w_ - k(36 + 240), H - k(76), k(240), k(50)}, tr("ui.keys.default"), MenuAct::KeysDefault);
   back_button();
 }
 
@@ -645,7 +676,11 @@ Menu::Result Menu::click(float x, float y, int button) {
 
 Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
   switch (w.act) {
-    case MenuAct::Toggle: open_ = open_ == w.arg ? -1 : w.arg; break;
+    case MenuAct::Toggle:
+      if (screen_ != MenuScreen::Main) go(MenuScreen::Main);   // oldalsó képernyőről: vissza, az almenü nyitva
+      open_ = open_ == w.arg ? -1 : w.arg;
+      anim_t_ = now_;
+      break;
     case MenuAct::Skirmish: go(MenuScreen::Skirmish); break;
     case MenuAct::Settings: go(MenuScreen::Settings); break;
     case MenuAct::Quit: return Result::Quit;

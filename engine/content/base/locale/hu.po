@@ -7830,7 +7830,7 @@ msgid "BILLENTYŰKIOSZTÁS"
 msgstr ""
 
 msgctxt "ui.keys.info"
-msgid "A parancsrács (4 × 3) billentyűi. Kattints egy mezőre, majd nyomd le az új betűt. Foglalt: P (szünet) és a számjegyek (csapatok)."
+msgid "A parancsrács (4 × 3) billentyűi. Kattints egy mezőre, majd nyomd le az új betűt. Foglalt: P (járőr) és a számjegyek (csapatok)."
 msgstr ""
 
 msgctxt "ui.keys.default"

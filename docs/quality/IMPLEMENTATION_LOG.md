@@ -86,6 +86,14 @@ arany szegély, díszvonalak), balról becsúszva (0,22 mp, lassuló), a játék
 az elmosással), a HUD elsötétül; Esc/Enter folytatás, Q kilépés, kattintás a menüpontra, a panelen kívül folytatás.
 **Kép:** `kepek/utan_szunetmenu.jpg`.
 
+## 9. Menük oldalt (a tulajdonos kérése)
+
+A régi játékban a főmenü almenüje az oldalsáv mögül csúszott ki, a Beállítások középen, teljes képernyőn nyílt. Most a
+**Beállítások, a Hang és a Billentyűk** az oldalsáv mellett nyílnak (a „Beállítások” pont kiemelve), balról
+becsúszva (0,14 mp, lassuló), a főmenü hátterén; az oldalsáv pontjaira kattintva vissza a főmenübe, nyitott
+almenüvel. A főmenü almenüje is a régi módon csúszik ki. A Csata képernyő elrendezését a tulajdonos adja (változatlan).
+Szöveghiba javítva: a billentyűkiosztás „Foglalt: P (szünet)” → „P (járőr)”. **Képek:** `kepek/utan_menu_*.jpg`.
+
 ## Döntésre vár
 
 AS-07

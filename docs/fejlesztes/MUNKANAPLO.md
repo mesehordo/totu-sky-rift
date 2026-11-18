@@ -907,3 +907,5 @@ A HUD-modell nyers mutatót tartott a világ pillanatképére; ha egy képkocka 
 ## 2026-11-19 – Köd: szélesebb határ, elmosott változat kipróbálva; szünetmenü bal oldalt, elmosott háttérrel
 
 A köd határa szélesebb (kb. 3 helyett kb. 6 csempés átmenet). Az elmosott köd (`--fog-blur`, a felderített rész színes, elmosott, kissé sötétebb) költsége 1080p-ben a mérési zajon belül (≤ 1 ms, RX 550); az alap a szürke marad (D41), amíg a tulajdonos dönt. A szünetmenü bal oldali panel a főmenü oldalsávjának stílusában, balról becsúszik, a játéktér mögötte elmosódik. Képek: `docs/quality/kepek/kod_osszevetes_*.jpg`, `utan_szunetmenu.jpg`.
+
+**Menük oldalt:** a Beállítások, a Hang és a Billentyűk az oldalsáv mellett nyílnak, balról becsúszva, a főmenü hátterén; a főmenü almenüje a régi módon csúszik ki az oldalsáv mögül. A billentyűkiosztás szövege javítva (a P a járőr). Képek: `docs/quality/kepek/utan_menu_*.jpg`.
