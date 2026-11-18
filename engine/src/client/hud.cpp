@@ -518,6 +518,7 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, const H
   draw_topbar(f);
   draw_quests();
   draw_clock(f);
+  draw_notice(f);
   if (model_.path_pending()) draw_path_choice(f);
   else draw_tooltip(f);
   draw_mission(f);
@@ -1131,6 +1132,23 @@ void Hud::draw_clock(const HudFrame& f) {
   if (f.fps >= 0) t = std::to_string(f.fps) + " FPS   " + t;
   const float right = static_cast<float>(f.w - L.pad * 2);
   stext(F, right - tw(F, t) - 4, static_cast<float>(L.topbar.y) + (static_cast<float>(L.topbar.h) - line_h(F)) / 2, t, {240, 235, 200});
+}
+
+void Hud::draw_notice(const HudFrame& f) {
+  // a régi játék szerint (`ui.py` `draw_hud`): bal oldalt, az alsó sáv fölött, a legújabb alul, kis betű, soronként
+  // félig áttetsző fekete sáv (alfa 140), 8 mp-ig, legfeljebb 6 sor; a hibák narancsszínűek (255, 160, 90)
+  (void)f;
+  const HudLayout& L = model_.layout();
+  const int F = L.font.small;
+  const float s = static_cast<float>(L.s);
+  const float lh = line_h(F) + 4 * s;
+  float y = static_cast<float>(L.hud.y) - lh - 6 * s;
+  for (auto it = model_.notice_log.rbegin(); it != model_.notice_log.rend(); ++it) {
+    if (t_ < it->second || t_ - it->second > 8.0) continue;
+    rect(8 * s, y - 1, tw(F, it->first) + 10 * s, line_h(F) + 2, {0, 0, 0}, 140);
+    stext(F, 13 * s, y, it->first, {255, 160, 90});
+    y -= lh;
+  }
 }
 
 void Hud::draw_tooltip(const HudFrame& f) {

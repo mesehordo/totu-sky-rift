@@ -17,7 +17,7 @@ C++-ban rögzített szövegek (`main.cpp` `stderr`-üzenetei – nem a játékos
 |---|---|---|---|---|---|---|
 | C-01 | – | ablakcím | „TOTU: Sky Rift – fa … · arany … · létszám …” | „TOTU: Sky Rift” | ideiglenes kijelzés, a HUD már mutatja (AS-04) | JAVÍTVA |
 | C-02 | `ui.settings.ui_scale` | Beállítások | „Felület mérete” | „Menü mérete”, vagy a HUD is kövesse | csak a menüre hat (AS-07) | DÖNTÉSRE VÁR |
-| C-03 | (új) `hud.err.*` | HUD | – (csak villanás) | „Kevés arany”, „Kevés fa”, „Kevés meteorit”, „Nincs elég hely a seregben”, „Ide nem építhető” | a sikertelen parancs oka (AS-03) | DÖNTÉSRE VÁR |
+| C-03 | (új) `hud.err.*` | HUD | – (csak villanás) | „Kevés arany”, „Kevés fa”, „Kevés meteorit”, „Nincs elég hely a seregben”, „Ide nem építhető” | a sikertelen parancs oka (AS-03) | JAVÍTVA: `hud.err.res` „Nincs elég: {}”, `hud.err.supply`; hiányzó feltételnél a tooltip „Hiányzik: …” szövege |
 | C-04 | `ui.settings.sound` | Beállítások | „Hangerő és hangkategóriák” → gomb: „Hangbeállítások” | marad | a sor és a gomb szerepe más (címke ↔ művelet) | NEM HIBA |
 | C-05 | `ui.main.*.hint` | főmenü | „hamarosan” jelölés | marad | valós állapot (nincs még képernyő) | NEM HIBA |
 | C-06 | `chain.*` | küldetéssor | munkanevek („Küldetéssor”, „Választós próba-küldetéssor”) | a tulajdonos adja | D47 | DÖNTÉSRE VÁR |

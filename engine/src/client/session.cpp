@@ -292,9 +292,12 @@ void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
   const sim::EntityDef& d = r->defs[u.def];
   const auto fl = [](Fixed f) { return static_cast<float>(f.raw()) / 65536.0f; };
   u.armor = sim_->stat(e, "Health.armor", Fixed::from_int(d.armor)).floor_int();
-  if (const auto* a = w.get<sim::Attack>(e)) {
+  if (const auto* a = w.get<sim::Attack>(e)) {   // a bemutató egységei (M1-es komponens)
     u.damage = sim_->stat(e, "Attack.damage", Fixed::from_int(a->damage)).floor_int();
     u.range = fl(a->range);
+  } else if (d.attack.has) {   // a sablonból indított egységek és épületek: a sablon támadása a kutatásokkal
+    u.damage = sim_->stat(e, "Attack.damage", d.attack.damage).floor_int();
+    u.range = fl(d.attack.range);
   }
   u.shield_max = d.shield;
   if (const auto* v = w.get<sim::Vital>(e)) u.shield = v->shield / 1000;

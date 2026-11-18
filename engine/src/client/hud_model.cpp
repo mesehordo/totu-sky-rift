@@ -934,6 +934,15 @@ bool HudModel::input_blocked() const {
   return snap_ && (snap_->winner != 0 || self().defeated);
 }
 
+void HudModel::post_notice(std::string text) {
+  notice = std::move(text);
+  notice_t = t;
+  // ugyanaz az üzenet nem ismétlődik egymás alatt, csak frissül; legfeljebb 6 sor (a régi játék szerint)
+  if (!notice_log.empty() && notice_log.back().first == notice) notice_log.pop_back();
+  notice_log.emplace_back(notice, t);
+  if (notice_log.size() > 6) notice_log.erase(notice_log.begin());
+}
+
 bool HudModel::activate_slot(int i, int button) {
   if (input_blocked() || i < 0 || i >= 12) return false;
   CommandCard slots = command_card();
@@ -941,10 +950,32 @@ bool HudModel::activate_slot(int i, int button) {
   if (!sl) return false;
   const std::function<void()>& fn = button == 1 ? sl->fn : sl->rfn;
   if (!fn) return false;
-  if (button == 1 && (sl->kind == HudSlot::Unit || sl->kind == HudSlot::Building) && sl->def != sim::kNoDef) {
-    const auto& cost = rules_->defs[sl->def].cost;
-    for (size_t k = 0; k < sim::kResources; ++k) {
-      if (self().res[k] < cost[k]) res_flash[k] = t;
+  const bool costed = sl->kind == HudSlot::Unit || sl->kind == HudSlot::Building || sl->kind == HudSlot::Research;
+  if (button == 1 && costed && !sl->enabled && !sl->tip_text.empty() && sl->cost != "✓") {
+    post_notice(sl->tip_text);   // AS-03: hiányzó feltétel (épület, kutatás) – ugyanaz, mint a tooltipben
+  } else if (button == 1 && costed) {   // AS-03: a kiadás előtt ismert elutasítási ok szövegesen is
+    const std::array<int32_t, sim::kResources>* cost = nullptr;
+    if ((sl->kind == HudSlot::Unit || sl->kind == HudSlot::Building) && sl->def != sim::kNoDef) cost = &rules_->defs[sl->def].cost;
+    if (sl->kind == HudSlot::Research && sl->research >= 0 && static_cast<size_t>(sl->research) < rules_->researches.size()) {
+      cost = &rules_->researches[static_cast<size_t>(sl->research)].cost;
+    }
+    std::string short_of;
+    if (cost) {
+      for (int k : {0, 1, 2, 3}) {
+        if (self().res[static_cast<size_t>(k)] < (*cost)[static_cast<size_t>(k)]) {
+          res_flash[static_cast<size_t>(k)] = t;
+          short_of += (short_of.empty() ? "" : ", ") + res_name(k);
+        }
+      }
+    }
+    if (!short_of.empty()) {
+      post_notice(tr("err.res", {short_of}));
+    } else if (sl->kind == HudSlot::Unit && sl->def != sim::kNoDef && rules_->defs[sl->def].supply > 0 &&
+               self().supply_used + rules_->defs[sl->def].supply > self().supply_cap) {
+      // a régi szöveg: „Elérted a létszámkorlátot – növeld: <a faj létszámforrása>”
+      const sim::FactionDef* f = faction_of(player);
+      const content::Value* how = f && f->raw ? path_of(f->raw.get(), {"Faction", "supply_desc"}) : nullptr;
+      post_notice(how && how->is_string() ? tr("err.supply", {how->text()}) : tr("err.supply_plain"));
     }
   }
   slot_flash = i;

@@ -11,7 +11,7 @@ Mezők: **képernyő · hely · reprodukció · kár · bizonyíték · legkiseb
 |---|---|---|---|---|---|
 | AS-01 | interakció | Beállítások → játék | 4 kapcsoló nem hat a játékra (görgetés sebessége, képernyőszéli görgetés, FPS-kijelzés, képkocka-korlát) | alacsony (csak kliens) | JAVÍTVA |
 | AS-02 | hierarchia | Csata indulása | a kamera a pálya közepén, ködben indul: fekete kép a saját bázis helyett | alacsony | JAVÍTVA |
-| AS-03 | interakció | HUD | a sikertelen parancs csak villan (nyersanyag), szöveges ok nincs („Kevés arany”, „Nincs hely”) | közepes | DÖNTÉSRE VÁR |
+| AS-03 | interakció | HUD | a sikertelen parancs csak villan (nyersanyag), szöveges ok nincs („Kevés arany”, „Nincs hely”) | közepes | JAVÍTVA (nyersanyag, létszám, hiányzó feltétel); az elhelyezés és a szimulációs okok NYITOTT |
 | AS-04 | technikai | ablakcím | „ideiglenes kijelzés” a címsorban (nyersanyag, létszám) – a HUD már mutatja | alacsony | JAVÍTVA |
 | AS-05 | technikai | kamera | a billentyűs görgetés képkockánként 12 px: a sebesség a képkockaszámtól függ | alacsony | JAVÍTVA (AS-01-gyel) |
 | AS-06 | szöveg | dokumentáció | az állapotlapok az M2-nél és a Python-játéknál tartanak | nincs | JAVÍTVA |

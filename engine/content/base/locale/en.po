@@ -9032,3 +9032,15 @@ msgstr "Choose a mission (click)"
 msgctxt "chain.pick.done"
 msgid "teljesítve"
 msgstr "completed"
+
+msgctxt "hud.err.res"
+msgid "Nincs elég nyersanyag: {}"
+msgstr "Not enough resources: {}"
+
+msgctxt "hud.err.supply"
+msgid "Elérted a létszámkorlátot – növeld: {}"
+msgstr "Population limit reached – increase it: {}"
+
+msgctxt "hud.err.supply_plain"
+msgid "Elérted a létszámkorlátot."
+msgstr "Population limit reached."

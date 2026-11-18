@@ -124,6 +124,13 @@ class HudModel {
   int slot_flash = -1;
   double slot_flash_t = -9;
   std::array<double, sim::kResources> res_flash{-99, -99, -99, -99};
+  // AS-03: a legutóbbi elutasított kattintás rövid, lokalizált oka (a HUD 2 mp-ig mutatja); csak a kliensoldalon
+  // biztosan ismert okok: hiányzó nyersanyag, betelt létszám
+  std::string notice;
+  double notice_t = -99;
+  // a kijelzett sor: bal oldalt, az alsó sáv fölött (a régi játék `draw_hud` üzenetsora); a legutóbbi 6, időbélyeggel
+  std::vector<std::pair<std::string, double>> notice_log;
+  void post_notice(std::string text);
   bool jump = false;                          // kameraugrás kérése (világ-képpont)
   float jump_x = 0, jump_y = 0;
 

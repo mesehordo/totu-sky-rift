@@ -555,3 +555,52 @@ TEST_CASE("HUD betu M9: a kis jelek (pont, kettospont) nem halvanyak a sutesben"
     CHECK(peak('H') == 255);   // a teljes fedettségű betű nem változik
   }
 }
+
+TEST_CASE("AS-03 HUD: a sikertelen kiadas oka szovegesen (hianyzo nyersanyag, betelt letszam)") {
+  HudMatch m("ursan");
+  CHECK(m.ok);
+  if (!m.ok) return;
+  const client::SnapUnit* hq = m.hq();
+  CHECK(hq != nullptr);
+  if (!hq) return;
+  m.custom = *m.snap;
+  m.custom.players[1].res = {0, 0, 0, 0};
+  m.bind(&m.custom);
+  m.hud.sel = {hq->id};
+  m.hud.t = 5.0;
+  m.calls.clear();
+  m.execute = false;
+  m.key('W');
+  CHECK(!m.hud.notice.empty() && m.hud.notice_t == 5.0);
+  CHECK(m.hud.notice.find(m.hud.res_name(1)) != std::string::npos ||
+        m.hud.notice.find(m.hud.res_name(0)) != std::string::npos);   // a hiányzó nyersanyag neve benne van
+  std::printf("  üzenet: %s\n", m.hud.notice.c_str());
+  // van nyersanyag, de a létszám betelt
+  m.custom.players[1].res = {9999, 9999, 9999, 9999};
+  m.custom.players[1].supply_used = m.custom.players[1].supply_cap;
+  m.bind(&m.custom);
+  m.hud.sel = {hq->id};
+  m.hud.notice.clear();
+  m.hud.t = 7.0;
+  m.key('W');
+  CHECK(m.hud.notice.find("Tany") != std::string::npos);   // „Elérted a létszámkorlátot – növeld: Tanyák”
+  // minden rendben: nincs üzenet
+  m.custom.players[1].supply_used = 0;
+  m.bind(&m.custom);
+  m.hud.sel = {hq->id};
+  m.hud.notice.clear();
+  m.key('W');
+  CHECK(m.hud.notice.empty());
+}
+
+TEST_CASE("HUD karakterlap: a munkas tamadasa is latszik (a regi jatek szerint)") {
+  HudMatch m("ursan");
+  CHECK(m.ok);
+  if (!m.ok) return;
+  const auto w = m.own(true);
+  CHECK(!w.empty());
+  if (w.empty()) return;
+  const client::SnapUnit* u = m.snap->find(w[0]);
+  CHECK(u && u->damage > 0);
+  std::printf("  munkás: sebzés %d, páncél %d\n", u ? u->damage : -1, u ? u->armor : -1);
+}

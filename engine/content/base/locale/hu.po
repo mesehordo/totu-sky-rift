@@ -9031,3 +9031,15 @@ msgstr ""
 msgctxt "chain.pick.done"
 msgid "teljesítve"
 msgstr ""
+
+msgctxt "hud.err.res"
+msgid "Nincs elég nyersanyag: {}"
+msgstr ""
+
+msgctxt "hud.err.supply"
+msgid "Elérted a létszámkorlátot – növeld: {}"
+msgstr ""
+
+msgctxt "hud.err.supply_plain"
+msgid "Elérted a létszámkorlátot."
+msgstr ""

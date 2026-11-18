@@ -27,8 +27,29 @@ ablakban); CTest 9/9, goldenek bitre azonosak. **Képek:** `kepek/alap_hud_ursan
 `docs/fejlesztes/ALLAPOT.md` (M0–M12), `HIBAK_ES_FELADATOK.md` (a régi játékra vonatkozik – jelölve), `README.md`
 (állapottábla, CI-állítás, játékmódok), `docs/HUD.md` (a geometria helye).
 
+## 4. AS-03: a sikertelen kiadás oka szövegesen (a tulajdonos jóváhagyásával, 2026-11-18)
+
+**Probléma:** kiképzés, építés, kutatás kattintásra csak a nyersanyagszámláló villant. **Javítás:** a HUD-modell
+(`activate_slot`) a parancs kiadása előtt, ugyanabból az adatból, amiből a mező tiltott, rövid okot ír
+(`notice`): „Nincs elég: Fa, Arany” (a hiányzó nyersanyagok a faj nyersanyagnevével), „A létszám betelt – több
+lakóhely kell”, hiányzó feltételnél a tooltip „Hiányzik: …” szövege. A HUD 2 mp-ig mutatja az alsó sáv fölött,
+középen (`draw_notice`), **a régi játék szerint** (a tulajdonos kérése, `rts/ui.py` `draw_hud`): bal oldalt, az alsó sáv fölött, kis
+betűvel, soronként félig áttetsző fekete sávon, narancsszínnel, legfeljebb 6 sor, 8 mp-ig; a szövegek is a régiek
+(„Nincs elég nyersanyag: …”, „Elérted a létszámkorlátot – növeld: <a faj létszámforrása>”). **Nem változik:** a parancs útja, a szimuláció, a hash, a
+billentyű–kattintás azonosság. **Nyitott:** „Ide nem építhető” – az elhelyezés ellenőrzése a szimuláció szálán fut,
+a HUD onnan nem olvashat; ehhez a pillanatképbe kell a foglaltság (külön lépés); az „érvénytelen cél”,
+„elérhetetlen” okhoz szimulációs visszajelzés kell (döntés). **Teszt:** `AS-03 HUD` próba (hiányzó nyersanyag,
+betelt létszám, rendben: nincs üzenet); a 8 HUD-próba zöld. **Kép:** `kepek/utan_as03_uzenet.jpg`.
+
+## 5. Karakterlap: a Támadás sora (a régi játékkal összevetve)
+
+**Hiba:** a pillanatkép a sebzést a bemutató (M1) `Attack` komponenséből olvasta; a sablonból indított egységeknek
+ilyen nincs, ezért a karakterlapon **egyetlen egységnél sem** látszott a Támadás. **Javítás:** a sablon támadása a
+kutatásokkal (`Session::hud_fields`). Most a régi elrendezés: Támadás/Páncél, Mozgás/Látótáv két oszlopban.
+**Próba:** `HUD karakterlap: a munkas tamadasa`.
+
 ## Döntésre vár
 
-AS-03 (szöveges elutasítási ok – a kliensoldali okok P2, a szimulációs okok új visszajelzést kérnek), AS-07
+AS-07
 („Felület mérete”: csak menü, vagy a HUD is), C-06/C-07 (munkanevek), a diagnosztika exportjának helye és a
 véleménymező.
