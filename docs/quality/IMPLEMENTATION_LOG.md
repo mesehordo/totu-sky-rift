@@ -48,6 +48,15 @@ ilyen nincs, ezért a karakterlapon **egyetlen egységnél sem** látszott a Tá
 kutatásokkal (`Session::hud_fields`). Most a régi elrendezés: Támadás/Páncél, Mozgás/Látótáv két oszlopban.
 **Próba:** `HUD karakterlap: a munkas tamadasa`.
 
+## 6. A régi jobb felső sarok és a súgó (a régi játékkal összevetve)
+
+A régi `hud.py` `draw_clock` és `ui.py` `draw_help` szerint: jobb felül az óra, mellette [−] ×1 [+] gomb, alatta
+apró betűvel „N fps  •  F1: súgó”; a játéksebesség a régi lépcsőkben (50, 75, 100, 125, 150, 200, 300 %) a gombbal és
+a + / − billentyűvel – **csak egyjátékos módban**, hálózatban a gombok szürkék (a lockstep üteme kötött); a futtató
+ütemét és a rajzolás simítását állítja, a szimulációt nem. F1: a régi súgó panel (a felső sáv alatt, középen, arany
+keret), a sorok a mostani irányításhoz igazítva (P + klikk: járőr, Alt+1..6: alakzat, Shift-sor). **Próba:**
+`HUD jatekebesseg`. **Kép:** `kepek/regi_jatek_hud_ursan.jpg` (a régi játék) ↔ `kepek/utan_sugo_es_sebesseg.jpg`.
+
 ## Döntésre vár
 
 AS-07
