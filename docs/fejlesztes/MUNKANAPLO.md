@@ -899,3 +899,7 @@ A parancsrácson a kiképzés, építés vagy kutatás sikertelen kattintásakor
 **A régi felület szerint (3.):** hősportrék jobb felül (szint, életerő, energia, „+” pont; kattintás kijelöl, dupla odaugrik), F2/F3/F4 hőskijelölés (újra: odaugrás), Szóköz: utolsó riasztás vagy bázis, „Támadás ér!” piros üzenet (12 mp-enként), középső gombos kamerahúzás, a kezdőkamera a bázison; a súgó kiegészítve. Csak kliens; a szimuláció és a hash változatlan.
 
 **Döntés:** a P billentyű járőr marad (D46); a régi játék P-szünete helyett a szünet az Esc.
+
+## 2026-11-18 – Összeomlás javítva: a HUD érvénytelen pillanatképet olvasott
+
+A HUD-modell nyers mutatót tartott a világ pillanatképére; ha egy képkocka alatt két szimulációs tick is lefutott (indulás, akadás, mérőmód), a régi pillanatkép felszabadult, és a rajzolás érvénytelen memóriát olvasott (összeomlás a `draw_mission`-ben; a `--bench` 10–300 képkockánál véletlenszerűen). A HUD most megtartja a pillanatképét a következő szinkronig (`World::snapshot_shared`). Ellenőrzés: 6 mérőfutás hiba nélkül.

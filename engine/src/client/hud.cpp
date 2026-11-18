@@ -130,7 +130,8 @@ Hud::Theme Hud::theme() const {
 void Hud::sync(World& world, Session& session, int w, int h) {
   Session* ss = &session;
   World* ww = &world;
-  model_.bind(world.snapshot(), session.rules(), [ss](const std::string& k) { return ss->display_name(k); },
+  held_ = world.snapshot_shared();
+  model_.bind(held_.get(), session.rules(), [ss](const std::string& k) { return ss->display_name(k); },
               [ww](const sim::Command& c) { ww->post(c); });
   model_.set_screen(w, h);
   map_w_ = world.map().width();

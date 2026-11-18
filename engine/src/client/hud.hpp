@@ -7,6 +7,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -122,6 +123,9 @@ class Hud {
   float mx_ = -1, my_ = -1;
   std::string fid_;                 // a játékos népe (a kinézethez)
   int map_w_ = 1, map_h_ = 1;
+  // a HUD-modell pillanatképe: megtartva a következő sync-ig (ha közben a világ két ticket is továbblép, a régi
+  // pillanatkép felszabadulna – a nyers mutató érvénytelen memóriára mutatna; ez okozta az összeomlást)
+  std::shared_ptr<const Snapshot> held_;
   bool ready_ = false;
   Img mini_;                        // a minimap terepképe (M9)
 };

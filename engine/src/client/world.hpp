@@ -69,6 +69,7 @@ class World {
   // a HUD kijelölése (M8): az egységek, vagy egyetlen épület
   void set_selection(const std::vector<sim::EntityId>& ids);
   const Snapshot* snapshot() const { return cur_.get(); }
+  std::shared_ptr<const Snapshot> snapshot_shared() const { return cur_; }   // a HUD megtartja a képkocka végéig
   // a parancs a futtató sorába; Shift (`queue_mode`) mellett az egységparancs sorba áll (D46)
   void post(sim::Command c);
   bool queue_mode = false;
