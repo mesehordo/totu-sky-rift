@@ -794,7 +794,11 @@ struct Command {
                               Module = 31,
                               // M11: küldetésparancs (a csatlakozók kapják – pl. párbeszéd-választás: `def` a párbeszéd,
                               // `rx` a válasz sorszáma)
-                              Mission = 32 };
+                              Mission = 32,
+                              // irányítási csomag (D46): járőr (`units` a mostani helye és (x, y) között, támadó mozgással)
+                              Patrol = 33 };
+  // a `flag` bitje egységparancsnál (Move, Attack, Gather …): a meglévő parancs után sorba áll (Shift)
+  static constexpr uint8_t kQueue = 0x80;
   Kind kind = Kind::Spawn;
   int64_t tick = 0;          // ebben a tickben hajtódik végre
   uint8_t owner = 0;         // Spawn
@@ -1016,6 +1020,15 @@ class Sim {
   std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
   bool match_started_ = false;   // a setup_match egyszer fut (H-26)
   bool auto_defeat_ = true;      // M11: a „nincs épülete = kiesett” szabály (küldetésben ki; mentés 17)
+  // D46: a Shift-parancssor és a járőr (egységenként; üresen a hash és a mentés a korábbi – mentés 18)
+  struct PatrolState {
+    Fixed ax, ay, bx, by;
+    uint8_t to_b = 1;
+  };
+  std::map<EntityId, std::vector<Command>> order_queue_;
+  std::map<EntityId, PatrolState> patrols_;
+  void order_queue_system();
+  bool unit_idle(EntityId e);
   std::vector<std::array<int32_t, 6>> nav_ops_;   // a Block/Gate parancsok (fajta, x, y, w, h, jelző/maszk) – hash, mentés (H-29)
   PlayerState& player_mut(int i) { return players_[static_cast<size_t>(i)]; }
 
@@ -1038,6 +1051,7 @@ class Sim {
  // belső felület – a népmodulok (src/sim/factions) is használják (ADR-008)
  public:
   void apply(const Command& c);
+  void apply_now(const Command& c);   // a sorba állítás nélkül (a parancssor rendszere)
   bool owned_by(EntityId e, uint8_t owner);   // él, és ez a tulajdonosa (H-01)
   bool load_impl(const std::vector<uint8_t>& data);
   void report_deaths();

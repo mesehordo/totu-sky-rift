@@ -39,6 +39,20 @@ A billentyű és a kattintás ugyanazt a függvényt hívja (`activate_slot`), a
 
 A billentyűket a játék nem hajtja végre szünetben, döntési ablaknál, irányválasztáskor, a játék végén, vagy ha szövegbevitel aktív (`text_focus`). Egy lenyomás egy parancsot jelent: a billentyűismétlés ki van kapcsolva, és a lenyomott billentyűt is figyeli.
 
+## Irányítás a világban (D46)
+
+| Bemenet | Hatás |
+|---|---|
+| jobb gomb | mozgás alakzatban; ellenségre: támadás; saját helyőrség-épületre: beszállás |
+| jobb gombos húzás | vonalra mozgatás (a kijelöltek egyenletesen a szakaszon, a vonal mentén rendezve) |
+| Shift + parancs | a parancs a meglévő után sorba áll (mozgás, támadás, gyűjtés, építés, képesség …) |
+| A + bal gomb | támadó mozgás |
+| P + bal gomb | járőr a mostani hely és a pont között (támadó mozgással) |
+| Ctrl + szám | a kijelölés a kontrollcsoportba |
+| szám | a csoport kijelölése; kétszer gyorsan: a kamera odaugrik |
+| Shift + szám | a csoport hozzáadása a kijelöléshez |
+| Alt + 1–6 | alakzat (1 nincs, 2 WC3-szerű, 3 sor, 4 doboz …) |
+
 ## Kijelölés-rács
 
 - **Vegyes sereg:** típusonként összevonva, a darabszám jobb alul (`8×`). A vékony csík az átlagos életerő; tooltipben az átlagos életerő és a sérültek száma látszik.

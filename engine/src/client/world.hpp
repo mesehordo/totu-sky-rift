@@ -69,7 +69,14 @@ class World {
   // a HUD kijelölése (M8): az egységek, vagy egyetlen épület
   void set_selection(const std::vector<sim::EntityId>& ids);
   const Snapshot* snapshot() const { return cur_.get(); }
-  void post(sim::Command c) { runner_.post(std::move(c)); }
+  // a parancs a futtató sorába; Shift (`queue_mode`) mellett az egységparancs sorba áll (D46)
+  void post(sim::Command c);
+  bool queue_mode = false;
+  // D46 irányítás: járőr (a kijelöltek a mostani helyük és a pont között), vonalra mozgatás (a kijelöltek egyenletesen a
+  // szakaszon, a vonal mentén rendezve), a kijelölés középpontja (a kontrollcsoport kétszeri lenyomásához)
+  void order_patrol(float wx, float wy);
+  void order_line(float wx0, float wy0, float wx1, float wy1);
+  bool selection_center(float& wx, float& wy) const;
   // a kijelöltek képessége a gyorsbillentyűvel (a régi játék szerint): a pont és az alatta álló ellenség a célpont
   bool ability_hotkey(char key, float wx, float wy);
 

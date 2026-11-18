@@ -136,11 +136,69 @@ bool World::ability_hotkey(char key, float wx, float wy) {
       c.x = to_fixed(wx);
       c.y = to_fixed(wy);
       c.target = enemy_at(wx, wy);
-      runner_.post(c);
+      post(c);
       return true;
     }
   }
   return false;
+}
+
+void World::post(sim::Command c) {
+  using K = sim::Command::Kind;
+  const bool unit_order = c.kind == K::Move || c.kind == K::GroupMove || c.kind == K::Gather || c.kind == K::Stop ||
+                          c.kind == K::Build || c.kind == K::Attack || c.kind == K::AttackMove || c.kind == K::Hold ||
+                          c.kind == K::Ability || c.kind == K::Garrison || c.kind == K::Repair || c.kind == K::Patrol;
+  if (queue_mode && unit_order) c.flag = static_cast<uint8_t>(c.flag | sim::Command::kQueue);
+  runner_.post(std::move(c));
+}
+
+void World::order_patrol(float wx, float wy) {
+  if (selected_.empty()) return;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Patrol;
+  c.units = selected_;
+  c.x = to_fixed(wx);
+  c.y = to_fixed(wy);
+  post(c);
+}
+
+void World::order_line(float wx0, float wy0, float wx1, float wy1) {
+  if (selected_.empty() || !cur_) return;
+  // a kijelöltek a vonal irányára vetített helyük szerint rendezve (kevesebb keresztezés), majd egyenletesen elosztva
+  const float dx = wx1 - wx0, dy = wy1 - wy0;
+  std::vector<std::pair<float, sim::EntityId>> order;
+  for (const sim::EntityId id : selected_) {
+    const SnapUnit* u = cur_->find(id);
+    if (u) order.emplace_back(u->x * dx + u->y * dy, id);
+  }
+  std::sort(order.begin(), order.end());
+  const size_t n = order.size();
+  for (size_t i = 0; i < n; ++i) {
+    const float t = n == 1 ? 0.5f : static_cast<float>(i) / static_cast<float>(n - 1);
+    sim::Command c;
+    c.kind = sim::Command::Kind::Move;
+    c.units = {order[i].second};
+    c.x = to_fixed(wx0 + dx * t);
+    c.y = to_fixed(wy0 + dy * t);
+    post(c);
+  }
+}
+
+bool World::selection_center(float& wx, float& wy) const {
+  if (!cur_ || selected_.empty()) return false;
+  float sx = 0, sy = 0;
+  int n = 0;
+  for (const sim::EntityId id : selected_) {
+    if (const SnapUnit* u = cur_->find(id)) {
+      sx += u->x;
+      sy += u->y;
+      ++n;
+    }
+  }
+  if (n == 0) return false;
+  wx = sx / static_cast<float>(n);
+  wy = sy / static_cast<float>(n);
+  return true;
 }
 
 void World::order_move(float wx, float wy, sim::Formation f) {
@@ -151,7 +209,7 @@ void World::order_move(float wx, float wy, sim::Formation f) {
   c.x = to_fixed(wx);
   c.y = to_fixed(wy);
   c.formation = static_cast<uint8_t>(f);
-  runner_.post(c);   // a futtató során át a következő tickben (mint a hálózati játékban és a visszajátszásban)
+  post(c);   // a futtató során át a következő tickben (mint a hálózati játékban és a visszajátszásban)
 }
 
 sim::EntityId World::enemy_at(float wx, float wy) const {
@@ -195,7 +253,7 @@ void World::order_garrison(sim::EntityId building) {
   c.kind = sim::Command::Kind::Garrison;
   c.units = selected_;
   c.target = building;
-  runner_.post(c);
+  post(c);
 }
 
 void World::order_unload(float wx, float wy) {
@@ -204,7 +262,7 @@ void World::order_unload(float wx, float wy) {
   sim::Command c;
   c.kind = sim::Command::Kind::Unload;
   c.target = b;
-  runner_.post(c);
+  post(c);
 }
 
 void World::order_attack(sim::EntityId target) {
@@ -213,7 +271,7 @@ void World::order_attack(sim::EntityId target) {
   c.kind = sim::Command::Kind::Attack;
   c.units = selected_;
   c.target = target;
-  runner_.post(c);
+  post(c);
 }
 
 void World::order_attack_move(float wx, float wy) {
@@ -223,7 +281,7 @@ void World::order_attack_move(float wx, float wy) {
   c.units = selected_;
   c.x = to_fixed(wx);
   c.y = to_fixed(wy);
-  runner_.post(c);
+  post(c);
 }
 
 void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha) const {
@@ -300,7 +358,7 @@ bool World::order_build(uint16_t def, int tx, int ty) {
   c.def = r->defs[def].id;
   c.rx = tx;
   c.ry = ty;
-  runner_.post(c);
+  post(c);
   return true;
 }
 

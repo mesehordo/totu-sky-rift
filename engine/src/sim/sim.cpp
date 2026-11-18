@@ -73,7 +73,88 @@ bool Sim::owned_by(EntityId e, uint8_t owner) {
   return h && h->owner == owner;
 }
 
+namespace {
+// egységparancs (a sor és a járőr ezekre vonatkozik)
+bool unit_order(Command::Kind k) {
+  using K = Command::Kind;
+  switch (k) {
+    case K::Move: case K::GroupMove: case K::Gather: case K::Stop: case K::Build: case K::Attack: case K::AttackMove:
+    case K::Hold: case K::Ability: case K::Garrison: case K::Pickup: case K::Repair: case K::Patrol:
+      return true;
+    default:
+      return false;
+  }
+}
+}  // namespace
+
+bool Sim::unit_idle(EntityId e) {
+  if (const Movement* m = world_.get<Movement>(e); m && m->moving) return false;
+  if (const Combat* c = world_.get<Combat>(e); c && (c->order != Combat::None || c->target)) return false;
+  if (const Worker* w = world_.get<Worker>(e); w && w->state != Worker::Idle) return false;
+  return true;
+}
+
+void Sim::order_queue_system() {
+  // a járőr: megérkezve (tétlenül) a másik végpontra indul
+  for (auto it = patrols_.begin(); it != patrols_.end();) {
+    const Health* h = world_.alive(it->first) ? world_.get<Health>(it->first) : nullptr;
+    if (!h || h->hp <= 0) {
+      it = patrols_.erase(it);
+      continue;
+    }
+    if (unit_idle(it->first)) {
+      PatrolState& p = it->second;
+      p.to_b = p.to_b ? 0 : 1;
+      order_attack_move(it->first, p.to_b ? p.bx : p.ax, p.to_b ? p.by : p.ay);
+    }
+    ++it;
+  }
+  // a sor: a tétlen egység a következő parancsát kapja (azonosító szerint, determinisztikusan)
+  for (auto it = order_queue_.begin(); it != order_queue_.end();) {
+    const Health* h = world_.alive(it->first) ? world_.get<Health>(it->first) : nullptr;
+    if (!h || h->hp <= 0 || it->second.empty()) {
+      it = order_queue_.erase(it);
+      continue;
+    }
+    if (!patrols_.count(it->first) && unit_idle(it->first)) {
+      Command c = std::move(it->second.front());
+      it->second.erase(it->second.begin());
+      const EntityId e = it->first;
+      if (it->second.empty()) it = order_queue_.erase(it);
+      else ++it;
+      c.tick = tick_;
+      apply_now(c);
+      (void)e;
+      continue;
+    }
+    ++it;
+  }
+}
+
 void Sim::apply(const Command& raw) {
+  if (unit_order(raw.kind) && !raw.units.empty()) {
+    if (raw.flag & Command::kQueue) {   // Shift: egységenként a sor végére (a rendszer a tétlenné váláskor adja ki)
+      for (const EntityId e : raw.units) {
+        if (!world_.alive(e) || (raw.owner >= 1 && raw.owner <= kMaxPlayers && !owned_by(e, raw.owner))) continue;
+        auto& q = order_queue_[e];
+        if (q.size() >= 32) continue;   // korlát
+        Command one = raw;
+        one.units = {e};
+        one.flag = static_cast<uint8_t>(raw.flag & ~Command::kQueue);
+        q.push_back(std::move(one));
+      }
+      return;
+    }
+    for (const EntityId e : raw.units) {   // a közvetlen parancs törli a sort és a járőrt (csak a sajátét – H-01)
+      if (raw.owner >= 1 && raw.owner <= kMaxPlayers && !owned_by(e, raw.owner)) continue;
+      order_queue_.erase(e);
+      patrols_.erase(e);
+    }
+  }
+  apply_now(raw);
+}
+
+void Sim::apply_now(const Command& raw) {
   Command filtered;
   const Command* cp = &raw;
   if (raw.owner >= 1 && raw.owner <= kMaxPlayers) {
@@ -224,6 +305,14 @@ void Sim::apply(const Command& raw) {
     case Command::Kind::Mission:
       for (SimHooks* k : hooks_) k->on_command(*this, c);
       break;
+    case Command::Kind::Patrol:   // D46: a mostani hely és a cél között, támadó mozgással
+      for (const EntityId e : c.units) {
+        const Position* p = world_.get<Position>(e);
+        if (!p || !world_.get<Combat>(e) || !interrupt(e)) continue;
+        patrols_[e] = PatrolState{p->x, p->y, c.x, c.y, 1};
+        order_attack_move(e, c.x, c.y);
+      }
+      break;
   }
 }
 
@@ -306,6 +395,7 @@ void Sim::step() {
   while (n < pending_.size() && pending_[n].tick <= tick_) ++n;
   for (size_t i = 0; i < n; ++i) apply(pending_[i]);
   pending_.erase(pending_.begin(), pending_.begin() + static_cast<std::ptrdiff_t>(n));
+  if (!order_queue_.empty() || !patrols_.empty()) order_queue_system();   // D46: a sorban álló parancsok, járőr
   // 2. a csatlakozók (szkriptek) a csatlakoztatás sorrendjében
   for (SimHooks* h : hooks_) h->on_tick(*this);
   // 3. rendszerek rögzített sorrendben, majd a halál-események
@@ -350,6 +440,19 @@ uint64_t Sim::hash() const {
   h.add_u64(combat_rng_.increment());
   for (const SimHooks* k : hooks_) h.add_u64(k->hash());   // csatlakozó nélkül a hash az M2-es marad
   if (!auto_defeat_) h.add_u64(0x6d697373696f6e);   // M11: küldetés (üresen a hash a korábbi)
+  if (!order_queue_.empty() || !patrols_.empty()) {   // D46 (üresen a hash a korábbi)
+    h.add_u64(order_queue_.size());
+    for (const auto& [e, q] : order_queue_) {
+      h.add_u64(e);
+      core::ByteWriter qw;
+      for (const auto& c : q) save_command(qw, c, 4);
+      h.add_bytes(std::string_view(reinterpret_cast<const char*>(qw.data().data()), qw.data().size()));
+    }
+    h.add_u64(patrols_.size());
+    for (const auto& [e, p] : patrols_) {
+      h.add_u64(e); h.add_i64(p.ax.raw()); h.add_i64(p.ay.raw()); h.add_i64(p.bx.raw()); h.add_i64(p.by.raw()); h.add_u64(p.to_b);
+    }
+  }
   if (!nav_ops_.empty()) {   // H-29: a parancsból jött pálya-blokkolások és kapuk (üresen a hash a korábbi)
     h.add_u64(nav_ops_.size());
     for (const auto& op : nav_ops_) for (const int32_t v : op) h.add_i64(v);
@@ -454,7 +557,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 32 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 33 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -483,7 +586,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(17);   // séma (17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(18);   // séma (18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -548,6 +651,16 @@ std::vector<uint8_t> Sim::save() const {
   w.u32(static_cast<uint32_t>(died_.size()));
   for (const auto& [id, o] : died_) { w.u32(id); w.u8(o); }
   w.u8(auto_defeat_ ? 1 : 0);   // 17 (M11)
+  w.u32(static_cast<uint32_t>(order_queue_.size()));   // 18 (D46)
+  for (const auto& [e, q] : order_queue_) {
+    w.u32(e);
+    w.u32(static_cast<uint32_t>(q.size()));
+    for (const auto& c : q) save_command(w, c, 4);
+  }
+  w.u32(static_cast<uint32_t>(patrols_.size()));
+  for (const auto& [e, p] : patrols_) {
+    w.u32(e); w.i32(p.ax.raw()); w.i32(p.ay.raw()); w.i32(p.bx.raw()); w.i32(p.by.raw()); w.u8(p.to_b);
+  }
   return w.data();
 }
 
@@ -590,7 +703,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 17) return false;
+  if (schema < 3 || schema > 18) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r);
     if (!r.ok()) return false;
@@ -735,6 +848,32 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
     }
   }
   auto_defeat_ = schema >= 17 ? r.u8() != 0 : true;
+  order_queue_.clear();
+  patrols_.clear();
+  if (schema >= 18) {
+    const uint32_t nq = r.u32();
+    if (nq > kMaxLoadCount) return false;
+    for (uint32_t i = 0; i < nq && r.ok(); ++i) {
+      const EntityId e = r.u32();
+      const uint32_t m = r.u32();
+      if (m > 32) return false;
+      auto& q = order_queue_[e];
+      for (uint32_t j = 0; j < m && r.ok(); ++j) {
+        auto c = load_command(r, 4);
+        if (!c) return false;
+        q.push_back(std::move(*c));
+      }
+    }
+    const uint32_t np = r.u32();
+    if (np > kMaxLoadCount) return false;
+    for (uint32_t i = 0; i < np && r.ok(); ++i) {
+      const EntityId e = r.u32();
+      PatrolState p;
+      p.ax = Fixed::from_raw(r.i32()); p.ay = Fixed::from_raw(r.i32()); p.bx = Fixed::from_raw(r.i32()); p.by = Fixed::from_raw(r.i32());
+      p.to_b = r.u8();
+      patrols_[e] = p;
+    }
+  }
   if (!r.ok() || !r.at_end()) return false;
   // H-99, H-100: a betöltött sablon- és navigációs indexek érvényesek
   bool valid = true;

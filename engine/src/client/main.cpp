@@ -487,6 +487,12 @@ int main(int argc, char** argv) {
     float drag_x = 0, drag_y = 0;
     bool dragging = false;
     bool attack_move = false;
+    bool patrol_mode = false;                                // D46: P + bal gomb: járőr
+    std::array<std::vector<sim::EntityId>, 10> ctrl_groups;  // D46: kontrollcsoportok (Ctrl+szám)
+    int last_group = -1;
+    double last_group_t = 0;
+    bool line_drag = false;                                  // D46: jobb gombos húzás: vonalra mozgatás
+    float line_x0 = 0, line_y0 = 0;
     std::vector<double> sim_times, draw_times;   // a mérésben külön: szimulációs tick és rajzolás
     if (rc == 0) {
       std::printf("grafika: %s (legnagyobb textúra %d)\n", dev.info().c_str(), dev.max_texture_size());
@@ -973,6 +979,12 @@ int main(int argc, char** argv) {
           c.def = "urs_telepes";
           runner.post(c);
         }
+        world.queue_mode = (SDL_GetModState() & SDL_KMOD_SHIFT) != 0;   // D46: Shift + parancs: sorba áll
+        if (patrol_mode && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
+          world.order_patrol(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom);
+          patrol_mode = false;
+          continue;
+        }
         if (attack_move && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
           world.order_attack_move(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom);
           attack_move = false;
@@ -991,8 +1003,19 @@ int main(int argc, char** argv) {
           const float wx = cam.x + ev.button.x / cam.zoom, wy = cam.y + ev.button.y / cam.zoom;
           if (const sim::EntityId enemy = world.enemy_at(wx, wy)) world.order_attack(enemy);   // ellenségre: támadás
           else if (const sim::EntityId gb = world.garrison_at(wx, wy)) world.order_garrison(gb);   // saját helyőrségbe
-          else world.order_move(wx, wy, formation);
+          else {   // mozgás: a felengedéskor (húzva vonalra, különben alakzatban)
+            line_drag = true;
+            line_x0 = wx;
+            line_y0 = wy;
+          }
         }
+        if (line_drag && ev.type == SDL_EVENT_MOUSE_BUTTON_UP && ev.button.button == SDL_BUTTON_RIGHT) {
+          line_drag = false;
+          const float wx = cam.x + ev.button.x / cam.zoom, wy = cam.y + ev.button.y / cam.zoom;
+          if (std::hypot(wx - line_x0, wy - line_y0) * cam.zoom > 24 && world.selected() > 1) world.order_line(line_x0, line_y0, wx, wy);
+          else world.order_move(line_x0, line_y0, formation);
+        }
+        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_P && !ev.key.repeat) patrol_mode = true;   // P + bal gomb: járőr
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_A) attack_move = true;   // A + bal gomb: támadó mozgás
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_U && have_world) {   // U: a kurzor alatti épületből ki
           float umx = 0, umy = 0;
@@ -1005,8 +1028,31 @@ int main(int argc, char** argv) {
           weather_since = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
           std::printf("időjárás: %s\n", render::weather_name(weather_to));
         }
-        if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key >= SDLK_1 && ev.key.key <= SDLK_6) {
-          formation = static_cast<sim::Formation>(ev.key.key - SDLK_1);   // 1 nincs, 2 WC3-szerű, 3 sor, 4 doboz …
+        if (ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat && ev.key.key >= SDLK_0 && ev.key.key <= SDLK_9) {
+          const SDL_Keymod mod = SDL_GetModState();
+          const int g = static_cast<int>(ev.key.key - SDLK_0);
+          if (mod & SDL_KMOD_ALT) {   // Alt+1–6: alakzat (1 nincs, 2 WC3-szerű, 3 sor, 4 doboz …)
+            if (g >= 1 && g <= 6) formation = static_cast<sim::Formation>(g - 1);
+          } else if (mod & SDL_KMOD_CTRL) {   // Ctrl+szám: a kijelölés a csoportba
+            ctrl_groups[static_cast<size_t>(g)] = world.selection();
+          } else if (mod & SDL_KMOD_SHIFT) {   // Shift+szám: a csoport hozzáadása a kijelöléshez
+            std::vector<sim::EntityId> sel = world.selection();
+            for (const auto id : ctrl_groups[static_cast<size_t>(g)]) {
+              if (std::find(sel.begin(), sel.end(), id) == sel.end()) sel.push_back(id);
+            }
+            world.set_selection(sel);
+          } else if (!ctrl_groups[static_cast<size_t>(g)].empty()) {   // szám: a csoport kijelölése; kétszer: oda a kamera
+            world.set_selection(ctrl_groups[static_cast<size_t>(g)]);
+            ctrl_groups[static_cast<size_t>(g)] = world.selection();   // az elesettek kihullanak
+            const double now = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+            float cx = 0, cy = 0;
+            if (last_group == g && now - last_group_t < 0.4 && world.selection_center(cx, cy)) {
+              cam.x = cx - static_cast<float>(o.width) / 2 / cam.zoom;
+              cam.y = cy - static_cast<float>(o.height) / 2 / cam.zoom;
+            }
+            last_group = g;
+            last_group_t = now;
+          }
         }
       }
       if (have_world) {   // kamera billentyűkkel

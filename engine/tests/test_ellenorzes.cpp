@@ -148,3 +148,94 @@ TEST_CASE("ellenorzes C-115: a palya szelere kuldott egyseg a palyan belul marad
   }
   CHECK(inside);
 }
+
+TEST_CASE("iranyitas D46: Shift-parancssor, jaror, mentesbol folytatva, a kozvetlen parancs torli a sort") {
+  Match m("BUILD-ALAP", true, true, {"ursan", "wullof"});
+  sim::Sim& s = *m.sim;
+  const auto u = put(s, "urs_berserker", 1, 100, 100);
+  const uint64_t h0 = s.hash();
+  auto move = [&](int x10, int y10, bool queued) {
+    sim::Command c;
+    c.kind = sim::Command::Kind::Move;
+    c.owner = 1;
+    c.tick = s.tick();
+    c.units = {u};
+    c.x = fx(x10, 10);
+    c.y = fx(y10, 10);
+    if (queued) c.flag = sim::Command::kQueue;
+    s.queue(c);
+  };
+  move(160, 100, false);
+  move(160, 160, true);   // utána ide
+  move(100, 160, true);   // végül ide
+  m.run(2);
+  CHECK(s.hash() != h0);
+  // az első célon túl a második, majd a harmadik
+  bool second = false;
+  for (int i = 0; i < 1200; ++i) {
+    m.run(1);
+    const auto& p = *s.world().get<sim::Position>(u);
+    if (core::length(p.x - fx(160, 10), p.y - fx(160, 10)) < fx(5, 10)) second = true;
+    if (second && core::length(p.x - fx(100, 10), p.y - fx(160, 10)) < fx(5, 10)) break;
+  }
+  const auto& pe = *s.world().get<sim::Position>(u);
+  CHECK(second && core::length(pe.x - fx(100, 10), pe.y - fx(160, 10)) < fx(6, 10));
+  // járőr: a két végpont között ingázik; mentés közben, folytatva ugyanaz
+  sim::Command pc;
+  pc.kind = sim::Command::Kind::Patrol;
+  pc.owner = 1;
+  pc.tick = s.tick();
+  pc.units = {u};
+  pc.x = fx(140, 10);
+  pc.y = fx(160, 10);
+  s.queue(pc);
+  move(100, 100, true);   // a járőr alatt a sor vár
+  m.run(300);
+  const auto saved = s.save();
+  m.run(400);
+  Match b("BUILD-ALAP", true, false, {"ursan", "wullof"});
+  CHECK(b.sim->load(saved));
+  b.sim->restore_obstacles(*b.map);
+  b.run(400);
+  CHECK(b.sim->hash() == s.hash());
+  // még járőrözik (nem állt meg)
+  int visits = 0;
+  bool near_b = false;
+  for (int i = 0; i < 900; ++i) {
+    m.run(1);
+    const auto& p = *s.world().get<sim::Position>(u);
+    const bool nb = core::length(p.x - fx(140, 10), p.y - fx(160, 10)) < fx(8, 10);
+    if (nb && !near_b) ++visits;
+    near_b = nb;
+  }
+  CHECK(visits >= 1);
+  // a közvetlen parancs törli a járőrt és a sort: utána megáll a célnál
+  move(120, 120, false);
+  m.run(400);
+  const auto& pf = *s.world().get<sim::Position>(u);
+  CHECK(core::length(pf.x - fx(120, 10), pf.y - fx(120, 10)) < fx(6, 10));
+  m.run(200);
+  const auto& pg = *s.world().get<sim::Position>(u);
+  CHECK(core::length(pg.x - fx(120, 10), pg.y - fx(120, 10)) < fx(6, 10));
+  // az idegen játékos nem törölheti a sort (H-01)
+  const auto v = put(s, "wul_landzsas", 2, 60, 60);
+  sim::Command q2;
+  q2.kind = sim::Command::Kind::Patrol;
+  q2.owner = 2;
+  q2.tick = s.tick();
+  q2.units = {v};
+  q2.x = fx(60, 10);
+  q2.y = fx(90, 10);
+  s.queue(q2);
+  m.run(2);
+  sim::Command steal;
+  steal.kind = sim::Command::Kind::Stop;
+  steal.owner = 1;
+  steal.tick = s.tick();
+  steal.units = {v};
+  s.queue(steal);
+  m.run(60);
+  const auto* vm = s.world().get<sim::Movement>(v);
+  const auto* vc = s.world().get<sim::Combat>(v);
+  CHECK((vm && vm->moving) || (vc && vc->order != sim::Combat::None));   // a 2. játékos járőre fut tovább
+}
