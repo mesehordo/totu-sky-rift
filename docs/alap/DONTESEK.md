@@ -457,6 +457,8 @@ D20/K3 hadjárattérképe. A történetes, egymás után következő pályák a 
    `requires` szerint; tartós döntés és következménye) a küldetéssor része marad – **nem** a D46 hadjárattérkép-prototípusa.
 3. A „hadjárat” szó (kód: `campaign`, menü: `ui.main.campaign`) a területfoglaló térképé; a D46 szűk prototípusa ennek
    a része lesz (néhány tartomány, körök, sereg, támadáskor Csata, győzelemkor foglalás), külön szabályrétegben.
+4. **Ütemezés (a tulajdonos, 2026-11-18):** a hadjárat (területfoglaló térkép) a **legutolsó fejlesztési rész**; addig
+   félretéve. Az M12 ezzel lezárva (győzelmi feltételek, tempóprofilok, küldetéssor-választás); jön az anti-slop csomag.
 
 ### D48 – A hadjárat kisnépei és hősei · ELDÖNTVE (2026-11-18, tervezési elv)
 
