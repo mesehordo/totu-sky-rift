@@ -67,6 +67,9 @@ egy saját kész egység vagy épület életereje csökken (12 mp-enként legfel
 a szimuláció nem változik). **Középső gomb húzása:** kamera. **Kezdőkamera:** a bázisra (a régi `start_xy`).
 A súgó új sora ezekről. **Próba:** `HUD a regi jatek szerint: F2 hos …`. **Kép:** `kepek/utan_hosportre.jpg`.
 
+**Eltérés a régitől (a tulajdonos döntése, 2026-11-18):** a P billentyű **járőr marad** (P + kattintás, D46); a régi
+játékban szünet volt – a szünet az Esc-kel (szünetmenü) érhető el.
+
 ## Döntésre vár
 
 AS-07

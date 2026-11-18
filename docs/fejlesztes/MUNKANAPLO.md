@@ -897,3 +897,5 @@ A parancsrácson a kiképzés, építés vagy kutatás sikertelen kattintásakor
 **A régi felület szerint (2.):** jobb felül az óra mellett [−] ×1 [+] sebességgomb, alatta „N fps • F1: súgó”; játéksebesség 50–300 % a régi lépcsőkben (gomb és + / −; csak egyjátékos módban); F1: a régi súgó panel a mostani irányítással. A szimuláció és a hash változatlan (a futtató üteme állítódik).
 
 **A régi felület szerint (3.):** hősportrék jobb felül (szint, életerő, energia, „+” pont; kattintás kijelöl, dupla odaugrik), F2/F3/F4 hőskijelölés (újra: odaugrás), Szóköz: utolsó riasztás vagy bázis, „Támadás ér!” piros üzenet (12 mp-enként), középső gombos kamerahúzás, a kezdőkamera a bázison; a súgó kiegészítve. Csak kliens; a szimuláció és a hash változatlan.
+
+**Döntés:** a P billentyű járőr marad (D46); a régi játék P-szünete helyett a szünet az Esc.
