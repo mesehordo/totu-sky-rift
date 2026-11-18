@@ -61,6 +61,9 @@ struct Replay {
   // M11 (7-es változat): a küldetés leírása (mission.json szövege); vele a meccs kezdőbázis nélkül indul, a népek a
   // küldetés játékosaiból
   std::string mission;
+  // M12 (8-as változat, ha nem az alapérték): győzelmi feltétel, tempóprofil, perc
+  uint8_t victory = 0, tempo = 0;
+  int32_t minutes = 0;
   std::vector<Checkpoint> checkpoints;
 };
 

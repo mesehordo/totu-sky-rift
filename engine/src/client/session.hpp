@@ -121,6 +121,7 @@ struct Snapshot {
   int32_t night = 0;              // 0 nappal .. 1000 éjjel
   std::string weather;            // "" = derült
   SnapMission mission;            // M11
+  sim::MatchMode mode;            // M12: győzelmi feltétel, tempó (béke, domb, hullámok)
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
 };
 

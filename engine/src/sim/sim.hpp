@@ -738,6 +738,15 @@ struct MatchSetup {
   // M11: küldetés – a kezdőbázis (főépület, kezdő egységek) nélkül, és a „nincs épülete = kiesett” szabály ki
   // (a győzelmet és a bukást a küldetés dönti el)
   bool bases = true;
+  // M12 (D46): győzelmi feltétel és tempóprofil (munkanevek; a játékbeli nevüket a tulajdonos adja – D20)
+  //   Hódítás: aki minden épületét elveszti, kiesik (a régi szabály); Főváros: a főépület elvesztése is vereség;
+  //   Dombkirály: a pálya közepét (8×8) egyedül tartó játékos `minutes` perc után nyer; Időkorlát: `minutes` perc után
+  //   a legtöbb pontú nyer (gyűjtés + épületek + egységek)
+  enum class Victory : uint8_t { Conquest = 0, Capital = 1, Hill = 2, Timed = 3 } victory = Victory::Conquest;
+  //   Klasszikus: változatlan; Nyugodt: 10 perc béke a játékosok között; Gyors: kétszeres kezdő nyersanyag;
+  //   Túlélés: a játékosok nem harcolnak egymással, a Vadon hullámokban támad, `minutes` perc után győzelem
+  enum class Tempo : uint8_t { Classic = 0, Calm = 1, Rush = 2, Survival = 3 } tempo = Tempo::Classic;
+  int32_t minutes = 0;   // 0: az alapérték (Dombkirály 3, Időkorlát 20, Túlélés 15)
 };
 
 // A navigációs mozgás beállításai (ADR-006 5–6. pont).
@@ -843,6 +852,18 @@ class SimHooks {
   virtual void save(core::ByteWriter& w) const = 0;
   virtual bool load(core::ByteReader& r) = 0;
   virtual void on_command(Sim&, const Command&) {}                   // M11: a csatlakozónak szóló parancs (Mission)
+};
+
+// M12: a meccs módja (győzelmi feltétel, tempó) – a Sim állapota
+struct MatchMode {
+  uint8_t victory = 0, tempo = 0;
+  int32_t minutes = 0;
+  int64_t peace_until = 0;
+  bool peace_players = false, survived = false;
+  std::array<int32_t, 9> hill{};   // játékosonként (0–8): a dombon töltött tick
+  int32_t wave = 0;
+  int64_t next_wave = 0;
+  bool active() const { return victory != 0 || tempo != 0; }
 };
 
 class Sim {
@@ -968,6 +989,7 @@ class Sim {
   // Győzelem és vereség (ADR-007 9. lépés): akinek minden épülete elpusztult, kiesik; a győztes az egyetlen megmaradt
   // játékos (0: még tart, vagy nincs meccs).
   int winner() const;
+  const MatchMode& match_mode() const { return mode_; }
   // Hősök és tárgyak (M7 2. lépés; D25, HOS-1–4, TARGY-1)
   bool learn(EntityId hero, const std::string& ability);     // egy képességpont: a következő szint
   void add_xp(EntityId hero, int32_t xp_milli);              // szintlépéssel
@@ -1020,6 +1042,9 @@ class Sim {
   std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
   bool match_started_ = false;   // a setup_match egyszer fut (H-26)
   bool auto_defeat_ = true;      // M11: a „nincs épülete = kiesett” szabály (küldetésben ki; mentés 17)
+  // M12: a meccs módja (alapértelmezésben hatástalan; csak akkor hash-elt, ha nem az; mentés 19)
+  MatchMode mode_;
+  void mode_system();
   // D46: a Shift-parancssor és a járőr (egységenként; üresen a hash és a mentés a korábbi – mentés 18)
   struct PatrolState {
     Fixed ax, ay, bx, by;
@@ -1170,7 +1195,10 @@ class Sim {
   EntityId find_enemy(EntityId e, Fixed radius);
   bool can_hit(EntityId e, EntityId target);
   // a 0. játékos a Vadon (semleges): mindenkinek ellensége (D25)
-  bool hostile(uint8_t a, uint8_t b) const { return a != b && a <= kMaxPlayers && b <= kMaxPlayers; }
+  bool hostile(uint8_t a, uint8_t b) const {
+    if (a == b || a > kMaxPlayers || b > kMaxPlayers) return false;
+    return a == 0 || b == 0 || !(mode_.peace_players || tick_ < mode_.peace_until);   // M12: béke a játékosok között
+  }
   Fixed gap(EntityId a, EntityId b);
   Fixed attack_range(EntityId e, EntityId target);
   void halt(EntityId e);      // a mozgás leállítása (a munka és a harci parancs marad)

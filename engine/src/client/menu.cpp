@@ -203,6 +203,8 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
   c.setup.weather = s.weather;
   c.setup.camps = s.camps;
   c.setup.upkeep = s.upkeep;
+  c.setup.victory = s.victory;
+  c.setup.tempo = s.tempo;
   if (out) *out = std::move(c);
   return true;
 }
@@ -465,7 +467,7 @@ void Menu::layout_skirmish() {
   }
   // ---- játékbeállítások (saját panelen)
   const float oy = slots.y + slots.h + k(16);
-  const float ow = std::min(k(300), std::floor((W - x0 - k(24)) / 3));
+  const float ow = std::min(k(300), std::floor((W - x0 - k(24)) / 4));   // 4 oszlop (M12: 7 beállítás, 2 sor)
   struct Opt {
     const char* label;
     std::vector<const char*> options;
@@ -477,12 +479,16 @@ void Menu::layout_skirmish() {
       {"ui.opt.weather", {"ui.opt.mode.off", "ui.opt.mode.mood", "ui.opt.mode.effect", "ui.opt.mode.effect_terrain"}, static_cast<int>(sk_.weather)},
       {"ui.opt.camps", {"ui.on", "ui.off"}, sk_.camps ? 0 : 1},
       {"ui.opt.upkeep", {"ui.on", "ui.off"}, sk_.upkeep ? 0 : 1},
+      {"ui.opt.victory", {"ui.opt.victory.conquest", "ui.opt.victory.capital", "ui.opt.victory.hill", "ui.opt.victory.timed"},
+       static_cast<int>(sk_.victory)},
+      {"ui.opt.tempo", {"ui.opt.tempo.classic", "ui.opt.tempo.calm", "ui.opt.tempo.rush", "ui.opt.tempo.survival"},
+       static_cast<int>(sk_.tempo)},
   };
-  constexpr int kOpts = 5;
-  panels_.push_back({{x0 - k(10), oy, 3 * ow + k(4), static_cast<float>((kOpts + 2) / 3) * k(62) + k(14)}, 200, false});
+  constexpr int kOpts = 7;
+  panels_.push_back({{x0 - k(10), oy, 4 * ow + k(4), static_cast<float>((kOpts + 3) / 4) * k(62) + k(14)}, 200, false});
   for (int i = 0; i < kOpts; ++i) {
-    const float ox = x0 + static_cast<float>(i % 3) * ow;
-    const float oy2 = oy + k(10) + static_cast<float>(i / 3) * k(62);
+    const float ox = x0 + static_cast<float>(i % 4) * ow;
+    const float oy2 = oy + k(10) + static_cast<float>(i / 4) * k(62);
     text(ox, oy2, ow - k(20), tr(opts[i].label), MenuText::Small, MenuText::Gold);
     MenuWidget& d = add(MenuWidget::Kind::Dropdown, {ox, oy2 + k(24), ow - k(20), dh}, "", MenuAct::Option, i);
     for (const char* o : opts[i].options) d.options.push_back(tr(o));
@@ -716,6 +722,8 @@ void Menu::choose(MenuAct act, int arg, int index) {
       case 2: sk_.weather = static_cast<sim::MatchSetup::WeatherMode>(std::clamp(index, 0, 3)); break;
       case 3: sk_.camps = index == 0; break;
       case 4: sk_.upkeep = index == 0; break;
+      case 5: sk_.victory = static_cast<sim::MatchSetup::Victory>(std::clamp(index, 0, 3)); break;
+      case 6: sk_.tempo = static_cast<sim::MatchSetup::Tempo>(std::clamp(index, 0, 3)); break;
       default: break;
     }
   }

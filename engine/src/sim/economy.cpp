@@ -196,8 +196,9 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     p.faction = setup.factions[i];
     p.active = true;
     const FactionDef& f = *rules_->faction(p.faction);
-    for (int r = 0; r < kResources; ++r) {   // küldetésben a nyersanyagot a küldetés adja
-      p.res[static_cast<size_t>(r)] = setup.bases ? int64_t{f.start_resources[static_cast<size_t>(r)]} * 1000 : 0;
+    for (int r = 0; r < kResources; ++r) {   // küldetésben a nyersanyagot a küldetés adja; Gyors: kétszeres
+      p.res[static_cast<size_t>(r)] = setup.bases ? int64_t{f.start_resources[static_cast<size_t>(r)]} * 1000 *
+                                                        (setup.tempo == MatchSetup::Tempo::Rush ? 2 : 1) : 0;
     }
     playing.push_back(static_cast<uint8_t>(i + 1));
   }
@@ -221,6 +222,19 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   // játékosonként a főépület és a kezdő egységek (a régi játék szerint: a pálya közepe felé, ívben)
   const Fixed cx = half(m.width()), cy = half(m.height());
   auto_defeat_ = setup.bases;
+  // M12: a meccs módja
+  mode_ = MatchMode{};
+  mode_.victory = static_cast<uint8_t>(setup.victory);
+  mode_.tempo = static_cast<uint8_t>(setup.tempo);
+  {
+    const int32_t def = setup.tempo == MatchSetup::Tempo::Survival ? 15 : setup.victory == MatchSetup::Victory::Hill ? 3 : 20;
+    mode_.minutes = std::clamp(setup.minutes > 0 ? setup.minutes : def, 1, 240);
+  }
+  if (setup.tempo == MatchSetup::Tempo::Calm) mode_.peace_until = tick_ + 10LL * 60 * kTickHz;
+  if (setup.tempo == MatchSetup::Tempo::Survival) {
+    mode_.peace_players = true;
+    mode_.next_wave = tick_ + 3LL * 60 * kTickHz;   // az első hullám a 3. percben
+  }
   for (const uint8_t owner : playing) {
     if (!setup.bases) break;   // M11: küldetés – a kezdő egységeket a küldetés helyezi el
     const FactionDef& f = *rules_->faction(players_[owner].faction);
@@ -578,6 +592,11 @@ void Sim::economy_system() {
 
 int Sim::winner() const {
   int alive = 0, last = 0, playing = 0;
+  if (mode_.survived) {   // Túlélés: a csapat nyert (a legkisebb sorszámú életben maradt játékos)
+    for (int i = 1; i <= kMaxPlayers; ++i) {
+      if (players_[static_cast<size_t>(i)].active && !players_[static_cast<size_t>(i)].defeated) return i;
+    }
+  }
   for (int i = 1; i <= kMaxPlayers; ++i) {
     const PlayerState& p = players_[static_cast<size_t>(i)];
     if (!p.active) continue;
@@ -626,10 +645,116 @@ void Sim::supply_system() {
     PlayerState& p = players_[static_cast<size_t>(i)];
     if (auto_defeat_ && p.active && !p.defeated && buildings[static_cast<size_t>(i)] == 0) p.defeated = true;
   }
+  if (mode_.active()) mode_system();   // M12: győzelmi feltétel, hullámok
   for (int i = 1; i <= kMaxPlayers; ++i) cap[static_cast<size_t>(i)] += mod_supply(static_cast<uint8_t>(i));
   for (int i = 0; i <= kMaxPlayers; ++i) {
     players_[static_cast<size_t>(i)].supply_cap = std::min(cap[static_cast<size_t>(i)], rules_->max_supply);
     players_[static_cast<size_t>(i)].supply_used = used[static_cast<size_t>(i)];
+  }
+}
+
+// M12: a győzelmi feltételek és a tempóprofilok tickenkénti része (determinisztikus; a szimuláció állapotából)
+void Sim::mode_system() {
+  if (!map_ || winner() != 0) return;
+  auto defeat_others = [&](uint8_t keep) {   // a győztes és a vele nem ellenséges játékosok maradnak
+    for (int i = 1; i <= kMaxPlayers; ++i) {
+      PlayerState& p = players_[static_cast<size_t>(i)];
+      if (p.active && !p.defeated && hostile(keep, static_cast<uint8_t>(i))) p.defeated = true;
+    }
+  };
+  // Főváros: a főépület elvesztése vereség
+  if (mode_.victory == static_cast<uint8_t>(MatchSetup::Victory::Capital)) {
+    std::array<bool, kMaxPlayers + 1> has{};
+    world_.pool<Building>().each([&](EntityId e, const Building& b) {
+      const Health* h = world_.get<Health>(e);
+      if (!h || h->hp <= 0 || h->owner < 1 || h->owner > kMaxPlayers) return;
+      const FactionDef* f = rules_->faction(players_[h->owner].faction);
+      if (f && b.def == f->hq) has[h->owner] = true;
+    });
+    for (int i = 1; i <= kMaxPlayers; ++i) {
+      PlayerState& p = players_[static_cast<size_t>(i)];
+      if (p.active && !p.defeated && !has[static_cast<size_t>(i)]) p.defeated = true;
+    }
+  }
+  const int64_t limit = int64_t{mode_.minutes} * 60 * kTickHz;
+  // Dombkirály: a pálya közepének 8×8 csempéje; ha csak egy játékos (és szövetségesei) egységei vannak bent, nála gyűlik
+  if (mode_.victory == static_cast<uint8_t>(MatchSetup::Victory::Hill) && tick_ % kTickHz == 0) {
+    const Fixed cx = Fixed::from_ratio(map_->width(), 2), cy = Fixed::from_ratio(map_->height(), 2), r = Fixed::from_int(4);
+    std::array<bool, kMaxPlayers + 1> in{};
+    world_.pool<Unit>().each([&](EntityId e, const Unit&) {
+      const Health* h = world_.get<Health>(e);
+      const Position* p = world_.get<Position>(e);
+      if (!h || !p || h->hp <= 0 || h->owner < 1 || h->owner > kMaxPlayers) return;
+      if (p->x >= cx - r && p->x < cx + r && p->y >= cy - r && p->y < cy + r) in[h->owner] = true;
+    });
+    int holder = 0;
+    bool contested = false;
+    for (int i = 1; i <= kMaxPlayers; ++i) {
+      if (!in[static_cast<size_t>(i)]) continue;
+      if (holder == 0) holder = i;
+      else if (hostile(static_cast<uint8_t>(holder), static_cast<uint8_t>(i))) contested = true;
+    }
+    if (holder && !contested) {
+      mode_.hill[static_cast<size_t>(holder)] += kTickHz;
+      if (mode_.hill[static_cast<size_t>(holder)] >= limit) defeat_others(static_cast<uint8_t>(holder));
+    }
+  }
+  // Időkorlát: a legtöbb pont nyer (egyenlőségnél a kisebb sorszám)
+  if (mode_.victory == static_cast<uint8_t>(MatchSetup::Victory::Timed) && tick_ >= limit) {
+    std::array<int64_t, kMaxPlayers + 1> score{};
+    for (int i = 1; i <= kMaxPlayers; ++i) {
+      for (int k = 0; k < kResources; ++k) score[static_cast<size_t>(i)] += players_[static_cast<size_t>(i)].gathered[static_cast<size_t>(k)] / 1000;
+    }
+    world_.pool<Health>().each([&](EntityId e, const Health& h) {
+      if (h.hp <= 0 || h.owner < 1 || h.owner > kMaxPlayers) return;
+      if (world_.get<Building>(e)) score[h.owner] += 50;
+      else if (world_.get<Unit>(e)) score[h.owner] += 10;
+    });
+    int best = 0;
+    for (int i = 1; i <= kMaxPlayers; ++i) {
+      const PlayerState& p = players_[static_cast<size_t>(i)];
+      if (p.active && !p.defeated && (best == 0 || score[static_cast<size_t>(i)] > score[static_cast<size_t>(best)])) best = i;
+    }
+    if (best) defeat_others(static_cast<uint8_t>(best));
+  }
+  // Túlélés: a Vadon hullámai (90 s-onként, egyre több), a pálya sarkaiból a legközelebbi játékosépület felé
+  if (mode_.tempo == static_cast<uint8_t>(MatchSetup::Tempo::Survival)) {
+    if (tick_ >= limit) {
+      mode_.survived = true;
+      return;
+    }
+    if (tick_ >= mode_.next_wave) {
+      mode_.next_wave = tick_ + 90LL * kTickHz;
+      ++mode_.wave;
+      std::vector<uint16_t> pool;
+      for (size_t d = 0; d < rules_->defs.size(); ++d) {
+        if (rules_->defs[d].faction == "vadon" && !rules_->defs[d].building && rules_->defs[d].attack.has) pool.push_back(static_cast<uint16_t>(d));
+      }
+      if (pool.empty()) return;
+      const int corner = (mode_.wave - 1) % 4;
+      const Fixed sx = Fixed::from_int(corner % 2 == 0 ? 3 : map_->width() - 3);
+      const Fixed sy = Fixed::from_int(corner < 2 ? 3 : map_->height() - 3);
+      EntityId target = kNoEntity;
+      int64_t best = 0;
+      world_.pool<Building>().each([&](EntityId e, const Building&) {
+        const Health* h = world_.get<Health>(e);
+        const Position* p = world_.get<Position>(e);
+        if (!h || !p || h->hp <= 0 || h->owner < 1 || h->owner > kMaxPlayers) return;
+        const int64_t d = core::length_sq_raw(p->x - sx, p->y - sy);
+        if (target == kNoEntity || d < best || (d == best && e < target)) {
+          target = e;
+          best = d;
+        }
+      });
+      const int n = std::min(3 + mode_.wave * 2, 40);
+      for (int k = 0; k < n; ++k) {
+        const uint16_t def = pool[static_cast<size_t>((mode_.wave + k) % static_cast<int>(pool.size()))];
+        const EntityId u = spawn_unit(def, 0, sx, sy);
+        if (u == kNoEntity) continue;
+        place_at_free(u, sx, sy);
+        if (const Position* tp = target != kNoEntity ? world_.get<Position>(target) : nullptr) order_attack_move(u, tp->x, tp->y);
+      }
+    }
   }
 }
 

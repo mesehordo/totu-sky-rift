@@ -483,6 +483,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     s->winner = sim_->winner();
     s->night = sim_->night_permille();
     s->weather = sim_->weather_info().kind;
+    s->mode = sim_->match_mode();
   }
   if (mission_) {   // M11: a küldetés a felületnek
     SnapMission& m = s->mission;

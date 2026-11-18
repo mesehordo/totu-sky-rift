@@ -148,6 +148,9 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       setup.camps = r.camps;
       setup.fog = static_cast<MatchSetup::Fog>(std::min<uint8_t>(r.fog, 2));
       setup.daytime = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.daytime, 2));
+      setup.victory = static_cast<MatchSetup::Victory>(std::min<uint8_t>(r.victory, 3));
+      setup.tempo = static_cast<MatchSetup::Tempo>(std::min<uint8_t>(r.tempo, 3));
+      setup.minutes = std::clamp(r.minutes, 0, 240);
       if (!s.setup_match(*m->map, setup, &error)) return nullptr;
     }
   }
@@ -180,6 +183,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
 namespace {
 
 int format_of(const Replay& r) {
+  if (r.victory != 0 || r.tempo != 0 || r.minutes != 0) return 8;
   if (!r.mission.empty()) return 7;
   if (!r.factions.empty() && (!r.upkeep || r.camps || r.fog != 0 || r.daytime != 2)) return 6;
   if (!r.ai.empty()) return 5;
@@ -283,6 +287,11 @@ std::vector<uint8_t> encode(const Replay& r) {
     w.u8(r.daytime);
   }
   if (format >= 7) w.str(r.mission);
+  if (format >= 8) {
+    w.u8(r.victory);
+    w.u8(r.tempo);
+    w.i32(r.minutes);
+  }
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -297,7 +306,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 7) return std::nullopt;
+  if (version < 1 || version > 8) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -354,6 +363,11 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
     r.daytime = rd.u8();
   }
   if (version >= 7) r.mission = rd.str();
+  if (version >= 8) {
+    r.victory = rd.u8();
+    r.tempo = rd.u8();
+    r.minutes = rd.i32();
+  }
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {
     Checkpoint c;

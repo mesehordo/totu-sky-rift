@@ -7454,8 +7454,8 @@ msgid "A novellák önálló pályái – bármikor, bármilyen sorrendben."
 msgstr "Standalone novella missions – play at any time, in any order."
 
 msgctxt "ui.main.skirmish"
-msgid "Egyéni csata"
-msgstr "Custom battle"
+msgid "Csata"
+msgstr "Skirmish"
 
 msgctxt "ui.main.skirmish.hint"
 msgid "Csata gépi ellenfelek ellen, saját beállításokkal."
@@ -7554,8 +7554,8 @@ msgid "Ki"
 msgstr "Off"
 
 msgctxt "ui.skirmish.title"
-msgid "EGYÉNI CSATA"
-msgstr "CUSTOM BATTLE"
+msgid "CSATA"
+msgstr "SKIRMISH"
 
 msgctxt "ui.skirmish.map"
 msgid "Pálya"
@@ -8920,3 +8920,59 @@ msgstr "The campaign is over."
 msgctxt "editor.data.objects"
 msgid "Objektumok"
 msgstr "Objects"
+
+msgctxt "ui.opt.victory"
+msgid "Győzelem"
+msgstr "Victory"
+
+msgctxt "ui.opt.victory.conquest"
+msgid "Hódítás"
+msgstr "Conquest"
+
+msgctxt "ui.opt.victory.capital"
+msgid "Főváros"
+msgstr "Capital"
+
+msgctxt "ui.opt.victory.hill"
+msgid "Dombkirály"
+msgstr "King of the hill"
+
+msgctxt "ui.opt.victory.timed"
+msgid "Időkorlát"
+msgstr "Time limit"
+
+msgctxt "ui.opt.tempo"
+msgid "Tempó"
+msgstr "Tempo"
+
+msgctxt "ui.opt.tempo.classic"
+msgid "Klasszikus"
+msgstr "Classic"
+
+msgctxt "ui.opt.tempo.calm"
+msgid "Nyugodt építkezés"
+msgstr "Calm building"
+
+msgctxt "ui.opt.tempo.rush"
+msgid "Gyors támadások"
+msgstr "Fast attacks"
+
+msgctxt "ui.opt.tempo.survival"
+msgid "Túlélés"
+msgstr "Survival"
+
+msgctxt "hud.mode.peace"
+msgid "Béke: {}"
+msgstr "Peace: {}"
+
+msgctxt "hud.mode.hill"
+msgid "Domb: {} / {}"
+msgstr "Hill: {} / {}"
+
+msgctxt "hud.mode.timed"
+msgid "Hátralévő idő: {}"
+msgstr "Time left: {}"
+
+msgctxt "hud.mode.survival"
+msgid "Hullám {} · {}"
+msgstr "Wave {} · {}"

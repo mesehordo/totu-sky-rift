@@ -7454,7 +7454,7 @@ msgid "A novellák önálló pályái – bármikor, bármilyen sorrendben."
 msgstr ""
 
 msgctxt "ui.main.skirmish"
-msgid "Egyéni csata"
+msgid "Csata"
 msgstr ""
 
 msgctxt "ui.main.skirmish.hint"
@@ -7554,7 +7554,7 @@ msgid "Ki"
 msgstr ""
 
 msgctxt "ui.skirmish.title"
-msgid "EGYÉNI CSATA"
+msgid "CSATA"
 msgstr ""
 
 msgctxt "ui.skirmish.map"
@@ -8918,4 +8918,60 @@ msgstr ""
 
 msgctxt "editor.data.objects"
 msgid "Objektumok"
+msgstr ""
+
+msgctxt "ui.opt.victory"
+msgid "Győzelem"
+msgstr ""
+
+msgctxt "ui.opt.victory.conquest"
+msgid "Hódítás"
+msgstr ""
+
+msgctxt "ui.opt.victory.capital"
+msgid "Főváros"
+msgstr ""
+
+msgctxt "ui.opt.victory.hill"
+msgid "Dombkirály"
+msgstr ""
+
+msgctxt "ui.opt.victory.timed"
+msgid "Időkorlát"
+msgstr ""
+
+msgctxt "ui.opt.tempo"
+msgid "Tempó"
+msgstr ""
+
+msgctxt "ui.opt.tempo.classic"
+msgid "Klasszikus"
+msgstr ""
+
+msgctxt "ui.opt.tempo.calm"
+msgid "Nyugodt építkezés"
+msgstr ""
+
+msgctxt "ui.opt.tempo.rush"
+msgid "Gyors támadások"
+msgstr ""
+
+msgctxt "ui.opt.tempo.survival"
+msgid "Túlélés"
+msgstr ""
+
+msgctxt "hud.mode.peace"
+msgid "Béke: {}"
+msgstr ""
+
+msgctxt "hud.mode.hill"
+msgid "Domb: {} / {}"
+msgstr ""
+
+msgctxt "hud.mode.timed"
+msgid "Hátralévő idő: {}"
+msgstr ""
+
+msgctxt "hud.mode.survival"
+msgid "Hullám {} · {}"
 msgstr ""

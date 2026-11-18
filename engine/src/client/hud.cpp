@@ -1115,7 +1115,19 @@ void Hud::draw_clock(const HudFrame& f) {
   // jobb felül, visszafogottan: a játékidő
   const HudLayout& L = model_.layout();
   const int F = L.font.small;
-  const std::string t = mmss(model_.snap()->tick / 30);
+  std::string t = mmss(model_.snap()->tick / 30);
+  // M12: a mód visszajelzése (béke hátralévő ideje, a domb állása, a túlélés hulláma és hátralévő ideje)
+  const sim::MatchMode& md = model_.snap()->mode;
+  const int64_t now = model_.snap()->tick;
+  if (md.peace_until > now) t = model_.tr("mode.peace", {mmss((md.peace_until - now) / 30)}) + "   " + t;
+  if (md.victory == 2) {
+    const int64_t mine = md.hill[std::min<size_t>(model_.player, 8)] / 30;
+    t = model_.tr("mode.hill", {mmss(mine), mmss(int64_t{md.minutes} * 60)}) + "   " + t;
+  }
+  if (md.victory == 3) t = model_.tr("mode.timed", {mmss(std::max<int64_t>(0, int64_t{md.minutes} * 60 - now / 30))}) + "   " + t;
+  if (md.tempo == 3) {
+    t = model_.tr("mode.survival", {std::to_string(md.wave), mmss(std::max<int64_t>(0, int64_t{md.minutes} * 60 - now / 30))}) + "   " + t;
+  }
   const float right = static_cast<float>(f.w - L.pad * 2);
   stext(F, right - tw(F, t) - 4, static_cast<float>(L.topbar.y) + (static_cast<float>(L.topbar.h) - line_h(F)) / 2, t, {240, 235, 200});
 }

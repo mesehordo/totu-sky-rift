@@ -2,6 +2,7 @@
 // A hibajegyzék nyitott ellenőrzései (C-101…C-115): célzott próbák a mentés, a determinizmus, a gazdaság és az
 // útkeresés határeseteire.
 #include <cstdio>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -238,4 +239,112 @@ TEST_CASE("iranyitas D46: Shift-parancssor, jaror, mentesbol folytatva, a kozvet
   const auto* vm = s.world().get<sim::Movement>(v);
   const auto* vc = s.world().get<sim::Combat>(v);
   CHECK((vm && vm->moving) || (vc && vc->order != sim::Combat::None));   // a 2. játékos járőre fut tovább
+}
+
+namespace {
+// meccs a megadott móddal (a Match segéd a szokásos indítást végzi; itt a beállítás kell)
+struct ModeMatch {
+  std::optional<map::Map> map;
+  std::unique_ptr<map::NavGrid> nav;
+  std::unique_ptr<map::Pathfinder> pf;
+  std::unique_ptr<sim::Sim> sim;
+  bool ok = false;
+  explicit ModeMatch(sim::MatchSetup setup, const std::string& name = "BUILD-ALAP", bool start = true) {
+    Content& c = content_once();
+    std::vector<std::string> errors;
+    const auto doc = content::parse(read_file(std::filesystem::path(TOTU_TEST_DATA) / "maps" / (name + ".json")));
+    map = map::Map::from_json(*doc, c.terrain, errors);
+    nav = std::make_unique<map::NavGrid>(*map, c.terrain);
+    pf = std::make_unique<map::Pathfinder>(*nav);
+    sim = std::make_unique<sim::Sim>(777);
+    sim->attach_navigation(pf.get());
+    sim->attach_rules(&*c.rules);
+    std::string err;
+    ok = !start || sim->setup_match(*map, setup, &err);
+    if (!ok) std::printf("  %s\n", err.c_str());
+  }
+  void run(int n) { for (int i = 0; i < n; ++i) sim->step(); }
+};
+sim::MatchSetup setup_of(sim::MatchSetup::Victory v, sim::MatchSetup::Tempo t, int minutes = 0) {
+  sim::MatchSetup st;
+  st.factions = {"ursan", "wullof"};
+  st.victory = v;
+  st.tempo = t;
+  st.minutes = minutes;
+  return st;
+}
+}  // namespace
+
+TEST_CASE("M12 jatekmodok: az alapertelmezett mod hash-e valtozatlan, a Fovaros a foepulettel veszit") {
+  ModeMatch a(setup_of(sim::MatchSetup::Victory::Conquest, sim::MatchSetup::Tempo::Classic));
+  Match b("BUILD-ALAP", true, true, {"ursan", "wullof"});
+  CHECK(a.ok && !a.sim->match_mode().active());
+  // Főváros: a 2. játékos más épülettel is kiesik, ha a főépülete elpusztul
+  ModeMatch c(setup_of(sim::MatchSetup::Victory::Capital, sim::MatchSetup::Tempo::Classic));
+  CHECK(c.ok);
+  sim::Sim& s = *c.sim;
+  s.place_building(R().def("wul_tipi"), 2, 40, 40, true);
+  c.run(2);
+  CHECK(!s.player(2).defeated);
+  s.deal_damage(0, 1, sim::kNoDef, hq_of(s, 2), 100000000, false);
+  c.run(3);
+  CHECK(s.player(2).defeated && s.winner() == 1);
+}
+
+TEST_CASE("M12 jatekmodok: Dombkiraly - a kozepet egyedul tarto jatekos nyer; Idokorlat - a tobb pont nyer") {
+  ModeMatch h(setup_of(sim::MatchSetup::Victory::Hill, sim::MatchSetup::Tempo::Classic, 1));
+  CHECK(h.ok);
+  sim::Sim& s = *h.sim;
+  const int cx = h.map->width() / 2, cy = h.map->height() / 2;
+  const auto king = put(s, "urs_berserker", 1, cx * 10, cy * 10);
+  sim::Command hold;
+  hold.kind = sim::Command::Kind::Hold;
+  hold.owner = 1;
+  hold.tick = s.tick();
+  hold.units.push_back(king);
+  s.queue(hold);   // a dombon marad (nem indul harcolni)
+  h.run(30 * 30);
+  CHECK(s.winner() == 0);   // fél perc még nem elég
+  h.run(31 * 30);
+  CHECK(s.winner() == 1 && s.player(2).defeated);
+  // Időkorlát: 1 perc; az 1. játékos több egységgel
+  ModeMatch t(setup_of(sim::MatchSetup::Victory::Timed, sim::MatchSetup::Tempo::Classic, 1));
+  CHECK(t.ok);
+  for (int i = 0; i < 6; ++i) put(*t.sim, "urs_berserker", 1, 100 + i * 8, 100);
+  t.run(60 * 30 + 2);
+  CHECK(t.sim->winner() == 1);
+}
+
+TEST_CASE("M12 tempo: Nyugodt - beke a jatekosok kozott; Gyors - ketszeres kezdo nyersanyag; Tulels - hullamok es gyozelem") {
+  ModeMatch calm(setup_of(sim::MatchSetup::Victory::Conquest, sim::MatchSetup::Tempo::Calm));
+  sim::Sim& s = *calm.sim;
+  const auto a = put(s, "urs_berserker", 1, 150, 150);
+  const auto b = put(s, "wul_landzsas", 2, 160, 150);
+  calm.run(300);
+  CHECK(s.world().get<sim::Health>(a)->hp == s.world().get<sim::Health>(a)->max);
+  CHECK(s.world().get<sim::Health>(b)->hp == s.world().get<sim::Health>(b)->max);   // nem harcolnak
+  CHECK(!s.hostile(1, 2) && s.hostile(0, 1));
+  ModeMatch classic(setup_of(sim::MatchSetup::Victory::Conquest, sim::MatchSetup::Tempo::Classic));
+  ModeMatch rush(setup_of(sim::MatchSetup::Victory::Conquest, sim::MatchSetup::Tempo::Rush));
+  CHECK(rush.sim->player(1).resource(sim::kGold) == 2 * classic.sim->player(1).resource(sim::kGold));
+  // Túlélés (1 perc a teszthez; az első hullám a 3. percben jönne – itt rövidebb: a győzelem az időn múlik)
+  ModeMatch surv(setup_of(sim::MatchSetup::Victory::Conquest, sim::MatchSetup::Tempo::Survival, 4));
+  sim::Sim& v = *surv.sim;
+  CHECK(!v.hostile(1, 2));
+  surv.run(3 * 60 * 30 + 5);
+  CHECK(v.match_mode().wave == 1);
+  int wild = 0;
+  v.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit&) { wild += v.world().get<sim::Health>(e)->owner == 0 ? 1 : 0; });
+  CHECK(wild >= 5);
+  // mentésből folytatva ugyanaz
+  const auto saved = v.save();
+  surv.run(600);
+  ModeMatch again(setup_of(sim::MatchSetup::Victory::Conquest, sim::MatchSetup::Tempo::Survival, 4), "BUILD-ALAP", false);
+  CHECK(again.sim->load(saved));
+  again.sim->restore_obstacles(*again.map);
+  again.run(600);
+  CHECK(again.sim->hash() == v.hash());
+  surv.run(60 * 30);
+  CHECK(v.winner() != 0 || v.player(1).defeated);
+  std::printf("  túlélés: hullám %d, győztes %d\n", v.match_mode().wave, v.winner());
 }

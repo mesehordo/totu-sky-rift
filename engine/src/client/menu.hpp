@@ -67,6 +67,9 @@ struct SkirmishSetup {
   sim::MatchSetup::WeatherMode weather = sim::MatchSetup::WeatherMode::Mood;
   bool camps = true;    // a Vadon táborai (a régi „Szörnytáborok”)
   bool upkeep = true;   // Hadtáp
+  // M12 (D46): győzelmi feltétel és tempóprofil (munkanevek – D20)
+  sim::MatchSetup::Victory victory = sim::MatchSetup::Victory::Conquest;
+  sim::MatchSetup::Tempo tempo = sim::MatchSetup::Tempo::Classic;
   SkirmishSetup();
 };
 
