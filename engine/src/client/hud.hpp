@@ -22,6 +22,7 @@ struct HudFrame {
   float mx = -1, my = -1;           // egér
   double t = 0;                     // a felület órája (másodperc)
   float cam_x = 0, cam_y = 0, cam_w = 0, cam_h = 0;   // a látott világrész (világ-képpont) a minimaphez
+  int fps = -1;                     // a kijelzett képkocka/mp (−1: nem látszik – beállítás, AS-01)
 };
 
 class Hud {

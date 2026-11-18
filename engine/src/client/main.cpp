@@ -439,8 +439,10 @@ int main(int argc, char** argv) {
     };
     // küldetés indulásakor a kamera a helyi játékos első egységére (az átvezető kamerája később felülírja)
     auto center_on_local = [&](client::Camera& c, int vw, int vh) {
-      if (!mission_match || !mission_match->sim) return;
-      sim::Sim& s = *mission_match->sim;
+      sim::Sim* sp = mission_match && mission_match->sim ? mission_match->sim.get()
+                     : session.has_starts() && session.has_sim() ? &session.sim() : nullptr;
+      if (!sp || session.local_player() == 0) return;   // a megfigyelő (0) marad középen
+      sim::Sim& s = *sp;
       sim::EntityId best = sim::kNoEntity;
       s.world().pool<sim::Unit>().each([&](sim::EntityId e, const sim::Unit&) {
         const sim::Health* h = s.world().get<sim::Health>(e);
@@ -679,7 +681,8 @@ int main(int argc, char** argv) {
             // a küldetés már elindult (a start_match)
           } else if (session.has_starts()) {
             const bool started = have_cfg ? session.start_match(match_cfg.setup, match_cfg.ai, "ai_nep.lua", &err)
-                                          : session.start_match({"ursan", "ursan"}, true, &err);
+                                          : session.start_match({o.faction.empty() ? std::string("ursan") : o.faction, "ursan"},
+                                                                true, &err);
             if (!started) {   // N-04: a sikertelen indítás nem fut tovább részben felépített meccsként
               std::fprintf(stderr, "meccs: %s\n", err.c_str());
               rc = 1;
@@ -703,7 +706,7 @@ int main(int argc, char** argv) {
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
-          if (mission_match && !editor_on) center_on_local(cam, o.width, o.height);
+          if (!editor_on) center_on_local(cam, o.width, o.height);   // AS-02: csatában is a saját bázis látszik
           if (o.look_x >= 0 && o.look_y >= 0) {
             cam.x = o.look_x * client::World::kTilePx - static_cast<float>(o.width) / 2 / cam.zoom;
             cam.y = o.look_y * client::World::kTilePx - static_cast<float>(o.height) / 2 / cam.zoom;
@@ -742,6 +745,9 @@ int main(int argc, char** argv) {
     std::vector<double> times;
     bool running = rc == 0 && !menu_quit;
     bool game_paused = false;   // a játékon belüli szünetmenü (Esc, fogaskerék)
+    auto frame_prev = std::chrono::steady_clock::now();   // AS-01: képkockaidő, FPS-kijelzés, képkocka-korlát
+    float frame_dt = 0, fps_acc = 0;
+    int fps_frames = 0, fps_shown = -1;
     long frame = 0;
     const auto start = std::chrono::steady_clock::now();
     while (running && (o.frames < 0 || frame < o.frames)) {
@@ -1111,13 +1117,32 @@ int main(int argc, char** argv) {
           }
         }
       }
-      if (have_world) {   // kamera billentyűkkel
+      {   // AS-01: a képkockák közti idő (a görgetéshez és az FPS-kijelzéshez)
+        const auto now = std::chrono::steady_clock::now();
+        frame_dt = static_cast<float>(std::chrono::duration<double>(now - frame_prev).count());
+        frame_prev = now;
+        fps_acc += frame_dt;
+        ++fps_frames;
+        if (fps_acc >= 0.5f) {
+          fps_shown = static_cast<int>(static_cast<float>(fps_frames) / fps_acc + 0.5f);
+          fps_acc = 0;
+          fps_frames = 0;
+        }
+      }
+      if (have_world && !game_paused && !chain_pick) {   // kamera: billentyű és (a beállítás szerint) képernyőszél
         const bool* keys = SDL_GetKeyboardState(nullptr);
-        const float step = 12.0f / cam.zoom;
-        if (keys[SDL_SCANCODE_LEFT]) cam.x -= step;
-        if (keys[SDL_SCANCODE_RIGHT]) cam.x += step;
-        if (keys[SDL_SCANCODE_UP]) cam.y -= step;
-        if (keys[SDL_SCANCODE_DOWN]) cam.y += step;
+        client::ScrollInput si;
+        si.kx = (keys[SDL_SCANCODE_RIGHT] ? 1 : 0) - (keys[SDL_SCANCODE_LEFT] ? 1 : 0);
+        si.ky = (keys[SDL_SCANCODE_DOWN] ? 1 : 0) - (keys[SDL_SCANCODE_UP] ? 1 : 0);
+        // képpróbában és mérésnél nincs szélgörgetés (a rejtett ablak egere a sarokban áll – H-003b)
+        si.mouse_in = !o.hidden && o.screenshot.empty() && !o.bench &&
+                      (SDL_GetWindowFlags(win) & SDL_WINDOW_MOUSE_FOCUS) != 0;
+        SDL_GetMouseState(&si.mx, &si.my);
+        SDL_GetWindowSize(win, &si.w, &si.h);
+        float dx = 0, dy = 0;
+        client::scroll_delta(settings, si, frame_dt, cam.zoom, &dx, &dy);
+        cam.x += dx;
+        cam.y += dy;
       }
       if (hud_on && hud.model().jump) {   // a HUD kameraugrása (minimap, tétlen munkás)
         int jw = 0, jh = 0;
@@ -1283,6 +1308,7 @@ int main(int argc, char** argv) {
           hf.cam_y = cam.y;
           hf.cam_w = static_cast<float>(w) / cam.zoom;
           hf.cam_h = static_cast<float>(h) / cam.zoom;
+          hf.fps = settings.show_fps ? fps_shown : -1;
           batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
           hud.draw(batch, white, hf);
           if (chain_def && chain_pick) {   // M12: küldetésválasztó – vonalak a feltételekhez, csomópontok, cím
@@ -1344,15 +1370,6 @@ int main(int argc, char** argv) {
           }
           batch.end();
         }
-        // ideiglenes kijelzés (a HUD az M6 9. lépésében): az 1. játékos nyersanyagai és létszáma a címsorban
-        if (frame % 15 == 0 && session.has_starts()) {
-          if (const client::SnapPlayer* pl = world.player(session.local_player()); pl && pl->active) {
-            char title[160];
-            std::snprintf(title, sizeof title, "TOTU: Sky Rift – fa %d · arany %d · meteorit %d · létszám %d/%d",
-                          pl->res[0], pl->res[1], pl->res[2], pl->supply_used, pl->supply_cap);
-            SDL_SetWindowTitle(win, title);
-          }
-        }
       } else if (demo.units > 0 || !adem.units.empty()) {
         // a bemutató determinisztikus időt használ, ha képernyőkép vagy mérés készül (azonos kép minden gépen)
         const double t = (o.bench || !o.screenshot.empty())
@@ -1386,6 +1403,11 @@ int main(int argc, char** argv) {
       }
       if (o.bench) dev.api().Finish();
       SDL_GL_SwapWindow(win);
+      if (settings.fps_limit > 0 && !o.bench) {   // AS-01: képkocka-korlát (a függőleges szinkron mellett)
+        const double target = 1.0 / static_cast<double>(settings.fps_limit);
+        const double spent = std::chrono::duration<double>(std::chrono::steady_clock::now() - frame_prev).count();
+        if (spent < target) SDL_DelayPrecise(static_cast<Uint64>((target - spent) * 1e9));
+      }
       times.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - f0).count());
       if (have_world && o.bench) {
         double st = 0;

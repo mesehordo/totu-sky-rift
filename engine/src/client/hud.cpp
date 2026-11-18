@@ -1128,6 +1128,7 @@ void Hud::draw_clock(const HudFrame& f) {
   if (md.tempo == 3) {
     t = model_.tr("mode.survival", {std::to_string(md.wave), mmss(std::max<int64_t>(0, int64_t{md.minutes} * 60 - now / 30))}) + "   " + t;
   }
+  if (f.fps >= 0) t = std::to_string(f.fps) + " FPS   " + t;
   const float right = static_cast<float>(f.w - L.pad * 2);
   stext(F, right - tw(F, t) - 4, static_cast<float>(L.topbar.y) + (static_cast<float>(L.topbar.h) - line_h(F)) / 2, t, {240, 235, 200});
 }

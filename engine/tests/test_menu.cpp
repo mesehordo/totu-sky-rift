@@ -481,3 +481,39 @@ TEST_CASE("M8 felulet – csapatszínek: a színvak-barát paletta 8 jól elkül
     }
   }
 }
+
+TEST_CASE("AS-01 kamera-gorgetes: a beallitott sebesseg idoaranyosan, kepernyoszel csak bekapcsolva") {
+  client::Settings s;
+  s.scroll_speed = 900;
+  client::ScrollInput in;
+  in.kx = 1;
+  float dx = 0, dy = 0;
+  client::scroll_delta(s, in, 0.09f, 1.5f, &dx, &dy);
+  CHECK(dx > 53.9f && dx < 54.1f && dy == 0.0f);   // 900 px/s × 0,09 s / 1,5 (a dt legfeljebb 0,1 s)
+  // képkockaszámtól független: két fél képkocka ugyanannyi
+  float a = 0, b = 0, c = 0;
+  client::scroll_delta(s, in, 0.045f, 1.5f, &a, &c);
+  client::scroll_delta(s, in, 0.045f, 1.5f, &b, &c);
+  CHECK(a + b > 53.9f && a + b < 54.1f);
+  // képernyőszél: bal felső sarok, ablakban
+  client::ScrollInput e;
+  e.mx = 2;
+  e.my = 3;
+  e.w = 1280;
+  e.h = 720;
+  e.mouse_in = true;
+  client::scroll_delta(s, e, 0.1f, 1.0f, &dx, &dy);
+  CHECK(dx < 0 && dy < 0);
+  s.edge_scroll = false;
+  client::scroll_delta(s, e, 0.1f, 1.0f, &dx, &dy);
+  CHECK(dx == 0.0f && dy == 0.0f);
+  s.edge_scroll = true;
+  e.mouse_in = false;   // az egér nincs az ablakban (vagy képpróba)
+  client::scroll_delta(s, e, 0.1f, 1.0f, &dx, &dy);
+  CHECK(dx == 0.0f && dy == 0.0f);
+  e.mouse_in = true;
+  e.mx = 640;
+  e.my = 360;   // középen nem görget
+  client::scroll_delta(s, e, 0.1f, 1.0f, &dx, &dy);
+  CHECK(dx == 0.0f && dy == 0.0f);
+}

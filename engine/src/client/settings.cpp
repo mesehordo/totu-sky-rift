@@ -254,4 +254,19 @@ const std::array<TeamColor, 8>& team_colors(bool colorblind) {
   return colorblind ? safe : normal;
 }
 
+void scroll_delta(const Settings& s, const ScrollInput& in, float dt, float zoom, float* dx, float* dy) {
+  int x = in.kx, y = in.ky;
+  constexpr float kEdge = 8.0f;
+  if (s.edge_scroll && in.mouse_in && in.w > 0 && in.h > 0) {
+    if (in.mx >= 0 && in.mx < kEdge) x = -1;
+    if (in.mx >= static_cast<float>(in.w) - kEdge && in.mx < static_cast<float>(in.w)) x = 1;
+    if (in.my >= 0 && in.my < kEdge) y = -1;
+    if (in.my >= static_cast<float>(in.h) - kEdge && in.my < static_cast<float>(in.h)) y = 1;
+  }
+  const float step = static_cast<float>(std::clamp(s.scroll_speed, 100, 3000)) * std::clamp(dt, 0.0f, 0.1f) /
+                     std::max(zoom, 0.1f);
+  *dx = static_cast<float>(std::clamp(x, -1, 1)) * step;
+  *dy = static_cast<float>(std::clamp(y, -1, 1)) * step;
+}
+
 }  // namespace totu::client

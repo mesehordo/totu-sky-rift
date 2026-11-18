@@ -73,6 +73,17 @@ struct Settings {
   bool operator==(const Settings&) const = default;
 };
 
+// Kamera-görgetés egy képkockára (AS-01): a `scroll_speed` képernyő-képpont/mp, `dt` mp; a nagyítás osztja.
+// Billentyű: kx, ky (−1/0/1); a képernyő szélső 8 képpontján a kurzor is görget, ha az `edge_scroll` be van kapcsolva
+// és az egér az ablakban van. Eredmény: világ-képpontban.
+struct ScrollInput {
+  int kx = 0, ky = 0;
+  float mx = -1, my = -1;
+  int w = 0, h = 0;
+  bool mouse_in = false;
+};
+void scroll_delta(const Settings& s, const ScrollInput& in, float dt, float zoom, float* dx, float* dy);
+
 // JSON (tömör, determinisztikus kulcssorrend)
 std::string settings_to_json(const Settings& s);
 // Hibatűrő: az ismeretlen kulcs kimarad, a hibás érték alapértékre áll (figyelmeztetéssel). false: nem JSON-objektum.

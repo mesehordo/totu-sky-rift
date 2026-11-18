@@ -165,6 +165,7 @@ class Session {
   const map::Map& map() const { return *map_; }
   const map::TerrainTable& terrain() const { return terrain_; }
   sim::Sim& sim() { return *sim_; }
+  bool has_sim() const { return sim_ != nullptr; }
 
  private:
   void update_fog();
