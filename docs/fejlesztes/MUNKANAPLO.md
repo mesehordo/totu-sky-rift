@@ -883,3 +883,7 @@ közben mentett profil is folytatható. **Minta** (`chains/valaszto`): a táborb
 nyugati hágó és a keleti gázló tetszőleges sorrendben; a következmény: szövetségben három segítő érkezik a kezdéskor.
 Próba: mindkét döntés és mindkét sorrend, zárt küldetés nem választható, a profil oda-vissza, a végén nincs több.
 Kép: `docs/fejlesztes/kepek/m12_kuldetesvalaszto.png`.
+
+## 2026-11-18 – Anti-slop csomag 1.: alapállapot, audit, kis kliensjavítások
+
+**Ütemezés (D47 4.):** a hadjárat a legutolsó fejlesztési rész; az M12 lezárva. **Dokumentumok** a `docs/quality/` alatt: alapállapot és kockázatok (CTest 9/9, goldenek, képek 1280/1920/2560-on, elavult lapok), anti-slop audit (AS-01 … AS-12, rangsorolva), stílusútmutató (a HUD.md-re építve, a `hud_layout` értékeivel), szöveg-audit, ikonleltár (174 kép), diagnosztikai terv (csak helyi, kézi export; terv), regressziós mátrix, megvalósítási napló. **Javítva (csak kliens):** a Beállítások négy kapcsolója eddig nem hatott – a görgetés sebessége (időarányosan, képkockaszámtól függetlenül), a képernyőszéli görgetés, az FPS-kijelzés (az óra mellett) és a képkocka-korlát; a Csata a saját bázison indul (eddig a pálya közepén, ködben – fekete kép); az ideiglenes ablakcím-kijelzés törölve; a `--faction` a `--world` képpróbára is hat (mind a hét faj HUD-ja fényképezhető). Az állapotlapok, a README és a HUD.md frissítve. **Döntésre vár:** szöveges elutasítási ok (AS-03), „Felület mérete” (AS-07), munkanevek, a diagnosztikai export helye. Képek: `docs/quality/kepek/`.

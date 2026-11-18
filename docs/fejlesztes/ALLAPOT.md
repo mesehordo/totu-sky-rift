@@ -1,19 +1,15 @@
 # Fejlesztési állapot
 
-**Irányadó dokumentum: [`docs/alap/TOTU_ALAPDOKUMENTUM.md`](../alap/TOTU_ALAPDOKUMENTUM.md)** (fázisok F1–F8), nyitott döntések: [`docs/alap/DONTESEK.md`](../alap/DONTESEK.md). A korábbi S00–S14 munkajegyzékből csak a munkamódszer érvényes.
+Irányadó: [UJ_MOTOR_TERV.md](../alap/UJ_MOTOR_TERV.md) (M0–M14) és [DONTESEK.md](../alap/DONTESEK.md); a részletek a
+[MUNKANAPLO.md](MUNKANAPLO.md)-ban.
 
 | Mező | Érték |
 |---|---|
-| Aktív szakasz | Új motor: M0, M1 és **M2 kész** (a golden visszajátszás mind az öt rendszeren egyezik); következik az M3 (Lua-réteg) |
-| Aktív feladat | S01-02: ablakos kézi próba (F-002) |
-| Kiindulópont | nyilvános GitHub-repó (csak az új motor, a tartalom, a grafika és a történet); a régi Python-játék helyben, gitből kizárva, referenciaként; a régi történet mentése a repó melletti `.bundle` fájlban |
-| Utolsó ellenőrzött állapot | 2026-11-12: `test_dmath.py`, `test_hud.py`, `test_snapshot.py`, `golden_replays.py` 3/3 (újrarögzítve a `dmath` után), `snapshot_check.py --all-missions` 46/46 |
-| Környezet | Windows 10, i7-6700K, RX 550, 32 GB; Python 3.13.14, pygame-ce 2.5.8, numpy 2.5.4; .NET SDK 10.0.404, GCC 16.2 (WinLibs), CMake 4.4.4 – betöltés: `. tools/fejlesztoi_kornyezet.ps1` |
-| Következő konkrét lépés | M3: Lua 5.4 beágyazása sandboxszal (FORRASOK_ES_TANULSAGOK 2.4), determinisztikus `math`, rendezett bejárás, utasításkeret, API; kapu: szkriptes visszajátszás minden rendszeren azonos – vagy a küldetés-tervlapok |
+| Kész | M0–M11; M12 (győzelmi feltételek, tempóprofilok, küldetéssor-választás) |
+| Folyamatban | anti-slop minőségbiztosítás ([docs/quality/](../quality/)) |
+| Hátra | M13 (modrendszer, mod.io), M14 (kiadás), teljes angol fordítás, a két BSD a CI-ben, végső összevetés a tanulmánnyal; **legutoljára** a hadjárat (D47, D48) |
+| Utolsó ellenőrzött állapot | 2026-11-18: CTest 9/9 (core, golden M2–M7, net_loss_rovid, ai_batch) |
+| Környezet | Windows 10, i7-6700K, RX 550, 32 GB; GCC 16.2 (WinLibs UCRT), CMake 4.4, SDL 3.4 |
 
-## Nyitott döntések (felhasználó)
-
-1. ~~Verziókezelés~~ – eldöntve: helyi Git (2026-11-11).
-2. **Licencütközés:** a `LICENSE.md` szerint a kód MIT, a C++/C# tanulmány (v1.1) „GPLv2+ TOTU-kódról” beszél, és erre építi a MonoGame-kizárást.
-3. **Motorirány:** a munkajegyzék Python + Arcade felé visz, a délután érkezett v1.1 csomag C++/C# migrációt vizsgál. S01–S03-at nem érinti, S04 előtt el kell dönteni.
-4. **Szimulációs frekvencia:** a játék `sim_hz = 30`, a követelmény 20 Hz-es hiteles ticket ír. Átálláskor minden időzítőt át kell számolni (S04).
+A régi Python-játék hibalistája (`HIBAK_ES_FELADATOK.md`) a régi kódra vonatkozik; az új motor hibái és javításai a
+munkanaplóban és a [quality/ANTI_SLOP_AUDIT.md](../quality/ANTI_SLOP_AUDIT.md)-ban vannak.

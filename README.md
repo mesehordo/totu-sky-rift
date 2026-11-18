@@ -16,9 +16,12 @@ Az új motor (C++20 + Lua) fejlesztés alatt áll – terv és ütemterv: [docs/
 | M0 Alapozás – tartalmi leltár, viselkedési specifikáció, döntések, ADR-ek | kész |
 | M1 Platform-váz – SDL3-ablak, OpenGL 3.3, CI mind az öt rendszeren | kész |
 | M2 Determinisztikus mag – fixpontos matematika, tartalomréteg, modrétegek, sablonok, mentés, visszajátszás | kész – a golden visszajátszás mind az öt rendszeren egyezik |
-| M3–M14 – Lua, mozgás, megjelenítő, játékmag, fajok, felület, gépi ellenfél, hálózat, küldetések, játékmódok, modrendszer, kiadás | tervezett |
+| M3–M11 – Lua, mozgás, megjelenítő, játékmag, fajok, felület, gépi ellenfél, hálózat (lockstep relével), küldetések és szerkesztő | kész |
+| M12 Játékmódok – győzelmi feltételek, tempóprofilok, küldetéssor-választás | kész (a hadjárattérkép a legutolsó fejlesztési rész) |
+| M13–M14 – modrendszer kiadása, kiadás | tervezett |
 
-Célrendszerek: Windows, Linux, macOS (Intel és Apple Silicon), FreeBSD, OpenBSD – mindegyiket a CI ellenőrzi.
+Célrendszerek: Windows, Linux, macOS (Intel és Apple Silicon), FreeBSD, OpenBSD – a CI most a Windows, Linux és macOS
+változatot ellenőrzi; a két BSD felvétele nyitott feladat.
 
 ## A játék
 
@@ -28,7 +31,8 @@ Célrendszerek: Windows, Linux, macOS (Intel és Apple Silicon), FreeBSD, OpenBS
 * **Nyersanyagok:** Fa, Arany, Meteorit, Áhítat (az elfeknél; a Huk’uchánál Tóének); létszám legfeljebb 200.
 * **Felemelkedés:** három különböző kész épület után a nép választ a három fejlődési iránya közül.
 * **Hősök** szintekkel, megtanulható képességekkel és tárgyakkal; semleges szörnytáborok.
-* **Játékmódok:** hadjárat, győzelmi feltételek, hadjárattérkép (tervezett).
+* **Játékmódok:** Csata győzelmi feltételekkel és tempóprofilokkal, küldetések és küldetéssor; a hadjárat
+  (területfoglaló térkép, foglaláskor csata) tervezett.
 
 A szabályok pontos leírása: [docs/alap/spec/](docs/alap/spec/) · a tartalom leltára:
 [docs/alap/TARTALOM_LELTAR.md](docs/alap/TARTALOM_LELTAR.md).

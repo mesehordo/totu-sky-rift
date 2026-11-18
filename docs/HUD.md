@@ -20,7 +20,7 @@ Minden szekció saját, kiemelt keretben van.
 **Bal felül:** háttér nélküli küldetéslista jelölőnégyzetekkel; 3 cél felett összecsukható.
 **Jobb felül, visszafogottan:** játékidő és sebesség (−/+).
 
-A geometria egyetlen függvényben van: `rts/hud.py: hud_layout()`. A HUD 1080 képpont magassághoz skálázódik, keskeny ablakon kicsinyít. A faj csak a kinézetet változtatja (`rts/faction_ui.py`). A rajzolt képek helye:
+A geometria egyetlen függvényben van: `engine/src/client/hud_layout.cpp: hud_layout()` (a régi `rts/hud.py` átvétele). A HUD 1080 képpont magassághoz skálázódik, keskeny ablakon kicsinyít. A faj csak a kinézetet változtatja (`rts/faction_ui.py`). A rajzolt képek helye:
 - `assets/ui/hud_<faj>.png`
 - `assets/ui/banner_<faj>.png`
 - `assets/ui/res/<nyersanyag>.png`

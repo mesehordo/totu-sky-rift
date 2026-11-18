@@ -1,5 +1,8 @@
 # Hibák és feladatok
 
+> **A régi Python-játékra vonatkozik** (referencia). Az új motor hibái: [MUNKANAPLO.md](MUNKANAPLO.md),
+> [../quality/ANTI_SLOP_AUDIT.md](../quality/ANTI_SLOP_AUDIT.md).
+
 | ID | Szak. | Prior. | Leírás | Reprodukció / bizonyíték | Státusz |
 |---|---|---|---|---|---|
 | H-001 | S01 | mérés | `--simulate --seed N` faj megadása nélkül futásonként más fajpárt választott → a mérés nem volt megismételhető | `python main.py --simulate 2 --seed 7` kétszer | ELLENŐRZÖTT (javítva) |
