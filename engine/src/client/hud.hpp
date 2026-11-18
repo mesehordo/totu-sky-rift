@@ -100,6 +100,7 @@ class Hud {
   void draw_quests();
   void draw_clock(const HudFrame& f);
   void draw_notice(const HudFrame& f);   // AS-03: az elutasítás oka
+  void draw_help(const HudFrame& f);     // F1: a régi súgó panel
   void draw_tooltip(const HudFrame& f);
   void draw_path_choice(const HudFrame& f);
   void draw_result(const HudFrame& f);

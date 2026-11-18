@@ -604,3 +604,10 @@ TEST_CASE("HUD karakterlap: a munkas tamadasa is latszik (a regi jatek szerint)"
   CHECK(u && u->damage > 0);
   std::printf("  munkás: sebzés %d, páncél %d\n", u ? u->damage : -1, u ? u->armor : -1);
 }
+
+TEST_CASE("HUD jatekebesseg: a regi lepcsok (50 ... 300 %), a szeleken megall") {
+  CHECK(HudModel::next_speed(100, 1) == 125 && HudModel::next_speed(100, -1) == 75);
+  CHECK(HudModel::next_speed(50, -1) == 50 && HudModel::next_speed(300, 1) == 300);
+  CHECK(HudModel::next_speed(200, 1) == 300 && HudModel::next_speed(150, 1) == 200);
+  CHECK(HudModel::next_speed(110, 1) == 125);   // a legközelebbi lépcsőről lép
+}

@@ -264,6 +264,21 @@ bool hud_event(client::HudModel& m, const SDL_Event& ev, const client::Camera& c
     if (k == SDLK_F8) return client::HudModel::kKeyF8;
     return -1;
   };
+  if (ev.type == SDL_EVENT_KEY_DOWN && !m.text_focus) {   // a régi játék: + / − sebesség, F1 súgó
+    const SDL_Keycode kk = ev.key.key;
+    if (kk == SDLK_F1) {
+      if (!ev.key.repeat) m.help_open = !m.help_open;
+      return true;
+    }
+    if (kk == SDLK_KP_PLUS || kk == SDLK_EQUALS || kk == SDLK_PLUS || kk == SDLK_KP_MINUS || kk == SDLK_MINUS) {
+      if (!ev.key.repeat && !m.speed_locked) m.speed_change = (kk == SDLK_KP_MINUS || kk == SDLK_MINUS) ? -1 : 1;
+      return true;
+    }
+    if (kk == SDLK_ESCAPE && m.help_open) {
+      m.help_open = false;
+      return true;
+    }
+  }
   if (ev.type == SDL_EVENT_KEY_DOWN || ev.type == SDL_EVENT_KEY_UP) {
     const int k = keycode(ev.key.key);
     if (k < 0) return false;
@@ -1143,6 +1158,13 @@ int main(int argc, char** argv) {
         client::scroll_delta(settings, si, frame_dt, cam.zoom, &dx, &dy);
         cam.x += dx;
         cam.y += dy;
+      }
+      if (hud_on) {   // a régi játék sebességvezérlése: −/+ gomb és billentyű (egyjátékos módban)
+        auto& hm = hud.model();
+        hm.speed_locked = o.host_port > 0 || !o.join.empty();
+        if (hm.speed_change != 0 && !hm.speed_locked) runner.set_speed_pct(client::HudModel::next_speed(runner.speed_pct(), hm.speed_change));
+        hm.speed_change = 0;
+        hm.speed_pct = runner.speed_pct();
       }
       if (hud_on && hud.model().jump) {   // a HUD kameraugrása (minimap, tétlen munkás)
         int jw = 0, jh = 0;

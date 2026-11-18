@@ -9044,3 +9044,55 @@ msgstr "Population limit reached – increase it: {}"
 msgctxt "hud.err.supply_plain"
 msgid "Elérted a létszámkorlátot."
 msgstr "Population limit reached."
+
+msgctxt "hud.help.hint"
+msgid "F1: súgó"
+msgstr "F1: help"
+
+msgctxt "hud.help.title"
+msgid "IRÁNYÍTÁS"
+msgstr "CONTROLS"
+
+msgctxt "hud.help.1"
+msgid "Bal klikk / húzás: kijelölés  (Shift: hozzáadás, dupla klikk: azonos típus)"
+msgstr "Left click / drag: select  (Shift: add, double click: same type)"
+
+msgctxt "hud.help.2"
+msgid "Jobb klikk: mozgás / támadás / gyűjtés / segít építeni / javít / gyülekezőpont  (Shift: a parancssor végére)"
+msgstr "Right click: move / attack / gather / help build / repair / rally point  (Shift: queue)"
+
+msgctxt "hud.help.3"
+msgid "Parancsrács (jobb alul, a betű minden ikon sarkában):  W E R T / S D F G / X C V B"
+msgstr "Command grid (bottom right, the key in each icon's corner):  W E R T / S D F G / X C V B"
+
+msgctxt "hud.help.4"
+msgid "   W: mozgás  E: állj  R: támadás  T: helyben tartás  S…B: képességek, építés, kiképzés, kutatás"
+msgstr "   W: move  E: stop  R: attack  T: hold  S…B: abilities, build, train, research"
+
+msgctxt "hud.help.5"
+msgid "   Munkás: S = Építés (B: vissza, V: következő oldal)   Épület: kiképzés/kutatás, B: utolsó visszavonása"
+msgstr "   Worker: S = Build (B: back, V: next page)   Building: train/research, B: cancel last"
+
+msgctxt "hud.help.6"
+msgid "Kijelölés-rács: kattintás = csak ezek, Shift/jobb klikk = kivétel; Shift + kiképzés: 5×"
+msgstr "Selection grid: click = only these, Shift/right click = remove; Shift + train: 5×"
+
+msgctxt "hud.help.7"
+msgid "Ctrl+1..9: csoport mentése, 1..9: csoport kijelölése (dupla: odaugrás)"
+msgstr "Ctrl+1..9: save group, 1..9: select group (double: jump)"
+
+msgctxt "hud.help.8"
+msgid "P + bal klikk: járőr   Jobb gomb húzása: vonalra mozgatás   Alt+1..6: alakzat"
+msgstr "P + left click: patrol   Right drag: line move   Alt+1..6: formation"
+
+msgctxt "hud.help.9"
+msgid "F8: következő tétlen munkás"
+msgstr "F8: next idle worker"
+
+msgctxt "hud.help.10"
+msgid "Nyilak / képernyőszél: kamera   Görgő: nagyítás   + / − : játéksebesség   Esc: mégse / menü"
+msgstr "Arrows / screen edge: camera   Wheel: zoom   + / − : game speed   Esc: cancel / menu"
+
+msgctxt "hud.help.11"
+msgid "Felül: szövetségesek, erőforrások, fogaskerék = menü   F1: ez a súgó"
+msgstr "Top: allies, resources, gear = menu   F1: this help"

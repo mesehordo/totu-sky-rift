@@ -227,6 +227,10 @@ class SimRunner {
     cur_.reset();
   }
   void set_paused(bool p) { paused_.store(p); }   // szünet: a szimuláció nem lép (a kép tovább rajzolódik)
+  // játéksebesség százalékban (a régi `SPEEDS`: 50 … 300); hálózati játékban mindig 100 (a lockstep üteme)
+  void set_speed_pct(int p) { speed_pct_.store(source_ ? 100 : std::clamp(p, 50, 300)); }
+  int speed_pct() const { return speed_pct_.load(); }
+  double tick_seconds() const { return kTickSeconds * 100.0 / static_cast<double>(speed_pct_.load()); }
   bool paused() const { return paused_.load(); }
 
   // a két legutóbbi pillanatkép (előző, jelenlegi) – a rajzolás a kettő között simít
@@ -244,6 +248,7 @@ class SimRunner {
   std::thread thread_;
   std::atomic<bool> stop_{false};
   std::atomic<bool> paused_{false};
+  std::atomic<int> speed_pct_{100};
   std::mutex mu_;
   std::vector<sim::Command> pending_;
   std::shared_ptr<const Snapshot> prev_, cur_;

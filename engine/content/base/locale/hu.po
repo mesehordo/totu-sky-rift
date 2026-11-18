@@ -9043,3 +9043,55 @@ msgstr ""
 msgctxt "hud.err.supply_plain"
 msgid "Elérted a létszámkorlátot."
 msgstr ""
+
+msgctxt "hud.help.hint"
+msgid "F1: súgó"
+msgstr ""
+
+msgctxt "hud.help.title"
+msgid "IRÁNYÍTÁS"
+msgstr ""
+
+msgctxt "hud.help.1"
+msgid "Bal klikk / húzás: kijelölés  (Shift: hozzáadás, dupla klikk: azonos típus)"
+msgstr ""
+
+msgctxt "hud.help.2"
+msgid "Jobb klikk: mozgás / támadás / gyűjtés / segít építeni / javít / gyülekezőpont  (Shift: a parancssor végére)"
+msgstr ""
+
+msgctxt "hud.help.3"
+msgid "Parancsrács (jobb alul, a betű minden ikon sarkában):  W E R T / S D F G / X C V B"
+msgstr ""
+
+msgctxt "hud.help.4"
+msgid "   W: mozgás  E: állj  R: támadás  T: helyben tartás  S…B: képességek, építés, kiképzés, kutatás"
+msgstr ""
+
+msgctxt "hud.help.5"
+msgid "   Munkás: S = Építés (B: vissza, V: következő oldal)   Épület: kiképzés/kutatás, B: utolsó visszavonása"
+msgstr ""
+
+msgctxt "hud.help.6"
+msgid "Kijelölés-rács: kattintás = csak ezek, Shift/jobb klikk = kivétel; Shift + kiképzés: 5×"
+msgstr ""
+
+msgctxt "hud.help.7"
+msgid "Ctrl+1..9: csoport mentése, 1..9: csoport kijelölése (dupla: odaugrás)"
+msgstr ""
+
+msgctxt "hud.help.8"
+msgid "P + bal klikk: járőr   Jobb gomb húzása: vonalra mozgatás   Alt+1..6: alakzat"
+msgstr ""
+
+msgctxt "hud.help.9"
+msgid "F8: következő tétlen munkás"
+msgstr ""
+
+msgctxt "hud.help.10"
+msgid "Nyilak / képernyőszél: kamera   Görgő: nagyítás   + / − : játéksebesség   Esc: mégse / menü"
+msgstr ""
+
+msgctxt "hud.help.11"
+msgid "Felül: szövetségesek, erőforrások, fogaskerék = menü   F1: ez a súgó"
+msgstr ""

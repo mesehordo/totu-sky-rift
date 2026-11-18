@@ -519,6 +519,7 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, const H
   draw_quests();
   draw_clock(f);
   draw_notice(f);
+  if (model_.help_open) draw_help(f);
   if (model_.path_pending()) draw_path_choice(f);
   else draw_tooltip(f);
   draw_mission(f);
@@ -1129,9 +1130,64 @@ void Hud::draw_clock(const HudFrame& f) {
   if (md.tempo == 3) {
     t = model_.tr("mode.survival", {std::to_string(md.wave), mmss(std::max<int64_t>(0, int64_t{md.minutes} * 60 - now / 30))}) + "   " + t;
   }
-  if (f.fps >= 0) t = std::to_string(f.fps) + " FPS   " + t;
-  const float right = static_cast<float>(f.w - L.pad * 2);
-  stext(F, right - tw(F, t) - 4, static_cast<float>(L.topbar.y) + (static_cast<float>(L.topbar.h) - line_h(F)) / 2, t, {240, 235, 200});
+  // a régi `draw_clock`: jobbról balra [+] ×1 [−] óra; alatta apró betűvel „N fps  •  F1: súgó”
+  const float th = static_cast<float>(L.topbar.h), ty = static_cast<float>(L.topbar.y);
+  float x = static_cast<float>(f.w - L.pad * 2);
+  const float bs = th - 6;
+  char sp[16];
+  std::snprintf(sp, sizeof sp, "×%g", static_cast<double>(model_.speed_pct) / 100.0);
+  for (int i = 1; i >= 0; --i) {   // [+], a felirat, [−]
+    if (i == 0) {
+      x -= tw(F, sp);
+      stext(F, x, ty + (th - line_h(F)) / 2, sp, model_.speed_locked ? Col{150, 150, 150} : Col{200, 220, 255});
+      x -= 6;
+    }
+    const Rect r{static_cast<int>(x - bs), static_cast<int>(ty + 3), static_cast<int>(bs), static_cast<int>(bs)};
+    model_.speed_btn[static_cast<size_t>(i)] = r;
+    const bool hover = r.contains(mx_, my_) && !model_.speed_locked;
+    rect(r, hover ? Col{70, 60, 36} : Col{20, 18, 14});
+    outline(r, {160, 136, 80});
+    const std::string lab = i == 1 ? "+" : "−";
+    stext(F, static_cast<float>(r.x) + (bs - tw(F, lab)) / 2, static_cast<float>(r.y) + (bs - line_h(F)) / 2, lab,
+          model_.speed_locked ? Col{120, 120, 120} : Col{255, 230, 160});
+    x = static_cast<float>(r.x) - 6;
+  }
+  x -= tw(F, t) + 4;
+  stext(F, x, ty + (th - line_h(F)) / 2, t, {240, 235, 200});
+  std::string sub = f.fps >= 0 ? std::to_string(f.fps) + " fps" : std::string();
+  sub += (sub.empty() ? "" : "  •  ") + model_.tr("help.hint");
+  const int FT = L.font.tiny;
+  stext(FT, static_cast<float>(f.w - L.pad * 2) - tw(FT, sub), ty + th + 2, sub, {170, 170, 160});
+}
+
+void Hud::draw_help(const HudFrame& f) {
+  // a régi `draw_help`: a felső sáv alatt, középen, legfeljebb 1000 (·s) széles sötét panel arany kerettel; cím, sorok
+  const HudLayout& L = model_.layout();
+  const float s = static_cast<float>(L.s);
+  const float pad = 16 * s;
+  const float w = std::min(static_cast<float>(f.w) - 40, 1000 * s);
+  const float y = static_cast<float>(L.topbar.bottom()) + 10 * s;
+  const float avail = static_cast<float>(L.hud.y) - y - 10 * s;
+  const int FT = L.font.name, FB = L.font.small;
+  std::vector<std::string> lines;
+  for (int i = 1; i <= 16; ++i) {
+    const std::string key = "help." + std::to_string(i);
+    const std::string v = model_.tr(key);
+    if (v.empty() || v == "hud." + key) break;
+    lines.push_back(v);
+  }
+  const float h = std::min(avail, 2 * pad + line_h(FT) + 6 * s + static_cast<float>(lines.size()) * line_h(FB));
+  const float x = static_cast<float>(f.w) / 2 - w / 2;
+  rect(x, y, w, h, {8, 10, 12}, 235);
+  outline(Rect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h)}, {170, 140, 70}, 2);
+  stext(FT, x + pad, y + pad, model_.tr("help.title"), {255, 230, 150});
+  float yy = y + pad + line_h(FT) + 6 * s;
+  for (const auto& ln : lines) {
+    if (yy + line_h(FB) > y + h - pad / 2) break;
+    const bool indent = !ln.empty() && ln[0] == ' ';
+    stext(FB, x + pad + (indent ? 20 * s : 0), yy, indent ? ln.substr(ln.find_first_not_of(' ')) : ln, {220, 220, 210});
+    yy += line_h(FB);
+  }
 }
 
 void Hud::draw_notice(const HudFrame& f) {

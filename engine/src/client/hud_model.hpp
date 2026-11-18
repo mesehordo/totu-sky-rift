@@ -128,6 +128,13 @@ class HudModel {
   // biztosan ismert okok: hiányzó nyersanyag, betelt létszám
   std::string notice;
   double notice_t = -99;
+  // a régi jobb felső sarok (`hud.py` `draw_clock`): óra, sebesség −/+ gombbal, alatta „fps • F1: súgó”
+  int speed_pct = 100;          // a kijelzett sebesség (a futtatótól)
+  bool speed_locked = false;    // hálózati játék: nem állítható
+  int speed_change = 0;         // a kattintás/billentyű kérése (−1/+1); a főciklus alkalmazza és nullázza
+  std::array<Rect, 2> speed_btn{};   // [0]: −, [1]: + (a rajzolás tölti ki)
+  bool help_open = false;       // F1: a súgó panel
+  static int next_speed(int pct, int dir);   // a régi lépcsők: 50, 75, 100, 125, 150, 200, 300
   // a kijelzett sor: bal oldalt, az alsó sáv fölött (a régi játék `draw_hud` üzenetsora); a legutóbbi 6, időbélyeggel
   std::vector<std::pair<std::string, double>> notice_log;
   void post_notice(std::string text);

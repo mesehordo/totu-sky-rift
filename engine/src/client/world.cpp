@@ -58,7 +58,7 @@ void World::update() {
 
 float World::live_alpha() const {
   if (!cur_) return 0;
-  return static_cast<float>(std::clamp((runner_.now() - cur_->published) / SimRunner::kTickSeconds, 0.0, 1.0));
+  return static_cast<float>(std::clamp((runner_.now() - cur_->published) / runner_.tick_seconds(), 0.0, 1.0));
 }
 
 const std::vector<uint8_t>& World::fog(bool* changed) {

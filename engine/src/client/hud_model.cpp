@@ -1164,8 +1164,18 @@ void HudModel::key_up(int key) {
   held_.erase(key);
 }
 
+int HudModel::next_speed(int pct, int dir) {
+  static constexpr int kSteps[] = {50, 75, 100, 125, 150, 200, 300};
+  int best = 0;
+  for (int i = 0; i < 7; ++i) {
+    if (std::abs(kSteps[i] - pct) < std::abs(kSteps[best] - pct)) best = i;
+  }
+  return kSteps[std::clamp(best + dir, 0, 6)];
+}
+
 bool HudModel::over_hud(float x, float y) const {
   if (L_.hud.contains(x, y) || L_.topbar.contains(x, y) || L_.idle.contains(x, y)) return true;
+  if (speed_btn[0].contains(x, y) || speed_btn[1].contains(x, y)) return true;
   if (has_faith() && L_.faith.contains(x, y)) return true;
   return false;
 }
@@ -1214,6 +1224,12 @@ bool HudModel::click(float x, float y, int button) {
   if (button == 1 && L_.gear.contains(x, y)) {
     menu_requested = true;
     return true;
+  }
+  for (int i = 0; i < 2; ++i) {   // sebesség −/+
+    if (speed_btn[static_cast<size_t>(i)].contains(x, y)) {
+      if (button == 1 && !speed_locked) speed_change = i == 0 ? -1 : 1;
+      return true;
+    }
   }
   if (button == 1 && L_.allies.contains(x, y)) {
     show_allies = !show_allies;
