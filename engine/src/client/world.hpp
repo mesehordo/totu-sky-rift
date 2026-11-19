@@ -67,6 +67,17 @@ class World {
   const std::vector<sim::EntityId>& selection() const { return selected_; }
   // a kijelölés pecsétjei (a régi `sel_sigil`): saját (zöld), idegen (piros); a képek `sigil_base` gyűrűszélességgel
   // készültek, rajzoláskor a figura méretére nagyítva
+  // a gyülekezőpont képei (a régi szerint): nyíl (16 irány rétegenként), kis pecsét (fehér), rúd, zászló és árnyék
+  // (8 lengésfázis rétegenként); a zászló, a nyíl és a pecsét a csapatszínnel árnyalva
+  struct RallyArt {
+    const render::Texture *arrows = nullptr, *sigil = nullptr, *pole = nullptr, *cloth = nullptr, *shadow = nullptr;
+  };
+  void set_rally_art(const RallyArt& a) { rally_ = a; }
+  // a kijelölt saját épület gyülekezőpontja (jobb kattintás, ha csak épület van kijelölve – a régi szerint); igaz: kiadva
+  bool order_rally(float wx, float wy);
+  // a talajra (az egységek alá): a nyíl-ösvény és a pecsét; az egységek fölé: a zászló
+  void draw_rally_ground(render::SpriteBatch& batch, double time) const;
+  void draw_rally_flags(render::SpriteBatch& batch, double time) const;
   void set_sigils(const render::Texture* own, const render::Texture* other, float sigil_base) {
     sigil_own_ = own;
     sigil_other_ = other;
@@ -136,6 +147,8 @@ class World {
   const render::Texture* sigil_own_ = nullptr;
   const render::Texture* sigil_other_ = nullptr;
   float sigil_base_ = 48;
+  RallyArt rally_;
+  std::array<uint8_t, 3> team_color(uint8_t owner) const;
   sim::EntityId selected_building_ = 0;
   std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai
   bool sheets_ready_ = false;

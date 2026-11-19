@@ -574,7 +574,7 @@ int main(int argc, char** argv) {
     }
     render::TerrainView terrain;
     render::Atlas world_atlas;
-    render::Texture fallback, white, sigil_own, sigil_other;
+    render::Texture fallback, white, sigil_own, sigil_other, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
     render::Lighting lighting;
@@ -818,6 +818,29 @@ int main(int argc, char** argv) {
             sigil_own = dev.create_array_from(own, false);
             sigil_other = dev.create_array_from(other, false);
             world.set_sigils(&sigil_own, &sigil_other, 48.0f);
+            // a gyülekezőpont képei (a régi szerint): 16 irányú nyíl, kis pecsét, rúd, 8 fázisú zászló és árnyék
+            auto layers = [&](int n, int lw, int lh, auto make) {
+              render::Texture t = dev.create_array(lw, lh, n, false);
+              for (int i = 0; i < n; ++i) {
+                render::Image im = make(i);
+                render::premultiply(im);
+                dev.upload_layer(t, i, im);
+              }
+              dev.finish_array(t);
+              return t;
+            };
+            rally_arrows = layers(16, 16, 16, [](int i) { return client::rally_arrow_image(static_cast<float>(i) * 6.2831853f / 16.0f); });
+            rally_cloth = layers(8, 22, 32, [](int i) { return client::rally_cloth_image(i); });
+            rally_shadow = layers(8, 40, 20, [](int i) { return client::rally_shadow_image(i); });
+            {
+              auto pole = client::rally_pole_image();
+              render::premultiply(pole);
+              rally_pole = dev.create_array_from(pole, false);
+              auto sg = client::sigil_image({255, 255, 255}, 26.0f, false);
+              render::premultiply(sg);
+              rally_sigil = dev.create_array_from(sg, false);
+            }
+            world.set_rally_art({&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow});
           }
           render::Image px;
           px.width = px.height = 1;
@@ -1262,7 +1285,8 @@ int main(int argc, char** argv) {
         }
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_RIGHT) {
           const float wx = cam.x + ev.button.x / cam.zoom, wy = cam.y + ev.button.y / cam.zoom;
-          if (const sim::EntityId enemy = world.enemy_at(wx, wy)) world.order_attack(enemy);   // ellenségre: támadás
+          if (world.order_rally(wx, wy)) {   // csak épület kijelölve: a gyülekezőpont (a régi szerint)
+          } else if (const sim::EntityId enemy = world.enemy_at(wx, wy)) world.order_attack(enemy);   // ellenségre: támadás
           else if (const sim::EntityId gb = world.garrison_at(wx, wy)) world.order_garrison(gb);   // saját helyőrségbe
           else {   // mozgás: a felengedéskor (húzva vonalra, különben alakzatban)
             line_drag = true;
@@ -1455,7 +1479,9 @@ int main(int argc, char** argv) {
         batch.end();
         lighting.apply_shadows();
         batch.begin(proj);
+        world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
+        world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         world.draw_bars(batch, white, alpha);
         {
           float hmx = 0, hmy = 0;
@@ -1686,6 +1712,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow}) dev.destroy(*t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {

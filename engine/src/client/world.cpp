@@ -201,6 +201,20 @@ bool World::selection_center(float& wx, float& wy) const {
   return true;
 }
 
+bool World::order_rally(float wx, float wy) {
+  if (!selected_.empty() || !selected_building_ || !cur_) return false;
+  const SnapUnit* b = cur_->find(selected_building_);
+  const sim::Rules* r = session_.rules();
+  if (!b || b->owner != session_.local_player() || !r || b->def >= r->defs.size() || r->defs[b->def].produces.empty()) return false;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Rally;
+  c.units = {selected_building_};
+  c.x = to_fixed(wx);
+  c.y = to_fixed(wy);
+  post(c);
+  return true;
+}
+
 void World::order_move(float wx, float wy, sim::Formation f) {
   if (selected_.empty()) return;
   sim::Command c;
@@ -314,6 +328,83 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
     fg.tint[1] = static_cast<uint8_t>(f > 0.5f ? 210.0f : f * 2.0f * 210.0f);
     fg.tint[2] = 40;
     batch.draw(white, nullptr, fg);
+  }
+}
+
+std::array<uint8_t, 3> World::team_color(uint8_t owner) const {
+  const sim::Rules* r = session_.rules();
+  const content::Value* pc = r && r->game_raw ? r->game_raw->find("player_colors") : nullptr;
+  if (owner == 0 || !pc || !pc->is_array() || pc->items().size() < owner) return {200, 200, 200};
+  const content::Value& c = pc->items()[owner - 1u];
+  std::array<uint8_t, 3> out{200, 200, 200};
+  if (c.is_array() && c.items().size() >= 3) {
+    for (size_t i = 0; i < 3; ++i) out[i] = static_cast<uint8_t>(std::clamp<long long>(c.items()[i].as_int().value_or(200), 0, 255));
+  }
+  return out;
+}
+
+void World::draw_rally_ground(render::SpriteBatch& batch, double time) const {
+  if (!cur_ || !rally_.arrows || !rally_.sigil) return;
+  const uint8_t me = session_.local_player();
+  const std::array<uint8_t, 3> col = team_color(me);
+  const std::array<uint8_t, 3> light = {static_cast<uint8_t>(std::min(255, col[0] + 70)), static_cast<uint8_t>(std::min(255, col[1] + 70)),
+                                        static_cast<uint8_t>(std::min(255, col[2] + 70))};
+  for (const sim::EntityId e : {selected_building_}) {
+    const SnapUnit* b = cur_->find(e);
+    if (!b || !b->has_rally || b->owner != me) continue;
+    const float x0 = (static_cast<float>(b->tx) + static_cast<float>(b->w) / 2) * kTilePx;
+    const float y0 = (static_cast<float>(b->ty) + static_cast<float>(b->h) / 2) * kTilePx;
+    const float rx = b->rally_x, ry = b->rally_y;
+    const float dx = rx - x0, dy = ry - y0, d = std::sqrt(dx * dx + dy * dy);
+    if (d <= 14) continue;
+    // menetelő nyilak (15 képpontonként, 18 képpont/mp), a régi `_draw_marching_arrows`
+    const float ux = dx / d, uy = dy / d;
+    const int dir = static_cast<int>(std::lround(std::atan2(uy, ux) / 6.2831853 * 16.0)) & 15;
+    for (float k = std::fmod(static_cast<float>(time) * 18.0f, 15.0f); k < d - 14; k += 15.0f) {
+      render::SpriteInstance a;
+      a.x = x0 + ux * k - 8;
+      a.y = y0 + uy * k - 8;
+      a.w = a.h = 16;
+      a.layer[0] = static_cast<uint8_t>(dir);
+      a.tint[0] = light[0]; a.tint[1] = light[1]; a.tint[2] = light[2];
+      batch.draw(*rally_.arrows, nullptr, a);
+    }
+    render::SpriteInstance s;   // kis pecsét a célnál (26 képpontos gyűrű)
+    s.w = 38;
+    s.h = 27;
+    s.x = rx - s.w / 2;
+    s.y = ry + 2 - s.h / 2;
+    s.tint[0] = col[0]; s.tint[1] = col[1]; s.tint[2] = col[2];
+    batch.draw(*rally_.sigil, nullptr, s);
+    if (rally_.shadow) {   // a zászló vetett árnyéka (a talajon)
+      render::SpriteInstance sh;
+      sh.x = rx - 3;
+      sh.y = ry - 3;
+      sh.w = 40;
+      sh.h = 20;
+      sh.layer[0] = static_cast<uint8_t>(static_cast<int>(time * 5.0 / 6.2831853 * 8.0) & 7);
+      batch.draw(*rally_.shadow, nullptr, sh);
+    }
+  }
+}
+
+void World::draw_rally_flags(render::SpriteBatch& batch, double time) const {
+  if (!cur_ || !rally_.pole || !rally_.cloth) return;
+  const uint8_t me = session_.local_player();
+  const std::array<uint8_t, 3> col = team_color(me);
+  for (const sim::EntityId e : {selected_building_}) {
+    const SnapUnit* b = cur_->find(e);
+    if (!b || !b->has_rally || b->owner != me) continue;
+    render::SpriteInstance p;
+    p.x = b->rally_x - 3;
+    p.y = b->rally_y - 30;
+    p.w = 22;
+    p.h = 32;
+    batch.draw(*rally_.pole, nullptr, p);
+    render::SpriteInstance c = p;   // a zászló a csapatszínben, lengve
+    c.layer[0] = static_cast<uint8_t>(static_cast<int>(time * 5.0 / 6.2831853 * 8.0) & 7);
+    c.tint[0] = col[0]; c.tint[1] = col[1]; c.tint[2] = col[2];
+    batch.draw(*rally_.cloth, nullptr, c);
   }
 }
 

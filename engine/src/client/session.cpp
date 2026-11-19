@@ -414,6 +414,11 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
             if (q.research) u.queue_research = static_cast<uint8_t>(u.queue_research | (1u << u.queue_n));
             ++u.queue_n;
           }
+          if (pr->has_rally) {
+            u.has_rally = true;
+            u.rally_x = to_px(pr->rx);
+            u.rally_y = to_px(pr->ry);
+          }
           if (!pr->queue.empty()) u.queue_progress = static_cast<uint16_t>(pr->queue[0].progress * 1000 / std::max(1, pr->queue[0].time));
         }
         hud_fields(e, u);

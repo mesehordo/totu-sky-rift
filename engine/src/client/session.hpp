@@ -45,6 +45,8 @@ struct SnapUnit {
   float sx = 0, sy = 0;                 // lövedék: a kiindulás (az ívhez és az irányhoz)
   float lift = 0;                       // lövedék: az ív magassága most (képpont)
   uint8_t garrison = 0, slots = 0;      // épület: a helyőrség (bent lévők, helyek; D39)
+  bool has_rally = false;               // épület: a gyülekezőpont (világ-képpont)
+  float rally_x = 0, rally_y = 0;
   uint8_t queue_n = 0;                  // épület: a termelési sor (legfeljebb 5; egység: sablon, kutatás: sorszám)
   std::array<uint16_t, 5> queue_def{};
   uint8_t queue_research = 0;           // bitmaszk: az elem kutatás

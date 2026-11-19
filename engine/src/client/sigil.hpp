@@ -14,4 +14,11 @@ namespace totu::client {
 // `w`: a gyűrű szélessége képpontban; a kép (w + 12) × (0,6 w + 12)
 render::Image sigil_image(std::array<uint8_t, 3> color, float w, bool inward);
 
+// A gyülekezőpont képei (a régi `draw_rally_flag`, `draw_rally_flag_shadow`, `_draw_marching_arrows`). A színezhető
+// részek fehérek (a rajzoló a csapatszínnel árnyalja), a többi a saját színében.
+render::Image rally_arrow_image(float angle);    // 16 × 16, középre: menetelő nyíl az `angle` irányba (fehér)
+render::Image rally_pole_image();                // 22 × 32: a rúd és a gomb (a talppont: 3, 30)
+render::Image rally_cloth_image(int phase);      // 22 × 32: a fecskefarkú zászló (fehér, sötét kontúr), 8 fázis
+render::Image rally_shadow_image(int phase);     // 40 × 20: a vetett árnyék (a rúd töve: 3, 3), 8 fázis
+
 }  // namespace totu::client

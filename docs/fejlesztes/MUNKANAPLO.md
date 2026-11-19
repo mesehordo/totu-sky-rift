@@ -945,3 +945,7 @@ Eddig a pálya sprite-jai csak `--atlas` kapcsolóval jelentek meg; a menüből 
 ## 2026-11-19 – Összevetés a régi játékkal; 1. tétel: a kijelölés pecsétje
 
 A régi és az új kinézet 13 eltérése: `docs/quality/REGI_JATEK_OSSZEVETES.md` (tételenként döntünk). 1. tétel átvéve: a kijelölt egység alatt a régi pecsét (lágy belső fény, sötét kontúrú kettős gyűrű, négy nyílhegy), saját zöld, idegen piros, a figura méretével (max(24, 2,5 × sugár)), 82–100 %-os pulzálással. A képet a kliens egyszer rajzolja meg háromszoros felbontásban (`client/sigil`), a befelé mutató változat a mozgáscélhoz kész. Próba: „kijelolesi pecset”.
+
+## 2026-11-19 – 2. tétel: a gyülekezőpont a régi szerint
+
+A tulajdonos döntése: a 12. kivételével minden tételnél a régi játék megoldása jön át, kérdés nélkül. Gyülekezőpont: a kijelölt saját termelő épületnél a régi fecskefarkú zászló a csapatszínben, 8 fázisban lengve, vetett árnyékkal; az épülettől menetelő nyilak (16 irány), a célnál kis pecsét. Hiba javítva: a kliens eddig nem tudta beállítani a gyülekezőpontot – most jobb kattintással, ha csak épület van kijelölve (a régi szerint). A pillanatkép viszi a pontot. Kép: `docs/quality/kepek/utan_gyulekezopont.jpg`.

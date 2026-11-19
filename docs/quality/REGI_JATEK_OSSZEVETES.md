@@ -6,7 +6,7 @@ percben). A tételekről a tulajdonos **egyesével** dönt: átvesszük, módos�
 | # | Tétel | Régi játék | Új motor most | Döntés |
 |---|---|---|---|---|
 | 1 | Kijelölés jele | „pecsét” a figura alatt: lágy belső fény, sötét kontúrú kettős gyűrű, négy nyílhegy a tengelyeken, a csapat színében, a figura méretéhez igazítva (`sel_sigil`) | lapos zöld folt (24 × 10 képpont), minden egységnél ugyanakkora | **átvéve** (2026-11-19): a régi pecsét, saját zöld, idegen piros, a figura méretével, pulzálva (`client/sigil`; kép: `kepek/utan_kijeloles_pecset.jpg`). A szövetséges kék még nincs (a pillanatkép nem tudja a szövetséget) |
-| 2 | Gyülekezőpont | lengő, fecskefarkú zászló a csapat színében, saját árnyékkal; az épülettől menetelő nyilak vezetnek oda, a végén kis pecsét (`draw_rally_flag`, `draw_rally_path`) | a pont megvan (parancs), de a pályán nem látszik | – |
+| 2 | Gyülekezőpont | lengő, fecskefarkú zászló a csapat színében, saját árnyékkal; az épülettől menetelő nyilak vezetnek oda, a végén kis pecsét (`draw_rally_flag`, `draw_rally_path`) | a pont megvan (parancs), de a pályán nem látszik | **átvéve**: a kijelölt saját épületnél zászló (csapatszín, lengés, árnyék), menetelő nyilak, kis pecsét; jobb kattintással állítható (eddig a kliens nem adta ki a parancsot). Kép: `kepek/utan_gyulekezopont.jpg` |
 | 3 | Mozgáscél jelzése | a kijelölt csoporttól a célig menetelő zöld nyilak, a célnál befelé mutató pecsét (`draw_move_indicator`) | nincs | – |
 | 4 | Életerő-csík | 4 px; zöld > 60 % > sárga > 30 % > piros; fölötte kék pajzscsík, alatta lila energiacsík (saját egységnél), idézett lénynél „N mp” visszaszámlálás; az egér alatti egységnél is | 3 px, folytonos zöld → sárga → piros; csak kijelölve vagy sérülten; pajzs, energia, visszaszámlálás nincs | – |
 | 5 | Csapatszín az épületeken | a lobogók, vásznak a játékos színében | a főépület vászna a kép eredeti (piros) színében | – |
@@ -18,5 +18,7 @@ percben). A tételekről a tulajdonos **egyesével** dönt: átvesszük, módos�
 | 11 | Holttestek, tárgyak | holttestek (lélekidézőknél), a földön heverő tárgyak | a szimulációban megvannak, a pályán nem látszanak | – |
 | 12 | Építés | lerakási rács, tervezett (sorba állított) épületek, munkahelyek, alapozás, tavacska | kísértetkép zöld/piros színnel | – |
 | 13 | Minimap | terepkép, köd, pöttyök, kamerakeret | megvan; a két kép között nincs lényeges eltérés | – |
+
+**Döntés (a tulajdonos, 2026-11-19):** a 12. tétel kivételével mindenhol a régi játék megoldása jön át, egyenkénti kérdés nélkül; a 12.-nél (építés) a különbséget képen kell megmutatni.
 
 A régi játék szabálya csak akkor nyer, ha nem ütközik a tanulmánnyal; ütközésnél kérdés.
