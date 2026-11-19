@@ -121,6 +121,15 @@ class World {
   void draw_hero_badges(render::SpriteBatch& batch, float alpha, double time) const;    // a figurák fölött
   void draw_carry(render::SpriteBatch& batch, float alpha) const;
   void draw_banners(render::SpriteBatch& batch, double time) const;
+  // D49: az épületek animációs rétege (az épület képe fölött, külön). A fényezés előtt: a füst (kémény, égő épület) és
+  // az atlaszlapos elemek; a fényezés után: a lángok (éjjel is világítanak). A sérült épület az életerő szerint egyre
+  // jobban ég: 75% alatt egy láng, 50% alatt három és füst, 25% alatt öt nagyobb láng és sűrű füst.
+  struct FireArt {
+    const render::Texture *flame = nullptr, *puff = nullptr, *glow = nullptr;
+  };
+  void set_fire_art(FireArt a) { fire_ = a; }
+  void draw_building_fx(render::SpriteBatch& batch, render::Atlas* atlas, double time);
+  void draw_building_flames(render::SpriteBatch& batch, double time) const;
   // a kijelölt saját épület gyülekezőpontja (jobb kattintás, ha csak épület van kijelölve – a régi szerint); igaz: kiadva
   bool order_rally(float wx, float wy);
   // a talajra (az egységek alá): a nyíl-ösvény és a pecsét; az egységek fölé: a zászló
@@ -201,6 +210,7 @@ class World {
   float sigil_base_ = 48;
   RallyArt rally_;
   BannerArt banner_;
+  FireArt fire_;
   const render::Texture* sack_ = nullptr;
   std::map<std::string, const render::Texture*> item_icons_;
   const render::Texture* item_glow_ = nullptr;

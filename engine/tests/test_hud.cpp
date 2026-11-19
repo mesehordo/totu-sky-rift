@@ -842,3 +842,18 @@ TEST_CASE("HUD lobogok (D51): minden fonepnek sajat alak, cimer nelkul; a kisnep
     render::save_png(out, sheet);
   }
 }
+
+TEST_CASE("D49 epuletanimacio: egetesi fokozatok az eleteroig, langnyelv es fustgomoly kepe") {
+  CHECK(client::burn_stage(100, 100) == 0 && client::burn_stage(80, 100) == 0);
+  CHECK(client::burn_stage(74, 100) == 1 && client::burn_stage(50, 100) == 1);
+  CHECK(client::burn_stage(49, 100) == 2 && client::burn_stage(25, 100) == 2);
+  CHECK(client::burn_stage(24, 100) == 3 && client::burn_stage(1, 100) == 3);
+  CHECK(client::burn_stage(0, 100) == 0 && client::burn_stage(5, 0) == 0);
+  // a lángnyelv: alul és fent átlátszó (nincs egyenes vágás), középen erős; a képkockák különböznek
+  auto f0 = client::flame_image(0), f3 = client::flame_image(3);
+  CHECK(f0.width == 16 && f0.height == 24);
+  CHECK(f0.at(8, 23)[3] < 60 && f0.at(8, 0)[3] < 60 && f0.at(8, 16)[3] > 150);
+  CHECK(f0.rgba != f3.rgba);
+  auto p = client::smoke_puff_image();
+  CHECK(p.at(12, 12)[3] > 200 && p.at(0, 0)[3] == 0);
+}

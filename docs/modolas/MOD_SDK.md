@@ -109,6 +109,29 @@ Saját grafikánál a képlap a többi mellé kerül (`assets/sprites/units/<id>
 indításkor magától újraépíti az atlaszt. **Csapatszín:** az egységképen a **tiszta kék** (#0000FF árnyalatai)
 helyére kerül a játékos színe (D52) – ezt a színt másra ne használd; az épületek csapatjele a lobogó (D51).
 
+### Az épület animációs rétege (D49)
+
+A kész épület képe állókép; az animációk külön rétegen, a kép fölött futnak. A helyük csempében értendő, a lábnyom
+bal felső sarkától (lehet negatív is, pl. a tető fölött):
+
+```json
+"Visual": {
+  "overlays": [
+    {"effect": "smoke", "x": 1.6, "y": 0.4},
+    {"effect": "fire", "x": 2.1, "y": 1.8, "scale": 0.6},
+    {"effect": "sajat_zaszlo_anim", "x": 0.5, "y": 0.2}
+  ],
+  "fire": [[1.0, 1.5], [2.2, 1.9]]
+}
+```
+
+- **`effect`:**
+  - `smoke`: kéményfüst;
+  - `fire`: állandó láng (pl. kohó);
+  - bármi más: egy atlaszlap azonosítója, amelynek az `idle` (vagy az első) animációja ismétlődik.
+- **`fire`:** a sérült épület lángjainak helyei. Az épület 75% életerő alatt kezd égni, 50% alatt füstöl, 25% alatt
+  erősen ég. Ha a `fire` hiányzik, a lángok a lábnyom alsó részén oszlanak el.
+
 ### Szövegek
 
 A mod `locale/hu.po` és `locale/en.po` fájljai kiegészítik az alap fordítását (`msgctxt` a kulcs, `msgid` a

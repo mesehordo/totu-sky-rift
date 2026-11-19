@@ -187,3 +187,37 @@ TEST_CASE("M13 gyozelmi szkript: a Victory tabla dont, determinisztikus, a vissz
   CHECK(vh && vh->errors() == 0 && vh->victory_status().rfind("Kincs:", 0) == 0 && m2->sim->winner() == 0 && m2->sim->conquest());
   if (vh && vh->errors()) std::printf("  hiba: %s\n", vh->messages().back().c_str());
 }
+
+TEST_CASE("D49 Visual: az epulet animacios retege es a langok helyei a sablonbol (modbol foltkent is)") {
+  const auto root = std::filesystem::path(TOTU_CONTENT_DIR);
+  const auto tmp = std::filesystem::temp_directory_path() / "totu_visual_mod";
+  std::filesystem::remove_all(tmp);
+  std::filesystem::create_directories(tmp / "vis" / "templates" / "buildings");
+  { std::ofstream(tmp / "vis" / "mod.json", std::ios::binary) << R"({"id": "vis", "depends": ["totu"]})"; }
+  { std::ofstream(tmp / "vis" / "templates" / "buildings" / "vis.json", std::ios::binary)
+      << R"({"urs_harcosok_haza": {"Visual": {"overlays": [{"effect": "smoke", "x": 1.5, "y": -0.25}, {"effect": "fire", "x": 2, "y": 1, "scale": 0.5}], "fire": [[1, 1.5], [2.25, 2]]}}})"; }
+  const auto order = content::select_mods(content::discover_mods(root, {tmp}), {"vis"});
+  CHECK(order.errors.empty());
+  content::Vfs vfs;
+  content::add_mod_layers(vfs, root, order.order);
+  content::ContentSet set;
+  const auto rep = content::ContentLoader(vfs, root / "schema").load(set);
+  for (const auto& e : rep.errors) std::printf("  hiba: %s\n", e.c_str());
+  CHECK(rep.errors.empty());
+  std::vector<std::string> errors;
+  const auto game = content::parse(testing::read_file(root / "base" / "game.json"));
+  auto rules = sim::Rules::load(*game, set, errors);
+  CHECK(rules.has_value());
+  if (rules) {
+    const auto& d = rules->defs[rules->def("urs_harcosok_haza")];
+    CHECK(d.overlays.size() == 2 && d.overlays[0].effect == "smoke" && d.overlays[0].y == core::Fixed::from_ratio(-1, 4));
+    CHECK(d.overlays[1].scale == core::Fixed::from_ratio(1, 2) && d.overlays[0].scale == core::Fixed::from_int(1));
+    CHECK(d.fire_points.size() == 2 && d.fire_points[1][0] == core::Fixed::from_ratio(9, 4));
+  }
+  // hibás mező: a séma elutasítja
+  { std::ofstream(tmp / "vis" / "templates" / "buildings" / "vis.json", std::ios::binary)
+      << R"({"urs_harcosok_haza": {"Visual": {"overlays": [{"effect": "smoke", "x": 1}]}}})"; }
+  content::ContentSet bad;
+  CHECK(!content::ContentLoader(vfs, root / "schema").load(bad).errors.empty());
+  std::filesystem::remove_all(tmp);
+}

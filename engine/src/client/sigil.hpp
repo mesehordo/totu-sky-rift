@@ -45,6 +45,13 @@ render::Image objective_beacon_image();
 // légköri részecskék (a régi `scenery.Ambient`): additív ragyogás (előszorzott szín, nulla alfa – a rajzoló nem
 // szorozhatja elő), 12 × 12; falevél 8 elforgatásban (fehér – a levél színe árnyalja), 8 × 8
 render::Image ambient_glow_image();
+// D49: a lángoló épület és a kéményfüst – lángnyelv (16×24, `frame` 0–7: lobogás) és füstgomoly (24×24, fehér; a
+// rajzoló színezi)
+constexpr int kFlameFrames = 8;
+render::Image flame_image(int frame);
+render::Image smoke_puff_image();
+// az égés fokozata az életerő szerint: 0 ép (75% fölött), 1: <75%, 2: <50%, 3: <25%
+int burn_stage(int32_t hp, int32_t max_hp);
 render::Image ambient_leaf_image(int rot);
 int banner_style(const std::string& faction);
 render::Image banner_pole_image(int style);

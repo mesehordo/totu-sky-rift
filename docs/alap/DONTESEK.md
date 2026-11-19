@@ -485,6 +485,23 @@ A tulajdonos kérése:
    fogy az életereje** (fokozatok az életerő-arány szerint; a WC3 és az AoE2 mintájára). A lángok is a fenti
    animációs rétegen futnak. Csak megjelenítés: a szimulációt és az állapothash-t nem érinti.
 
+**Megvalósítva (2026-11-19):**
+- a kész épület állókép (a képlap `idle` első kockája);
+- a sablon `Visual` része adja az animációs réteget:
+  - `overlays`: `smoke` (kéményfüst), `fire` (állandó láng) vagy egy atlaszlap animációja; a hely csempében, a
+    lábnyom bal felső sarkától;
+  - `fire`: a lángok helyei sérüléskor; ha nincs megadva, a lábnyom alsó részén elosztva;
+- az égés fokozatai:
+
+  | Életerő | Lángok | Füst |
+  |---|---|---|
+  | 75% alatt | 1 | – |
+  | 50% alatt | 3 | van |
+  | 25% alatt | 5, nagyobbak | sűrű |
+
+- a lángok a fényezés után rajzolódnak, ezért éjjel is világítanak;
+- csak a látott épület ég.
+
 ### D50 – A modkezelő a 0 A.D. mintájára · ELDÖNTVE (2026-11-19, tervezési elv)
 
 A játék modkezelője (M13) a **0 A.D. modkezelőjéhez hasonló**: két lista – elérhető és engedélyezett modok –, a mod

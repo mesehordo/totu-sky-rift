@@ -906,6 +906,156 @@ void World::draw_banners(render::SpriteBatch& batch, double time) const {
   }
 }
 
+namespace {
+
+// a láng helyei csempében a lábnyom bal felső sarkától: a sablon `Visual.fire` pontjai, különben az épület
+// azonosítójából számolt, a lábnyomon (és fölötte, a tetőn) elosztott pontok
+void fire_spots(const SnapUnit& u, const sim::EntityDef* d, int n, std::vector<std::array<float, 3>>& out) {
+  out.clear();
+  for (int k = 0; k < n; ++k) {
+    float fx, fy;
+    if (d && !d->fire_points.empty()) {
+      const auto& p = d->fire_points[static_cast<size_t>(k) % d->fire_points.size()];
+      fx = static_cast<float>(p[0].raw()) / 65536.0f;
+      fy = static_cast<float>(p[1].raw()) / 65536.0f;
+      if (static_cast<size_t>(k) >= d->fire_points.size()) fx += (k & 1 ? 0.3f : -0.3f);   // több láng, mint pont: mellé
+    } else {
+      uint32_t h = static_cast<uint32_t>(u.id) * 2654435761u + static_cast<uint32_t>(k) * 40503u;
+      h ^= h >> 15;
+      h *= 2246822519u;
+      h ^= h >> 13;
+      const float a = static_cast<float>(h & 0xffff) / 65535.0f, b = static_cast<float>(h >> 16) / 65535.0f;
+      fx = static_cast<float>(u.w) * (0.18f + 0.64f * a);
+      fy = static_cast<float>(u.h) * (0.42f + 0.4f * b);   // a kép a lábnyom alsó részén áll
+    }
+    out.push_back({fx, fy, 0.7f + 0.2f * static_cast<float>((k * 7) % 3) / 2.0f});
+  }
+}
+
+bool fx_visible(const Snapshot& s, const SnapUnit& u, int mw) {
+  if (!s.fog) return true;
+  const int cx = u.tx + u.w / 2, cy = u.ty + u.h / 2;
+  const size_t k = static_cast<size_t>(cy) * static_cast<size_t>(mw) + static_cast<size_t>(cx);
+  return cx >= 0 && cy >= 0 && k < s.fog->size() && (*s.fog)[k] == 255;
+}
+
+constexpr int kFlamesPerStage[4] = {0, 1, 3, 5};
+
+}  // namespace
+
+void World::draw_building_fx(render::SpriteBatch& batch, render::Atlas* atlas, double time) {
+  if (!cur_) return;
+  const sim::Rules* r = session_.rules();
+  const float t = static_cast<float>(std::fmod(time, 10000.0));
+  const int mw = map().width();
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kBuilding || !u.complete || u.hp <= 0 || !fx_visible(*cur_, u, mw)) continue;
+    const sim::EntityDef* d = r && u.def < r->defs.size() ? &r->defs[u.def] : nullptr;
+    const float ox = static_cast<float>(u.tx) * kTilePx, oy = static_cast<float>(u.ty) * kTilePx;
+    if (d) {   // a sablon animációs rétege: kéményfüst és atlaszlapos elemek
+      for (size_t i = 0; i < d->overlays.size(); ++i) {
+        const auto& o = d->overlays[i];
+        const float px = ox + static_cast<float>(o.x.raw()) / 65536.0f * kTilePx, py = oy + static_cast<float>(o.y.raw()) / 65536.0f * kTilePx;
+        const float sc = static_cast<float>(o.scale.raw()) / 65536.0f;
+        if (o.effect != "smoke" && o.effect != "fire" && atlas) {   // egy atlaszlap animációja (pl. modból)
+          const int si = sheet_by_id(atlas, o.effect);
+          if (si < 0) continue;
+          const auto& s = atlas->data().sheets[static_cast<size_t>(si)];
+          int col = 0;
+          if (!s.anims.empty()) {
+            const auto a = s.anims.find("idle");
+            const auto& an = a != s.anims.end() ? a->second : s.anims.begin()->second;
+            col = an.start + static_cast<int>(t * std::max(1.0f, static_cast<float>(an.fps))) % std::max(1, an.frames);
+          }
+          const uint8_t no_team[4] = {0, 0, 0, 0};
+          atlas->draw(batch, s, 0, col, px, py, sc / s.scale, no_team, nullptr, 0.0f);
+        }
+      }
+    }
+  }
+}
+
+void World::draw_building_flames(render::SpriteBatch& batch, double time) const {
+  if (!cur_ || !fire_.flame) return;
+  const sim::Rules* r = session_.rules();
+  const float t = static_cast<float>(std::fmod(time, 10000.0));
+  const int mw = map().width();
+  const float dim = 1.0f - 0.55f * static_cast<float>(std::clamp(cur_->night, 0, 1000)) / 1000.0f;   // éjjel a füst sötétebb
+  // egy füstoszlop: a gomolyok emelkednek, nőnek, a szél kissé elviszi, és elhalványulnak (állapot nélkül, az időből)
+  auto smoke = [&](float px, float py, float scale, uint8_t shade, float dens, uint32_t seed) {
+    if (!fire_.puff) return;
+    constexpr int kN = 7;
+    for (int k = 0; k < kN; ++k) {
+      float p = t * 0.32f + static_cast<float>(k) / kN + static_cast<float>(seed % 97) * 0.0137f;
+      p -= std::floor(p);
+      const float sz = (12.0f + 30.0f * p) * scale;
+      const float x = px + p * p * 16.0f * scale + std::sin(t * 1.3f + static_cast<float>(k) * 2.1f + static_cast<float>(seed)) * 3.0f * p;
+      const float y = py - p * 64.0f * scale;
+      const float a = (1.0f - p) * std::min(1.0f, p * 6.0f) * dens;
+      if (a <= 0.01f) continue;
+      render::SpriteInstance s;
+      s.x = x - sz / 2;
+      s.y = y - sz / 2;
+      s.w = s.h = sz;
+      s.tint[0] = s.tint[1] = s.tint[2] = static_cast<uint8_t>(std::lround(shade * dim));
+      s.tint[3] = static_cast<uint8_t>(std::lround(std::clamp(a, 0.0f, 1.0f) * 255.0f));
+      batch.draw(*fire_.puff, nullptr, s);
+    }
+  };
+  auto flame = [&](float px, float py, float sc, int k, uint32_t seed) {
+    const float flick = 1.0f + 0.08f * std::sin(t * 9.0f + static_cast<float>(seed % 31));
+    if (fire_.glow) {   // a láng fénye (közel additív)
+      render::SpriteInstance g;
+      const float gs = 30.0f * sc * flick;
+      g.x = px - gs / 2;
+      g.y = py - 8.0f * sc - gs / 2;
+      g.w = g.h = gs;
+      g.tint[0] = 200; g.tint[1] = 80; g.tint[2] = 20;
+      batch.draw(*fire_.glow, nullptr, g);
+    }
+    render::SpriteInstance s;
+    s.w = 16.0f * sc;
+    s.h = 24.0f * sc * flick;
+    s.x = px - s.w / 2;
+    s.y = py - s.h;
+    s.layer[0] = static_cast<uint8_t>((static_cast<int>(t * 12.0f) + k * 3 + static_cast<int>(seed % 8)) % client::kFlameFrames);
+    batch.draw(*fire_.flame, nullptr, s);
+  };
+  std::vector<std::array<float, 3>> spots;
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kBuilding || !u.complete || u.hp <= 0 || !fx_visible(*cur_, u, mw)) continue;
+    const sim::EntityDef* d = r && u.def < r->defs.size() ? &r->defs[u.def] : nullptr;
+    const float ox = static_cast<float>(u.tx) * kTilePx, oy = static_cast<float>(u.ty) * kTilePx;
+    if (d) {   // a sablon állandó lángjai (pl. kohó)
+      for (size_t i = 0; i < d->overlays.size(); ++i) {
+        const auto& o = d->overlays[i];
+        if (o.effect == "smoke") {
+          smoke(ox + static_cast<float>(o.x.raw()) / 65536.0f * kTilePx, oy + static_cast<float>(o.y.raw()) / 65536.0f * kTilePx,
+                static_cast<float>(o.scale.raw()) / 65536.0f, 225, 0.8f, static_cast<uint32_t>(u.id * 5 + i));
+          continue;
+        }
+        if (o.effect != "fire") continue;
+        flame(ox + static_cast<float>(o.x.raw()) / 65536.0f * kTilePx, oy + static_cast<float>(o.y.raw()) / 65536.0f * kTilePx,
+              static_cast<float>(o.scale.raw()) / 65536.0f, static_cast<int>(i), static_cast<uint32_t>(u.id + i));
+      }
+    }
+    const int stage = client::burn_stage(u.hp, u.max_hp);
+    if (stage == 0) continue;
+    if (stage >= 2) {   // az égő épület füstje (50% alatt), a lángok mögött
+      fire_spots(u, d, stage == 3 ? 3 : 1, spots);
+      for (size_t k = 0; k < spots.size(); ++k) {
+        smoke(ox + spots[k][0] * kTilePx, oy + spots[k][1] * kTilePx - 12.0f, stage == 3 ? 1.35f : 1.0f, 150, 1.0f,
+              static_cast<uint32_t>(u.id * 11 + k));
+      }
+    }
+    fire_spots(u, d, kFlamesPerStage[stage], spots);
+    const float grow = stage == 3 ? 1.35f : stage == 2 ? 1.15f : 1.0f;
+    for (size_t k = 0; k < spots.size(); ++k) {
+      flame(ox + spots[k][0] * kTilePx, oy + spots[k][1] * kTilePx, spots[k][2] * grow, static_cast<int>(k), static_cast<uint32_t>(u.id * 13 + k));
+    }
+  }
+}
+
 void World::draw_rally_flags(render::SpriteBatch& batch, double time) const {
   if (!cur_ || !rally_.pole || !rally_.cloth) return;
   const uint8_t me = session_.local_player();
@@ -1194,7 +1344,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
         } else if (const auto b = s.anims.find("build"); !u.complete && b != s.anims.end()) {   // építési fázis
           col = b->second.start + std::min(b->second.frames - 1, u.progress * b->second.frames / 1000);
         } else if (const auto a = s.anims.find("idle"); a != s.anims.end()) {
-          col = a->second.start + static_cast<int>(time * a->second.fps) % std::max(1, a->second.frames);
+          col = a->second.start;   // D49: az elkészült épület állókép; az animációi a külön rétegen (draw_building_fx)
         }
         const uint8_t no_team[4] = {0, 0, 0, 0};
         const bool tree = u.kind == SnapUnit::kResource && u.res == sim::kWood;

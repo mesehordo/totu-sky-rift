@@ -513,6 +513,27 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     d.building = kind && kind->is_string() && kind->text() == "building";
     if (const content::Value* f = path(*v, "Identity", "faction"); f && f->is_string()) d.faction = f->text();
     if (const content::Value* sp = path(*v, "Identity", "sprite"); sp && sp->is_string()) d.sprite = sp->text();
+    if (const content::Value* ov = path(*v, "Visual", "overlays"); ov && ov->is_array()) {   // D49
+      for (const auto& o : ov->items()) {
+        const content::Value* ef = o.find("effect");
+        const content::Value* ox = o.find("x");
+        const content::Value* oy = o.find("y");
+        if (!ef || !ef->is_string() || !ox || !oy || !ox->as_fixed() || !oy->as_fixed()) continue;
+        EntityDef::Overlay x;
+        x.effect = ef->text();
+        x.x = *ox->as_fixed();
+        x.y = *oy->as_fixed();
+        if (const content::Value* sc = o.find("scale"); sc && sc->as_fixed()) x.scale = *sc->as_fixed();
+        d.overlays.push_back(std::move(x));
+      }
+    }
+    if (const content::Value* fp = path(*v, "Visual", "fire"); fp && fp->is_array()) {
+      for (const auto& p : fp->items()) {
+        if (p.is_array() && p.items().size() == 2 && p.items()[0].as_fixed() && p.items()[1].as_fixed()) {
+          d.fire_points.push_back({*p.items()[0].as_fixed(), *p.items()[1].as_fixed()});
+        }
+      }
+    }
     if (const content::Value* tg = path(*v, "Identity", "tags"); tg && tg->is_array()) {
       for (const auto& t : tg->items()) {
         if (t.is_string()) d.tags.push_back(t.text());

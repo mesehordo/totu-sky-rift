@@ -499,6 +499,58 @@ render::Image ambient_glow_image() {
   return img;
 }
 
+render::Image flame_image(int frame) {
+  render::Image img;
+  img.width = 16;
+  img.height = 24;
+  img.rgba.assign(16 * 24 * 4, 0);
+  const float ph = static_cast<float>(frame) * 6.2831853f / static_cast<float>(kFlameFrames);
+  for (int y = 0; y < 24; ++y) {
+    const float v = 1.0f - (static_cast<float>(y) + 0.5f) / 24.0f;            // 0 lent, 1 fent
+    const float half = 6.2f * std::pow(std::sin(std::min(1.0f, (1.0f - v) * 1.15f) * 3.1415926f * 0.5f), 0.8f) * (1.0f - v * 0.75f);
+    const float sway = std::sin(v * 5.0f - ph) * 1.8f * v + std::sin(v * 11.0f + ph * 2.0f) * 0.6f * v;
+    for (int x = 0; x < 16; ++x) {
+      const float dx = (static_cast<float>(x) + 0.5f - 8.0f - sway) / std::max(0.5f, half);
+      const float edge = 1.0f - std::abs(dx);
+      if (edge <= 0) continue;
+      const float flick = 0.85f + 0.15f * std::sin(static_cast<float>(x) * 1.7f + static_cast<float>(y) * 0.9f + ph * 3.0f);
+      const float base = std::clamp(v / 0.18f, 0.0f, 1.0f);   // az alja is elvékonyodik (nincs egyenes vágás)
+      const float a = std::clamp(edge * 2.2f, 0.0f, 1.0f) * std::clamp((1.0f - v) * 1.6f, 0.0f, 1.0f) * flick * base * base * (3.0f - 2.0f * base);
+      const float core = std::clamp(edge * 1.6f - v * 0.9f, 0.0f, 1.0f);   // a mag fehéres sárga, a széle narancs, a csúcs vörös
+      uint8_t* p = img.at(x, y);
+      p[0] = 255;
+      p[1] = static_cast<uint8_t>(std::lround(std::clamp(70.0f + 120.0f * core + 60.0f * (1.0f - v), 0.0f, 255.0f)));
+      p[2] = static_cast<uint8_t>(std::lround(std::clamp(10.0f + 150.0f * core * core, 0.0f, 255.0f)));
+      p[3] = static_cast<uint8_t>(std::lround(a * 255.0f));
+    }
+  }
+  return img;
+}
+
+int burn_stage(int32_t hp, int32_t max_hp) {
+  if (max_hp <= 0 || hp <= 0 || hp >= max_hp) return 0;
+  const int64_t pct = int64_t{hp} * 100 / max_hp;
+  return pct < 25 ? 3 : pct < 50 ? 2 : pct < 75 ? 1 : 0;
+}
+
+render::Image smoke_puff_image() {
+  render::Image img;
+  img.width = img.height = 24;
+  img.rgba.assign(24 * 24 * 4, 0);
+  for (int y = 0; y < 24; ++y) {
+    for (int x = 0; x < 24; ++x) {
+      const float dx = (static_cast<float>(x) + 0.5f - 12) / 12, dy = (static_cast<float>(y) + 0.5f - 12) / 12;
+      const float r = std::sqrt(dx * dx + dy * dy) + 0.08f * std::sin(std::atan2(dy, dx) * 5.0f);   // gomolygó szél
+      const float f = std::pow(std::clamp(1.0f - r, 0.0f, 1.0f), 0.8f);
+      uint8_t* p = img.at(x, y);
+      const uint8_t shade = static_cast<uint8_t>(std::lround(255.0f * (0.82f + 0.18f * (1.0f - dy) * 0.5f)));
+      p[0] = p[1] = p[2] = shade;
+      p[3] = static_cast<uint8_t>(std::lround(std::min(1.0f, f * 1.6f) * 235.0f));
+    }
+  }
+  return img;
+}
+
 render::Image ambient_leaf_image(int rot) {
   Canvas c(8, 8, 4);
   const float a = static_cast<float>(rot) * 3.1415926f / 8, ca = std::cos(a), sa = std::sin(a);

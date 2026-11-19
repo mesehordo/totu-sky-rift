@@ -4,6 +4,16 @@
  "required": ["Identity"],
  "additionalProperties": false,
  "properties": {
+  "Visual": {
+   "_leiras": "D49: csak megjelenítés (a szimuláció nem használja). overlays: az épület képe fölötti animációs réteg elemei (effect: smoke | fire | egy atlaszlap azonosítója; x, y: csempe a lábnyom bal felső sarkától, lehet negatív; scale). fire: a sérült épület lángjainak helyei ([x, y] csempében); üres: a lábnyomon elosztva.",
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "overlays": {"type": "array", "items": {"type": "object", "required": ["effect", "x", "y"], "additionalProperties": false,
+     "properties": {"effect": {"type": "string"}, "x": {"type": "number"}, "y": {"type": "number"}, "scale": {"type": "number", "minimum": 0}}}},
+    "fire": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}}
+   }
+  },
   "Identity": {
    "type": "object",
    "required": ["kind"],

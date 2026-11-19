@@ -582,7 +582,7 @@ int main(int argc, char** argv) {
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
-        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf;
+        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf, fire_flame, fire_puff;
     std::map<std::string, render::Texture> item_tex;
     render::Texture ground_tex;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
@@ -872,6 +872,13 @@ int main(int argc, char** argv) {
               ba.cloth = &banner_cloth;
               ba.trim = &banner_trim;
               world.set_banner_art(ba);
+              // D49: a lángoló épület és a kéményfüst
+              fire_flame = layers(client::kFlameFrames, 16, 24, [](int i) { return client::flame_image(i); });
+              {
+                auto puff = client::smoke_puff_image();
+                render::premultiply(puff);
+                fire_puff = dev.create_array_from(puff, false);
+              }
               auto sack = client::carry_sack_image();
               render::premultiply(sack);
               carry_sack = dev.create_array_from(sack, false);
@@ -893,6 +900,7 @@ int main(int argc, char** argv) {
               amb_glow = dev.create_array_from(client::ambient_glow_image(), false);   // additív: nincs előszorzás
               amb_leaf = layers(8, 8, 8, [](int i) { return client::ambient_leaf_image(i); });
               world.set_ambient_art(&amb_glow, &amb_leaf, &fallback);
+              world.set_fire_art({&fire_flame, &fire_puff, &amb_glow});
               if (session.has_sim() && session.rules()) {   // a terep fedőrétege (a régi földutak és talajfoltok)
                 const auto g0 = std::chrono::steady_clock::now();
                 render::Image gi = client::ground_overlay(world.map(), session.terrain(), session.seed());
@@ -1582,6 +1590,7 @@ int main(int argc, char** argv) {
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
         world.draw_objective_beacons(batch, t);    // a célok jelzőfénye
         world.draw_banners(batch, t);        // D51: a csapatjelző lobogók
+        world.draw_building_fx(batch, atl, t);   // D49: az épületek animációs rétege (füst, atlaszlapos elemek)
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         {
           float hmx = 0, hmy = 0;
@@ -1626,6 +1635,7 @@ int main(int argc, char** argv) {
         lighting.set_blur(game_paused ? pause_slide : 0.0f);
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
         batch.begin(proj);   // a légköri részecskék a fényezés után (a szentjánosbogár éjjel is világít – a régi szerint)
+        world.draw_building_flames(batch, t);   // D49: a lángok (éjjel is világítanak)
         world.draw_ambient(batch, cam, w, h, t);
         batch.end();
         if (editor_on && !editor_test) {   // M11: a szerkesztő rétegei és palettája
@@ -1816,7 +1826,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &ground_tex}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &ground_tex}) dev.destroy(*t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();

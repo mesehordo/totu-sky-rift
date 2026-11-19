@@ -184,6 +184,14 @@ struct EntityDef {
   int32_t hp = 1, armor = 0;
   int32_t sight = 0;                          // csempe
   std::string sprite;                         // a kép azonosítója (`Identity.sprite`; üres: az `id`) – modok, változatok
+  // D49: a megjelenítés adatai (`Visual`; a szimuláció nem használja): az épület képe fölötti animációs réteg elemei
+  // (effect: smoke, fire vagy egy atlaszlap; hely csempében a lábnyom bal felső sarkától) és a lángok helyei sérüléskor
+  struct Overlay {
+    std::string effect;
+    Fixed x, y, scale = Fixed::from_int(1);
+  };
+  std::vector<Overlay> overlays;
+  std::vector<std::array<Fixed, 2>> fire_points;
   std::array<int32_t, kResources> cost{};    // nyersanyag-költség
   int32_t supply = 0;                         // a felhasznált létszám (egység)
   int32_t time_ticks = 0;                     // termelési / építési idő
