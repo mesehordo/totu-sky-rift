@@ -2,6 +2,7 @@
 #include "render/terrain_view.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
@@ -29,6 +30,7 @@ out vec2 v_muv;
 out float v_has_mask;
 out vec3 v_tint;
 out vec4 v_rim;
+out float v_soil;
 const vec2 corners[6] = vec2[6](vec2(0, 0), vec2(1, 0), vec2(1, 1), vec2(0, 0), vec2(1, 1), vec2(0, 1));
 void main() {
   vec2 c = corners[gl_VertexID % 6];
@@ -40,6 +42,7 @@ void main() {
   v_rim = a_rim;
   v_world = a_rect.xy + c * a_rect.zw;
   v_water = a_flags.x;
+  v_soil = a_flags.y;
 }
 )";
 
@@ -51,10 +54,20 @@ in vec3 v_tint;
 in vec4 v_rim;
 in vec2 v_world;
 in float v_water;
+in float v_soil;
 uniform float u_time;
+uniform sampler2D u_soil;
+uniform vec2 u_size;   // a pálya mérete világ-képpontban
 uniform sampler2DArray u_tiles;
 uniform sampler2DArray u_masks;
 out vec4 o_color;
+// érték-zaj a világ-képpontban (a régi `Scenery._organic_soil` kanyargós fű–föld határa helyett)
+float hash21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vnoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash21(i), hash21(i + vec2(1, 0)), f.x), mix(hash21(i + vec2(0, 1)), hash21(i + vec2(1, 1)), f.x), f.y);
+}
 void main() {
   vec3 uv = v_uv;
   float sheen = 0.0;
@@ -65,6 +78,15 @@ void main() {
   }
   vec4 c = texture(u_tiles, uv);
   float a = v_has_mask > 0.5 ? texture(u_masks, vec3(v_muv, 0.0)).r : 1.0;
+  if (v_soil > 0.5) {   // a fű–föld határ: a talajmező és a zaj (a régi kanyargós, kerekded határ)
+    float sf = texture(u_soil, v_world / u_size).r;
+    float n = vnoise(v_world / 52.0) * 0.6 + vnoise(v_world / 17.0) * 0.4;
+    float dirt = smoothstep(0.44, 0.56, sf + (n - 0.5) * 0.55);
+    a = v_soil > 1.5 ? dirt : 1.0 - dirt;
+  } else if (v_has_mask > 0.5 && v_water < 0.5) {   // a szárazföldi átmenet széle kanyargós, nem szögletes (a régi szerint)
+    float n = vnoise(v_world / 46.0) * 0.6 + vnoise(v_world / 15.0) * 0.4;
+    a = clamp((a - 0.5) * 1.5 + 0.5 + (n - 0.5) * 0.95, 0.0, 1.0);
+  }
   if (a <= 0.002) discard;
   // festett perem a folt szélén (a régi játék szerint: a maszk 0,5-ös szintje körüli sáv)
   float band = v_rim.a > 0.0 ? clamp(1.0 - abs(a - 0.5) / 0.274, 0.0, 1.0) * v_rim.a : 0.0;
@@ -91,6 +113,8 @@ bool TerrainView::init(Device& dev, const std::string& assets_dir, std::string* 
   loc_tiles_ = gl.GetUniformLocation(prog_.id, "u_tiles");
   loc_masks_ = gl.GetUniformLocation(prog_.id, "u_masks");
   loc_time_ = gl.GetUniformLocation(prog_.id, "u_time");
+  loc_soil_ = gl.GetUniformLocation(prog_.id, "u_soil");
+  loc_size_ = gl.GetUniformLocation(prog_.id, "u_size");
   gl.GenVertexArrays(1, &vao_);
   gl.GenBuffers(1, &vbo_);
   gl.BindVertexArray(vao_);
@@ -160,6 +184,7 @@ void TerrainView::shutdown() {
   dev_->destroy(prog_);
   dev_->destroy(tiles_);
   dev_->destroy(masks_);
+  dev_->destroy(soil_);
   vbo_ = vao_ = 0;
 }
 
@@ -203,13 +228,61 @@ void TerrainView::set_map(const map::Map& m, const map::TerrainTable& table) {
       kinds_[static_cast<size_t>(per_terrain[i])].shore = shore;
     }
   }
+  {   // a talajosztály terepfajtánként (a régi GRASS / DIRT)
+    soil_class_.assign(static_cast<size_t>(w_) * static_cast<size_t>(h_), 0);
+    std::vector<uint8_t> cls(table.terrains().size(), 0);
+    for (size_t i = 0; i < table.terrains().size(); ++i) {
+      const std::string& id = table.terrains()[i].id;
+      if (id == "grass" || id == "grass_lush" || id == "grass_dry" || id == "meadow" || id == "forest_floor") cls[i] = 1;
+      if (id == "dirt" || id == "mud" || id == "gravel") cls[i] = 2;
+    }
+    std::vector<float> f(soil_class_.size(), 0.0f);
+    for (int y = 0; y < h_; ++y) {
+      for (int x = 0; x < w_; ++x) {
+        const size_t i = static_cast<size_t>(y) * static_cast<size_t>(w_) + static_cast<size_t>(x);
+        const uint16_t t = m.terrain(x, y);
+        soil_class_[i] = t < cls.size() ? cls[t] : 0;
+        f[i] = soil_class_[i] == 2 ? 1.0f : 0.0f;
+      }
+    }
+    for (int pass = 0; pass < 2; ++pass) {   // a régi `_blur(dirt, 3)` helyett két 3 × 3-as átlag
+      std::vector<float> g(f.size(), 0.0f);
+      for (int y = 0; y < h_; ++y) {
+        for (int x = 0; x < w_; ++x) {
+          float s = 0;
+          int c = 0;
+          for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+              const int xx = x + dx, yy = y + dy;
+              if (xx < 0 || yy < 0 || xx >= w_ || yy >= h_) continue;
+              s += f[static_cast<size_t>(yy) * static_cast<size_t>(w_) + static_cast<size_t>(xx)];
+              ++c;
+            }
+          }
+          g[static_cast<size_t>(y) * static_cast<size_t>(w_) + static_cast<size_t>(x)] = s / static_cast<float>(c);
+        }
+      }
+      f.swap(g);
+    }
+    std::vector<uint8_t> bytes(f.size());
+    for (size_t i = 0; i < f.size(); ++i) bytes[i] = static_cast<uint8_t>(std::lround(std::clamp(f[i], 0.0f, 1.0f) * 255.0f));
+    if (dev_) {
+      if (soil_.id && (soil_w_ != w_ || soil_h_ != h_)) dev_->destroy(soil_);
+      if (!soil_.id) soil_ = dev_->create_r8(w_, h_);
+      dev_->update_r8(soil_, bytes.data());
+      soil_w_ = w_;
+      soil_h_ = h_;
+    }
+  }
   kind_.assign(static_cast<size_t>(w_) * static_cast<size_t>(h_), 0);
+  kind_class_.assign(kinds_.size(), 0);
   level_.assign(kind_.size(), 0);
   cliff_.assign(kind_.size(), 0);
   for (int y = 0; y < h_; ++y) {
     for (int x = 0; x < w_; ++x) {
       const size_t i = static_cast<size_t>(y) * static_cast<size_t>(w_) + static_cast<size_t>(x);
       kind_[i] = per_terrain[m.terrain(x, y)];
+      if (!soil_class_.empty() && soil_class_[i] != 0) kind_class_[static_cast<size_t>(kind_[i])] = soil_class_[i];
       level_[i] = static_cast<int8_t>(m.level(x, y));
       cliff_[i] = m.cliff(x, y) ? 1 : 0;
     }
@@ -296,8 +369,25 @@ void TerrainView::draw(const Mat4& projection, float vx0, float vy0, float vx1, 
         }
         higher[j + 1] = v;
       }
+      // a régi kerekded fű–föld határ: a 2 csempén belül másik osztályú szomszéd fajtája a talajmező szerint rá
+      if (soil_.id && !soil_class_.empty() && soil_class_[i] != 0) {
+        int other = -1;
+        for (int dy = -2; dy <= 2 && other < 0; ++dy) {
+          for (int dx = -2; dx <= 2 && other < 0; ++dx) {
+            const int nx = x + dx, ny = y + dy;
+            if (nx < 0 || ny < 0 || nx >= w_ || ny >= h_) continue;
+            const size_t j = static_cast<size_t>(ny) * static_cast<size_t>(w_) + static_cast<size_t>(nx);
+            if (soil_class_[j] != 0 && soil_class_[j] != soil_class_[i]) other = kind_[j];
+          }
+        }
+        if (other >= 0) soil_pending_.push_back({other, x, y, variant, soil_class_[i] == 1 ? uint8_t{2} : uint8_t{1}});
+      }
       for (int h = 0; h < nh; ++h) {
         const int K = higher[h];
+        if (soil_.id && soil_class_[i] != 0 && kind_class_[static_cast<size_t>(K)] != 0 &&
+            kind_class_[static_cast<size_t>(K)] != soil_class_[i]) {
+          continue;   // a fű–föld határt a talajmező rajzolja (kanyargósan), a maszkos átmenet nem kell
+        }
         auto is_k = [&](int dx, int dy) {
           const int nx = x + dx, ny = y + dy;
           return nx >= 0 && ny >= 0 && nx < w_ && ny < h_ && kind_at(nx, ny) == K;
@@ -314,6 +404,16 @@ void TerrainView::draw(const Mat4& projection, float vx0, float vy0, float vx1, 
       }
     }
   }
+  for (const SoilQuad& sq : soil_pending_) {   // a határrétegek a csempék után (a kanyargós határ mindent fed)
+    const size_t i = static_cast<size_t>(sq.ty) * static_cast<size_t>(w_) + static_cast<size_t>(sq.tx);
+    int sh = 255 + level_[i] * 22;
+    if (cliff_[i]) sh = 150;
+    const uint8_t shade[3] = {static_cast<uint8_t>(std::clamp(sh, 0, 255)), static_cast<uint8_t>(std::clamp(sh, 0, 255)),
+                              static_cast<uint8_t>(std::clamp(sh - (level_[i] > 0 ? 8 : 0), 0, 255))};
+    emit(kinds_[static_cast<size_t>(sq.kind)], sq.tx, sq.ty, sq.variant, -1, 0, time, shade);
+    quads_.back().flags[1] = sq.mode;
+  }
+  soil_pending_.clear();
   last_quads_ = static_cast<int>(quads_.size());
   if (quads_.empty()) return;
   const gl::Api& gl = dev_->api();
@@ -322,6 +422,10 @@ void TerrainView::draw(const Mat4& projection, float vx0, float vy0, float vx1, 
   gl.Uniform1i(loc_tiles_, 0);
   gl.Uniform1i(loc_masks_, 1);
   gl.Uniform1f(loc_time_, static_cast<float>(time));
+  gl.Uniform1i(loc_soil_, 2);
+  gl.Uniform2f(loc_size_, static_cast<float>(w_) * kTilePx, static_cast<float>(h_) * kTilePx);
+  gl.ActiveTexture(gl::TEXTURE0 + 2);
+  gl.BindTexture(gl::TEXTURE_2D, soil_.id);
   gl.ActiveTexture(gl::TEXTURE0);
   gl.BindTexture(gl::TEXTURE_2D_ARRAY, tiles_.id);
   gl.ActiveTexture(gl::TEXTURE0 + 1);

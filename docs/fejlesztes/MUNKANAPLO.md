@@ -1013,3 +1013,7 @@ A tulajdonos a képes összevetés alapján a régi rácsot választotta, minden
 ## 2026-11-19 – Tervezett épületek a régi szerint
 
 A pillanatkép viszi a helyi játékos még meg nem kezdett épületeit (a munkás oda tart, vagy a parancssorában vár egy Építés); a kliens a lábnyomot kéken rácsozza, és halványan kirajzolja az épületet (a régi `draw_planned_buildings`). A pillanatkép tartalma ideiglenes kiírással ellenőrizve; képen még nem.
+
+## 2026-11-19 – A fű–föld határ a régi szerint (kanyargós, lekerekített)
+
+A terepcsempe-rajzoló a régi `Scenery._organic_soil` szerint: a föld elmosott térképe (talajmező, R8 textúra, két 3 × 3-as átlag) és kétoktávos világ-zaj 0,5-ös szintjén fut a határ képpontonként; a határ menti (2 csempén belüli) csempékre a másik talajosztály rétege kerül ezzel az alfával, a fű–föld maszkos átmenet és a festett perem ott elmarad. A többi szárazföldi maszkos átmenet széle is enyhén zajos lett. Csak megjelenítés; a szimuláció terepe változatlan (a nagyon keskeny fűsávokat a régi játékhoz hasonlóan részben elnyeli). Kép: `docs/quality/kepek/osszevetes_fu_fold_hatar.jpg` (bal: előtte, jobb: utána).
