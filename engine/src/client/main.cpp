@@ -1545,6 +1545,7 @@ int main(int argc, char** argv) {
         batch.end();
         lighting.apply_shadows();
         batch.begin(proj);
+        world.draw_doodads(batch, atl, cam, w, h);   // a terep apró díszletei (a régi szerint)
         world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw_ground_marks(batch, alpha, t);     // talajjelek: hős, ének, rejtőzés

@@ -97,6 +97,9 @@ class World {
     amb_dot_ = dot;
   }
   void draw_ambient(render::SpriteBatch& batch, const Camera& cam, int sw, int sh, double time) const;
+  // a terep apró díszletei (6. tétel, a régi `_scatter_doodads`): virág, fűcsomó, kavics, gomba, bokor, tuskó, farönk,
+  // nád a parton, tavirózsa, csont – egyszer szórva (rögzített véletlen), a figurák alatt
+  void draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const Camera& cam, int sw, int sh);
   // talajjelek és a hős jelei (9. tétel): hős talajjel (színezhető + rögzített), jelvény (keret + jelkép, stílusonként
   // egy réteg), ének (8 fázis), rejtőzés
   struct MarkArt {
@@ -200,6 +203,12 @@ class World {
     float a, b, c, d;
   };
   mutable std::vector<AmbPart> amb_;
+  struct Doodad {
+    float x, y;
+    uint8_t frame;
+  };
+  mutable std::vector<Doodad> doodads_;
+  mutable bool doodads_done_ = false;
   MarkArt marks_;
   const render::Texture *obj_ring_ = nullptr, *obj_beacon_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;

@@ -993,3 +993,7 @@ A pillanatkép viszi a látott holttesteket (sablon, tulajdonos, hely, kor) és 
 ## 2026-11-19 – 7. tétel: légköri részecskék a régi szerint
 
 A régi `Ambient` erdei készlete: 34 szentjánosbogár (villogó, közel additív fény), 22 forgó falevél (3 szín, 8 elforgatás), 30 pollen; a világhoz rögzítve, a látómező körül körbetekerve, a fényezés után rajzolva (éjjel is világít). A pályáknak még nincs témája, ezért mindig az erdei készlet. Kép: `docs/quality/kepek/utan_legkor.jpg`.
+
+## 2026-11-19 – 6. tétel (1. rész): a terep apró díszletei a régi szerint
+
+A régi `_scatter_doodads` szabályai: füvön 16 %, a réteken (6 csempés simított zaj) csoportosan sűrűbb virág, az erdő 3 csempés körzetében bokor, gomba, tuskó, farönk (32 %); földön kavics, fűcsomó, tuskó, csont, ritkán koponya; úton kevés kavics; a parton nád, a vízen tavirózsa; csempénként ±8 képpont eltolással. Egyszer szórva rögzített véletlenből, a `doodads` képlapról. Hátra (2. rész): földutak, a fű–föld határ lekerekítése, talajfoltok. Kép: `docs/quality/kepek/utan_tereptargyak.jpg`.

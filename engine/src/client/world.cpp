@@ -558,6 +558,105 @@ void World::draw_ambient(render::SpriteBatch& batch, const Camera& cam, int sw, 
   }
 }
 
+void World::draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const Camera& cam, int sw, int sh) {
+  if (!atlas || !cur_) return;
+  const int si = sheet_by_id(atlas, "doodads");
+  if (si < 0) return;
+  const auto& sheet = atlas->data().sheets[static_cast<size_t>(si)];
+  if (!doodads_done_) {
+    doodads_done_ = true;
+    const map::Map& m = map();
+    const auto& tt = session_.terrain().terrains();
+    const int W = m.width(), H = m.height();
+    // a képlap nevei: virag_sarga 0, virag_piros 1, virag_kek 2, fucsomo 3, kavics 4, gomba 5, csont 6, tusko 7,
+    // faronk 8, bokor 9, nad 10, tavirozsa 11, kristaly 12, koponya 13
+    enum : uint8_t { kSarga = 0, kPiros, kKek, kFu, kKavics, kGomba, kCsont, kTusko, kRonk, kBokor, kNad, kTavi, kKrist, kKoponya };
+    auto kind = [&](int x, int y) {   // 0 egyéb, 1 fű, 2 föld, 3 víz, 4 út
+      if (!m.in_bounds(x, y)) return 0;
+      const uint16_t t = m.terrain(x, y);
+      if (t >= tt.size()) return 0;
+      const std::string& id = tt[t].id;
+      if (id == "grass" || id == "grass_lush" || id == "grass_dry" || id == "meadow" || id == "forest_floor") return 1;
+      if (id == "dirt" || id == "mud" || id == "gravel" || id == "sand") return 2;
+      if (id == "shallow_water" || id == "deep_water") return 3;
+      if (id == "road" || id == "paved") return 4;
+      return 0;
+    };
+    std::vector<uint8_t> wood(static_cast<size_t>(W) * static_cast<size_t>(H), 0);   // az erdő közelsége (3 csempén belül)
+    for (const SnapUnit& u : cur_->units) {
+      if (u.kind != SnapUnit::kResource || u.res != sim::kWood) continue;
+      const int cx = static_cast<int>(u.x / kTilePx), cy = static_cast<int>(u.y / kTilePx);
+      for (int dy = -3; dy <= 3; ++dy) {
+        for (int dx = -3; dx <= 3; ++dx) {
+          if (m.in_bounds(cx + dx, cy + dy)) wood[static_cast<size_t>(cy + dy) * static_cast<size_t>(W) + static_cast<size_t>(cx + dx)] = 1;
+        }
+      }
+    }
+    uint64_t st = 0x2545F4914F6CDD1DULL ^ (static_cast<uint64_t>(W) << 32) ^ static_cast<uint64_t>(H);
+    auto rnd = [&]() {
+      st ^= st << 13;
+      st ^= st >> 7;
+      st ^= st << 17;
+      return static_cast<float>(st >> 40) / static_cast<float>(1ULL << 24);
+    };
+    auto hash01 = [](int x, int y) {   // a rét-zaj rácspontjai
+      uint32_t h = static_cast<uint32_t>(x) * 374761393u + static_cast<uint32_t>(y) * 668265263u;
+      h = (h ^ (h >> 13)) * 1274126177u;
+      return static_cast<float>((h ^ (h >> 16)) & 0xffff) / 65535.0f;
+    };
+    auto meadow = [&](int x, int y) {   // 6 csempés cellák, simítva
+      const float fx = static_cast<float>(x) / 6.0f, fy = static_cast<float>(y) / 6.0f;
+      const int ix = static_cast<int>(fx), iy = static_cast<int>(fy);
+      const float ax = fx - static_cast<float>(ix), ay = fy - static_cast<float>(iy);
+      const float sx = ax * ax * (3 - 2 * ax), sy = ay * ay * (3 - 2 * ay);
+      const float a = hash01(ix, iy) * (1 - sx) + hash01(ix + 1, iy) * sx, b = hash01(ix, iy + 1) * (1 - sx) + hash01(ix + 1, iy + 1) * sx;
+      return a * (1 - sy) + b * sy;
+    };
+    auto near = [&](int x, int y, int k) {
+      return kind(x + 1, y) == k || kind(x - 1, y) == k || kind(x, y + 1) == k || kind(x, y - 1) == k;
+    };
+    auto pick = [&](std::initializer_list<uint8_t> l) { return *(l.begin() + static_cast<int>(rnd() * static_cast<float>(l.size())) % static_cast<int>(l.size())); };
+    for (int y = 0; y < H; ++y) {
+      for (int x = 0; x < W; ++x) {
+        const int k = kind(x, y);
+        int f = -1;
+        if (k == 3) {
+          if (near(x, y, 1) && rnd() < 0.18f) f = kTavi;
+        } else if (k == 1 || k == 2 || k == 4) {
+          if ((near(x, y, 3)) && rnd() < 0.35f) {
+            f = kNad;
+          } else if (k == 4) {   // úton csak néhány kavics
+            if (rnd() < 0.06f) f = kKavics;
+          } else if (k == 1) {
+            const float md = meadow(x, y);
+            if (wood[static_cast<size_t>(y) * static_cast<size_t>(W) + static_cast<size_t>(x)]) {
+              if (rnd() < 0.32f) f = pick({kBokor, kGomba, kTusko, kRonk, kFu, kBokor, kGomba});
+            } else {
+              const float cl = md > 0.42f ? 0.2f + 2.0f * std::max(0.0f, (md - 0.42f) / 0.3f) : 0.25f;   // a régi `cluster`
+              if (rnd() < 0.16f * cl) {
+                f = md > 0.5f ? pick({kSarga, kPiros, kKek, kFu}) : pick({kFu, kFu, kSarga, kPiros, kKek, kBokor, kKavics, kGomba, kTusko, kRonk});
+              }
+            }
+          } else {
+            if (rnd() < 0.1f) f = pick({kKavics, kKavics, kKavics, kFu, kFu, kTusko, kCsont});
+            else if (rnd() < 0.006f) f = kKoponya;
+          }
+        }
+        if (f >= 0) {
+          const float jx = std::floor(rnd() * 17.0f) - 8.0f, jy = std::floor(rnd() * 17.0f) - 8.0f;
+          doodads_.push_back({static_cast<float>(x) * kTilePx + jx, static_cast<float>(y) * kTilePx + jy, static_cast<uint8_t>(f)});
+        }
+      }
+    }
+  }
+  const float vx1 = cam.x + static_cast<float>(sw) / cam.zoom, vy1 = cam.y + static_cast<float>(sh) / cam.zoom;
+  const uint8_t no_team[4] = {0, 0, 0, 0};
+  for (const Doodad& d : doodads_) {
+    if (d.x < cam.x - 64 || d.y < cam.y - 64 || d.x > vx1 + 64 || d.y > vy1 + 64) continue;
+    atlas->draw(batch, sheet, 0, d.frame, d.x, d.y, 1.0f / sheet.scale, no_team, nullptr, -1.0f, 0);
+  }
+}
+
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !sack_ || !rules || !rules->game_raw) return;
@@ -821,6 +920,9 @@ bool World::prepare_atlas(render::Atlas& atlas, std::string* error) {
       const int s = sheet_by_id(&atlas, pk.id);
       if (s >= 0 && std::find(sheets.begin(), sheets.end(), s) == sheets.end()) sheets.push_back(s);
     }
+  }
+  if (const int dd = sheet_by_id(&atlas, "doodads"); dd >= 0 && std::find(sheets.begin(), sheets.end(), dd) == sheets.end()) {
+    sheets.push_back(dd);   // a terep apró díszletei (6. tétel)
   }
   for (const int i : sheets) need.push_back(&atlas.data().sheets[static_cast<size_t>(i)]);
   return atlas.prepare(need, error);
