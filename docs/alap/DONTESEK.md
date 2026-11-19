@@ -518,7 +518,9 @@ fecskefarkú). A **kisnépek** épületei a szövetséges főnép (a tulajdonos)
 ### D53 – A Croftianok újragondolása · ELDÖNTVE (2026-11-19, tervezési elv; megvalósítás később)
 
 A tulajdonos új koncepciója a Croftian népre (a kánon része; a meglévő tartalom ehhez igazodik majd):
-1. **Új név:** a nép új nevet kap (a nevet a tulajdonos adja; addig munkanév: Croftian).
+1. **Új név: Formitarák** (egyes szám: Formitara) – a tulajdonos szabálya szerint a hangya (*Formica*) és a pitypang
+   (*Taraxacum*) latin nevének első két-két szótagjából (Formi + Tara). A játékszövegekben átírva; a belső azonosító
+   (`croftian`, `cro_` előtag) a mentések és a tartalom miatt marad.
 2. **Eredet:** hangyanép, amely növényekkel foglalkozott; a meteorit hatására összeolvadtak, összemutálódtak kedvenc
    növényeikkel. Ezért náluk **sok a növényi utalás** (megjelenés, nevek, képességek).
 3. **Lárva helyett Mag.** A **főépület: Anya-királynő** – nem mozog, ő a központi tudat; a nép **magas szintű

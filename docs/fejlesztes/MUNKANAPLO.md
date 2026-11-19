@@ -977,3 +977,7 @@ A figura alatt: forgó rúnagyűrű (bekapcsolt ének vagy kapcsoló, 8 fázis),
 ## 2026-11-19 – Hős: kis korona; hibajavítás; D53 felírva
 
 A hős feje fölött a nép jelképe helyett kis korona (a tulajdonos kérése), a csapatszínben, arany szegéllyel. Hiba javítva: a rejtőzés lekérdezése szabályok nélküli világban (bemutató) kivételt dobott – most csak meccsben. Felírva D53: a Croftianok újragondolása (új név, növény-hangya eredet, Mag, Anya-királynő, Mag-őrök, Termő, szürkés-zöld gyökeres terület, inda az épületek alatt).
+
+## 2026-11-19 – A Croftianok új neve: Formitarák
+
+A tulajdonos szabálya: a hangya (Formica) és a pitypang (Taraxacum) latin nevének első két-két szótagja – Formitara. A magyar és az angol szövegekben átírva; a belső azonosító marad (D53 1.).

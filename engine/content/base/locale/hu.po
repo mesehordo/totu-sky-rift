@@ -1748,7 +1748,7 @@ msgid "Tüskemező telepítése"
 msgstr ""
 
 msgctxt "building.cro_merges_tuskek.desc"
-msgid "A Csápszolga 2 mp alatt rakja le. A tüskéken áthaladó nem Croftian földi egységek 40%-kal lassulnak és 4 sebzés/mp mérgezést kapnak. Ez a saját és a szövetséges kisfaji egységekre is érvényes. Mezőnként 40 életerő. A tűz és méreg teljes, a többi támadás 20% sebzést okoz, és a nem Croftian támadó megmérgeződik. Legfeljebb 16 mező. A Tüskemező kutatással 2×2-es."
+msgid "A Csápszolga 2 mp alatt rakja le. A tüskéken áthaladó nem Formitara földi egységek 40%-kal lassulnak és 4 sebzés/mp mérgezést kapnak. Ez a saját és a szövetséges kisfaji egységekre is érvényes. Mezőnként 40 életerő. A tűz és méreg teljes, a többi támadás 20% sebzést okoz, és a nem Formitara támadó megmérgeződik. Legfeljebb 16 mező. A Tüskemező kutatással 2×2-es."
 msgstr ""
 
 msgctxt "research.cro_inas_labak.name"
@@ -1880,7 +1880,7 @@ msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után
 msgstr ""
 
 msgctxt "faction.croftian.name"
-msgid "Croftianok"
+msgid "Formitarák"
 msgstr ""
 
 msgctxt "faction.croftian.desc"

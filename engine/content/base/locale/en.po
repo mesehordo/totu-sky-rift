@@ -1748,8 +1748,8 @@ msgid "Tüskemező telepítése"
 msgstr "Poisonous Spikes"
 
 msgctxt "building.cro_merges_tuskek.desc"
-msgid "A Csápszolga 2 mp alatt rakja le. A tüskéken áthaladó nem Croftian földi egységek 40%-kal lassulnak és 4 sebzés/mp mérgezést kapnak. Ez a saját és a szövetséges kisfaji egységekre is érvényes. Mezőnként 40 életerő. A tűz és méreg teljes, a többi támadás 20% sebzést okoz, és a nem Croftian támadó megmérgeződik. Legfeljebb 16 mező. A Tüskemező kutatással 2×2-es."
-msgstr "A Tendril Servant places this in 2 seconds. Non-Croftian ground units crossing the spikes are slowed by 40% and poisoned for 4 damage per second. This includes your own and allied minor-faction units. Each tile has 40 HP. Fire and poison deal full damage. Other attacks deal 20% damage and poison non-Croftian attackers. Up to 16 tiles. Spike Field research expands placement to 2×2."
+msgid "A Csápszolga 2 mp alatt rakja le. A tüskéken áthaladó nem Formitara földi egységek 40%-kal lassulnak és 4 sebzés/mp mérgezést kapnak. Ez a saját és a szövetséges kisfaji egységekre is érvényes. Mezőnként 40 életerő. A tűz és méreg teljes, a többi támadás 20% sebzést okoz, és a nem Formitara támadó megmérgeződik. Legfeljebb 16 mező. A Tüskemező kutatással 2×2-es."
+msgstr "A Tendril Servant places this in 2 seconds. Non-Formitara ground units crossing the spikes are slowed by 40% and poisoned for 4 damage per second. This includes your own and allied minor-faction units. Each tile has 40 HP. Fire and poison deal full damage. Other attacks deal 20% damage and poison non-Formitara attackers. Up to 16 tiles. Spike Field research expands placement to 2×2."
 
 msgctxt "research.cro_inas_labak.name"
 msgid "Inas lábak"
@@ -1880,8 +1880,8 @@ msgid "+2 sebzés a közelharci egységeknek. (III. szint; a Felemelkedés után
 msgstr ""
 
 msgctxt "faction.croftian.name"
-msgid "Croftianok"
-msgstr "Croftians"
+msgid "Formitarák"
+msgstr "Formitara"
 
 msgctxt "faction.croftian.desc"
 msgid "Az Idegen Kórus: a meteorokkal érkezett spórák megszállták a hangyaszerű kethri népet. A Kaptár lárváiból minden egység párhuzamosan kel ki, a Karmosok gubóban páncélos bogárrá mutálódnak, és a mélységen elesett élő ellenségből új Karmos kelhet ki."
