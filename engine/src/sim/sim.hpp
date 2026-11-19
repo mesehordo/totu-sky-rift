@@ -718,6 +718,7 @@ struct PlayerState {
   std::vector<std::array<int32_t, 4>> reveals;
   bool ascended = false;
   bool defeated = false;                     // minden épülete elpusztult (M6 9. lépés)
+  uint8_t team = 0;                          // csapat (1–4; 0: mindenki ellen) – a régi `team` (mentés 21)
   bool cheat_gather = false;                 // „Őrült” gépi ellenfél (M9): +50% gyűjtés – nyíltan jelölt csalás
   // látótér (M6 6. lépés): csempénként 1 = most látható; a felderített megmarad
   std::vector<uint8_t> visible, explored;
@@ -749,6 +750,9 @@ struct MatchSetup {
   enum class WeatherMode : uint8_t { Off = 0, Mood = 1, Effect = 2, EffectTerrain = 3 } weather = WeatherMode::Mood;
   bool camps = false;                  // a Vadon táborai (D25; az egyéni csata kliense bekapcsolja)
   std::vector<AiSlot> ai;              // gépi játékosok (M9)
+  // csapatok (a régi játék szerint): játékosonként 1–4, 0 vagy hiányzó: mindenki ellen. A csapattárs nem ellenség,
+  // és a meccs akkor ér véget, ha az életben maradók mind egy csapatban vannak (a győzelem a csapaté).
+  std::vector<uint8_t> teams;
   // M11: küldetés – a kezdőbázis (főépület, kezdő egységek) nélkül, és a „nincs épülete = kiesett” szabály ki
   // (a győzelmet és a bukást a küldetés dönti el)
   bool bases = true;
@@ -902,6 +906,12 @@ class Sim {
   bool declare_winner(uint8_t p);
   void set_conquest(bool on) { auto_defeat_ = on; }
   bool conquest() const { return auto_defeat_; }
+  // csapat (a régi `allied`): önmaga vagy azonos, nem nulla csapat; a Vadon (0) senkinek sem szövetségese
+  bool allied(uint8_t a, uint8_t b) const {
+    if (a > kMaxPlayers || b > kMaxPlayers) return false;
+    if (a == b) return true;
+    return a != 0 && b != 0 && players_[a].team != 0 && players_[a].team == players_[b].team;
+  }
 
   // Navigáció (M4): a pálya útkeresőjének csatolása (az egységek létrehozása előtt). Utána a mozgás útkereséssel,
   // ütközéssel és kitéréssel megy; az útkereső a hívóé. Mentés betöltése előtt ugyanígy csatolni kell.
@@ -1221,6 +1231,7 @@ class Sim {
   // a 0. játékos a Vadon (semleges): mindenkinek ellensége (D25)
   bool hostile(uint8_t a, uint8_t b) const {
     if (a == b || a > kMaxPlayers || b > kMaxPlayers) return false;
+    if (allied(a, b)) return false;   // csapattárs
     return a == 0 || b == 0 || !(mode_.peace_players || tick_ < mode_.peace_until);   // M12: béke a játékosok között
   }
   Fixed gap(EntityId a, EntityId b);

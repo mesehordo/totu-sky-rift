@@ -163,3 +163,46 @@ TEST_CASE("adatvezérelt gép (`ai_nep.lua`): minden főnép a saját terve szer
   }
   CHECK(researched >= 1);   // a kis pályán az arany hamar elfogy
 }
+
+TEST_CASE("Csapatok (a regi szerint): a csapattars nem ellenseg, a gyozelem a csapate, mentes es visszajatszas") {
+  Content& c = content_once();
+  sim::Replay base;
+  base.seed = 11;
+  base.ticks = 60;
+  base.map = read_file(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps" / "het_ut.json");
+  base.factions = {"ursan", "ursan", "ursan"};
+  base.teams = {1, 1, 2};
+  std::string err;
+  auto m = sim::start_match(base, &c.terrain, &*c.rules, err);
+  if (!m) std::printf("  hiba: %s\n", err.c_str());
+  CHECK(m != nullptr);
+  if (!m) return;
+  sim::Sim& s = *m->sim;
+  CHECK(s.player(1).team == 1 && s.player(2).team == 1 && s.player(3).team == 2);
+  CHECK(s.allied(1, 2) && s.allied(2, 1) && !s.allied(1, 3) && !s.allied(0, 1) && s.allied(3, 3));
+  CHECK(s.winner() == 0);
+  // közös látótér: a csapattárs egységei mindig látszanak, az ellenfél kezdőbázisa (messze) nem
+  for (int i = 0; i < 3; ++i) s.step();
+  sim::EntityId of2 = sim::kNoEntity, of3 = sim::kNoEntity;
+  s.world().pool<sim::Health>().each([&](sim::EntityId e, const sim::Health& h) {
+    if (h.owner == 2 && of2 == sim::kNoEntity) of2 = e;
+    if (h.owner == 3 && of3 == sim::kNoEntity) of3 = e;
+  });
+  CHECK(of2 != sim::kNoEntity && s.is_visible(1, of2) && !s.is_visible(1, of3));
+  // mentés–betöltés: a csapat megmarad
+  const auto saved = s.save();
+  auto copy = sim::start_match(base, &c.terrain, &*c.rules, err, true);
+  CHECK(copy && copy->sim->load(saved) && copy->sim->player(2).team == 1 && copy->sim->allied(1, 2));
+  s.defeat_player(3);
+  CHECK(s.winner() == 1 && !s.player(2).defeated);   // az 1-es csapat nyert (a 2. játékos is)
+  // egyetlen csapat: nincs két oldal, nincs győztes
+  base.teams = {2, 2, 2};
+  auto one = sim::start_match(base, &c.terrain, &*c.rules, err);
+  CHECK(one && one->sim->winner() == 0);
+  // visszajátszás: a 9-es változat viszi a csapatokat, és újrajátszva ugyanaz
+  base.teams = {1, 1, 2};
+  const sim::Replay rec = sim::record_match(base, c.terrain, *c.rules);
+  const auto dec = sim::decode(sim::encode(rec));
+  CHECK(dec.has_value() && dec->teams == base.teams);
+  CHECK(sim::verify(rec, &c.terrain, &*c.rules).ok);
+}

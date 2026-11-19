@@ -514,6 +514,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       o.supply_cap = p.supply_cap;
       o.supply_used = p.supply_used;
       o.defeated = p.defeated;
+      o.team = p.team;
       o.ascended = p.ascended;
       o.ally = p.ally;
       o.path = p.path;

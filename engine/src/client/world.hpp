@@ -150,9 +150,10 @@ class World {
   // a mozgáscél jelzése (a régi `draw_move_indicator`): a kijelölt csoporttól a legutóbbi mozgásparancs céljáig
   // menetelő zöld nyilak, a célnál befelé mutató pecsét – amíg a kijelöltek közül valaki még tart oda
   void draw_move_indicator(render::SpriteBatch& batch, float alpha, double time) const;
-  void set_sigils(const render::Texture* own, const render::Texture* other, float sigil_base) {
+  void set_sigils(const render::Texture* own, const render::Texture* other, float sigil_base, const render::Texture* ally = nullptr) {
     sigil_own_ = own;
     sigil_other_ = other;
+    sigil_ally_ = ally;
     sigil_base_ = sigil_base;
   }
   sim::EntityId selected_building() const { return selected_building_; }
@@ -218,6 +219,7 @@ class World {
   std::vector<Visual> vis_;
   std::vector<sim::EntityId> selected_;
   const render::Texture* sigil_own_ = nullptr;
+  const render::Texture* sigil_ally_ = nullptr;   // csapattárs: kék (a régi szerint)
   const render::Texture* sigil_other_ = nullptr;
   float sigil_base_ = 48;
   RallyArt rally_;

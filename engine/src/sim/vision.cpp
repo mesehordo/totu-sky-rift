@@ -68,14 +68,15 @@ void Sim::update_vision(uint8_t player) {
     }
   }
   world_.pool<Health>().each([&](EntityId e, const Health& hh) {
-    if (hh.owner != player || hh.hp <= 0) return;
+    if (!allied(player, hh.owner) || hh.hp <= 0) return;   // a csapattársak közös látótere (a régi szerint)
+    const uint8_t o = hh.owner;
     if (const Unit* u = world_.get<Unit>(e)) {
       const EntityDef& d = rules_->defs[u->def];
-      const Fixed s = stat(e, "Vision.sight", Fixed::from_int(std::max(1, d.sight))) * env_sight_mult(player, d);
+      const Fixed s = stat(e, "Vision.sight", Fixed::from_int(std::max(1, d.sight))) * env_sight_mult(o, d);
       see_from(e, std::max(1, s.floor_int()), d.flying);
     } else if (const Building* b = world_.get<Building>(e)) {
       const EntityDef& bd = rules_->defs[b->def];
-      const Fixed s = research_stat(player, "Vision.sight", Fixed::from_int(std::max(1, bd.sight)), bd) * env_sight_mult(player, bd);
+      const Fixed s = research_stat(o, "Vision.sight", Fixed::from_int(std::max(1, bd.sight)), bd) * env_sight_mult(o, bd);
       see_from(e, std::max(1, s.floor_int()) + std::max(b->w, b->h) / 2, false);
     }
   });
@@ -161,12 +162,16 @@ void Sim::stealth_system() {
 bool Sim::is_visible(uint8_t player, EntityId e) {
   if (!world_.alive(e)) return false;
   const Health* h = world_.get<Health>(e);
-  if (h && h->owner == player) return true;
+  if (h && allied(player, h->owner)) return true;   // saját és csapattárs
   if (sheltered(e)) return false;   // épületben: nem látszik
   if (!rules_ || !map_ || fog_ == MatchSetup::Fog::None || player == 0 || player > kMaxPlayers) return true;
   const Stealth* st = world_.get<Stealth>(e);
   if (st && st->revealed_until > tick_) return true;   // a fentről lövő (D33)
-  if (st && st->hidden && !(st->detected & (1u << player))) return false;
+  if (st && st->hidden) {   // rejtett: ha ő vagy egy csapattársa felfedte
+    bool det = false;
+    for (int i = 0; i <= kMaxPlayers && !det; ++i) det = (st->detected & (1u << i)) && allied(player, static_cast<uint8_t>(i));
+    if (!det) return false;
+  }
   const PlayerState& p = players_[player];
   if (p.visible.empty()) return true;
   int x = 0, y = 0;

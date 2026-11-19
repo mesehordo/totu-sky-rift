@@ -198,13 +198,13 @@ int a_my(lua_State* L) {
   return 1;
 }
 
-// AI.enemies() → a most látott idegen egységek és épületek (a Vadon is, owner = 0)
+// AI.enemies() → a most látott idegen egységek és épületek (a Vadon is, owner = 0; a csapattársaké nem)
 int a_enemies(lua_State* L) {
   Sim& s = sim_of(L);
   const uint8_t p = me(L);
   std::vector<EntityId> ids;
   s.world().pool<sim::Health>().each([&](EntityId e, const sim::Health& h) {
-    if (h.hp > 0 && h.owner != p) ids.push_back(e);
+    if (h.hp > 0 && !s.allied(p, h.owner)) ids.push_back(e);
   });
   lua_newtable(L);
   lua_Integer n = 0;

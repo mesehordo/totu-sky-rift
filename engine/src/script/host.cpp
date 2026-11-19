@@ -872,6 +872,7 @@ int g_player(lua_State* L) {
   lua_pushstring(L, p.path.c_str()); lua_setfield(L, -2, "path");
   lua_pushboolean(L, p.defeated); lua_setfield(L, -2, "defeated");
   lua_pushboolean(L, p.active); lua_setfield(L, -2, "active");   // M13: játszik-e ezen a helyen
+  lua_pushinteger(L, p.team); lua_setfield(L, -2, "team");       // csapat (0: mindenki ellen)
   lua_pushstring(L, p.ally.c_str()); lua_setfield(L, -2, "ally");
   lua_pushstring(L, p.faction.c_str()); lua_setfield(L, -2, "faction");
   return 1;

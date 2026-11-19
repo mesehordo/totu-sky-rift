@@ -588,3 +588,25 @@ TEST_CASE("M13 felulet – menü: a modok gyozelmi szkriptjei a gyozelmi feltete
   pick(m, MenuAct::Option, 5, 1);   // vissza beépítettre: Főváros
   CHECK(m.skirmish().victory == sim::MatchSetup::Victory::Capital && m.skirmish().victory_script.empty());
 }
+
+TEST_CASE("Csapatok – menü: Csapat oszlop (–, 1–4), a MatchSetup viszi; egy csapat nem eleg") {
+  client::Settings st;
+  const auto factions = client::scan_factions(TOTU_CONTENT_DIR);
+  Menu m(st, real_locale(), test_maps(), factions);
+  m.go(MenuScreen::Skirmish);
+  m.layout(1280, 720);
+  const auto* t0 = m.find(MenuAct::SlotTeam, 0);
+  CHECK(t0 && t0->options.size() == 5 && t0->enabled && t0->current == 0);
+  pick(m, MenuAct::SlotTeam, 0, 1);
+  pick(m, MenuAct::SlotTeam, 1, 1);
+  CHECK(m.skirmish().slots[0].team == 1 && m.skirmish().slots[1].team == 1);
+  CHECK(press(m, MenuAct::Start) == Menu::Result::None);
+  CHECK(m.message() == "Csapatjátékhoz legalább két különböző csapat kell.");
+  pick(m, MenuAct::SlotTeam, 1, 2);
+  client::MatchConfig c;
+  CHECK(m.match_config(7, &c));
+  CHECK(c.setup.teams.size() >= 2 && c.setup.teams[0] == 1 && c.setup.teams[1] == 2);
+  pick(m, MenuAct::SlotTeam, 0, 0);
+  pick(m, MenuAct::SlotTeam, 1, 0);
+  CHECK(m.match_config(7, &c) && c.setup.teams.empty());   // mindenki ellen: nincs csapat
+}

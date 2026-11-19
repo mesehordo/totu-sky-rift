@@ -195,6 +195,7 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     p = PlayerState{};
     p.faction = setup.factions[i];
     p.active = true;
+    p.team = i < setup.teams.size() && setup.teams[i] <= 4 ? setup.teams[i] : 0;
     const FactionDef& f = *rules_->faction(p.faction);
     for (int r = 0; r < kResources; ++r) {   // küldetésben a nyersanyagot a küldetés adja; Gyors: kétszeres
       p.res[static_cast<size_t>(r)] = setup.bases ? int64_t{f.start_resources[static_cast<size_t>(r)]} * 1000 *
@@ -591,22 +592,32 @@ void Sim::economy_system() {
 }
 
 int Sim::winner() const {
-  int alive = 0, last = 0, playing = 0;
   if (mode_.survived) {   // Túlélés: a csapat nyert (a legkisebb sorszámú életben maradt játékos)
     for (int i = 1; i <= kMaxPlayers; ++i) {
       if (players_[static_cast<size_t>(i)].active && !players_[static_cast<size_t>(i)].defeated) return i;
     }
   }
+  // a régi szabály: vége, ha az életben maradók mind szövetségesek (egy csapat vagy egy játékos); a győztes a
+  // legkisebb sorszámú életben maradt (a csapattársai is nyertek – allied()). Legalább két oldal kell a kezdetén.
+  int first = 0, sides = 0;
+  std::array<bool, 5> team_seen{};
   for (int i = 1; i <= kMaxPlayers; ++i) {
     const PlayerState& p = players_[static_cast<size_t>(i)];
     if (!p.active) continue;
-    ++playing;
-    if (!p.defeated) {
-      ++alive;
-      last = i;
+    if (p.team == 0) ++sides;
+    else if (!team_seen[std::min<size_t>(p.team, 4)]) {
+      team_seen[std::min<size_t>(p.team, 4)] = true;
+      ++sides;
     }
   }
-  return playing >= 2 && alive == 1 ? last : 0;
+  if (sides < 2) return 0;
+  for (int i = 1; i <= kMaxPlayers; ++i) {
+    const PlayerState& p = players_[static_cast<size_t>(i)];
+    if (!p.active || p.defeated) continue;
+    if (first == 0) first = i;
+    else if (!allied(static_cast<uint8_t>(first), static_cast<uint8_t>(i))) return 0;
+  }
+  return first;
 }
 
 bool Sim::defeat_player(uint8_t p) {

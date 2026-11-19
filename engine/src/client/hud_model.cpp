@@ -1308,8 +1308,8 @@ void HudModel::minimap_click(float x, float y, int button) {
 
 bool HudModel::match_over() const {
   if (!snap_) return false;
-  const SnapPlayer& me = snap_->players[std::min<size_t>(player, sim::Sim::kMaxPlayers)];
-  return snap_->mission.active ? snap_->mission.result != 0 : (snap_->winner != 0 || me.defeated);
+  // csapatban: a játékos kiesése után a csapattársai még játszhatnak (a régi szerint addig figyel)
+  return snap_->mission.active ? snap_->mission.result != 0 : (snap_->winner != 0 || snap_->side_out(player));
 }
 
 std::array<int64_t, 4> HudModel::score(const SnapPlayer& p) {

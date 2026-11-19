@@ -64,6 +64,8 @@ struct Replay {
   // M12 (8-as változat, ha nem az alapérték): győzelmi feltétel, tempóprofil, perc
   uint8_t victory = 0, tempo = 0;
   int32_t minutes = 0;
+  // 9-es változat (ha van csapat): játékosonként a csapat (0: mindenki ellen)
+  std::vector<uint8_t> teams;
   std::vector<Checkpoint> checkpoints;
 };
 

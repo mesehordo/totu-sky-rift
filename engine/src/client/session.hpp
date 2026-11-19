@@ -83,6 +83,7 @@ struct SnapPlayer {
   std::array<int32_t, sim::kResources> res{};
   int32_t supply_cap = 0, supply_used = 0;
   bool defeated = false, ascended = false;
+  uint8_t team = 0;                          // csapat (0: mindenki ellen)
   std::string ally;
   std::string path;
   std::vector<std::string> researched;
@@ -166,6 +167,22 @@ struct Snapshot {
     std::shared_ptr<const std::vector<uint8_t>> grid;
   } place;
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
+  // csapat (a régi `allied`): önmaga vagy azonos, nem nulla csapat
+  bool allied(int a, int b) const {
+    if (a < 0 || b < 0 || a > sim::Sim::kMaxPlayers || b > sim::Sim::kMaxPlayers) return false;
+    if (a == b) return true;
+    const uint8_t ta = players[static_cast<size_t>(a)].team;
+    return a != 0 && b != 0 && ta != 0 && ta == players[static_cast<size_t>(b)].team;
+  }
+  bool won(int p) const { return winner != 0 && allied(winner, p); }   // a győztes csapatban van
+  // a játékos oldala kiesett: ő és minden csapattársa (a régi: a vereség, ha nincs élő szövetséges)
+  bool side_out(int p) const {
+    for (int i = 1; i <= sim::Sim::kMaxPlayers; ++i) {
+      const SnapPlayer& q = players[static_cast<size_t>(i)];
+      if (q.active && !q.defeated && allied(p, i)) return false;
+    }
+    return true;
+  }
 };
 
 class Session {

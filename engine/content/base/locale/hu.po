@@ -9344,3 +9344,15 @@ msgstr ""
 msgctxt "hud.summon.left"
 msgid "{} mp"
 msgstr ""
+
+msgctxt "ui.skirmish.col.team"
+msgid "Csapat"
+msgstr ""
+
+msgctxt "ui.skirmish.need_two_teams"
+msgid "Csapatjátékhoz legalább két különböző csapat kell."
+msgstr ""
+
+msgctxt "hud.rel.ally"
+msgid "Szövetséges"
+msgstr ""

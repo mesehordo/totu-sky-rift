@@ -56,6 +56,7 @@ struct SlotSetup {
   // gépi helyen (M9): az alap gép nehézsége és személyisége
   std::string difficulty = "normal";
   std::string personality = "kiegyenlitett";
+  uint8_t team = 0;   // csapat (1–4; 0: mindenki ellen) – a régi „Csapat” oszlop
 };
 
 // az alap gépi ellenfél (`content/base/ai/alap`) nehézségei és személyiségei a lenyílókhoz (a csomag sorrendjében)
@@ -100,6 +101,7 @@ enum class MenuAct : uint8_t {
   SlotFaction,   // lenyíló; arg: a hely
   SlotDifficulty,    // lenyíló; arg: a hely (M9)
   SlotPersonality,   // lenyíló; arg: a hely (M9)
+  SlotTeam,          // lenyíló; arg: a hely (csapat: –, 1–4)
   Option,        // lenyíló; arg: 0 köd, 1 napszak, 2 időjárás, 3 táborok, 4 hadtáp
   Cycle,         // beállítás léptetése; arg: a sor
   OpenSound, OpenKeys,

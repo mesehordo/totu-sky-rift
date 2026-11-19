@@ -1322,7 +1322,9 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       const float rad = static_cast<float>(rules->defs[u->def].radius.to_double()) * kTilePx;
       const float w = std::max(24.0f, rad * 2.5f);
       const float k = w / sigil_base_;
-      const render::Texture* tex = u->owner == session_.local_player() ? sigil_own_ : sigil_other_;
+      const uint8_t me = session_.local_player();
+      const render::Texture* tex = u->owner == me ? sigil_own_
+                                   : sigil_ally_ && cur_->allied(me, u->owner) ? sigil_ally_ : sigil_other_;
       render::SpriteInstance in;
       in.w = (sigil_base_ + 12.0f) * k;
       in.h = (std::floor(sigil_base_ * 0.6f) + 12.0f) * k;

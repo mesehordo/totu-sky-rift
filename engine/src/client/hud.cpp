@@ -1071,8 +1071,9 @@ void Hud::draw_allies_panel() {
   for (const int q : rows) {
     const SnapPlayer& p = s->players[static_cast<size_t>(q)];
     const bool me = q == model_.player;
-    const std::string rel = me ? model_.tr("rel.you") : model_.tr("rel.enemy");
-    const Col col = me ? Col{150, 230, 150} : Col{240, 140, 120};
+    const bool ally = !me && s->allied(model_.player, q);
+    const std::string rel = me ? model_.tr("rel.you") : ally ? model_.tr("rel.ally") : model_.tr("rel.enemy");
+    const Col col = me || ally ? Col{150, 230, 150} : Col{240, 140, 120};
     rect(static_cast<float>(r.x + 10), y + 3, 12, lh - 10, model_.player_color(static_cast<uint8_t>(q)));
     std::string nm = model_.tr("player", {std::to_string(q)});
     if (p.defeated) nm += model_.tr("defeated_mark");
@@ -1110,7 +1111,7 @@ void Hud::draw_quests() {
     }
     return;
   }
-  const bool done = model_.snap()->winner == model_.player;
+  const bool done = model_.snap()->won(model_.player);
   const Col col = done ? Col{150, 235, 150} : Col{240, 236, 214};
   const Rect r{static_cast<int>(x), static_cast<int>(y + (lh - box) / 2 - 1), static_cast<int>(box), static_cast<int>(box)};
   outline({r.x + 1, r.y + 1, r.w, r.h}, {0, 0, 0});
@@ -1448,7 +1449,7 @@ void Hud::draw_result(const HudFrame& f) {
   if (!model_.match_over()) return;
   const Snapshot* s = model_.snap();
   const bool mission = s->mission.active;
-  const bool won = mission ? s->mission.result == 1 : s->winner == model_.player;
+  const bool won = mission ? s->mission.result == 1 : s->won(model_.player);
   const HudLayout& L = model_.layout();
   const float u = static_cast<float>(L.s);
   auto k = [&](float v) { return std::round(v * u); };
@@ -1500,8 +1501,8 @@ void Hud::draw_result(const HudFrame& f) {
   }
   auto outcome = [&](int q) {
     const SnapPlayer& p = s->players[static_cast<size_t>(q)];
-    if (p.defeated) return model_.tr("sum.out.defeated");
-    if (mission ? (q == model_.player && won) : s->winner == q) return model_.tr("sum.out.winner");
+    if (p.defeated && !(!mission && s->won(q))) return model_.tr("sum.out.defeated");   // a győztes csapat elesett tagja is nyert
+    if (mission ? (q == model_.player && won) : s->won(q)) return model_.tr("sum.out.winner");
     return model_.tr("sum.out.alive");
   };
   if (model_.sum_tab == 3) {

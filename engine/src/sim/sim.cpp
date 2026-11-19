@@ -502,6 +502,7 @@ uint64_t Sim::hash() const {
       }
       h.add_u64(p.ascended);
       h.add_u64(p.defeated);
+      if (p.team) h.add_u64(0x5445414D00ULL + p.team);   // csapat (csak ha van: a korábbi hash-ek maradnak)
       if (p.cheat_gather) h.add_u64(0x4F52554C54ULL);   // (csak ha be van kapcsolva: a korábbi hash-ek maradnak)
       h.add_u64(p.fallen.size());
       for (const auto& [fd, hs] : p.fallen) { h.add_u64(fd); hs.hash(h); }
@@ -613,7 +614,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(20);   // séma (20: az összesítő számlálói; 19: a meccs módja; 18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(21);   // séma (21: csapatok; 20: az összesítő számlálói; 19: a meccs módja; 18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -701,6 +702,7 @@ std::vector<uint8_t> Sim::save() const {
     w.u32(static_cast<uint32_t>(s.timeline.size()));
     for (const auto& x : s.timeline) { w.i32(x.t); w.i32(x.supply); w.i32(x.army); w.i32(x.gathered); w.i32(x.kills); }
   }
+  for (const PlayerState& p : players_) w.u8(p.team);   // 21: csapatok
   return w.data();
 }
 
@@ -743,7 +745,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 20) return false;
+  if (schema < 3 || schema > 21) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r);
     if (!r.ok()) return false;
@@ -942,6 +944,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
       s.timeline.push_back(x);
     }
   }
+  for (PlayerState& p : players_) p.team = schema >= 21 ? std::min<uint8_t>(r.u8(), 4) : 0;
   if (!r.ok() || !r.at_end()) return false;
   // H-99, H-100: a betöltött sablon- és navigációs indexek érvényesek
   bool valid = true;

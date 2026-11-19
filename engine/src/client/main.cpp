@@ -585,7 +585,7 @@ int main(int argc, char** argv) {
         mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf, fire_flame, fire_puff;
     std::map<std::string, render::Texture> item_tex;
     render::Texture ground_tex;
-    render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
+    render::Texture fallback, white, sigil_own, sigil_other, sigil_ally, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
     render::Lighting lighting;
@@ -833,7 +833,10 @@ int main(int argc, char** argv) {
             render::premultiply(other);
             sigil_own = dev.create_array_from(own, false);
             sigil_other = dev.create_array_from(other, false);
-            world.set_sigils(&sigil_own, &sigil_other, 48.0f);
+            auto ally = client::sigil_image({120, 200, 255}, 48.0f, false);   // csapattárs: kék (a régi szerint)
+            render::premultiply(ally);
+            sigil_ally = dev.create_array_from(ally, false);
+            world.set_sigils(&sigil_own, &sigil_other, 48.0f, &sigil_ally);
             // a gyülekezőpont képei (a régi szerint): 16 irányú nyíl, kis pecsét, rúd, 8 fázisú zászló és árnyék
             auto layers = [&](int n, int lw, int lh, auto make) {
               render::Texture t = dev.create_array(lw, lh, n, false);
@@ -1013,7 +1016,7 @@ int main(int argc, char** argv) {
         ds.tempo = kTempo[std::min<int>(sn->mode.tempo, 3)];
         ds.duration_ticks = sn->tick;
         if (hm.match_over()) {
-          const bool won = sn->mission.active ? sn->mission.result == 1 : sn->winner == hm.player;
+          const bool won = sn->mission.active ? sn->mission.result == 1 : sn->won(hm.player);
           ds.result = won ? "won" : "lost";
         }
       }
@@ -1827,6 +1830,7 @@ int main(int argc, char** argv) {
     terrain.shutdown();
     dev.destroy(fallback);
     dev.destroy(sigil_own);
+    dev.destroy(sigil_ally);
     dev.destroy(sigil_other);
     for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &ground_tex}) dev.destroy(*t);
     for (auto& [k, t] : item_tex) dev.destroy(t);

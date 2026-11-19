@@ -9345,3 +9345,15 @@ msgstr "{m}: its dependency ({d}) must load first – move it up"
 msgctxt "hud.summon.left"
 msgid "{} mp"
 msgstr "{} s"
+
+msgctxt "ui.skirmish.col.team"
+msgid "Csapat"
+msgstr "Team"
+
+msgctxt "ui.skirmish.need_two_teams"
+msgid "Csapatjátékhoz legalább két különböző csapat kell."
+msgstr "A team game needs at least two different teams."
+
+msgctxt "hud.rel.ally"
+msgid "Szövetséges"
+msgstr "Ally"
