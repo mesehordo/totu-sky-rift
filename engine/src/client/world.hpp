@@ -53,7 +53,9 @@ class World {
   void order_garrison(sim::EntityId building);
   void order_unload(float wx, float wy);
   // életerőcsíkok (a sérült és a kijelölt egységek és épületek fölött); a fő menet után
-  void draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha) const;
+  // a régi szerint csak az egér alatti egység / épület csíkjai: fölül pajzs (kék), életerő (4 képpont; zöld > 60 % >
+  // sárga > 30 % > piros), alul energia (lila, saját egységnél); `hover_*`: az egér világ-képpontban
+  void draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha, float hover_wx, float hover_wy) const;
   // helyőrség-jelzés (D39) a saját épületeken: jel, ha bent van valaki; a kurzor alatti épület fölött annyi fej, ahány
   // hely van (a foglaltak a játékos színével, a szabadok szürkén); az építő bentléte nem jelölendő
   void draw_garrison(render::SpriteBatch& batch, const render::Texture& white, float hover_wx, float hover_wy) const;

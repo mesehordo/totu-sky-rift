@@ -305,36 +305,64 @@ void World::order_attack_move(float wx, float wy) {
   note_move(wx, wy);
 }
 
-void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha) const {
+void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha, float hx, float hy) const {
   if (!cur_) return;
+  const sim::Rules* rules = session_.rules();
+  // az egér alatti entitás: előbb egység (a figura doboza), aztán épület (a lábnyom, fölfelé a kép magasságáig)
+  int best = -1;
+  float best_d = 1e9f;
   for (size_t i = 0; i < cur_->units.size(); ++i) {
     const SnapUnit& u = cur_->units[i];
-    if (u.kind == SnapUnit::kShot || u.kind == SnapUnit::kResource || u.max_hp <= 0 || u.hp <= 0) continue;
-    const bool sel = std::find(selected_.begin(), selected_.end(), u.id) != selected_.end();
-    if (u.hp >= u.max_hp && !sel) continue;
-    float x, y, w;
-    if (u.kind == SnapUnit::kBuilding) {
-      w = static_cast<float>(u.w) * kTilePx * 0.7f;
-      x = static_cast<float>(u.tx) * kTilePx + (static_cast<float>(u.w) * kTilePx - w) / 2;
-      y = static_cast<float>(u.ty) * kTilePx - 8.0f;
-    } else {
-      const Visual& v = vis_[i];
-      w = 22.0f;
-      x = v.px + (u.x - v.px) * alpha - w / 2;
-      y = v.py + (u.y - v.py) * alpha - 44.0f;
+    if (u.kind != SnapUnit::kUnit || u.max_hp <= 0 || u.hp <= 0) continue;
+    const Visual& v = vis_[i];
+    const float x = v.px + (u.x - v.px) * alpha, y = v.py + (u.y - v.py) * alpha;
+    const float rad = rules && u.def < rules->defs.size() ? static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx : 10.0f;
+    const float half = std::max(10.0f, rad * 1.1f);
+    if (hx < x - half || hx > x + half || hy < y - std::max(36.0f, rad * 2.6f) || hy > y + 4) continue;
+    const float d = std::fabs(hx - x) + std::fabs(hy - (y - rad));
+    if (d < best_d) { best_d = d; best = static_cast<int>(i); }
+  }
+  if (best < 0) {
+    for (size_t i = 0; i < cur_->units.size(); ++i) {
+      const SnapUnit& u = cur_->units[i];
+      if (u.kind != SnapUnit::kBuilding || u.max_hp <= 0 || u.hp <= 0) continue;
+      const float bx = static_cast<float>(u.tx) * kTilePx, by = static_cast<float>(u.ty) * kTilePx;
+      const float bw = static_cast<float>(u.w) * kTilePx, bh = static_cast<float>(u.h) * kTilePx;
+      if (hx >= bx && hx < bx + bw && hy >= by - bh * 0.5f && hy < by + bh) best = static_cast<int>(i);
     }
-    const float f = std::clamp(static_cast<float>(u.hp) / static_cast<float>(u.max_hp), 0.0f, 1.0f);
+  }
+  if (best < 0) return;
+  const SnapUnit& u = cur_->units[static_cast<size_t>(best)];
+  float cx, y, w;
+  if (u.kind == SnapUnit::kBuilding) {
+    w = std::max(20.0f, static_cast<float>(u.w) * kTilePx * 0.7f);
+    cx = (static_cast<float>(u.tx) + static_cast<float>(u.w) / 2) * kTilePx;
+    y = static_cast<float>(u.ty) * kTilePx - 30.0f;   // a lábnyom fölött, a helyőrség jelzői fölött
+  } else {
+    const Visual& v = vis_[static_cast<size_t>(best)];
+    const float rad = rules && u.def < rules->defs.size() ? static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx : 10.0f;
+    w = std::max(20.0f, rad * 2.5f);
+    cx = v.px + (u.x - v.px) * alpha;
+    y = v.py + (u.y - v.py) * alpha - std::max(40.0f, rad * 2.8f);
+  }
+  const float x0 = cx - w / 2;
+  auto bar = [&](float yy, float hh, float frac, uint8_t r, uint8_t g, uint8_t b) {
     render::SpriteInstance bg;
-    bg.x = x - 1; bg.y = y - 1; bg.w = w + 2; bg.h = 5;
-    bg.tint[0] = 15; bg.tint[1] = 12; bg.tint[2] = 10; bg.tint[3] = 200;
+    bg.x = x0; bg.y = yy; bg.w = w; bg.h = hh;
+    bg.tint[0] = 10; bg.tint[1] = 10; bg.tint[2] = 10;
     batch.draw(white, nullptr, bg);
-    render::SpriteInstance fg;
-    fg.x = x; fg.y = y; fg.w = w * f; fg.h = 3;
-    // zöld → sárga → piros (a régi játék színei szerint)
-    fg.tint[0] = static_cast<uint8_t>(f > 0.5f ? (1.0f - f) * 2.0f * 230.0f : 230.0f);
-    fg.tint[1] = static_cast<uint8_t>(f > 0.5f ? 210.0f : f * 2.0f * 210.0f);
-    fg.tint[2] = 40;
+    render::SpriteInstance fg = bg;
+    fg.w = w * std::clamp(frac, 0.0f, 1.0f);
+    fg.tint[0] = r; fg.tint[1] = g; fg.tint[2] = b;
     batch.draw(white, nullptr, fg);
+  };
+  if (u.shield_max > 0) bar(y - 4, 3, static_cast<float>(u.shield) / static_cast<float>(u.shield_max), 90, 170, 255);
+  const float f = static_cast<float>(u.hp) / static_cast<float>(u.max_hp);
+  if (f > 0.6f) bar(y, 4, f, 80, 220, 80);
+  else if (f > 0.3f) bar(y, 4, f, 230, 200, 60);
+  else bar(y, 4, f, 230, 60, 50);
+  if (u.energy_max > 0 && u.kind == SnapUnit::kUnit && u.owner == session_.local_player()) {
+    bar(y + 5, 3, static_cast<float>(u.energy) / static_cast<float>(u.energy_max), 200, 110, 255);
   }
 }
 

@@ -961,3 +961,7 @@ A tulajdonos döntése: az épületek csapatát lengő lobogó jelzi (nem maszk,
 ## 2026-11-19 – Lobogók népenként, címer nélkül; a zászlók árnyéka (D51 kiegészítés, D52)
 
 Minden főnépnek saját alakú lobogó (9 stílus: általános + 7 főnép + a Micélia-mod), címer nélkül; rúd a nép anyagából, csúcsdísz és szegély a kiemelőszínben, vászon a csapatszínben. A stílust a tulajdonos népe adja, így a szövetséges kisnép épülete a főnép lobogóját kapja. A csapatlobogók és a gyülekezőzászló az árnyékmenetbe kerültek: az árnyékuk a nappal forog (különbségképpel ellenőrizve). Felírva (D52 2.): az egységeken a csapatszín egy kulcsszín helyére kerül. Próba: „lobogok”. Képek: `docs/quality/kepek/lobogok_nepenkent.jpg`, `utan_csapatlobogo.jpg`.
+
+## 2026-11-19 – 4. tétel: életerő-csík a régi szerint
+
+Csak az egér alatti egység vagy épület csíkja látszik (a régi `hover_bar`): 4 px, zöld > 60 % > sárga > 30 % > piros, fölötte kék pajzscsík, alatta lila energiacsík a saját egységnél; az épületnél a helyőrség-jelzők fölött. Nyitott: az idézett lény „N mp” visszaszámlálása. Kép: `docs/quality/kepek/utan_eletero_csik.jpg`.

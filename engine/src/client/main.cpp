@@ -1503,10 +1503,10 @@ int main(int argc, char** argv) {
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_banners(batch, t);        // D51: a csapatjelző lobogók
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
-        world.draw_bars(batch, white, alpha);
         {
           float hmx = 0, hmy = 0;
           SDL_GetMouseState(&hmx, &hmy);
+          world.draw_bars(batch, white, alpha, cam.x + hmx / cam.zoom, cam.y + hmy / cam.zoom);   // a régi: csak az egér alattié
           if (demo_hover_x >= 0) world.draw_garrison(batch, white, demo_hover_x, demo_hover_y);
           else world.draw_garrison(batch, white, cam.x + hmx / cam.zoom, cam.y + hmy / cam.zoom);
         }
