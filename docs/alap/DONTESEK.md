@@ -514,6 +514,11 @@ fecskefarkú). A **kisnépek** épületei a szövetséges főnép (a tulajdonos)
 2. **Az egységeken** a csapatszín **egy kulcsszín helyére** kerül: a képen egy fenntartott szín (árnyalattartomány)
    jelöli, hová jön a csapatszín; az atlaszkészítő ebből magától készíti a maszkot, külön maszkkép nem kell (a
    meglévő maszkok tovább működnek). Az épületeken a csapatjelzés a lobogó (D51).
+   **A kulcsszín: tiszta kék** (#0000FF és árnyalatai, sötéttől világosig; a vörös és a zöld csatorna a kék 25 %-a
+   alatt). A felmérés szerint a mostani egység- és épületképeken ez gyakorlatilag nem fordul elő (2 képpont egy
+   képen), szemben a bíborral (16 kép), a zölddel (20) vagy a ciánnal (38). Az egységképen így festett részeket az
+   atlaszkészítő szürkévé alakítja (a kék fényessége az árnyalat), és oda kerül a csapatszín. A kulcsszínt az
+   egységképeken másra nem szabad használni.
 
 ### D53 – A Croftianok újragondolása · ELDÖNTVE (2026-11-19, tervezési elv; megvalósítás később)
 

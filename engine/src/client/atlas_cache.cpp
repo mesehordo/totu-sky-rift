@@ -19,7 +19,7 @@ namespace fs = std::filesystem;
 namespace {
 
 // az atlaszkészítő változata: ha a készítés módja változik (szűrő, elrendezés), növelni kell – a régi atlasz újraépül
-constexpr const char* kBuilderVersion = "atlasz-1";
+constexpr const char* kBuilderVersion = "atlasz-2";   // 2: kulcsszínes csapatmaszk (D52)
 
 struct Cancelled {};
 

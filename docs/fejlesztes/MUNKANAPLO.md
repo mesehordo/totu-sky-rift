@@ -1001,3 +1001,7 @@ A régi `_scatter_doodads` szabályai: füvön 16 %, a réteken (6 csempés sim�
 ## 2026-11-19 – 6. tétel (2. rész): földutak és talajfoltok a régi szerint
 
 `client/ground_overlay`: a régi `Scenery` szerint a kitaposott ösvények (fél felbontású Dijkstra a kezdőhelyek, a pálya közepe, a szomszéd kezdőhely és a 15 csempén belüli aranybánya között; víz, szikla, fa, lelőhely drága; zajos, kanyargós költség), majd a talajfoltok (moha, száraz fű, avar az erdő közelében) érték-zajból, szemcsés széllel; 8 képpont/csempe fedőréteg az egész pályára, egyszer (kb. 0,1 s), rögzített véletlenből. Hátra: a fű–föld határ lekerekítése. Kép: `docs/quality/kepek/utan_foldutak.jpg`.
+
+## 2026-11-19 – D52 2.: kulcsszínes csapatszín az egységeken
+
+Az atlaszkészítő a külön maszk nélküli egységképeken a tiszta kék (#0000FF árnyalatai; R, G < B/4) képpontokból maszkot készít, a képpontot szürkévé alakítja (a fényesség megmarad), és a rajzoló oda teszi a csapatszínt (a meglévő maszkos út). A kulcsszín a felmérés alapján: a jelölt színek közül a kék fordul elő a legkevésbé a mostani grafikában. Az atlasz készítőjének változata „atlasz-2” lett, így a gyorsítótár magától újraépül (első indításkor kb. 3 perc). A mostani képeken nincs kék kulcsszín, ezért látható változás még nincs; az új vagy átfestett egységképeken működik. Próba: „kulcsszin”.

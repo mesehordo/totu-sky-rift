@@ -198,3 +198,9 @@ TEST_CASE("nyugodt + belső átlag: körvonal a sziluett köré, a belső zaj si
   // a sima felület (a tinta csak a helyi maximumnál sötétebb pontokat érinti) lényegében változatlan
   CHECK(std::abs(img.at(12, 20)[0] - 200) <= 6 && img.at(12, 20)[3] == 255);
 }
+
+TEST_CASE("atlasz D52: a csapatszin kulcsszine (tiszta kek) – maszk keszul belole, a kep szurke lesz") {
+  using totu::render::key_color;
+  CHECK(key_color(0, 0, 255) && key_color(10, 20, 120) && key_color(30, 30, 200));
+  CHECK(!key_color(60, 60, 200) && !key_color(176, 70, 255) && !key_color(0, 0, 30) && !key_color(80, 160, 255));
+}

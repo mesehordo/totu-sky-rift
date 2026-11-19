@@ -86,6 +86,9 @@ AtlasData build_atlas(const std::vector<std::string>& sheet_jsons, const AtlasOp
                       const std::function<void(int, const Image&, const Image&)>& write_page,
                       std::vector<std::string>* warnings = nullptr);
 
+// D52: a csapatszín kulcsszíne az egységképeken (tiszta kék árnyalatai); külön maszk nélkül ebből készül a maszk
+bool key_color(int r, int g, int b);
+
 // A grafika mappájából a használható sprite-leírások (a `_old` változatok nélkül), rendezve.
 std::vector<std::string> list_sprite_sheets(const std::string& assets_dir);
 

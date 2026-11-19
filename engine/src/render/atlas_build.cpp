@@ -219,6 +219,12 @@ std::vector<std::string> list_sprite_sheets(const std::string& assets_dir) {
   return out;
 }
 
+bool key_color(int r, int g, int b) {
+  // a csapatszín kulcsszíne (D52): tiszta kék árnyalatai – a vörös és a zöld csatorna a kék 25 %-a alatt; a mostani
+  // grafikában ez szinte sehol nem fordul elő (a felmérés szerint 2 képpont egyetlen képen)
+  return b > 40 && r * 4 < b && g * 4 < b;
+}
+
 AtlasData build_atlas(const std::vector<std::string>& sheet_jsons, const AtlasOptions& opt,
                       const std::function<void(int, const Image&, const Image&)>& write_page,
                       std::vector<std::string>* warnings) {
@@ -266,6 +272,29 @@ AtlasData build_atlas(const std::vector<std::string>& sheet_jsons, const AtlasOp
     if (const content::Value* tm = doc->find("team_mask"); tm && tm->is_string()) {
       mask = load_png((dir / tm->text()).string(), nullptr);
       if (mask && (mask->width != img->width || mask->height != img->height)) mask.reset();
+    }
+    if (!mask) {   // D52: egységképen külön maszk nélkül a kulcsszín (tiszta kék) jelöli a csapatszín helyét
+      const content::Value* tyv = doc->find("type");
+      if (tyv && tyv->is_string() && tyv->text() == "unit") {
+        Image km;
+        km.width = img->width;
+        km.height = img->height;
+        km.rgba.assign(img->rgba.size(), 0);
+        bool any = false;
+        for (int y = 0; y < img->height; ++y) {
+          for (int x = 0; x < img->width; ++x) {
+            uint8_t* p = img->at(x, y);
+            if (p[3] < 8) continue;
+            const int r = p[0], g = p[1], b = p[2];
+            if (key_color(r, g, b)) {   // a kék fényessége lesz a szürke árnyalat, rá jön a csapatszín
+              p[0] = p[1] = p[2] = static_cast<uint8_t>(std::min(255, b + (r + g) / 2));
+              km.at(x, y)[3] = 255;
+              any = true;
+            }
+          }
+        }
+        if (any) mask = std::move(km);
+      }
     }
     AtlasSheet s;
     const content::Value* id = doc->find("id");
