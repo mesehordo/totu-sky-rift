@@ -949,3 +949,7 @@ A régi és az új kinézet 13 eltérése: `docs/quality/REGI_JATEK_OSSZEVETES.m
 ## 2026-11-19 – 2. tétel: a gyülekezőpont a régi szerint
 
 A tulajdonos döntése: a 12. kivételével minden tételnél a régi játék megoldása jön át, kérdés nélkül. Gyülekezőpont: a kijelölt saját termelő épületnél a régi fecskefarkú zászló a csapatszínben, 8 fázisban lengve, vetett árnyékkal; az épülettől menetelő nyilak (16 irány), a célnál kis pecsét. Hiba javítva: a kliens eddig nem tudta beállítani a gyülekezőpontot – most jobb kattintással, ha csak épület van kijelölve (a régi szerint). A pillanatkép viszi a pontot. Kép: `docs/quality/kepek/utan_gyulekezopont.jpg`.
+
+## 2026-11-19 – 3. tétel: a mozgáscél jelzése a régi szerint
+
+A kijelölt csoport közepétől a legutóbbi saját mozgásparancs (mozgás, vonal, támadó mozgás) céljáig menetelő zöld nyilak, a célnál befelé mutató zöld pecsét; csak amíg a kijelöltek közül valaki még oda tart. Kép: `docs/quality/kepek/utan_mozgascel.jpg`.

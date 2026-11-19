@@ -92,6 +92,7 @@ void World::select_box(float x0, float y0, float x1, float y1) {
   if (y0 > y1) std::swap(y0, y1);
   selected_.clear();
   selected_building_ = 0;
+  last_move_ = false;
   if (!cur_) return;
   for (const SnapUnit& u : cur_->units) {
     if (u.owner != session_.local_player() || u.hp <= 0 || u.kind != SnapUnit::kUnit) continue;
@@ -110,6 +111,7 @@ void World::select_box(float x0, float y0, float x1, float y1) {
 void World::set_selection(const std::vector<sim::EntityId>& ids) {
   selected_.clear();
   selected_building_ = 0;
+  last_move_ = false;
   if (!cur_) return;
   for (const sim::EntityId id : ids) {
     const SnapUnit* u = cur_->find(id);
@@ -182,6 +184,7 @@ void World::order_line(float wx0, float wy0, float wx1, float wy1) {
     c.y = to_fixed(wy0 + dy * t);
     post(c);
   }
+  note_move(wx0 + dx / 2, wy0 + dy / 2);
 }
 
 bool World::selection_center(float& wx, float& wy) const {
@@ -223,7 +226,8 @@ void World::order_move(float wx, float wy, sim::Formation f) {
   c.x = to_fixed(wx);
   c.y = to_fixed(wy);
   c.formation = static_cast<uint8_t>(f);
-  post(c);   // a futtató során át a következő tickben (mint a hálózati játékban és a visszajátszásban)
+  post(c);
+  note_move(wx, wy);   // a futtató során át a következő tickben (mint a hálózati játékban és a visszajátszásban)
 }
 
 sim::EntityId World::enemy_at(float wx, float wy) const {
@@ -296,6 +300,7 @@ void World::order_attack_move(float wx, float wy) {
   c.x = to_fixed(wx);
   c.y = to_fixed(wy);
   post(c);
+  note_move(wx, wy);
 }
 
 void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha) const {
@@ -386,6 +391,45 @@ void World::draw_rally_ground(render::SpriteBatch& batch, double time) const {
       batch.draw(*rally_.shadow, nullptr, sh);
     }
   }
+}
+
+void World::draw_move_indicator(render::SpriteBatch& batch, float alpha, double time) const {
+  if (!cur_ || !last_move_ || !rally_.arrows || !rally_.move_sigil) return;
+  float sx = 0, sy = 0;
+  int n = 0;
+  bool going = false;
+  for (const sim::EntityId e : selected_) {
+    const SnapUnit* u = cur_->find(e);
+    if (!u || u->owner != session_.local_player()) continue;
+    const Visual& v = vis_[static_cast<size_t>(u - cur_->units.data())];
+    sx += v.px + (u->x - v.px) * alpha;
+    sy += v.py + (u->y - v.py) * alpha;
+    ++n;
+    going = going || u->order == SnapUnit::kMove || u->order == SnapUnit::kAttackMove;
+  }
+  if (n == 0 || !going) return;
+  const float x0 = sx / static_cast<float>(n), y0 = sy / static_cast<float>(n);
+  const float dx = last_move_x_ - x0, dy = last_move_y_ - y0, d = std::sqrt(dx * dx + dy * dy);
+  const uint8_t light[3] = {130, 255, 162};   // a régi (60, 205, 92) + 70
+  if (d > 20) {
+    const float ux = dx / d, uy = dy / d;
+    const int dir = static_cast<int>(std::lround(std::atan2(uy, ux) / 6.2831853 * 16.0)) & 15;
+    for (float k = std::fmod(static_cast<float>(time) * 18.0f, 15.0f); k < d - 20; k += 15.0f) {
+      render::SpriteInstance a;
+      a.x = x0 + ux * k - 8;
+      a.y = y0 + uy * k - 8;
+      a.w = a.h = 16;
+      a.layer[0] = static_cast<uint8_t>(dir);
+      a.tint[0] = light[0]; a.tint[1] = light[1]; a.tint[2] = light[2];
+      batch.draw(*rally_.arrows, nullptr, a);
+    }
+  }
+  render::SpriteInstance s;
+  s.w = 50;
+  s.h = 34;
+  s.x = last_move_x_ - s.w / 2;
+  s.y = last_move_y_ - s.h / 2;
+  batch.draw(*rally_.move_sigil, nullptr, s);
 }
 
 void World::draw_rally_flags(render::SpriteBatch& batch, double time) const {

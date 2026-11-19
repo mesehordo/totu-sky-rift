@@ -71,6 +71,7 @@ class World {
   // (8 lengésfázis rétegenként); a zászló, a nyíl és a pecsét a csapatszínnel árnyalva
   struct RallyArt {
     const render::Texture *arrows = nullptr, *sigil = nullptr, *pole = nullptr, *cloth = nullptr, *shadow = nullptr;
+    const render::Texture* move_sigil = nullptr;   // a mozgáscél: zöld, befelé mutató pecsét (38 képpont)
   };
   void set_rally_art(const RallyArt& a) { rally_ = a; }
   // a kijelölt saját épület gyülekezőpontja (jobb kattintás, ha csak épület van kijelölve – a régi szerint); igaz: kiadva
@@ -78,6 +79,9 @@ class World {
   // a talajra (az egységek alá): a nyíl-ösvény és a pecsét; az egységek fölé: a zászló
   void draw_rally_ground(render::SpriteBatch& batch, double time) const;
   void draw_rally_flags(render::SpriteBatch& batch, double time) const;
+  // a mozgáscél jelzése (a régi `draw_move_indicator`): a kijelölt csoporttól a legutóbbi mozgásparancs céljáig
+  // menetelő zöld nyilak, a célnál befelé mutató pecsét – amíg a kijelöltek közül valaki még tart oda
+  void draw_move_indicator(render::SpriteBatch& batch, float alpha, double time) const;
   void set_sigils(const render::Texture* own, const render::Texture* other, float sigil_base) {
     sigil_own_ = own;
     sigil_other_ = other;
@@ -148,6 +152,9 @@ class World {
   const render::Texture* sigil_other_ = nullptr;
   float sigil_base_ = 48;
   RallyArt rally_;
+  bool last_move_ = false;   // a legutóbbi saját mozgásparancs célja (világ-képpont)
+  float last_move_x_ = 0, last_move_y_ = 0;
+  void note_move(float x, float y) { last_move_ = true; last_move_x_ = x; last_move_y_ = y; }
   std::array<uint8_t, 3> team_color(uint8_t owner) const;
   sim::EntityId selected_building_ = 0;
   std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai

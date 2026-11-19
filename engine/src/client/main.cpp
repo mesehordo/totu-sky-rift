@@ -574,7 +574,7 @@ int main(int argc, char** argv) {
     }
     render::TerrainView terrain;
     render::Atlas world_atlas;
-    render::Texture fallback, white, sigil_own, sigil_other, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
+    render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
     render::Lighting lighting;
@@ -839,8 +839,11 @@ int main(int argc, char** argv) {
               auto sg = client::sigil_image({255, 255, 255}, 26.0f, false);
               render::premultiply(sg);
               rally_sigil = dev.create_array_from(sg, false);
+              auto mv = client::sigil_image({60, 205, 92}, 38.0f, true);
+              render::premultiply(mv);
+              move_sigil = dev.create_array_from(mv, false);
             }
-            world.set_rally_art({&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow});
+            world.set_rally_art({&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil});
           }
           render::Image px;
           px.width = px.height = 1;
@@ -1480,6 +1483,7 @@ int main(int argc, char** argv) {
         lighting.apply_shadows();
         batch.begin(proj);
         world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
+        world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         world.draw_bars(batch, white, alpha);
@@ -1712,7 +1716,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil}) dev.destroy(*t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {
