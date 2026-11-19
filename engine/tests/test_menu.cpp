@@ -566,3 +566,25 @@ TEST_CASE("M13 modkezelo (D50): ket lista, engedelyezes, sorrend, fuggoseg-hiba 
   CHECK(click(client::MenuAct::ModSave) == client::Menu::Result::Restart);
   CHECK((st.mods == std::vector<std::string>{"alfa", "beta"}));
 }
+
+TEST_CASE("M13 felulet – menü: a modok gyozelmi szkriptjei a gyozelmi feltetel lenyilojaban") {
+  client::Settings st;
+  const auto factions = client::scan_factions(TOTU_CONTENT_DIR);
+  Menu m(st, real_locale(), test_maps(), factions);
+  script::VictoryInfo v;
+  v.id = "kincsvadaszat";
+  v.name = {{"hu", "Kincsvadászat"}, {"en", "Treasure hunt"}};
+  m.set_victories({v});
+  m.go(MenuScreen::Skirmish);
+  m.layout(1280, 720);
+  const auto* d = m.find(MenuAct::Option, 5);
+  CHECK(d && d->options.size() == 5 && d->options[4] == "Kincsvadászat");
+  pick(m, MenuAct::Option, 5, 4);
+  CHECK(m.skirmish().victory == sim::MatchSetup::Victory::Script && m.skirmish().victory_script == "kincsvadaszat");
+  CHECK(m.find(MenuAct::Option, 5)->current == 4);
+  client::MatchConfig c;
+  CHECK(m.match_config(7, &c));
+  CHECK(c.setup.victory == sim::MatchSetup::Victory::Script && c.setup.victory_script == "kincsvadaszat");
+  pick(m, MenuAct::Option, 5, 1);   // vissza beépítettre: Főváros
+  CHECK(m.skirmish().victory == sim::MatchSetup::Victory::Capital && m.skirmish().victory_script.empty());
+}

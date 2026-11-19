@@ -46,6 +46,7 @@ struct ScriptHost::Impl {
   size_t errors = 0;
   int s_ref = LUA_NOREF;     // az S tábla a registryben
   detail::AiState ai;        // gépi játékos (M9)
+  std::string victory_status;   // M13: Victory.status (nem játékállapot)
 
   struct Timer {
     int64_t tick = 0;
@@ -857,11 +858,11 @@ uint16_t check_def(lua_State* L, sim::Sim& s, int i) {
   return d;
 }
 
-// Game.player(owner) → {wood, gold, meteor, supply_used, supply_cap, ascended, path, defeated}
+// Game.player(owner) → {wood, gold, meteor, supply_used, supply_cap, ascended, path, defeated, active, ally, faction}
 int g_player(lua_State* L) {
   sim::Sim& s = need_sim(L);
   const sim::PlayerState& p = s.player(check_owner(L, 1));
-  lua_createtable(L, 0, 10);
+  lua_createtable(L, 0, 11);
   lua_pushinteger(L, p.resource(sim::kWood)); lua_setfield(L, -2, "wood");
   lua_pushinteger(L, p.resource(sim::kGold)); lua_setfield(L, -2, "gold");
   lua_pushinteger(L, p.resource(sim::kMeteor)); lua_setfield(L, -2, "meteor");
@@ -870,6 +871,7 @@ int g_player(lua_State* L) {
   lua_pushboolean(L, p.ascended); lua_setfield(L, -2, "ascended");
   lua_pushstring(L, p.path.c_str()); lua_setfield(L, -2, "path");
   lua_pushboolean(L, p.defeated); lua_setfield(L, -2, "defeated");
+  lua_pushboolean(L, p.active); lua_setfield(L, -2, "active");   // M13: játszik-e ezen a helyen
   lua_pushstring(L, p.ally.c_str()); lua_setfield(L, -2, "ally");
   lua_pushstring(L, p.faction.c_str()); lua_setfield(L, -2, "faction");
   return 1;
@@ -1158,6 +1160,54 @@ void open_mission(lua_State* L) {
   luaL_newlib(L, funcs);
   wrap_readonly(L);
   lua_setglobal(L, "Mission");
+}
+
+// --- M13: a győzelmi szkript (`Victory`) ---------------------------------------------------------------------------
+sim::Sim& need_victory_sim(lua_State* L) {
+  Impl& I = impl(L);
+  if (!I.sim) luaL_error(L, "a Victory csak eseménykezelésben (on_start, on_tick, on_death, időzítő) hívható");
+  return *I.sim;
+}
+
+uint8_t victory_owner(lua_State* L) {
+  const lua_Integer p = luaL_checkinteger(L, 1);
+  if (p < 1 || p > sim::Sim::kMaxPlayers) luaL_argerror(L, 1, "játékos: 1–8");
+  return static_cast<uint8_t>(p);
+}
+
+// Victory.win(p): p nyer – a vele ellenséges, még játszó játékosok kiesnek
+int v_win(lua_State* L) {
+  lua_pushboolean(L, need_victory_sim(L).declare_winner(victory_owner(L)));
+  return 1;
+}
+
+// Victory.defeat(p): p kiesik
+int v_defeat(lua_State* L) {
+  lua_pushboolean(L, need_victory_sim(L).defeat_player(victory_owner(L)));
+  return 1;
+}
+
+// Victory.conquest(be) → a hódítás alapszabálya („nincs épülete = kiesett”); argumentum nélkül csak lekérdez
+int v_conquest(lua_State* L) {
+  sim::Sim& s = need_victory_sim(L);
+  if (!lua_isnoneornil(L, 1)) s.set_conquest(lua_toboolean(L, 1) != 0);
+  lua_pushboolean(L, s.conquest());
+  return 1;
+}
+
+// Victory.status(szöveg): a felületen látszó állás (pl. „Kincs: 820 / 1500”); nem játékállapot
+int v_status(lua_State* L) {
+  size_t n = 0;
+  const char* t = luaL_optlstring(L, 1, "", &n);
+  impl(L).victory_status.assign(t, std::min<size_t>(n, 200));
+  return 0;
+}
+
+void open_victory(lua_State* L) {
+  static const luaL_Reg funcs[] = {{"win", v_win}, {"defeat", v_defeat}, {"conquest", v_conquest}, {"status", v_status}, {nullptr, nullptr}};
+  luaL_newlib(L, funcs);
+  wrap_readonly(L);
+  lua_setglobal(L, "Victory");
 }
 
 void open_game(lua_State* L) {
@@ -1555,6 +1605,14 @@ void ScriptHost::enable_ai(uint8_t player, const std::string& difficulty, const 
     lua_setglobal(st, "Game");   // a teljes (csaló) API nem érhető el
   });
 }
+
+void ScriptHost::enable_victory() {
+  Impl& I = *impl_;
+  if (!I.L) return;
+  I.protect("Victory tábla", [](lua_State* st) { open_victory(st); });
+}
+
+const std::string& ScriptHost::victory_status() const { return impl_->victory_status; }
 
 uint64_t ScriptHost::command_digest() const { return impl_->ai.digest; }
 uint64_t ScriptHost::command_count() const { return impl_->ai.count; }

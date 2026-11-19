@@ -1,0 +1,9 @@
+{
+ "id": "minta_gyozelem",
+ "name": "Minta: győzelmi feltétel",
+ "version": "1.0",
+ "depends": [
+  "totu"
+ ],
+ "description": "Mintamod: szkriptes győzelmi feltétel (Kincsvadászat – aki elsőként tart 2000 aranyat a kincstárában, nyer). A Csata győzelmi feltételei között jelenik meg. Az SDK leírásának 4. példája."
+}

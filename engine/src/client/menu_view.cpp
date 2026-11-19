@@ -505,6 +505,11 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
   }
   Menu menu(st, loc, std::move(maps), scan_factions(o.content));
   menu.set_mods(o.available_mods);
+  {   // M13: a modok (és az alap) győzelmi szkriptjei
+    content::Vfs vfs;
+    content::add_mod_layers(vfs, o.content, o.mods);
+    menu.set_victories(script::list_victories(vfs));
+  }
   menu.set_logo_aspect(view.logo_aspect());
   if (o.start != MenuScreen::Main) menu.go(o.start);
   view.colorblind_ = st.colorblind;

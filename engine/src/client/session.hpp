@@ -153,6 +153,7 @@ struct Snapshot {
   std::vector<Item> items;
   SnapMission mission;            // M11
   sim::MatchMode mode;            // M12: győzelmi feltétel, tempó (béke, domb, hullámok)
+  std::string victory_status;     // M13: a győzelmi szkript állása (Victory.status)
   // az építési hely próbája (a kísértetkép és a „Nem lehet építeni” üzenet): a kért sablon és csempe, és hogy a
   // szimuláció szerint oda építhető-e (ha nem, az ok a szimuláció szövegével)
   struct PlaceProbe {
@@ -230,6 +231,8 @@ class Session {
   sim::Sim* sim_ = nullptr;
   std::unique_ptr<script::ScriptHost> ai_;
   std::vector<std::unique_ptr<script::ScriptHost>> ais_;   // M9: az új gépi ellenfél játékosonként
+  std::unique_ptr<script::ScriptHost> victory_;            // M13: a modbeli győzelmi szkript (egyéni csata)
+  const script::ScriptHost* victory_view_ = nullptr;       // a sajátja vagy az átvett meccsé (az állás szövegéhez)
   std::string content_dir_;
   std::vector<content::ModInfo> mods_;   // üres: csak az alap
   std::map<std::string, std::string> names_;

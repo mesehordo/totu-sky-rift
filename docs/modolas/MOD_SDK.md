@@ -64,6 +64,7 @@ A betöltési sorrend számít: **a később betöltött mod felülírja a korá
 | `locale/hu.po`, `locale/en.po` | szövegek | – |
 | `ai/<azonosító>/` | gépi ellenfél (Lua) | – |
 | `missions/<azonosító>/mission.json` | küldetés | – |
+| `victory/<azonosító>/` | győzelmi feltétel (Lua) | – |
 | `maps/*.json` | pályák (a Csata listájában is; azonos névnél a mod nyer) | – |
 
 Egy sablonfájl egy JSON-objektum; a kulcsai a sablonok azonosítói. Az azonosítók **névterenként** egyediek. A
@@ -122,24 +123,57 @@ eseményindítók. A küldetés az engedélyezett modok teljes tartalmával fut 
 szövegek is elérhetők). Indítás: `totu --mods <modok> --mission <mappa>`. Teljes példa minden elemre: `engine/content/base/missions/proba`;
 a küldetés a beépített szerkesztővel (`totu --editor <küldetésmappa>`) is készíthető.
 
-## 5. Többjátékos mód
+## 5. Győzelmi feltétel
+
+`victory/<azonosító>/victory.json` és `victory.lua`. Az azonosító kisbetű, szám és `_`. A feltétel a Csata
+képernyő győzelmi lenyílójában a beépítettek (Hódítás, Főváros, Dombkirály, Időkorlát) után jelenik meg.
+
+```json
+{
+  "name": {"hu": "Kincsvadászat", "en": "Treasure hunt"},
+  "description": {"hu": "Aki elsőként tart 2000 aranyat, nyer.", "en": "First to hold 2000 gold wins."}
+}
+```
+
+A szkript saját, homokozott Lua-állapotban fut (ugyanaz a homokozó, mint a küldetésszkripteké). Minden gépen
+ugyanúgy fut, ezért a mentés és a visszajátszás része: a megmaradó adat helye az `S` tábla. Események: `on_start()`,
+`on_tick(tick)` (30 tick = 1 másodperc), `on_death(id, owner)`. A `Game` tábla olvasható; a legfontosabb elemei:
+
+- `Game.player(p)`: `wood`, `gold`, `meteor`, `supply_used`, `active`, `defeated`, `faction`;
+- `Game.count(...)`, `Game.units(...)`;
+- `Game.winner()`.
+
+A döntés a `Victory` táblán át történik:
+
+| Hívás | Hatás |
+|---|---|
+| `Victory.win(p)` | `p` nyer: a vele ellenséges, még játszó játékosok kiesnek |
+| `Victory.defeat(p)` | `p` kiesik |
+| `Victory.conquest(be)` | a hódítás alapszabálya („akinek nem marad épülete, kiesik”); alapból be van kapcsolva; argumentum nélkül csak lekérdez |
+| `Victory.status(szöveg)` | az állás a képernyő jobb felső sarkában, változtatás nélkül (pl. „Kincs: 820 / 2000”) |
+
+Teljes példa: `engine/content/mods/minta_gyozelem/victory/kincsvadaszat`.
+
+## 6. Többjátékos mód
 
 A lobbi a **séma, az alap és az engedélyezett modok** tartalmából (a sorrendjükben) ujjlenyomatot számol; eltérő
 modkészlettel nem lehet csatlakozni (modlock). A játékosoknak ugyanazokat a modokat kell ugyanabban a sorrendben
 engedélyezniük.
 
-## 6. A mintamodok
+## 7. A mintamodok
 
 | Mod | Mit mutat |
 |---|---|
 | `minta_egyseg` | új egység örökléssel, meglévő képpel (`Identity.sprite`), folt a termelő épületre és a nép listájára, saját szövegek |
 | `minta_kepesseg` | új képesség (`abilities.json`) és folt egy meglévő egység képességlistájára (`"+"`) |
+| `minta_gyozelem` | győzelmi feltétel szkriptből (Kincsvadászat: 2000 arany a kincstárban) |
 | `minta_kuldetes` | küldetés a modban: régió, egységek, két cél (az egyik helyhez kötve), győzelem és bukás eseményindítóval; a `minta_egyseg` egységét is használja (függőség a modok között) |
 
 Kipróbálás: `totu --mods minta_egyseg,minta_kepesseg` (csatában az Ursanokkal), illetve
-`totu --mods minta_egyseg,minta_kuldetes --mission engine/content/mods/minta_kuldetes/missions/minta`.
+`totu --mods minta_egyseg,minta_kuldetes --mission engine/content/mods/minta_kuldetes/missions/minta`; a győzelmi
+feltétel: `totu --mods minta_gyozelem`, majd Csata → Győzelem: Kincsvadászat.
 
-## 7. Amit még nem lehet (tervben)
+## 8. Amit még nem lehet (tervben)
 
-- új győzelmi feltétel szkriptből (a győzelmi módok most beépítettek);
-- online modtár (mod.io, D23).
+- online modtár (mod.io, D23);
+- a hálózati lobbi még nem választ győzelmi feltételt (a visszajátszás és a hálózati meccs leírása már viszi).

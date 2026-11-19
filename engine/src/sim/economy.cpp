@@ -609,6 +609,23 @@ int Sim::winner() const {
   return playing >= 2 && alive == 1 ? last : 0;
 }
 
+bool Sim::defeat_player(uint8_t p) {
+  if (p < 1 || p > kMaxPlayers) return false;
+  PlayerState& ps = players_[p];
+  if (!ps.active || ps.defeated) return false;
+  ps.defeated = true;
+  return true;
+}
+
+bool Sim::declare_winner(uint8_t p) {
+  if (p < 1 || p > kMaxPlayers || !players_[p].active || players_[p].defeated || winner() != 0) return false;
+  for (int i = 1; i <= kMaxPlayers; ++i) {
+    PlayerState& o = players_[static_cast<size_t>(i)];
+    if (o.active && !o.defeated && hostile(p, static_cast<uint8_t>(i))) o.defeated = true;
+  }
+  return true;
+}
+
 void Sim::supply_system() {
   std::array<int32_t, kMaxPlayers + 1> cap{}, used{};
   std::array<int64_t, kMaxPlayers + 1> part{};   // ezredrész-létszám (H-04)

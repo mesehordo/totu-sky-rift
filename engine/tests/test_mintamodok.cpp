@@ -12,6 +12,8 @@
 #include "check.hpp"
 #include "match_util.hpp"
 #include "sim/mission.hpp"
+#include "script/host.hpp"
+#include "script/victory.hpp"
 #include "sim/replay.hpp"
 
 using namespace totu;
@@ -113,4 +115,75 @@ TEST_CASE("M13 kuldetes palyaja a mod palyamappajabol") {
   CHECK(!sim::load_mission_package((tmp / "kuld").string(), (root / "base" / "maps").string(), 3, &err).has_value());   // a modmappa nélkül nincs meg
   CHECK(sim::load_mission_package((tmp / "kuld").string(), (root / "base" / "maps").string(), 3, &err, {(tmp / "mod" / "maps").string()}).has_value());
   std::filesystem::remove_all(tmp);
+}
+
+TEST_CASE("M13 gyozelmi feltetel modbol: a Kincsvadaszat a modban felfedezheto es betoltheto") {
+  const auto root = std::filesystem::path(TOTU_CONTENT_DIR);
+  const auto order = content::select_mods(content::discover_mods(root, {}), {"minta_gyozelem"});
+  CHECK(order.errors.empty());
+  content::Vfs vfs;
+  content::add_mod_layers(vfs, root, order.order);
+  const auto list = script::list_victories(vfs);
+  const auto it = std::find_if(list.begin(), list.end(), [](const script::VictoryInfo& v) { return v.id == "kincsvadaszat"; });
+  CHECK(it != list.end());
+  if (it != list.end()) CHECK(it->label("hu") == "Kincsvadászat" && it->label("en") == "Treasure hunt" && it->label("de") == "Treasure hunt");
+  CHECK(script::load_victory(vfs, "kincsvadaszat").has_value());
+  CHECK(!script::load_victory(vfs, "nincs_ilyen").has_value());
+  CHECK(!script::load_victory(vfs, "../kincsvadaszat").has_value());
+  content::Vfs base_only;   // a mod nélkül nincs ott
+  content::add_mod_layers(base_only, root, content::select_mods(content::discover_mods(root, {}), {}).order);
+  CHECK(!script::load_victory(base_only, "kincsvadaszat").has_value());
+}
+
+TEST_CASE("M13 gyozelmi szkript: a Victory tabla dont, determinisztikus, a visszajatszasban is") {
+  ModRules m({"minta_gyozelem"});
+  CHECK(m.errors.empty() && m.rules.has_value());
+  if (!m.rules) return;
+  const auto root = std::filesystem::path(TOTU_CONTENT_DIR);
+  sim::Replay base;
+  base.seed = 7;
+  base.ticks = 150;
+  base.map = testing::read_file(root / "base" / "maps" / "kraterfold.json");
+  base.factions = {"ursan", "ursan"};
+  // saját győzelmi szkript: a 2. másodpercben a 2. játékos nyer (a hódítás szabálya kikapcsolva)
+  script::VictoryPackage pkg{{"proba", {}, {}},
+                             "function on_start() Victory.conquest(false) end\n"
+                             "function on_tick(t) if t == 60 then Victory.win(2); Victory.status('vege') end end\n"};
+  script::add_to_replay(base, pkg);
+  CHECK(base.victory == 4);
+  const sim::Replay rec = sim::record_match(base, m.terrain, *m.rules);
+  const auto v = sim::verify(rec, &m.terrain, &*m.rules);
+  if (!v.ok) std::printf("  hiba: %s\n", v.error.c_str());
+  CHECK(v.ok);
+  const auto dec = sim::decode(sim::encode(rec));
+  CHECK(dec.has_value() && dec->victory == 4 && dec->scripts.size() == 1);
+  std::string err;
+  auto match = sim::start_match(base, &m.terrain, &*m.rules, err);
+  CHECK(match != nullptr);
+  if (!match) return;
+  CHECK(match->sim->match_mode().victory == 4 && !match->sim->conquest());
+  for (int i = 0; i < 59; ++i) match->sim->step();
+  CHECK(match->sim->winner() == 0);
+  for (int i = 0; i < 3; ++i) match->sim->step();
+  CHECK(match->sim->winner() == 2 && match->sim->player(1).defeated);
+  // a Kincsvadászat: indul, és kiírja az állást
+  std::string verr;
+  content::Vfs vfs;
+  content::add_mod_layers(vfs, root, content::select_mods(content::discover_mods(root, {}), {"minta_gyozelem"}).order);
+  auto kincs = script::load_victory(vfs, "kincsvadaszat", &verr);
+  CHECK(kincs.has_value());
+  if (!kincs) return;
+  sim::Replay b2 = base;
+  b2.scripts.clear();
+  script::add_to_replay(b2, *kincs);
+  auto m2 = sim::start_match(b2, &m.terrain, &*m.rules, err);
+  CHECK(m2 != nullptr);
+  if (!m2) return;
+  for (int i = 0; i < 31; ++i) m2->sim->step();
+  const script::ScriptHost* vh = nullptr;
+  for (const auto& h : m2->hosts) {
+    if (h->name() == "victory") vh = h.get();
+  }
+  CHECK(vh && vh->errors() == 0 && vh->victory_status().rfind("Kincs:", 0) == 0 && m2->sim->winner() == 0 && m2->sim->conquest());
+  if (vh && vh->errors()) std::printf("  hiba: %s\n", vh->messages().back().c_str());
 }

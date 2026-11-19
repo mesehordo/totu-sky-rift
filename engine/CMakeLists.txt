@@ -79,6 +79,7 @@ add_library(totu_core
   src/script/host.cpp
   src/script/ai_api.cpp
   src/script/ai.cpp
+  src/script/victory.cpp
   src/map/terrain.cpp
   src/map/map.cpp
   src/map/navgrid.cpp

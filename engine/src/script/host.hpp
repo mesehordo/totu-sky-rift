@@ -55,6 +55,10 @@ class ScriptHost final : public sim::SimHooks {
   void set_shared(const std::string& name, const content::Value& data);
   // M11: a küldetés szkriptje a `Mission` táblán át éri el a trigger-motort (akció, változó, cél, névvel adott egységek)
   void set_mission(sim::MissionHost* mission);
+  // M13: a győzelmi szkript `Victory` táblája (win, defeat, conquest, status). A szkriptek futtatása előtt kell hívni.
+  void enable_victory();
+  // a győzelmi szkript állapotszövege (Victory.status; nem játékállapot – a felület mutatja)
+  const std::string& victory_status() const;
 
   // Egy szkriptfájl felső szintjének futtatása (függvények megadása). false: hiba, az üzenet a naplóban.
   bool run(const std::string& chunk_name, const std::string& source);

@@ -1131,6 +1131,7 @@ void Hud::draw_clock(const HudFrame& f) {
     const int64_t mine = md.hill[std::min<size_t>(model_.player, 8)] / 30;
     t = model_.tr("mode.hill", {mmss(mine), mmss(int64_t{md.minutes} * 60)}) + "   " + t;
   }
+  if (md.victory == 4 && !model_.snap()->victory_status.empty()) t = model_.snap()->victory_status + "   " + t;   // M13: a győzelmi szkript állása
   if (md.victory == 3) t = model_.tr("mode.timed", {mmss(std::max<int64_t>(0, int64_t{md.minutes} * 60 - now / 30))}) + "   " + t;
   if (md.tempo == 3) {
     t = model_.tr("mode.survival", {std::to_string(md.wave), mmss(std::max<int64_t>(0, int64_t{md.minutes} * 60 - now / 30))}) + "   " + t;

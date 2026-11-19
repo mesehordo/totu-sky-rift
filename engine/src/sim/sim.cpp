@@ -916,7 +916,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   }
   mode_ = MatchMode{};
   if (schema >= 19) {
-    mode_.victory = std::min<uint8_t>(r.u8(), 3);
+    mode_.victory = std::min<uint8_t>(r.u8(), 4);
     mode_.tempo = std::min<uint8_t>(r.u8(), 3);
     mode_.minutes = r.i32();
     mode_.peace_until = r.i64();

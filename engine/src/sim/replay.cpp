@@ -35,6 +35,7 @@ std::vector<std::unique_ptr<script::ScriptHost>> attach_scripts(Sim& s, const Re
       hosts.push_back(std::make_unique<script::ScriptHost>(f.mod, r.seed));
       h = hosts.back().get();
       if (f.mod == "mission") h->set_mission(mission);   // M11: a küldetés szkriptje (`Mission` tábla)
+      if (f.mod == "victory") h->enable_victory();       // M13: a győzelmi szkript (`Victory` tábla)
       s.add_hooks(h);
     }
     if (!h->run(f.name, f.source)) return {};   // H-08: a hibás szkript a visszajátszás hibája
@@ -148,7 +149,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       setup.camps = r.camps;
       setup.fog = static_cast<MatchSetup::Fog>(std::min<uint8_t>(r.fog, 2));
       setup.daytime = static_cast<MatchSetup::Daytime>(std::min<uint8_t>(r.daytime, 2));
-      setup.victory = static_cast<MatchSetup::Victory>(std::min<uint8_t>(r.victory, 3));
+      setup.victory = static_cast<MatchSetup::Victory>(std::min<uint8_t>(r.victory, 4));
       setup.tempo = static_cast<MatchSetup::Tempo>(std::min<uint8_t>(r.tempo, 3));
       setup.minutes = std::clamp(r.minutes, 0, 240);
       if (!s.setup_match(*m->map, setup, &error)) return nullptr;

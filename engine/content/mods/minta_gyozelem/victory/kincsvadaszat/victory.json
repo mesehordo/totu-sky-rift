@@ -1,0 +1,7 @@
+{
+ "name": {"hu": "Kincsvadászat", "en": "Treasure hunt"},
+ "description": {
+  "hu": "Aki elsőként tart 2000 aranyat a kincstárában, nyer. A hódítás szabálya is él: akinek nem marad épülete, kiesik.",
+  "en": "The first player to hold 2000 gold in the treasury wins. Conquest still applies: a player left without buildings is out."
+ }
+}

@@ -204,6 +204,8 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
   c.setup.camps = s.camps;
   c.setup.upkeep = s.upkeep;
   c.setup.victory = s.victory;
+  c.setup.victory_script = s.victory_script;
+  if (s.victory == sim::MatchSetup::Victory::Script && s.victory_script.empty()) c.setup.victory = sim::MatchSetup::Victory::Conquest;
   c.setup.tempo = s.tempo;
   if (out) *out = std::move(c);
   return true;
@@ -526,6 +528,13 @@ void Menu::layout_skirmish() {
     MenuWidget& d = add(MenuWidget::Kind::Dropdown, {ox, oy2 + k(24), ow - k(20), dh}, "", MenuAct::Option, i);
     for (const char* o : opts[i].options) d.options.push_back(tr(o));
     d.current = opts[i].current;
+    if (i == 5) {   // M13: a modok győzelmi szkriptjei a beépítettek után
+      for (size_t v = 0; v < victories_.size(); ++v) {
+        d.options.push_back(victories_[v].label(st_.language));
+        if (sk_.victory == sim::MatchSetup::Victory::Script && victories_[v].id == sk_.victory_script) d.current = 4 + static_cast<int>(v);
+      }
+      if (sk_.victory == sim::MatchSetup::Victory::Script && d.current >= static_cast<int>(d.options.size())) d.current = 0;
+    }
   }
   add(MenuWidget::Kind::Button, {W - k(36 + 240), H - k(76), k(240), k(50)}, tr("ui.skirmish.start"), MenuAct::Start).enabled =
       !maps_.empty();
@@ -908,7 +917,15 @@ void Menu::choose(MenuAct act, int arg, int index) {
       case 2: sk_.weather = static_cast<sim::MatchSetup::WeatherMode>(std::clamp(index, 0, 3)); break;
       case 3: sk_.camps = index == 0; break;
       case 4: sk_.upkeep = index == 0; break;
-      case 5: sk_.victory = static_cast<sim::MatchSetup::Victory>(std::clamp(index, 0, 3)); break;
+      case 5:
+        if (index >= 4 && static_cast<size_t>(index - 4) < victories_.size()) {   // M13: modbeli győzelmi szkript
+          sk_.victory = sim::MatchSetup::Victory::Script;
+          sk_.victory_script = victories_[static_cast<size_t>(index - 4)].id;
+        } else {
+          sk_.victory = static_cast<sim::MatchSetup::Victory>(std::clamp(index, 0, 3));
+          sk_.victory_script.clear();
+        }
+        break;
       case 6: sk_.tempo = static_cast<sim::MatchSetup::Tempo>(std::clamp(index, 0, 3)); break;
       default: break;
     }

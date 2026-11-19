@@ -756,7 +756,10 @@ struct MatchSetup {
   //   Hódítás: aki minden épületét elveszti, kiesik (a régi szabály); Főváros: a főépület elvesztése is vereség;
   //   Dombkirály: a pálya közepét (8×8) egyedül tartó játékos `minutes` perc után nyer; Időkorlát: `minutes` perc után
   //   a legtöbb pontú nyer (gyűjtés + épületek + egységek)
-  enum class Victory : uint8_t { Conquest = 0, Capital = 1, Hill = 2, Timed = 3 } victory = Victory::Conquest;
+  //   Szkript (M13): egy mod győzelmi szkriptje dönt (`victory/<azonosító>/`, a `Victory` Lua-tábla); a hódítás
+  //   alapszabálya mellette is él, amíg a szkript ki nem kapcsolja
+  enum class Victory : uint8_t { Conquest = 0, Capital = 1, Hill = 2, Timed = 3, Script = 4 } victory = Victory::Conquest;
+  std::string victory_script;   // M13: a győzelmi szkript azonosítója (Script módban; a kliens tölti be)
   //   Klasszikus: változatlan; Nyugodt: 10 perc béke a játékosok között; Gyors: kétszeres kezdő nyersanyag;
   //   Túlélés: a játékosok nem harcolnak egymással, a Vadon hullámokban támad, `minutes` perc után győzelem
   enum class Tempo : uint8_t { Classic = 0, Calm = 1, Rush = 2, Survival = 3 } tempo = Tempo::Classic;
@@ -893,6 +896,12 @@ class Sim {
   EntityId spawn(const Command& c);                       // Spawn parancs azonnal; az új egység azonosítója
   bool order_move(EntityId e, Fixed x, Fixed y);
   bool kill(EntityId e);                                  // életerő 0, törlés a tick végén, halál-esemény
+  // M13: a győzelmi szkript műveletei (a `Victory` tábla): a játékos kiesik; a játékos nyer (a vele ellenséges, még
+  // játszó játékosok kiesnek); a hódítás alapszabálya („nincs épülete = kiesett”) ki-be kapcsolható (mentett állapot)
+  bool defeat_player(uint8_t p);
+  bool declare_winner(uint8_t p);
+  void set_conquest(bool on) { auto_defeat_ = on; }
+  bool conquest() const { return auto_defeat_; }
 
   // Navigáció (M4): a pálya útkeresőjének csatolása (az egységek létrehozása előtt). Utána a mozgás útkereséssel,
   // ütközéssel és kitéréssel megy; az útkereső a hívóé. Mentés betöltése előtt ugyanígy csatolni kell.

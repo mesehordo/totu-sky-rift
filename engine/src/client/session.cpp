@@ -14,6 +14,7 @@
 
 #include "content/loader.hpp"
 #include "script/ai.hpp"
+#include "script/victory.hpp"
 
 namespace totu::client {
 
@@ -57,6 +58,11 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
 void Session::adopt(sim::MatchInstance& match) {
   ais_.clear();
   ai_.reset();
+  victory_.reset();
+  victory_view_ = nullptr;
+  for (const auto& h : match.hosts) {
+    if (h->name() == "victory") victory_view_ = h.get();
+  }
   own_sim_.reset();
   pf_.reset();
   nav_.reset();
@@ -74,6 +80,8 @@ bool Session::load_content(const std::string& content_dir, std::string* error) {
   // az előző meccs állapota nem marad meg (H-61: teljes felfedés; H-62: gépek; H-63: szabályok)
   ais_.clear();
   ai_.reset();
+  victory_.reset();
+  victory_view_ = nullptr;
   own_sim_.reset();
   sim_ = nullptr;
   pf_.reset();
@@ -180,6 +188,17 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   sim_->attach_rules(&*rules_);
   if (!sim_->setup_match(*map_, setup, error)) return false;
   if (setup.fog == sim::MatchSetup::Fog::None) reveal_all_ = true;
+  victory_.reset();
+  victory_view_ = nullptr;
+  if (setup.victory == sim::MatchSetup::Victory::Script) {   // M13: a modbeli győzelmi szkript (a gépek előtt csatolva)
+    content::Vfs vfs;
+    content::add_mod_layers(vfs, content_dir_, mods_);
+    auto pkg = script::load_victory(vfs, setup.victory_script, error);
+    if (!pkg) return false;
+    victory_ = script::attach_victory(*sim_, *pkg, seed_, true, error);
+    if (!victory_ || victory_->errors() > 0) return false;
+    victory_view_ = victory_.get();
+  }
   if (!setup.ai.empty()) {   // M9: az új gépi ellenfél – gépi játékosonként saját Lua-állapot (AI-csomag a VFS-ből)
     content::Vfs vfs;
     content::add_mod_layers(vfs, content_dir_, mods_);
@@ -600,6 +619,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     s->night = sim_->night_permille();
     s->weather = sim_->weather_info().kind;
     s->mode = sim_->match_mode();
+    if (victory_view_) s->victory_status = victory_view_->victory_status();
   }
   if (mission_) {   // M11: a küldetés a felületnek
     SnapMission& m = s->mission;

@@ -992,7 +992,7 @@ int main(int argc, char** argv) {
       ds.map_id = std::filesystem::path(o.world).stem().string();
       if (session.has_sim()) ds.seed = static_cast<int64_t>(session.seed() & 0x7fffffffffffffffULL);
       if (const client::Snapshot* sn = hm.snap()) {
-        static const char* kVict[] = {"conquest", "capital", "hill", "timed"};
+        static const char* kVict[] = {"conquest", "capital", "hill", "timed", "script"};
         static const char* kTempo[] = {"classic", "calm", "rush", "survival"};
         ds.players = 0;
         for (int i = 1; i <= sim::Sim::kMaxPlayers; ++i) {
@@ -1001,7 +1001,7 @@ int main(int argc, char** argv) {
           ++ds.players;
           ds.factions.push_back(p.faction);
         }
-        ds.victory = kVict[std::min<int>(sn->mode.victory, 3)];
+        ds.victory = kVict[std::min<int>(sn->mode.victory, 4)];
         ds.tempo = kTempo[std::min<int>(sn->mode.tempo, 3)];
         ds.duration_ticks = sn->tick;
         if (hm.match_over()) {

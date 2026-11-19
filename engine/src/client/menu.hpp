@@ -19,6 +19,7 @@
 #include "client/i18n.hpp"
 #include "client/settings.hpp"
 #include "map/map.hpp"
+#include "script/victory.hpp"
 #include "sim/sim.hpp"
 
 namespace totu::client {
@@ -72,6 +73,7 @@ struct SkirmishSetup {
   // M12 (D46): győzelmi feltétel és tempóprofil (munkanevek – D20)
   sim::MatchSetup::Victory victory = sim::MatchSetup::Victory::Conquest;
   sim::MatchSetup::Tempo tempo = sim::MatchSetup::Tempo::Classic;
+  std::string victory_script;   // M13: Szkript módban a modbeli győzelmi szkript azonosítója
   SkirmishSetup();
 };
 
@@ -198,6 +200,9 @@ class Menu {
   SkirmishSetup& skirmish() { return sk_; }
   // M13: a választható modok (az alap nélkül) – a modkezelő listái; a szerkesztett lista mentéskor a beállításokba
   void set_mods(std::vector<content::ModInfo> available) { mods_avail_ = std::move(available); }
+  // M13: a modok győzelmi szkriptjei – a győzelmi feltétel lenyílójában a beépítettek után
+  void set_victories(std::vector<script::VictoryInfo> v) { victories_ = std::move(v); }
+  const std::vector<script::VictoryInfo>& victories() const { return victories_; }
   const std::vector<std::string>& mods_enabled() const { return mods_on_; }
   const std::vector<std::string>& mods_errors() const { return mods_err_; }
   const std::vector<MapInfo>& maps() const { return maps_; }
@@ -232,6 +237,7 @@ class Menu {
   Locale& loc_;
   std::vector<MapInfo> maps_;
   std::vector<content::ModInfo> mods_avail_;
+  std::vector<script::VictoryInfo> victories_;
   std::vector<std::string> mods_on_, mods_err_;
   std::string mod_sel_;
   std::vector<FactionInfo> factions_;
