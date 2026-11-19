@@ -528,6 +528,13 @@ void World::draw_ambient(render::SpriteBatch& batch, const Camera& cam, int sw, 
       y = p.b * 4000 + (p.d - 0.5f) * 10 * t + std::cos(t * (0.9f + p.d) + p.c * 7) * 12;
     }
     const float wx = cam.x + wrap(x - cam.x, BW) - M, wy = cam.y + wrap(y - cam.y, BH) - M;
+    if (cur_ && cur_->fog && session_.has_sim()) {   // felfedezetlen helyen nem látszik
+      const int tx = static_cast<int>(wx / kTilePx), ty = static_cast<int>(wy / kTilePx);
+      const int mw = map().width(), mh = map().height();
+      if (tx < 0 || ty < 0 || tx >= mw || ty >= mh) continue;
+      const size_t k = static_cast<size_t>(ty) * static_cast<size_t>(mw) + static_cast<size_t>(tx);
+      if (k < cur_->fog->size() && (*cur_->fog)[k] == 0) continue;
+    }
     render::SpriteInstance s;
     if (p.kind == 0) {   // szentjánosbogár: villog, a gyengébb fázisban kisebb
       const float pulse = 0.5f + 0.5f * std::sin(t * (1.5f + p.c * 2) + p.d * 20);
@@ -661,6 +668,41 @@ void World::draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const
     if (d.x < cam.x - 64 || d.y < cam.y - 64 || d.x > vx1 + 64 || d.y > vy1 + 64) continue;
     atlas->draw(batch, sheet, 0, d.frame, d.x, d.y, 1.0f / sheet.scale, no_team, nullptr, -1.0f, 0);
   }
+}
+
+void World::draw_placement_grid(render::SpriteBatch& batch, const render::Texture& white) const {
+  if (!cur_ || ghost_def_ == sim::kNoDef) return;
+  const auto& pp = cur_->place;
+  const std::array<uint8_t, 3> col = {70, 130, 255};   // a tulajdonos kérése: a rács minden csapatnál kék
+  auto rect = [&](float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    render::SpriteInstance in;
+    in.x = x; in.y = y; in.w = w; in.h = h;
+    in.tint[0] = r; in.tint[1] = g; in.tint[2] = b; in.tint[3] = a;
+    batch.draw(white, nullptr, in);
+  };
+  if (pp.grid && pp.def == ghost_def_) {   // a lerakható csempék: halvány kitöltés, a peremük erősebb
+    for (int y = 0; y < pp.gh; ++y) {
+      for (int x = 0; x < pp.gw; ++x) {
+        if (!(*pp.grid)[static_cast<size_t>(y * pp.gw + x)]) continue;
+        const float px = static_cast<float>(pp.gx + x) * kTilePx, py = static_cast<float>(pp.gy + y) * kTilePx;
+        rect(px, py, kTilePx, kTilePx, col[0], col[1], col[2], 55);
+        rect(px, py, kTilePx, 1, col[0], col[1], col[2], 175);
+        rect(px, py + kTilePx - 1, kTilePx, 1, col[0], col[1], col[2], 175);
+        rect(px, py, 1, kTilePx, col[0], col[1], col[2], 175);
+        rect(px + kTilePx - 1, py, 1, kTilePx, col[0], col[1], col[2], 175);
+      }
+    }
+  }
+  const sim::Rules* r = session_.rules();
+  if (!r || ghost_def_ >= r->defs.size()) return;
+  const float bw = static_cast<float>(std::max<int>(1, r->defs[ghost_def_].fw)) * kTilePx;
+  const float bh = static_cast<float>(std::max<int>(1, r->defs[ghost_def_].fh)) * kTilePx;
+  const float x0 = static_cast<float>(ghost_tx_) * kTilePx, y0 = static_cast<float>(ghost_ty_) * kTilePx;
+  const uint8_t cr = ghost_ok_ ? 90 : 255, cg = ghost_ok_ ? 255 : 70, cb = ghost_ok_ ? 110 : 60;   // a régi keret színe
+  rect(x0, y0, bw, 2, cr, cg, cb, 255);
+  rect(x0, y0 + bh - 2, bw, 2, cr, cg, cb, 255);
+  rect(x0, y0, 2, bh, cr, cg, cb, 255);
+  rect(x0 + bw - 2, y0, 2, bh, cr, cg, cb, 255);
 }
 
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {

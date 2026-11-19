@@ -1563,6 +1563,7 @@ int main(int argc, char** argv) {
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw_ground_marks(batch, alpha, t);     // talajjelek: hős, ének, rejtőzés
         world.draw_objective_rings(batch, t);         // a küldetés célgyűrűi
+        world.draw_placement_grid(batch, white);     // a régi lerakási rács és keret
         world.draw_ground_items(batch, white, t);     // a földön heverő tárgyak
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga

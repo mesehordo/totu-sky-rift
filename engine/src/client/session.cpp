@@ -510,6 +510,41 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       pp.tx = static_cast<int16_t>((pr >> 16) & 0xffff);
       pp.ty = static_cast<int16_t>(pr & 0xffff);
       if (pp.def != sim::kNoDef) pp.ok = sim_->can_place(local_, pp.def, pp.tx, pp.ty, &pp.why);
+      if (pp.def != sim::kNoDef && map_ && pp.def < sim_->rules()->defs.size()) {
+        // a régi `draw_placement_area`: a kurzor körüli 48 × 32 csempe közül azok, amelyeket egy lerakható helyzet
+        // lefed; újraszámolás: más épület, a kurzor messzebb került, vagy fél másodperc telt el
+        PlaceGrid& g = place_grid_;
+        const int64_t now = sim_->tick();
+        if (g.def != pp.def || std::abs(g.cx - pp.tx) > 6 || std::abs(g.cy - pp.ty) > 4 || now - g.tick >= 15 || !g.cells) {
+          const auto& d = sim_->rules()->defs[pp.def];
+          const int bw = std::max(1, static_cast<int>(d.fw)), bh = std::max(1, static_cast<int>(d.fh));
+          g.def = pp.def;
+          g.cx = pp.tx;
+          g.cy = pp.ty;
+          g.tick = now;
+          g.gx = std::max(0, pp.tx - 24);
+          g.gy = std::max(0, pp.ty - 16);
+          g.gw = std::min(map_->width(), pp.tx + 24) - g.gx;
+          g.gh = std::min(map_->height(), pp.ty + 16) - g.gy;
+          auto cells = std::make_shared<std::vector<uint8_t>>(static_cast<size_t>(std::max(0, g.gw) * std::max(0, g.gh)), 0);
+          for (int y = g.gy - bh + 1; y < g.gy + g.gh; ++y) {
+            for (int x = g.gx - bw + 1; x < g.gx + g.gw; ++x) {
+              if (!sim_->can_place(local_, pp.def, x, y)) continue;
+              for (int yy = std::max(y, g.gy); yy < std::min(y + bh, g.gy + g.gh); ++yy) {
+                for (int xx = std::max(x, g.gx); xx < std::min(x + bw, g.gx + g.gw); ++xx) {
+                  (*cells)[static_cast<size_t>((yy - g.gy) * g.gw + (xx - g.gx))] = 1;
+                }
+              }
+            }
+          }
+          g.cells = std::move(cells);
+        }
+        pp.gx = g.gx;
+        pp.gy = g.gy;
+        pp.gw = g.gw;
+        pp.gh = g.gh;
+        pp.grid = g.cells;
+      }
     }
     {   // holttestek (csak a látott helyen) és a földön heverő tárgyak (a felderített helyen)
       const sim::PlayerState& me = sim_->player(local_);

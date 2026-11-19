@@ -62,6 +62,8 @@ class World {
   // építés (ideiglenes kezelés a HUD-ig): a kísértetkép (sablon, bal felső csempe; kNoDef = nincs), és a parancs az
   // első kijelölt munkással
   void set_ghost(uint16_t def, int tx, int ty, bool ok = true) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; ghost_ok_ = ok; }
+  // a régi lerakási rács (a csapatszínben) és a lábnyom zöld/piros kerete – a kísértetkép alatt, a talajon
+  void draw_placement_grid(render::SpriteBatch& batch, const render::Texture& white) const;
   bool order_build(uint16_t def, int tx, int ty);
   std::vector<uint16_t> buildable_defs(const std::string& faction) const;
   size_t selected() const { return selected_.size(); }

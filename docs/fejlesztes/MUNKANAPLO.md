@@ -1005,3 +1005,7 @@ A régi `_scatter_doodads` szabályai: füvön 16 %, a réteken (6 csempés sim�
 ## 2026-11-19 – D52 2.: kulcsszínes csapatszín az egységeken
 
 Az atlaszkészítő a külön maszk nélküli egységképeken a tiszta kék (#0000FF árnyalatai; R, G < B/4) képpontokból maszkot készít, a képpontot szürkévé alakítja (a fényesség megmarad), és a rajzoló oda teszi a csapatszínt (a meglévő maszkos út). A kulcsszín a felmérés alapján: a jelölt színek közül a kék fordul elő a legkevésbé a mostani grafikában. Az atlasz készítőjének változata „atlasz-2” lett, így a gyorsítótár magától újraépül (első indításkor kb. 3 perc). A mostani képeken nincs kék kulcsszín, ezért látható változás még nincs; az új vagy átfestett egységképeken működik. Próba: „kulcsszin”.
+
+## 2026-11-19 – 12. tétel: a régi lerakási rács
+
+A tulajdonos a képes összevetés alapján a régi rácsot választotta, minden csapatnál kéken. A szimuláció a kurzor körüli 48 × 32 csempére kiszámolja, mely csempéket fedi le egy lerakható helyzet (a régi `draw_placement_area`), gyorsítótárral (más épület, 6/4 csempénél nagyobb kurzormozgás vagy fél másodperc után újra); a kliens ezeket kéken rácsozza, a lábnyomra zöld vagy piros keretet tesz. Közben javítva: a légköri részecskék felfedezetlen helyen nem látszanak. Hátra: a sorba állított épületek rajza. Kép: `docs/quality/kepek/utan_lerakasi_racs.jpg`.

@@ -153,6 +153,9 @@ struct Snapshot {
     int tx = 0, ty = 0;
     bool ok = true;
     std::string why;
+    // a régi lerakási rács: a kurzor körüli terület csempéi, amelyekre az épület valamely helyzetben lerakható
+    int gx = 0, gy = 0, gw = 0, gh = 0;
+    std::shared_ptr<const std::vector<uint8_t>> grid;
   } place;
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
 };
@@ -232,6 +235,13 @@ class Session {
   bool reveal_all_ = false;
   uint8_t local_ = 1;
   std::atomic<uint64_t> probe_{uint64_t{sim::kNoDef} << 32};
+  struct PlaceGrid {   // a lerakási rács gyorsítótára (nem minden tickben számolódik újra)
+    uint16_t def = sim::kNoDef;
+    int cx = 0, cy = 0;
+    int64_t tick = -100;
+    int gx = 0, gy = 0, gw = 0, gh = 0;
+    std::shared_ptr<const std::vector<uint8_t>> cells;
+  } place_grid_;
   sim::MissionHost* mission_ = nullptr;   // M11: az átvett meccs küldetése
   const sim::Rules* match_rules_ = nullptr;
   map::NavConfig nav_config_;   // a game.json `navigation` része (H-90)
