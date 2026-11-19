@@ -44,6 +44,13 @@
   },
   {
    "name": "csapat",
+   "def": "urs_minta_vertes",
+   "owner": 1,
+   "x": 22,
+   "y": 22
+  },
+  {
+   "name": "csapat",
    "def": "urs_berserker",
    "owner": 1,
    "x": 21,

@@ -64,6 +64,7 @@ A betöltési sorrend számít: **a később betöltött mod felülírja a korá
 | `locale/hu.po`, `locale/en.po` | szövegek | – |
 | `ai/<azonosító>/` | gépi ellenfél (Lua) | – |
 | `missions/<azonosító>/mission.json` | küldetés | – |
+| `maps/*.json` | pályák (a Csata listájában is; azonos névnél a mod nyer) | – |
 
 Egy sablonfájl egy JSON-objektum; a kulcsai a sablonok azonosítói. Az azonosítók **névterenként** egyediek. A
 `_` kezdetű kulcsok megjegyzések. A konkrét sablonok (nem `template_` kezdetűek) az öröklés feloldása után a
@@ -114,9 +115,11 @@ magyar szöveg, `msgstr` a fordítás). Ami hiányzik, angolra, majd a kulcsra e
 
 ## 4. Küldetés
 
-`missions/<azonosító>/mission.json`: a pálya (a küldetés mappájából vagy az alap `maps` mappájából), a játékosok,
+`missions/<azonosító>/mission.json`: a pálya (a küldetés mappájából, az alap `maps` mappájából vagy az engedélyezett
+modok `maps` mappájából), a játékosok,
 régiók, pontok, egységek, célok (`at`: a cél helye a pályán – arany gyűrű jelzi), párbeszédek, átvezetők és
-eseményindítók. Indítás: `totu --mission <mappa>`. Teljes példa minden elemre: `engine/content/base/missions/proba`;
+eseményindítók. A küldetés az engedélyezett modok teljes tartalmával fut (a modbeli egységek, képességek,
+szövegek is elérhetők). Indítás: `totu --mods <modok> --mission <mappa>`. Teljes példa minden elemre: `engine/content/base/missions/proba`;
 a küldetés a beépített szerkesztővel (`totu --editor <küldetésmappa>`) is készíthető.
 
 ## 5. Többjátékos mód
@@ -131,13 +134,12 @@ engedélyezniük.
 |---|---|
 | `minta_egyseg` | új egység örökléssel, meglévő képpel (`Identity.sprite`), folt a termelő épületre és a nép listájára, saját szövegek |
 | `minta_kepesseg` | új képesség (`abilities.json`) és folt egy meglévő egység képességlistájára (`"+"`) |
-| `minta_kuldetes` | küldetés a modban: régió, egységek, két cél (az egyik helyhez kötve), győzelem és bukás eseményindítóval |
+| `minta_kuldetes` | küldetés a modban: régió, egységek, két cél (az egyik helyhez kötve), győzelem és bukás eseményindítóval; a `minta_egyseg` egységét is használja (függőség a modok között) |
 
 Kipróbálás: `totu --mods minta_egyseg,minta_kepesseg` (csatában az Ursanokkal), illetve
-`totu --mission engine/content/mods/minta_kuldetes/missions/minta`.
+`totu --mods minta_egyseg,minta_kuldetes --mission engine/content/mods/minta_kuldetes/missions/minta`.
 
 ## 7. Amit még nem lehet (tervben)
 
-- a küldetés és a küldetéssor tartalma csak az alap rétegből olvas (a modbeli egységet a küldetés még nem látja);
 - új győzelmi feltétel szkriptből (a győzelmi módok most beépítettek);
 - online modtár (mod.io, D23).

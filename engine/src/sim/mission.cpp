@@ -1066,7 +1066,7 @@ bool MissionHost::load(core::ByteReader& r) {
 }
 
 std::optional<Replay> load_mission_package(const std::string& mission_dir, const std::string& maps_dir, uint64_t seed,
-                                           std::string* error) {
+                                           std::string* error, const std::vector<std::string>& extra_maps_dirs) {
   namespace fs = std::filesystem;
   auto slurp = [](const fs::path& p, std::string& out) {
     std::ifstream in(p, std::ios::binary);
@@ -1090,7 +1090,9 @@ std::optional<Replay> load_mission_package(const std::string& mission_dir, const
     if (error) *error = "a küldetés pályája hiányzik vagy érvénytelen";
     return std::nullopt;
   }
-  if (!slurp(fs::path(mission_dir) / map, r.map) && !slurp(fs::path(maps_dir) / map, r.map)) {
+  bool found = slurp(fs::path(mission_dir) / map, r.map) || slurp(fs::path(maps_dir) / map, r.map);
+  for (const auto& d : extra_maps_dirs) found = found || slurp(fs::path(d) / map, r.map);   // a modok pályái
+  if (!found) {
     if (error) *error = "a küldetés pályája nem található: " + map;
     return std::nullopt;
   }

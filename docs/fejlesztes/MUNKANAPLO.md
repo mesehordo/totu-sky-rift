@@ -1029,3 +1029,7 @@ Három mintamod (`content/mods/minta_egyseg`, `minta_kepesseg`, `minta_kuldetes`
 ## 2026-11-19 – M13 4.: ZIP-modok
 
 A mods mappába tett `.zip` modot a játék a felhasználói mappa `mods_kibontva` alá bontja ki (csak ha a ZIP mérete vagy ideje változott; az ujjlenyomat a mod mappáján kívül van, így a modlock-ujjlenyomat gépenként azonos), és onnan mappaként tölti be. `content/zip`: a központi könyvtár olvasása, tárolt és deflate bejegyzés (a deflate az stb_image beépített, változatlan zlib-dekóderével – új külső könyvtár nélkül), egyetlen gyökérmappa lehántása; a titkosított, a ZIP64-es és a `..`-t vagy abszolút utat tartalmazó csomag hiba (figyelmeztetéssel kimarad). Próba: „ZIP-modok” (két kis próba-ZIP a `tests/data/mods_zip` alatt).
+
+## 2026-11-19 – M13 5.: küldetések és pályák modból
+
+A küldetés eddig is a modokkal együtt betöltött szabályokat kapta (a munkamenet tartalma a modrétegekből jön); hiányzott viszont a modok pályamappája: a küldetés pályáját a játék most a modok `maps` mappájában is keresi, és a Csata képernyő pályalistája is felveszi a modok pályáit (azonos névnél a mod nyer). A mintaküldetés a `minta_egyseg` modra épül (függőség a modok között), a csapatban a modbeli egység. Próbák: a küldetés a modbeli egységgel indul; a küldetés pályája a mod pályamappájából. Élőben ellenőrizve (`--mods minta_egyseg,minta_kuldetes --mission …`). Kép: `docs/quality/kepek/utan_modkuldetes.jpg`.

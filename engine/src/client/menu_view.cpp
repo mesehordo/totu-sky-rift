@@ -494,7 +494,16 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
     std::vector<std::string> errs = rep.errors;
     terrain_ok = terrain.load(set, errs) && errs.empty();
   }
-  Menu menu(st, loc, scan_maps(o.maps_dir, terrain_ok ? &terrain : nullptr), scan_factions(o.content));
+  std::vector<MapInfo> maps = scan_maps(o.maps_dir, terrain_ok ? &terrain : nullptr);
+  for (const auto& m : o.mods) {   // M13: a modok pályái is a listába (azonos névnél a később betöltött mod nyer)
+    if (m.id == "totu") continue;
+    for (auto& mi : scan_maps((m.root / "maps").string(), terrain_ok ? &terrain : nullptr)) {
+      const auto same = std::find_if(maps.begin(), maps.end(), [&](const MapInfo& x) { return x.name == mi.name; });
+      if (same != maps.end()) *same = std::move(mi);
+      else maps.push_back(std::move(mi));
+    }
+  }
+  Menu menu(st, loc, std::move(maps), scan_factions(o.content));
   menu.set_mods(o.available_mods);
   menu.set_logo_aspect(view.logo_aspect());
   if (o.start != MenuScreen::Main) menu.go(o.start);

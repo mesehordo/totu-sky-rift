@@ -3,7 +3,8 @@
  "name": "Minta: küldetés",
  "version": "1.0",
  "depends": [
-  "totu"
+  "totu",
+  "minta_egyseg"
  ],
- "description": "Mintamod: kis küldetés (érd el a kaput, győzd le az őrséget) az alap pályáján. Indítás: --mission content/mods/minta_kuldetes/missions/minta. Az SDK leírásának 3. példája."
+ "description": "Mintamod: kis küldetés (érd el a kaput, győzd le az őrséget) az alap pályáján; a csapatban a minta_egyseg mod Vértes pajzshordozója is ott van (függőség a modok között). Indítás: --mods minta_egyseg,minta_kuldetes --mission content/mods/minta_kuldetes/missions/minta. Az SDK leírásának 3. példája."
 }

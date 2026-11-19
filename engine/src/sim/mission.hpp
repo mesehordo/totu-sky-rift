@@ -194,7 +194,8 @@ class MissionHost : public SimHooks {
 struct Replay;
 // Küldetéscsomag (mappa) → meccsleírás: a mission.json, a pálya (a küldetés mappájából, különben a `maps_dir`-ből) és a
 // küldetés szkriptje (`script`, a „mission” modként). A tartalmat a start_match ellenőrzi.
+// `extra_maps_dirs`: a modok pályamappái (M13) – a küldetés mappája és az alap pályái után ezekben is keres
 std::optional<Replay> load_mission_package(const std::string& mission_dir, const std::string& maps_dir, uint64_t seed,
-                                           std::string* error);
+                                           std::string* error, const std::vector<std::string>& extra_maps_dirs = {});
 
 }  // namespace totu::sim

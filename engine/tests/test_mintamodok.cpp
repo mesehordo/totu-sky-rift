@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <filesystem>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -19,6 +20,7 @@ namespace {
 
 struct ModRules {
   content::ContentSet set;
+  map::TerrainTable terrain;
   std::optional<sim::Rules> rules;
   std::vector<std::string> errors;
   explicit ModRules(const std::vector<std::string>& mods) {
@@ -30,6 +32,7 @@ struct ModRules {
     content::add_mod_layers(vfs, root, order.order);
     const auto rep = content::ContentLoader(vfs, root / "schema").load(set);
     errors.insert(errors.end(), rep.errors.begin(), rep.errors.end());
+    terrain.load(set, errors);
     const auto game = content::parse(testing::read_file(root / "base" / "game.json"));
     if (game) rules = sim::Rules::load(*game, set, errors);
     for (size_t i = 0; i < errors.size() && i < 5; ++i) std::printf("  hiba: %s\n", errors[i].c_str());
@@ -81,4 +84,33 @@ TEST_CASE("M13 mintamodok: a kuldetes a modban betoltheto es ervenyes") {
   for (const auto& e : errs) std::printf("  hiba: %s\n", e.c_str());
   CHECK(def.has_value() && errs.empty());
   if (def) CHECK(def->objectives.size() == 2 && def->objectives[0].at == "kapu");
+  // a küldetés a modok tartalmával indul: a minta_egyseg (függőség) egysége is ott van a pályán
+  if (!desc) return;
+  std::string serr;
+  auto match = sim::start_match(*desc, &m.terrain, &*m.rules, serr);
+  if (!match) std::printf("  hiba: %s\n", serr.c_str());
+  CHECK(match != nullptr);
+  if (!match) return;
+  const uint16_t vertes = m.rules->def("urs_minta_vertes");
+  bool found = false;
+  match->sim->world().pool<sim::Unit>().each([&](sim::EntityId, const sim::Unit& u) { found = found || u.def == vertes; });
+  CHECK(vertes != sim::kNoDef && found);
+}
+
+TEST_CASE("M13 kuldetes palyaja a mod palyamappajabol") {
+  const auto root = std::filesystem::path(TOTU_CONTENT_DIR);
+  const auto tmp = std::filesystem::temp_directory_path() / "totu_modpalya";
+  std::filesystem::remove_all(tmp);
+  std::filesystem::create_directories(tmp / "mod" / "maps");
+  std::filesystem::create_directories(tmp / "kuld");
+  std::filesystem::copy_file(root / "base" / "maps" / "kraterfold.json", tmp / "mod" / "maps" / "mod_palya.json");
+  std::string text = testing::read_file(root / "mods" / "minta_kuldetes" / "missions" / "minta" / "mission.json");
+  const auto at = text.find("kraterfold.json");
+  CHECK(at != std::string::npos);
+  text.replace(at, std::string("kraterfold.json").size(), "mod_palya.json");
+  { std::ofstream(tmp / "kuld" / "mission.json", std::ios::binary) << text; }
+  std::string err;
+  CHECK(!sim::load_mission_package((tmp / "kuld").string(), (root / "base" / "maps").string(), 3, &err).has_value());   // a modmappa nélkül nincs meg
+  CHECK(sim::load_mission_package((tmp / "kuld").string(), (root / "base" / "maps").string(), 3, &err, {(tmp / "mod" / "maps").string()}).has_value());
+  std::filesystem::remove_all(tmp);
 }

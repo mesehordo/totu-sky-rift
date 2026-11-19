@@ -724,7 +724,11 @@ int main(int argc, char** argv) {
         };
         auto start_mission = [&]() -> bool {   // M11: a küldetéscsomagból (mission.json + pálya + szkript)
           if (!session.load_content(o.content, &err)) return false;
-          auto desc = sim::load_mission_package(o.mission, o.maps, 20261116, &err);
+          std::vector<std::string> mod_maps;   // M13: a modok pályamappái is
+          for (const auto& m : mod_order) {
+            if (m.id != "totu") mod_maps.push_back((m.root / "maps").string());
+          }
+          auto desc = sim::load_mission_package(o.mission, o.maps, 20261116, &err, mod_maps);
           if (!desc) return false;
           mission_match = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err);
           if (!mission_match) return false;
