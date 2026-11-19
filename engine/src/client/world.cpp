@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/world.hpp"
 
+#include "client/sigil.hpp"
+
 #include <algorithm>
 #include <cmath>
 
@@ -381,15 +383,7 @@ void World::draw_rally_ground(render::SpriteBatch& batch, double time) const {
     s.y = ry + 2 - s.h / 2;
     s.tint[0] = col[0]; s.tint[1] = col[1]; s.tint[2] = col[2];
     batch.draw(*rally_.sigil, nullptr, s);
-    if (rally_.shadow) {   // a zászló vetett árnyéka (a talajon)
-      render::SpriteInstance sh;
-      sh.x = rx - 3;
-      sh.y = ry - 3;
-      sh.w = 40;
-      sh.h = 20;
-      sh.layer[0] = static_cast<uint8_t>(static_cast<int>(time * 5.0 / 6.2831853 * 8.0) & 7);
-      batch.draw(*rally_.shadow, nullptr, sh);
-    }
+    // a zászló árnyékát az árnyékmenet veti, a nappal együtt forogva (D52)
   }
 }
 
@@ -445,29 +439,27 @@ std::array<uint8_t, 3> World::faction_accent(const std::string& fid) const {
 }
 
 void World::draw_banners(render::SpriteBatch& batch, double time) const {
-  // D51: minden látott, nem semleges épület jobb alsó sarkánál a tulajdonos lobogója (a csapatszín, a nép
-  // kiemelőszíne és címere); a fázis épületenként eltolva, hogy ne lengjenek egyszerre
+  // D51: minden látott, nem semleges épület jobb alsó sarkánál a tulajdonos lobogója – a népe stílusában (címer
+  // nélkül), a csapatszínben, a nép kiemelőszínű szegélyével és csúcsdíszével; a fázis épületenként eltolva
   if (!cur_ || !banner_.pole || !banner_.cloth) return;
   for (const SnapUnit& u : cur_->units) {
     if (u.kind != SnapUnit::kBuilding || u.owner == 0 || u.hp <= 0) continue;
     const std::array<uint8_t, 3> team = team_color(u.owner);
     const std::string& fid = cur_->players[std::min<size_t>(u.owner, sim::Sim::kMaxPlayers)].faction;
     const std::array<uint8_t, 3> acc = faction_accent(fid);
+    const int style = banner_style(fid);
     const float fx = static_cast<float>(u.tx + u.w) * kTilePx - 10.0f, fy = static_cast<float>(u.ty + u.h) * kTilePx - 6.0f;
-    const auto ph = static_cast<uint8_t>((static_cast<int>(time * 5.0 / 6.2831853 * 8.0) + static_cast<int>(u.id * 3)) & 7);
+    const int ph = (static_cast<int>(time * 5.0 / 6.2831853 * 8.0) + static_cast<int>(u.id * 3)) & 7;
     render::SpriteInstance s;
     s.x = fx - 5;
     s.y = fy - 54;
-    s.w = 16;
+    s.w = 20;
     s.h = 56;
+    s.foot = fy;   // a napszakkal forgó árnyék innen vetül (D52)
+    s.layer[0] = static_cast<uint8_t>(style);
     batch.draw(*banner_.pole, nullptr, s);
-    if (banner_.knob) {
-      render::SpriteInstance k = s;
-      k.tint[0] = acc[0]; k.tint[1] = acc[1]; k.tint[2] = acc[2];
-      batch.draw(*banner_.knob, nullptr, k);
-    }
     render::SpriteInstance c = s;
-    c.layer[0] = ph;
+    c.layer[0] = static_cast<uint8_t>(style * 8 + ph);
     c.tint[0] = team[0]; c.tint[1] = team[1]; c.tint[2] = team[2];
     batch.draw(*banner_.cloth, nullptr, c);
     if (banner_.trim) {
@@ -475,14 +467,10 @@ void World::draw_banners(render::SpriteBatch& batch, double time) const {
       t.tint[0] = acc[0]; t.tint[1] = acc[1]; t.tint[2] = acc[2];
       batch.draw(*banner_.trim, nullptr, t);
     }
-    const auto it = banner_.emblems.find(fid);
-    if (it != banner_.emblems.end() && it->second) {   // a címer a lobogó közepén, a lengéssel együtt
-      const float sway = static_cast<float>(std::sin(static_cast<double>(ph) / 8.0 * 6.2831853 + 20 * 0.22)) * 0.6f;
-      render::SpriteInstance e;
-      e.w = e.h = 9;
-      e.x = s.x + 10.5f + sway - e.w / 2;
-      e.y = s.y + 19 - e.h / 2;
-      batch.draw(*it->second, nullptr, e);
+    if (banner_.knob) {
+      render::SpriteInstance k = s;
+      k.tint[0] = acc[0]; k.tint[1] = acc[1]; k.tint[2] = acc[2];
+      batch.draw(*banner_.knob, nullptr, k);
     }
   }
 }
@@ -499,6 +487,7 @@ void World::draw_rally_flags(render::SpriteBatch& batch, double time) const {
     p.y = b->rally_y - 30;
     p.w = 22;
     p.h = 32;
+    p.foot = b->rally_y;   // a napszakkal forgó árnyék innen vetül (D52)
     batch.draw(*rally_.pole, nullptr, p);
     render::SpriteInstance c = p;   // a zászló a csapatszínben, lengve
     c.layer[0] = static_cast<uint8_t>(static_cast<int>(time * 5.0 / 6.2831853 * 8.0) & 7);

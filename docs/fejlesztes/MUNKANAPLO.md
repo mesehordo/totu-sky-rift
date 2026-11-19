@@ -957,3 +957,7 @@ A kijelölt csoport közepétől a legutóbbi saját mozgásparancs (mozgás, vo
 ## 2026-11-19 – 5. tétel: csapatlobogó az épületeken (D51)
 
 A tulajdonos döntése: az épületek csapatát lengő lobogó jelzi (nem maszk, nem kulcsszín). Rúd, gomb és szegély a nép kiemelőszínében, a lobogó a csapatszínben, középen a nép címere; 8 fázisban leng, épületenként eltolva. Kép: `docs/quality/kepek/utan_csapatlobogo.jpg`.
+
+## 2026-11-19 – Lobogók népenként, címer nélkül; a zászlók árnyéka (D51 kiegészítés, D52)
+
+Minden főnépnek saját alakú lobogó (9 stílus: általános + 7 főnép + a Micélia-mod), címer nélkül; rúd a nép anyagából, csúcsdísz és szegély a kiemelőszínben, vászon a csapatszínben. A stílust a tulajdonos népe adja, így a szövetséges kisnép épülete a főnép lobogóját kapja. A csapatlobogók és a gyülekezőzászló az árnyékmenetbe kerültek: az árnyékuk a nappal forog (különbségképpel ellenőrizve). Felírva (D52 2.): az egységeken a csapatszín egy kulcsszín helyére kerül. Próba: „lobogok”. Képek: `docs/quality/kepek/lobogok_nepenkent.jpg`, `utan_csapatlobogo.jpg`.

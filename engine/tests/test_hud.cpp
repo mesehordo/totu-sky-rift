@@ -795,3 +795,50 @@ TEST_CASE("HUD a regi jatek szerint: kijelolesi pecset (meret, fenyudvar, gyuru,
   const auto in = client::sigil_image({60, 205, 92}, 38.0f, true);   // a mozgáscél: befelé mutató hegyek
   CHECK(in.width == 50 && in.height == 34);
 }
+
+TEST_CASE("HUD lobogok (D51): minden fonepnek sajat alak, cimer nelkul; a kisnep a tulajdonos lobogojat kapja") {
+  CHECK(client::banner_style("ursan") != client::banner_style("croftian") && client::banner_style("tokla") == 0);
+  std::vector<std::vector<uint8_t>> alphas;
+  for (int st = 0; st < client::kBannerStyles; ++st) {
+    const auto c = client::banner_cloth_image(st, 0);
+    CHECK(c.width == 20 && c.height == 56);
+    std::vector<uint8_t> a;
+    int filled = 0;
+    for (int y = 0; y < c.height; ++y) {
+      for (int x = 0; x < c.width; ++x) {
+        a.push_back(c.at(x, y)[3]);
+        filled += c.at(x, y)[3] > 128 ? 1 : 0;
+      }
+    }
+    CHECK(filled > 60);   // van vászon
+    for (const auto& prev : alphas) CHECK(prev != a);   // minden stílus más alakú
+    alphas.push_back(a);
+  }
+  if (const char* out = std::getenv("TOTU_BANNER_SHEET")) {   // áttekintő kép (csak kérésre)
+    render::Image sheet;
+    sheet.width = 20 * client::kBannerStyles * 3;
+    sheet.height = 56 * 3;
+    sheet.rgba.assign(static_cast<size_t>(sheet.width * sheet.height) * 4, 0);
+    for (size_t i = 0; i < sheet.rgba.size(); i += 4) { sheet.rgba[i] = 60; sheet.rgba[i + 1] = 110; sheet.rgba[i + 2] = 50; sheet.rgba[i + 3] = 255; }
+    const uint8_t team[3] = {60, 120, 230}, acc[3] = {240, 210, 120};
+    for (int st = 0; st < client::kBannerStyles; ++st) {
+      const render::Image layers[4] = {client::banner_pole_image(st), client::banner_cloth_image(st, 2), client::banner_trim_image(st, 2),
+                                       client::banner_knob_image(st)};
+      const uint8_t* tints[4] = {nullptr, team, acc, acc};
+      for (int l = 0; l < 4; ++l) {
+        for (int y = 0; y < 56 * 3; ++y) {
+          for (int x = 0; x < 20 * 3; ++x) {
+            const uint8_t* p = layers[l].at(x / 3, y / 3);
+            const float a = p[3] / 255.0f;
+            uint8_t* d = sheet.at(st * 60 + x, y);
+            for (int c = 0; c < 3; ++c) {
+              const float v = tints[l] ? p[c] * tints[l][c] / 255.0f : p[c];
+              d[c] = static_cast<uint8_t>(d[c] * (1 - a) + v * a);
+            }
+          }
+        }
+      }
+    }
+    render::save_png(out, sheet);
+  }
+}

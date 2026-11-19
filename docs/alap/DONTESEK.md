@@ -499,3 +499,18 @@ mellé tűzött, lengő lobogó** jelzi, a nép stílusában és a csapat szín�
 Megvalósítás: rúd (sötét fa, a gomb a nép kiemelőszínében), a lobogó a csapatszínben, a szegélye a nép
 kiemelőszínében, középen a nép címere (`assets/emblems`), 8 lengésfázis, épületenként eltolt fázissal; az épület jobb
 alsó sarkánál. A WC3/AoE2 maszkos vagy palettás színezése helyett ez a grafika készítését egyszerűsíti.
+
+**D51 kiegészítés (2026-11-19, a tulajdonos):** minden főnépnek **saját kinézetű, a néphez illő lobogója** van, **címer
+nélkül** (Ursan: cakkos aljú; Croftian: rongyos szélű hártya, kitinrúd; Elves: keskeny, hegyes, ezüst rúd, kristály;
+Imperium: szögletes hadijelvény rojttal, vasrúd, kereszt; Ooni: magas nobori; Hukucha: tavirózsalevél nádszáron;
+Wullof: vízszintes háromszög szalagokkal, lándzsanyél; Micélia: gombakalap alatti fodros függöny; a többi:
+fecskefarkú). A **kisnépek** épületei a szövetséges főnép (a tulajdonos) lobogóját kapják. Kép:
+`docs/quality/kepek/lobogok_nepenkent.jpg`.
+
+### D52 – A zászlók árnyéka és az egységek csapatszíne · ELDÖNTVE (2026-11-19)
+
+1. **Minden zászlónak** (csapatlobogó, gyülekezőzászló, később a többi) **árnyéka van, és a napot követi**, mint minden
+   más árnyék (a napszakkal forgó árnyékmenet része).
+2. **Az egységeken** a csapatszín **egy kulcsszín helyére** kerül: a képen egy fenntartott szín (árnyalattartomány)
+   jelöli, hová jön a csapatszín; az atlaszkészítő ebből magától készíti a maszkot, külön maszkkép nem kell (a
+   meglévő maszkok tovább működnek). Az épületeken a csapatjelzés a lobogó (D51).

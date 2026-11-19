@@ -6,6 +6,7 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 
 #include "render/image.hpp"
 
@@ -21,11 +22,14 @@ render::Image rally_pole_image();                // 22 × 32: a rúd és a gomb 
 render::Image rally_cloth_image(int phase);      // 22 × 32: a fecskefarkú zászló (fehér, sötét kontúr), 8 fázis
 render::Image rally_shadow_image(int phase);     // 40 × 20: a vetett árnyék (a rúd töve: 3, 3), 8 fázis
 
-// Az épületek csapatjelző lobogója (D51), 16 × 56-os képek (a talppont 5, 54): a rúd (sötét fa), a gomb (fehér – a nép
-// kiemelőszíne árnyalja), a lobogó (fehér – a csapatszín) és a szegélye (fehér – a nép kiemelőszíne), 8 lengésfázisban
-render::Image banner_pole_image();
-render::Image banner_knob_image();
-render::Image banner_cloth_image(int phase);
-render::Image banner_trim_image(int phase);
+// Az épületek csapatjelző lobogója (D51): minden főnépnek saját alakú, címer nélkül. 20 × 56-os képek (a talppont
+// 5, 54): a rúd (a nép anyagából), a csúcsdísz (fehér – a nép kiemelőszíne árnyalja), a vászon (fehér – a csapatszín)
+// és a szegélye (fehér – a kiemelőszín), 8 lengésfázisban. A stílus: 0 az általános fecskefarkú, 1–8 a főnépeké.
+constexpr int kBannerStyles = 9;
+int banner_style(const std::string& faction);
+render::Image banner_pole_image(int style);
+render::Image banner_knob_image(int style);
+render::Image banner_cloth_image(int style, int phase);
+render::Image banner_trim_image(int style, int phase);
 
 }  // namespace totu::client

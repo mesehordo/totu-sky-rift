@@ -74,10 +74,9 @@ class World {
     const render::Texture* move_sigil = nullptr;   // a mozgáscél: zöld, befelé mutató pecsét (38 képpont)
   };
   void set_rally_art(const RallyArt& a) { rally_ = a; }
-  // a csapatjelző lobogó (D51): rúd, gomb, lobogó és szegély (8 fázis rétegenként), népenként a címer
+  // a csapatjelző lobogó (D51): rúd és csúcsdísz (stílusonként egy réteg), vászon és szegély (stílus × 8 fázis réteg)
   struct BannerArt {
     const render::Texture *pole = nullptr, *knob = nullptr, *cloth = nullptr, *trim = nullptr;
-    std::map<std::string, const render::Texture*> emblems;   // a nép azonosítója → címer
   };
   void set_banner_art(BannerArt a) { banner_ = std::move(a); }
   void draw_banners(render::SpriteBatch& batch, double time) const;
