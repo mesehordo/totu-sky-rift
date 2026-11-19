@@ -146,6 +146,7 @@ class HudModel {
   bool help_open = false;       // F1: a súgó panel
  private:
   std::unordered_map<sim::EntityId, int32_t> seen_hp_;   // a riasztáshoz: az előző pillanatkép életereje
+  std::unordered_map<sim::EntityId, SnapUnit> seen_bld_;  // a saját épületek („Elpusztult: …”, a régi `notify`)
   int64_t seen_tick_ = -1;
   double hero_click_t_ = -9;
   sim::EntityId hero_click_id_ = 0;
@@ -159,6 +160,8 @@ class HudModel {
   };
   std::vector<Notice> notice_log;
   void post_notice(std::string text, std::array<uint8_t, 3> col = {255, 160, 90});
+  // a pillanatkép építési próbája szerint ide nem építhető (`why`: a lefordított ok); ismeretlen helyre: nem tiltott
+  bool place_blocked(uint16_t def, int tx, int ty, std::string* why) const;
   // a régi hősportrék (jobb felül, legfeljebb 4): a rajzolás tölti ki; kattintás kijelöl, dupla kattintás odaugrik
   std::array<Rect, 4> hero_btn{};
   std::array<sim::EntityId, 4> hero_ids{};

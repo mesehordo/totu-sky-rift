@@ -816,9 +816,11 @@ int main(int argc, char** argv) {
           SDL_GetMouseState(&gx, &gy);
           int tx = 0, ty = 0;
           hud.model().place_tile(cam.x + gx / cam.zoom, cam.y + gy / cam.zoom, hm.def, &tx, &ty);
-          world.set_ghost(hm.def, tx, ty);
+          if (hm.kind == client::HudMode::Place) session.set_place_probe(hm.def, tx, ty);
+          world.set_ghost(hm.def, tx, ty, hm.kind != client::HudMode::Place || !hud.model().place_blocked(hm.def, tx, ty, nullptr));
         } else {
           world.set_ghost(sim::kNoDef, 0, 0);
+          session.set_place_probe(sim::kNoDef, 0, 0);
         }
       }
       while (SDL_PollEvent(&ev)) {

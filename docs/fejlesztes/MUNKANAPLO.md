@@ -917,3 +917,7 @@ A meccs végén a régi összesítő: Áttekintés (pontszám, katonai, gazdasá
 ## 2026-11-19 – Döntés: elmosott köd
 
 A tulajdonos döntése: a felderített rész alapból elmosott (színes, elmosott, kissé sötétebb) a szürke helyett; D41 kiegészítve. A szürke összehasonlításhoz: `--fog-gray`.
+
+## 2026-11-19 – „Nem lehet építeni” és „Elpusztult” (a régi játék szerint)
+
+Az építés kísértetképe tiltott helyen piros (a szimuláció `can_place`-e a pillanatképben, a kurzor alatti helyre); kattintásra „Nem lehet építeni: <ok>”, parancs nem megy ki, a mód marad. A sérült saját épület eltűnésekor „Elpusztult: <név>”. Csak kliens; a hash és a mentés változatlan. Próba: `HUD`.

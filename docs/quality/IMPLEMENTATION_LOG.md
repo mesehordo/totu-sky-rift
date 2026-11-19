@@ -108,6 +108,19 @@ csak a meccs végén másolja. **Próba:** `Osszesito` (ölés, veszteség, ép�
 **Képek:** `kepek/utan_osszesito_attekintes.jpg`, `kepek/utan_osszesito_grafikon.jpg` (próbameccs, a vége
 kényszerítve).
 
+## 11. „Nem lehet építeni”, „Elpusztult” (a régi játék szerint; az AS-03 nyitott pontjai)
+
+**Építési hely:** a kliens minden képkockán elküldi a kurzor alatti helyet (sablon, csempe) a futtatónak; a
+pillanatkép a szimuláció `can_place` válaszát hozza (a helyi játékos szemszögéből). A kísértetkép zöld, tiltott
+helyen piros (a régi kurzor „nem”-je helyett); kattintásra az üzenetsorban „Nem lehet építeni: <ok>” (a régi
+szöveg), parancs nem megy ki, az építési mód marad. Az okok (térképen kívül, terep, szirt, foglalt, lelőhely, a
+népek külön szabályai) fordítási kulccsal, angolul is. Ismert korlát: a „foglalt” a ködben álló, nem látott
+épületre is igaz (a régi játékban is így volt).
+**Elpusztult:** ha a helyi játékos sérült épülete eltűnik a pillanatképből, „Elpusztult: <név>” (a régi `notify`
+szövege és színe); a lebontott (ép) épület csendben, az elfoglalt (más tulajdonossal ott maradó) nem számít.
+Csak kliens: a szimuláció, a hash és a mentés változatlan. **Próba:** `HUD` – „Nem lehet epiteni …, Elpusztult
+epulet”.
+
 ## Döntésre vár
 
 AS-07

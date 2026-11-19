@@ -1213,6 +1213,22 @@ void HudModel::watch_alerts() {
     }
   }
   seen_hp_ = std::move(now);
+  {   // a régi: „Elpusztult: <épület>” – az eltűnt, sérült saját épület (a lebontott ép marad csendben; az elfoglalt
+      // más tulajdonossal ott van a pillanatképben)
+    std::unordered_map<sim::EntityId, SnapUnit> bld;
+    for (const SnapUnit& u : snap_->units) {
+      if (u.owner == player && u.kind == SnapUnit::kBuilding) bld.emplace(u.id, u);
+    }
+    if (!first) {
+      std::vector<sim::EntityId> gone;
+      for (const auto& [id, u] : seen_bld_) {
+        if (!bld.count(id) && u.hp < u.max_hp && !snap_->find(id)) gone.push_back(id);
+      }
+      std::sort(gone.begin(), gone.end());
+      for (const sim::EntityId id : gone) post_notice(tr("lost.building", {unit_name(seen_bld_[id])}), {255, 120, 90});
+    }
+    seen_bld_ = std::move(bld);
+  }
   if (hit && snap_->tick - alert_tick > 12 * 30) {   // a régi: 12 mp-enként legfeljebb egy riasztás
     alert_tick = snap_->tick;
     alert_x = hx;
@@ -1396,6 +1412,33 @@ void HudModel::place_tile(float wx, float wy, uint16_t def, int* tx, int* ty) co
   *ty = static_cast<int>(std::floor(wy / kTile)) - fh / 2;
 }
 
+bool HudModel::place_blocked(uint16_t def, int tx, int ty, std::string* why) const {
+  if (!snap_) return false;
+  const auto& p = snap_->place;
+  if (p.def != def || p.tx != tx || p.ty != ty || p.ok) return false;
+  if (why) {
+    // a szimuláció szövegei (magyar belső okok) → fordítási kulcs; az ismeretlen ok változatlanul
+    static const std::pair<const char*, const char*> kReasons[] = {
+        {"a térképen kívül", "place.out"},
+        {"nem építhető terep", "place.terrain"},
+        {"szirtre és szintkülönbségre nem építhető", "place.cliff"},
+        {"foglalt hely", "place.busy"},
+        {"aranybányára vagy meteoritra kell építeni", "place.node"},
+        {"csak lámpásfénybe építhető", "place.lantern"},
+        {"csak saját mélységre építhető", "place.depth"},
+        {"csak saját tóra építhető", "place.pond"},
+        {"itt már tó van", "place.pond_here"},
+        {"nincs energiamező (Napobeliszk) a helyen", "place.field"},
+        {"a kapu párja csak látott helyre építhető", "place.gate_seen"},
+    };
+    *why = p.why;
+    for (const auto& [src, key] : kReasons) {
+      if (p.why == src) *why = tr(key);
+    }
+  }
+  return true;
+}
+
 bool HudModel::world_click(float wx, float wy, int button, sim::EntityId under) {
   if (mode.kind == HudMode::None) return false;
   if (button == 3) {
@@ -1410,6 +1453,10 @@ bool HudModel::world_click(float wx, float wy, int button, sim::EntityId under) 
     case HudMode::Place: {
       int tx = 0, ty = 0;
       place_tile(wx, wy, m.def, &tx, &ty);
+      if (std::string why; place_blocked(m.def, tx, ty, &why)) {   // a régi: „Nem lehet építeni: …”, a mód marad
+        post_notice(tr("err.place", {why}));
+        return true;
+      }
       sim::Command c = base_cmd(sim::Command::Kind::Build);
       for (const SnapUnit* u : own_sel_units()) {
         if (def_of(*u)->worker && def_of(*u)->builds) {

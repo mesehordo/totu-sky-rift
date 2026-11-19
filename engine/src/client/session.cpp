@@ -346,7 +346,13 @@ void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
 }
 
 std::shared_ptr<const Snapshot> Session::snapshot() {
-  if (last_ && last_->tick == sim_->tick()) return last_;
+  if (last_ && last_->tick == sim_->tick() &&
+      (!sim_->rules() || static_cast<uint16_t>(probe_.load() >> 32) == sim::kNoDef ||
+       (last_->place.def == static_cast<uint16_t>(probe_.load() >> 32) &&
+        last_->place.tx == static_cast<int16_t>((probe_.load() >> 16) & 0xffff) &&
+        last_->place.ty == static_cast<int16_t>(probe_.load() & 0xffff)))) {
+    return last_;
+  }
   if (sim_->rules()) {   // meccs: a köd az 1. játékos látóteréből (a szimulációé)
     const sim::PlayerState& p1 = sim_->player(local_);
     if (!fog_ || sim_->tick() % 6 == 0) {
@@ -485,6 +491,14 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       for (int r = 0; r < sim::kResources; ++r) o.gathered[static_cast<size_t>(r)] = static_cast<int32_t>(p.gathered[static_cast<size_t>(r)] / 1000);
       o.stats = p.stats;
       if (!p.defeated && sim_->winner() == 0 && !(mission_ && mission_->result() != sim::MissionHost::Result::None)) o.stats.timeline.clear();
+    }
+    {   // az építési hely próbája (a helyi játékos szemszögéből)
+      const uint64_t pr = probe_.load();
+      auto& pp = s->place;
+      pp.def = static_cast<uint16_t>(pr >> 32);
+      pp.tx = static_cast<int16_t>((pr >> 16) & 0xffff);
+      pp.ty = static_cast<int16_t>(pr & 0xffff);
+      if (pp.def != sim::kNoDef) pp.ok = sim_->can_place(local_, pp.def, pp.tx, pp.ty, &pp.why);
     }
     s->winner = sim_->winner();
     s->night = sim_->night_permille();

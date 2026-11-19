@@ -9209,3 +9209,55 @@ msgstr "Total resources gathered"
 msgctxt "hud.sum.menu"
 msgid "FŐMENÜ"
 msgstr "MAIN MENU"
+
+msgctxt "hud.err.place"
+msgid "Nem lehet építeni: {}"
+msgstr "Cannot build here: {}"
+
+msgctxt "hud.place.out"
+msgid "a térképen kívül"
+msgstr "outside the map"
+
+msgctxt "hud.place.terrain"
+msgid "nem építhető terep"
+msgstr "unbuildable terrain"
+
+msgctxt "hud.place.cliff"
+msgid "szirtre és szintkülönbségre nem építhető"
+msgstr "cannot build on cliffs or across levels"
+
+msgctxt "hud.place.busy"
+msgid "foglalt hely"
+msgstr "the area is occupied"
+
+msgctxt "hud.place.node"
+msgid "aranybányára vagy meteoritra kell építeni"
+msgstr "must be built on a gold mine or meteorite"
+
+msgctxt "hud.place.lantern"
+msgid "csak lámpásfénybe építhető"
+msgstr "can only be built in lantern light"
+
+msgctxt "hud.place.depth"
+msgid "csak saját mélységre építhető"
+msgstr "can only be built on your own depths"
+
+msgctxt "hud.place.pond"
+msgid "csak saját tóra építhető"
+msgstr "can only be built on your own pond"
+
+msgctxt "hud.place.pond_here"
+msgid "itt már tó van"
+msgstr "there is already a pond here"
+
+msgctxt "hud.place.field"
+msgid "nincs energiamező (Napobeliszk) a helyen"
+msgstr "no energy field (Sun Obelisk) here"
+
+msgctxt "hud.place.gate_seen"
+msgid "a kapu párja csak látott helyre építhető"
+msgstr "the gate's pair can only be built where you can see"
+
+msgctxt "hud.lost.building"
+msgid "Elpusztult: {}"
+msgstr "Destroyed: {}"

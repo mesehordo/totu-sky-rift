@@ -653,3 +653,48 @@ TEST_CASE("HUD a regi jatek szerint: F2 hos (ujra: odaugras), Szokoz bazis, Tama
   m.key(HudModel::kKeySpace);
   CHECK(m.hud.jump && (m.hud.jump_x != hqx || m.hud.jump_y != hqy));   // az utolsó riasztás helye
 }
+
+TEST_CASE("HUD a regi jatek szerint: Nem lehet epiteni (piros kiserteskep, ok), Elpusztult epulet") {
+  HudMatch m("ursan");
+  CHECK(m.ok);
+  if (!m.ok) return;
+  const client::SnapUnit* hq = m.hq();
+  const auto w = m.own(true);
+  const uint16_t hd = m.s.rules()->def("urs_hosszuhaz");
+  CHECK(hq != nullptr && !w.empty() && hd != sim::kNoDef);
+  if (!hq || w.empty() || hd == sim::kNoDef) return;
+  const sim::EntityId hq_id = hq->id;
+  // a szimuláció próbája: a főépületre nem építhető (foglalt), a pillanatkép válaszol
+  int tx = 0, ty = 0;
+  m.hud.place_tile(hq->x, hq->y, hd, &tx, &ty);
+  m.s.set_place_probe(hd, tx, ty);
+  m.step(1);
+  std::string why;
+  CHECK(m.hud.place_blocked(hd, tx, ty, &why) && why == m.hud.tr("place.busy"));
+  // kattintás a tiltott helyre: üzenet, parancs nem megy ki, a mód marad
+  m.hud.sel = {w[0]};
+  m.hud.mode.kind = client::HudMode::Place;
+  m.hud.mode.def = hd;
+  m.calls.clear();
+  m.execute = false;
+  m.hud.world_click(m.snap->find(hq_id)->x, m.snap->find(hq_id)->y, 1, 0);
+  CHECK(m.calls.empty() && m.hud.mode.kind == client::HudMode::Place);
+  CHECK(!m.hud.notice_log.empty() && m.hud.notice_log.back().text == m.hud.tr("err.place", {m.hud.tr("place.busy")}));
+  std::printf("  üzenet: %s\n", m.hud.notice_log.back().text.c_str());
+  // a próba nélküli hely nem tiltott
+  CHECK(!m.hud.place_blocked(hd, tx + 40, ty, nullptr));
+  // a sérült saját épület eltűnik: „Elpusztult: …”; a lebontott (ép) csendben
+  m.hud.mode = {};
+  m.custom = *m.snap;
+  for (auto& u : m.custom.units) {
+    if (u.id == hq_id) u.hp = u.max_hp / 2;
+  }
+  m.bind(&m.custom);
+  m.hud.watch_alerts();
+  m.custom.tick += 1;
+  std::erase_if(m.custom.units, [&](const client::SnapUnit& u) { return u.id == hq_id; });
+  m.bind(&m.custom);
+  m.hud.notice_log.clear();
+  m.hud.watch_alerts();
+  CHECK(m.hud.notice_log.size() == 1 && m.hud.notice_log.back().text.rfind("Elpusztult: ", 0) == 0);
+}

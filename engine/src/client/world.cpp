@@ -592,7 +592,8 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     const int s = sheet_by_id(atlas, r->defs[ghost_def_].id);
     if (s >= 0) {
       const auto& gs = atlas->data().sheets[static_cast<size_t>(s)];
-      const uint8_t tint[4] = {190, 255, 190, 150};
+      const uint8_t ok_tint[4] = {190, 255, 190, 150}, no_tint[4] = {255, 110, 100, 160};
+      const uint8_t* tint = ghost_ok_ ? ok_tint : no_tint;
       const uint8_t no_team[4] = {0, 0, 0, 0};
       atlas->draw(batch, gs, 0, 0, static_cast<float>(ghost_tx_) * kTilePx, static_cast<float>(ghost_ty_) * kTilePx,
                   1.0f / gs.scale, no_team, tint);

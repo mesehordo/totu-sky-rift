@@ -124,6 +124,14 @@ struct Snapshot {
   std::string weather;            // "" = derült
   SnapMission mission;            // M11
   sim::MatchMode mode;            // M12: győzelmi feltétel, tempó (béke, domb, hullámok)
+  // az építési hely próbája (a kísértetkép és a „Nem lehet építeni” üzenet): a kért sablon és csempe, és hogy a
+  // szimuláció szerint oda építhető-e (ha nem, az ok a szimuláció szövegével)
+  struct PlaceProbe {
+    uint16_t def = sim::kNoDef;
+    int tx = 0, ty = 0;
+    bool ok = true;
+    std::string why;
+  } place;
   const SnapUnit* find(sim::EntityId id) const;   // bináris keresés
 };
 
@@ -155,6 +163,10 @@ class Session {
   void set_reveal_all(bool on) { reveal_all_ = on; }
   // a helyi játékos (M10: hálózaton a kapott hely): az ő szemével látszik a köd, az ő egységei választhatók
   void set_local_player(uint8_t p) { local_ = p; }
+  // az építési hely próbája (a rajzoló szálról; a következő pillanatkép `place` mezője válaszol); kNoDef: nincs
+  void set_place_probe(uint16_t def, int tx, int ty) {
+    probe_.store((uint64_t{def} << 32) | (uint64_t{static_cast<uint16_t>(tx)} << 16) | static_cast<uint16_t>(ty));
+  }
   uint8_t local_player() const { return local_; }
   // képpróba (M6 5. lépés): két vegyes ursan sereg a pálya közepe két oldalán, támadó mozgással egymásnak
   void battle_demo(int per_side);
@@ -192,6 +204,7 @@ class Session {
   std::map<sim::EntityId, SnapUnit> remembered_;
   bool reveal_all_ = false;
   uint8_t local_ = 1;
+  std::atomic<uint64_t> probe_{uint64_t{sim::kNoDef} << 32};
   sim::MissionHost* mission_ = nullptr;   // M11: az átvett meccs küldetése
   const sim::Rules* match_rules_ = nullptr;
   map::NavConfig nav_config_;   // a game.json `navigation` része (H-90)

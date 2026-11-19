@@ -59,7 +59,7 @@ class World {
   void draw_garrison(render::SpriteBatch& batch, const render::Texture& white, float hover_wx, float hover_wy) const;
   // építés (ideiglenes kezelés a HUD-ig): a kísértetkép (sablon, bal felső csempe; kNoDef = nincs), és a parancs az
   // első kijelölt munkással
-  void set_ghost(uint16_t def, int tx, int ty) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; }
+  void set_ghost(uint16_t def, int tx, int ty, bool ok = true) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; ghost_ok_ = ok; }
   bool order_build(uint16_t def, int tx, int ty);
   std::vector<uint16_t> buildable_defs(const std::string& faction) const;
   size_t selected() const { return selected_.size(); }
@@ -133,6 +133,7 @@ class World {
   std::vector<FxEvent> fx_;
   uint16_t ghost_def_ = sim::kNoDef;
   int ghost_tx_ = 0, ghost_ty_ = 0;
+  bool ghost_ok_ = true;   // a szimuláció szerint építhető (különben piros – a régi `can_place` a kurzornál)
   int drawn_ = 0;
   std::vector<Item> items_;
   struct ItemsKey {

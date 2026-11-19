@@ -9208,3 +9208,55 @@ msgstr ""
 msgctxt "hud.sum.menu"
 msgid "FŐMENÜ"
 msgstr ""
+
+msgctxt "hud.err.place"
+msgid "Nem lehet építeni: {}"
+msgstr ""
+
+msgctxt "hud.place.out"
+msgid "a térképen kívül"
+msgstr ""
+
+msgctxt "hud.place.terrain"
+msgid "nem építhető terep"
+msgstr ""
+
+msgctxt "hud.place.cliff"
+msgid "szirtre és szintkülönbségre nem építhető"
+msgstr ""
+
+msgctxt "hud.place.busy"
+msgid "foglalt hely"
+msgstr ""
+
+msgctxt "hud.place.node"
+msgid "aranybányára vagy meteoritra kell építeni"
+msgstr ""
+
+msgctxt "hud.place.lantern"
+msgid "csak lámpásfénybe építhető"
+msgstr ""
+
+msgctxt "hud.place.depth"
+msgid "csak saját mélységre építhető"
+msgstr ""
+
+msgctxt "hud.place.pond"
+msgid "csak saját tóra építhető"
+msgstr ""
+
+msgctxt "hud.place.pond_here"
+msgid "itt már tó van"
+msgstr ""
+
+msgctxt "hud.place.field"
+msgid "nincs energiamező (Napobeliszk) a helyen"
+msgstr ""
+
+msgctxt "hud.place.gate_seen"
+msgid "a kapu párja csak látott helyre építhető"
+msgstr ""
+
+msgctxt "hud.lost.building"
+msgid "Elpusztult: {}"
+msgstr ""
