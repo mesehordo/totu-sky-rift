@@ -54,8 +54,9 @@ ModLoadResult resolve_mods(const std::vector<ModInfo>& available, const std::vec
 // M13: a választható modok – az alap (`totu`, a `<content>/base`) és minden `mod.json`-os almappa a
 // `<content>/mods` és az `extra_dirs` (pl. a felhasználói `mods` mappa) alatt; azonos azonosítónál az első
 // (a beépített) nyer. A hibás `mod.json` figyelmeztetés, a mod kimarad.
+// A `.zip` modokat (ha a `zip_cache` meg van adva) oda bontja ki, és onnan mappaként veszi fel (content/zip.hpp).
 std::vector<ModInfo> discover_mods(const std::filesystem::path& content_dir, const std::vector<std::filesystem::path>& extra_dirs,
-                                   std::vector<std::string>* warnings = nullptr);
+                                   std::vector<std::string>* warnings = nullptr, const std::filesystem::path& zip_cache = {});
 // a kért modok betöltési sorrendje az alappal együtt (az alap mindig az első); hiba esetén üres `order`
 ModLoadResult select_mods(const std::vector<ModInfo>& available, const std::vector<std::string>& requested);
 // a rétegek a sorrend szerint (az alap alul); üres sorrendnél csak az alap

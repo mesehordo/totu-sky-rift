@@ -64,6 +64,7 @@ add_library(totu_core
   src/core/decimal.cpp
   src/content/json.cpp
   src/content/vfs.cpp
+  src/content/zip.cpp
   src/content/templates.cpp
   src/content/schema.cpp
   src/content/loader.cpp
@@ -83,7 +84,7 @@ add_library(totu_core
   src/map/navgrid.cpp
   src/map/pathfinder.cpp)
 target_include_directories(totu_core PUBLIC src)
-target_link_libraries(totu_core PRIVATE totu_options PUBLIC totu_lua)
+target_link_libraries(totu_core PRIVATE totu_options totu_stb PUBLIC totu_lua)   # totu_stb: a ZIP-modok deflate-kibontása
 target_compile_definitions(totu_core PUBLIC TOTU_VERSION="${PROJECT_VERSION}")
 
 # --- képek (PNG, stb_image – MIT / közkincs, változatlan): grafikus kártya nélkül is (tesztek, atlaszkészítő) ---

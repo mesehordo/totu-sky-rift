@@ -1025,3 +1025,7 @@ A főmenü „Modok” pontja megnyitja a modkezelőt az oldalsáv mellett: balr
 ## 2026-11-19 – M13 3.: mintamodok és modkészítői leírás (SDK)
 
 Három mintamod (`content/mods/minta_egyseg`, `minta_kepesseg`, `minta_kuldetes`): új egység örökléssel és meglévő képpel, folttal a termelő épületre és a nép listájára; új képesség folttal egy meglévő egységre; küldetés a modban. Közben bevezetve: `Identity.sprite` – a sablon képe lehet egy meglévő képlap (az alapadatok már használták, eddig figyelmen kívül maradt, így néhány változat-egység kör volt). A `mod.json` `name` mezője a Micéliáknak is. Leírás: `docs/modolas/MOD_SDK.md` (CC BY 4.0, D8); a régi `docs/MODDING.md` a Python-játéké (megjelölve). Próbák: „mintamodok” (3), a felderítési próba azonosító szerint ellenőriz.
+
+## 2026-11-19 – M13 4.: ZIP-modok
+
+A mods mappába tett `.zip` modot a játék a felhasználói mappa `mods_kibontva` alá bontja ki (csak ha a ZIP mérete vagy ideje változott; az ujjlenyomat a mod mappáján kívül van, így a modlock-ujjlenyomat gépenként azonos), és onnan mappaként tölti be. `content/zip`: a központi könyvtár olvasása, tárolt és deflate bejegyzés (a deflate az stb_image beépített, változatlan zlib-dekóderével – új külső könyvtár nélkül), egyetlen gyökérmappa lehántása; a titkosított, a ZIP64-es és a `..`-t vagy abszolút utat tartalmazó csomag hiba (figyelmeztetéssel kimarad). Próba: „ZIP-modok” (két kis próba-ZIP a `tests/data/mods_zip` alatt).

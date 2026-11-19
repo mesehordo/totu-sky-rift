@@ -17,6 +17,11 @@ mappákat használja, és amit tartalmaz, az kiegészíti vagy felülírja az al
 
 Azonos azonosítónál a beépített mod nyer; a hibás `mod.json`-ú mappa kimarad (figyelmeztetéssel).
 
+**ZIP-ben is terjeszthető:** a `.zip`-et elég a mods mappába tenni. A játék indításkor kibontja (a felhasználói
+mappa `mods_kibontva` alá; csak ha a ZIP megváltozott), és onnan mappaként tölti be. A ZIP gyökerében vagy egyetlen
+gyökérmappájában legyen a `mod.json`. Tömörítés: tárolt vagy deflate (a szokásos „Tömörített mappa”); a titkosított,
+a 4 GB fölötti (ZIP64) és a `..`-t tartalmazó csomagot a játék elutasítja.
+
 ### mod.json
 
 ```json
@@ -133,7 +138,6 @@ Kipróbálás: `totu --mods minta_egyseg,minta_kepesseg` (csatában az Ursanokka
 
 ## 7. Amit még nem lehet (tervben)
 
-- ZIP-be csomagolt mod (most csak mappa);
 - a küldetés és a küldetéssor tartalma csak az alap rétegből olvas (a modbeli egységet a küldetés még nem látja);
 - új győzelmi feltétel szkriptből (a győzelmi módok most beépítettek);
 - online modtár (mod.io, D23).

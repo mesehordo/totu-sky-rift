@@ -445,12 +445,14 @@ int main(int argc, char** argv) {
   std::vector<content::ModInfo> mod_order;   // M13: az alap és az engedélyezett modok betöltési sorrendje
   {
     std::vector<std::filesystem::path> extra;
-    if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {   // a felhasználói modmappa
+    std::filesystem::path zip_cache;
+    if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {   // a felhasználói modmappa és a ZIP-modok kibontási helye
       extra.push_back(std::filesystem::path(pref) / "mods");
+      zip_cache = std::filesystem::path(pref) / "mods_kibontva";
       SDL_free(pref);
     }
     std::vector<std::string> warns;
-    const auto avail = content::discover_mods(o.content, extra, &warns);
+    const auto avail = content::discover_mods(o.content, extra, &warns, zip_cache);
     for (const auto& m : avail) {
       if (m.id != "totu") mods_available.push_back(m);
     }

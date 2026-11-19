@@ -113,3 +113,36 @@ TEST_CASE("M13 modok: felderites (alap, beepitett, felhasznaloi), sorrend, hiany
   CHECK(base.layers().size() == 1 && base.layers()[0].first == "totu");
   std::filesystem::remove_all(user);
 }
+
+TEST_CASE("M13 ZIP-modok: kibontas (deflate es tarolt, gyokermappa), gyorsitotar, tiltott utvonal, a folt betolt") {
+  const auto src = std::filesystem::path(TOTU_TEST_DATA) / "mods_zip";
+  const auto tmp = std::filesystem::temp_directory_path() / "totu_zip_proba";
+  std::filesystem::remove_all(tmp);
+  std::filesystem::create_directories(tmp / "mods");
+  std::filesystem::copy_file(src / "zip_proba.zip", tmp / "mods" / "zip_proba.zip");
+  std::filesystem::copy_file(src / "rossz.zip", tmp / "mods" / "rossz.zip");
+  std::vector<std::string> warns;
+  const auto avail = discover_mods(TOTU_CONTENT_DIR, {tmp / "mods"}, &warns, tmp / "kibontva");
+  const auto it = std::find_if(avail.begin(), avail.end(), [](const ModInfo& m) { return m.id == "zip_proba"; });
+  CHECK(it != avail.end());
+  if (it == avail.end()) return;
+  CHECK(it->name == "ZIP-próba" && std::filesystem::is_regular_file(it->root / "templates" / "units" / "zip.json"));
+  CHECK(std::filesystem::is_regular_file(it->root / "locale" / "hu.po"));   // tárolt bejegyzés
+  CHECK(!std::filesystem::exists(it->root / ".zip-ujjlenyomat"));           // az ujjlenyomat a mod mappáján kívül (modlock)
+  CHECK(std::none_of(avail.begin(), avail.end(), [](const ModInfo& m) { return m.id == "rossz"; }));
+  CHECK(std::any_of(warns.begin(), warns.end(), [](const std::string& w) { return w.find("tiltott") != std::string::npos; }));
+  CHECK(!std::filesystem::exists(tmp / "kivul.txt") && !std::filesystem::exists(tmp / "kibontva" / "kivul.txt"));
+  // a második felderítés a gyorsítótárból (nem bont ki újra): a kibontott fájl ideje nem változik
+  const auto t0 = std::filesystem::last_write_time(it->root / "mod.json");
+  discover_mods(TOTU_CONTENT_DIR, {tmp / "mods"}, nullptr, tmp / "kibontva");
+  CHECK(std::filesystem::last_write_time(it->root / "mod.json") == t0);
+  // a mod foltja betölt
+  Vfs vfs;
+  add_mod_layers(vfs, TOTU_CONTENT_DIR, select_mods(avail, {"zip_proba"}).order);
+  ContentSet store;
+  const LoadReport rep = ContentLoader(vfs, std::filesystem::path(TOTU_CONTENT_DIR) / "schema").load(store);
+  CHECK(rep.errors.empty());
+  const Value* b = store.get("entity", "urs_berserker");
+  CHECK(b && b->find("Health") && b->find("Health")->find("max")->as_int() == 777);
+  std::filesystem::remove_all(tmp);
+}

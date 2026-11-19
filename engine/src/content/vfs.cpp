@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "content/vfs.hpp"
 
+#include "content/zip.hpp"
+
 #include <algorithm>
 #include <fstream>
 #include <set>
@@ -151,7 +153,7 @@ std::optional<ModInfo> read_mod_info(const fs::path& mod_root, std::string* erro
 }
 
 std::vector<ModInfo> discover_mods(const fs::path& content_dir, const std::vector<fs::path>& extra_dirs,
-                                   std::vector<std::string>* warnings) {
+                                   std::vector<std::string>* warnings, const fs::path& zip_cache) {
   std::vector<ModInfo> out;
   ModInfo base;
   base.id = "totu";
@@ -165,6 +167,15 @@ std::vector<ModInfo> discover_mods(const fs::path& content_dir, const std::vecto
     std::error_code ec;
     for (const auto& e : fs::directory_iterator(d, ec)) {
       if (e.is_directory(ec) && fs::is_regular_file(e.path() / "mod.json", ec)) subs.push_back(e.path());
+      if (!zip_cache.empty() && e.is_regular_file(ec) && e.path().extension() == ".zip") {   // ZIP-mod: kibontva, mappaként
+        std::string zerr;
+        const fs::path root = unpack_zip_mod(e.path(), zip_cache, &zerr);
+        if (root.empty()) {
+          if (warnings) warnings->push_back(zerr);
+        } else {
+          subs.push_back(root);
+        }
+      }
     }
     std::sort(subs.begin(), subs.end());   // determinisztikus sorrend
     for (const auto& s : subs) {
