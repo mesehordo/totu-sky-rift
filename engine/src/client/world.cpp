@@ -705,6 +705,45 @@ void World::draw_placement_grid(render::SpriteBatch& batch, const render::Textur
   rect(x0 + bw - 2, y0, 2, bh, cr, cg, cb, 255);
 }
 
+void World::draw_planned(render::SpriteBatch& batch, const render::Texture& white, render::Atlas* atlas) {
+  const sim::Rules* r = session_.rules();
+  if (!cur_ || !r || cur_->planned.empty()) return;
+  auto rect = [&](float x, float y, float w, float h, uint8_t a) {
+    render::SpriteInstance in;
+    in.x = x; in.y = y; in.w = w; in.h = h;
+    in.tint[0] = 70; in.tint[1] = 130; in.tint[2] = 255; in.tint[3] = a;
+    batch.draw(white, nullptr, in);
+  };
+  for (const auto& p : cur_->planned) {
+    if (p.def >= r->defs.size()) continue;
+    bool built = false;   // ahol már áll (épül) valami, ott nem kell a terv
+    for (const SnapUnit& u : cur_->units) {
+      if (u.kind == SnapUnit::kBuilding && u.tx == p.tx && u.ty == p.ty) built = true;
+    }
+    if (built) continue;
+    const int fw = std::max<int>(1, r->defs[p.def].fw), fh = std::max<int>(1, r->defs[p.def].fh);
+    for (int y = 0; y < fh; ++y) {
+      for (int x = 0; x < fw; ++x) {
+        const float px = static_cast<float>(p.tx + x) * kTilePx, py = static_cast<float>(p.ty + y) * kTilePx;
+        rect(px, py, kTilePx, kTilePx, 55);
+        rect(px, py, kTilePx, 1, 175);
+        rect(px, py + kTilePx - 1, kTilePx, 1, 175);
+        rect(px, py, 1, kTilePx, 175);
+        rect(px + kTilePx - 1, py, 1, kTilePx, 175);
+      }
+    }
+    if (atlas) {
+      const int s = sheet_by_id(atlas, r->defs[p.def].id);
+      if (s >= 0) {
+        const auto& gs = atlas->data().sheets[static_cast<size_t>(s)];
+        const uint8_t tint[4] = {255, 255, 255, 170};
+        const uint8_t no_team[4] = {0, 0, 0, 0};
+        atlas->draw(batch, gs, 0, 0, static_cast<float>(p.tx) * kTilePx, static_cast<float>(p.ty) * kTilePx, 1.0f / gs.scale, no_team, tint);
+      }
+    }
+  }
+}
+
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !sack_ || !rules || !rules->game_raw) return;

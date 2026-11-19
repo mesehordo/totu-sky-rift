@@ -64,6 +64,8 @@ class World {
   void set_ghost(uint16_t def, int tx, int ty, bool ok = true) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; ghost_ok_ = ok; }
   // a régi lerakási rács (a csapatszínben) és a lábnyom zöld/piros kerete – a kísértetkép alatt, a talajon
   void draw_placement_grid(render::SpriteBatch& batch, const render::Texture& white) const;
+  // a tervezett épületek (a régi szerint): a lábnyom kék rácsa és az épület halvány képe
+  void draw_planned(render::SpriteBatch& batch, const render::Texture& white, render::Atlas* atlas);
   bool order_build(uint16_t def, int tx, int ty);
   std::vector<uint16_t> buildable_defs(const std::string& faction) const;
   size_t selected() const { return selected_.size(); }

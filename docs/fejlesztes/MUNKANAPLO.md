@@ -1009,3 +1009,7 @@ Az atlaszkészítő a külön maszk nélküli egységképeken a tiszta kék (#00
 ## 2026-11-19 – 12. tétel: a régi lerakási rács
 
 A tulajdonos a képes összevetés alapján a régi rácsot választotta, minden csapatnál kéken. A szimuláció a kurzor körüli 48 × 32 csempére kiszámolja, mely csempéket fedi le egy lerakható helyzet (a régi `draw_placement_area`), gyorsítótárral (más épület, 6/4 csempénél nagyobb kurzormozgás vagy fél másodperc után újra); a kliens ezeket kéken rácsozza, a lábnyomra zöld vagy piros keretet tesz. Közben javítva: a légköri részecskék felfedezetlen helyen nem látszanak. Hátra: a sorba állított épületek rajza. Kép: `docs/quality/kepek/utan_lerakasi_racs.jpg`.
+
+## 2026-11-19 – Tervezett épületek a régi szerint
+
+A pillanatkép viszi a helyi játékos még meg nem kezdett épületeit (a munkás oda tart, vagy a parancssorában vár egy Építés); a kliens a lábnyomot kéken rácsozza, és halványan kirajzolja az épületet (a régi `draw_planned_buildings`). A pillanatkép tartalma ideiglenes kiírással ellenőrizve; képen még nem.

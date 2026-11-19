@@ -137,6 +137,13 @@ struct Snapshot {
     float x = 0, y = 0, age = 0;   // világ-képpont; másodperc a halál óta
   };
   std::vector<Corpse> corpses;
+  // a helyi játékos tervezett, még meg nem kezdett épületei (a munkás oda tart, vagy a parancssorában vár) – a régi
+  // `draw_planned_buildings`
+  struct Planned {
+    uint16_t def = sim::kNoDef;
+    int tx = 0, ty = 0;
+  };
+  std::vector<Planned> planned;
   struct Item {
     float x = 0, y = 0;
     uint32_t id = 0;

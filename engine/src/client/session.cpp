@@ -546,6 +546,25 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         pp.grid = g.cells;
       }
     }
+    {   // a tervezett épületek: a munkás oda tart (Build állapot), vagy a parancssorában vár (Build parancs)
+      auto add_plan = [&](uint16_t def, int tx, int ty) {
+        if (def == sim::kNoDef) return;
+        for (const auto& p : s->planned) {
+          if (p.def == def && p.tx == tx && p.ty == ty) return;
+        }
+        s->planned.push_back({def, tx, ty});
+      };
+      w.pool<sim::Worker>().each([&](sim::EntityId e, const sim::Worker& k) {
+        const auto* hh = w.get<sim::Health>(e);
+        if (!hh || hh->owner != local_) return;
+        if (k.state == sim::Worker::Build) add_plan(k.build_def, k.btx, k.bty);
+        const auto q = sim_->order_queue_.find(e);
+        if (q == sim_->order_queue_.end()) return;
+        for (const auto& c : q->second) {
+          if (c.kind == sim::Command::Kind::Build) add_plan(sim_->rules()->def(c.def), c.rx, c.ry);
+        }
+      });
+    }
     {   // holttestek (csak a látott helyen) és a földön heverő tárgyak (a felderített helyen)
       const sim::PlayerState& me = sim_->player(local_);
       auto seen = [&](float px, float py, bool need_visible) {
