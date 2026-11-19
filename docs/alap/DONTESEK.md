@@ -400,6 +400,10 @@ határok puhák.
 **átmenetek sokkal kevésbé hirtelenek**: mindhárom zóna (felfedezetlen, felderített, látott) között kb. háromszor
 szélesebb, fokozatos határ (a köd 5 × 5 mintás, ±1,5 csempés súlyozott átlagából).
 
+**Kiegészítés (2026-11-19, a tulajdonos):** a felderített rész **elmosott** a szürke helyett – színes, elmosott és
+kissé sötétebb (fényesség × 0,78); a határ kb. 6 csempés. Mérve (RX 550, 1080p): a többletköltség a mérési zajon
+belül (≤ 1 ms). A szürke változat összehasonlításhoz megmaradt (`--fog-gray`).
+
 ### D42 – A végleges HUD a Python-játék HUD-ja szerint · ELDÖNTVE (2026-11-13)
 
 A tulajdonos kérése: a végleges kezelőfelület **pontosan úgy nézzen ki, mint a régi (Python) játékban** – elrendezés,

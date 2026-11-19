@@ -78,7 +78,7 @@ akadás, mérőmód) – most megtartja (`World::snapshot_shared`).
 1,5 csempe: kb. 3 helyett kb. 6 csempés átmenet). **Elmosott köd** (a szürke helyett) kipróbálva: `--fog-blur`;
 a felderített rész színes marad, elmosva és kissé sötétebben. **Költség** (RX 550, 1920×1080, `--bench`, 600
 képkocka, felváltva 3–3 futás): szürke p50 49,3 / 48,7 / 49,7 ms, elmosott 50,3 / 49,3 / 49,3 ms – a különbség a
-mérési zajon belül (≤ 1 ms). Az alap: továbbra is a szürke (D41), amíg a tulajdonos nem dönt. **Kép:**
+mérési zajon belül (≤ 1 ms). Az alap (a tulajdonos döntése, 2026-11-19): az elmosott (D41 kiegészítés); a szürke: `--fog-gray`. **Kép:**
 `kepek/kod_osszevetes_A_szurke_B_szeles_C_elmosott.jpg`.
 **Megjegyzés:** a rejtett ablakos mérőmód 1080p-ben kb. 50 ms/képkocka – ezt külön meg kell vizsgálni (NYITOTT).
 **Szünetmenü (a tulajdonos kérése):** bal oldali panel a főmenü oldalsávjának stílusában (átmenetes sötét háttér,

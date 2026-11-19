@@ -112,7 +112,7 @@ struct Options {
   int rejoin = 0;
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
   std::string editor;    // M11: a szerkesztő (a küldetés mappája)
-  bool fog_blur = false;   // a köd stílusa (a tulajdonos dönt: szürke – D41 – vagy elmosott)
+  bool fog_blur = true;    // a köd stílusa: elmosott (D41 kiegészítés, 2026-11-19); `--fog-gray`: a régi szürke
   float fog_soft = 1.5f;   // a köd határa: mintatávolság csempében (a tulajdonos kérése: szélesebb, kb. 6 csempe)
   std::string chain;  // M11: küldetéssor (a küldetéssor mappája; a profil a felhasználói mappában)
   bool trigger_editor = false;   // képpróbához: a trigger-szerkesztő nyitva indul
@@ -323,7 +323,8 @@ int main(int argc, char** argv) {
     else if (a == "--content") o.content = next();
     else if (a == "--daytime") o.daytime = std::strtod(next(), nullptr);
     else if (a == "--nofog") o.fog = false;
-    else if (a == "--fog-blur") o.fog_blur = true;   // összehasonlító képhez: elmosott köd (a szürke helyett)
+    else if (a == "--fog-blur") o.fog_blur = true;
+    else if (a == "--fog-gray") o.fog_blur = false;   // összehasonlító képhez: a szürke köd
     else if (a == "--fog-soft") o.fog_soft = std::clamp(std::strtof(next(), nullptr), 0.5f, 3.0f);
     else if (a == "--nopost") o.post = false;
     else if (a == "--zoom") o.zoom = std::strtof(next(), nullptr);

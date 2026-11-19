@@ -913,3 +913,7 @@ A köd határa szélesebb (kb. 3 helyett kb. 6 csempés átmenet). Az elmosott k
 ## 2026-11-19 – A meccs utáni összesítő (4 fül, a régi szerint)
 
 A meccs végén a régi összesítő: Áttekintés (pontszám, katonai, gazdasági, építkezés, eredmény), Gazdaság (gyűjtött nyersanyagonként, összes, elköltött), Katonaság (kiképzett, megölt, elesett, épített, lerombolt, elvesztett épület), Grafikon (a sereg értéke és az összes gyűjtött nyersanyag, 15 mp-enként); „Főmenü” gomb. A szimulációban új, nem hash-elt számlálók (`PlayerStats`); a mentés 20. sémája viszi őket, a régebbi mentés betölthető. A goldenek változatlanok. Próba: `Osszesito`. Képek: `docs/quality/kepek/utan_osszesito_*.jpg`.
+
+## 2026-11-19 – Döntés: elmosott köd
+
+A tulajdonos döntése: a felderített rész alapból elmosott (színes, elmosott, kissé sötétebb) a szürke helyett; D41 kiegészítve. A szürke összehasonlításhoz: `--fog-gray`.
