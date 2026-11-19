@@ -135,6 +135,19 @@ kb. 45 ms várakozással kezelte. **Javítás:** az újrafoglalás pontosan a k�
 8,05 ms; 2000 egységes bemutató 1,78 / 3,55 ms. Az elmosott köd költsége most mérhető: kb. 0,8 ms (4,45 vs. a szürke
 3,61 ms).
 
+## 13. Helyi diagnosztika – MVP (DIAGNOSTICS_DESIGN 1. séma)
+
+`client/diagnostics.{hpp,cpp}`: eseményszámlálók engedélyezőlistával (`ASSET_FALLBACK`, `LOCALE_MISSING` – kulcsonként
+egyszer, a kulcs nem kerül be –, `LOAD_FAILED`, `SAVE_FAILED`, `NET_DESYNC`, `CMD_LOCAL_NO_RESOURCE / _NO_SUPPLY /
+_BAD_PLACE`); képkocka- és tickidő-hisztogram (0,25 ms-os rekeszek, 0–100 ms; p50/p95/p99, a 33,3 ms-ot túllépő
+tickek aránya); csúcs-egységszám. **Export:** kézzel, a szünetmenüben („Diagnosztika mentése”) és az összesítőn
+(„Diagnosztikai jelentés”) – a felhasználói mappába `diagnosztika_<dátum_idő>.json`, atomikusan (ideiglenes fájl +
+átnevezés); az üzenetsor megmondja a fájl nevét; hibánál lokalizált üzenet, a játék fut tovább. Semmi nem megy
+hálózatra (`privacy.sent_automatically: false`); nincs útvonal, név, IP; a munkamenet-azonosító véletlen. A nem mért
+érték `null`. A szimulációt nem érinti (csak kliens). **Nyitott (tulajdonos):** a véleménymező (most `null`), a gomb
+helye (most mindkettő). **Próba:** `DIAG` (engedélyezőlista, séma, hányadok, mentés, nem írható hely).
+**Kép:** `kepek/utan_diagnosztika_szunetmenu.jpg`.
+
 ## Döntésre vár
 
 AS-07

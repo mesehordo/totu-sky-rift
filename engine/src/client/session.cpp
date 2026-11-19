@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/session.hpp"
+#include "client/diagnostics.hpp"
 
 #include "sim/mission.hpp"
 
@@ -157,7 +158,9 @@ void Session::spawn_demo(int players, int per_player) {
 
 std::string Session::display_name(const std::string& key) const {
   const auto it = names_.find(key);
-  return it != names_.end() && !it->second.empty() ? it->second : key;
+  if (it != names_.end() && !it->second.empty()) return it->second;
+  Diagnostics::get().count_once("LOCALE_MISSING", key);   // a kulcs nem kerül az exportba
+  return key;
 }
 
 bool Session::start_match(const std::vector<std::string>& factions, bool upkeep, std::string* error, std::vector<int> ai) {
@@ -596,6 +599,7 @@ bool SimRunner::run_one() {
   cur_ = std::move(pub);
   if (fx_.size() < 16384) fx_.insert(fx_.end(), fx_scratch_.begin(), fx_scratch_.end());
   if (tick_ms_.size() < 1000000) tick_ms_.push_back(ms);
+  Diagnostics::get().tick_ms(ms);
   return true;
 }
 

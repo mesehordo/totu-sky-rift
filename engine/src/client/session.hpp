@@ -180,6 +180,7 @@ class Session {
   const map::TerrainTable& terrain() const { return terrain_; }
   sim::Sim& sim() { return *sim_; }
   bool has_sim() const { return sim_ != nullptr; }
+  uint64_t seed() const { return seed_; }
 
  private:
   void update_fog();

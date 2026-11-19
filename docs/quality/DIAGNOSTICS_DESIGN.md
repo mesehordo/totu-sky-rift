@@ -1,6 +1,6 @@
 # Helyi diagnosztika – terv
 
-Kelt: 2026-11-18 · státusz: **TERV** (megvalósítás külön kapuval, P3).
+Kelt: 2026-11-18 · státusz: **MVP KÉSZ** (2026-11-19; `client/diagnostics.{hpp,cpp}`, l. IMPLEMENTATION_LOG 13.).
 
 ## 1. Ami most van
 
@@ -67,5 +67,6 @@ véleményszöveg levágva; írási hiba (nem írható mappa) nem omlik össze.
 
 ## 7. Nyitott kérdés a tulajdonosnak
 
-Kell-e a véleménymező (3 rövid kérdés), és hol legyen az export gombja (eredmény- vagy szünetmenü)? Eredményképernyő
-még nincs (AS a 00-ban).
+Kell-e a véleménymező (3 rövid kérdés)? Az MVP-ben a mezők `null`-ok (szövegbevitel kellene hozzá). Az export
+gombja most mindkét helyen ott van: a szünetmenüben („Diagnosztika mentése”) és az összesítőn („Diagnosztikai
+jelentés”); ha csak az egyik kell, egy sor törlése.

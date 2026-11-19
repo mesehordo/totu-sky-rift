@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/hud_model.hpp"
+#include "client/diagnostics.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -970,12 +971,14 @@ bool HudModel::activate_slot(int i, int button) {
     }
     if (!short_of.empty()) {
       post_notice(tr("err.res", {short_of}));
+      Diagnostics::get().count("CMD_LOCAL_NO_RESOURCE");
     } else if (sl->kind == HudSlot::Unit && sl->def != sim::kNoDef && rules_->defs[sl->def].supply > 0 &&
                self().supply_used + rules_->defs[sl->def].supply > self().supply_cap) {
       // a régi szöveg: „Elérted a létszámkorlátot – növeld: <a faj létszámforrása>”
       const sim::FactionDef* f = faction_of(player);
       const content::Value* how = f && f->raw ? path_of(f->raw.get(), {"Faction", "supply_desc"}) : nullptr;
       post_notice(how && how->is_string() ? tr("err.supply", {how->text()}) : tr("err.supply_plain"));
+      Diagnostics::get().count("CMD_LOCAL_NO_SUPPLY");
     }
   }
   slot_flash = i;
@@ -1326,6 +1329,7 @@ bool HudModel::click(float x, float y, int button) {
         if (sum_tab_btn[i].contains(x, y)) sum_tab = static_cast<int>(i);
       }
       if (sum_menu_btn.contains(x, y)) quit_requested = true;
+      if (sum_diag_btn.contains(x, y)) diag_requested = true;
     }
     return true;
   }
@@ -1455,6 +1459,7 @@ bool HudModel::world_click(float wx, float wy, int button, sim::EntityId under) 
       place_tile(wx, wy, m.def, &tx, &ty);
       if (std::string why; place_blocked(m.def, tx, ty, &why)) {   // a régi: „Nem lehet építeni: …”, a mód marad
         post_notice(tr("err.place", {why}));
+        Diagnostics::get().count("CMD_LOCAL_BAD_PLACE");
         return true;
       }
       sim::Command c = base_cmd(sim::Command::Kind::Build);

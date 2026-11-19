@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "check.hpp"
+#include "client/diagnostics.hpp"
 #include "client/hud_model.hpp"
 #include "client/session.hpp"
 #include "content/json.hpp"
@@ -697,4 +698,52 @@ TEST_CASE("HUD a regi jatek szerint: Nem lehet epiteni (piros kiserteskep, ok), 
   m.hud.notice_log.clear();
   m.hud.watch_alerts();
   CHECK(m.hud.notice_log.size() == 1 && m.hud.notice_log.back().text.rfind("Elpusztult: ", 0) == 0);
+}
+
+TEST_CASE("DIAG: engedelyezolista, sema, hisztogram, mentes (atomikus), nem irhato mappa") {
+  auto& d = client::Diagnostics::get();
+  d.reset();
+  d.count("CMD_LOCAL_NO_RESOURCE");
+  d.count("CMD_LOCAL_NO_RESOURCE");
+  d.count("ISMERETLEN_KOD");                       // nincs az engedélyezőlistán
+  d.count_once("ASSET_FALLBACK", "ui/icons/x");
+  d.count_once("ASSET_FALLBACK", "ui/icons/x");    // kulcsonként egyszer
+  CHECK(d.counter("CMD_LOCAL_NO_RESOURCE") == 2 && d.counter("ISMERETLEN_KOD") == 0 && d.counter("ASSET_FALLBACK") == 1);
+  CHECK(d.frame_percentile(0.5) < 0);              // nincs mérés: −1 (a jelentésben null)
+  for (int i = 0; i < 99; ++i) d.frame_ms(4.1);
+  d.frame_ms(40.0);
+  CHECK(d.frame_percentile(0.5) == 4.25 && d.frame_percentile(0.99) == 4.25 && d.frame_percentile(1.0) == 40.25);
+  d.tick_ms(50.0);
+  d.tick_ms(2.0);
+  client::DiagSession s;
+  s.mode = "skirmish";
+  s.map_id = "csatamezo";
+  s.factions = {"ursan", "elves"};
+  s.players = 2;
+  const std::string js = d.to_json(s, "opengl33");
+  const auto v = content::parse(js);
+  CHECK(v.has_value());
+  if (!v) return;
+  CHECK(v->find("schema_version") && v->find("privacy")->find("sent_automatically")->is_bool());
+  CHECK(v->find("errors")->find("total")->text() == "1");
+  CHECK(v->find("ux")->find("command_rejected_local")->find("no_resource")->text() == "2");
+  CHECK(v->find("session")->find("seed")->is_null() && v->find("session")->find("result")->is_null());
+  CHECK(v->find("performance")->find("over_budget_tick_ratio")->text() == "0.50");
+  CHECK(v->find("feedback")->find("liked")->is_null());
+  CHECK(js.find("ui/icons/x") == std::string::npos && js.find("ISMERETLEN") == std::string::npos);   // a kulcs és a tiltott kód nincs benne
+  // mentés: atomikus, ideiglenes fájl nem marad
+  const auto dir = std::filesystem::temp_directory_path() / "totu_diag_proba";
+  std::filesystem::remove_all(dir);
+  std::string name, err;
+  CHECK(client::save_diagnostics(dir.string(), js, &name, &err));
+  CHECK(name.rfind("diagnosztika_", 0) == 0 && std::filesystem::is_regular_file(dir / name));
+  int files = 0;
+  for (const auto& e : std::filesystem::directory_iterator(dir)) files += e.path().extension() == ".tmp" ? 100 : 1;
+  CHECK(files == 1);
+  // nem írható hely (egy fájl a mappa helyén): hamis, nem omlik össze
+  const auto bad = dir / name / "alatta";
+  CHECK(!client::save_diagnostics(bad.string(), js, &name, &err) && !err.empty());
+  CHECK(!client::save_diagnostics("", js, &name, &err));
+  std::filesystem::remove_all(dir);
+  d.reset();
 }

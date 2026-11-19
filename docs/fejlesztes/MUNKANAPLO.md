@@ -925,3 +925,7 @@ Az építés kísértetképe tiltott helyen piros (a szimuláció `can_place`-e 
 ## 2026-11-19 – Képkockaidő: 50 ms → 5 ms
 
 A sprite-köteg minden kiürítéskor a teljes, 786 KB-os puffert foglalta újra; az RX 550 ezt képkockánként kb. 45 ms GPU-várakozással kezelte (a felbontástól függetlenül). Most pontosan a köteg méretével foglal. 1080p: p50 49,5 → 4,45 ms, p99 95 → 8,6 ms; a kép pixelre azonos. Az elmosott köd költsége így mérhető: kb. 0,8 ms.
+
+## 2026-11-19 – Helyi diagnosztika (MVP)
+
+Kézi export a szünetmenüből és az összesítőről a felhasználói mappába (`diagnosztika_<dátum>.json`, 1. séma): verzió, platform, meccs (mód, pálya, mag, fajok, győzelmi mód, tempó, hossz, eredmény), képkocka- és tickidő-hányadok, csúcs-egységszám, hibakódok, a felület elutasításai. Engedélyezőlista, nincs útvonal vagy név, semmi nem megy hálózatra. A véleménymező a tulajdonos döntéséig üres. Próba: `DIAG`.

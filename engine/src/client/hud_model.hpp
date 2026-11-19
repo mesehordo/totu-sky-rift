@@ -124,8 +124,9 @@ class HudModel {
   // a „Főmenü” gomb téglalapja (a rajzoló tölti), a kilépés kérése (a hívó zárja a meccset)
   int sum_tab = 0;
   std::vector<Rect> sum_tab_btn;
-  Rect sum_menu_btn{};
+  Rect sum_menu_btn{}, sum_diag_btn{};
   bool quit_requested = false;
+  bool diag_requested = false;                // „Diagnosztikai jelentés mentése” (a hívó menti; DIAGNOSTICS_DESIGN 5.)
   bool match_over() const;                    // vége a meccsnek a helyi játékos szemszögéből (az összesítő látszik)
   // a régi `_score`: összes, katonai, gazdasági, építkezés
   static std::array<int64_t, 4> score(const SnapPlayer& p);

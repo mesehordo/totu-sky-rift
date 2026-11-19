@@ -9260,3 +9260,19 @@ msgstr ""
 msgctxt "hud.lost.building"
 msgid "Elpusztult: {}"
 msgstr ""
+
+msgctxt "hud.diag.save"
+msgid "Diagnosztikai jelentés"
+msgstr ""
+
+msgctxt "hud.diag.saved"
+msgid "Diagnosztikai jelentés mentve a felhasználói mappába: {}"
+msgstr ""
+
+msgctxt "hud.diag.failed"
+msgid "A diagnosztikai jelentés nem menthető: {}"
+msgstr ""
+
+msgctxt "ui.pause.diag"
+msgid "Diagnosztika mentése"
+msgstr ""

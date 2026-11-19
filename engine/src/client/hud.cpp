@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/hud.hpp"
+#include "client/diagnostics.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -80,6 +81,7 @@ const Hud::Img* Hud::image(const std::string& rel) {
         im.ok = true;
       }
     }
+    if (!im.ok && dev_) Diagnostics::get().count_once("ASSET_FALLBACK", rel);   // egyszer képenként
     it = images_.emplace(rel, im).first;
   }
   return it->second.ok ? &it->second : nullptr;
@@ -1409,6 +1411,7 @@ void Hud::draw_result(const HudFrame& f) {
   // egy sor, az oszlop legjobb értéke kiemelve
   model_.sum_tab_btn.clear();
   model_.sum_menu_btn = {};
+  model_.sum_diag_btn = {};
   if (!model_.match_over()) return;
   const Snapshot* s = model_.snap();
   const bool mission = s->mission.active;
@@ -1525,6 +1528,15 @@ void Hud::draw_result(const HudFrame& f) {
   text(*batch_, FM, static_cast<float>(br.centerx()) - tw(FM, bl) / 2, static_cast<float>(br.centery()) - line_h(FM) / 2, bl, 255, 236,
        190);
   model_.sum_menu_btn = br;
+  // a diagnosztikai jelentés mentése (helyi fájl; semmi nem megy hálózatra)
+  const std::string dl = model_.tr("diag.save");
+  const Rect dr{br.x - static_cast<int>(tw(FS, dl) + k(40)) - static_cast<int>(k(12)), br.y, static_cast<int>(tw(FS, dl) + k(40)), br.h};
+  const bool dhot = dr.contains(mx_, my_);
+  rect(dr, dhot ? Col{50, 44, 34} : Col{30, 26, 20});
+  rect(static_cast<float>(dr.x), static_cast<float>(dr.y), static_cast<float>(dr.w), 1, {110, 92, 60});
+  rect(static_cast<float>(dr.x), static_cast<float>(dr.bottom() - 1), static_cast<float>(dr.w), 1, {110, 92, 60});
+  text(*batch_, FS, static_cast<float>(dr.centerx()) - tw(FS, dl) / 2, static_cast<float>(dr.centery()) - line_h(FS) / 2, dl, 220, 210, 190);
+  model_.sum_diag_btn = dr;
 }
 
 void Hud::summary_table(const Rect& body, const std::vector<int>& players, const std::vector<std::string>& heads,

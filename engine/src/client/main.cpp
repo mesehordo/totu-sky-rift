@@ -49,6 +49,7 @@
 #include "sim/chain.hpp"
 #include "sim/mission.hpp"
 #include "client/hud.hpp"
+#include "client/diagnostics.hpp"
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
 #include "client/net_play.hpp"
@@ -775,6 +776,47 @@ int main(int argc, char** argv) {
     std::vector<double> times;
     bool running = rc == 0 && !menu_quit;
     bool game_paused = false;   // a játékon belüli szünetmenü (Esc, fogaskerék)
+    size_t diag_desyncs = 0;    // a már beszámolt szinkronhibák
+    // a diagnosztikai jelentés (DIAGNOSTICS_DESIGN; csak helyi fájl): a meccs adatai a pillanatképből
+    auto save_diag = [&](client::HudModel& hm) {
+      auto& dg = client::Diagnostics::get();
+      if (o.host_port > 0 || !o.join.empty()) {
+        for (size_t n = netplay.client().desyncs().size(); diag_desyncs < n; ++diag_desyncs) dg.count("NET_DESYNC");
+      }
+      client::DiagSession ds;
+      ds.mode = (o.host_port > 0 || !o.join.empty()) ? "net" : !o.chain.empty() ? "chain" : !o.mission.empty() ? "mission" : "skirmish";
+      ds.map_id = std::filesystem::path(o.world).stem().string();
+      if (session.has_sim()) ds.seed = static_cast<int64_t>(session.seed() & 0x7fffffffffffffffULL);
+      if (const client::Snapshot* sn = hm.snap()) {
+        static const char* kVict[] = {"conquest", "capital", "hill", "timed"};
+        static const char* kTempo[] = {"classic", "calm", "rush", "survival"};
+        ds.players = 0;
+        for (int i = 1; i <= sim::Sim::kMaxPlayers; ++i) {
+          const auto& p = sn->players[static_cast<size_t>(i)];
+          if (p.faction.empty()) continue;
+          ++ds.players;
+          ds.factions.push_back(p.faction);
+        }
+        ds.victory = kVict[std::min<int>(sn->mode.victory, 3)];
+        ds.tempo = kTempo[std::min<int>(sn->mode.tempo, 3)];
+        ds.duration_ticks = sn->tick;
+        if (hm.match_over()) {
+          const bool won = sn->mission.active ? sn->mission.result == 1 : sn->winner == hm.player;
+          ds.result = won ? "won" : "lost";
+        }
+      }
+      std::string dir, file, derr;
+      if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
+        dir = pref;
+        SDL_free(pref);
+      }
+      if (client::save_diagnostics(dir, dg.to_json(ds, "opengl33"), &file, &derr)) {
+        hm.post_notice(hm.tr("diag.saved", {file}), {150, 220, 150});
+      } else {
+        dg.count("SAVE_FAILED");
+        hm.post_notice(hm.tr("diag.failed", {derr}));
+      }
+    };
     double pause_t = 0;           // a megnyitás ideje (a becsúszáshoz és az elmosáshoz)
     bool pause_was = false;
     float pause_slide = 0;
@@ -834,8 +876,11 @@ int main(int argc, char** argv) {
             for (size_t i = 0; i < pause_items.size(); ++i) {
               if (pause_items[i].contains(ev.button.x, ev.button.y)) hit = static_cast<int>(i);
             }
-            if (hit == 1) running = false;
-            else if (hit == 0 || pause_items.empty() || ev.button.x > static_cast<float>(pause_items[0].right()) + 40.0f) game_paused = false;
+            if (hit == 2) running = false;
+            else if (hit == 1) {
+              save_diag(hud.model());
+              game_paused = false;
+            } else if (hit == 0 || pause_items.empty() || ev.button.x > static_cast<float>(pause_items[0].right()) + 40.0f) game_paused = false;
           }
           continue;
         }
@@ -1017,6 +1062,7 @@ int main(int argc, char** argv) {
               center_on_local(cam, cw, ch);
             } else {
               std::fprintf(stderr, "küldetéssor: %s\n", err.c_str());
+              client::Diagnostics::get().count("LOAD_FAILED");
             }
           }
           runner.start();
@@ -1220,6 +1266,10 @@ int main(int argc, char** argv) {
       }
       if (hud_on && hud.model().menu_requested) game_paused = true;   // a fogaskerék: a szünetmenü
       if (hud_on && hud.model().quit_requested) running = false;      // az összesítő „Főmenü” gombja
+      if (hud_on && hud.model().diag_requested) {                       // az összesítő „Diagnosztikai jelentés”
+        hud.model().diag_requested = false;
+        save_diag(hud.model());
+      }
       if (hud_on) {
         hud.model().menu_requested = false;
         hud.model().paused = game_paused;   // szünetben nincs parancs (a régi őr)
@@ -1442,7 +1492,7 @@ int main(int argc, char** argv) {
             dim.tint[3] = static_cast<uint8_t>(110 * pause_slide);
             batch.draw(white, nullptr, dim);
             pause_items = hud.draw_pause(batch, white, hf, pause_slide, locale.tr("ui.pause.title"),
-                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.quit")});
+                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.diag"), locale.tr("ui.pause.quit")});
           } else {
             pause_items.clear();
           }
@@ -1487,6 +1537,14 @@ int main(int argc, char** argv) {
         if (spent < target) SDL_DelayPrecise(static_cast<Uint64>((target - spent) * 1e9));
       }
       times.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - f0).count());
+      if (have_world) {
+        client::Diagnostics::get().frame_ms(times.back());
+        if (frame % 30 == 0 && hud.model().snap()) {   // a csúcs-egységszám (csak egységek, fél másodpercenként)
+          int n = 0;
+          for (const auto& u : hud.model().snap()->units) n += u.kind == client::SnapUnit::kUnit ? 1 : 0;
+          client::Diagnostics::get().note_units(n);
+        }
+      }
       if (have_world && o.bench) {
         double st = 0;
         if (!runner.threaded() && frame % 2 == 1 && !sim_times.empty()) st = sim_times.back();

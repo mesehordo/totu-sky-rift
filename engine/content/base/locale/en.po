@@ -9261,3 +9261,19 @@ msgstr "the gate's pair can only be built where you can see"
 msgctxt "hud.lost.building"
 msgid "Elpusztult: {}"
 msgstr "Destroyed: {}"
+
+msgctxt "hud.diag.save"
+msgid "Diagnosztikai jelentés"
+msgstr "Diagnostics report"
+
+msgctxt "hud.diag.saved"
+msgid "Diagnosztikai jelentés mentve a felhasználói mappába: {}"
+msgstr "Diagnostics report saved to your user folder: {}"
+
+msgctxt "hud.diag.failed"
+msgid "A diagnosztikai jelentés nem menthető: {}"
+msgstr "Could not save the diagnostics report: {}"
+
+msgctxt "ui.pause.diag"
+msgid "Diagnosztika mentése"
+msgstr "Save diagnostics"

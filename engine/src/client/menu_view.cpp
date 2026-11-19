@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/menu_view.hpp"
+#include "client/diagnostics.hpp"
 
 #include <algorithm>
 #include <array>
@@ -459,7 +460,10 @@ class MenuView {
 void save(const MenuRunOptions& o, const Settings& st) {
   if (o.settings_file.empty()) return;
   std::string err;
-  if (!save_settings(o.settings_file, st, &err)) std::fprintf(stderr, "%s\n", err.c_str());
+  if (!save_settings(o.settings_file, st, &err)) {
+    std::fprintf(stderr, "%s\n", err.c_str());
+    Diagnostics::get().count("SAVE_FAILED");
+  }
 }
 
 }  // namespace
