@@ -473,3 +473,21 @@ A tulajdonos szabályai a hadjárathoz (a területfoglaló térképhez, D47):
 2. **Hősök:** a hadjárattérképen hősöket lehet képezni, **legfeljebb 3-at**; a hősök „gyalogolnak” a területeken (ők a
    seregek vezetői a térképen). Így a hadjárat minden csatájában rögtön van egy hősünk, és a hős a hadjárat alatt
    fejlődik (szint, tapasztalat, képességek, tárgyak – a küldetéssor hősátvitelének mintájára).
+
+### D49 – Épületanimáció külön rétegen, lángoló épület · ELDÖNTVE (2026-11-19, tervezési elv)
+
+A tulajdonos kérése:
+1. Az épületnek **elkészültekor nem kell animáció**.
+2. Az épület animációi (pl. füstöl a kémény) **külön rétegen** töltődnek be, az épület képe fölé rakva (külön
+   képsor / atlaszréteg, az épület sablonjában megadott helyen). Így egy épület animációja könnyebben összerakható és
+   cserélhető (modokból is), az alapkép módosítása nélkül.
+3. **Sérült épület lángol:** amikor az épületet támadják, lángok jelennek meg rajta, és **egyre jobban égnek, ahogy
+   fogy az életereje** (fokozatok az életerő-arány szerint; a WC3 és az AoE2 mintájára). A lángok is a fenti
+   animációs rétegen futnak. Csak megjelenítés: a szimulációt és az állapothash-t nem érinti.
+
+### D50 – A modkezelő a 0 A.D. mintájára · ELDÖNTVE (2026-11-19, tervezési elv)
+
+A játék modkezelője (M13) a **0 A.D. modkezelőjéhez hasonló**: két lista – elérhető és engedélyezett modok –, a mod
+adatai (név, verzió, leírás, függőségek, ütközések), engedélyezés/tiltás, a betöltési sorrend állítása, a függőségi és
+ütközési hibák jelzése a mentés előtt, „Mentés és újraindítás”. Az online modtár (mod.io) ugyanebből a képernyőből
+érhető el, külön fülként (D23). A pontos elrendezést a 0 A.D. alapján javaslom, és a tulajdonossal egyeztetem.
