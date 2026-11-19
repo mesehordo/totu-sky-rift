@@ -1287,7 +1287,32 @@ void HudModel::minimap_click(float x, float y, int button) {
   }
 }
 
+bool HudModel::match_over() const {
+  if (!snap_) return false;
+  const SnapPlayer& me = snap_->players[std::min<size_t>(player, sim::Sim::kMaxPlayers)];
+  return snap_->mission.active ? snap_->mission.result != 0 : (snap_->winner != 0 || me.defeated);
+}
+
+std::array<int64_t, 4> HudModel::score(const SnapPlayer& p) {
+  const sim::PlayerStats& st = p.stats;
+  int64_t g = 0;
+  for (const int32_t v : p.gathered) g += v;
+  const int64_t mil = st.killed_value / 10 + int64_t{st.units_killed} * 2;
+  const int64_t eco = g / 10;
+  const int64_t bld = int64_t{st.buildings_built} * 15 + int64_t{st.buildings_killed} * 20;
+  return {mil + eco + bld, mil, eco, bld};
+}
+
 bool HudModel::click(float x, float y, int button) {
+  if (match_over()) {   // az összesítő: fülek, „Főmenü”; a világ nem kap kattintást
+    if (button == 1) {
+      for (size_t i = 0; i < sum_tab_btn.size(); ++i) {
+        if (sum_tab_btn[i].contains(x, y)) sum_tab = static_cast<int>(i);
+      }
+      if (sum_menu_btn.contains(x, y)) quit_requested = true;
+    }
+    return true;
+  }
   if (path_pending()) {   // irányválasztó ablak
     if (button == 1) {
       for (const auto& [r, pid] : path_cards()) {

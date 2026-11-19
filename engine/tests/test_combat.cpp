@@ -259,3 +259,26 @@ TEST_CASE("harc: determinisztikus csata (rögzített hash) és mentésből folyt
   std::printf("  harci állapothash (900 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
   CHECK(a.sim->hash() == 0x8eef03e3bb50319eULL);   // minden rendszeren ugyanez
 }
+
+TEST_CASE("Osszesito: ölés, veszteség, lerombolt épület, idősor; a mentés megtartja") {
+  Arena a;
+  const auto g = a.spawn("urs_runaorias", 1, 120, 175), e = a.spawn("urs_telepes", 2, 135, 175);
+  const auto house = a.s.place_building(def_of("urs_hosszuhaz"), 2, 15, 16, true);
+  CHECK(a.s.order_attack(g, e));
+  a.run_until([&] { return !a.s.world().alive(e); }, 30 * 30);
+  CHECK(a.s.order_attack(g, house));
+  a.run_until([&] { return !a.s.world().alive(house); }, 30 * 120);
+  a.m.run(460);
+  const sim::PlayerStats& s1 = a.s.player(1).stats;
+  const sim::PlayerStats& s2 = a.s.player(2).stats;
+  CHECK(s1.units_killed == 1 && s1.buildings_killed == 1 && s1.killed_value > 0);
+  CHECK(s2.units_lost == 1 && s2.buildings_lost == 1 && s2.lost_value == s1.killed_value);
+  CHECK(s1.units_lost == 0 && s2.units_killed == 0);
+  CHECK(!s1.timeline.empty() && s1.timeline.back().kills == 1);
+  const auto saved = a.s.save();
+  Match c("BUILD-ALAP", true, false);
+  CHECK(c.sim->load(saved));
+  const sim::PlayerStats& l1 = c.sim->player(1).stats;
+  CHECK(l1.units_killed == 1 && l1.buildings_killed == 1 && l1.killed_value == s1.killed_value);
+  CHECK(l1.timeline.size() == s1.timeline.size() && l1.timeline.back().army == s1.timeline.back().army);
+}

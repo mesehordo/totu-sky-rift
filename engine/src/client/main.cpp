@@ -1216,6 +1216,7 @@ int main(int argc, char** argv) {
         hud.model().jump = false;
       }
       if (hud_on && hud.model().menu_requested) game_paused = true;   // a fogaskerék: a szünetmenü
+      if (hud_on && hud.model().quit_requested) running = false;      // az összesítő „Főmenü” gombja
       if (hud_on) {
         hud.model().menu_requested = false;
         hud.model().paused = game_paused;   // szünetben nincs parancs (a régi őr)

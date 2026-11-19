@@ -316,12 +316,14 @@ void Sim::production_system() {
     const Health* h = world_.get<Health>(e);
     if (!pr || !b || !h || !b->complete || h->hp <= 0 || pr->queue.empty()) continue;
     if (occupied_against(e, h->owner)) continue;   // H-40: megszállt épületben a sor sem halad
+    const uint8_t own = h->owner;   // a születés átméretezheti a tárolót (a mutató érvénytelen lehet)
     if (rules_->defs[b->def].parallel) {   // a teljes sor egyszerre (a régi E 1750)
       for (size_t i = 0; i < pr->queue.size();) {
         QueueItem& q = pr->queue[i];
         q.progress = std::min(q.time, q.progress + 1);
         const QueueItem done = q;
         if (done.progress >= done.time && finish_item(e, done)) {
+          if (!done.research) ++players_[own].stats.units_trained;
           pr = world_.get<Producer>(e);
           pr->queue.erase(pr->queue.begin() + static_cast<std::ptrdiff_t>(i));
         } else {
@@ -334,7 +336,10 @@ void Sim::production_system() {
     q.progress = std::min(q.time, q.progress + 1);
     if (q.progress < q.time) continue;
     const QueueItem done = q;
-    if (finish_item(e, done)) pr->queue.erase(pr->queue.begin());
+    if (finish_item(e, done)) {
+      if (!done.research) ++players_[own].stats.units_trained;
+      pr->queue.erase(pr->queue.begin());
+    }
   }
 }
 

@@ -9104,3 +9104,108 @@ msgstr "We are under attack!"
 msgctxt "hud.help.12"
 msgid "F2/F3/F4: 1./2./3. hős (újra: odaugrás)   Szóköz: bázis / utolsó riasztás   Középső gomb: kamera húzása"
 msgstr "F2/F3/F4: 1st/2nd/3rd hero (again: jump)   Space: base / last alert   Middle button: drag camera"
+
+msgctxt "hud.sum.title"
+msgid "ÖSSZESÍTŐ"
+msgstr "SUMMARY"
+
+msgctxt "hud.sum.won"
+msgid "Győzelem  •  Játékidő: {}"
+msgstr "Victory  •  Game time: {}"
+
+msgctxt "hud.sum.lost"
+msgid "Vereség  •  Játékidő: {}"
+msgstr "Defeat  •  Game time: {}"
+
+msgctxt "hud.sum.tab.overview"
+msgid "Áttekintés"
+msgstr "Overview"
+
+msgctxt "hud.sum.tab.economy"
+msgid "Gazdaság"
+msgstr "Economy"
+
+msgctxt "hud.sum.tab.military"
+msgid "Katonaság"
+msgstr "Military"
+
+msgctxt "hud.sum.tab.graph"
+msgid "Grafikon"
+msgstr "Graphs"
+
+msgctxt "hud.sum.col.score"
+msgid "Pontszám"
+msgstr "Score"
+
+msgctxt "hud.sum.col.military"
+msgid "Katonai"
+msgstr "Military"
+
+msgctxt "hud.sum.col.economy"
+msgid "Gazdasági"
+msgstr "Economy"
+
+msgctxt "hud.sum.col.building"
+msgid "Építkezés"
+msgstr "Building"
+
+msgctxt "hud.sum.col.outcome"
+msgid "Eredmény"
+msgstr "Result"
+
+msgctxt "hud.sum.col.gathered"
+msgid "Összes gyűjtött"
+msgstr "Total gathered"
+
+msgctxt "hud.sum.col.spent"
+msgid "Elköltött"
+msgstr "Spent"
+
+msgctxt "hud.sum.col.trained"
+msgid "Kiképzett"
+msgstr "Trained"
+
+msgctxt "hud.sum.col.killed"
+msgid "Megölt"
+msgstr "Killed"
+
+msgctxt "hud.sum.col.lost"
+msgid "Elesett"
+msgstr "Lost"
+
+msgctxt "hud.sum.col.built"
+msgid "Épített"
+msgstr "Built"
+
+msgctxt "hud.sum.col.razed"
+msgid "Lerombolt"
+msgstr "Razed"
+
+msgctxt "hud.sum.col.blost"
+msgid "Elvesztett ép."
+msgstr "Bldgs lost"
+
+msgctxt "hud.sum.out.defeated"
+msgid "kiesett"
+msgstr "eliminated"
+
+msgctxt "hud.sum.out.winner"
+msgid "győztes"
+msgstr "winner"
+
+msgctxt "hud.sum.out.alive"
+msgid "életben"
+msgstr "survived"
+
+msgctxt "hud.sum.graph.army"
+msgid "A sereg értéke"
+msgstr "Army value"
+
+msgctxt "hud.sum.graph.gathered"
+msgid "Összes gyűjtött nyersanyag"
+msgstr "Total resources gathered"
+
+
+msgctxt "hud.sum.menu"
+msgid "FŐMENÜ"
+msgstr "MAIN MENU"

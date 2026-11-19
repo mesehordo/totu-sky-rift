@@ -482,6 +482,9 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       o.ally = p.ally;
       o.path = p.path;
       if (i == 1) o.researched = p.researched;
+      for (int r = 0; r < sim::kResources; ++r) o.gathered[static_cast<size_t>(r)] = static_cast<int32_t>(p.gathered[static_cast<size_t>(r)] / 1000);
+      o.stats = p.stats;
+      if (!p.defeated && sim_->winner() == 0 && !(mission_ && mission_->result() != sim::MissionHost::Result::None)) o.stats.timeline.clear();
     }
     s->winner = sim_->winner();
     s->night = sim_->night_permille();

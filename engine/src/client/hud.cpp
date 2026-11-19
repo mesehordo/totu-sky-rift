@@ -1405,16 +1405,211 @@ void Hud::draw_path_choice(const HudFrame& f) {
 }
 
 void Hud::draw_result(const HudFrame& f) {
+  // a meccs utáni összesítő (a régi `draw_summary`): fülek – áttekintés, gazdaság, katonaság, grafikon; játékosonként
+  // egy sor, az oszlop legjobb értéke kiemelve
+  model_.sum_tab_btn.clear();
+  model_.sum_menu_btn = {};
+  if (!model_.match_over()) return;
   const Snapshot* s = model_.snap();
-  const SnapPlayer& me = s->players[std::min<size_t>(model_.player, sim::Sim::kMaxPlayers)];
   const bool mission = s->mission.active;
-  if (mission ? s->mission.result == 0 : (s->winner == 0 && !me.defeated)) return;
   const bool won = mission ? s->mission.result == 1 : s->winner == model_.player;
-  const std::string msg = won ? model_.tr("win") : model_.tr("lose");
-  const float H = static_cast<float>(f.h), W = static_cast<float>(f.w);
-  rect(0, H / 2 - 40, W, 80, {10, 8, 6}, 200);
-  const int big = 32;
-  text(*batch_, big, W / 2 - tw(big, msg) / 2, H / 2 - line_h(big) / 2, msg, won ? 250 : 240, won ? 220 : 90, won ? 120 : 70);
+  const HudLayout& L = model_.layout();
+  const float u = static_cast<float>(L.s);
+  auto k = [&](float v) { return std::round(v * u); };
+  const float W = static_cast<float>(f.w), H = static_cast<float>(f.h);
+  rect(0, 0, W, H, {0, 0, 0}, 175);
+  const float pw = std::min(W - k(40), k(1180)), ph = std::min(H - k(40), k(680));
+  const Rect P{static_cast<int>(W / 2 - pw / 2), static_cast<int>(H / 2 - ph / 2), static_cast<int>(pw), static_cast<int>(ph)};
+  rect(P, {14, 12, 10}, 236);
+  const Col frame{170, 140, 80};
+  rect(static_cast<float>(P.x), static_cast<float>(P.y), pw, 2, frame);
+  rect(static_cast<float>(P.x), static_cast<float>(P.bottom() - 2), pw, 2, frame);
+  rect(static_cast<float>(P.x), static_cast<float>(P.y), 2, ph, frame);
+  rect(static_cast<float>(P.right() - 2), static_cast<float>(P.y), 2, ph, frame);
+  const int FB = std::max(L.font.name + 6, static_cast<int>(k(30))), FM = std::max(L.font.name, static_cast<int>(k(20)));
+  const int FS = L.font.small;
+  const std::string head = model_.tr("sum.title");
+  text(*batch_, FB, static_cast<float>(P.x) + k(20), static_cast<float>(P.y) + k(14), head, 255, 220, 130);
+  const int64_t secs = s->tick / 30;
+  char clock[32];
+  std::snprintf(clock, sizeof clock, "%lld:%02lld", static_cast<long long>(secs / 60), static_cast<long long>(secs % 60));
+  const std::string sub = model_.tr(won ? "sum.won" : "sum.lost", {clock});
+  text(*batch_, FS, static_cast<float>(P.right()) - k(20) - tw(FS, sub), static_cast<float>(P.y) + k(22), sub, 220, 210, 190);
+  // fülek
+  const char* tabs[] = {"sum.tab.overview", "sum.tab.economy", "sum.tab.military", "sum.tab.graph"};
+  float tx = static_cast<float>(P.x) + k(20);
+  const float ty = static_cast<float>(P.y) + k(14) + line_h(FB) + k(10);
+  for (int i = 0; i < 4; ++i) {
+    const std::string nm = model_.tr(tabs[i]);
+    const Rect r{static_cast<int>(tx), static_cast<int>(ty), static_cast<int>(tw(FM, nm) + k(28)), static_cast<int>(line_h(FM) + k(12))};
+    const bool on = i == model_.sum_tab, hot = r.contains(mx_, my_);
+    rect(r, on ? Col{60, 46, 26} : hot ? Col{40, 34, 26} : Col{24, 20, 16});
+    const Col bc = on ? Col{200, 166, 90} : Col{110, 92, 60};
+    rect(static_cast<float>(r.x), static_cast<float>(r.y), static_cast<float>(r.w), 1, bc);
+    rect(static_cast<float>(r.x), static_cast<float>(r.bottom() - 1), static_cast<float>(r.w), 1, bc);
+    rect(static_cast<float>(r.x), static_cast<float>(r.y), 1, static_cast<float>(r.h), bc);
+    rect(static_cast<float>(r.right() - 1), static_cast<float>(r.y), 1, static_cast<float>(r.h), bc);
+    if (on) text(*batch_, FM, static_cast<float>(r.x) + k(14), static_cast<float>(r.y) + k(6), nm, 255, 236, 190);
+    else text(*batch_, FM, static_cast<float>(r.x) + k(14), static_cast<float>(r.y) + k(6), nm, 200, 190, 170);
+    model_.sum_tab_btn.push_back(r);
+    tx = static_cast<float>(r.right()) + k(6);
+  }
+  const float by = ty + line_h(FM) + k(12) + k(20);
+  const Rect body{P.x + static_cast<int>(k(20)), static_cast<int>(by), P.w - static_cast<int>(k(40)),
+                  P.bottom() - static_cast<int>(by) - static_cast<int>(k(76))};
+  rect(static_cast<float>(P.x) + k(12), static_cast<float>(body.y) - k(8), pw - k(24), 1, {110, 92, 60});
+  std::vector<int> players;
+  for (int i = 1; i <= sim::Sim::kMaxPlayers; ++i) {
+    if (!s->players[static_cast<size_t>(i)].faction.empty()) players.push_back(i);
+  }
+  auto outcome = [&](int q) {
+    const SnapPlayer& p = s->players[static_cast<size_t>(q)];
+    if (p.defeated) return model_.tr("sum.out.defeated");
+    if (mission ? (q == model_.player && won) : s->winner == q) return model_.tr("sum.out.winner");
+    return model_.tr("sum.out.alive");
+  };
+  if (model_.sum_tab == 3) {
+    summary_graphs(body, players);
+  } else {
+    std::vector<std::string> heads;
+    std::vector<std::vector<std::string>> vals;
+    std::vector<std::vector<int64_t>> nums;   // a kiemeléshez (−1: nem szám)
+    for (const int q : players) {
+      const SnapPlayer& p = s->players[static_cast<size_t>(q)];
+      const sim::PlayerStats& st = p.stats;
+      std::vector<int64_t> row;
+      if (model_.sum_tab == 0) {
+        const auto sc = HudModel::score(p);
+        row = {sc[0], sc[1], sc[2], sc[3]};
+      } else if (model_.sum_tab == 1) {
+        int64_t all = 0, spent = 0;
+        for (const int r : kResOrder) row.push_back(p.gathered[static_cast<size_t>(r)]);
+        for (int r = 0; r < sim::kResources; ++r) all += p.gathered[static_cast<size_t>(r)];
+        for (int r = 0; r < sim::kResources; ++r) if (r != sim::kFaith) spent += st.spent[static_cast<size_t>(r)] / 1000;
+        row.push_back(p.gathered[sim::kFaith]);
+        row.push_back(all);
+        row.push_back(spent);
+      } else {
+        row = {st.units_trained, st.units_killed, st.units_lost, st.buildings_built, st.buildings_killed, st.buildings_lost};
+      }
+      std::vector<std::string> sv;
+      for (const int64_t v : row) sv.push_back(std::to_string(v));
+      if (model_.sum_tab == 0) {
+        sv.push_back(outcome(q));
+        row.push_back(-1);
+      }
+      vals.push_back(sv);
+      nums.push_back(row);
+    }
+    if (model_.sum_tab == 0) {
+      heads = {model_.tr("sum.col.score"), model_.tr("sum.col.military"), model_.tr("sum.col.economy"),
+               model_.tr("sum.col.building"), model_.tr("sum.col.outcome")};
+    } else if (model_.sum_tab == 1) {
+      for (const int r : kResOrder) heads.push_back(model_.res_name(r));
+      heads.push_back(model_.res_name(sim::kFaith));
+      heads.push_back(model_.tr("sum.col.gathered"));
+      heads.push_back(model_.tr("sum.col.spent"));
+    } else {
+      heads = {model_.tr("sum.col.trained"), model_.tr("sum.col.killed"), model_.tr("sum.col.lost"),
+               model_.tr("sum.col.built"), model_.tr("sum.col.razed"), model_.tr("sum.col.blost")};
+    }
+    summary_table(body, players, heads, vals, nums);
+  }
+  // gomb
+  const Rect br{P.right() - static_cast<int>(k(220)), P.bottom() - static_cast<int>(k(62)), static_cast<int>(k(200)), static_cast<int>(k(46))};
+  const bool hot = br.contains(mx_, my_);
+  rect(br, hot ? Col{92, 70, 34} : Col{64, 48, 24});
+  rect(static_cast<float>(br.x), static_cast<float>(br.y), static_cast<float>(br.w), 2, {200, 166, 90});
+  rect(static_cast<float>(br.x), static_cast<float>(br.bottom() - 2), static_cast<float>(br.w), 2, {200, 166, 90});
+  const std::string bl = model_.tr("sum.menu");
+  text(*batch_, FM, static_cast<float>(br.centerx()) - tw(FM, bl) / 2, static_cast<float>(br.centery()) - line_h(FM) / 2, bl, 255, 236,
+       190);
+  model_.sum_menu_btn = br;
+}
+
+void Hud::summary_table(const Rect& body, const std::vector<int>& players, const std::vector<std::string>& heads,
+                        const std::vector<std::vector<std::string>>& vals, const std::vector<std::vector<int64_t>>& nums) {
+  const Snapshot* s = model_.snap();
+  const float u = static_cast<float>(model_.layout().s);
+  auto k = [&](float v) { return std::round(v * u); };
+  const int F = model_.layout().font.small;
+  const float name_w = std::floor(static_cast<float>(body.w) * 0.34f);
+  const float cw = std::floor((static_cast<float>(body.w) - name_w) / static_cast<float>(std::max<size_t>(1, heads.size())));
+  float y = static_cast<float>(body.y);
+  for (size_t i = 0; i < heads.size(); ++i) {
+    const float x = static_cast<float>(body.x) + name_w + static_cast<float>(i) * cw + cw - k(8);
+    text(*batch_, F, x - tw(F, heads[i]), y, heads[i], 230, 200, 130);
+  }
+  y += k(34);
+  std::vector<int64_t> best(heads.size(), -1);
+  for (const auto& row : nums) {
+    for (size_t c = 0; c < row.size() && c < best.size(); ++c) best[c] = std::max(best[c], row[c]);
+  }
+  for (size_t pi = 0; pi < players.size(); ++pi) {
+    const int q = players[pi];
+    const SnapPlayer& p = s->players[static_cast<size_t>(q)];
+    rect(static_cast<float>(body.x), y - k(4), static_cast<float>(body.w), k(36), q == model_.player ? Col{40, 34, 26} : Col{24, 22, 18},
+         q == model_.player ? 150 : 120);
+    rect(static_cast<float>(body.x) + k(6), y + k(4), k(18), k(18), model_.player_color(static_cast<uint8_t>(q)));
+    const std::string nm = model_.tr("player", {std::to_string(q)}) + " – " + model_.faction_name(p.faction);
+    text(*batch_, F, static_cast<float>(body.x) + k(32), y + k(2), nm, 236, 228, 210);
+    for (size_t c = 0; c < vals[pi].size() && c < heads.size(); ++c) {
+      const int64_t v = c < nums[pi].size() ? nums[pi][c] : -1;
+      const bool hi = v > 0 && v == best[c];
+      const float x = static_cast<float>(body.x) + name_w + static_cast<float>(c) * cw + cw - k(8);
+      const Col col = hi ? Col{255, 220, 120} : Col{220, 214, 200};
+      text(*batch_, F, x - tw(F, vals[pi][c]), y + k(2), vals[pi][c], col[0], col[1], col[2]);
+    }
+    y += k(40);
+  }
+}
+
+void Hud::summary_graphs(const Rect& body, const std::vector<int>& players) {
+  // két grafikon (a régi szerint): a sereg értéke és az összes gyűjtött nyersanyag az idő függvényében
+  const Snapshot* s = model_.snap();
+  const float u = static_cast<float>(model_.layout().s);
+  auto k = [&](float v) { return std::round(v * u); };
+  const int F = model_.layout().font.small, ft = model_.layout().font.tiny;
+  const float gw = std::floor((static_cast<float>(body.w) - k(24)) / 2);
+  for (int gi = 0; gi < 2; ++gi) {
+    const std::string title = model_.tr(gi == 0 ? "sum.graph.army" : "sum.graph.gathered");
+    const float rx = static_cast<float>(body.x) + static_cast<float>(gi) * (gw + k(24)), ry = static_cast<float>(body.y) + k(30);
+    const float rw = gw, rh = static_cast<float>(body.h) - k(40);
+    text(*batch_, F, rx, static_cast<float>(body.y), title, 230, 200, 130);
+    rect(rx, ry, rw, rh, {20, 18, 15});
+    const Col fc{110, 92, 60};
+    rect(rx, ry, rw, 1, fc);
+    rect(rx, ry + rh - 1, rw, 1, fc);
+    rect(rx, ry, 1, rh, fc);
+    rect(rx + rw - 1, ry, 1, rh, fc);
+    auto val = [&](const sim::PlayerStats::Sample& x) { return gi == 0 ? x.army : x.gathered; };
+    int32_t tmax = 1, vmax = 1;
+    for (const int q : players) {
+      for (const auto& x : s->players[static_cast<size_t>(q)].stats.timeline) {
+        tmax = std::max(tmax, x.t);
+        vmax = std::max(vmax, val(x));
+      }
+    }
+    for (const float fr : {0.25f, 0.5f, 0.75f}) rect(rx + 1, std::floor(ry + rh - rh * fr), rw - 2, 1, {40, 36, 30});
+    const std::string vl = std::to_string(vmax);
+    text(*batch_, ft, rx + k(4), ry + k(4), vl, 170, 160, 140);
+    for (const int q : players) {
+      const auto& tl = s->players[static_cast<size_t>(q)].stats.timeline;
+      if (tl.size() < 2) continue;
+      const Col c = model_.player_color(static_cast<uint8_t>(q));
+      auto pt = [&](const sim::PlayerStats::Sample& x) {
+        return std::pair<float, float>{rx + k(4) + (rw - k(8)) * static_cast<float>(x.t) / static_cast<float>(tmax),
+                                       ry + rh - k(4) - (rh - k(12)) * static_cast<float>(val(x)) / static_cast<float>(vmax)};
+      };
+      for (size_t i = 1; i < tl.size(); ++i) {
+        const auto a = pt(tl[i - 1]), b = pt(tl[i]);
+        line(a.first, a.second, b.first, b.second, c, std::max(2.0f, k(2)));
+      }
+    }
+    char mins[32];   // a vízszintes tengely vége (perc:másodperc)
+    std::snprintf(mins, sizeof mins, "%d:%02d", static_cast<int>(tmax / 60), static_cast<int>(tmax % 60));
+    text(*batch_, ft, rx + rw - tw(ft, mins) - k(4), ry + rh - line_h(ft) - k(4), mins, 170, 160, 140);
+  }
 }
 
 }  // namespace totu::client

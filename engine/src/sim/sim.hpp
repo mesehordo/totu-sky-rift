@@ -691,6 +691,19 @@ struct Veteran {   // előléptetés: ezred tapasztalat és fokozat (0: újonc, 
   static Veteran load(core::ByteReader& r) { Veteran v; v.xp = r.i32(); v.rank = static_cast<uint8_t>(r.u32()); return v; }
 };
 
+// A meccs utáni összesítő számlálói (a régi `Player.stats`, `spent`, `timeline` szerint). Csak kijelzés: a játékmenetre
+// nem hatnak, ezért nem részei az állapothashnek; a mentés (20. séma) viszi őket.
+struct PlayerStats {
+  int32_t units_trained = 0, units_killed = 0, units_lost = 0;
+  int32_t buildings_built = 0, buildings_killed = 0, buildings_lost = 0;
+  int64_t killed_value = 0, lost_value = 0;      // a megölt / elvesztett egységek és épületek költsége (egész egység)
+  std::array<int64_t, kResources> spent{};       // elköltött nyersanyag ezredben (a visszatérítés levonva)
+  struct Sample {                                // 15 mp-enként (450 tick): a grafikonhoz
+    int32_t t = 0, supply = 0, army = 0, gathered = 0, kills = 0;
+  };
+  std::vector<Sample> timeline;
+};
+
 // játékosállapot (1–8. játékos; a 0. a semleges)
 struct PlayerState {
   std::string faction;                       // pl. `ursan`
@@ -713,6 +726,7 @@ struct PlayerState {
   std::vector<Modifier> research_mods;
   // elesett hősök állapota (D25, HOS-1): újraképzéskor (újraélesztés) visszaáll
   std::vector<std::pair<uint16_t, HeroState>> fallen;
+  PlayerStats stats;                         // az összesítőhöz (nem hash-elt)
 };
 
 // Gépi játékos (M9; GEPI_ELLENFEL.md): a meccsbeállítás és a visszajátszás része. A gép Lua-állapotát a
@@ -1080,6 +1094,7 @@ class Sim {
   bool owned_by(EntityId e, uint8_t owner);   // él, és ez a tulajdonosa (H-01)
   bool load_impl(const std::vector<uint8_t>& data);
   void report_deaths();
+  void stats_sample();   // az összesítő idősora (15 mp-enként)
   void nav_request(EntityId e, Fixed x, Fixed y);
   void nav_paths();
   void nav_movement();

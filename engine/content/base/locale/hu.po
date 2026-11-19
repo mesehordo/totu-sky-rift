@@ -9103,3 +9103,108 @@ msgstr ""
 msgctxt "hud.help.12"
 msgid "F2/F3/F4: 1./2./3. hős (újra: odaugrás)   Szóköz: bázis / utolsó riasztás   Középső gomb: kamera húzása"
 msgstr ""
+
+msgctxt "hud.sum.title"
+msgid "ÖSSZESÍTŐ"
+msgstr ""
+
+msgctxt "hud.sum.won"
+msgid "Győzelem  •  Játékidő: {}"
+msgstr ""
+
+msgctxt "hud.sum.lost"
+msgid "Vereség  •  Játékidő: {}"
+msgstr ""
+
+msgctxt "hud.sum.tab.overview"
+msgid "Áttekintés"
+msgstr ""
+
+msgctxt "hud.sum.tab.economy"
+msgid "Gazdaság"
+msgstr ""
+
+msgctxt "hud.sum.tab.military"
+msgid "Katonaság"
+msgstr ""
+
+msgctxt "hud.sum.tab.graph"
+msgid "Grafikon"
+msgstr ""
+
+msgctxt "hud.sum.col.score"
+msgid "Pontszám"
+msgstr ""
+
+msgctxt "hud.sum.col.military"
+msgid "Katonai"
+msgstr ""
+
+msgctxt "hud.sum.col.economy"
+msgid "Gazdasági"
+msgstr ""
+
+msgctxt "hud.sum.col.building"
+msgid "Építkezés"
+msgstr ""
+
+msgctxt "hud.sum.col.outcome"
+msgid "Eredmény"
+msgstr ""
+
+msgctxt "hud.sum.col.gathered"
+msgid "Összes gyűjtött"
+msgstr ""
+
+msgctxt "hud.sum.col.spent"
+msgid "Elköltött"
+msgstr ""
+
+msgctxt "hud.sum.col.trained"
+msgid "Kiképzett"
+msgstr ""
+
+msgctxt "hud.sum.col.killed"
+msgid "Megölt"
+msgstr ""
+
+msgctxt "hud.sum.col.lost"
+msgid "Elesett"
+msgstr ""
+
+msgctxt "hud.sum.col.built"
+msgid "Épített"
+msgstr ""
+
+msgctxt "hud.sum.col.razed"
+msgid "Lerombolt"
+msgstr ""
+
+msgctxt "hud.sum.col.blost"
+msgid "Elvesztett ép."
+msgstr ""
+
+msgctxt "hud.sum.out.defeated"
+msgid "kiesett"
+msgstr ""
+
+msgctxt "hud.sum.out.winner"
+msgid "győztes"
+msgstr ""
+
+msgctxt "hud.sum.out.alive"
+msgid "életben"
+msgstr ""
+
+msgctxt "hud.sum.graph.army"
+msgid "A sereg értéke"
+msgstr ""
+
+msgctxt "hud.sum.graph.gathered"
+msgid "Összes gyűjtött nyersanyag"
+msgstr ""
+
+
+msgctxt "hud.sum.menu"
+msgid "FŐMENÜ"
+msgstr ""

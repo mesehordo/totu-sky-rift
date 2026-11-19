@@ -120,6 +120,15 @@ class HudModel {
   bool text_focus = false, paused = false, path_hidden = false, show_allies = false, quests_open = false;
   bool shift = false;                         // Shift lenyomva (5× képzés)
   bool menu_requested = false;                // a fogaskerék: a szünetmenü (a hívó nyitja)
+  // a meccs utáni összesítő (a régi `draw_summary`): fül (0 áttekintés, 1 gazdaság, 2 katonaság, 3 grafikon), a fülek és
+  // a „Főmenü” gomb téglalapja (a rajzoló tölti), a kilépés kérése (a hívó zárja a meccset)
+  int sum_tab = 0;
+  std::vector<Rect> sum_tab_btn;
+  Rect sum_menu_btn{};
+  bool quit_requested = false;
+  bool match_over() const;                    // vége a meccsnek a helyi játékos szemszögéből (az összesítő látszik)
+  // a régi `_score`: összes, katonai, gazdasági, építkezés
+  static std::array<int64_t, 4> score(const SnapPlayer& p);
   uint8_t formation = 1;                      // a mozgásparancs alakzata
   double t = 0;                               // a felület órája (másodperc)
   int slot_flash = -1;

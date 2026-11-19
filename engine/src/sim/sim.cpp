@@ -316,6 +316,26 @@ void Sim::apply_now(const Command& raw) {
   }
 }
 
+void Sim::stats_sample() {
+  std::array<int64_t, kMaxPlayers + 1> army{};
+  world_.pool<Unit>().each([&](EntityId e, const Unit& u) {
+    const Health* h = world_.get<Health>(e);
+    if (!h || h->owner < 1 || h->owner > kMaxPlayers || world_.get<Worker>(e) || world_.get<Lifetime>(e)) return;
+    const EntityDef& d = rules_->defs[u.def];
+    int64_t c = 0;
+    for (const int32_t v : d.cost) c += v;
+    army[h->owner] += c / std::max<int32_t>(1, d.count);
+  });
+  for (int i = 1; i <= kMaxPlayers; ++i) {
+    PlayerState& p = players_[static_cast<size_t>(i)];
+    if (!p.active) continue;
+    int64_t g = 0;
+    for (const int64_t v : p.gathered) g += v / 1000;
+    p.stats.timeline.push_back({static_cast<int32_t>(tick_ / 30), p.supply_used, static_cast<int32_t>(army[static_cast<size_t>(i)]),
+                                static_cast<int32_t>(g), p.stats.units_killed});
+  }
+}
+
 void Sim::report_deaths() {
   // index szerint, mert egy eseménykezelő újabb halált okozhat (kill), ami a lista végére kerül
   for (size_t i = 0; i < died_.size(); ++i) {
@@ -407,6 +427,7 @@ void Sim::step() {
     production_system();
     if (tick_ % 15 == 0) stealth_system();   // a régi: 0,5 s
     if (tick_ % 6 == 0) vision_system();     // a régi: 0,2 s
+    if (tick_ % 450 == 0) stats_sample();    // az összesítő idősora (a régi: 15 mp)
   }
   if (nav_) {
     const auto t0 = std::chrono::steady_clock::now();
@@ -592,7 +613,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(19);   // séma (19: a meccs módja; 18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(20);   // séma (20: az összesítő számlálói; 19: a meccs módja; 18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -671,6 +692,15 @@ std::vector<uint8_t> Sim::save() const {
   w.u8(mode_.peace_players ? 1 : 0); w.u8(mode_.survived ? 1 : 0);
   for (const int32_t x : mode_.hill) w.i32(x);
   w.i32(mode_.wave); w.i64(mode_.next_wave);
+  for (const PlayerState& p : players_) {   // 20: az összesítő számlálói
+    const PlayerStats& s = p.stats;
+    for (const int32_t v : {s.units_trained, s.units_killed, s.units_lost, s.buildings_built, s.buildings_killed, s.buildings_lost}) w.i32(v);
+    w.i64(s.killed_value);
+    w.i64(s.lost_value);
+    for (const int64_t v : s.spent) w.i64(v);
+    w.u32(static_cast<uint32_t>(s.timeline.size()));
+    for (const auto& x : s.timeline) { w.i32(x.t); w.i32(x.supply); w.i32(x.army); w.i32(x.gathered); w.i32(x.kills); }
+  }
   return w.data();
 }
 
@@ -713,7 +743,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 19) return false;
+  if (schema < 3 || schema > 20) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r);
     if (!r.ok()) return false;
@@ -895,6 +925,22 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
     for (int32_t& x : mode_.hill) x = r.i32();
     mode_.wave = r.i32();
     mode_.next_wave = r.i64();
+  }
+  for (PlayerState& p : players_) {
+    PlayerStats& s = p.stats;
+    s = PlayerStats{};
+    if (schema < 20) continue;
+    for (int32_t* v : {&s.units_trained, &s.units_killed, &s.units_lost, &s.buildings_built, &s.buildings_killed, &s.buildings_lost}) *v = r.i32();
+    s.killed_value = r.i64();
+    s.lost_value = r.i64();
+    for (int64_t& v : s.spent) v = r.i64();
+    const uint32_t nt = r.u32();
+    if (nt > kMaxLoadCount) return false;
+    for (uint32_t i = 0; i < nt && r.ok(); ++i) {
+      PlayerStats::Sample x;
+      x.t = r.i32(); x.supply = r.i32(); x.army = r.i32(); x.gathered = r.i32(); x.kills = r.i32();
+      s.timeline.push_back(x);
+    }
   }
   if (!r.ok() || !r.at_end()) return false;
   // H-99, H-100: a betöltött sablon- és navigációs indexek érvényesek

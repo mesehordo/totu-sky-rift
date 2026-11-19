@@ -110,6 +110,9 @@ class Hud {
   void draw_tooltip(const HudFrame& f);
   void draw_path_choice(const HudFrame& f);
   void draw_result(const HudFrame& f);
+  void summary_table(const Rect& body, const std::vector<int>& players, const std::vector<std::string>& heads,
+                     const std::vector<std::vector<std::string>>& vals, const std::vector<std::vector<int64_t>>& nums);
+  void summary_graphs(const Rect& body, const std::vector<int>& players);
   void draw_mission(const HudFrame& f);   // M11: átvezető-sáv, felirat, párbeszéd, üzenetek
   struct Theme { Col base, light, dark, accent, fill; };
   Theme theme() const;

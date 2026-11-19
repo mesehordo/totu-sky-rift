@@ -563,6 +563,27 @@ void Sim::shot_system() {
 
 void Sim::die(EntityId e) {
   if (!world_.alive(e)) return;
+  if (const Health* vh = world_.get<Health>(e)) {   // az összesítő: veszteség és ölés (a régi `stats`)
+    const Unit* vu = world_.get<Unit>(e);
+    const Building* vb = vu ? nullptr : world_.get<Building>(e);
+    if (vu || vb) {
+      const EntityDef& vd = rules_->defs[vu ? vu->def : vb->def];
+      int64_t val = 0;
+      for (const int32_t c : vd.cost) val += c;
+      if (vu) val /= std::max<int32_t>(1, vd.count);
+      if (vh->owner >= 1 && vh->owner <= kMaxPlayers) {
+        PlayerStats& ls = players_[vh->owner].stats;
+        ++(vb ? ls.buildings_lost : ls.units_lost);
+        ls.lost_value += val;
+      }
+      if (const auto it = killer_.find(e); it != killer_.end() && it->second.second >= 1 && it->second.second <= kMaxPlayers &&
+                                           hostile(it->second.second, vh->owner)) {
+        PlayerStats& ks = players_[it->second.second].stats;
+        ++(vb ? ks.buildings_killed : ks.units_killed);
+        ks.killed_value += val;
+      }
+    }
+  }
   {
     const auto kit = killer_.find(e);
     for (auto& m : modules_) {

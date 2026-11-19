@@ -113,13 +113,19 @@ bool Sim::pay(uint8_t owner, const std::array<int32_t, kResources>& cost) {
   for (int r = 0; r < kResources; ++r) {
     if (p.res[static_cast<size_t>(r)] < int64_t{cost[static_cast<size_t>(r)]} * 1000) return false;
   }
-  for (int r = 0; r < kResources; ++r) p.res[static_cast<size_t>(r)] -= int64_t{cost[static_cast<size_t>(r)]} * 1000;
+  for (int r = 0; r < kResources; ++r) {
+    p.res[static_cast<size_t>(r)] -= int64_t{cost[static_cast<size_t>(r)]} * 1000;
+    p.stats.spent[static_cast<size_t>(r)] += int64_t{cost[static_cast<size_t>(r)]} * 1000;
+  }
   return true;
 }
 
 void Sim::refund(uint8_t owner, const std::array<int32_t, kResources>& cost, int32_t permille) {
   PlayerState& p = players_[owner];
-  for (int r = 0; r < kResources; ++r) p.res[static_cast<size_t>(r)] += int64_t{cost[static_cast<size_t>(r)]} * permille;
+  for (int r = 0; r < kResources; ++r) {
+    p.res[static_cast<size_t>(r)] += int64_t{cost[static_cast<size_t>(r)]} * permille;
+    p.stats.spent[static_cast<size_t>(r)] -= int64_t{cost[static_cast<size_t>(r)]} * permille;
+  }
 }
 
 bool Sim::order_build(EntityId e, uint16_t def, int tx, int ty, std::string* error) {
@@ -379,6 +385,7 @@ void Sim::construction_system() {
     }
   });
   for (const EntityId c : completed) {
+    if (const Health* ch = world_.get<Health>(c); ch && ch->owner >= 1 && ch->owner <= kMaxPlayers) ++players_[ch->owner].stats.buildings_built;
     for (auto& m : modules_) m->on_building_complete(*this, c);
   }
 }

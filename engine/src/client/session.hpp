@@ -82,6 +82,8 @@ struct SnapPlayer {
   std::string ally;
   std::string path;
   std::vector<std::string> researched;
+  std::array<int32_t, sim::kResources> gathered{};   // az összesítőhöz (egész egység)
+  sim::PlayerStats stats;                            // az idősor csak a meccs végén (a másolás miatt)
 };
 
 // látványesemény (a részecskéknek): találat (az életerő csökkent) vagy halál

@@ -94,6 +94,20 @@ becsúszva (0,14 mp, lassuló), a főmenü hátterén; az oldalsáv pontjaira ka
 almenüvel. A főmenü almenüje is a régi módon csúszik ki. A Csata képernyő elrendezését a tulajdonos adja (változatlan).
 Szöveghiba javítva: a billentyűkiosztás „Foglalt: P (szünet)” → „P (járőr)”. **Képek:** `kepek/utan_menu_*.jpg`.
 
+## 10. A meccs utáni összesítő (a régi `draw_summary` szerint; a tulajdonos jóváhagyásával)
+
+Eddig a meccs végén csak egy „Győzelem / Vereség” sáv látszott. Most a régi összesítő: cím, eredmény és játékidő,
+négy fül – **Áttekintés** (pontszám, katonai, gazdasági, építkezés, eredmény; a régi `_score` képlete),
+**Gazdaság** (gyűjtött nyersanyagonként, összes, elköltött), **Katonaság** (kiképzett, megölt, elesett, épített,
+lerombolt, elvesztett épület), **Grafikon** (a sereg értéke és az összes gyűjtött nyersanyag az idő függvényében,
+15 mp-es mintákból) –, játékosonként egy sor, az oszlop legjobb értéke kiemelve; „Főmenü” gomb.
+**Szimuláció:** új `PlayerStats` a játékosállapotban (kiképzés, ölés ellenséges gyilkostól, veszteség, kész épület,
+költés a visszatérítéssel csökkentve, idősor). Csak kijelzés: nem része az állapothashnek (a goldenek
+változatlanok); a mentés 20. sémája viszi, a 19-es mentés betölthető (üres számlálókkal). Az idősort a pillanatkép
+csak a meccs végén másolja. **Próba:** `Osszesito` (ölés, veszteség, épület, idősor, mentés–betöltés).
+**Képek:** `kepek/utan_osszesito_attekintes.jpg`, `kepek/utan_osszesito_grafikon.jpg` (próbameccs, a vége
+kényszerítve).
+
 ## Döntésre vár
 
 AS-07

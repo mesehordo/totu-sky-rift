@@ -909,3 +909,7 @@ A HUD-modell nyers mutatót tartott a világ pillanatképére; ha egy képkocka 
 A köd határa szélesebb (kb. 3 helyett kb. 6 csempés átmenet). Az elmosott köd (`--fog-blur`, a felderített rész színes, elmosott, kissé sötétebb) költsége 1080p-ben a mérési zajon belül (≤ 1 ms, RX 550); az alap a szürke marad (D41), amíg a tulajdonos dönt. A szünetmenü bal oldali panel a főmenü oldalsávjának stílusában, balról becsúszik, a játéktér mögötte elmosódik. Képek: `docs/quality/kepek/kod_osszevetes_*.jpg`, `utan_szunetmenu.jpg`.
 
 **Menük oldalt:** a Beállítások, a Hang és a Billentyűk az oldalsáv mellett nyílnak, balról becsúszva, a főmenü hátterén; a főmenü almenüje a régi módon csúszik ki az oldalsáv mögül. A billentyűkiosztás szövege javítva (a P a járőr). Képek: `docs/quality/kepek/utan_menu_*.jpg`.
+
+## 2026-11-19 – A meccs utáni összesítő (4 fül, a régi szerint)
+
+A meccs végén a régi összesítő: Áttekintés (pontszám, katonai, gazdasági, építkezés, eredmény), Gazdaság (gyűjtött nyersanyagonként, összes, elköltött), Katonaság (kiképzett, megölt, elesett, épített, lerombolt, elvesztett épület), Grafikon (a sereg értéke és az összes gyűjtött nyersanyag, 15 mp-enként); „Főmenü” gomb. A szimulációban új, nem hash-elt számlálók (`PlayerStats`); a mentés 20. sémája viszi őket, a régebbi mentés betölthető. A goldenek változatlanok. Próba: `Osszesito`. Képek: `docs/quality/kepek/utan_osszesito_*.jpg`.
