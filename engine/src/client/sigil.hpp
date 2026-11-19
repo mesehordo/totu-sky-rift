@@ -42,6 +42,10 @@ render::Image hidden_mark_image(float w);
 // `r` sugárra, (2r + 20) × (1,2 r + 20), 12 forgásfázis; a jelzőfény (lebegő kristály és fénysugár), 16 × 64
 render::Image objective_ring_image(float r, int phase);
 render::Image objective_beacon_image();
+// légköri részecskék (a régi `scenery.Ambient`): additív ragyogás (előszorzott szín, nulla alfa – a rajzoló nem
+// szorozhatja elő), 12 × 12; falevél 8 elforgatásban (fehér – a levél színe árnyalja), 8 × 8
+render::Image ambient_glow_image();
+render::Image ambient_leaf_image(int rot);
 int banner_style(const std::string& faction);
 render::Image banner_pole_image(int style);
 render::Image banner_knob_image(int style);

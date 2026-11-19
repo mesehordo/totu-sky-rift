@@ -575,7 +575,7 @@ int main(int argc, char** argv) {
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
-        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon;
+        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf;
     std::map<std::string, render::Texture> item_tex;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
@@ -877,6 +877,9 @@ int main(int argc, char** argv) {
               obj_ring = layers(12, 148, 96, [](int i) { return client::objective_ring_image(64.0f, i); });
               obj_beacon = one(client::objective_beacon_image());
               world.set_objective_art(&obj_ring, &obj_beacon);
+              amb_glow = dev.create_array_from(client::ambient_glow_image(), false);   // additív: nincs előszorzás
+              amb_leaf = layers(8, 8, 8, [](int i) { return client::ambient_leaf_image(i); });
+              world.set_ambient_art(&amb_glow, &amb_leaf, &fallback);
               {   // a földön heverő tárgyak ikonjai (assets/items, 32 × 32-re kicsinyítve) és a kör alakú fényudvar
                 std::map<std::string, const render::Texture*> icons;
                 std::error_code iec;
@@ -1595,6 +1598,9 @@ int main(int argc, char** argv) {
         lighting.set_fog_style(o.fog_blur, o.fog_soft, 6.0f * cam.zoom);
         lighting.set_blur(game_paused ? pause_slide : 0.0f);
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
+        batch.begin(proj);   // a légköri részecskék a fényezés után (a szentjánosbogár éjjel is világít – a régi szerint)
+        world.draw_ambient(batch, cam, w, h, t);
+        batch.end();
         if (editor_on && !editor_test) {   // M11: a szerkesztő rétegei és palettája
           int ww = 0, wh = 0;
           SDL_GetWindowSizeInPixels(win, &ww, &wh);
@@ -1783,7 +1789,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf}) dev.destroy(*t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();

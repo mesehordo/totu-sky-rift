@@ -989,3 +989,7 @@ A küldetés céljának helye lehet (`at`: régió vagy pont; `marker`: felirat 
 ## 2026-11-19 – 11. tétel: holttestek és földön heverő tárgyak a régi szerint
 
 A pillanatkép viszi a látott holttesteket (sablon, tulajdonos, hely, kor) és a felderített helyen heverő tárgyakat (ritkaság, azonosító). A holttest a halálanimációt játssza le, és a végén megáll (a régi `draw_corpses`); a tárgy lebegő ikon (assets/items) a ritkaság színű, pulzáló fényudvarral és árnyékkal (a régi `draw_ground_items`). Nyitott: a tárgy neve az egér alatt; képi ellenőrzés (a bemutatókban nem volt látható holttest vagy tárgy).
+
+## 2026-11-19 – 7. tétel: légköri részecskék a régi szerint
+
+A régi `Ambient` erdei készlete: 34 szentjánosbogár (villogó, közel additív fény), 22 forgó falevél (3 szín, 8 elforgatás), 30 pollen; a világhoz rögzítve, a látómező körül körbetekerve, a fényezés után rajzolva (éjjel is világít). A pályáknak még nincs témája, ezért mindig az erdei készlet. Kép: `docs/quality/kepek/utan_legkor.jpg`.

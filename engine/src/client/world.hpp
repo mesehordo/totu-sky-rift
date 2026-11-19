@@ -89,6 +89,14 @@ class World {
     item_glow_ = glow;
   }
   void draw_ground_items(render::SpriteBatch& batch, const render::Texture& white, double time) const;
+  // légköri részecskék (7. tétel, a régi `Ambient` erdei készlete): szentjánosbogár, falevél, pollen – a világhoz
+  // rögzítve, a látómező körül körbetekerve
+  void set_ambient_art(const render::Texture* glow, const render::Texture* leaf, const render::Texture* dot) {
+    amb_glow_ = glow;
+    amb_leaf_ = leaf;
+    amb_dot_ = dot;
+  }
+  void draw_ambient(render::SpriteBatch& batch, const Camera& cam, int sw, int sh, double time) const;
   // talajjelek és a hős jelei (9. tétel): hős talajjel (színezhető + rögzített), jelvény (keret + jelkép, stílusonként
   // egy réteg), ének (8 fázis), rejtőzés
   struct MarkArt {
@@ -186,6 +194,12 @@ class World {
   const render::Texture* sack_ = nullptr;
   std::map<std::string, const render::Texture*> item_icons_;
   const render::Texture* item_glow_ = nullptr;
+  const render::Texture *amb_glow_ = nullptr, *amb_leaf_ = nullptr, *amb_dot_ = nullptr;
+  struct AmbPart {
+    uint8_t kind;   // 0 szentjánosbogár, 1 falevél, 2 pollen
+    float a, b, c, d;
+  };
+  mutable std::vector<AmbPart> amb_;
   MarkArt marks_;
   const render::Texture *obj_ring_ = nullptr, *obj_beacon_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;

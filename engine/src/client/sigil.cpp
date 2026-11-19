@@ -483,6 +483,32 @@ render::Image objective_beacon_image() {
   return c.image();
 }
 
+render::Image ambient_glow_image() {
+  render::Image img;
+  img.width = img.height = 12;
+  img.rgba.assign(12 * 12 * 4, 0);
+  for (int y = 0; y < 12; ++y) {
+    for (int x = 0; x < 12; ++x) {
+      const float dx = (static_cast<float>(x) + 0.5f - 6) / 6, dy = (static_cast<float>(y) + 0.5f - 6) / 6;
+      const float f = std::pow(std::clamp(1 - std::sqrt(dx * dx + dy * dy), 0.0f, 1.0f), 2.2f) * 0.9f;
+      uint8_t* p = img.at(x, y);
+      p[0] = p[1] = p[2] = static_cast<uint8_t>(std::lround(f * 255));
+      p[3] = 1;   // közel additív (az árnyaló a nulla alfát eldobja): a cél alig halványul
+    }
+  }
+  return img;
+}
+
+render::Image ambient_leaf_image(int rot) {
+  Canvas c(8, 8, 4);
+  const float a = static_cast<float>(rot) * 3.1415926f / 8, ca = std::cos(a), sa = std::sin(a);
+  c.fill([&](float x, float y) {
+    const float dx = x - 4, dy = y - 4, u = dx * ca + dy * sa, v = -dx * sa + dy * ca;
+    return u * u / 9.0f + v * v / 4.0f <= 1;
+  }, 1, 1, 1, 1);
+  return c.image();
+}
+
 int banner_style(const std::string& faction) {
   static const std::pair<const char*, int> kStyles[] = {{"ursan", 1}, {"croftian", 2}, {"elves", 3}, {"imperium", 4},
                                                         {"ooni", 5},  {"hukucha", 6},  {"wullof", 7}, {"mycel", 8}};

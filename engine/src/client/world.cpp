@@ -501,6 +501,63 @@ void World::draw_ground_items(render::SpriteBatch& batch, const render::Texture&
   }
 }
 
+void World::draw_ambient(render::SpriteBatch& batch, const Camera& cam, int sw, int sh, double time) const {
+  if (!amb_glow_ || !amb_leaf_ || !amb_dot_) return;
+  if (amb_.empty()) {   // a régi: 34 szentjánosbogár, 22 levél, 30 pollen, rögzített véletlenből
+    uint64_t st = 0x9E3779B97F4A7C15ULL;
+    auto rnd = [&]() {
+      st ^= st << 13;
+      st ^= st >> 7;
+      st ^= st << 17;
+      return static_cast<float>(st >> 40) / static_cast<float>(1ULL << 24);
+    };
+    for (const auto& [kind, n] : {std::pair<uint8_t, int>{0, 34}, {1, 22}, {2, 30}}) {
+      for (int i = 0; i < n; ++i) amb_.push_back({kind, rnd(), rnd(), rnd(), rnd()});
+    }
+  }
+  const float t = static_cast<float>(std::fmod(time, 10000.0));
+  const float M = 60, BW = static_cast<float>(sw) / cam.zoom + 2 * M, BH = static_cast<float>(sh) / cam.zoom + 2 * M;
+  auto wrap = [](float v, float m) { return std::fmod(std::fmod(v, m) + m, m); };
+  for (const AmbPart& p : amb_) {
+    float x, y;
+    if (p.kind == 1) {
+      x = p.a * 4000 + t * (16 + p.c * 14) + std::sin(t * (1.2f + p.d) + p.c * 6) * 22;
+      y = p.b * 4000 + t * (22 + p.d * 14);
+    } else {
+      x = p.a * 4000 + (p.c - 0.5f) * 14 * t + std::sin(t * (0.7f + p.c) + p.d * 9) * 18;
+      y = p.b * 4000 + (p.d - 0.5f) * 10 * t + std::cos(t * (0.9f + p.d) + p.c * 7) * 12;
+    }
+    const float wx = cam.x + wrap(x - cam.x, BW) - M, wy = cam.y + wrap(y - cam.y, BH) - M;
+    render::SpriteInstance s;
+    if (p.kind == 0) {   // szentjánosbogár: villog, a gyengébb fázisban kisebb
+      const float pulse = 0.5f + 0.5f * std::sin(t * (1.5f + p.c * 2) + p.d * 20);
+      if (pulse < 0.25f) continue;
+      const float sz = pulse > 0.6f ? 12.0f : 7.0f;
+      s.x = wx - sz / 2;
+      s.y = wy - sz / 2;
+      s.w = s.h = sz;
+      s.tint[0] = 255; s.tint[1] = 240; s.tint[2] = 140;
+      batch.draw(*amb_glow_, nullptr, s);
+    } else if (p.kind == 1) {   // falevél: forog
+      static const uint8_t kLeaf[3][3] = {{176, 110, 40}, {196, 150, 52}, {140, 80, 36}};
+      const int var = static_cast<int>(p.c * 3) % 3;
+      const float ang = std::fmod(t * (90 + p.d * 120) + p.a * 360, 360.0f);
+      s.x = wx;
+      s.y = wy;
+      s.w = s.h = 8;
+      s.layer[0] = static_cast<uint8_t>(static_cast<int>(ang / 22.5f) & 7);
+      s.tint[0] = kLeaf[var][0]; s.tint[1] = kLeaf[var][1]; s.tint[2] = kLeaf[var][2];
+      batch.draw(*amb_leaf_, nullptr, s);
+    } else {   // pollen
+      s.x = wx;
+      s.y = wy;
+      s.w = s.h = 2.5f;
+      s.tint[0] = 240; s.tint[1] = 240; s.tint[2] = 200;
+      batch.draw(*amb_dot_, nullptr, s);
+    }
+  }
+}
+
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !sack_ || !rules || !rules->game_raw) return;
