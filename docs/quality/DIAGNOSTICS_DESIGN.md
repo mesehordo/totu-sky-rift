@@ -67,6 +67,6 @@ véleményszöveg levágva; írási hiba (nem írható mappa) nem omlik össze.
 
 ## 7. Nyitott kérdés a tulajdonosnak
 
-Kell-e a véleménymező (3 rövid kérdés)? Az MVP-ben a mezők `null`-ok (szövegbevitel kellene hozzá). Az export
+Kell-e a véleménymező (3 rövid kérdés)? **Döntés (2026-11-19, a tulajdonos): most nem** – a mezők `null`-ok maradnak. Az export
 gombja most mindkét helyen ott van: a szünetmenüben („Diagnosztika mentése”) és az összesítőn („Diagnosztikai
 jelentés”); ha csak az egyik kell, egy sor törlése.

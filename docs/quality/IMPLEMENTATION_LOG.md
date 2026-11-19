@@ -144,12 +144,10 @@ tickek aránya); csúcs-egységszám. **Export:** kézzel, a szünetmenüben (�
 („Diagnosztikai jelentés”) – a felhasználói mappába `diagnosztika_<dátum_idő>.json`, atomikusan (ideiglenes fájl +
 átnevezés); az üzenetsor megmondja a fájl nevét; hibánál lokalizált üzenet, a játék fut tovább. Semmi nem megy
 hálózatra (`privacy.sent_automatically: false`); nincs útvonal, név, IP; a munkamenet-azonosító véletlen. A nem mért
-érték `null`. A szimulációt nem érinti (csak kliens). **Nyitott (tulajdonos):** a véleménymező (most `null`), a gomb
-helye (most mindkettő). **Próba:** `DIAG` (engedélyezőlista, séma, hányadok, mentés, nem írható hely).
+érték `null`. A szimulációt nem érinti (csak kliens). **Döntés:** véleménymező most nem (`null`); a gomb mindkét helyen. **Próba:** `DIAG` (engedélyezőlista, séma, hányadok, mentés, nem írható hely).
 **Kép:** `kepek/utan_diagnosztika_szunetmenu.jpg`.
 
 ## Döntésre vár
 
 AS-07
-(„Felület mérete”: csak menü, vagy a HUD is), C-06/C-07 (munkanevek), a diagnosztika exportjának helye és a
-véleménymező.
+(„Felület mérete”: csak menü, vagy a HUD is), C-06/C-07 (munkanevek), a diagnosztika gombjának helye (most mindkét helyen).
