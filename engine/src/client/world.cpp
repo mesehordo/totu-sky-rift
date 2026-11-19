@@ -432,6 +432,61 @@ void World::draw_move_indicator(render::SpriteBatch& batch, float alpha, double 
   batch.draw(*rally_.move_sigil, nullptr, s);
 }
 
+std::array<uint8_t, 3> World::faction_accent(const std::string& fid) const {
+  const sim::Rules* r = session_.rules();
+  const sim::FactionDef* f = r ? r->faction(fid) : nullptr;
+  const content::Value* fv = f && f->raw ? f->raw->find("Faction") : nullptr;
+  const content::Value* v = fv ? fv->find("accent") : nullptr;
+  std::array<uint8_t, 3> out{230, 190, 90};
+  if (v && v->is_array() && v->items().size() >= 3) {
+    for (size_t i = 0; i < 3; ++i) out[i] = static_cast<uint8_t>(std::clamp<long long>(v->items()[i].as_int().value_or(200), 0, 255));
+  }
+  return out;
+}
+
+void World::draw_banners(render::SpriteBatch& batch, double time) const {
+  // D51: minden látott, nem semleges épület jobb alsó sarkánál a tulajdonos lobogója (a csapatszín, a nép
+  // kiemelőszíne és címere); a fázis épületenként eltolva, hogy ne lengjenek egyszerre
+  if (!cur_ || !banner_.pole || !banner_.cloth) return;
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kBuilding || u.owner == 0 || u.hp <= 0) continue;
+    const std::array<uint8_t, 3> team = team_color(u.owner);
+    const std::string& fid = cur_->players[std::min<size_t>(u.owner, sim::Sim::kMaxPlayers)].faction;
+    const std::array<uint8_t, 3> acc = faction_accent(fid);
+    const float fx = static_cast<float>(u.tx + u.w) * kTilePx - 10.0f, fy = static_cast<float>(u.ty + u.h) * kTilePx - 6.0f;
+    const auto ph = static_cast<uint8_t>((static_cast<int>(time * 5.0 / 6.2831853 * 8.0) + static_cast<int>(u.id * 3)) & 7);
+    render::SpriteInstance s;
+    s.x = fx - 5;
+    s.y = fy - 54;
+    s.w = 16;
+    s.h = 56;
+    batch.draw(*banner_.pole, nullptr, s);
+    if (banner_.knob) {
+      render::SpriteInstance k = s;
+      k.tint[0] = acc[0]; k.tint[1] = acc[1]; k.tint[2] = acc[2];
+      batch.draw(*banner_.knob, nullptr, k);
+    }
+    render::SpriteInstance c = s;
+    c.layer[0] = ph;
+    c.tint[0] = team[0]; c.tint[1] = team[1]; c.tint[2] = team[2];
+    batch.draw(*banner_.cloth, nullptr, c);
+    if (banner_.trim) {
+      render::SpriteInstance t = c;
+      t.tint[0] = acc[0]; t.tint[1] = acc[1]; t.tint[2] = acc[2];
+      batch.draw(*banner_.trim, nullptr, t);
+    }
+    const auto it = banner_.emblems.find(fid);
+    if (it != banner_.emblems.end() && it->second) {   // a címer a lobogó közepén, a lengéssel együtt
+      const float sway = static_cast<float>(std::sin(static_cast<double>(ph) / 8.0 * 6.2831853 + 20 * 0.22)) * 0.6f;
+      render::SpriteInstance e;
+      e.w = e.h = 9;
+      e.x = s.x + 10.5f + sway - e.w / 2;
+      e.y = s.y + 19 - e.h / 2;
+      batch.draw(*it->second, nullptr, e);
+    }
+  }
+}
+
 void World::draw_rally_flags(render::SpriteBatch& batch, double time) const {
   if (!cur_ || !rally_.pole || !rally_.cloth) return;
   const uint8_t me = session_.local_player();

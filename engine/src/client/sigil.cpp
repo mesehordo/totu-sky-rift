@@ -204,6 +204,56 @@ render::Image rally_cloth_image(int phase) {
   return c.image();
 }
 
+namespace {
+
+// a lobogó alakja: a keresztrúd alatt lógó, alul fecskefarkú vászon, a széllel lefelé erősödően hullámozva
+bool banner_in(float x, float y, int phase, float shrink) {
+  const float top = 6, bottom = 36, left = 6, right = 15;
+  if (y < top + shrink || y > bottom + 6) return false;
+  const float t = (y - top) / (bottom - top);
+  const float ph = static_cast<float>(phase) / 8.0f * 6.2831853f;
+  const float sway = std::sin(ph + y * 0.22f) * 1.3f * t;
+  const float l = left + sway + shrink, r = right + sway - shrink;
+  if (x < l || x > r) return false;
+  if (y <= bottom - shrink) return true;
+  const float mid = (l + r) / 2, half = (r - l) / 2;   // a fecskefarok: középen V alakú bevágás
+  const float depth = 6.0f - shrink;
+  const float cut = (y - (bottom - shrink)) / depth;   // 0..1
+  return cut <= 1.0f && std::fabs(x - mid) >= cut * half;
+}
+
+}  // namespace
+
+render::Image banner_pole_image() {
+  Canvas c(16, 56, 3);
+  c.fill([](float x, float y) { return near_seg(x, y, 6, 54, 6, 5, 1.6f); }, 20 / 255.0f, 16 / 255.0f, kDark, 1);
+  c.fill([](float x, float y) { return near_seg(x, y, 5, 54, 5, 4, 1.1f); }, 112 / 255.0f, 84 / 255.0f, 52 / 255.0f, 1);
+  c.fill([](float x, float y) { return near_seg(x, y, 5, 6, 16, 6, 0.9f); }, 90 / 255.0f, 66 / 255.0f, 40 / 255.0f, 1);
+  return c.image();
+}
+
+render::Image banner_knob_image() {
+  Canvas c(16, 56, 3);
+  c.fill([](float x, float y) { return (x - 5) * (x - 5) + (y - 3.5f) * (y - 3.5f) <= 6.5f; }, kDark, kDark, kDark, 1);
+  c.fill([](float x, float y) { return (x - 5) * (x - 5) + (y - 3.5f) * (y - 3.5f) <= 4.0f; }, 1, 1, 1, 1);
+  return c.image();
+}
+
+render::Image banner_cloth_image(int phase) {
+  Canvas c(16, 56, 3);
+  c.fill([&](float x, float y) { return banner_in(x - 1, y - 1, phase, 0); }, 20 / 255.0f, 16 / 255.0f, kDark, 0.85f);
+  c.fill([&](float x, float y) { return banner_in(x, y, phase, 0); }, 0.86f, 0.86f, 0.86f, 1);
+  c.fill([&](float x, float y) { return banner_in(x, y, phase, 0) && std::fmod(y + static_cast<float>(phase) * 1.5f, 9.0f) < 2.0f; },
+         1, 1, 1, 1);
+  return c.image();
+}
+
+render::Image banner_trim_image(int phase) {
+  Canvas c(16, 56, 3);
+  c.fill([&](float x, float y) { return banner_in(x, y, phase, 0) && !banner_in(x, y, phase, 1.4f); }, 1, 1, 1, 1);
+  return c.image();
+}
+
 render::Image rally_shadow_image(int phase) {
   Canvas c(40, 20, 3);
   const float wave = std::sin(static_cast<float>(phase) / 8.0f * 6.2831853f) * 2.0f;

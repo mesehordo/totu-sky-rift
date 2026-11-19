@@ -491,3 +491,11 @@ A játék modkezelője (M13) a **0 A.D. modkezelőjéhez hasonló**: két lista 
 adatai (név, verzió, leírás, függőségek, ütközések), engedélyezés/tiltás, a betöltési sorrend állítása, a függőségi és
 ütközési hibák jelzése a mentés előtt, „Mentés és újraindítás”. Az online modtár (mod.io) ugyanebből a képernyőből
 érhető el, külön fülként (D23). A pontos elrendezést a 0 A.D. alapján javaslom, és a tulajdonossal egyeztetem.
+
+### D51 – Csapatjelzés az épületeken: lengő lobogó · ELDÖNTVE (2026-11-19)
+
+A tulajdonos döntése (három lehetőség közül – maszk, kulcsszín átszínezése, lobogó): az épületek csapatát **az épület
+mellé tűzött, lengő lobogó** jelzi, a nép stílusában és a csapat színében; az épületképekhez nem kell csapatszín-maszk.
+Megvalósítás: rúd (sötét fa, a gomb a nép kiemelőszínében), a lobogó a csapatszínben, a szegélye a nép
+kiemelőszínében, középen a nép címere (`assets/emblems`), 8 lengésfázis, épületenként eltolt fázissal; az épület jobb
+alsó sarkánál. A WC3/AoE2 maszkos vagy palettás színezése helyett ez a grafika készítését egyszerűsíti.

@@ -953,3 +953,7 @@ A tulajdonos döntése: a 12. kivételével minden tételnél a régi játék me
 ## 2026-11-19 – 3. tétel: a mozgáscél jelzése a régi szerint
 
 A kijelölt csoport közepétől a legutóbbi saját mozgásparancs (mozgás, vonal, támadó mozgás) céljáig menetelő zöld nyilak, a célnál befelé mutató zöld pecsét; csak amíg a kijelöltek közül valaki még oda tart. Kép: `docs/quality/kepek/utan_mozgascel.jpg`.
+
+## 2026-11-19 – 5. tétel: csapatlobogó az épületeken (D51)
+
+A tulajdonos döntése: az épületek csapatát lengő lobogó jelzi (nem maszk, nem kulcsszín). Rúd, gomb és szegély a nép kiemelőszínében, a lobogó a csapatszínben, középen a nép címere; 8 fázisban leng, épületenként eltolva. Kép: `docs/quality/kepek/utan_csapatlobogo.jpg`.

@@ -574,6 +574,8 @@ int main(int argc, char** argv) {
     }
     render::TerrainView terrain;
     render::Atlas world_atlas;
+    render::Texture banner_pole, banner_knob, banner_cloth, banner_trim;
+    std::map<std::string, render::Texture> emblem_tex;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -844,6 +846,57 @@ int main(int argc, char** argv) {
               move_sigil = dev.create_array_from(mv, false);
             }
             world.set_rally_art({&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil});
+            {   // D51: a csapatjelző lobogó; a népek címere az assets/emblems képeiből (32 × 32-re kicsinyítve)
+              auto one = [&](render::Image im) {
+                render::premultiply(im);
+                return dev.create_array_from(im, false);
+              };
+              banner_pole = one(client::banner_pole_image());
+              banner_knob = one(client::banner_knob_image());
+              banner_cloth = layers(8, 16, 56, [](int i) { return client::banner_cloth_image(i); });
+              banner_trim = layers(8, 16, 56, [](int i) { return client::banner_trim_image(i); });
+              client::World::BannerArt ba;
+              ba.pole = &banner_pole;
+              ba.knob = &banner_knob;
+              ba.cloth = &banner_cloth;
+              ba.trim = &banner_trim;
+              std::error_code eec;
+              for (const auto& e : std::filesystem::directory_iterator(std::filesystem::path(o.assets) / "emblems", eec)) {
+                const std::string name = e.path().filename().string();
+                if (e.path().extension() != ".png" || name.find("_old") != std::string::npos) continue;
+                auto png = render::load_png(e.path().string());
+                if (!png) continue;
+                render::Image small;   // dobozszűrős kicsinyítés 32 × 32-re (az alfával súlyozva)
+                small.width = small.height = 32;
+                small.rgba.assign(32 * 32 * 4, 0);
+                const int bw = std::max(1, png->width / 32), bh = std::max(1, png->height / 32);
+                for (int y = 0; y < 32; ++y) {
+                  for (int x = 0; x < 32; ++x) {
+                    long long acc[4] = {0, 0, 0, 0};
+                    int n = 0;
+                    for (int j = 0; j < bh; ++j) {
+                      for (int i = 0; i < bw; ++i) {
+                        const int px = std::min(png->width - 1, x * png->width / 32 + i), py = std::min(png->height - 1, y * png->height / 32 + j);
+                        const uint8_t* p = png->at(px, py);
+                        acc[0] += p[0] * p[3];
+                        acc[1] += p[1] * p[3];
+                        acc[2] += p[2] * p[3];
+                        acc[3] += p[3];
+                        ++n;
+                      }
+                    }
+                    uint8_t* q = small.at(x, y);
+                    if (acc[3] > 0) {
+                      for (int c = 0; c < 3; ++c) q[c] = static_cast<uint8_t>(acc[c] / acc[3]);
+                    }
+                    q[3] = static_cast<uint8_t>(acc[3] / std::max(1, n));
+                  }
+                }
+                emblem_tex[e.path().stem().string()] = one(small);
+              }
+              for (auto& [k, t] : emblem_tex) ba.emblems[k] = &t;
+              world.set_banner_art(std::move(ba));
+            }
           }
           render::Image px;
           px.width = px.height = 1;
@@ -1485,6 +1538,7 @@ int main(int argc, char** argv) {
         world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
+        world.draw_banners(batch, t);        // D51: a csapatjelző lobogók
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         world.draw_bars(batch, white, alpha);
         {
@@ -1716,7 +1770,8 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim}) dev.destroy(*t);
+    for (auto& [k, t] : emblem_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {

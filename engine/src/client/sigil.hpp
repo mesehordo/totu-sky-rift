@@ -21,4 +21,11 @@ render::Image rally_pole_image();                // 22 × 32: a rúd és a gomb 
 render::Image rally_cloth_image(int phase);      // 22 × 32: a fecskefarkú zászló (fehér, sötét kontúr), 8 fázis
 render::Image rally_shadow_image(int phase);     // 40 × 20: a vetett árnyék (a rúd töve: 3, 3), 8 fázis
 
+// Az épületek csapatjelző lobogója (D51), 16 × 56-os képek (a talppont 5, 54): a rúd (sötét fa), a gomb (fehér – a nép
+// kiemelőszíne árnyalja), a lobogó (fehér – a csapatszín) és a szegélye (fehér – a nép kiemelőszíne), 8 lengésfázisban
+render::Image banner_pole_image();
+render::Image banner_knob_image();
+render::Image banner_cloth_image(int phase);
+render::Image banner_trim_image(int phase);
+
 }  // namespace totu::client
