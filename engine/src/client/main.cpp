@@ -51,6 +51,7 @@
 #include "client/hud.hpp"
 #include "client/atlas_cache.hpp"
 #include "client/diagnostics.hpp"
+#include "client/ground_overlay.hpp"
 #include "client/sigil.hpp"
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
@@ -577,6 +578,7 @@ int main(int argc, char** argv) {
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
         mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf;
     std::map<std::string, render::Texture> item_tex;
+    render::Texture ground_tex;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -880,6 +882,17 @@ int main(int argc, char** argv) {
               amb_glow = dev.create_array_from(client::ambient_glow_image(), false);   // additív: nincs előszorzás
               amb_leaf = layers(8, 8, 8, [](int i) { return client::ambient_leaf_image(i); });
               world.set_ambient_art(&amb_glow, &amb_leaf, &fallback);
+              if (session.has_sim() && session.rules()) {   // a terep fedőrétege (a régi földutak és talajfoltok)
+                const auto g0 = std::chrono::steady_clock::now();
+                render::Image gi = client::ground_overlay(world.map(), session.terrain(), session.seed());
+                if (gi.width <= dev.max_texture_size() && gi.height <= dev.max_texture_size()) {
+                  render::premultiply(gi);
+                  ground_tex = dev.create_array_from(gi, false);
+                  world.set_ground_overlay(&ground_tex);
+                }
+                std::printf("terep-fedőréteg: %d × %d, %.0f ms\n", gi.width, gi.height,
+                            std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - g0).count());
+              }
               {   // a földön heverő tárgyak ikonjai (assets/items, 32 × 32-re kicsinyítve) és a kör alakú fényudvar
                 std::map<std::string, const render::Texture*> icons;
                 std::error_code iec;
@@ -1790,7 +1803,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &ground_tex}) dev.destroy(*t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();

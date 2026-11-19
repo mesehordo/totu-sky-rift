@@ -559,6 +559,12 @@ void World::draw_ambient(render::SpriteBatch& batch, const Camera& cam, int sw, 
 }
 
 void World::draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const Camera& cam, int sw, int sh) {
+  if (ground_ && session_.has_sim()) {   // a fedőréteg: földutak és talajfoltok (a régi `Scenery`)
+    render::SpriteInstance g;
+    g.w = static_cast<float>(map().width()) * kTilePx;
+    g.h = static_cast<float>(map().height()) * kTilePx;
+    batch.draw(*ground_, nullptr, g);
+  }
   if (!atlas || !cur_) return;
   const int si = sheet_by_id(atlas, "doodads");
   if (si < 0) return;

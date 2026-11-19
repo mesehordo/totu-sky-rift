@@ -100,6 +100,8 @@ class World {
   // a terep apró díszletei (6. tétel, a régi `_scatter_doodads`): virág, fűcsomó, kavics, gomba, bokor, tuskó, farönk,
   // nád a parton, tavirózsa, csont – egyszer szórva (rögzített véletlen), a figurák alatt
   void draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const Camera& cam, int sw, int sh);
+  // a terep fedőrétege (földutak, talajfoltok – client/ground_overlay), az egész pályára
+  void set_ground_overlay(const render::Texture* t) { ground_ = t; }
   // talajjelek és a hős jelei (9. tétel): hős talajjel (színezhető + rögzített), jelvény (keret + jelkép, stílusonként
   // egy réteg), ének (8 fázis), rejtőzés
   struct MarkArt {
@@ -209,6 +211,7 @@ class World {
   };
   mutable std::vector<Doodad> doodads_;
   mutable bool doodads_done_ = false;
+  const render::Texture* ground_ = nullptr;
   MarkArt marks_;
   const render::Texture *obj_ring_ = nullptr, *obj_beacon_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;

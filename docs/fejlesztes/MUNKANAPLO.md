@@ -997,3 +997,7 @@ A régi `Ambient` erdei készlete: 34 szentjánosbogár (villogó, közel addit�
 ## 2026-11-19 – 6. tétel (1. rész): a terep apró díszletei a régi szerint
 
 A régi `_scatter_doodads` szabályai: füvön 16 %, a réteken (6 csempés simított zaj) csoportosan sűrűbb virág, az erdő 3 csempés körzetében bokor, gomba, tuskó, farönk (32 %); földön kavics, fűcsomó, tuskó, csont, ritkán koponya; úton kevés kavics; a parton nád, a vízen tavirózsa; csempénként ±8 képpont eltolással. Egyszer szórva rögzített véletlenből, a `doodads` képlapról. Hátra (2. rész): földutak, a fű–föld határ lekerekítése, talajfoltok. Kép: `docs/quality/kepek/utan_tereptargyak.jpg`.
+
+## 2026-11-19 – 6. tétel (2. rész): földutak és talajfoltok a régi szerint
+
+`client/ground_overlay`: a régi `Scenery` szerint a kitaposott ösvények (fél felbontású Dijkstra a kezdőhelyek, a pálya közepe, a szomszéd kezdőhely és a 15 csempén belüli aranybánya között; víz, szikla, fa, lelőhely drága; zajos, kanyargós költség), majd a talajfoltok (moha, száraz fű, avar az erdő közelében) érték-zajból, szemcsés széllel; 8 képpont/csempe fedőréteg az egész pályára, egyszer (kb. 0,1 s), rögzített véletlenből. Hátra: a fű–föld határ lekerekítése. Kép: `docs/quality/kepek/utan_foldutak.jpg`.
