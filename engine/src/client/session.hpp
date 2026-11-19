@@ -129,6 +129,21 @@ struct Snapshot {
   int winner = 0;                 // 0: a meccs tart
   int32_t night = 0;              // 0 nappal .. 1000 éjjel
   std::string weather;            // "" = derült
+  // a régi `draw_corpses`, `draw_ground_items`: a látott holttestek (a halálanimáció a végén megáll) és a felderített
+  // helyen heverő tárgyak
+  struct Corpse {
+    uint16_t def = sim::kNoDef;
+    uint8_t owner = 0;
+    float x = 0, y = 0, age = 0;   // világ-képpont; másodperc a halál óta
+  };
+  std::vector<Corpse> corpses;
+  struct Item {
+    float x = 0, y = 0;
+    uint32_t id = 0;
+    uint8_t rarity = 0;            // 0 közönséges, 1 ritka, 2 ereklye
+    std::string item;              // a tárgy azonosítója (az ikonhoz)
+  };
+  std::vector<Item> items;
   SnapMission mission;            // M11
   sim::MatchMode mode;            // M12: győzelmi feltétel, tempó (béke, domb, hullámok)
   // az építési hely próbája (a kísértetkép és a „Nem lehet építeni” üzenet): a kért sablon és csempe, és hogy a

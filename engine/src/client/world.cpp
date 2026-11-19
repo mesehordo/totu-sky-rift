@@ -460,6 +460,47 @@ void World::draw_objective_beacons(render::SpriteBatch& batch, double time) cons
   }
 }
 
+void World::draw_ground_items(render::SpriteBatch& batch, const render::Texture& white, double time) const {
+  // a régi `draw_ground_items`: árnyék, pulzáló fényudvar a ritkaság színében, fölötte lebegő ikon
+  if (!cur_) return;
+  static const uint8_t kRar[3][3] = {{230, 220, 190}, {110, 170, 255}, {255, 190, 70}};
+  for (const auto& g : cur_->items) {
+    const uint8_t* col = kRar[std::min<uint8_t>(g.rarity, 2)];
+    const float bob = static_cast<float>(std::sin(time * 3.0 + static_cast<double>(g.id))) * 2.0f;
+    render::SpriteInstance sh;   // árnyék
+    sh.x = g.x - 9;
+    sh.y = g.y + 4;
+    sh.w = 18;
+    sh.h = 6;
+    sh.tint[0] = sh.tint[1] = sh.tint[2] = 0;
+    sh.tint[3] = 150;
+    if (item_glow_) batch.draw(*item_glow_, nullptr, sh);
+    if (item_glow_) {
+      render::SpriteInstance gl;
+      gl.x = g.x - 18;
+      gl.y = g.y - 22 + bob;
+      gl.w = gl.h = 36;
+      gl.tint[0] = col[0]; gl.tint[1] = col[1]; gl.tint[2] = col[2];
+      gl.tint[3] = static_cast<uint8_t>(60 + 40 * std::sin(time * 4.0 + static_cast<double>(g.id)));
+      batch.draw(*item_glow_, nullptr, gl);
+    }
+    render::SpriteInstance ic;
+    const auto it = item_icons_.find(g.item);
+    if (it != item_icons_.end() && it->second) {
+      ic.x = g.x - 11;
+      ic.y = g.y - 15 + bob;
+      ic.w = ic.h = 22;
+      batch.draw(*it->second, nullptr, ic);
+    } else {   // ikon nélkül: kis négyzet a ritkaság színében
+      ic.x = g.x - 6;
+      ic.y = g.y - 10 + bob;
+      ic.w = ic.h = 12;
+      ic.tint[0] = col[0]; ic.tint[1] = col[1]; ic.tint[2] = col[2];
+      batch.draw(white, nullptr, ic);
+    }
+  }
+}
+
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !sack_ || !rules || !rules->game_raw) return;
@@ -850,6 +891,22 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     }
   }
   drawn_ = 0;
+  // holttestek (a régi `draw_corpses`): a halálanimáció lejátszva, a végén megállva; a figurák alatt
+  if (atlas && !cur_->corpses.empty()) {
+    const sim::Rules* rr = session_.rules();
+    for (const auto& c : cur_->corpses) {
+      if (!rr || c.def >= rr->defs.size()) continue;
+      const int si = sheet_by_id(atlas, rr->defs[c.def].id);
+      if (si < 0) continue;
+      const auto& s = atlas->data().sheets[static_cast<size_t>(si)];
+      const auto d = s.anims.find("death");
+      if (d == s.anims.end()) continue;
+      const int frame = std::min(d->second.frames - 1, static_cast<int>(c.age * static_cast<float>(d->second.fps)));
+      const uint8_t* team = teams_[(c.owner + 7u) % 8u].data();
+      atlas->draw(batch, s, 0, d->second.start + std::max(0, frame), c.x, c.y, 1.0f / s.scale, team, nullptr, -1.0f,
+                  shadow_pass ? 0 : render::kFxInnerShadow);
+    }
+  }
   for (const auto& it : items_) {
     const SnapUnit& u = cur_->units[it.i];
     Visual& v = vis_[it.i];

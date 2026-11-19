@@ -511,6 +511,37 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       pp.ty = static_cast<int16_t>(pr & 0xffff);
       if (pp.def != sim::kNoDef) pp.ok = sim_->can_place(local_, pp.def, pp.tx, pp.ty, &pp.why);
     }
+    {   // holttestek (csak a látott helyen) és a földön heverő tárgyak (a felderített helyen)
+      const sim::PlayerState& me = sim_->player(local_);
+      auto seen = [&](float px, float py, bool need_visible) {
+        if (reveal_all_ || !map_) return true;
+        const int tx = static_cast<int>(px / 32.0f), ty = static_cast<int>(py / 32.0f);
+        if (tx < 0 || ty < 0 || tx >= map_->width() || ty >= map_->height()) return false;
+        const size_t k = static_cast<size_t>(ty) * static_cast<size_t>(map_->width()) + static_cast<size_t>(tx);
+        const auto& v = need_visible ? me.visible : me.explored;
+        return k < v.size() && v[k] != 0;
+      };
+      for (const auto& c : sim_->corpses_) {
+        Snapshot::Corpse o;
+        o.def = c.def;
+        o.owner = c.owner;
+        o.x = to_px(c.x);
+        o.y = to_px(c.y);
+        o.age = static_cast<float>(sim_->tick() - c.tick) / 30.0f;
+        if (seen(o.x, o.y, true)) s->corpses.push_back(o);
+      }
+      w.pool<sim::GroundItem>().each([&](sim::EntityId e, const sim::GroundItem& g) {
+        const auto* p = w.get<sim::Position>(e);
+        if (!p || g.item >= sim_->rules()->items.size()) return;
+        Snapshot::Item it;
+        it.x = to_px(p->x);
+        it.y = to_px(p->y);
+        it.id = e;
+        it.rarity = sim_->rules()->items[g.item].rarity;
+        it.item = sim_->rules()->items[g.item].id;
+        if (seen(it.x, it.y, false)) s->items.push_back(it);
+      });
+    }
     s->winner = sim_->winner();
     s->night = sim_->night_permille();
     s->weather = sim_->weather_info().kind;

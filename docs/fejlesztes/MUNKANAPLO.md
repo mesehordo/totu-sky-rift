@@ -985,3 +985,7 @@ A tulajdonos szabálya: a hangya (Formica) és a pitypang (Taraxacum) latin nev�
 ## 2026-11-19 – 10. tétel: küldetésjelek a régi szerint
 
 A küldetés céljának helye lehet (`at`: régió vagy pont; `marker`: felirat – a régi `markers`), a szerkesztő Adatok lapján is. Az aktív, helyhez kötött célnál arany célgyűrű (fényudvar, kettős gyűrű, forgó szaggatott perem, rúna-rombuszok, pulzálva) és fölötte lebegő kristály fénysugárral. A mintaküldetés első célja a kapuhoz kötve. Nyitott: a jelzőfény felirata a pályán. Kép: `docs/quality/kepek/utan_celgyuru.jpg`.
+
+## 2026-11-19 – 11. tétel: holttestek és földön heverő tárgyak a régi szerint
+
+A pillanatkép viszi a látott holttesteket (sablon, tulajdonos, hely, kor) és a felderített helyen heverő tárgyakat (ritkaság, azonosító). A holttest a halálanimációt játssza le, és a végén megáll (a régi `draw_corpses`); a tárgy lebegő ikon (assets/items) a ritkaság színű, pulzáló fényudvarral és árnyékkal (a régi `draw_ground_items`). Nyitott: a tárgy neve az egér alatt; képi ellenőrzés (a bemutatókban nem volt látható holttest vagy tárgy).

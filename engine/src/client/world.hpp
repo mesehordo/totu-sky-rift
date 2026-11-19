@@ -83,6 +83,12 @@ class World {
   void set_banner_art(BannerArt a) { banner_ = std::move(a); }
   // a munkások cipelt nyersanyaga (8. tétel): a zsák a figura jobb vállánál, a nyersanyag színében
   void set_sack(const render::Texture* t) { sack_ = t; }
+  // a földön heverő tárgyak (11. tétel): ikonok azonosító szerint (az assets/items képeiből) és a fényudvar
+  void set_item_art(std::map<std::string, const render::Texture*> icons, const render::Texture* glow) {
+    item_icons_ = std::move(icons);
+    item_glow_ = glow;
+  }
+  void draw_ground_items(render::SpriteBatch& batch, const render::Texture& white, double time) const;
   // talajjelek és a hős jelei (9. tétel): hős talajjel (színezhető + rögzített), jelvény (keret + jelkép, stílusonként
   // egy réteg), ének (8 fázis), rejtőzés
   struct MarkArt {
@@ -178,6 +184,8 @@ class World {
   RallyArt rally_;
   BannerArt banner_;
   const render::Texture* sack_ = nullptr;
+  std::map<std::string, const render::Texture*> item_icons_;
+  const render::Texture* item_glow_ = nullptr;
   MarkArt marks_;
   const render::Texture *obj_ring_ = nullptr, *obj_beacon_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;

@@ -576,6 +576,7 @@ int main(int argc, char** argv) {
     render::Atlas world_atlas;
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
         mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon;
+    std::map<std::string, render::Texture> item_tex;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -876,6 +877,29 @@ int main(int argc, char** argv) {
               obj_ring = layers(12, 148, 96, [](int i) { return client::objective_ring_image(64.0f, i); });
               obj_beacon = one(client::objective_beacon_image());
               world.set_objective_art(&obj_ring, &obj_beacon);
+              {   // a földön heverő tárgyak ikonjai (assets/items, 32 × 32-re kicsinyítve) és a kör alakú fényudvar
+                std::map<std::string, const render::Texture*> icons;
+                std::error_code iec;
+                for (const auto& e : std::filesystem::directory_iterator(std::filesystem::path(o.assets) / "items", iec)) {
+                  const std::string nm = e.path().filename().string();
+                  if (e.path().extension() != ".png" || nm.find("_old") != std::string::npos) continue;
+                  auto png = render::load_png(e.path().string());
+                  if (!png) continue;
+                  render::Image small;
+                  small.width = small.height = 32;
+                  small.rgba.assign(32 * 32 * 4, 0);
+                  for (int y = 0; y < 32; ++y) {
+                    for (int x = 0; x < 32; ++x) {
+                      const uint8_t* p = png->at(std::min(png->width - 1, x * png->width / 32 + png->width / 64),
+                                                 std::min(png->height - 1, y * png->height / 32 + png->height / 64));
+                      std::copy(p, p + 4, small.at(x, y));
+                    }
+                  }
+                  item_tex[e.path().stem().string()] = one(small);
+                }
+                for (auto& [k, t] : item_tex) icons[k] = &t;
+                world.set_item_art(std::move(icons), &fallback);
+              }
               world.set_mark_art({&mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden});
             }
           }
@@ -1522,6 +1546,7 @@ int main(int argc, char** argv) {
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw_ground_marks(batch, alpha, t);     // talajjelek: hős, ének, rejtőzés
         world.draw_objective_rings(batch, t);         // a küldetés célgyűrűi
+        world.draw_ground_items(batch, white, t);     // a földön heverő tárgyak
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
@@ -1759,6 +1784,7 @@ int main(int argc, char** argv) {
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
     for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon}) dev.destroy(*t);
+    for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {
