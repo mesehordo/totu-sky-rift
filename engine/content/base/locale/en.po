@@ -9277,3 +9277,11 @@ msgstr "Could not save the diagnostics report: {}"
 msgctxt "ui.pause.diag"
 msgid "Diagnosztika mentése"
 msgstr "Save diagnostics"
+
+msgctxt "ui.atlas.building"
+msgid "Grafika előkészítése (első indítás)… {n}. lap kész"
+msgstr "Preparing graphics (first start)… page {n} done"
+
+msgctxt "ui.atlas.failed"
+msgid "A grafika előkészítése nem sikerült – a játék tartalékalakokkal fut"
+msgstr "Graphics preparation failed – the game uses placeholder shapes"

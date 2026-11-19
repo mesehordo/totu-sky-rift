@@ -413,7 +413,11 @@ int World::sheet_by_id(render::Atlas* atlas, const std::string& id) {
 }
 
 int World::sheet_of(render::Atlas* atlas, const SnapUnit& u) {
-  if (u.kind == SnapUnit::kResource) return sheet_by_id(atlas, sim::resource_id(u.res));
+  if (u.kind == SnapUnit::kResource) {
+    // az arany lelőhelye a régi grafikában „stone” néven van (a régi játék köve lett az arany)
+    const int s = sheet_by_id(atlas, sim::resource_id(u.res));
+    return s >= 0 || u.res != sim::kGold ? s : sheet_by_id(atlas, "stone");
+  }
   if (u.kind == SnapUnit::kShot) {   // lövedék: a fajta lapja (D40)
     const sim::Rules* r = session_.rules();
     return r && u.res < r->projectiles.size() ? sheet_by_id(atlas, r->projectiles[u.res].id) : -1;

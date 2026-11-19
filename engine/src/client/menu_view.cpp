@@ -506,6 +506,7 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
     const float px = ww > 0 ? static_cast<float>(w) / static_cast<float>(ww) : 1.0f;   // képpont / ablakpont
     menu.set_time(fixed ? static_cast<double>(frame) / 60.0
                         : std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count());
+    menu.set_status(o.status ? o.status() : std::string());
     menu.layout(w, h);
     SDL_Event ev;
     Menu::Result res = Menu::Result::None;

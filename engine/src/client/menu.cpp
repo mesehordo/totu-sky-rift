@@ -365,6 +365,7 @@ void Menu::layout_sidebar(int highlight) {
   }
   // súgó és lábléc az oldalsáv alján (a régi `MainMenu.draw`)
   const float foot = H - k(70);
+  if (!status_.empty()) text(sw / 2, foot - k(20), sw - k(30), status_, MenuText::Tiny, MenuText::Gold, true);
   text(sw / 2, foot + k(10), sw - k(30), tr("ui.main.creator"), MenuText::Tiny, MenuText::Dim, true);
   text(sw / 2, foot + k(34), sw - k(30), std::string("v") + core::version(), MenuText::Tiny, MenuText::Dim, true);
   if (screen_ == MenuScreen::Main && open_ >= 0 && static_cast<size_t>(open_) < items.size()) {

@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "check.hpp"
+#include "client/atlas_cache.hpp"
 #include "client/diagnostics.hpp"
 #include "client/hud_model.hpp"
 #include "client/session.hpp"
@@ -746,4 +747,38 @@ TEST_CASE("DIAG: engedelyezolista, sema, hisztogram, mentes (atomikus), nem irha
   CHECK(!client::save_diagnostics("", js, &name, &err));
   std::filesystem::remove_all(dir);
   d.reset();
+}
+
+TEST_CASE("ATLASZ gyorsitotar: hatterben elkeszul, a masodik inditas a kesz atlaszt hasznalja, valtozasra ujraepul") {
+  namespace fs = std::filesystem;
+  const fs::path tmp = fs::temp_directory_path() / "totu_atlasz_proba";
+  fs::remove_all(tmp);
+  const fs::path assets = tmp / "assets", cache = tmp / "felhasznalo";
+  fs::create_directories(assets / "sprites" / "resources");
+  for (const char* f : {"meteor.json", "meteor.png", "stone.json", "stone.png"}) {
+    fs::copy_file(fs::path(TOTU_ASSETS_DIR) / "sprites" / "resources" / f, assets / "sprites" / "resources" / f);
+  }
+  {
+    client::AtlasCache c;
+    CHECK(!c.start(assets.string(), cache.string(), true));   // még nincs: háttérben épül
+    c.wait();
+    CHECK(c.ready() && c.error().empty() && c.pages_done() >= 1);
+    CHECK(fs::is_regular_file(fs::path(c.dir()) / "atlas.json") && !fs::exists(cache / "atlasz.uj"));
+  }
+  {
+    client::AtlasCache c;
+    CHECK(c.start(assets.string(), cache.string(), false));   // kész és érvényes: nem épít
+  }
+  const std::string fp = client::atlas_fingerprint(assets.string());
+  { std::ofstream(assets / "sprites" / "resources" / "uj.json") << "{}"; }   // a grafika változott
+  CHECK(client::atlas_fingerprint(assets.string()) != fp);
+  {
+    client::AtlasCache c;
+    CHECK(!c.start(assets.string(), cache.string(), false));  // elavult; építés nélkül nem kész
+  }
+  {
+    client::AtlasCache c;   // üres felhasználói mappa: nem csinál semmit
+    CHECK(!c.start(assets.string(), "", true) && !c.building());
+  }
+  fs::remove_all(tmp);
 }

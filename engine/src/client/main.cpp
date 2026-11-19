@@ -49,6 +49,7 @@
 #include "sim/chain.hpp"
 #include "sim/mission.hpp"
 #include "client/hud.hpp"
+#include "client/atlas_cache.hpp"
 #include "client/diagnostics.hpp"
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
@@ -83,6 +84,7 @@ void print_version() {
 void* gl_loader(const char* name) { return reinterpret_cast<void*>(SDL_GL_GetProcAddress(name)); }
 
 struct Options {
+  bool build_atlas = false;
   std::vector<std::string> mods;   // --mods
   bool mods_given = false;
   long frames = -1;
@@ -322,6 +324,7 @@ int main(int argc, char** argv) {
     else if (a == "--screenshot") o.screenshot = next();
     else if (a == "--assets") o.assets = next();
     else if (a == "--atlas") o.atlas = next();
+    else if (a == "--build-atlas") o.build_atlas = true;   // a játék atlaszának elkészítése a felhasználói mappába, majd kilépés
     else if (a == "--world") o.world = next();
     else if (a == "--mods") {   // M13: az engedélyezett modok (vesszővel; felülírja a beállítást), üres: csak az alap
       o.mods_given = true;
@@ -396,6 +399,22 @@ int main(int argc, char** argv) {
   }
   std::setvbuf(stdout, nullptr, _IONBF, 0);   // a kimenet azonnal (Windowson az SDL-indító kilépéskor nem üríti)
   print_version();
+  if (o.build_atlas) {   // ablak nélkül: a gyorsítótár (a telepítőnek és a próbáknak is)
+    char* pref = SDL_GetPrefPath("TOTU", "SkyRift");
+    if (!pref) return 1;
+    client::AtlasCache c;
+    const auto t0 = std::chrono::steady_clock::now();
+    const bool had = c.start(o.assets, pref, true);
+    SDL_free(pref);
+    c.wait();
+    const double s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+    if (!c.ready()) {
+      std::fprintf(stderr, "atlasz: %s\n", c.error().empty() ? "nem készült el" : c.error().c_str());
+      return 1;
+    }
+    std::printf("atlasz: %s (%s, %d lap, %.1f s)\n", c.dir().c_str(), had ? "már kész volt" : "elkészült", c.pages_done(), s);
+    return 0;
+  }
   if (!SDL_Init(SDL_INIT_VIDEO)) {
     std::fprintf(stderr, "SDL_Init hiba: %s\n", SDL_GetError());
     return 1;
@@ -484,6 +503,19 @@ int main(int argc, char** argv) {
     Demo demo;
     demo.units = (o.atlas.empty() && o.world.empty()) ? o.demo : 0;
     AtlasDemo adem;
+    // a világ atlasza (a sprite-ok): `--atlas` nélkül a felhasználói mappából; ha még nincs vagy elavult, a játék
+    // háttérben elkészíti (csak interaktív indításkor – képpróbában, mérésben a kész atlaszt használja, ha van);
+    // `--atlas -`: atlasz nélkül (tartalékalakok)
+    client::AtlasCache atlas_cache;
+    if (o.atlas.empty()) {
+      if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
+        const bool interactive = o.screenshot.empty() && !o.bench && o.frames < 0 && !o.hidden;
+        atlas_cache.start(o.assets, pref, interactive);
+        SDL_free(pref);
+      }
+    } else if (o.atlas == "-") {
+      o.atlas.clear();
+    }
     client::Session session;
     session.set_mods(mod_order);
     net::RelayServer host_relay;   // M10: a gazda reléje (a SimRunner előtt jön létre, utána szűnik meg)
@@ -589,6 +621,11 @@ int main(int argc, char** argv) {
                    mo.screenshot = o.screenshot;
                    mo.start = o.menu_screen;
                    mo.mods = mod_order;
+                   mo.status = [&]() -> std::string {
+                     if (atlas_cache.building()) return locale.tr("ui.atlas.building", {{"n", std::to_string(atlas_cache.pages_done())}});
+                     if (!atlas_cache.ready() && !atlas_cache.error().empty()) return locale.tr("ui.atlas.failed");
+                     return {};
+                   };
                    if (!client::run_menu(win, dev, batch, settings, locale, mo, &match_cfg, &rc)) return false;
                    o.world = match_cfg.map_path;
                    return true;
@@ -767,6 +804,8 @@ int main(int argc, char** argv) {
           }
           if (!editor_on && (!net_game || netplay.client().slot() > 0)) session.set_reveal_all(!o.fog);
           if (o.battle_demo > 0 && session.has_starts()) session.battle_demo(o.battle_demo);
+          if (o.atlas.empty() && atlas_cache.ready()) o.atlas = atlas_cache.dir();   // a játék saját atlasza
+          if (o.atlas.empty() && atlas_cache.building()) std::printf("az atlasz még készül: ez a meccs sprite-ok nélkül indul\n");
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
           fallback = dev.create_array_from(circle_image(32), false);

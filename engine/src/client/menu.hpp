@@ -170,6 +170,7 @@ class Menu {
   int open_submenu() const { return open_; }
   // a becsúszás órája (a menü ciklusa adja minden képkockán; másodperc)
   void set_time(double t) { now_ = t; }
+  void set_status(std::string s) { status_ = std::move(s); }   // a lábléc fölötti állapotsor (pl. a grafika előkészítése)
   int capture_slot() const { return capture_; }   // billentyűkiosztás: erre a helyre vár új billentyűt (-1: nincs)
   const std::string& message() const { return message_; }
   uint32_t take_changes() {
@@ -235,6 +236,7 @@ class Menu {
   // a tulajdonos kérése: a menük oldalt – a beállítás-képernyők az oldalsáv mellett, balról becsúszva; a terület
   // (x, szélesség), ahová az oldalsáv melletti képernyő rajzol (0: a teljes ablak)
   float area_x_ = 0, area_w_ = 0;
+  std::string status_;
   double now_ = 0, anim_t_ = -9;   // az utolsó nyitás ideje (almenü, oldalsó képernyő)
   float anim() const;              // 0..1, lassuló (0,14 mp – a régi `MainMenu` almenüje)
   void layout_sidebar(int highlight);

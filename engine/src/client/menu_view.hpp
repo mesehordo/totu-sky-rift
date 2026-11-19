@@ -5,6 +5,7 @@
 // betűje (Rováskönyv Text, a címekhez Rováskönyv).
 #pragma once
 
+#include <functional>
 #include <string>
 
 #include <SDL3/SDL.h>
@@ -22,6 +23,7 @@ struct MenuRunOptions {
   std::string screenshot;      // az utolsó képkockáról
   MenuScreen start = MenuScreen::Main;
   std::vector<content::ModInfo> mods;   // M13: a betöltött modok (az alappal)
+  std::function<std::string()> status;   // az állapotsor szövege képkockánként (üres: nincs)
 };
 
 // A felbontás és a teljes képernyő alkalmazása az ablakra.
