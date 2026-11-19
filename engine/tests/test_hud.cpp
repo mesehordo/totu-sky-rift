@@ -18,6 +18,7 @@
 #include "client/diagnostics.hpp"
 #include "client/hud_model.hpp"
 #include "client/session.hpp"
+#include "client/sigil.hpp"
 #include "content/json.hpp"
 #include "render/font.hpp"
 
@@ -781,4 +782,16 @@ TEST_CASE("ATLASZ gyorsitotar: hatterben elkeszul, a masodik inditas a kesz atla
     CHECK(!c.start(assets.string(), "", true) && !c.building());
   }
   fs::remove_all(tmp);
+}
+
+TEST_CASE("HUD a regi jatek szerint: kijelolesi pecset (meret, fenyudvar, gyuru, nyilhegyek)") {
+  const auto img = client::sigil_image({90, 255, 110}, 48.0f, false);
+  CHECK(img.width == 60 && img.height == 40);
+  const uint8_t* c = img.at(30, 20);   // közép: halvány fény a pecsét színében
+  CHECK(c[3] > 60 && c[3] < 200 && c[1] > c[0]);   // 8 rétegű fényudvar: áttetsző
+  const uint8_t* ring = img.at(30 + 23, 20);   // a gyűrű a vízszintes tengelyen: átlátszatlan, zöld
+  CHECK(ring[3] > 200);
+  CHECK(img.at(0, 0)[3] == 0);   // a sarok üres
+  const auto in = client::sigil_image({60, 205, 92}, 38.0f, true);   // a mozgáscél: befelé mutató hegyek
+  CHECK(in.width == 50 && in.height == 34);
 }

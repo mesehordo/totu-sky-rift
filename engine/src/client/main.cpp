@@ -51,6 +51,7 @@
 #include "client/hud.hpp"
 #include "client/atlas_cache.hpp"
 #include "client/diagnostics.hpp"
+#include "client/sigil.hpp"
 #include "client/i18n.hpp"
 #include "client/menu_view.hpp"
 #include "client/net_play.hpp"
@@ -573,7 +574,7 @@ int main(int argc, char** argv) {
     }
     render::TerrainView terrain;
     render::Atlas world_atlas;
-    render::Texture fallback, white;
+    render::Texture fallback, white, sigil_own, sigil_other;
     client::Hud hud;
     client::Camera cam;
     render::Lighting lighting;
@@ -809,6 +810,15 @@ int main(int argc, char** argv) {
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
           fallback = dev.create_array_from(circle_image(32), false);
+          {   // a kijelölés pecsétjei (a régi színekkel: saját zöld, idegen piros)
+            auto own = client::sigil_image({90, 255, 110}, 48.0f, false);
+            auto other = client::sigil_image({255, 90, 80}, 48.0f, false);
+            render::premultiply(own);
+            render::premultiply(other);
+            sigil_own = dev.create_array_from(own, false);
+            sigil_other = dev.create_array_from(other, false);
+            world.set_sigils(&sigil_own, &sigil_other, 48.0f);
+          }
           render::Image px;
           px.width = px.height = 1;
           px.rgba = {255, 255, 255, 255};
@@ -1674,6 +1684,8 @@ int main(int argc, char** argv) {
     effects.shutdown();
     terrain.shutdown();
     dev.destroy(fallback);
+    dev.destroy(sigil_own);
+    dev.destroy(sigil_other);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {

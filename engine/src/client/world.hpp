@@ -65,6 +65,13 @@ class World {
   size_t selected() const { return selected_.size(); }
   // a HUD-nak (M6 9. lépés): a kijelölés, a kijelölt saját épület, a pillanatkép, parancs a futtató sorába
   const std::vector<sim::EntityId>& selection() const { return selected_; }
+  // a kijelölés pecsétjei (a régi `sel_sigil`): saját (zöld), idegen (piros); a képek `sigil_base` gyűrűszélességgel
+  // készültek, rajzoláskor a figura méretére nagyítva
+  void set_sigils(const render::Texture* own, const render::Texture* other, float sigil_base) {
+    sigil_own_ = own;
+    sigil_other_ = other;
+    sigil_base_ = sigil_base;
+  }
   sim::EntityId selected_building() const { return selected_building_; }
   // a HUD kijelölése (M8): az egységek, vagy egyetlen épület
   void set_selection(const std::vector<sim::EntityId>& ids);
@@ -126,6 +133,9 @@ class World {
   std::shared_ptr<const Snapshot> prev_, cur_;
   std::vector<Visual> vis_;
   std::vector<sim::EntityId> selected_;
+  const render::Texture* sigil_own_ = nullptr;
+  const render::Texture* sigil_other_ = nullptr;
+  float sigil_base_ = 48;
   sim::EntityId selected_building_ = 0;
   std::map<uint8_t, std::vector<int>> owner_sheets_;   // tulajdonos → a népe egységlapjai
   bool sheets_ready_ = false;

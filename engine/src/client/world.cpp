@@ -486,8 +486,29 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
                  int sw, int sh, float alpha, double time, bool shadow_pass) {
   collect(cam, sw, sh, alpha);
   if (!cur_) return;
-  // kijelölés jelzése (a sprite alatt; az árnyékmenetben nem)
-  if (!shadow_pass) {
+  // kijelölés jelzése (a sprite alatt; az árnyékmenetben nem): a régi pecsét – saját zöld, idegen piros; a mérete
+  // a figuráé (max(24, 2,5 × sugár)), a talppont alatt 0,45 sugárral, lassan pulzálva (82–100 %)
+  const sim::Rules* rules = session_.rules();
+  if (!shadow_pass && sigil_own_ && rules) {
+    const float pulse = 0.82f + 0.18f * static_cast<float>(std::sin(time * 3.0));
+    for (const sim::EntityId e : selected_) {
+      const SnapUnit* u = cur_->find(e);
+      if (!u || u->def >= rules->defs.size()) continue;
+      const Visual& v = vis_[static_cast<size_t>(u - cur_->units.data())];
+      const float x = v.px + (u->x - v.px) * alpha, y = v.py + (u->y - v.py) * alpha;
+      const float rad = static_cast<float>(rules->defs[u->def].radius.to_double()) * kTilePx;
+      const float w = std::max(24.0f, rad * 2.5f);
+      const float k = w / sigil_base_;
+      const render::Texture* tex = u->owner == session_.local_player() ? sigil_own_ : sigil_other_;
+      render::SpriteInstance in;
+      in.w = (sigil_base_ + 12.0f) * k;
+      in.h = (std::floor(sigil_base_ * 0.6f) + 12.0f) * k;
+      in.x = x - in.w / 2;
+      in.y = y + rad * 0.45f - in.h / 2;
+      in.tint[3] = static_cast<uint8_t>(255.0f * pulse);
+      batch.draw(*tex, nullptr, in);
+    }
+  } else if (!shadow_pass) {   // pecsét nélkül (próbák): a régi lapos folt
     for (const sim::EntityId e : selected_) {
       const SnapUnit* u = cur_->find(e);
       if (!u) continue;

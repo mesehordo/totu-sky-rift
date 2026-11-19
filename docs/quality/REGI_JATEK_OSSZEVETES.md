@@ -5,7 +5,7 @@ percben). A tételekről a tulajdonos **egyesével** dönt: átvesszük, módos�
 
 | # | Tétel | Régi játék | Új motor most | Döntés |
 |---|---|---|---|---|
-| 1 | Kijelölés jele | „pecsét” a figura alatt: lágy belső fény, sötét kontúrú kettős gyűrű, négy nyílhegy a tengelyeken, a csapat színében, a figura méretéhez igazítva (`sel_sigil`) | lapos zöld folt (24 × 10 képpont), minden egységnél ugyanakkora | – |
+| 1 | Kijelölés jele | „pecsét” a figura alatt: lágy belső fény, sötét kontúrú kettős gyűrű, négy nyílhegy a tengelyeken, a csapat színében, a figura méretéhez igazítva (`sel_sigil`) | lapos zöld folt (24 × 10 képpont), minden egységnél ugyanakkora | **átvéve** (2026-11-19): a régi pecsét, saját zöld, idegen piros, a figura méretével, pulzálva (`client/sigil`; kép: `kepek/utan_kijeloles_pecset.jpg`). A szövetséges kék még nincs (a pillanatkép nem tudja a szövetséget) |
 | 2 | Gyülekezőpont | lengő, fecskefarkú zászló a csapat színében, saját árnyékkal; az épülettől menetelő nyilak vezetnek oda, a végén kis pecsét (`draw_rally_flag`, `draw_rally_path`) | a pont megvan (parancs), de a pályán nem látszik | – |
 | 3 | Mozgáscél jelzése | a kijelölt csoporttól a célig menetelő zöld nyilak, a célnál befelé mutató pecsét (`draw_move_indicator`) | nincs | – |
 | 4 | Életerő-csík | 4 px; zöld > 60 % > sárga > 30 % > piros; fölötte kék pajzscsík, alatta lila energiacsík (saját egységnél), idézett lénynél „N mp” visszaszámlálás; az egér alatti egységnél is | 3 px, folytonos zöld → sárga → piros; csak kijelölve vagy sérülten; pajzs, energia, visszaszámlálás nincs | – |
