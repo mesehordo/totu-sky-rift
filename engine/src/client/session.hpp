@@ -20,6 +20,7 @@
 #include <thread>
 #include <vector>
 
+#include "content/vfs.hpp"
 #include "map/pathfinder.hpp"
 #include "script/host.hpp"
 #include "sim/replay.hpp"
@@ -181,6 +182,9 @@ class Session {
   sim::Sim& sim() { return *sim_; }
   bool has_sim() const { return sim_ != nullptr; }
   uint64_t seed() const { return seed_; }
+  // M13: az engedélyezett modok betöltési sorrendje (az alappal; `content::select_mods`); a következő betöltéstől hat
+  void set_mods(std::vector<content::ModInfo> order) { mods_ = std::move(order); }
+  const std::vector<content::ModInfo>& mods() const { return mods_; }
 
  private:
   void update_fog();
@@ -196,6 +200,7 @@ class Session {
   std::unique_ptr<script::ScriptHost> ai_;
   std::vector<std::unique_ptr<script::ScriptHost>> ais_;   // M9: az új gépi ellenfél játékosonként
   std::string content_dir_;
+  std::vector<content::ModInfo> mods_;   // üres: csak az alap
   std::map<std::string, std::string> names_;
   uint64_t seed_ = 0;
   std::shared_ptr<const Snapshot> last_;

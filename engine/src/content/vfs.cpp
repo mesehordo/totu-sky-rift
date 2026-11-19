@@ -146,6 +146,56 @@ std::optional<ModInfo> read_mod_info(const fs::path& mod_root, std::string* erro
   return m;
 }
 
+std::vector<ModInfo> discover_mods(const fs::path& content_dir, const std::vector<fs::path>& extra_dirs,
+                                   std::vector<std::string>* warnings) {
+  std::vector<ModInfo> out;
+  ModInfo base;
+  base.id = "totu";
+  base.version = "0";
+  base.root = content_dir / "base";
+  out.push_back(base);
+  std::vector<fs::path> dirs = {content_dir / "mods"};
+  dirs.insert(dirs.end(), extra_dirs.begin(), extra_dirs.end());
+  for (const auto& d : dirs) {
+    std::vector<fs::path> subs;
+    std::error_code ec;
+    for (const auto& e : fs::directory_iterator(d, ec)) {
+      if (e.is_directory(ec) && fs::is_regular_file(e.path() / "mod.json", ec)) subs.push_back(e.path());
+    }
+    std::sort(subs.begin(), subs.end());   // determinisztikus sorrend
+    for (const auto& s : subs) {
+      std::string err;
+      auto m = read_mod_info(s, &err);
+      if (!m) {
+        if (warnings) warnings->push_back(s.filename().string() + ": " + err);
+        continue;
+      }
+      if (std::any_of(out.begin(), out.end(), [&](const ModInfo& x) { return x.id == m->id; })) {
+        if (warnings) warnings->push_back(m->id + ": már van ilyen azonosítójú mod, kimarad");
+        continue;
+      }
+      out.push_back(std::move(*m));
+    }
+  }
+  return out;
+}
+
+ModLoadResult select_mods(const std::vector<ModInfo>& available, const std::vector<std::string>& requested) {
+  std::vector<std::string> req = {"totu"};
+  for (const auto& r : requested) {
+    if (r != "totu") req.push_back(r);
+  }
+  return resolve_mods(available, req);
+}
+
+void add_mod_layers(Vfs& vfs, const fs::path& content_dir, const std::vector<ModInfo>& order) {
+  if (order.empty()) {
+    vfs.add_layer("totu", content_dir / "base");
+    return;
+  }
+  for (const auto& m : order) vfs.add_layer(m.id, m.root);
+}
+
 ModLoadResult resolve_mods(const std::vector<ModInfo>& available, const std::vector<std::string>& requested) {
   ModLoadResult r;
   auto find = [&](const std::string& id) -> const ModInfo* {

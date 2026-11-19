@@ -21,6 +21,7 @@ struct MenuRunOptions {
   long frames = -1;            // ennyi képkocka után kilép (füstteszt)
   std::string screenshot;      // az utolsó képkockáról
   MenuScreen start = MenuScreen::Main;
+  std::vector<content::ModInfo> mods;   // M13: a betöltött modok (az alappal)
 };
 
 // A felbontás és a teljes képernyő alkalmazása az ablakra.

@@ -50,4 +50,14 @@ std::optional<ModInfo> read_mod_info(const std::filesystem::path& mod_root, std:
 // ütközés és körkörös függőség hiba.
 ModLoadResult resolve_mods(const std::vector<ModInfo>& available, const std::vector<std::string>& requested);
 
+// M13: a választható modok – az alap (`totu`, a `<content>/base`) és minden `mod.json`-os almappa a
+// `<content>/mods` és az `extra_dirs` (pl. a felhasználói `mods` mappa) alatt; azonos azonosítónál az első
+// (a beépített) nyer. A hibás `mod.json` figyelmeztetés, a mod kimarad.
+std::vector<ModInfo> discover_mods(const std::filesystem::path& content_dir, const std::vector<std::filesystem::path>& extra_dirs,
+                                   std::vector<std::string>* warnings = nullptr);
+// a kért modok betöltési sorrendje az alappal együtt (az alap mindig az első); hiba esetén üres `order`
+ModLoadResult select_mods(const std::vector<ModInfo>& available, const std::vector<std::string>& requested);
+// a rétegek a sorrend szerint (az alap alul); üres sorrendnél csak az alap
+void add_mod_layers(Vfs& vfs, const std::filesystem::path& content_dir, const std::vector<ModInfo>& order);
+
 }  // namespace totu::content

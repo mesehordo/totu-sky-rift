@@ -217,6 +217,7 @@ TEST_CASE("M8 felulet – beállítások: JSON oda-vissza, hibatűrés, a fájl 
   st.colorblind = true;
   CHECK(st.keys.assign(0, 'Q') == -1);
   st.fps_limit = 0;
+  st.mods = {"micelia", "sajat"};   // M13
   const std::string js = client::settings_to_json(st);
   client::Settings back;
   CHECK(client::settings_from_json(js, &back));
@@ -230,6 +231,9 @@ TEST_CASE("M8 felulet – beállítások: JSON oda-vissza, hibatűrés, a fájl 
       &bad, &warn));
   CHECK(bad.language == "hu" && bad.ui_scale == 100 && bad.keys.str() == "WERTSDFGXCVB" && bad.width == 1280);
   CHECK(!bad.show_fps);
+  client::Settings badmods;
+  std::vector<std::string> mwarn;
+  CHECK(client::settings_from_json(R"({"mods":["a",3]})", &badmods, &mwarn) && badmods.mods.empty() && mwarn.size() == 1);
   CHECK(warn.size() == 4);
   CHECK(!client::settings_from_json("[1, 2]", &bad));
   // fájl: nincs → alapértékek; mentés után ugyanaz jön vissza

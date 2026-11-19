@@ -38,6 +38,8 @@ class Locale {
   // az alaptartalom (`<content>/base/locale`) és a modrétegek (`<content>/mods/*/locale`) nyelvei;
   // false, ha egy nyelv sincs
   bool load(const std::string& content_dir);
+  // M13: az alap és a megadott modmappák `locale` alkönyvtára (a sorrendben; a későbbi felülír)
+  bool load(const std::string& content_dir, const std::vector<std::string>& mod_roots);
   // egy mappa minden `*.po` fájlja (a későbbi mappa kiegészíti és felülírja a korábbit)
   void add_dir(const std::string& locale_dir);
   // egy nyelv .po-szövege (tesztekhez is); a név a fejlécből, ha van

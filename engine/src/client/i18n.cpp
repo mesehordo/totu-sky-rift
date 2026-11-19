@@ -96,16 +96,12 @@ std::vector<PoEntry> parse_po(std::string_view text, std::string* header) {
   return out;
 }
 
-bool Locale::load(const std::string& content_dir) {
+bool Locale::load(const std::string& content_dir) { return load(content_dir, {}); }
+
+bool Locale::load(const std::string& content_dir, const std::vector<std::string>& mod_roots) {
   const std::filesystem::path root(content_dir);
   add_dir((root / "base" / "locale").string());
-  std::error_code ec;
-  std::vector<std::filesystem::path> mods;
-  for (const auto& e : std::filesystem::directory_iterator(root / "mods", ec)) {
-    if (e.is_directory()) mods.push_back(e.path() / "locale");
-  }
-  std::sort(mods.begin(), mods.end());
-  for (const auto& m : mods) add_dir(m.string());
+  for (const auto& m : mod_roots) add_dir((std::filesystem::path(m) / "locale").string());
   return !langs_.empty();
 }
 

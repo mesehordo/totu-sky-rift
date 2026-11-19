@@ -115,6 +115,9 @@ std::string settings_to_json(const Settings& s) {
   o.set("edge_scroll", Value::boolean(s.edge_scroll));
   o.set("show_fps", Value::boolean(s.show_fps));
   o.set("fps_limit", num(s.fps_limit));
+  Value mods = Value::array();
+  for (const auto& m : s.mods) mods.push(Value::string(m));
+  o.set("mods", std::move(mods));
   return content::dump(o) + "\n";
 }
 
@@ -186,6 +189,18 @@ bool settings_from_json(std::string_view text, Settings* out, std::vector<std::s
   get_bool(o, "edge_scroll", &s.edge_scroll);
   get_bool(o, "show_fps", &s.show_fps);
   get_int(o, "fps_limit", 0, 1000, &s.fps_limit);
+  if (const Value* v = o.find("mods")) {
+    bool ok = v->is_array();
+    std::vector<std::string> ids;
+    if (ok) {
+      for (const Value& x : v->items()) {
+        if (!x.is_string() || x.text().empty() || x.text().size() > 64) ok = false;
+        else if (std::find(ids.begin(), ids.end(), x.text()) == ids.end()) ids.push_back(x.text());
+      }
+    }
+    if (ok) s.mods = std::move(ids);
+    else warn("mods");
+  }
   *out = s;
   return true;
 }

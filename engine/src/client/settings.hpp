@@ -67,6 +67,7 @@ struct Settings {
   bool edge_scroll = true;
   bool show_fps = true;
   int fps_limit = 60;               // 30 / 60 / 120 / 0 = nincs korlát
+  std::vector<std::string> mods;    // M13: az engedélyezett modok azonosítói (a kért sorrendben; az alap nélkül)
 
   static const std::vector<std::pair<int, int>>& resolutions();   // a régi menü listája
   static const std::vector<int>& ui_scales();                     // 100, 125, 150, 175, 200

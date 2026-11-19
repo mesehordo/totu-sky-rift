@@ -83,6 +83,8 @@ void print_version() {
 void* gl_loader(const char* name) { return reinterpret_cast<void*>(SDL_GL_GetProcAddress(name)); }
 
 struct Options {
+  std::vector<std::string> mods;   // --mods
+  bool mods_given = false;
   long frames = -1;
   int demo = 0;
   bool bench = false, hidden = false, check = false;
@@ -321,6 +323,15 @@ int main(int argc, char** argv) {
     else if (a == "--assets") o.assets = next();
     else if (a == "--atlas") o.atlas = next();
     else if (a == "--world") o.world = next();
+    else if (a == "--mods") {   // M13: az engedélyezett modok (vesszővel; felülírja a beállítást), üres: csak az alap
+      o.mods_given = true;
+      std::string list = next();
+      for (size_t p = 0; p <= list.size();) {
+        const size_t q = std::min(list.find(',', p), list.size());
+        if (q > p) o.mods.push_back(list.substr(p, q - p));
+        p = q + 1;
+      }
+    }
     else if (a == "--content") o.content = next();
     else if (a == "--daytime") o.daytime = std::strtod(next(), nullptr);
     else if (a == "--nofog") o.fog = false;
@@ -409,7 +420,34 @@ int main(int argc, char** argv) {
     if (!client::load_settings(settings_file, &settings, &serr)) std::fprintf(stderr, "%s\n", serr.c_str());
   }
   client::Locale locale;
-  locale.load(o.content);
+  std::vector<content::ModInfo> mod_order;   // M13: az alap és az engedélyezett modok betöltési sorrendje
+  {
+    std::vector<std::filesystem::path> extra;
+    if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {   // a felhasználói modmappa
+      extra.push_back(std::filesystem::path(pref) / "mods");
+      SDL_free(pref);
+    }
+    std::vector<std::string> warns;
+    const auto avail = content::discover_mods(o.content, extra, &warns);
+    for (const auto& w : warns) std::fprintf(stderr, "mod: %s\n", w.c_str());
+    const auto res = content::select_mods(avail, o.mods_given ? o.mods : settings.mods);
+    if (!res.errors.empty()) {   // a hibás modkészlet nem töltődik be: az alapjáték indul, a hiba látszik
+      for (const auto& e : res.errors) std::fprintf(stderr, "mod: %s\n", e.c_str());
+      client::Diagnostics::get().count("LOAD_FAILED");
+    } else {
+      mod_order = res.order;
+    }
+    if (mod_order.size() > 1) {
+      std::printf("modok:");
+      for (const auto& m : mod_order) if (m.id != "totu") std::printf(" %s %s", m.id.c_str(), m.version.c_str());
+      std::printf("\n");
+    }
+  }
+  std::vector<std::string> mod_roots;
+  for (const auto& m : mod_order) {
+    if (m.id != "totu") mod_roots.push_back(m.root.string());
+  }
+  locale.load(o.content, mod_roots);
   locale.set_lang(settings.language);
   if (menu_mode && !o.size_given) {
     o.width = settings.width;
@@ -447,6 +485,7 @@ int main(int argc, char** argv) {
     demo.units = (o.atlas.empty() && o.world.empty()) ? o.demo : 0;
     AtlasDemo adem;
     client::Session session;
+    session.set_mods(mod_order);
     net::RelayServer host_relay;   // M10: a gazda reléje (a SimRunner előtt jön létre, utána szűnik meg)
     client::NetPlay netplay;
     std::unique_ptr<sim::MatchInstance> mission_match;   // M11: a küldetés meccse (a munkamenet csak hivatkozik rá)
@@ -549,6 +588,7 @@ int main(int argc, char** argv) {
                    mo.frames = o.frames;
                    mo.screenshot = o.screenshot;
                    mo.start = o.menu_screen;
+                   mo.mods = mod_order;
                    if (!client::run_menu(win, dev, batch, settings, locale, mo, &match_cfg, &rc)) return false;
                    o.world = match_cfg.map_path;
                    return true;
@@ -562,7 +602,11 @@ int main(int argc, char** argv) {
         // M10: a hálózati meccs a lobbin át (konzolon; a menübeli lobbi később), utána a munkamenet átveszi
         auto start_net = [&]() -> bool {
           if (!session.load_content(o.content, &err)) return false;
-          const uint64_t ch = net::content_hash({o.content});
+          // modlock: a séma, az alap és az engedélyezett modok (a sorrendjükben) – az eltérő modkészlet nem csatlakozhat
+          std::vector<std::string> hash_dirs = {(std::filesystem::path(o.content) / "schema").string()};
+          if (mod_order.empty()) hash_dirs.push_back((std::filesystem::path(o.content) / "base").string());
+          for (const auto& m : mod_order) hash_dirs.push_back(m.root.string());
+          const uint64_t ch = net::content_hash(hash_dirs);
           std::string host = "127.0.0.1";
           int port = o.host_port;
           if (o.host_port > 0) {

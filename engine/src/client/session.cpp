@@ -88,8 +88,11 @@ bool Session::load_content(const std::string& content_dir, std::string* error) {
   fog_.reset();
   remembered_.clear();
   content_dir_ = content_dir;
-  {   // a nevek (hu.po): msgctxt "kulcs" után az msgid "szöveg"
-    std::ifstream po(std::filesystem::path(content_dir) / "base" / "locale" / "hu.po", std::ios::binary);
+  content::Vfs vfs;
+  content::add_mod_layers(vfs, content_dir, mods_);   // M13: az alap és az engedélyezett modok
+  for (const auto& layer : vfs.layers()) {   // a nevek (hu.po): msgctxt "kulcs" után az msgid "szöveg"; a mod felülír
+    std::ifstream po(layer.second / "locale" / "hu.po", std::ios::binary);
+    if (!po) continue;
     std::string line, ctx;
     auto quoted = [](const std::string& l) {
       const size_t a = l.find('"'), b = l.rfind('"');
@@ -103,8 +106,6 @@ bool Session::load_content(const std::string& content_dir, std::string* error) {
       }
     }
   }
-  content::Vfs vfs;
-  vfs.add_layer("totu", std::filesystem::path(content_dir) / "base");
   content::ContentSet set;
   const auto report = content::ContentLoader(vfs, std::filesystem::path(content_dir) / "schema").load(set);
   std::vector<std::string> errors = report.errors;   // H-07/H-68: a tartalomhiba nem marad csendben
@@ -117,8 +118,7 @@ bool Session::load_content(const std::string& content_dir, std::string* error) {
     return false;
   }
   {   // játékszabályok (M6): a game.json és a sablonok
-    std::ifstream gin(std::filesystem::path(content_dir) / "base" / "game.json", std::ios::binary);
-    const std::string gtext{std::istreambuf_iterator<char>(gin), std::istreambuf_iterator<char>()};
+    const std::string gtext = vfs.read_text("game.json").value_or(std::string());   // a mod felülírhatja
     const auto game = content::parse(gtext);
     std::vector<std::string> rerr;
     if (game) rules_ = sim::Rules::load(*game, set, rerr);
@@ -182,7 +182,7 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   if (setup.fog == sim::MatchSetup::Fog::None) reveal_all_ = true;
   if (!setup.ai.empty()) {   // M9: az új gépi ellenfél – gépi játékosonként saját Lua-állapot (AI-csomag a VFS-ből)
     content::Vfs vfs;
-    vfs.add_layer("totu", std::filesystem::path(content_dir_) / "base");
+    content::add_mod_layers(vfs, content_dir_, mods_);
     std::vector<script::AiPackage> pkgs;
     for (const auto& a : setup.ai) {
       if (std::any_of(pkgs.begin(), pkgs.end(), [&](const script::AiPackage& p) { return p.id == a.ai; })) continue;

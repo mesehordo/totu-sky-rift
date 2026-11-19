@@ -486,7 +486,7 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
   bool terrain_ok = false;
   {
     content::Vfs vfs;
-    vfs.add_layer("totu", std::filesystem::path(o.content) / "base");
+    content::add_mod_layers(vfs, o.content, o.mods);
     content::ContentSet set;
     content::ContentLoader loader(vfs, std::filesystem::path(o.content) / "schema");
     const auto rep = loader.load(set);

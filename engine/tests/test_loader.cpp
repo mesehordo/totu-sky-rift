@@ -2,6 +2,8 @@
 // A valódi, konvertált tartalom betöltése (M2, 3. lépés): a 22 faj minden eleme átmegy a sémán, és a számok
 // determinisztikusan olvashatók. A tartalmat a tools/konverter_motor.py állítja elő a Python-játék adataiból.
 #include <cstdio>
+#include <filesystem>
+#include <fstream>
 
 #include "check.hpp"
 #include "content/loader.hpp"
@@ -75,3 +77,36 @@ TEST_CASE("tartalom: a Micélia-mod réteggel a 22 faj teljes tartalma") {
   CHECK(store.get("faction", "faction_micelia") != nullptr);   // a kisnép-változat az alapban
 }
 
+
+TEST_CASE("M13 modok: felderites (alap, beepitett, felhasznaloi), sorrend, hianyzo, dupla azonosito, retegek") {
+  const auto root = std::filesystem::path(TOTU_CONTENT_DIR);
+  const auto user = std::filesystem::temp_directory_path() / "totu_mod_proba";
+  std::filesystem::remove_all(user);
+  std::filesystem::create_directories(user / "sajat");
+  std::filesystem::create_directories(user / "masolat");
+  std::filesystem::create_directories(user / "rossz");
+  {
+    std::ofstream(user / "sajat" / "mod.json") << R"({"id": "sajat", "version": "1.2.0", "depends": ["micelia"]})";
+    std::ofstream(user / "masolat" / "mod.json") << R"({"id": "micelia", "version": "9.9.9"})";
+    std::ofstream(user / "rossz" / "mod.json") << "{ nem json";
+  }
+  std::vector<std::string> warns;
+  const auto avail = discover_mods(root, {user}, &warns);
+  CHECK(avail.size() == 3 && avail[0].id == "totu" && avail[1].id == "micelia" && avail[1].version == "0.1.0" && avail[2].id == "sajat");
+  CHECK(warns.size() == 2);   // a dupla azonosító (a beépített nyer) és a hibás mod.json
+  // a függőség előbb, az alap mindig az első
+  auto r = select_mods(avail, {"sajat"});
+  CHECK(r.errors.empty() && r.order.size() == 3 && r.order[0].id == "totu" && r.order[1].id == "micelia" && r.order[2].id == "sajat");
+  r = select_mods(avail, {});
+  CHECK(r.errors.empty() && r.order.size() == 1 && r.order[0].id == "totu");
+  r = select_mods(avail, {"nincsilyen"});
+  CHECK(!r.errors.empty() && r.order.empty());
+  // a rétegek: a mod felül
+  Vfs vfs;
+  add_mod_layers(vfs, root, select_mods(avail, {"micelia"}).order);
+  CHECK(vfs.layers().size() == 2 && vfs.layers()[1].first == "micelia");
+  Vfs base;
+  add_mod_layers(base, root, {});
+  CHECK(base.layers().size() == 1 && base.layers()[0].first == "totu");
+  std::filesystem::remove_all(user);
+}
