@@ -514,3 +514,20 @@ fecskefarkú). A **kisnépek** épületei a szövetséges főnép (a tulajdonos)
 2. **Az egységeken** a csapatszín **egy kulcsszín helyére** kerül: a képen egy fenntartott szín (árnyalattartomány)
    jelöli, hová jön a csapatszín; az atlaszkészítő ebből magától készíti a maszkot, külön maszkkép nem kell (a
    meglévő maszkok tovább működnek). Az épületeken a csapatjelzés a lobogó (D51).
+
+### D53 – A Croftianok újragondolása · ELDÖNTVE (2026-11-19, tervezési elv; megvalósítás később)
+
+A tulajdonos új koncepciója a Croftian népre (a kánon része; a meglévő tartalom ehhez igazodik majd):
+1. **Új név:** a nép új nevet kap (a nevet a tulajdonos adja; addig munkanév: Croftian).
+2. **Eredet:** hangyanép, amely növényekkel foglalkozott; a meteorit hatására összeolvadtak, összemutálódtak kedvenc
+   növényeikkel. Ezért náluk **sok a növényi utalás** (megjelenés, nevek, képességek).
+3. **Lárva helyett Mag.** A **főépület: Anya-királynő** – nem mozog, ő a központi tudat; a nép **magas szintű
+   mágiahasználó**.
+4. **Populáció:** hatalmas, **nagyon lassan** sétáló bogarak, amelyeknek a potroha egy nagy fa – ők a **Mag-őrök**; bennük
+   is képezhetők az alap harci egységek.
+5. **Csápszolga új neve: Termő.** Minden egységet kicsit át kell tervezni a fentiek szerint.
+6. **„Megmérgezett” terület:** szürkés-zöld, kiálló gyökerekkel; **minden épületük alatt inda-grafika**, mintha a földet
+   „kiszívnák”.
+
+A régi játék szabálya itt nem irányadó (a tulajdonos új döntése felülírja); a tanulmánnyal való összevetés a végső
+átnézéskor.

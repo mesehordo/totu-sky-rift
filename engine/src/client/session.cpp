@@ -376,7 +376,9 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     SnapUnit u;
     u.id = e;
     u.x = to_px(p.x);
-    if (const auto* st = w.get<sim::Stealth>(e); st && st->hidden && hh && hh->owner == local_) u.hidden = true;   // a régi talajjel
+    if (match && hh && hh->owner == local_) {   // a régi talajjel (a rejtőzés csak meccsben van)
+      if (const auto* st = w.get<sim::Stealth>(e); st && st->hidden) u.hidden = true;
+    }
     u.y = to_px(p.y);
     if (hh) {
       u.hp = hh->hp;

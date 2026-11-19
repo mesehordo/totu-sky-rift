@@ -869,8 +869,8 @@ int main(int argc, char** argv) {
               };
               mark_hero_tint = one(client::hero_ground_tinted(48.0f));
               mark_hero_fixed = one(client::hero_ground_fixed(48.0f));
-              mark_badge_frame = layers(kS, 21, 21, [](int i) { return client::hero_badge_frame(i); });
-              mark_badge_symbol = layers(kS, 21, 21, [](int i) { return client::hero_badge_symbol(i); });
+              mark_badge_frame = one(client::hero_badge_frame());
+              mark_badge_symbol = one(client::hero_badge_symbol());
               mark_chant = layers(8, 54, 38, [](int i) { return client::chant_mark_image(40.0f, i); });
               mark_hidden = one(client::hidden_mark_image(40.0f));
               world.set_mark_art({&mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden});

@@ -311,81 +311,30 @@ render::Image carry_sack_image() {
 
 namespace {
 
-// a régi `_faction_symbol` (S × S, középre): a nép jelképe a [-0,5; 0,5] egységnégyzetben
-bool symbol_in(int style, float x, float y) {
-  auto circ = [&](float cx, float cy, float r) { return (x - cx) * (x - cx) + (y - cy) * (y - cy) <= r * r; };
-  auto ell = [&](float cx, float cy, float rx, float ry) { return (x - cx) * (x - cx) / (rx * rx) + (y - cy) * (y - cy) / (ry * ry) <= 1; };
-  switch (style) {
-    case 3: {   // Elves: napkorong sugarakkal (közepén sötét – itt lyuk)
-      if (circ(0, 0, 0.12f)) return false;
-      if (circ(0, 0, 0.25f)) return true;
-      for (int k = 0; k < 8; ++k) {
-        const float a = static_cast<float>(k) * 0.785398f;
-        const std::vector<std::pair<float, float>> tri = {{std::cos(a - 0.22f) * 0.24f, std::sin(a - 0.22f) * 0.24f},
-                                                          {std::cos(a) * 0.47f, std::sin(a) * 0.47f},
-                                                          {std::cos(a + 0.22f) * 0.24f, std::sin(a + 0.22f) * 0.24f}};
-        if (in_poly(x, y, tri)) return true;
-      }
-      return false;
-    }
-    case 1:   // Ursan: medvemancs
-      if (ell(0, 0.19f, 0.27f, 0.21f)) return true;
-      for (const auto& [dx, dy] : {std::pair{-0.30f, -0.12f}, {-0.11f, -0.30f}, {0.11f, -0.30f}, {0.30f, -0.12f}}) {
-        if (circ(dx, dy, 0.11f)) return true;
-      }
-      return false;
-    case 2:   // Croftian: három görbe karom
-      for (const float dx : {-0.20f, 0.08f, 0.36f}) {
-        std::vector<std::pair<float, float>> pts;
-        for (int k = 0; k <= 8; ++k) {
-          const float t = static_cast<float>(k) / 8;
-          pts.emplace_back(dx + 0.11f * std::pow(1 - t, 1.4f) - 0.30f * t * t, 0.44f - 0.90f * t);
-        }
-        for (int k = 8; k >= 0; --k) {
-          const float t = static_cast<float>(k) / 8;
-          pts.emplace_back(dx - 0.05f * std::pow(1 - t, 1.4f) - 0.30f * t * t, 0.44f - 0.90f * t);
-        }
-        if (in_poly(x, y, pts)) return true;
-      }
-      return false;
-    case 7:   // Wullof: félhold
-      return circ(0, 0, 0.44f) && !circ(0.18f, -0.10f, 0.38f);
-    case 4: {   // Imperium: kiterjesztett sasszárnyak
-      for (const float sg : {-1.0f, 1.0f}) {
-        const std::vector<std::pair<float, float>> w = {{0, 0.05f},          {sg * 0.46f, -0.30f}, {sg * 0.40f, -0.05f}, {sg * 0.48f, 0.02f},
-                                                        {sg * 0.34f, 0.14f}, {sg * 0.38f, 0.24f},  {0.0f, 0.30f}};
-        if (in_poly(x, y, w)) return true;
-      }
-      return circ(0, -0.12f, 0.10f);
-    }
-    case 6: {   // Hukucha: tavirózsalevél bevágással, rajta gyöngy (lyuk)
-      if (circ(0, 0.12f, 0.10f)) return false;
-      const std::vector<std::pair<float, float>> cut = {{0, 0.06f}, {0.24f, -0.5f}, {-0.24f, -0.5f}};
-      return circ(0, 0.04f, 0.42f) && !in_poly(x, y, cut);
-    }
-    case 5:   // Ooni: torii-kapu
-      return in_poly(x, y, {{-0.48f, -0.36f}, {0.48f, -0.36f}, {0.42f, -0.24f}, {-0.42f, -0.24f}}) ||
-             (x >= -0.34f && x <= 0.34f && y >= -0.12f && y <= -0.04f) || (x >= -0.25f && x <= -0.17f && y >= -0.30f && y <= 0.44f) ||
-             (x >= 0.17f && x <= 0.25f && y >= -0.30f && y <= 0.44f);
-    case 8:   // Micélia: gombakalap tönkkel
-      return ell(0, -0.14f, 0.44f, 0.26f) || (x >= -0.10f && x <= 0.10f && y >= -0.05f && y <= 0.40f);
-    default: {   // csillag
-      std::vector<std::pair<float, float>> pts;
-      for (int k = 0; k < 10; ++k) {
-        const float r = k % 2 == 0 ? 0.46f : 0.20f, a = -1.5707963f + static_cast<float>(k) * 0.6283185f;
-        pts.emplace_back(std::cos(a) * r, std::sin(a) * r);
-      }
-      return in_poly(x, y, pts);
-    }
+// a hős jelvénye (a tulajdonos kérése: kis korona a nép jelképe helyett) a [-0,5; 0,5] egységnégyzetben:
+// öt ágú pánt, az ágak hegyén gömb, alul sáv
+bool crown_in(float x, float y) {
+  if (x < -0.44f || x > 0.44f || y < -0.46f || y > 0.34f) return false;
+  if (y >= 0.12f) return std::fabs(x) <= 0.40f;   // a pánt
+  const float tipx[3] = {-0.36f, 0.0f, 0.36f}, tipy[3] = {-0.22f, -0.34f, -0.22f};
+  for (int i = 0; i < 3; ++i) {   // gömb az ág hegyén
+    if ((x - tipx[i]) * (x - tipx[i]) + (y - tipy[i] + 0.04f) * (y - tipy[i] + 0.04f) <= 0.085f * 0.085f) return true;
   }
+  // három ág: a hegytől a pántig szélesedő háromszögek, köztük mély völgyek
+  for (int i = 0; i < 3; ++i) {
+    if (y < tipy[i]) continue;
+    const float t = (y - tipy[i]) / (0.12f - tipy[i]);   // 0 a hegynél, 1 a pántnál
+    if (std::fabs(x - tipx[i]) <= 0.05f + 0.17f * t) return true;
+  }
+  return std::fabs(x) <= 0.40f && y >= 0.02f;   // a völgyek alja
 }
 
 }  // namespace
 
-render::Image hero_badge_frame(int style) {
+render::Image hero_badge_frame() {
   // 21 × 21: a jelkép sötét körvonala (3 képpont) és arany szegélye (1,5 képpont) – a régi `hero_badge`
   Canvas c(21, 21, 4);
-  auto sym = [&](float x, float y) { return symbol_in(style, (x - 10.5f) / 15.0f, (y - 10.5f) / 15.0f); };
+  auto sym = [&](float x, float y) { return crown_in((x - 10.5f) / 15.0f, (y - 10.5f) / 15.0f); };
   auto dil = [&](float x, float y, float r) {
     for (int k = 0; k < 12; ++k) {
       const float a = static_cast<float>(k) * 0.5235988f;
@@ -398,11 +347,11 @@ render::Image hero_badge_frame(int style) {
   return c.image();
 }
 
-render::Image hero_badge_symbol(int style) {
+render::Image hero_badge_symbol() {
   Canvas c(21, 21, 4);
-  c.fill([&](float x, float y) { return symbol_in(style, (x - 10.5f) / 15.0f, (y - 10.5f) / 15.0f); }, 1, 1, 1, 1);
+  c.fill([&](float x, float y) { return crown_in((x - 10.5f) / 15.0f, (y - 10.5f) / 15.0f); }, 1, 1, 1, 1);
   c.fill([&](float x, float y) {   // felső fény
-    return symbol_in(style, (x - 10.5f) / 15.0f, (y - 10.5f) / 15.0f) && !symbol_in(style, (x - 10.5f) / 15.0f, (y - 9.7f) / 15.0f);
+    return crown_in((x - 10.5f) / 15.0f, (y - 10.5f) / 15.0f) && !crown_in((x - 10.5f) / 15.0f, (y - 9.7f) / 15.0f);
   }, 1, 1, 1, 0.25f);
   return c.image();
 }

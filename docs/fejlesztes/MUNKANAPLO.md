@@ -973,3 +973,7 @@ A rakományt vivő munkás vállánál kis zsák a nyersanyag színében (a `gam
 ## 2026-11-19 – 9. tétel: talajjelek és a hős jelei a régi szerint
 
 A figura alatt: forgó rúnagyűrű (bekapcsolt ének vagy kapcsoló, 8 fázis), pöttyözött gyűrű (a saját rejtőzött egység; a pillanatkép most viszi a rejtőzést), a hős talajjele (fényudvar, csapatszínű kettős gyűrű, nyolc arany rovátka, pulzálva). A hős feje fölött lebegő jelvény: a nép régi jelképe (medvemancs, karmok, napkorong, sasszárny, torii, levél, félhold, gombakalap) a csapatszínben, sötét kontúrral és arany szegéllyel. Az ének és a rejtőzés jelét képen nem ellenőriztem (a bemutatóban nincs ilyen). Kép: `docs/quality/kepek/utan_hos_jelek.jpg`.
+
+## 2026-11-19 – Hős: kis korona; hibajavítás; D53 felírva
+
+A hős feje fölött a nép jelképe helyett kis korona (a tulajdonos kérése), a csapatszínben, arany szegéllyel. Hiba javítva: a rejtőzés lekérdezése szabályok nélküli világban (bemutató) kivételt dobott – most csak meccsben. Felírva D53: a Croftianok újragondolása (új név, növény-hangya eredet, Mag, Anya-királynő, Mag-őrök, Termő, szürkés-zöld gyökeres terület, inda az épületek alatt).

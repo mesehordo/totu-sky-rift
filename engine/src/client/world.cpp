@@ -418,13 +418,11 @@ void World::draw_hero_badges(render::SpriteBatch& batch, float alpha, double tim
     const float rad = static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx;
     const float top = y - std::max(48.0f, rad * 3.4f) - 6;   // a fej és a csík fölött
     const float bob = static_cast<float>(std::sin(time * 2.0 + static_cast<double>(u.id))) * 1.5f;
-    const int style = banner_style(cur_->players[std::min<size_t>(u.owner, sim::Sim::kMaxPlayers)].faction);
     const auto col = team_color(u.owner);
     render::SpriteInstance s;
     s.w = s.h = 21;
     s.x = x - 10.5f;
     s.y = top - 21 - 3 + bob;
-    s.layer[0] = static_cast<uint8_t>(style);
     batch.draw(*marks_.badge_frame, nullptr, s);
     s.tint[0] = col[0]; s.tint[1] = col[1]; s.tint[2] = col[2];
     batch.draw(*marks_.badge_symbol, nullptr, s);
