@@ -104,7 +104,12 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       return nullptr;
     }
     m->map = std::make_unique<map::Map>(std::move(*mp));
-    m->nav = std::make_unique<map::NavGrid>(*m->map, *terrain);
+    map::NavConfig nc;   // a game.json navigációs beállítása (H-90) – ugyanaz, mint a munkamenet egyéni csatájában
+    if (rules && rules->game_raw) {
+      std::vector<std::string> nerr;
+      nc = map::NavConfig::from_json(rules->game_raw->find("navigation"), nerr);
+    }
+    m->nav = std::make_unique<map::NavGrid>(*m->map, *terrain, nc);
     m->pf = std::make_unique<map::Pathfinder>(*m->nav);
     s.attach_navigation(m->pf.get());
   }

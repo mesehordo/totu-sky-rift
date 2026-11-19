@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // A népmodulok horgainak összesítése (M7, ADR-008): a szorzók szorzata, az engedélyek ÉS-e, a bónuszok összege – a
 // modulok rögzített sorrendjében (registry.cpp).
+#include "map/map.hpp"
 #include "sim/sim.hpp"
 
 namespace totu::sim {
@@ -153,6 +154,15 @@ bool Sim::mod_command(const Command& c) {
     if (m->on_command(*this, c)) return true;
   }
   return false;
+}
+
+void Sim::module_view(ModuleView& out) {
+  out = ModuleView{};
+  if (map_) {
+    out.w = map_->width();
+    out.h = map_->height();
+  }
+  for (auto& m : modules_) m->view(*this, out);
 }
 
 }  // namespace totu::sim

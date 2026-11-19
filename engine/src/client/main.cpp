@@ -26,7 +26,7 @@
 //   totu --hidden                  rejtett ablak (CI);  --size SZxM  ablakméret;  --assets mappa  a grafika helye
 //   totu [--menu]                  főmenü (M8): egyéni csata, beállítások; paraméter nélkül is ez indul
 //                                  (--maps mappa: a pályák helye; a beállításfájl a felhasználói mappában;
-//                                  --menu-screen skirmish|settings|sound|keys: ezzel a képernyővel indul – képpróba)
+//                                  --menu-screen skirmish|settings|sound|keys|mods|load: ezzel a képernyővel indul – képpróba)
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
@@ -51,6 +51,8 @@
 #include "client/hud.hpp"
 #include "client/atlas_cache.hpp"
 #include "client/diagnostics.hpp"
+#include "client/savegame.hpp"
+#include "client/cursors.hpp"
 #include "client/ground_overlay.hpp"
 #include "client/sigil.hpp"
 #include "client/i18n.hpp"
@@ -102,6 +104,7 @@ struct Options {
   float zoom = 0;   // 0: a régi játék alapja (1,5)
   bool sync = false;
   float look_x = -1, look_y = -1;
+  std::string load;   // mentett játék (a régi `LoadMenu`)
   bool build_demo = false;
   bool garrison_demo = false;   // képpróba (D39): helyőrséges Hosszúház, a kurzor fölötte
   int battle_demo = 0;
@@ -354,7 +357,7 @@ int main(int argc, char** argv) {
       o.menu = true;
       o.menu_screen = v == "skirmish" ? client::MenuScreen::Skirmish : v == "settings" ? client::MenuScreen::Settings
                       : v == "sound"  ? client::MenuScreen::Sound    : v == "keys"     ? client::MenuScreen::Keys
-                      : v == "mods"   ? client::MenuScreen::Mods     : client::MenuScreen::Main;
+                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
@@ -370,6 +373,7 @@ int main(int argc, char** argv) {
     else if (a == "--observe") o.observe = true;
     else if (a == "--rejoin") o.rejoin = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--battle-demo") o.battle_demo = static_cast<int>(std::strtol(next(), nullptr, 10));
+    else if (a == "--load") o.world = o.load = next();   // mentett játék betöltése
     else if (a == "--look") {
       char* end = nullptr;
       const char* v = next();
@@ -490,6 +494,9 @@ int main(int argc, char** argv) {
     SDL_Quit();
     return 1;
   }
+  client::Cursors cursors;   // a festett kurzorok (a régi `cursor_kind`)
+  cursors.load(o.assets, 32 * std::clamp(settings.ui_scale, 100, 200) / 100);
+  cursors.set("arrow");
   SDL_GLContext ctx = SDL_GL_CreateContext(win);
   if (!ctx) {
     std::fprintf(stderr, "OpenGL 3.3 core környezet nem jött létre: %s\n", SDL_GetError());
@@ -584,7 +591,7 @@ int main(int argc, char** argv) {
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
         mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf, fire_flame, fire_puff;
     std::map<std::string, render::Texture> item_tex;
-    render::Texture ground_tex;
+    render::Texture ground_tex, module_tex;   // a terep fedőrétege; a népmechanikák fedőképe (fertőzött talaj, tavak)
     render::Texture fallback, white, sigil_own, sigil_other, sigil_ally, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -641,6 +648,7 @@ int main(int argc, char** argv) {
                    };
                    if (!client::run_menu(win, dev, batch, settings, locale, mo, &match_cfg, &rc)) return false;
                    o.world = match_cfg.map_path;
+                   if (!match_cfg.load_path.empty()) o.world = o.load = match_cfg.load_path;   // mentett játék
                    return true;
                  }())) {
         menu_quit = true;
@@ -733,6 +741,26 @@ int main(int argc, char** argv) {
           mission_match = sim::start_match(*desc, session.terrain_ptr(), session.content_rules(), err);
           if (!mission_match) return false;
           session.adopt(*mission_match);
+          session.set_match_desc(*desc);   // a küldetés is menthető
+          return true;
+        };
+        auto start_load = [&]() -> bool {   // mentett játék: a leírásból a kezdés nélkül, majd az állapot
+          if (!session.load_content(o.content, &err)) return false;
+          auto f = client::read_save(o.load);
+          if (!f) {
+            err = "a mentés nem olvasható: " + o.load;
+            return false;
+          }
+          mission_match = sim::start_match(f->desc, session.terrain_ptr(), session.content_rules(), err, true);
+          if (!mission_match) return false;
+          if (!mission_match->sim->load(f->state)) {
+            err = "a mentés nem tölthető be (eltérő tartalom vagy sérült fájl): " + o.load;
+            return false;
+          }
+          if (mission_match->map) mission_match->sim->restore_obstacles(*mission_match->map);   // fák, épületek a rácson
+          session.adopt(*mission_match);
+          session.set_match_desc(f->desc);
+          if (f->desc.fog == 2) session.set_reveal_all(true);
           return true;
         };
         auto start_editor = [&]() -> bool {   // M11: a szerkesztő (WC3 World Editor mintájára)
@@ -792,7 +820,7 @@ int main(int argc, char** argv) {
           session.adopt(*mission_match);
           return true;
         };
-        const bool loaded = net_game ? start_net() : !o.chain.empty() ? start_chain() : !o.editor.empty() ? start_editor()
+        const bool loaded = net_game ? start_net() : !o.load.empty() ? start_load() : !o.chain.empty() ? start_chain() : !o.editor.empty() ? start_editor()
                             : !o.mission.empty() ? start_mission() : session.load(o.content, o.world, 20261112, &err);
         if (!loaded || !terrain.init(dev, o.assets, &err)) {
           std::fprintf(stderr, "%s\n", err.c_str());
@@ -1091,9 +1119,36 @@ int main(int argc, char** argv) {
             for (size_t i = 0; i < pause_items.size(); ++i) {
               if (pause_items[i].contains(ev.button.x, ev.button.y)) hit = static_cast<int>(i);
             }
-            if (hit == 2) running = false;
-            else if (hit == 1) {
+            if (hit == 3) running = false;
+            else if (hit == 2) {
               save_diag(hud.model());
+              game_paused = false;
+            } else if (hit == 1) {   // mentés (a régi `SaveMenu`): a felhasználói adatmappa `mentesek` alá, időbélyeggel
+              client::HudModel& hm = hud.model();
+              if (!session.match_desc()) {
+                hm.post_notice(hm.tr("save_unavailable"));
+              } else {
+                const auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+                char stamp[32] = {}, date[32] = {};
+                std::strftime(stamp, sizeof stamp, "%Y%m%d_%H%M%S", std::localtime(&now));
+                std::strftime(date, sizeof date, "%Y-%m-%d %H:%M", std::localtime(&now));
+                const auto path = client::saves_dir() / (std::string(stamp) + ".totumentes");
+                std::string mapname = "?";
+                if (const auto mv = content::parse(session.match_desc()->map)) {
+                  if (const auto* nm = mv->find("name"); nm && nm->is_string()) mapname = nm->text();
+                }
+                const int64_t secs = hm.snap() ? hm.snap()->tick / 30 : 0;
+                char clock[16] = {};
+                std::snprintf(clock, sizeof clock, "%02lld:%02lld", static_cast<long long>(secs / 60), static_cast<long long>(secs % 60));
+                content::Value meta = content::Value::object();
+                meta.set("title", content::Value::string(locale.name(mapname) + "  " + clock));
+                meta.set("date", content::Value::string(date));
+                bool ok = false;
+                std::string serr;
+                runner.with_sim([&] { ok = session.save_game(path.string(), content::dump(meta), &serr); });
+                if (ok) hm.post_notice(hm.tr("saved", {path.filename().string()}), {150, 220, 150});
+                else hm.post_notice(hm.tr("save_failed", {serr}));
+              }
               game_paused = false;
             } else if (hit == 0 || pause_items.empty() || ev.button.x > static_cast<float>(pause_items[0].right()) + 40.0f) game_paused = false;
           }
@@ -1469,7 +1524,15 @@ int main(int argc, char** argv) {
       if (hud_on) {   // a régi játék sebességvezérlése: −/+ gomb és billentyű (egyjátékos módban)
         auto& hm = hud.model();
         hm.speed_locked = o.host_port > 0 || !o.join.empty();
-        if (hm.speed_change != 0 && !hm.speed_locked) runner.set_speed_pct(client::HudModel::next_speed(runner.speed_pct(), hm.speed_change));
+        if (hm.speed_change != 0 && !hm.speed_locked) {   // a régi: „Játéksebesség: x1.5”
+          const int before = runner.speed_pct();
+          runner.set_speed_pct(client::HudModel::next_speed(runner.speed_pct(), hm.speed_change));
+          if (runner.speed_pct() != before) {
+            char sp[16];
+            std::snprintf(sp, sizeof sp, "%g", static_cast<double>(runner.speed_pct()) / 100.0);
+            hm.post_notice(hm.tr("speed", {sp}), {230, 230, 200});
+          }
+        }
         hm.speed_change = 0;
         hm.speed_pct = runner.speed_pct();
       }
@@ -1558,7 +1621,9 @@ int main(int argc, char** argv) {
         // részecskék: a szimuláció eseményeiből (találat, halál), a fáklyák parazsa, az eső cseppjei a talajon
         const float dt = static_cast<float>(std::clamp(t - prev_t, 0.0, 0.1));
         prev_t = t;
-        for (const auto& fe : world.fx_events()) particles.emit(fe.death ? render::Effect::Death : render::Effect::Hit, fe.x, fe.y);
+        for (const auto& fe : world.fx_events()) {   // találat: szikra; a halál képét a világ játssza le (blood, explosion)
+          if (!fe.death) particles.emit(render::Effect::Hit, fe.x, fe.y);
+        }
         world.fx_events().clear();
         if (wl.splashes > 0 && wl.precip == render::Precip::Rain) {
           const float area = (vx1 - cam.x) * (vy1 - cam.y) * cam.zoom * cam.zoom / (1280.0f * 720.0f);
@@ -1568,6 +1633,16 @@ int main(int argc, char** argv) {
           }
         }
         particles.update(dt, wl.wind);
+        if (auto mv = world.take_view_change()) {   // a népmechanikák fedőképe (csak ha a nézet változott)
+          render::Image mi = client::module_overlay(mv->w, mv->h, mv->creep, mv->pond);
+          if (module_tex.id) dev.destroy(module_tex);
+          module_tex = {};
+          if (mi.width > 0 && mi.width <= dev.max_texture_size() && mi.height <= dev.max_texture_size()) {
+            render::premultiply(mi);
+            module_tex = dev.create_array_from(mi, false);
+          }
+          world.set_module_overlay(module_tex.id ? &module_tex : nullptr);
+        }
         lighting.resize(w, h);
         lighting.begin_scene(0.0f, 0.0f, 0.0f);
         terrain.draw(proj, cam.x, cam.y, vx1, vy1, t);
@@ -1588,7 +1663,12 @@ int main(int argc, char** argv) {
         world.draw_planned(batch, white, atl);       // a tervezett épületek (rács és halvány kép)
         world.draw_placement_grid(batch, white);     // a régi lerakási rács és keret
         world.draw_ground_items(batch, white, t);     // a földön heverő tárgyak
+        world.draw_links(batch, white, t);            // a micélia spórafonalai
+        world.draw_areas(batch, atl, alpha);          // a területi mezők (a régi `draw_area`)
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
+        world.draw_vfx(batch, atl, alpha);            // varázslás, robbanó varázslat, becsapódás, szintlépés
+        world.draw_larva(batch, white);               // a Kaptárak lárvái
+        world.draw_status_fx(batch, white, alpha, t); // állapotok a figurán (a régi `draw_status_fx`)
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
         world.draw_objective_beacons(batch, t);    // a célok jelzőfénye
@@ -1673,6 +1753,59 @@ int main(int argc, char** argv) {
           hf.cam_w = static_cast<float>(w) / cam.zoom;
           hf.cam_h = static_cast<float>(h) / cam.zoom;
           hf.fps = settings.show_fps ? fps_shown : -1;
+          {   // a kurzor a helyzet szerint (a régi `cursor_kind`)
+            client::HudModel& chm = hud.model();
+            const auto* cs = world.snapshot();
+            const sim::Rules* cr = session.rules();
+            std::string kind = "arrow";
+            const int ex = hf.mx <= 2 ? -1 : hf.mx >= static_cast<float>(w) - 3 ? 1 : 0;
+            const int ey = hf.my <= 2 ? -1 : hf.my >= static_cast<float>(h) - 3 ? 1 : 0;
+            static const char* kScroll[3][3] = {{"scroll_nw", "scroll_n", "scroll_ne"}, {"scroll_w", "", "scroll_e"}, {"scroll_sw", "scroll_s", "scroll_se"}};
+            if (settings.edge_scroll && chm.mode.kind == client::HudMode::None && (ex || ey)) {
+              kind = kScroll[ey + 1][ex + 1];
+            } else if (chm.over_hud(hf.mx, hf.my)) {
+              kind = "arrow";
+            } else if (chm.mode.kind != client::HudMode::None) {
+              switch (chm.mode.kind) {
+                case client::HudMode::Move: kind = "move"; break;
+                case client::HudMode::Attack: kind = "attack"; break;
+                case client::HudMode::Place:
+                  kind = cs && cs->place.def == chm.mode.def && !cs->place.ok ? "no" : "build";
+                  break;
+                case client::HudMode::Unpack: kind = "build"; break;
+                default: kind = "cast"; break;
+              }
+            } else if (cs && cr) {
+              const float wx = cam.x + hf.mx / cam.zoom, wy = cam.y + hf.my / cam.zoom;
+              bool any_worker = false, any_attacker = false;
+              for (const sim::EntityId id : world.selection()) {
+                const auto* su = cs->find(id);
+                if (!su || su->owner != session.local_player() || su->def >= cr->defs.size()) continue;
+                any_worker = any_worker || cr->defs[su->def].worker;
+                any_attacker = any_attacker || su->damage > 0;
+              }
+              const client::SnapUnit* res = nullptr;   // a lelőhely a lábnyoma szerint
+              for (const auto& su : cs->units) {
+                if (su.kind == client::SnapUnit::kResource && wx >= su.tx * 32.0f && wx < (su.tx + su.w) * 32.0f && wy >= su.ty * 32.0f &&
+                    wy < (su.ty + su.h) * 32.0f) {
+                  res = &su;
+                }
+              }
+              const int hi = world.hovered(alpha, wx, wy);
+              if (hi >= 0) {
+                const client::SnapUnit& e = cs->units[static_cast<size_t>(hi)];
+                const uint8_t me = session.local_player();
+                const bool hostile = e.owner != me && !cs->allied(me, e.owner);
+                if (hostile) kind = any_attacker ? "attack" : "select_enemy";
+                else if (e.owner == me && e.hp < e.max_hp && any_worker && e.kind == client::SnapUnit::kBuilding) kind = "repair";
+                else kind = "select_friend";
+              } else if (res) {
+                static const char* kGather[4] = {"gather_wood", "gather_stone", "gather_meteor", "gather_stone"};
+                kind = any_worker ? kGather[std::min<int>(res->res, 3)] : "select_neutral";
+              }
+            }
+            cursors.set(kind);
+          }
           batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
           hud.draw_world_labels(batch, white, world.labels(alpha, t, cam.x + hf.mx / cam.zoom, cam.y + hf.my / cam.zoom), cam.x, cam.y,
                                 cam.zoom);   // a világ feliratai (a HUD alatt)
@@ -1730,7 +1863,7 @@ int main(int argc, char** argv) {
             dim.tint[3] = static_cast<uint8_t>(110 * pause_slide);
             batch.draw(white, nullptr, dim);
             pause_items = hud.draw_pause(batch, white, hf, pause_slide, locale.tr("ui.pause.title"),
-                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.diag"), locale.tr("ui.pause.quit")});
+                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.save"), locale.tr("ui.pause.diag"), locale.tr("ui.pause.quit")});
           } else {
             pause_items.clear();
           }
@@ -1832,7 +1965,7 @@ int main(int argc, char** argv) {
     dev.destroy(sigil_own);
     dev.destroy(sigil_ally);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &ground_tex}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &ground_tex, &module_tex}) dev.destroy(*t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();

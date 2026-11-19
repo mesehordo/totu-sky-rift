@@ -160,6 +160,36 @@ class Module final : public FactionModule {
     return n;
   }
 
+  void view(Sim& s, ModuleView& v) override {   // a spórafonalak: a bejárás élei (a régi `links`, `draw_network`)
+    for (int owner = 1; owner <= Sim::kMaxPlayers; ++owner) {
+      if (!network(s, static_cast<uint8_t>(owner))) continue;
+      const Net& n = net(s, static_cast<uint8_t>(owner));
+      std::vector<EntityId> seen, stack;
+      for (const EntityId e : n.connected) {
+        if (is_core(s.rules_->defs[s.world_.get<Building>(e)->def])) {
+          seen.push_back(e);
+          stack.push_back(e);
+        }
+      }
+      while (!stack.empty()) {
+        const EntityId a = stack.back();
+        stack.pop_back();
+        const Position pa = *s.world_.get<Position>(a);
+        const Fixed la = link_radius(s.rules_->defs[s.world_.get<Building>(a)->def]);
+        for (const EntityId o : n.connected) {
+          if (std::find(seen.begin(), seen.end(), o) != seen.end()) continue;
+          const Position& po = *s.world_.get<Position>(o);
+          const Fixed lr = std::max(la, link_radius(s.rules_->defs[s.world_.get<Building>(o)->def]));
+          if (core::length(pa.x - po.x, pa.y - po.y) <= lr) {
+            seen.push_back(o);
+            stack.push_back(o);
+            v.links.push_back({a, o, static_cast<uint8_t>(owner)});
+          }
+        }
+      }
+    }
+  }
+
   bool connected(Sim& s, EntityId b) {
     const Health* h = s.world_.get<Health>(b);
     if (!h) return false;

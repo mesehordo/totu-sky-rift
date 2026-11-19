@@ -279,4 +279,99 @@ render::Image ground_overlay(const map::Map& m, const map::TerrainTable& terrain
   return img;
 }
 
+render::Image module_overlay(int w, int h, const std::vector<uint8_t>& creep, const std::vector<uint8_t>& pond) {
+  render::Image img;
+  const size_t n = static_cast<size_t>(std::max(0, w)) * static_cast<size_t>(std::max(0, h));
+  const bool has_c = creep.size() == n && n > 0, has_p = pond.size() == n && n > 0;
+  if (!has_c && !has_p) return img;
+  constexpr int P = kOverlayPx;
+  img.width = w * P;
+  img.height = h * P;
+  img.rgba.assign(static_cast<size_t>(img.width) * static_cast<size_t>(img.height) * 4, 0);
+  // a csempemaszk 3 × 3-as simítása, majd kétszer lineáris mintavétel: kerekded part, mint a régi `smoothscale`
+  auto smooth = [&](const std::vector<uint8_t>& m, int rad) {
+    std::vector<float> f(n, 0.0f);
+    for (int y = 0; y < h; ++y) {
+      for (int x = 0; x < w; ++x) {
+        float sum = 0, cnt = 0;
+        for (int dy = -rad; dy <= rad; ++dy) {
+          for (int dx = -rad; dx <= rad; ++dx) {
+            if (dx * dx + dy * dy > rad * rad + 1) continue;   // kerek ablak
+            const int xx = std::clamp(x + dx, 0, w - 1), yy = std::clamp(y + dy, 0, h - 1);
+            const float k = dx == 0 && dy == 0 ? 2.0f : 1.0f;
+            sum += (m[static_cast<size_t>(yy * w + xx)] ? 1.0f : 0.0f) * k;
+            cnt += k;
+          }
+        }
+        f[static_cast<size_t>(y * w + x)] = sum / cnt;
+      }
+    }
+    return f;
+  };
+  const std::vector<float> fc = has_c ? smooth(creep, 1) : std::vector<float>{}, fp = has_p ? smooth(pond, 2) : std::vector<float>{};
+  auto sample = [&](const std::vector<float>& f, float tx, float ty) {
+    const float gx = std::clamp(tx - 0.5f, 0.0f, static_cast<float>(w - 1)), gy = std::clamp(ty - 0.5f, 0.0f, static_cast<float>(h - 1));
+    const int x0 = static_cast<int>(gx), y0 = static_cast<int>(gy);
+    const int x1 = std::min(x0 + 1, w - 1), y1 = std::min(y0 + 1, h - 1);
+    const float ax = gx - static_cast<float>(x0), ay = gy - static_cast<float>(y0);
+    auto at = [&](int x, int y) { return f[static_cast<size_t>(y * w + x)]; };
+    return (at(x0, y0) * (1 - ax) + at(x1, y0) * ax) * (1 - ay) + (at(x0, y1) * (1 - ax) + at(x1, y1) * ax) * ay;
+  };
+  auto hash = [](int x, int y) {
+    uint32_t v = static_cast<uint32_t>(x) * 73856093u ^ static_cast<uint32_t>(y) * 19349663u;
+    v ^= v >> 13;
+    v *= 0x5bd1e995u;
+    return static_cast<float>((v >> 8) & 0xffff) / 65535.0f;
+  };
+  auto vnoise = [&](float x, float y) {   // simított értékzaj (a gyökérerekhez és a víz árnyalatához)
+    const int x0 = static_cast<int>(std::floor(x)), y0 = static_cast<int>(std::floor(y));
+    const float fx = x - static_cast<float>(x0), fy = y - static_cast<float>(y0);
+    const float sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+    const float a = hash(x0, y0), b = hash(x0 + 1, y0), c = hash(x0, y0 + 1), d = hash(x0 + 1, y0 + 1);
+    return (a * (1 - sx) + b * sx) * (1 - sy) + (c * (1 - sx) + d * sx) * sy;
+  };
+  auto smoothstep = [](float a, float b, float x) {
+    const float t = std::clamp((x - a) / (b - a), 0.0f, 1.0f);
+    return t * t * (3 - 2 * t);
+  };
+  for (int py = 0; py < img.height; ++py) {
+    for (int px = 0; px < img.width; ++px) {
+      const float tx = (static_cast<float>(px) + 0.5f) / P, ty = (static_cast<float>(py) + 0.5f) / P;
+      uint8_t* o = &img.rgba[(static_cast<size_t>(py) * static_cast<size_t>(img.width) + static_cast<size_t>(px)) * 4];
+      const float noise = hash(px / 2, py / 2);
+      if (has_p) {   // tavacska: víz (a közepe sötétebb), habvonal, homoksáv
+        const float v = sample(fp, tx, ty);
+        if (v > 0.36f) {
+          float r, g, b, a;
+          if (v > 0.58f) {
+            const float d = smoothstep(0.58f, 1.0f, v) * (0.75f + 0.25f * vnoise(tx * 0.7f, ty * 0.7f));
+            r = 62 - 22 * d; g = 108 - 30 * d; b = 136 - 26 * d; a = 235;
+          } else if (v > 0.5f) {
+            r = 214; g = 226; b = 220; a = 200;
+          } else {
+            r = 184 + 10 * noise; g = 166 + 8 * noise; b = 118; a = 220 * smoothstep(0.36f, 0.44f, v);
+          }
+          o[0] = static_cast<uint8_t>(r); o[1] = static_cast<uint8_t>(g); o[2] = static_cast<uint8_t>(b); o[3] = static_cast<uint8_t>(a);
+          continue;
+        }
+      }
+      if (has_c) {   // fertőzött talaj (D53): szürkészöld, foltos, a széle lágy; vékony, sötét gyökérerek
+        const float v = sample(fc, tx, ty);
+        const float a = smoothstep(0.32f, 0.6f, v);
+        if (a <= 0.0f) continue;
+        // gyökérerek: egy simított zajmező szintvonalai (szabálytalan, elágazó vonalak), csak a folt belsejében
+        const float nv = vnoise(tx * 0.9f, ty * 0.9f) * 0.65f + vnoise(tx * 2.3f + 17.0f, ty * 2.3f) * 0.35f;
+        const float rw = v > 0.6f ? std::clamp(1.0f - std::abs(nv - 0.5f) / 0.03f, 0.0f, 1.0f) : 0.0f;   // lágy szélű ér
+        const float m = 0.85f + 0.3f * noise;
+        auto mix = [&](float base, float root) { return std::clamp((base + (root - base) * rw) * m, 0.0f, 255.0f); };
+        o[0] = static_cast<uint8_t>(mix(112.0f, 62.0f));
+        o[1] = static_cast<uint8_t>(mix(124.0f, 58.0f));
+        o[2] = static_cast<uint8_t>(mix(96.0f, 44.0f));
+        o[3] = static_cast<uint8_t>(std::clamp(a * (160.0f + 50.0f * rw), 0.0f, 255.0f));
+      }
+    }
+  }
+  return img;
+}
+
 }  // namespace totu::client

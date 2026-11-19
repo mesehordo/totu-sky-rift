@@ -610,3 +610,19 @@ TEST_CASE("Csapatok – menü: Csapat oszlop (–, 1–4), a MatchSetup viszi; e
   pick(m, MenuAct::SlotTeam, 1, 0);
   CHECK(m.match_config(7, &c) && c.setup.teams.empty());   // mindenki ellen: nincs csapat
 }
+
+TEST_CASE("Mentes – menü: a Betoltes kepernyo listaja, betoltes es torles (a regi LoadMenu)") {
+  client::Settings st;
+  Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+  m.layout(1280, 720);
+  m.go(MenuScreen::Load);
+  m.layout(1280, 720);
+  CHECK(m.find(MenuAct::SavePick, 0) == nullptr && !m.find(MenuAct::SaveLoad)->enabled);   // üres lista
+  m.set_saves({{"a.totumentes", "Kráterföld 03:10", "2026-11-20 10:00"}, {"b.totumentes", "Hasadék 12:00", "2026-11-19 09:00"}});
+  m.layout(1280, 720);
+  CHECK(m.find(MenuAct::SavePick, 1) != nullptr && m.find(MenuAct::SaveLoad)->enabled);
+  press(m, MenuAct::SavePick, 1);
+  CHECK(press(m, MenuAct::SaveLoad) == Menu::Result::Load && m.load_choice() == "b.totumentes");
+  press(m, MenuAct::SaveDelete);
+  CHECK(m.take_delete() == "b.totumentes" && m.take_delete().empty());
+}

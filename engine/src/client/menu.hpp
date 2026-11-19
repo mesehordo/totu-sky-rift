@@ -84,13 +84,14 @@ struct MatchConfig {
   std::string map_path;
   sim::MatchSetup setup;
   std::vector<int> ai;
+  std::string load_path;   // nem üres: mentett játék betöltése (a többi mező üres)
 };
 // false és a hibaüzenet kulcsa (a .po-ban), ha a beállítás nem indítható (pl. kevesebb mint két résztvevő)
 bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps, const std::vector<FactionInfo>& factions,
                        uint64_t seed, MatchConfig* out, std::string* error_hu);
 
 // --- az elrendezés elemei -------------------------------------------------------------------------------------------
-enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods };
+enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods, Load };
 
 enum class MenuAct : uint8_t {
   None = 0,
@@ -113,6 +114,9 @@ enum class MenuAct : uint8_t {
   OpenMods,
   ModPick,       // arg: < 1000 az elérhetők listájában, ≥ 1000 az engedélyezettekében
   ModEnable, ModDisable, ModUp, ModDown, ModSave,
+  OpenLoad,      // a régi `LoadMenu`: a mentések listája
+  SavePick,      // arg: a mentés sorszáma
+  SaveLoad, SaveDelete,
 };
 
 struct MenuWidget {
@@ -156,7 +160,7 @@ class Menu {
  public:
   // változásjelzők (a hívó menti a fájlt, alkalmazza a képernyőt, a nyelvet, a csapatszíneket)
   enum Change : uint32_t { kSave = 1, kDisplay = 2, kLanguage = 4, kColors = 8 };
-  enum class Result : uint8_t { None = 0, Start, Quit, Restart };
+  enum class Result : uint8_t { None = 0, Start, Quit, Restart, Load };
 
   Menu(Settings& settings, Locale& locale, std::vector<MapInfo> maps, std::vector<FactionInfo> factions);
 
@@ -204,6 +208,14 @@ class Menu {
   void set_mods(std::vector<content::ModInfo> available) { mods_avail_ = std::move(available); }
   // M13: a modok győzelmi szkriptjei – a győzelmi feltétel lenyílójában a beépítettek után
   void set_victories(std::vector<script::VictoryInfo> v) { victories_ = std::move(v); }
+  // a mentések (a betöltő listája; legújabb elöl): a fájl és a felirat
+  struct SaveRow {
+    std::string path, title, detail;
+  };
+  void set_saves(std::vector<SaveRow> s) { saves_ = std::move(s); save_sel_ = saves_.empty() ? -1 : 0; }
+  const std::vector<SaveRow>& saves() const { return saves_; }
+  const std::string& load_choice() const { return load_choice_; }   // Result::Load után: a választott mentés
+  std::string take_delete() { std::string s; s.swap(delete_req_); return s; }   // törlési kérés (a hívó törli, majd set_saves)
   const std::vector<script::VictoryInfo>& victories() const { return victories_; }
   const std::vector<std::string>& mods_enabled() const { return mods_on_; }
   const std::vector<std::string>& mods_errors() const { return mods_err_; }
@@ -240,6 +252,12 @@ class Menu {
   std::vector<MapInfo> maps_;
   std::vector<content::ModInfo> mods_avail_;
   std::vector<script::VictoryInfo> victories_;
+  std::vector<SaveRow> saves_;
+  int save_sel_ = -1;
+  std::string load_choice_, delete_req_;
+  int last_pick_ = -1;
+  double last_pick_t_ = -9;
+  void layout_load();
   std::vector<std::string> mods_on_, mods_err_;
   std::string mod_sel_;
   std::vector<FactionInfo> factions_;

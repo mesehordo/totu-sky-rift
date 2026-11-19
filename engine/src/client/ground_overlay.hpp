@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "map/map.hpp"
 #include "map/terrain.hpp"
@@ -16,5 +17,10 @@ constexpr int kOverlayPx = 8;   // képpont csempénként (a régi PX)
 
 // a teljes pálya fedőrétege (szélesség × 8, magasság × 8), előszorzás nélküli RGBA
 render::Image ground_overlay(const map::Map& m, const map::TerrainTable& terrain, uint64_t seed);
+
+// a népmechanikák fedőképe (a régi `draw_creep` és `draw_ponds`), csempénként 8 képpont, lágy, kerekded széllel:
+// a fertőzött talaj szürkészöld foltja (D53) és a tavacska vize homoksávval és habvonallal. `creep`, `pond`: csempénként
+// a gazda (0: nincs); üres: nincs ilyen. Előszorzás nélküli RGBA; ha egyik sincs, üres kép.
+render::Image module_overlay(int w, int h, const std::vector<uint8_t>& creep, const std::vector<uint8_t>& pond);
 
 }  // namespace totu::client

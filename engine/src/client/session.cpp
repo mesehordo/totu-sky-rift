@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/session.hpp"
 #include "client/diagnostics.hpp"
+#include "client/savegame.hpp"
 
 #include "sim/mission.hpp"
 
@@ -40,6 +41,8 @@ bool Session::load(const std::string& content_dir, const std::string& map_path, 
   std::vector<std::string> errors;
   std::ifstream in(map_path, std::ios::binary);
   const std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
+  map_text_ = text;
+  desc_.reset();
   const auto doc = content::parse(text);
   if (doc) own_map_ = map::Map::from_json(*doc, terrain_, errors);
   if (!own_map_) {
@@ -60,6 +63,8 @@ void Session::adopt(sim::MatchInstance& match) {
   ai_.reset();
   victory_.reset();
   victory_view_ = nullptr;
+  view_.reset();
+  desc_.reset();   // a hívó adja át (set_match_desc), ha menthető
   for (const auto& h : match.hosts) {
     if (h->name() == "victory") victory_view_ = h.get();
   }
@@ -190,6 +195,21 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   if (setup.fog == sim::MatchSetup::Fog::None) reveal_all_ = true;
   victory_.reset();
   victory_view_ = nullptr;
+  // a mentéshez: a meccs leírása (a betöltés ebből építi fel ugyanígy – start_match, ugyanaz a csatlakozó-sorrend)
+  sim::Replay desc;
+  desc.seed = seed_;
+  desc.map = map_text_;
+  desc.factions = setup.factions;
+  desc.weather = static_cast<uint8_t>(setup.weather);
+  desc.ai = setup.ai;
+  desc.upkeep = setup.upkeep;
+  desc.camps = setup.camps;
+  desc.fog = static_cast<uint8_t>(setup.fog);
+  desc.daytime = static_cast<uint8_t>(setup.daytime);
+  desc.victory = static_cast<uint8_t>(setup.victory);
+  desc.tempo = static_cast<uint8_t>(setup.tempo);
+  desc.minutes = setup.minutes;
+  desc.teams = setup.teams;
   if (setup.victory == sim::MatchSetup::Victory::Script) {   // M13: a modbeli győzelmi szkript (a gépek előtt csatolva)
     content::Vfs vfs;
     content::add_mod_layers(vfs, content_dir_, mods_);
@@ -197,6 +217,7 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
     if (!pkg) return false;
     victory_ = script::attach_victory(*sim_, *pkg, seed_, true, error);
     if (!victory_ || victory_->errors() > 0) return false;
+    script::add_to_replay(desc, *pkg);
     victory_view_ = victory_.get();
   }
   if (!setup.ai.empty()) {   // M9: az új gépi ellenfél – gépi játékosonként saját Lua-állapot (AI-csomag a VFS-ből)
@@ -211,6 +232,7 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
     }
     ais_ = script::attach_ais(*sim_, setup.ai, pkgs, seed_, true, error);
     if (ais_.empty()) return false;
+    for (const auto& p : pkgs) script::add_to_replay(desc, p);
   } else if (!ai.empty()) {   // a szkriptelt ellenfél (Lua; determinisztikus, a hash és a mentés része)
     std::ifstream in(std::filesystem::path(content_dir_) / "base" / "scripts" / ai_script, std::ios::binary);
     const std::string src{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
@@ -233,7 +255,25 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   last_.reset();
   fog_.reset();
   remembered_.clear();
+  if (ai_) desc_.reset();   // a régi, egyfájlos gépi szkript: nem menthető
+  else desc_ = std::move(desc);
   return true;
+}
+
+bool Session::save_game(const std::string& path, const std::string& meta, std::string* error) {
+  if (!desc_ || !sim_) {
+    if (error) *error = "ez a meccs nem menthető";
+    return false;
+  }
+  SaveFile f;
+  f.meta = meta;
+  f.desc = *desc_;
+  f.desc.commands.clear();
+  f.desc.checkpoints.clear();
+  f.desc.ticks = 0;
+  f.desc.checkpoint_every = 1;   // a dekóder: legfeljebb a hossz + 1
+  f.state = sim_->save();
+  return write_save(path, f, error);
 }
 
 void Session::battle_demo(int per_side) {
@@ -353,6 +393,37 @@ void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
                  af->sleep_until, af->stun_until, af->fear_until, af->blind_until, af->silence_until, af->mark_until,
                  af->sunder_until};
   }
+  {   // a figura animációja: támadott-e most (a töltési idő újraindult), varázsolt-e (egy képesség újratöltése nőtt)
+    AnimTrack& tr = anim_[e];
+    const int64_t now = sim_->tick();
+    if (const auto* cb = w.get<sim::Combat>(e)) {
+      if (tr.seen > 0 && cb->cooldown > tr.cooldown) tr.attack_tick = now;
+      tr.cooldown = cb->cooldown;
+      if (cb->target != 0 && w.alive(cb->target)) {
+        if (const auto* tp = w.get<sim::Position>(cb->target)) {
+          u.has_face = true;
+          u.face_x = to_px(tp->x);
+          u.face_y = to_px(tp->y);
+        }
+      }
+    }
+    if (const auto* c = w.get<sim::Caster>(e)) {
+      int64_t mx = 0;
+      for (const auto& [ab, t] : c->ready) {
+        mx = std::max(mx, t);
+        // melyik képesség újratöltése nőtt: az volt a varázslat
+        const auto old = std::find_if(tr.ready.begin(), tr.ready.end(), [&](const auto& x) { return x.first == ab; });
+        if (tr.seen > 0 && (old == tr.ready.end() ? t > now : t > old->second)) tr.cast_ability = ab;
+      }
+      if (tr.seen > 0 && mx > tr.ready_max) tr.cast_tick = now;
+      tr.ready_max = mx;
+      tr.ready = c->ready;
+    }
+    tr.seen = now + 1;
+    u.attack_tick = tr.attack_tick;
+    u.cast_tick = tr.cast_tick;
+    u.cast_ability = tr.cast_ability;
+  }
   if (u.order != SnapUnit::kRest) return;
   if (w.get<sim::RepairOrder>(e)) {
     u.order = SnapUnit::kRepair;
@@ -387,6 +458,9 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
   }
   auto s = std::make_shared<Snapshot>();
   s->tick = sim_->tick();
+  if (s->tick % 300 == 0) {   // a figuraanimáció nyilvántartásából kihullanak a megszűnt entitások
+    for (auto it = anim_.begin(); it != anim_.end();) it = sim_->world().alive(it->first) ? std::next(it) : anim_.erase(it);
+  }
   const bool match = sim_->rules() != nullptr;
   std::vector<sim::EntityId> seen_now;
   auto& w = sim_->world();
@@ -408,6 +482,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       if (const auto* sh = w.get<sim::Shot>(e)) {   // lövedék
         u.kind = SnapUnit::kShot;
         u.res = sh->kind;
+        if (const auto* sp = w.get<sim::Spell>(e)) u.spell = sp->ability;   // varázslövedék (a régi `vfx_<elem>_bolt`)
         u.owner = sh->owner;
         u.hp = 1;
         u.sx = to_px(sh->sx);
@@ -517,6 +592,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       o.team = p.team;
       o.ascended = p.ascended;
       o.ally = p.ally;
+      for (const auto& fh : p.fallen) o.fallen.push_back(fh.first);
       o.path = p.path;
       if (i == 1) o.researched = p.researched;
       for (int r = 0; r < sim::kResources; ++r) o.gathered[static_cast<size_t>(r)] = static_cast<int32_t>(p.gathered[static_cast<size_t>(r)] / 1000);
@@ -615,6 +691,29 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         it.item = sim_->rules()->items[g.item].id;
         if (seen(it.x, it.y, false)) s->items.push_back(it);
       });
+      if (!view_ || s->tick % 10 == 0) {   // a népmechanikák nézete (csak ha változott, új példány – a rajzoló így tudja)
+        auto v = std::make_shared<sim::ModuleView>();
+        sim_->module_view(*v);
+        const bool same = view_ && view_->creep == v->creep && view_->pond == v->pond && view_->larva == v->larva &&
+                          view_->links.size() == v->links.size() &&
+                          std::equal(v->links.begin(), v->links.end(), view_->links.begin(),
+                                     [](const auto& x, const auto& y) { return x.a == y.a && x.b == y.b && x.owner == y.owner; });
+        if (!same) view_ = std::move(v);
+      }
+      s->view = view_;
+      w.pool<sim::Field>().each([&](sim::EntityId e, const sim::Field& f) {   // területi mezők (a régi `draw_area`)
+        const auto* p = w.get<sim::Position>(e);
+        if (!p || f.ability >= sim_->rules()->abilities.size() || f.until <= sim_->tick()) return;
+        const sim::AbilityDef& a = sim_->rules()->abilities[f.ability];
+        Snapshot::Area ar;
+        ar.x = to_px(p->x);
+        ar.y = to_px(p->y);
+        ar.r = to_px(a.radius);
+        ar.ability = f.ability;
+        ar.until = f.until;
+        ar.start = f.until - a.duration;
+        if (seen(ar.x, ar.y, true)) s->areas.push_back(ar);
+      });
     }
     s->winner = sim_->winner();
     s->night = sim_->night_permille();
@@ -695,7 +794,11 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
     if (a.kind != SnapUnit::kUnit) continue;   // a kivágott fa és a kimerült lelőhely nem „hal meg”
     while (j < after->units.size() && after->units[j].id < a.id) ++j;
     if (j >= after->units.size() || after->units[j].id != a.id) {
-      if (!sim_->world().alive(a.id)) fx.push_back({a.x, a.y, true});   // a ködbe lépő nem hal meg (D41)
+      if (!sim_->world().alive(a.id)) {   // a ködbe lépő nem hal meg (D41)
+        const sim::Rules* rr = sim_->rules();
+        const bool big = rr && a.def < rr->defs.size() && rr->defs[a.def].has_tag("large");
+        fx.push_back({a.x, a.y, true, big});
+      }
       continue;
     }
     const SnapUnit& b = after->units[j];
@@ -711,6 +814,7 @@ double SimRunner::now() const {
 }
 
 bool SimRunner::run_one() {
+  std::lock_guard<std::mutex> step_lock(step_mu_);   // a with_sim (mentés) addig vár
   std::vector<sim::Command> cmds;
   {
     std::lock_guard<std::mutex> lock(mu_);

@@ -148,6 +148,11 @@ class HudModel {
  private:
   std::unordered_map<sim::EntityId, int32_t> seen_hp_;   // a riasztáshoz: az előző pillanatkép életereje
   std::unordered_map<sim::EntityId, SnapUnit> seen_bld_;  // a saját épületek („Elpusztult: …”, a régi `notify`)
+  // a régi `notify` további üzenetei: az előző állapot (elesett hősök, szövetség, irány, felemelkedés, célok)
+  std::vector<uint16_t> seen_fallen_;
+  std::string seen_ally_, seen_path_;
+  bool seen_ascended_ = false;
+  std::vector<std::string> seen_goals_;
   int64_t seen_tick_ = -1;
   double hero_click_t_ = -9;
   sim::EntityId hero_click_id_ = 0;

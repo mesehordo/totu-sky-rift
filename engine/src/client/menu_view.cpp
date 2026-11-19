@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/menu_view.hpp"
 #include "client/diagnostics.hpp"
+#include "client/savegame.hpp"
 
 #include <algorithm>
 #include <array>
@@ -474,6 +475,15 @@ void apply_display(SDL_Window* win, const Settings& st) {
   if (!st.fullscreen) SDL_SetWindowSize(win, st.width, st.height);
 }
 
+std::filesystem::path saves_dir() {
+  std::filesystem::path dir;
+  if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
+    dir = std::filesystem::path(pref) / "mentesek";
+    SDL_free(pref);
+  }
+  return dir;
+}
+
 bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, Settings& st, Locale& loc,
               const MenuRunOptions& o, MatchConfig* out, int* rc) {
   MenuView view(dev);
@@ -505,6 +515,21 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
   }
   Menu menu(st, loc, std::move(maps), scan_factions(o.content));
   menu.set_mods(o.available_mods);
+  auto refresh_saves = [&] {   // a régi `LoadMenu` listája: a mentések, legújabb elöl
+    std::vector<Menu::SaveRow> rows;
+    for (const auto& e : list_saves(saves_dir())) {
+      Menu::SaveRow r;
+      r.path = e.path.string();
+      r.title = e.path.stem().string();
+      if (const auto v = content::parse(e.meta)) {
+        if (const auto* t = v->find("title"); t && t->is_string()) r.title = t->text();
+        if (const auto* d = v->find("date"); d && d->is_string()) r.detail = d->text();
+      }
+      rows.push_back(std::move(r));
+    }
+    menu.set_saves(std::move(rows));
+  };
+  refresh_saves();
   {   // M13: a modok (és az alap) győzelmi szkriptjei
     content::Vfs vfs;
     content::add_mod_layers(vfs, o.content, o.mods);
@@ -553,6 +578,16 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
       if (res == Menu::Result::Restart) {   // M13: a modkészlet megváltozott – a hívó újraindítja a játékot
         if (rc) *rc = kMenuRestart;
         return false;
+      }
+      if (const std::string del = menu.take_delete(); !del.empty()) {   // a mentés törlése
+        std::error_code ec;
+        std::filesystem::remove(del, ec);
+        refresh_saves();
+      }
+      if (res == Menu::Result::Load && out) {   // mentett játék betöltése
+        *out = MatchConfig{};
+        out->load_path = menu.load_choice();
+        return true;
       }
       if (res == Menu::Result::Start) {
         const uint64_t seed = static_cast<uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());

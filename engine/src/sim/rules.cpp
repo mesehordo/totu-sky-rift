@@ -440,6 +440,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.ultimate = flag("ultimate");
       if (const content::Value* b = key("buff"); b && b->is_string()) a.buff = b->text();
       if (const content::Value* ef = key("effect"); ef && ef->is_string()) a.effect = ef->text();
+      if (const content::Value* sp = key("sprite"); sp && sp->is_string()) a.sprite = sp->text();
       for (int ri = 0; ri < kResources; ++ri) a.cost[static_cast<size_t>(ri)] = int_of(key(resource_id(ri)), 0);
       a.hq_hp = int_of(key("hq_hp"), 0);
       a.cast = seconds_to_ticks(fixed_of(key("cast"), Fixed{}));
@@ -1075,6 +1076,13 @@ int Rules::ability_index(const std::string& id) const {
   const auto it = std::lower_bound(abilities.begin(), abilities.end(), id,
                                    [](const AbilityDef& x, const std::string& v) { return x.id < v; });
   return it != abilities.end() && it->id == id ? static_cast<int>(it - abilities.begin()) : -1;
+}
+
+const char* element_name(Element e) {
+  static const char* kNames[] = {"", "ice", "fear", "fire", "lightning", "poison", "water", "root", "sleep", "blind", "wind",
+                                 "sunder", "silence", "mark"};
+  const auto i = static_cast<size_t>(e);
+  return i < sizeof(kNames) / sizeof(kNames[0]) ? kNames[i] : "";
 }
 
 Element element_of(const std::string& n) {

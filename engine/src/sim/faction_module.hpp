@@ -19,8 +19,23 @@ struct Command;
 struct AbilityDef;
 using core::Fixed;
 
+// A népmechanikák megjelenítése (a régi `draw_creep`, `draw_ponds`, `draw_network`, `draw_building_marks`): csak
+// olvasott nézet a kliensnek, nem játékállapot. Csempénként a mélység és a tó gazdája (0: nincs), a spórafonalak élei,
+// és a lárvatartó épületek lárvái.
+struct ModuleView {
+  int w = 0, h = 0;
+  std::vector<uint8_t> creep, pond;   // w × h (üres: nincs ilyen népmechanika a meccsben)
+  struct Link {
+    EntityId a = 0, b = 0;
+    uint8_t owner = 0;
+  };
+  std::vector<Link> links;
+  std::vector<std::pair<EntityId, int32_t>> larva;
+};
+
 class FactionModule {
  public:
+  virtual void view(Sim&, ModuleView&) {}   // a megjelenítés nézete (csak olvas)
   virtual ~FactionModule() = default;
   virtual const char* name() const = 0;
   // a modul saját komponensei (az attach_rules-ban; a regisztráció sorrendje a hash és a mentés része)

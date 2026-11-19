@@ -151,6 +151,12 @@ class Module final : public FactionModule {
   }
 
   // --- tótérkép -----------------------------------------------------------------------------------------------------
+  void view(Sim& s, ModuleView& v) override {   // a tavak csempéi (a régi `draw_ponds`)
+    const PondMap* p = pond(s);
+    if (!p || p->w != v.w || p->h != v.h || p->owner.empty()) return;
+    v.pond = p->owner;
+  }
+
   static PondMap* pond(Sim& s) {
     PondMap* out = nullptr;
     s.world().pool<PondMap>().each([&](EntityId, PondMap& p) { out = &p; });

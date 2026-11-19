@@ -285,6 +285,22 @@ class Module final : public FactionModule {
 
   bool creep_at(Sim& s, uint8_t owner, int x, int y) { return on_creep(s, owner, x, y); }
 
+  void view(Sim& s, ModuleView& v) override {   // a mélység csempéi és a Kaptárak lárvái (a régi `draw_creep`)
+    if (dirty_) rebuild(s);
+    if (v.w <= 0 || v.h <= 0) return;
+    for (const auto& [owner, f] : fields_) {
+      if (f.size() != static_cast<size_t>(v.w * v.h)) continue;
+      if (v.creep.empty()) v.creep.assign(f.size(), 0);
+      for (size_t i = 0; i < f.size(); ++i) {
+        if (f[i] && !v.creep[i]) v.creep[i] = owner;
+      }
+    }
+    s.world().pool<CroCreep>().each([&](EntityId e, const CroCreep& cc) {
+      const Building* b = s.world().get<Building>(e);
+      if (b && b->complete && cc.larva > 0) v.larva.emplace_back(e, cc.larva);
+    });
+  }
+
   // --- horgok -------------------------------------------------------------------------------------------------------
   void on_building_placed(Sim& s, EntityId e) override {
     const Building* b = s.world().get<Building>(e);

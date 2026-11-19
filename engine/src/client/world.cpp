@@ -22,11 +22,16 @@ const char* kFactions[8] = {"elf_", "cro_", "urs_", "imp_", "wul_", "huk_", "oon
 void World::update() {
   std::shared_ptr<const Snapshot> prev, cur;
   runner_.latest(&prev, &cur);
+  const size_t fx_before = fx_.size();
   runner_.take_fx(fx_);
+  for (size_t k = fx_before; k < fx_.size() && cur; ++k) {   // halál: a régi `blood` (nagy egységnél `explosion`) képe
+    if (fx_[k].death) vfx_.push_back({fx_[k].big ? "explosion" : "blood", fx_[k].x, fx_[k].y, cur->tick, 0});
+  }
   if (cur == cur_ && prev == prev_) return;
   const bool new_tick = !cur_ || cur->tick != cur_->tick;
   prev_ = std::move(prev);
   cur_ = std::move(cur);
+  if (new_tick) spawn_vfx();
   if (!new_tick && !vis_.empty()) return;
   // a látványállapot átvétele azonosító szerint (mindkét lista rendezett): irány és mozgás a megtett útból
   std::vector<Visual> next;
@@ -48,6 +53,9 @@ void World::update() {
     v.moving = dx * dx + dy * dy > 0.01f;
     if (v.moving) {
       const float a = std::atan2(dy, dx);   // a képernyőn lefelé nő az y: K = 0, DK = 1, D = 2 …
+      v.dir = (static_cast<int>(std::lround(a / (3.14159265f / 4.0f))) + 8) % 8;
+    } else if (u.has_face && (u.face_x - u.x) * (u.face_x - u.x) + (u.face_y - u.y) * (u.face_y - u.y) > 1.0f) {
+      const float a = std::atan2(u.face_y - u.y, u.face_x - u.x);   // állva a célpontja felé néz (támadás, varázslás)
       v.dir = (static_cast<int>(std::lround(a / (3.14159265f / 4.0f))) + 8) % 8;
     }
     next.push_back(v);
@@ -626,6 +634,12 @@ void World::draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const
     g.h = static_cast<float>(map().height()) * kTilePx;
     batch.draw(*ground_, nullptr, g);
   }
+  if (module_ && session_.has_sim()) {   // a népmechanikák: fertőzött talaj, tavacskák (a régi `draw_creep`, `draw_ponds`)
+    render::SpriteInstance g;
+    g.w = static_cast<float>(map().width()) * kTilePx;
+    g.h = static_cast<float>(map().height()) * kTilePx;
+    batch.draw(*module_, nullptr, g);
+  }
   if (!atlas || !cur_) return;
   const int si = sheet_by_id(atlas, "doodads");
   if (si < 0) return;
@@ -1110,6 +1124,309 @@ void World::draw_building_flames(render::SpriteBatch& batch, double time) const 
   }
 }
 
+std::string World::element_sheet(uint16_t ability, const char* kind) const {
+  const sim::Rules* r = session_.rules();
+  std::string el = "arcane";
+  if (r && ability < r->abilities.size() && r->abilities[ability].element != sim::Element::None) {
+    el = sim::element_name(r->abilities[ability].element);
+  }
+  return "vfx_" + el + "_" + kind;
+}
+
+void World::spawn_vfx() {
+  const sim::Rules* r = session_.rules();
+  if (!cur_ || !prev_ || !r) return;
+  const int64_t now = cur_->tick;
+  vfx_.erase(std::remove_if(vfx_.begin(), vfx_.end(), [&](const Vfx& v) { return now - v.t0 > 90; }), vfx_.end());
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kUnit) continue;
+    if (u.cast_tick == now && u.cast_ability < r->abilities.size()) {   // varázslás (a régi `cast` / `enova`)
+      const sim::AbilityDef& a = r->abilities[u.cast_ability];
+      if (a.type == sim::AbilityDef::Type::Nova) {
+        vfx_.push_back({element_sheet(u.cast_ability, "nova"), u.x, u.y, now, 2.0f * static_cast<float>(a.radius.raw()) / 65536.0f * kTilePx});
+      } else if (a.type != sim::AbilityDef::Type::Toggle && a.type != sim::AbilityDef::Type::Aura) {
+        vfx_.push_back({element_sheet(u.cast_ability, "cast"), u.x, u.y, now, 0});
+      }
+    }
+    if (u.hero_level > 0) {   // szintlépés
+      const SnapUnit* p = prev_->find(u.id);
+      if (p && p->hero_level > 0 && u.hero_level > p->hero_level) vfx_.push_back({"levelup", u.x, u.y, now, 0});
+    }
+  }
+  for (const SnapUnit& p : prev_->units) {   // a varázslövedék becsapódása: az előző képben még repült, most nincs
+    if (p.kind != SnapUnit::kShot || p.spell >= r->abilities.size() || cur_->find(p.id)) continue;
+    const float splash = static_cast<float>(r->abilities[p.spell].splash.raw()) / 65536.0f * kTilePx;
+    vfx_.push_back({element_sheet(p.spell, "impact"), p.x, p.y - p.lift, now, splash > 4.0f ? splash * 2.0f : 0.0f});
+  }
+}
+
+void World::draw_vfx(render::SpriteBatch& batch, render::Atlas* atlas, float alpha) {
+  if (!cur_ || !atlas) return;
+  const uint8_t no_team[4] = {0, 0, 0, 0};
+  for (const Vfx& v : vfx_) {
+    const int si = sheet_by_id(atlas, v.sheet);
+    if (si < 0) continue;
+    const auto& s = atlas->data().sheets[static_cast<size_t>(si)];
+    if (s.anims.empty()) continue;
+    const auto it = s.anims.find("play");
+    const auto& an = it != s.anims.end() ? it->second : s.anims.begin()->second;
+    const double el = (static_cast<double>(cur_->tick - v.t0) + alpha) / 30.0;
+    const int frame = static_cast<int>(el * std::max(1, an.fps));
+    if (el < 0 || frame >= an.frames) continue;   // egyszer lejátszva
+    const float base_w = static_cast<float>(s.frame_w) / s.scale;
+    const float k = v.width > 0 && base_w > 0 ? v.width / base_w : 1.0f;
+    atlas->draw(batch, s, 0, an.start + frame, v.x, v.y, k / s.scale, no_team, nullptr, 0.0f);
+  }
+}
+
+void World::draw_areas(render::SpriteBatch& batch, render::Atlas* atlas, float alpha) {
+  // a régi `draw_area`: a képesség saját képe több, eredeti méretű példányban a terület mentén; különben az elem
+  // `area` lapja a terület méretére nagyítva; a végén elhalványul
+  const sim::Rules* r = session_.rules();
+  if (!cur_ || !atlas || !r) return;
+  const uint8_t no_team[4] = {0, 0, 0, 0};
+  const double now = static_cast<double>(cur_->tick) + alpha;
+  for (const auto& ar : cur_->areas) {
+    if (ar.ability >= r->abilities.size()) continue;
+    const sim::AbilityDef& a = r->abilities[ar.ability];
+    const double age = (now - static_cast<double>(ar.start)) / 30.0, left = (static_cast<double>(ar.until) - now) / 30.0;
+    uint8_t tint[4] = {255, 255, 255, static_cast<uint8_t>(255.0 * std::clamp(std::min(left / 0.5, age / 0.3), 0.0, 1.0))};
+    const bool own = !a.sprite.empty();
+    const int si = sheet_by_id(atlas, own ? a.sprite : element_sheet(ar.ability, "area"));
+    if (si < 0) continue;
+    const auto& s = atlas->data().sheets[static_cast<size_t>(si)];
+    if (s.anims.empty()) continue;
+    const auto it = s.anims.find("play");
+    const auto& an = it != s.anims.end() ? it->second : s.anims.begin()->second;
+    auto frame_at = [&](double t) { return an.start + static_cast<int>(std::max(0.0, t) * std::max(1, an.fps)) % std::max(1, an.frames); };
+    if (!own) {
+      const float base_w = static_cast<float>(s.frame_w) / s.scale;
+      const float k = base_w > 0 ? ar.r * 2.2f / base_w : 1.0f;
+      atlas->draw(batch, s, 0, frame_at(age), ar.x, ar.y, k / s.scale, no_team, tint, 0.0f);
+      continue;
+    }
+    const int n = std::max(1, static_cast<int>((ar.r / 26.0f) * (ar.r / 26.0f) * 1.2f));
+    for (int k = 0; k < n; ++k) {
+      float ox = 0, oy = 0;
+      if (k > 0) {
+        const float t = static_cast<float>(k) / static_cast<float>(std::max(1, n - 1)) * 6.283f + 0.4f;
+        ox = std::cos(t) * ar.r * 0.55f;
+        oy = std::sin(t) * ar.r * 0.45f;
+      }
+      atlas->draw(batch, s, 0, frame_at(age + k * 0.17), ar.x + ox, ar.y + oy, 1.0f / s.scale, no_team, tint, 0.0f);
+    }
+  }
+}
+
+std::shared_ptr<const sim::ModuleView> World::take_view_change() {
+  if (!cur_ || cur_->view == drawn_view_) return nullptr;
+  drawn_view_ = cur_->view;
+  return drawn_view_;
+}
+
+void World::draw_links(render::SpriteBatch& batch, const render::Texture& white, double time) const {
+  // a régi: három kanyargó szál (sötét, világos, közép) az összekötött épületek között, rajtuk lüktető pötty a nép
+  // kiemelőszínében; az idegen fonal csak akkor, ha mindkét végét látta
+  if (!cur_ || !cur_->view) return;
+  for (const auto& l : cur_->view->links) {
+    const SnapUnit* a = cur_->find(l.a);
+    const SnapUnit* b = cur_->find(l.b);
+    if (!a || !b) continue;
+    const float ax = (static_cast<float>(a->tx) + static_cast<float>(a->w) / 2) * kTilePx, ay = (static_cast<float>(a->ty) + static_cast<float>(a->h) / 2) * kTilePx;
+    const float bx = (static_cast<float>(b->tx) + static_cast<float>(b->w) / 2) * kTilePx, by = (static_cast<float>(b->ty) + static_cast<float>(b->h) / 2) * kTilePx;
+    const float d = std::max(1.0f, std::hypot(bx - ax, by - ay));
+    const float nx = -(by - ay) / d, ny = (bx - ax) / d;
+    static const uint8_t kStrand[3][3] = {{70, 55, 45}, {190, 175, 150}, {150, 135, 110}};
+    static const float kOff[3] = {0.0f, 1.5f, -1.5f};
+    const int n = std::max(4, static_cast<int>(d / 3.0f));
+    for (int k = 0; k < 3; ++k) {
+      for (int i = 0; i <= n; ++i) {
+        const float t = static_cast<float>(i) / static_cast<float>(n);
+        const float wv = std::sin(t * 3.14159f * 3 + static_cast<float>(k) * 2 + static_cast<float>(l.a)) * 2.2f * std::sin(t * 3.14159f);
+        render::SpriteInstance s;
+        const float sz = k == 0 ? 2.0f : 1.2f;
+        s.x = ax + (bx - ax) * t + nx * (wv + kOff[k]) - sz / 2;
+        s.y = ay + (by - ay) * t + ny * (wv + kOff[k]) - sz / 2;
+        s.w = s.h = sz;
+        s.tint[0] = kStrand[k][0]; s.tint[1] = kStrand[k][1]; s.tint[2] = kStrand[k][2];
+        batch.draw(white, nullptr, s);
+      }
+    }
+    const float ph = static_cast<float>(std::fmod(time * 0.6 + static_cast<double>(l.a) * 0.13, 1.0));
+    const auto acc = faction_accent(cur_->players[std::min<size_t>(l.owner, sim::Sim::kMaxPlayers)].faction);
+    render::SpriteInstance p;
+    p.x = ax + (bx - ax) * ph - 2;
+    p.y = ay + (by - ay) * ph - 2;
+    p.w = p.h = 4;
+    p.tint[0] = acc[0]; p.tint[1] = acc[1]; p.tint[2] = acc[2];
+    batch.draw(white, nullptr, p);
+  }
+}
+
+void World::draw_larva(render::SpriteBatch& batch, const render::Texture& white) const {
+  // a régi `draw_building_marks`: a Kaptár fölött annyi kis, sötét szélű pötty, ahány lárva van
+  if (!cur_ || !cur_->view) return;
+  for (const auto& [id, n] : cur_->view->larva) {
+    const SnapUnit* b = cur_->find(id);
+    if (!b || b->kind != SnapUnit::kBuilding) continue;
+    const float cx = (static_cast<float>(b->tx) + static_cast<float>(b->w) / 2) * kTilePx, y = (static_cast<float>(b->ty) + static_cast<float>(b->h) * 0.3f) * kTilePx;
+    const int k = std::min(n, 9);
+    for (int i = 0; i < k; ++i) {
+      const float x = cx + (static_cast<float>(i) - static_cast<float>(k - 1) / 2) * 7.0f;
+      render::SpriteInstance o;
+      o.x = x - 3; o.y = y - 3; o.w = o.h = 6;
+      o.tint[0] = 30; o.tint[1] = 24; o.tint[2] = 20;
+      batch.draw(white, nullptr, o);
+      render::SpriteInstance in = o;
+      in.x += 1; in.y += 1; in.w = in.h = 4;
+      in.tint[0] = 226; in.tint[1] = 214; in.tint[2] = 150;
+      batch.draw(white, nullptr, in);
+    }
+  }
+}
+
+void World::draw_status_fx(render::SpriteBatch& batch, const render::Texture& white, float alpha, double time) const {
+  const sim::Rules* rules = session_.rules();
+  if (!cur_ || !rules) return;
+  const float t = static_cast<float>(std::fmod(time, 10000.0));
+  const render::Texture& dot = amb_dot_ ? *amb_dot_ : white;
+  auto rect = [&](float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b) {
+    render::SpriteInstance s;
+    s.x = x; s.y = y; s.w = w; s.h = h;
+    s.tint[0] = r; s.tint[1] = g; s.tint[2] = b;
+    batch.draw(white, nullptr, s);
+  };
+  auto circ = [&](float x, float y, float rr, uint8_t r, uint8_t g, uint8_t b) {
+    render::SpriteInstance s;
+    s.x = x - rr; s.y = y - rr; s.w = s.h = rr * 2;
+    s.tint[0] = r; s.tint[1] = g; s.tint[2] = b;
+    batch.draw(dot, nullptr, s);
+  };
+  auto outlined = [&](float x, float y, float rr, uint8_t r, uint8_t g, uint8_t b, uint8_t dr, uint8_t dg, uint8_t db) {
+    circ(x + 0.6f, y + 0.6f, rr + 1.0f, dr, dg, db);
+    circ(x, y, rr, r, g, b);
+  };
+  for (size_t i = 0; i < cur_->units.size(); ++i) {
+    const SnapUnit& u = cur_->units[i];
+    if (u.kind != SnapUnit::kUnit || u.hp <= 0 || u.def >= rules->defs.size()) continue;
+    auto on = [&](int k) { return u.afflict[static_cast<size_t>(k)] > cur_->tick; };
+    bool any = false;
+    for (int k = 0; k < 13; ++k) any = any || on(k);
+    if (!any) continue;
+    const Visual& v = vis_[i];
+    const float sx = v.px + (u.x - v.px) * alpha, sy = v.py + (u.y - v.py) * alpha;
+    const float r = std::max(8.0f, static_cast<float>(rules->defs[u.def].radius.raw()) / 65536.0f * kTilePx);
+    const float top = std::max(28.0f, r * 2.6f);
+    const float ph = std::fmod(static_cast<float>(u.id) * 0.6180339f, 1.0f);
+    if (on(2) || on(3)) {   // fagyott, lassult: jégszilánkok lassan körbe
+      for (int k = 0; k < 4; ++k) {
+        const float a = t * 0.9f + static_cast<float>(k) * 1.5708f + ph * 6;
+        const float px = sx + std::cos(a) * r * 1.05f, py = sy - top * (0.25f + 0.18f * static_cast<float>(k % 2)) + std::sin(a) * r * 0.35f;
+        const float kk = k % 2 ? 3.2f : 2.4f;
+        rect(px - kk * 0.35f + 1, py - kk * 1.6f + 1, kk * 0.7f, kk * 3.2f, 24, 20, 46);
+        rect(px - kk * 0.35f, py - kk * 1.6f, kk * 0.7f, kk * 3.2f, 226, 238, 255);
+        rect(px - kk * 0.7f, py - kk * 0.35f, kk * 1.4f, kk * 0.7f, 226, 238, 255);
+      }
+    }
+    if (on(0) && fire_.flame) {   // ég: lángnyelvek a figura alsó felén
+      for (int k = 0; k < 5; ++k) {
+        float q = t * 1.6f + static_cast<float>(k) * 0.37f + ph;
+        q -= std::floor(q);
+        render::SpriteInstance s;
+        const float h = (11.0f + 3.0f * static_cast<float>(k % 2)) * (1 - q * 0.6f);
+        s.w = h * 0.66f;
+        s.h = h;
+        s.x = sx + (static_cast<float>(k) - 2) * r * 0.42f + std::sin(t * 7 + static_cast<float>(k)) * 1.5f - s.w / 2;
+        s.y = sy - top * (0.05f + 0.45f * q) - h;
+        s.layer[0] = static_cast<uint8_t>((static_cast<int>(t * 12.0f) + k * 3) % client::kFlameFrames);
+        batch.draw(*fire_.flame, nullptr, s);
+      }
+    }
+    if (on(1)) {   // mérgezett: buborékok szállnak fel
+      for (int k = 0; k < 4; ++k) {
+        float q = t * 0.7f + static_cast<float>(k) * 0.25f + ph;
+        q -= std::floor(q);
+        const float px = sx + std::sin(static_cast<float>(k) * 2.3f + ph * 9) * r * 0.7f + std::sin(t * 3 + static_cast<float>(k)) * 1.2f;
+        const float py = sy - top * (0.15f + 0.8f * q);
+        const float rr = 1.6f + 1.6f * (1 - std::abs(q - 0.5f) * 2);
+        outlined(px, py, rr, 150, 240, 90, 30, 70, 16);
+        circ(px - rr * 0.35f, py - rr * 0.35f, std::max(0.8f, rr * 0.35f), 220, 255, 190);
+      }
+    }
+    if (on(4)) {   // átázott: hulló vízcseppek
+      for (int k = 0; k < 4; ++k) {
+        float q = t * 1.3f + static_cast<float>(k) * 0.25f + ph;
+        q -= std::floor(q);
+        outlined(sx + (static_cast<float>(k) - 1.5f) * r * 0.55f, sy - top * (0.95f - 0.8f * q), 2.0f, 150, 205, 255, 16, 30, 60);
+      }
+    }
+    if (on(5)) {   // gúzsba kötve: gyökérindák a láb körül
+      for (int k = 0; k < 5; ++k) {
+        const float a = static_cast<float>(k) * 1.2566f + ph * 3;
+        const float bx = sx + std::cos(a) * r * 0.9f, by = sy + std::sin(a) * r * 0.3f;
+        const float tx = sx + std::cos(a) * r * 0.35f, ty = sy - top * (0.22f + 0.06f * std::sin(t * 2 + static_cast<float>(k)));
+        for (int j = 0; j <= 6; ++j) {
+          const float f = static_cast<float>(j) / 6.0f;
+          circ(bx + (tx - bx) * f + std::sin(a) * 4 * std::sin(f * 3.14159f), by + (ty - by) * f, 1.6f - f * 0.6f, 120, 92, 50);
+        }
+        circ(tx, ty, 2.0f, 90, 150, 60);
+      }
+    }
+    if (on(8)) {   // megrémült: felkiáltójel a fej fölött, verejtékcseppek
+      const float bob = std::sin(t * 9) * 1.5f, ex = sx, ey = sy - top - 10 + bob;
+      rect(ex - 2, ey - 9, 5, 10, 40, 10, 10);
+      rect(ex - 1, ey - 8, 3, 8, 255, 90, 80);
+      rect(ex - 2, ey + 2, 5, 4, 40, 10, 10);
+      rect(ex - 1, ey + 3, 3, 2, 255, 90, 80);
+      for (int k = 0; k < 2; ++k) {
+        float q = t * 2 + static_cast<float>(k) * 0.5f;
+        q -= std::floor(q);
+        circ(sx + (k ? r * 0.8f : -r * 0.8f), sy - top * (0.9f - 0.3f * q), 2.0f, 180, 220, 255);
+      }
+    }
+    if (on(6)) {   // alszik: Z Z Z száll fel
+      for (int k = 0; k < 3; ++k) {
+        float q = t * 0.5f + static_cast<float>(k) / 3.0f + ph;
+        q -= std::floor(q);
+        const float zx = sx + r * 0.5f + q * 10, zy = sy - top - 4 - q * 18, zs = 3.0f + q * 3.0f;
+        rect(zx, zy, zs * 2, 1.4f, 230, 235, 255);
+        for (int j = 0; j < 4; ++j) rect(zx + zs * 2 - static_cast<float>(j + 1) * zs * 0.5f, zy + static_cast<float>(j + 1) * zs * 0.4f, 1.4f, 1.4f, 230, 235, 255);
+        rect(zx, zy + zs * 2, zs * 2, 1.4f, 230, 235, 255);
+      }
+    }
+    if (on(7)) {   // kábult: csillagok forognak a fej körül
+      for (int k = 0; k < 3; ++k) {
+        const float a = t * 4 + static_cast<float>(k) * 2.094f;
+        const float px = sx + std::cos(a) * r * 0.9f, py = sy - top - 2 + std::sin(a) * 3;
+        rect(px - 2.5f, py - 0.7f, 5, 1.4f, 255, 230, 110);
+        rect(px - 0.7f, py - 2.5f, 1.4f, 5, 255, 230, 110);
+      }
+    }
+    if (on(9)) {   // elvakult: sötét fátyol a fej körül
+      for (int k = 0; k < 6; ++k) {
+        const float a = t * 1.5f + static_cast<float>(k) * 1.047f;
+        circ(sx + std::cos(a) * r * 0.8f, sy - top * 0.85f + std::sin(a) * 2, 3.0f, 40, 30, 60);
+      }
+    }
+    if (on(10)) {   // elnémítva: áthúzott kör a fej fölött
+      circ(sx, sy - top - 8, 5.0f, 60, 60, 70);
+      circ(sx, sy - top - 8, 3.6f, 200, 200, 210);
+      rect(sx - 4, sy - top - 8.7f, 8, 1.4f, 60, 60, 70);
+    }
+    if (on(11)) {   // megjelölt: piros célpont a fej fölött
+      circ(sx, sy - top - 7, 4.0f, 255, 70, 60);
+      circ(sx, sy - top - 7, 1.8f, 255, 230, 220);
+    }
+    if (on(12)) {   // páncéltörés: lepattanó szilánkok
+      for (int k = 0; k < 3; ++k) {
+        float q = t * 1.1f + static_cast<float>(k) / 3.0f + ph;
+        q -= std::floor(q);
+        rect(sx + (static_cast<float>(k) - 1) * r * 0.6f + q * 6, sy - top * 0.6f + q * 10, 2.4f, 2.4f, 170, 160, 150);
+      }
+    }
+  }
+}
+
 void World::draw_rally_flags(render::SpriteBatch& batch, double time) const {
   if (!cur_ || !rally_.pole || !rally_.cloth) return;
   const uint8_t me = session_.local_player();
@@ -1241,8 +1558,12 @@ int World::sheet_of(render::Atlas* atlas, const SnapUnit& u) {
     const int s = sheet_by_id(atlas, sim::resource_id(u.res));
     return s >= 0 || u.res != sim::kGold ? s : sheet_by_id(atlas, "stone");
   }
-  if (u.kind == SnapUnit::kShot) {   // lövedék: a fajta lapja (D40)
+  if (u.kind == SnapUnit::kShot) {   // lövedék: a fajta lapja (D40); varázslövedék: az elem `bolt` lapja (a régi)
     const sim::Rules* r = session_.rules();
+    if (r && u.spell < r->abilities.size()) {
+      const int vs = sheet_by_id(atlas, element_sheet(u.spell, "bolt"));
+      if (vs >= 0) return vs;
+    }
     return r && u.res < r->projectiles.size() ? sheet_by_id(atlas, r->projectiles[u.res].id) : -1;
   }
   const sim::Rules* r = session_.rules();
@@ -1436,9 +1757,30 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
         const auto* any = &s.anims.begin()->second;
         v.walk = wi != s.anims.end() ? &wi->second : ii != s.anims.end() ? &ii->second : any;
         v.idle = ii != s.anims.end() ? &ii->second : v.walk;
+        const auto at = s.anims.find("attack"), ca = s.anims.find("cast"), wk = s.anims.find("work");
+        v.attack = at != s.anims.end() ? &at->second : nullptr;
+        v.cast = ca != s.anims.end() ? &ca->second : nullptr;
+        v.work = wk != s.anims.end() ? &wk->second : nullptr;
       }
-      const auto& a = v.moving ? *v.walk : *v.idle;
-      const int frame = static_cast<int>(time * a.fps + static_cast<double>(u.id)) % std::max(1, a.frames);
+      // a régi `unit_anim` sorrendje: varázslás (0,6 s), támadás (0,5 s) – egyszer lejátszva –, munka (gyűjtés a
+      // lelőhelynél, építés, javítás), járás, állás
+      const double since_cast = (static_cast<double>(cur_->tick - u.cast_tick) + alpha) / 30.0;
+      const double since_attack = (static_cast<double>(cur_->tick - u.attack_tick) + alpha) / 30.0;
+      const render::AtlasAnim* pick = v.moving ? v.walk : v.idle;
+      double once = -1;
+      if (v.cast && since_cast >= 0 && since_cast < 0.6) {
+        pick = v.cast;
+        once = since_cast;
+      } else if (v.attack && since_attack >= 0 && since_attack < 0.5) {
+        pick = v.attack;
+        once = since_attack;
+      } else if (v.work && !v.moving &&
+                 (u.order == SnapUnit::kGather || u.order == SnapUnit::kConstruct || u.order == SnapUnit::kRepair)) {
+        pick = v.work;
+      }
+      const auto& a = *pick;
+      const int frame = once >= 0 ? std::min(a.frames - 1, static_cast<int>(once * a.fps))
+                                  : static_cast<int>(time * a.fps + static_cast<double>(u.id)) % std::max(1, a.frames);
       atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team, nullptr,
                   -1.0f, shadow_pass ? 0 : render::kFxInnerShadow);
     } else if (!shadow_pass) {   // tartalék: csapatszínű kör

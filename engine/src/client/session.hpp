@@ -11,6 +11,8 @@
 #include <array>
 #include <atomic>
 #include <map>
+#include <functional>
+#include <unordered_map>
 #include <condition_variable>
 #include <cstdint>
 #include <memory>
@@ -74,6 +76,12 @@ struct SnapUnit {
   int32_t morale = -1, morale_max = 0;       // Ooni harci kedv (-1: nincs)
   bool broken = false;                       // megtört (a harci kedv elfogyott)
   int16_t prayers = -1;                      // fohászhely: a most fohászkodó munkások száma (-1: nem fohászhely)
+  // a figura animációja (a régi `unit_anim`): az utolsó támadás és varázslás tickje, és a célpont helye (arra néz)
+  int64_t attack_tick = -100000, cast_tick = -100000;
+  uint16_t cast_ability = 0xFFFF;   // a legutóbb használt képesség (a varázslathatáshoz)
+  uint16_t spell = 0xFFFF;          // lövedék: a varázslat képessége (`bolt`), ha az
+  bool has_face = false;
+  float face_x = 0, face_y = 0;
 };
 
 // a játékos állapota a felületnek
@@ -86,6 +94,7 @@ struct SnapPlayer {
   uint8_t team = 0;                          // csapat (0: mindenki ellen)
   std::string ally;
   std::string path;
+  std::vector<uint16_t> fallen;              // az elesett (újraéleszthető) hősök sablonjai
   std::vector<std::string> researched;
   std::array<int32_t, sim::kResources> gathered{};   // az összesítőhöz (egész egység)
   sim::PlayerStats stats;                            // az idősor csak a meccs végén (a másolás miatt)
@@ -95,6 +104,7 @@ struct SnapPlayer {
 struct FxEvent {
   float x = 0, y = 0;   // világ-képpont (a talpvonal)
   bool death = false;
+  bool big = false;     // halál: nagy egység (`large`) – a régi: robbanás, különben vér
 };
 
 // M11: a küldetés a felületnek (célok, párbeszéd, átvezető, üzenetek, eredmény); a szövegek fordítási kulcsok
@@ -152,6 +162,15 @@ struct Snapshot {
     std::string item;              // a tárgy azonosítója (az ikonhoz)
   };
   std::vector<Item> items;
+  // területi mezők (a régi `draw_area`): hely, sugár (világ-képpont), a képesség, a lejárat és a kezdet (tick)
+  struct Area {
+    float x = 0, y = 0, r = 0;
+    uint16_t ability = 0xFFFF;
+    int64_t until = 0, start = 0;
+  };
+  std::vector<Area> areas;
+  // a népmechanikák nézete (fertőzött talaj, tavak, spórafonalak, lárvák); néhány tickenként frissül, különben megosztva
+  std::shared_ptr<const sim::ModuleView> view;
   SnapMission mission;            // M11
   sim::MatchMode mode;            // M12: győzelmi feltétel, tempó (béke, domb, hullámok)
   std::string victory_status;     // M13: a győzelmi szkript állása (Victory.status)
@@ -204,6 +223,12 @@ class Session {
   // meccs a teljes beállítással (M8, az egyéni csata képernyője): a gépi játékosok a `scripts/<ai_script>` szkripttel
   // (az adatvezérelt `ai_nep.lua` bármely főnépnek); köd nélkül (Fog::None) a pillanatkép sem szűr
   bool start_match(const sim::MatchSetup& setup, const std::vector<int>& ai, const std::string& ai_script, std::string* error);
+  // mentés (a régi `SaveMenu`): a meccs leírása (visszajátszás-leírás: pálya, beállítás, a gépek és a szkriptek forrása)
+  // – a Csatánál a start_match tölti, a küldetésnél a hívó adja át; üres: ez a meccs nem menthető
+  void set_match_desc(sim::Replay r) { desc_ = std::move(r); }
+  const sim::Replay* match_desc() const { return desc_ ? &*desc_ : nullptr; }
+  // a mentés a szimulációs szálon (SimRunner::with_sim); `meta`: rövid JSON a betöltő listájának
+  bool save_game(const std::string& path, const std::string& meta, std::string* error);
   // a küldetés saját szabályai (objektumszerkesztő), ha az átvett meccsnek van; különben a tartalomé
   const sim::Rules* rules() const { return match_rules_ ? match_rules_ : rules_ ? &*rules_ : nullptr; }
   const sim::Rules* content_rules() const { return rules_ ? &*rules_ : nullptr; }   // a meccsindításhoz (felülírás nélkül)
@@ -259,6 +284,20 @@ class Session {
   // D41: a ködben az 1. játékos a nem saját épületeket és a lelőhelyeket abban az állapotban látja, ahogy utoljára
   // látta (a lerombolt is ott marad, amíg újra oda nem lát)
   std::map<sim::EntityId, SnapUnit> remembered_;
+  // a figurák animációjához (nem játékállapot): a támadás újratöltése és a képességek legkésőbbi újratöltése az
+  // előző pillanatképben – ha nő, akkor most támadott / varázsolt
+  struct AnimTrack {
+    int32_t cooldown = 0;
+    int64_t ready_max = 0;
+    uint16_t cast_ability = 0xFFFF;
+    std::vector<std::pair<uint16_t, int64_t>> ready;
+    int64_t attack_tick = -100000, cast_tick = -100000;
+    int64_t seen = 0;
+  };
+  std::unordered_map<sim::EntityId, AnimTrack> anim_;
+  std::shared_ptr<const sim::ModuleView> view_;   // a népmechanikák utolsó nézete
+  std::optional<sim::Replay> desc_;               // a meccs leírása a mentéshez
+  std::string map_text_;                          // a betöltött pálya szövege (a leíráshoz)
   bool reveal_all_ = false;
   uint8_t local_ = 1;
   std::atomic<uint64_t> probe_{uint64_t{sim::kNoDef} << 32};
@@ -298,6 +337,11 @@ class SimRunner {
   void stop();
   bool threaded() const { return thread_.joinable(); }
   void step_sync();                  // szinkron mód: egy tick a hívó szálán
+  // a szimuláció elérése két tick között (pl. mentés): a hívó szálán fut, a lépést addig a futtató nem kezdi el
+  void with_sim(const std::function<void()>& f) {
+    std::lock_guard<std::mutex> lock(step_mu_);
+    f();
+  }
   void post(sim::Command c);         // a következő tickben hajtódik végre (c.tick-et a futtató állítja)
   void set_source(TickSource* src) { source_ = src; }   // hálózati játék (a start előtt)
   void reset_snapshots() {   // M11: a munkamenet új meccset vett át (szerkesztő-előnézet)
@@ -329,6 +373,7 @@ class SimRunner {
   std::atomic<bool> paused_{false};
   std::atomic<int> speed_pct_{100};
   std::mutex mu_;
+  std::mutex step_mu_;   // egy tick lépése és a with_sim kizárja egymást
   std::vector<sim::Command> pending_;
   std::shared_ptr<const Snapshot> prev_, cur_;
   std::vector<FxEvent> fx_;

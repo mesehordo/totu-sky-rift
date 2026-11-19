@@ -118,6 +118,16 @@ class World {
   void draw_doodads(render::SpriteBatch& batch, render::Atlas* atlas, const Camera& cam, int sw, int sh);
   // a terep fedőrétege (földutak, talajfoltok – client/ground_overlay), az egész pályára
   void set_ground_overlay(const render::Texture* t) { ground_ = t; }
+  // a népmechanikák fedőképe (fertőzött talaj, tavak – client/ground_overlay `module_overlay`): ha a pillanatkép
+  // nézete változott, visszaadja (a hívó elkészíti a textúrát és átadja); különben üres
+  std::shared_ptr<const sim::ModuleView> take_view_change();
+  void set_module_overlay(const render::Texture* t) { module_ = t; }
+  // a spórafonalak (a régi `draw_network`) a talajon, és a Kaptárak lárvái (a régi `draw_building_marks`) a képük fölött
+  void draw_links(render::SpriteBatch& batch, const render::Texture& white, double time) const;
+  void draw_larva(render::SpriteBatch& batch, const render::Texture& white) const;
+  // állapotok a figurán (a régi `draw_status_fx`): jégszilánk, láng, buborék, csepp, inda, felkiáltójel, Z, csillag,
+  // sötét fátyol, némaság, célkereszt, páncéltörés – sötét kontúrral, hogy minden talajon olvasható legyen
+  void draw_status_fx(render::SpriteBatch& batch, const render::Texture& white, float alpha, double time) const;
   // talajjelek és a hős jelei (9. tétel): hős talajjel (színezhető + rögzített), jelvény (keret + jelkép, stílusonként
   // egy réteg), ének (8 fázis), rejtőzés
   struct MarkArt {
@@ -142,6 +152,10 @@ class World {
   void set_fire_art(FireArt a) { fire_ = a; }
   void draw_building_fx(render::SpriteBatch& batch, render::Atlas* atlas, double time);
   void draw_building_flames(render::SpriteBatch& batch, double time) const;
+  // varázslathatások (a régi `draw_fx` és `draw_area`, a `vfx_<elem>_*` képlapokkal): a területi mezők a talajon (az
+  // egységek előtt), a varázslás, a robbanó varázslat, a becsapódás és a szintlépés az egységek után
+  void draw_areas(render::SpriteBatch& batch, render::Atlas* atlas, float alpha);
+  void draw_vfx(render::SpriteBatch& batch, render::Atlas* atlas, float alpha);
   // a kijelölt saját épület gyülekezőpontja (jobb kattintás, ha csak épület van kijelölve – a régi szerint); igaz: kiadva
   bool order_rally(float wx, float wy);
   // a talajra (az egységek alá): a nyíl-ösvény és a pecsét; az egységek fölé: a zászló
@@ -200,6 +214,9 @@ class World {
     int sheet = -1;         // az atlaszlap sorszáma (-1 = tartalék alakzat, -2 = még nincs kiválasztva)
     const render::AtlasAnim* walk = nullptr;   // a lap animációi (egyszer feloldva)
     const render::AtlasAnim* idle = nullptr;
+    const render::AtlasAnim* attack = nullptr;   // a régi `unit_anim`: támadás, varázslás, munka (ha a lapon van)
+    const render::AtlasAnim* cast = nullptr;
+    const render::AtlasAnim* work = nullptr;
   };
   struct Item {
     float x, y;   // a rajzolás helye (egységnél a talp, épületnél és lelőhelynél a lábnyom bal felső sarka)
@@ -225,6 +242,15 @@ class World {
   RallyArt rally_;
   BannerArt banner_;
   FireArt fire_;
+  struct Vfx {   // egy lejátszandó látványhatás (egyszer): a lap neve, a horgony helye, a kezdet (tick), a szélesség
+    std::string sheet;
+    float x = 0, y = 0;
+    int64_t t0 = 0;
+    float width = 0;   // 0: a lap saját mérete
+  };
+  std::vector<Vfx> vfx_;
+  void spawn_vfx();   // új ticknél: a két pillanatkép különbségéből (varázslás, becsapódás, szintlépés)
+  std::string element_sheet(uint16_t ability, const char* kind) const;
   const render::Texture* sack_ = nullptr;
   std::map<std::string, const render::Texture*> item_icons_;
   const render::Texture* item_glow_ = nullptr;
@@ -241,6 +267,8 @@ class World {
   mutable std::vector<Doodad> doodads_;
   mutable bool doodads_done_ = false;
   const render::Texture* ground_ = nullptr;
+  const render::Texture* module_ = nullptr;
+  std::shared_ptr<const sim::ModuleView> drawn_view_;
   MarkArt marks_;
   const render::Texture *obj_ring_ = nullptr, *obj_beacon_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;

@@ -26,21 +26,24 @@ Az új motorban egyáltalán nincs hanglejátszás; csak a hangerő-beállítás
 
 | Tétel | Régi | Új | Súly |
 |---|---|---|---|
-| Támadás-, varázslás- és munkaanimáció | `unit_anim`: attack, cast, work, gather, construct, repair | csak járás, állás, halál, építési fázis; a 109 egységlapon megvan az `attack` és a `cast` kocka, de nem használja | **Nagy** |
-| Varázslathatások | elemenkénti képlapok (`vfx_<elem>_cast/bolt/impact/area/nova`, 13 elem), gyógyítás, szintlépés, gyűrű, por, nova | csak találati szikra és halálpor; a `vfx_*` képlapok megvannak, de nincsenek használva | **Nagy** |
-| Területi hatások | `draw_area`: a tartós varázsterület (pl. tűzmező) képe | nem látszik | **Nagy** |
-| Állapotjelek a figurán | `draw_status_fx`: láng, jégkristály, buborék, Z Z Z, csillagok, szikra; pulzáló szín | csak a HUD hatássorában | Közepes |
-| Croftian fertőzött talaj | `draw_creep` | a szimulációban van, a pályán nem látszik | **Nagy** |
-| Huk’ucha tavacskák | `draw_ponds`: kerek part, homoksáv, habvonal | a szimulációban van (`PondMap`), a pályán nem látszik | **Nagy** |
-| Micélia spórahálózat | `draw_network`: lüktető szálak az épületek között | a szimulációban van, nem látszik | Közepes |
-| Lárvák, osztódás jelei | `draw_building_marks` (Kaptár lárvái), `draw_unit_marks` (micélia: pöttyök az osztódásig) | nincs | Közepes |
+| Támadás-, varázslás- és munkaanimáció | `unit_anim`: attack, cast, work, gather, construct, repair | **kész (2026-11-20)** | – |
+| Varázslathatások | elemenkénti képlapok (`vfx_<elem>_cast/bolt/impact/area/nova`, 13 elem), gyógyítás, szintlépés, gyűrű, por, nova | **kész (2026-11-20)**: varázslás, nova, varázslövedék, becsapódás, szintlépés, halál (vér/robbanás); a gyógyítás képe még nincs | – |
+| Területi hatások | `draw_area`: a tartós varázsterület (pl. tűzmező) képe | **kész (2026-11-20)** | – |
+| Állapotjelek a figurán | `draw_status_fx`: láng, jégkristály, buborék, Z Z Z, csillagok, szikra; pulzáló szín | **kész (2026-11-20)**; a pulzáló szín még nincs | – |
+| Croftian fertőzött talaj | `draw_creep` | **kész (2026-11-20)** | – |
+| Huk’ucha tavacskák | `draw_ponds`: kerek part, homoksáv, habvonal | **kész (2026-11-20)** | – |
+| Micélia spórahálózat | `draw_network`: lüktető szálak az épületek között | **kész (2026-11-20)** | – |
+| Lárvák, osztódás jelei | `draw_building_marks` (Kaptár lárvái), `draw_unit_marks` (micélia: pöttyök az osztódásig) | a lárvák **kész (2026-11-20)**; az osztódás pöttyei még nincsenek | Kicsi |
 | Rothadó fa | `draw_rot_bubbles` (Croftian) | nincs | Kicsi |
 | Félkész munkahelyek | `draw_worksites`, `draw_foundations`: ásás, alapozás, lapkő, tüskék haladása | csak az épület építési fázisa | Közepes |
 | Összekötött falak | `_wall_frame`: a falszakaszok a szomszédjuk szerint | minden fal külön képként | Közepes |
+| Kép nélküli egységek | `render.draw_shape`: népenként jellemző alakzat (kör, lándzsás, pajzsos …) a csapatszínnel | egyszerű csapatszínű kör; **103 egységsablonnak nincs képe** (Huk’ucha 21, Ooni 18, a kisnépek egységei) | **Nagy** |
 | Képpontpontos kijelölés | `hover_sprite`: a látható képpont dönt | téglalap a figura körül | Kicsi |
 | Díszletépületek, háttérszereplők | `draw_decor`, `draw_actor` | nincs | Kicsi |
 
-## 3. Értesítések játék közben (Közepes)
+## 3. Értesítések játék közben (Közepes) – **nagyrészt kész (2026-11-20)**
+
+Kész: elesett hős, szövetség, fejlődési irány, felemelkedés, új cél, a képesség még töltődik, játéksebesség. Még nincs: újratestesülés, osztódás, telihold, döntés, nincs célpont, az épület tele, a bánya betelt, elérhetetlen cél (ezekhez a szimuláció eseményei kellenek).
 
 Az új motor csak a hiányzó nyersanyagot, létszámot vagy feltételt jelzi, az építési hely hibáját, az elpusztult
 épületet és a támadást. A régi kb. 35 féle üzenetéből ezek hiányoznak:
@@ -57,7 +60,7 @@ Az új motor csak a hiányzó nyersanyagot, létszámot vagy feltételt jelzi, a
 
 | Tétel | Régi | Új | Súly |
 |---|---|---|---|
-| Mentés és betöltés | `SaveMenu`, `LoadMenu`: helyek, kis kép, törlés; a szünetmenüből is | nincs (a szimuláció tud menteni, a felület nem); a főmenüben „Hamarosan” | **Nagy** |
+| Mentés és betöltés | `SaveMenu`, `LoadMenu`: helyek, kis kép, törlés; a szünetmenüből is | **kész (2026-11-20)**: mentés a szünetmenüből, betöltés és törlés a főmenüből; kis kép még nincs, a betöltés a szünetmenüből még nincs | – |
 | Többjátékos menü | `LanMenu`: létrehozás, csatlakozás IP-vel, a LAN-on futó játékok keresése; lobbi | csak parancssorból (`--host`, `--join`), konzolos lobbi; LAN-keresés nincs | **Nagy** |
 | Profilok | `ProfileMenu`: név, címer (kedvenc nép), statisztika, haladás; több profil | nincs | Közepes |
 | Történetek | `StoriesMenu`: a világ és a népek olvasmányai képekkel (`stories/konyvtar.json`) | nincs | Közepes |
@@ -99,7 +102,7 @@ A régi beállítások közül ezek hiányoznak:
 
 (Az új viszont tud színvak módot, felület-méretarányt és billentyű-átállítást.)
 
-## 7. Egér és kurzor (Közepes)
+## 7. Egér és kurzor (Közepes) – **kész (2026-11-20)**, népenkénti kurzor nélkül
 
 A régi helyzetfüggő, festett kurzorkészletet használt (`assets/ui/cursors`):
 - görgetőnyíl a képernyő szélén;

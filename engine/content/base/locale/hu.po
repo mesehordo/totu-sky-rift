@@ -9356,3 +9356,63 @@ msgstr ""
 msgctxt "hud.rel.ally"
 msgid "Szövetséges"
 msgstr ""
+
+msgctxt "ui.load.title"
+msgid "Betöltés"
+msgstr ""
+
+msgctxt "ui.load.none"
+msgid "Még nincs mentett játék."
+msgstr ""
+
+msgctxt "ui.load.load"
+msgid "Betöltés"
+msgstr ""
+
+msgctxt "ui.load.delete"
+msgid "Törlés"
+msgstr ""
+
+msgctxt "ui.pause.save"
+msgid "Mentés"
+msgstr ""
+
+msgctxt "hud.saved"
+msgid "Mentve: {}"
+msgstr ""
+
+msgctxt "hud.save_failed"
+msgid "A mentés nem sikerült: {}"
+msgstr ""
+
+msgctxt "hud.save_unavailable"
+msgid "Ez a meccs nem menthető."
+msgstr ""
+
+msgctxt "hud.hero.fallen"
+msgid "Elesett: {} – a hősidéző épületben újraéleszthető."
+msgstr ""
+
+msgctxt "hud.ally.chosen"
+msgid "Szövetség: {} – a népük épületei megjelentek az építési listán."
+msgstr ""
+
+msgctxt "hud.path.chosen"
+msgid "Fejlődési irány: {} – megnyíltak az új épületek és egységek."
+msgstr ""
+
+msgctxt "hud.ascension"
+msgid "Felemelkedés! Válaszd ki a néped fejlődési irányát."
+msgstr ""
+
+msgctxt "hud.goal.new"
+msgid "Új cél: {}"
+msgstr ""
+
+msgctxt "hud.ability.cooldown"
+msgid "{}: még töltődik."
+msgstr ""
+
+msgctxt "hud.speed"
+msgid "Játéksebesség: ×{}"
+msgstr ""

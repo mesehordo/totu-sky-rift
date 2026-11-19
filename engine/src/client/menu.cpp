@@ -45,7 +45,7 @@ const std::vector<MainGroup>& main_items() {
        {{"ui.main.campaign", MenuAct::None, true},
         {"ui.main.novellas", MenuAct::None, true},
         {"ui.main.skirmish", MenuAct::Skirmish, false},
-        {"ui.main.load", MenuAct::None, true}}},
+        {"ui.main.load", MenuAct::OpenLoad, false}}},
       {"ui.main.multiplayer", MenuAct::None, true, {}},
       {"ui.main.stories", MenuAct::None, true, {}},
       {"ui.main.settings", MenuAct::Toggle, false,
@@ -337,6 +337,7 @@ void Menu::layout(int w, int h) {
     case MenuScreen::Sound: layout_sound(); break;
     case MenuScreen::Keys: layout_keys(); break;
     case MenuScreen::Mods: layout_mods(); break;
+    case MenuScreen::Load: layout_load(); break;
   }
 }
 
@@ -681,6 +682,31 @@ void Menu::mods_check() {
   }
 }
 
+void Menu::layout_load() {
+  // a régi `LoadMenu`: a mentések listája (legújabb elöl), alatta a betöltés és a törlés
+  const float H = static_cast<float>(h_);
+  side_area("ui.main.single");
+  title(tr("ui.load.title"));
+  const float top = k(96);
+  const float lw = std::min(k(720), area_w_ - k(48)), lx = area_x_ + k(24);
+  const float lh = std::max(k(200), H - top - k(180));
+  panels_.push_back({{lx, top, lw, lh}, 215, false});
+  const float rh = k(44);
+  float y = top + k(10);
+  const int fit = std::max(1, static_cast<int>((lh - k(20)) / (rh + k(4))));
+  for (int i = 0; i < static_cast<int>(saves_.size()) && i < fit; ++i) {
+    const SaveRow& s = saves_[static_cast<size_t>(i)];
+    MenuWidget& w = add(MenuWidget::Kind::MapRow, {lx + k(8), y, lw - k(16), rh}, s.title + "   " + s.detail, MenuAct::SavePick, i);
+    w.selected = i == save_sel_;
+    y += rh + k(4);
+  }
+  if (saves_.empty()) text(lx + k(16), top + k(16), lw - k(32), tr("ui.load.none"), MenuText::Med, MenuText::Dim);
+  const float by = top + lh + k(16), bw = k(200), bh = k(48);
+  add(MenuWidget::Kind::Button, {lx, by, bw, bh}, tr("ui.load.load"), MenuAct::SaveLoad).enabled = save_sel_ >= 0;
+  add(MenuWidget::Kind::Button, {lx + bw + k(16), by, bw, bh}, tr("ui.load.delete"), MenuAct::SaveDelete).enabled = save_sel_ >= 0;
+  back_button();
+}
+
 void Menu::layout_mods() {
   // a 0 A.D. modkezelője szerint (D50): balra az elérhető, jobbra az engedélyezett modok (a betöltési sorrendben),
   // alatta a kijelölt mod adatai és a hibák; a mentés újraindítja a játékot
@@ -852,6 +878,25 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
     case MenuAct::Cycle: cycle(w.arg, button == 3 ? -1 : 1); break;
     case MenuAct::OpenSound: go(MenuScreen::Sound); break;
     case MenuAct::OpenMods: go(MenuScreen::Mods); break;
+    case MenuAct::OpenLoad: go(MenuScreen::Load); break;
+    case MenuAct::SavePick:
+      save_sel_ = w.arg;
+      if (button == 1 && w.arg >= 0 && static_cast<size_t>(w.arg) < saves_.size() && last_pick_ == w.arg && now_ - last_pick_t_ < 0.4) {
+        load_choice_ = saves_[static_cast<size_t>(w.arg)].path;   // dupla kattintás: betöltés
+        return Result::Load;
+      }
+      last_pick_ = w.arg;
+      last_pick_t_ = now_;
+      break;
+    case MenuAct::SaveLoad:
+      if (save_sel_ >= 0 && static_cast<size_t>(save_sel_) < saves_.size()) {
+        load_choice_ = saves_[static_cast<size_t>(save_sel_)].path;
+        return Result::Load;
+      }
+      break;
+    case MenuAct::SaveDelete:
+      if (save_sel_ >= 0 && static_cast<size_t>(save_sel_) < saves_.size()) delete_req_ = saves_[static_cast<size_t>(save_sel_)].path;
+      break;
     case MenuAct::ModPick: {
       const bool on = w.arg >= 1000;
       const size_t i = static_cast<size_t>(on ? w.arg - 1000 : w.arg);

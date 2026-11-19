@@ -6,7 +6,11 @@
 #include <thread>
 
 #include "check.hpp"
+#include <filesystem>
+
+#include "client/savegame.hpp"
 #include "client/session.hpp"
+#include "sim/replay.hpp"
 
 using namespace totu;
 
@@ -88,4 +92,66 @@ TEST_CASE("pillanatkép: rendezett, a két legutóbbi a simításhoz, találat- 
   std::vector<double> ms;
   r.take_tick_ms(ms);
   CHECK(!ms.empty());
+}
+
+TEST_CASE("figuraanimacio (a regi unit_anim): a pillanatkep jelzi a tamadas pillanatat es a celpont helyet") {
+  client::Session s;
+  std::string err;
+  CHECK(s.load(TOTU_CONTENT_DIR, std::string(TOTU_CONTENT_DIR) + "/base/maps/kraterfold.json", 7, &err));
+  sim::MatchSetup setup;
+  setup.factions = {"ursan", "ursan"};
+  CHECK(s.start_match(setup, {}, "", &err));
+  s.battle_demo(8);
+  client::SimRunner r(s);
+  std::shared_ptr<const client::Snapshot> p, c;
+  bool attacked = false, faced = false;
+  for (int i = 0; i < 900 && !(attacked && faced); ++i) {
+    r.step_sync();
+    r.latest(&p, &c);
+    for (const auto& u : c->units) {
+      if (u.kind != client::SnapUnit::kUnit) continue;
+      attacked = attacked || (u.attack_tick > 0 && u.attack_tick == c->tick);
+      faced = faced || u.has_face;
+    }
+  }
+  CHECK(attacked && faced);
+}
+
+TEST_CASE("mentes es betoltes (a regi SaveMenu/LoadMenu): a betoltott meccs ugyanott tart es ugyanugy halad") {
+  client::Session s;
+  std::string err;
+  CHECK(s.load(TOTU_CONTENT_DIR, std::string(TOTU_CONTENT_DIR) + "/base/maps/kraterfold.json", 20261112, &err));
+  sim::MatchSetup setup;
+  setup.factions = {"ursan", "wullof"};
+  setup.teams = {1, 2};
+  sim::AiSlot a;
+  a.player = 2;
+  setup.ai.push_back(a);
+  CHECK(s.start_match(setup, {}, "", &err));
+  CHECK(s.match_desc() != nullptr);
+  client::SimRunner r(s);
+  for (int i = 0; i < 300; ++i) r.step_sync();
+  const auto path = std::filesystem::temp_directory_path() / "totu_proba.totumentes";
+  bool saved = false;
+  r.with_sim([&] { saved = s.save_game(path.string(), "{\"title\": \"proba\"}", &err); });
+  if (!saved) std::printf("  hiba: %s\n", err.c_str());
+  CHECK(saved);
+  const auto meta = client::read_save(path, true);
+  CHECK(meta && meta->meta == "{\"title\": \"proba\"}" && meta->state.empty());
+  const auto f = client::read_save(path);
+  CHECK(f.has_value());
+  if (!f) return;
+  CHECK(f->desc.teams == setup.teams && f->desc.ai.size() == 1 && !f->desc.ai_files.empty());
+  auto m = sim::start_match(f->desc, s.terrain_ptr(), s.content_rules(), err, true);
+  if (!m) std::printf("  hiba: %s\n", err.c_str());
+  CHECK(m && m->sim->load(f->state));
+  if (!m) return;
+  if (m->map) m->sim->restore_obstacles(*m->map);   // a fák és az épületek a navigációs rácson (mint az újracsatlakozásnál)
+  CHECK(m->sim->hash() == s.sim().hash() && m->sim->tick() == s.sim().tick() && m->sim->tick() == 300);
+  for (int i = 0; i < 200; ++i) {
+    r.step_sync();
+    m->sim->step();
+  }
+  CHECK(m->sim->hash() == s.sim().hash());
+  std::filesystem::remove(path);
 }

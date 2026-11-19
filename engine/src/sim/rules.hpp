@@ -33,6 +33,7 @@ int seconds_to_ticks(Fixed seconds);       // kerekítve
 enum class Element : uint8_t { None = 0, Ice, Fear, Fire, Lightning, Poison, Water, Root, Sleep, Blind, Wind, Sunder,
                                Silence, Mark, Count };
 Element element_of(const std::string& name);   // None, ha ismeretlen
+const char* element_name(Element e);            // "fire" …; None: ""
 
 struct ResourceDef {
   Fixed gather_time;      // másodperc egy teljes rakományra (az alap `carry`-hez)
@@ -89,6 +90,7 @@ struct AbilityDef {
   enum class Type : uint8_t { Unknown = 0, Garrison, SelfBuff, Toggle, Nova, Chant, Aura, Autoheal, Bolt, Summon, Area,
                               Passive, Power, Blink, Mount, Dismount, Capture, Occupy, Raise };
   std::string id;
+  std::string sprite;   // a látvány képe (`sprite`, pl. napvihar; üres: az elem képei)
   Type type = Type::Unknown;
   int32_t cooldown = 0, duration = 0;   // tick
   Fixed radius, range;

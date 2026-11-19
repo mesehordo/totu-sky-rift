@@ -9357,3 +9357,63 @@ msgstr "A team game needs at least two different teams."
 msgctxt "hud.rel.ally"
 msgid "Szövetséges"
 msgstr "Ally"
+
+msgctxt "ui.load.title"
+msgid "Betöltés"
+msgstr "Load game"
+
+msgctxt "ui.load.none"
+msgid "Még nincs mentett játék."
+msgstr "No saved games yet."
+
+msgctxt "ui.load.load"
+msgid "Betöltés"
+msgstr "Load"
+
+msgctxt "ui.load.delete"
+msgid "Törlés"
+msgstr "Delete"
+
+msgctxt "ui.pause.save"
+msgid "Mentés"
+msgstr "Save"
+
+msgctxt "hud.saved"
+msgid "Mentve: {}"
+msgstr "Saved: {}"
+
+msgctxt "hud.save_failed"
+msgid "A mentés nem sikerült: {}"
+msgstr "Saving failed: {}"
+
+msgctxt "hud.save_unavailable"
+msgid "Ez a meccs nem menthető."
+msgstr "This match cannot be saved."
+
+msgctxt "hud.hero.fallen"
+msgid "Elesett: {} – a hősidéző épületben újraéleszthető."
+msgstr "Fallen: {} – can be revived at the hero building."
+
+msgctxt "hud.ally.chosen"
+msgid "Szövetség: {} – a népük épületei megjelentek az építési listán."
+msgstr "Alliance: {} – their buildings are now on the build list."
+
+msgctxt "hud.path.chosen"
+msgid "Fejlődési irány: {} – megnyíltak az új épületek és egységek."
+msgstr "Path: {} – new buildings and units unlocked."
+
+msgctxt "hud.ascension"
+msgid "Felemelkedés! Válaszd ki a néped fejlődési irányát."
+msgstr "Ascension! Choose your people's path."
+
+msgctxt "hud.goal.new"
+msgid "Új cél: {}"
+msgstr "New objective: {}"
+
+msgctxt "hud.ability.cooldown"
+msgid "{}: még töltődik."
+msgstr "{}: still recharging."
+
+msgctxt "hud.speed"
+msgid "Játéksebesség: ×{}"
+msgstr "Game speed: ×{}"

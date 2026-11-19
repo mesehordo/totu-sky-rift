@@ -952,6 +952,10 @@ bool HudModel::activate_slot(int i, int button) {
   const std::function<void()>& fn = button == 1 ? sl->fn : sl->rfn;
   if (!fn) return false;
   const bool costed = sl->kind == HudSlot::Unit || sl->kind == HudSlot::Building || sl->kind == HudSlot::Research;
+  if (button == 1 && !sl->ab_id.empty() && !sl->enabled && sl->cd > 0.0f) {   // a régi: „<képesség>: még töltődik.”
+    post_notice(tr("ability.cooldown", {sl->tip_title}));
+    return true;
+  }
   if (button == 1 && costed && !sl->enabled && !sl->tip_text.empty() && sl->cost != "✓") {
     post_notice(sl->tip_text);   // AS-03: hiányzó feltétel (épület, kutatás) – ugyanaz, mint a tooltipben
   } else if (button == 1 && costed) {   // AS-03: a kiadás előtt ismert elutasítási ok szövegesen is
@@ -1231,6 +1235,33 @@ void HudModel::watch_alerts() {
       for (const sim::EntityId id : gone) post_notice(tr("lost.building", {unit_name(seen_bld_[id])}), {255, 120, 90});
     }
     seen_bld_ = std::move(bld);
+  }
+  {   // a régi `notify` üzenetei a saját állapot változásaiból
+    const SnapPlayer& me = snap_->players[std::min<size_t>(player, sim::Sim::kMaxPlayers)];
+    if (!first) {
+      for (const uint16_t d : me.fallen) {   // „Elesett: <hős> – a hősidéző épületben újraéleszthető.”
+        if (std::find(seen_fallen_.begin(), seen_fallen_.end(), d) == seen_fallen_.end() && rules_ && d < rules_->defs.size()) {
+          post_notice(tr("hero.fallen", {name("unit." + rules_->defs[d].id + ".name")}), {255, 150, 100});
+        }
+      }
+      if (!me.ally.empty() && me.ally != seen_ally_) post_notice(tr("ally.chosen", {faction_name(me.ally)}), {150, 220, 150});
+      if (!me.path.empty() && me.path != seen_path_) {
+        post_notice(tr("path.chosen", {name("path." + me.faction + "." + me.path + ".name")}), {150, 220, 150});
+      }
+      if (me.ascended && !seen_ascended_ && me.path.empty()) post_notice(tr("ascension"), {255, 220, 130});
+    }
+    seen_fallen_ = me.fallen;
+    seen_ally_ = me.ally;
+    seen_path_ = me.path;
+    seen_ascended_ = me.ascended;
+    std::vector<std::string> goals;   // „Új cél: …” (küldetésben; az induló célok csendben)
+    for (const auto& o : snap_->mission.objectives) goals.push_back(o.text);
+    if (!first && snap_->mission.active) {
+      for (const auto& g : goals) {
+        if (std::find(seen_goals_.begin(), seen_goals_.end(), g) == seen_goals_.end()) post_notice(tr("goal.new", {name(g)}), {255, 220, 130});
+      }
+    }
+    seen_goals_ = std::move(goals);
   }
   if (hit && snap_->tick - alert_tick > 12 * 30) {   // a régi: 12 mp-enként legfeljebb egy riasztás
     alert_tick = snap_->tick;

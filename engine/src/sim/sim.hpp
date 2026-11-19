@@ -906,6 +906,8 @@ class Sim {
   bool declare_winner(uint8_t p);
   void set_conquest(bool on) { auto_defeat_ = on; }
   bool conquest() const { return auto_defeat_; }
+  // a népmechanikák megjelenítési nézete (fertőzött talaj, tavak, spórafonalak, lárvák) – a kliensnek, nem állapot
+  void module_view(ModuleView& out);
   // csapat (a régi `allied`): önmaga vagy azonos, nem nulla csapat; a Vadon (0) senkinek sem szövetségese
   bool allied(uint8_t a, uint8_t b) const {
     if (a > kMaxPlayers || b > kMaxPlayers) return false;
