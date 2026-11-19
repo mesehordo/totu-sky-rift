@@ -80,7 +80,7 @@ a felderített rész színes marad, elmosva és kissé sötétebben. **Költség
 képkocka, felváltva 3–3 futás): szürke p50 49,3 / 48,7 / 49,7 ms, elmosott 50,3 / 49,3 / 49,3 ms – a különbség a
 mérési zajon belül (≤ 1 ms). Az alap (a tulajdonos döntése, 2026-11-19): az elmosott (D41 kiegészítés); a szürke: `--fog-gray`. **Kép:**
 `kepek/kod_osszevetes_A_szurke_B_szeles_C_elmosott.jpg`.
-**Megjegyzés:** a rejtett ablakos mérőmód 1080p-ben kb. 50 ms/képkocka – ezt külön meg kell vizsgálni (NYITOTT).
+**Megjegyzés:** a rejtett ablakos mérőmód 1080p-ben kb. 50 ms/képkocka volt – megoldva, l. 12. szakasz.
 **Szünetmenü (a tulajdonos kérése):** bal oldali panel a főmenü oldalsávjának stílusában (átmenetes sötét háttér,
 arany szegély, díszvonalak), balról becsúszva (0,22 mp, lassuló), a játéktér elmosódik mögötte (a fényezőben, ugyanazzal
 az elmosással), a HUD elsötétül; Esc/Enter folytatás, Q kilépés, kattintás a menüpontra, a panelen kívül folytatás.
@@ -120,6 +120,20 @@ népek külön szabályai) fordítási kulccsal, angolul is. Ismert korlát: a �
 szövege és színe); a lebontott (ép) épület csendben, az elfoglalt (más tulajdonossal ott maradó) nem számít.
 Csak kliens: a szimuláció, a hash és a mentés változatlan. **Próba:** `HUD` – „Nem lehet epiteni …, Elpusztult
 epulet”.
+
+## 12. A képkockaidő: 50 ms → 5 ms (a sprite-köteg puffere)
+
+**Tünet:** a mérőmódban 1080p-ben kb. 50 ms/képkocka, a felbontástól függetlenül (540p-ben is 50 ms), látható
+ablakban is. **Keresés:** a képkocka szakaszaiba tett mérők szerint a CPU-oldal 1–2 ms, a teljes idő a GPU-ra
+várakozás; szakaszonkénti várakozással viszont az egész 6 ms – tehát nem a munka sok, hanem szinkronizációs akadás.
+**Ok:** a sprite-köteg minden kiürítéskor (képkockánként kb. 90) a teljes kapacitású (16384 × 48 bájt = 786 KB)
+puffert foglalta újra („orphaning”), és csak utána töltötte fel a köteg tényleges részét; az RX 550 meghajtója ezt
+kb. 45 ms várakozással kezelte. **Javítás:** az újrafoglalás pontosan a köteg méretével, egy hívásban (a
+`sprite_batch.cpp` egy sora). A kép pixelre azonos (`totu_imgdiff`: 0 ‰).
+**Mérés (RX 550, `--bench`, 400 képkocka, p50 / p99):** 1080p rejtett 4,45 / 8,64 ms (előtte 49,5 / 95 ms);
+1080p látható 4,94 / 11,7 ms (előtte 47,1 / 60,5 ms); 1440p 6,71 / 11,6 ms; köd nélkül (10 644 sprite) 3,53 /
+8,05 ms; 2000 egységes bemutató 1,78 / 3,55 ms. Az elmosott köd költsége most mérhető: kb. 0,8 ms (4,45 vs. a szürke
+3,61 ms).
 
 ## Döntésre vár
 

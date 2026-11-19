@@ -921,3 +921,7 @@ A tulajdonos döntése: a felderített rész alapból elmosott (színes, elmosot
 ## 2026-11-19 – „Nem lehet építeni” és „Elpusztult” (a régi játék szerint)
 
 Az építés kísértetképe tiltott helyen piros (a szimuláció `can_place`-e a pillanatképben, a kurzor alatti helyre); kattintásra „Nem lehet építeni: <ok>”, parancs nem megy ki, a mód marad. A sérült saját épület eltűnésekor „Elpusztult: <név>”. Csak kliens; a hash és a mentés változatlan. Próba: `HUD`.
+
+## 2026-11-19 – Képkockaidő: 50 ms → 5 ms
+
+A sprite-köteg minden kiürítéskor a teljes, 786 KB-os puffert foglalta újra; az RX 550 ezt képkockánként kb. 45 ms GPU-várakozással kezelte (a felbontástól függetlenül). Most pontosan a köteg méretével foglal. 1080p: p50 49,5 → 4,45 ms, p99 95 → 8,6 ms; a kép pixelre azonos. Az elmosott köd költsége így mérhető: kb. 0,8 ms.
