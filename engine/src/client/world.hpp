@@ -81,6 +81,9 @@ class World {
     const render::Texture *pole = nullptr, *knob = nullptr, *cloth = nullptr, *trim = nullptr;
   };
   void set_banner_art(BannerArt a) { banner_ = std::move(a); }
+  // a munkások cipelt nyersanyaga (8. tétel): a zsák a figura jobb vállánál, a nyersanyag színében
+  void set_sack(const render::Texture* t) { sack_ = t; }
+  void draw_carry(render::SpriteBatch& batch, float alpha) const;
   void draw_banners(render::SpriteBatch& batch, double time) const;
   // a kijelölt saját épület gyülekezőpontja (jobb kattintás, ha csak épület van kijelölve – a régi szerint); igaz: kiadva
   bool order_rally(float wx, float wy);
@@ -161,6 +164,7 @@ class World {
   float sigil_base_ = 48;
   RallyArt rally_;
   BannerArt banner_;
+  const render::Texture* sack_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;
   bool last_move_ = false;   // a legutóbbi saját mozgásparancs célja (világ-képpont)
   float last_move_x_ = 0, last_move_y_ = 0;

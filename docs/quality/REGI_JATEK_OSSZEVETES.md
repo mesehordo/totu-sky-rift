@@ -12,7 +12,7 @@ percben). A tételekről a tulajdonos **egyesével** dönt: átvesszük, módos�
 | 5 | Csapatszín az épületeken | a lobogók, vásznak a játékos színében | a főépület vászna a kép eredeti (piros) színében | **másképp** (D51, D52): az épület mellett lengő lobogó a csapatszínben, népenként saját alakkal, címer nélkül, a nép kiemelőszínű szegélyével; árnyéka a nappal forog. Egységeken: kulcsszín (tervben). Képek: `kepek/utan_csapatlobogo.jpg`, `kepek/lobogok_nepenkent.jpg` |
 | 6 | Terep | földutak és fű lágy átmenetekkel, talajdíszek (virág, gomba, bokor, kő, ág) | egyszínű fűminta, díszek nélkül | – |
 | 7 | Légkör | lebegő szentjánosbogarak, pollen, falevél (a pálya témája szerint) | nincs (csak az időjárás részecskéi) | – |
-| 8 | Cipelt nyersanyag | kis zsák/köteg a munkáson a nyersanyag színében | nincs | – |
+| 8 | Cipelt nyersanyag | kis zsák/köteg a munkáson a nyersanyag színében | nincs | **átvéve**: kis zsák sötét kontúrral a nyersanyag színében, a figura vállánál. Kép: `kepek/utan_cipelt_nyersanyag.jpg` |
 | 9 | Talajjelek | ének / kapcsolt képesség, rejtőzés jele a figura alatt; hősnél talajjel és korona | nincs | – |
 | 10 | Küldetésjelek | célgyűrű és jelzőfény felirattal a pályán | csak a célok listája | – |
 | 11 | Holttestek, tárgyak | holttestek (lélekidézőknél), a földön heverő tárgyak | a szimulációban megvannak, a pályán nem látszanak | – |

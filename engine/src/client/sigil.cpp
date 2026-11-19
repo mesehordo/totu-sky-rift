@@ -297,6 +297,18 @@ PoleStyle pole_style(int style) {
 
 }  // namespace
 
+render::Image carry_sack_image() {
+  Canvas c(12, 12, 4);
+  auto ell = [](float x, float y, float cx, float cy, float rx, float ry) {
+    return (x - cx) * (x - cx) / (rx * rx) + (y - cy) * (y - cy) / (ry * ry) <= 1.0f;
+  };
+  c.fill([&](float x, float y) { return ell(x, y, 6, 6.5f, 5, 4.5f); }, 20 / 255.0f, 16 / 255.0f, kDark, 1);
+  c.fill([&](float x, float y) { return ell(x, y, 6, 6.5f, 4, 3.5f); }, 0.8f, 0.8f, 0.8f, 1);
+  c.fill([&](float x, float y) { return ell(x, y, 4.8f, 5.6f, 1.6f, 1.0f); }, 1, 1, 1, 1);
+  c.fill([&](float x, float y) { return near_seg(x, y, 4, 3.2f, 8, 3.2f, 0.9f); }, 20 / 255.0f, 16 / 255.0f, kDark, 1);
+  return c.image();
+}
+
 int banner_style(const std::string& faction) {
   static const std::pair<const char*, int> kStyles[] = {{"ursan", 1}, {"croftian", 2}, {"elves", 3}, {"imperium", 4},
                                                         {"ooni", 5},  {"hukucha", 6},  {"wullof", 7}, {"mycel", 8}};

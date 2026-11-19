@@ -965,3 +965,7 @@ Minden főnépnek saját alakú lobogó (9 stílus: általános + 7 főnép + a 
 ## 2026-11-19 – 4. tétel: életerő-csík a régi szerint
 
 Csak az egér alatti egység vagy épület csíkja látszik (a régi `hover_bar`): 4 px, zöld > 60 % > sárga > 30 % > piros, fölötte kék pajzscsík, alatta lila energiacsík a saját egységnél; az épületnél a helyőrség-jelzők fölött. Nyitott: az idézett lény „N mp” visszaszámlálása. Kép: `docs/quality/kepek/utan_eletero_csik.jpg`.
+
+## 2026-11-19 – 8. tétel: cipelt nyersanyag a régi szerint
+
+A rakományt vivő munkás vállánál kis zsák a nyersanyag színében (a `game.json` színe), sötét kontúrral és kötéssel. Kép: `docs/quality/kepek/utan_cipelt_nyersanyag.jpg`.

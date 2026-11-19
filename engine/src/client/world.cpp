@@ -366,6 +366,31 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
   }
 }
 
+void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
+  const sim::Rules* rules = session_.rules();
+  if (!cur_ || !sack_ || !rules || !rules->game_raw) return;
+  const content::Value* resv = rules->game_raw->find("resources");
+  for (size_t i = 0; i < cur_->units.size(); ++i) {
+    const SnapUnit& u = cur_->units[i];
+    if (u.kind != SnapUnit::kUnit || u.amount <= 0 || u.hp <= 0 || u.def >= rules->defs.size() || !rules->defs[u.def].worker) continue;
+    std::array<uint8_t, 3> col{200, 200, 200};
+    if (const content::Value* rv = resv ? resv->find(sim::resource_id(u.res)) : nullptr) {
+      if (const content::Value* c = rv->find("color"); c && c->is_array() && c->items().size() >= 3) {
+        for (size_t k = 0; k < 3; ++k) col[k] = static_cast<uint8_t>(std::clamp<long long>(c->items()[k].as_int().value_or(200), 0, 255));
+      }
+    }
+    const Visual& v = vis_[i];
+    const float x = v.px + (u.x - v.px) * alpha, y = v.py + (u.y - v.py) * alpha;
+    const float rad = static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx;
+    render::SpriteInstance s;
+    s.w = s.h = 12;
+    s.x = x + rad * 0.55f - 6;
+    s.y = y - rad * 1.25f - 6;
+    s.tint[0] = col[0]; s.tint[1] = col[1]; s.tint[2] = col[2];
+    batch.draw(*sack_, nullptr, s);
+  }
+}
+
 std::array<uint8_t, 3> World::team_color(uint8_t owner) const {
   const sim::Rules* r = session_.rules();
   const content::Value* pc = r && r->game_raw ? r->game_raw->find("player_colors") : nullptr;

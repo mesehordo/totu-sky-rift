@@ -574,7 +574,7 @@ int main(int argc, char** argv) {
     }
     render::TerrainView terrain;
     render::Atlas world_atlas;
-    render::Texture banner_pole, banner_knob, banner_cloth, banner_trim;
+    render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -857,6 +857,10 @@ int main(int argc, char** argv) {
               ba.cloth = &banner_cloth;
               ba.trim = &banner_trim;
               world.set_banner_art(ba);
+              auto sack = client::carry_sack_image();
+              render::premultiply(sack);
+              carry_sack = dev.create_array_from(sack, false);
+              world.set_sack(&carry_sack);
             }
           }
           render::Image px;
@@ -1501,6 +1505,7 @@ int main(int argc, char** argv) {
         world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
+        world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_banners(batch, t);        // D51: a csapatjelző lobogók
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         {
@@ -1733,7 +1738,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack}) dev.destroy(*t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {

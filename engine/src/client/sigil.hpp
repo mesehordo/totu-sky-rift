@@ -26,6 +26,9 @@ render::Image rally_shadow_image(int phase);     // 40 × 20: a vetett árnyék 
 // 5, 54): a rúd (a nép anyagából), a csúcsdísz (fehér – a nép kiemelőszíne árnyalja), a vászon (fehér – a csapatszín)
 // és a szegélye (fehér – a kiemelőszín), 8 lengésfázisban. A stílus: 0 az általános fecskefarkú, 1–8 a főnépeké.
 constexpr int kBannerStyles = 9;
+// a munkás cipelt nyersanyaga (a régi `draw_unit_marks`): kis zsák sötét kontúrral, 12 × 12; a test 80 %-os szürke, a
+// fény fehér (a rajzoló a nyersanyag színével árnyalja)
+render::Image carry_sack_image();
 int banner_style(const std::string& faction);
 render::Image banner_pole_image(int style);
 render::Image banner_knob_image(int style);
