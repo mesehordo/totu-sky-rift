@@ -575,7 +575,7 @@ int main(int argc, char** argv) {
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
-        mark_badge_symbol, mark_chant, mark_hidden;
+        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -873,6 +873,9 @@ int main(int argc, char** argv) {
               mark_badge_symbol = one(client::hero_badge_symbol());
               mark_chant = layers(8, 54, 38, [](int i) { return client::chant_mark_image(40.0f, i); });
               mark_hidden = one(client::hidden_mark_image(40.0f));
+              obj_ring = layers(12, 148, 96, [](int i) { return client::objective_ring_image(64.0f, i); });
+              obj_beacon = one(client::objective_beacon_image());
+              world.set_objective_art(&obj_ring, &obj_beacon);
               world.set_mark_art({&mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden});
             }
           }
@@ -1518,9 +1521,11 @@ int main(int argc, char** argv) {
         world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw_ground_marks(batch, alpha, t);     // talajjelek: hős, ének, rejtőzés
+        world.draw_objective_rings(batch, t);         // a küldetés célgyűrűi
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
+        world.draw_objective_beacons(batch, t);    // a célok jelzőfénye
         world.draw_banners(batch, t);        // D51: a csapatjelző lobogók
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         {
@@ -1753,7 +1758,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon}) dev.destroy(*t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {

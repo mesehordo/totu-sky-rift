@@ -236,6 +236,8 @@ std::optional<MissionDef> MissionDef::parse(const std::string& text, const Rules
       const std::string k = str(o, "kind", "primary");
       mo.kind = k == "secondary" ? 1 : k == "hidden" ? 2 : 0;
       mo.visible = flag(o, "visible", mo.kind != 2);
+      mo.at = str(o, "at");
+      mo.marker = str(o, "marker");
       m.objectives.push_back(std::move(mo));
     }
   }

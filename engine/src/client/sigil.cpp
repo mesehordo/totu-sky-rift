@@ -432,6 +432,57 @@ render::Image hidden_mark_image(float w) {
   return c.image();
 }
 
+render::Image objective_ring_image(float r, int phase) {
+  const int W = static_cast<int>(2 * r) + 20, H = static_cast<int>(r * 1.2f) + 20;
+  Canvas c(W, H, 2);
+  const float cx = static_cast<float>(W) / 2, cy = static_cast<float>(H) / 2, rw = r, rh = r * 0.6f;
+  const float gr = 1.0f, gg = 214 / 255.0f, gb = 110 / 255.0f;
+  auto ell = [&](float x, float y, float f) { return (x - cx) * (x - cx) / (rw * rw * f * f) + (y - cy) * (y - cy) / (rh * rh * f * f) <= 1; };
+  for (int i = 10; i >= 1; --i) {
+    const float f = static_cast<float>(i) / 10 * 0.86f;
+    c.fill([&](float x, float y) { return ell(x, y, f); }, gr, gg, gb, (4 + 26 * (1 - static_cast<float>(i) / 10)) / 255.0f);
+  }
+  c.fill([&](float x, float y) { return ell(x, y, 1.0f) && !ell(x, y, 1.0f - 4 / rh); }, 30 / 255.0f, 20 / 255.0f, 6 / 255.0f, 170 / 255.0f);
+  c.fill([&](float x, float y) { return ell(x, y, 1.0f) && !ell(x, y, 1.0f - 2 / rh); }, gr, gg, gb, 1);
+  c.fill([&](float x, float y) { return ell(x, y, 0.84f) && !ell(x, y, 0.84f - 1 / rh); }, gr, gg, gb, 140 / 255.0f);
+  c.fill([&](float x, float y) {   // forgó, szaggatott külső perem
+    if (!(ell(x, y, 1.12f + 1 / rh) && !ell(x, y, 1.12f - 1 / rh))) return false;
+    float a = std::atan2((y - cy) / rh, (x - cx) / rw) - static_cast<float>(phase) * 6.2831853f / 12 / 14;
+    a = std::fmod(a + 62.83185f, 6.2831853f);
+    const float seg = 6.2831853f / 28;
+    const int i = static_cast<int>(a / seg);
+    return i % 2 == 0 && a - static_cast<float>(i) * seg < 0.14f;
+  }, 1.0f, 240 / 255.0f, 180 / 255.0f, 230 / 255.0f);
+  for (int i = 0; i < 4; ++i) {   // rúna-rombuszok a tengelyeken
+    const float a = 0.785398f + static_cast<float>(i) * 1.5707963f;
+    const float px = cx + std::cos(a) * rw, py = cy + std::sin(a) * rh, sz = 4;
+    const std::vector<std::pair<float, float>> d = {{px, py - sz}, {px + sz * 0.7f, py}, {px, py + sz}, {px - sz * 0.7f, py}};
+    c.fill([&](float x, float y) { return in_poly(x - 1, y - 1, d); }, 30 / 255.0f, 20 / 255.0f, 6 / 255.0f, 220 / 255.0f);
+    c.fill([&](float x, float y) { return in_poly(x, y, d); }, 1.0f, 246 / 255.0f, 210 / 255.0f, 1);
+  }
+  return c.image();
+}
+
+render::Image objective_beacon_image() {
+  // 16 × 64: fent a kristály (a csúcs y = 3, a közepe y = 12), alatta lefelé halványuló fénysáv; a talppont y = 62
+  Canvas c(16, 64, 3);
+  const float x = 8, top = 12;
+  c.fill([&](float px, float py) { return px >= 6 && px <= 11 && py >= top + 8 && py <= top + 48; }, 1.0f, 230 / 255.0f, 150 / 255.0f, 0.0f);
+  for (int yy = 0; yy < 40; ++yy) {
+    const float a = 70.0f / 255.0f * (1 - static_cast<float>(yy) / 40);
+    c.fill([&](float px, float py) { return px >= 5 && px <= 10 && py >= top + 8 + static_cast<float>(yy) && py < top + 9 + static_cast<float>(yy); },
+           1.0f, 230 / 255.0f, 150 / 255.0f, a);
+  }
+  const std::vector<std::pair<float, float>> gem = {{x, top - 9}, {x + 7, top}, {x, top + 12}, {x - 7, top}};
+  const std::vector<std::pair<float, float>> lit = {{x, top - 9}, {x + 7, top}, {x, top}};
+  const std::vector<std::pair<float, float>> dim = {{x, top}, {x - 7, top}, {x, top + 12}};
+  c.fill([&](float px, float py) { return in_poly(px - 1, py - 1, gem); }, 30 / 255.0f, 20 / 255.0f, 6 / 255.0f, 1);
+  c.fill([&](float px, float py) { return in_poly(px, py, gem); }, 1.0f, 214 / 255.0f, 110 / 255.0f, 1);
+  c.fill([&](float px, float py) { return in_poly(px, py, lit); }, 1.0f, 246 / 255.0f, 210 / 255.0f, 1);
+  c.fill([&](float px, float py) { return in_poly(px, py, dim); }, 214 / 255.0f, 160 / 255.0f, 60 / 255.0f, 1);
+  return c.image();
+}
+
 int banner_style(const std::string& faction) {
   static const std::pair<const char*, int> kStyles[] = {{"ursan", 1}, {"croftian", 2}, {"elves", 3}, {"imperium", 4},
                                                         {"ooni", 5},  {"hukucha", 6},  {"wullof", 7}, {"mycel", 8}};

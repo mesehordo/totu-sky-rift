@@ -149,7 +149,7 @@ std::vector<ParamSpec> DataEditor::field_specs(const EditorDoc& d) const {
     case kObjectives:
       if (sel1 < 0) return {};
       return {{"id", K::Text, false, {}}, {"kind", K::Enum, false, {"primary", "secondary", "hidden"}}, {"text", K::Text, false, {}},
-              {"visible", K::Bool, true, {}}};
+              {"visible", K::Bool, true, {}}, {"at", K::Text, true, {}}, {"marker", K::Text, true, {}}};
     case kVariables:
       if (sel1 < 0) return {};
       return {{"name", K::Text, false, {}}, {"value", K::Int, false, {}}};

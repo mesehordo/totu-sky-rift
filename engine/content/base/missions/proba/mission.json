@@ -32,7 +32,7 @@
   ],
   "variables": {"bator": 0, "hullamok": 0},
   "objectives": [
-    {"id": "o_kapu", "kind": "primary", "text": "mission.proba.o_kapu"},
+    {"id": "o_kapu", "kind": "primary", "text": "mission.proba.o_kapu", "at": "kapu"},
     {"id": "o_orseg", "kind": "primary", "text": "mission.proba.o_orseg"},
     {"id": "o_titok", "kind": "hidden", "text": "mission.proba.o_titok"}
   ],

@@ -58,6 +58,8 @@ struct MissionObjective {
   std::string id, text;
   uint8_t kind = 0;      // 0 elsődleges, 1 másodlagos, 2 rejtett
   bool visible = true;   // a rejtett a megjelenítésig nem látszik
+  std::string at;        // a cél helye a pályán (régió vagy pont azonosítója; üres: nincs) – a régi `at`
+  std::string marker;    // a jelzőfény felirata (fordítási kulcs vagy szöveg; üres: nincs)
 };
 struct DialogueChoice {
   std::string text, next;

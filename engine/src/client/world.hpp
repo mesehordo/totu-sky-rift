@@ -90,6 +90,10 @@ class World {
                           *hidden = nullptr;
   };
   void set_mark_art(const MarkArt& m) { marks_ = m; }
+  // a küldetés célgyűrűje és jelzőfénye (10. tétel): a gyűrű 12 fázis (64-es sugárra rajzolva), a kristály
+  void set_objective_art(const render::Texture* ring, const render::Texture* beacon) { obj_ring_ = ring; obj_beacon_ = beacon; }
+  void draw_objective_rings(render::SpriteBatch& batch, double time) const;     // a talajon
+  void draw_objective_beacons(render::SpriteBatch& batch, double time) const;   // a figurák fölött
   void draw_ground_marks(render::SpriteBatch& batch, float alpha, double time) const;   // a figurák alatt
   void draw_hero_badges(render::SpriteBatch& batch, float alpha, double time) const;    // a figurák fölött
   void draw_carry(render::SpriteBatch& batch, float alpha) const;
@@ -175,6 +179,7 @@ class World {
   BannerArt banner_;
   const render::Texture* sack_ = nullptr;
   MarkArt marks_;
+  const render::Texture *obj_ring_ = nullptr, *obj_beacon_ = nullptr;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;
   bool last_move_ = false;   // a legutóbbi saját mozgásparancs célja (világ-képpont)
   float last_move_x_ = 0, last_move_y_ = 0;

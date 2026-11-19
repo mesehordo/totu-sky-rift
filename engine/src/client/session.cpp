@@ -522,7 +522,24 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
     m.active = true;
     for (const auto& o : d.objectives) {
       const uint8_t st = mission_->objective_state(o.id);
-      if (st != 0) m.objectives.push_back({o.text, static_cast<uint8_t>(o.kind == 1 ? 1 : 0), st});
+      if (st == 0) continue;
+      SnapMission::Objective so;
+      so.text = o.text;
+      so.kind = static_cast<uint8_t>(o.kind == 1 ? 1 : 0);
+      so.state = st;
+      so.marker = o.marker;
+      if (const sim::MissionRegion* rg = o.at.empty() ? nullptr : d.region(o.at)) {   // régió: a közepe, a nagyobbik fél oldal
+        so.placed = true;
+        so.x = (static_cast<float>(rg->x) + static_cast<float>(rg->w) / 2) * 32.0f;
+        so.y = (static_cast<float>(rg->y) + static_cast<float>(rg->h) / 2) * 32.0f;
+        so.r = static_cast<float>(std::max(rg->w, rg->h)) / 2 * 32.0f;
+      } else if (const sim::MissionPoint* pt = o.at.empty() ? nullptr : d.point(o.at)) {   // pont: 3 csempe sugár
+        so.placed = true;
+        so.x = to_px(pt->x);
+        so.y = to_px(pt->y);
+        so.r = 3 * 32.0f;
+      }
+      m.objectives.push_back(std::move(so));
     }
     const auto& tv = mission_->dialogue();
     if (const sim::MissionDialogue* md = d.dialogue(tv.dialogue)) {

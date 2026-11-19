@@ -38,6 +38,10 @@ render::Image hero_ground_tinted(float w);
 render::Image hero_ground_fixed(float w);
 render::Image chant_mark_image(float w, int phase);
 render::Image hidden_mark_image(float w);
+// a küldetés célgyűrűje (a régi `draw_objective_ring`): arany, lapított, forgó szaggatott peremmel és rúnákkal;
+// `r` sugárra, (2r + 20) × (1,2 r + 20), 12 forgásfázis; a jelzőfény (lebegő kristály és fénysugár), 16 × 64
+render::Image objective_ring_image(float r, int phase);
+render::Image objective_beacon_image();
 int banner_style(const std::string& faction);
 render::Image banner_pole_image(int style);
 render::Image banner_knob_image(int style);

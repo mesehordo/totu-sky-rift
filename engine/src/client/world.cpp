@@ -429,6 +429,37 @@ void World::draw_hero_badges(render::SpriteBatch& batch, float alpha, double tim
   }
 }
 
+void World::draw_objective_rings(render::SpriteBatch& batch, double time) const {
+  if (!cur_ || !obj_ring_ || !cur_->mission.active) return;
+  const float pulse = 0.85f + 0.15f * static_cast<float>(std::sin(time * 3.0));
+  for (const auto& o : cur_->mission.objectives) {
+    if (!o.placed || o.state != 1) continue;
+    const float r = std::max(18.0f, o.r), k = r / 64.0f;
+    render::SpriteInstance s;
+    s.w = (2 * 64 + 20) * k;
+    s.h = (64 * 1.2f + 20) * k;
+    s.x = o.x - s.w / 2;
+    s.y = o.y - s.h / 2;
+    s.layer[0] = static_cast<uint8_t>(static_cast<int>(time * 6.0 / 3.0) % 12);
+    s.tint[3] = static_cast<uint8_t>(255 * pulse);
+    batch.draw(*obj_ring_, nullptr, s);
+  }
+}
+
+void World::draw_objective_beacons(render::SpriteBatch& batch, double time) const {
+  if (!cur_ || !obj_beacon_ || !cur_->mission.active) return;
+  const float bob = static_cast<float>(std::sin(time * 2.4)) * 3.0f;
+  for (const auto& o : cur_->mission.objectives) {
+    if (!o.placed || o.state != 1) continue;
+    render::SpriteInstance s;   // a kristály közepe 46 képponttal a cél fölött (a régi szerint)
+    s.w = 16;
+    s.h = 64;
+    s.x = o.x - 8;
+    s.y = o.y - 46 + bob - 12;
+    batch.draw(*obj_beacon_, nullptr, s);
+  }
+}
+
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !sack_ || !rules || !rules->game_raw) return;

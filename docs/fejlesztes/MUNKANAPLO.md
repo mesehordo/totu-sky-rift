@@ -981,3 +981,7 @@ A hős feje fölött a nép jelképe helyett kis korona (a tulajdonos kérése),
 ## 2026-11-19 – A Croftianok új neve: Formitarák
 
 A tulajdonos szabálya: a hangya (Formica) és a pitypang (Taraxacum) latin nevének első két-két szótagja – Formitara. A magyar és az angol szövegekben átírva; a belső azonosító marad (D53 1.).
+
+## 2026-11-19 – 10. tétel: küldetésjelek a régi szerint
+
+A küldetés céljának helye lehet (`at`: régió vagy pont; `marker`: felirat – a régi `markers`), a szerkesztő Adatok lapján is. Az aktív, helyhez kötött célnál arany célgyűrű (fényudvar, kettős gyűrű, forgó szaggatott perem, rúna-rombuszok, pulzálva) és fölötte lebegő kristály fénysugárral. A mintaküldetés első célja a kapuhoz kötve. Nyitott: a jelzőfény felirata a pályán. Kép: `docs/quality/kepek/utan_celgyuru.jpg`.

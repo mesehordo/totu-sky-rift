@@ -102,6 +102,9 @@ struct SnapMission {
   struct Objective {
     std::string text;
     uint8_t kind = 0, state = 1;   // kind: 0 elsődleges, 1 másodlagos; state: 1 aktív, 2 kész, 3 elbukott
+    bool placed = false;           // van helye a pályán (a régi célgyűrű és jelzőfény)
+    float x = 0, y = 0, r = 0;     // világ-képpont; a gyűrű sugara
+    std::string marker;            // a jelzőfény felirata
   };
   std::vector<Objective> objectives;   // csak a látható
   std::string dialogue, speaker, portrait, text;   // a futó párbeszéd (üres: nincs)
