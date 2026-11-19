@@ -574,7 +574,8 @@ int main(int argc, char** argv) {
     }
     render::TerrainView terrain;
     render::Atlas world_atlas;
-    render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack;
+    render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
+        mark_badge_symbol, mark_chant, mark_hidden;
     render::Texture fallback, white, sigil_own, sigil_other, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
     client::Hud hud;
     client::Camera cam;
@@ -861,6 +862,18 @@ int main(int argc, char** argv) {
               render::premultiply(sack);
               carry_sack = dev.create_array_from(sack, false);
               world.set_sack(&carry_sack);
+              // talajjelek és a hős jelei (a régi szerint)
+              auto one = [&](render::Image im) {
+                render::premultiply(im);
+                return dev.create_array_from(im, false);
+              };
+              mark_hero_tint = one(client::hero_ground_tinted(48.0f));
+              mark_hero_fixed = one(client::hero_ground_fixed(48.0f));
+              mark_badge_frame = layers(kS, 21, 21, [](int i) { return client::hero_badge_frame(i); });
+              mark_badge_symbol = layers(kS, 21, 21, [](int i) { return client::hero_badge_symbol(i); });
+              mark_chant = layers(8, 54, 38, [](int i) { return client::chant_mark_image(40.0f, i); });
+              mark_hidden = one(client::hidden_mark_image(40.0f));
+              world.set_mark_art({&mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden});
             }
           }
           render::Image px;
@@ -1504,8 +1517,10 @@ int main(int argc, char** argv) {
         batch.begin(proj);
         world.draw_rally_ground(batch, t);   // a gyülekezőpont ösvénye, pecsétje és árnyéka (a talajon)
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
+        world.draw_ground_marks(batch, alpha, t);     // talajjelek: hős, ének, rejtőzés
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
+        world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
         world.draw_banners(batch, t);        // D51: a csapatjelző lobogók
         world.draw_rally_flags(batch, t);    // a zászló az egységek fölött
         {
@@ -1738,7 +1753,7 @@ int main(int argc, char** argv) {
     dev.destroy(fallback);
     dev.destroy(sigil_own);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden}) dev.destroy(*t);
     dev.destroy(white);
     adem.atlas.release();
     for (auto& s : demo.sheets) {

@@ -29,6 +29,15 @@ constexpr int kBannerStyles = 9;
 // a munkás cipelt nyersanyaga (a régi `draw_unit_marks`): kis zsák sötét kontúrral, 12 × 12; a test 80 %-os szürke, a
 // fény fehér (a rajzoló a nyersanyag színével árnyalja)
 render::Image carry_sack_image();
+// Talajjelek és a hős jelei (a régi `_mark_img`, `hero_sigil`, `hero_badge`): a hős jelvénye 21 × 21 (keret: sötét
+// körvonal és arany szegély; a jelkép fehér – a csapatszín árnyalja), a talajjel színezhető és rögzített része
+// (w + 8) × (0,56 w + 8), az ének forgó rúnagyűrűje 8 fázisban és a rejtőzés pöttyözött gyűrűje (w + 14) × (0,6 w + 14)
+render::Image hero_badge_frame(int style);
+render::Image hero_badge_symbol(int style);
+render::Image hero_ground_tinted(float w);
+render::Image hero_ground_fixed(float w);
+render::Image chant_mark_image(float w, int phase);
+render::Image hidden_mark_image(float w);
 int banner_style(const std::string& faction);
 render::Image banner_pole_image(int style);
 render::Image banner_knob_image(int style);

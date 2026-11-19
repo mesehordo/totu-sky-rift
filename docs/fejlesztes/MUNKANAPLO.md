@@ -969,3 +969,7 @@ Csak az egér alatti egység vagy épület csíkja látszik (a régi `hover_bar`
 ## 2026-11-19 – 8. tétel: cipelt nyersanyag a régi szerint
 
 A rakományt vivő munkás vállánál kis zsák a nyersanyag színében (a `game.json` színe), sötét kontúrral és kötéssel. Kép: `docs/quality/kepek/utan_cipelt_nyersanyag.jpg`.
+
+## 2026-11-19 – 9. tétel: talajjelek és a hős jelei a régi szerint
+
+A figura alatt: forgó rúnagyűrű (bekapcsolt ének vagy kapcsoló, 8 fázis), pöttyözött gyűrű (a saját rejtőzött egység; a pillanatkép most viszi a rejtőzést), a hős talajjele (fényudvar, csapatszínű kettős gyűrű, nyolc arany rovátka, pulzálva). A hős feje fölött lebegő jelvény: a nép régi jelképe (medvemancs, karmok, napkorong, sasszárny, torii, levél, félhold, gombakalap) a csapatszínben, sötét kontúrral és arany szegéllyel. Az ének és a rejtőzés jelét képen nem ellenőriztem (a bemutatóban nincs ilyen). Kép: `docs/quality/kepek/utan_hos_jelek.jpg`.

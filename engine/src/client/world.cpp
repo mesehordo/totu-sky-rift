@@ -366,6 +366,71 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
   }
 }
 
+void World::draw_ground_marks(render::SpriteBatch& batch, float alpha, double time) const {
+  const sim::Rules* rules = session_.rules();
+  if (!cur_ || !rules || !marks_.hero_tint) return;
+  for (size_t i = 0; i < cur_->units.size(); ++i) {
+    const SnapUnit& u = cur_->units[i];
+    if (u.kind != SnapUnit::kUnit || u.hp <= 0 || u.def >= rules->defs.size() || rules->defs[u.def].flying) continue;
+    const Visual& v = vis_[i];
+    const float x = v.px + (u.x - v.px) * alpha, y = v.py + (u.y - v.py) * alpha;
+    const float rad = static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx;
+    if (u.hero_level > 0) {   // a hős talajjele (a régi: max(30, 3 × sugár), lassan pulzálva)
+      const float w = std::max(30.0f, rad * 3.0f), k = w / 48.0f;
+      const auto col = team_color(u.owner);
+      const float pulse = 0.85f + 0.15f * static_cast<float>(std::sin(time * 2.4 + static_cast<double>(u.id)));
+      render::SpriteInstance s;
+      s.w = 56 * k;
+      s.h = 34 * k;
+      s.x = x - s.w / 2;
+      s.y = y + rad * 0.35f - s.h / 2;
+      s.tint[3] = static_cast<uint8_t>(255 * pulse);
+      if (marks_.hero_fixed) batch.draw(*marks_.hero_fixed, nullptr, s);
+      s.tint[0] = col[0]; s.tint[1] = col[1]; s.tint[2] = col[2];
+      batch.draw(*marks_.hero_tint, nullptr, s);
+    }
+    const float mw = std::max(22.0f, rad * 2.7f), mk = mw / 40.0f;
+    float extra = 0;
+    auto mark = [&](const render::Texture* t, int layer) {
+      if (!t) return;
+      render::SpriteInstance s;
+      s.w = (54 + extra) * mk;
+      s.h = 38 * mk;
+      s.x = x - s.w / 2;
+      s.y = y + 2 - s.h / 2;
+      s.layer[0] = static_cast<uint8_t>(layer);
+      batch.draw(*t, nullptr, s);
+      extra += 8;
+    };
+    if (!u.toggles.empty()) mark(marks_.chant, static_cast<int>(time * 8.0) & 7);
+    if (u.hidden) mark(marks_.hidden, 0);
+  }
+}
+
+void World::draw_hero_badges(render::SpriteBatch& batch, float alpha, double time) const {
+  const sim::Rules* rules = session_.rules();
+  if (!cur_ || !rules || !marks_.badge_frame || !marks_.badge_symbol) return;
+  for (size_t i = 0; i < cur_->units.size(); ++i) {
+    const SnapUnit& u = cur_->units[i];
+    if (u.kind != SnapUnit::kUnit || u.hp <= 0 || u.hero_level == 0 || u.def >= rules->defs.size()) continue;
+    const Visual& v = vis_[i];
+    const float x = v.px + (u.x - v.px) * alpha, y = v.py + (u.y - v.py) * alpha;
+    const float rad = static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx;
+    const float top = y - std::max(48.0f, rad * 3.4f) - 6;   // a fej és a csík fölött
+    const float bob = static_cast<float>(std::sin(time * 2.0 + static_cast<double>(u.id))) * 1.5f;
+    const int style = banner_style(cur_->players[std::min<size_t>(u.owner, sim::Sim::kMaxPlayers)].faction);
+    const auto col = team_color(u.owner);
+    render::SpriteInstance s;
+    s.w = s.h = 21;
+    s.x = x - 10.5f;
+    s.y = top - 21 - 3 + bob;
+    s.layer[0] = static_cast<uint8_t>(style);
+    batch.draw(*marks_.badge_frame, nullptr, s);
+    s.tint[0] = col[0]; s.tint[1] = col[1]; s.tint[2] = col[2];
+    batch.draw(*marks_.badge_symbol, nullptr, s);
+  }
+}
+
 void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !sack_ || !rules || !rules->game_raw) return;

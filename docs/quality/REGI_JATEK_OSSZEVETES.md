@@ -13,7 +13,7 @@ percben). A tételekről a tulajdonos **egyesével** dönt: átvesszük, módos�
 | 6 | Terep | földutak és fű lágy átmenetekkel, talajdíszek (virág, gomba, bokor, kő, ág) | egyszínű fűminta, díszek nélkül | – |
 | 7 | Légkör | lebegő szentjánosbogarak, pollen, falevél (a pálya témája szerint) | nincs (csak az időjárás részecskéi) | – |
 | 8 | Cipelt nyersanyag | kis zsák/köteg a munkáson a nyersanyag színében | nincs | **átvéve**: kis zsák sötét kontúrral a nyersanyag színében, a figura vállánál. Kép: `kepek/utan_cipelt_nyersanyag.jpg` |
-| 9 | Talajjelek | ének / kapcsolt képesség, rejtőzés jele a figura alatt; hősnél talajjel és korona | nincs | – |
+| 9 | Talajjelek | ének / kapcsolt képesség, rejtőzés jele a figura alatt; hősnél talajjel és korona | nincs | **átvéve**: forgó rúnagyűrű (ének, kapcsoló), pöttyözött gyűrű (saját rejtőzött), a hős talajjele (fényudvar, kettős gyűrű, arany rovátkák) és jelvénye a feje fölött (a nép régi jelképe a csapatszínben, arany szegéllyel). Kép: `kepek/utan_hos_jelek.jpg` (az ének és a rejtőzés képen nincs ellenőrizve) |
 | 10 | Küldetésjelek | célgyűrű és jelzőfény felirattal a pályán | csak a célok listája | – |
 | 11 | Holttestek, tárgyak | holttestek (lélekidézőknél), a földön heverő tárgyak | a szimulációban megvannak, a pályán nem látszanak | – |
 | 12 | Építés | lerakási rács, tervezett (sorba állított) épületek, munkahelyek, alapozás, tavacska | kísértetkép zöld/piros színnel | – |

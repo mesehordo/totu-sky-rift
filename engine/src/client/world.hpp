@@ -83,6 +83,15 @@ class World {
   void set_banner_art(BannerArt a) { banner_ = std::move(a); }
   // a munkások cipelt nyersanyaga (8. tétel): a zsák a figura jobb vállánál, a nyersanyag színében
   void set_sack(const render::Texture* t) { sack_ = t; }
+  // talajjelek és a hős jelei (9. tétel): hős talajjel (színezhető + rögzített), jelvény (keret + jelkép, stílusonként
+  // egy réteg), ének (8 fázis), rejtőzés
+  struct MarkArt {
+    const render::Texture *hero_tint = nullptr, *hero_fixed = nullptr, *badge_frame = nullptr, *badge_symbol = nullptr, *chant = nullptr,
+                          *hidden = nullptr;
+  };
+  void set_mark_art(const MarkArt& m) { marks_ = m; }
+  void draw_ground_marks(render::SpriteBatch& batch, float alpha, double time) const;   // a figurák alatt
+  void draw_hero_badges(render::SpriteBatch& batch, float alpha, double time) const;    // a figurák fölött
   void draw_carry(render::SpriteBatch& batch, float alpha) const;
   void draw_banners(render::SpriteBatch& batch, double time) const;
   // a kijelölt saját épület gyülekezőpontja (jobb kattintás, ha csak épület van kijelölve – a régi szerint); igaz: kiadva
@@ -165,6 +174,7 @@ class World {
   RallyArt rally_;
   BannerArt banner_;
   const render::Texture* sack_ = nullptr;
+  MarkArt marks_;
   std::array<uint8_t, 3> faction_accent(const std::string& fid) const;
   bool last_move_ = false;   // a legutóbbi saját mozgásparancs célja (világ-képpont)
   float last_move_x_ = 0, last_move_y_ = 0;
