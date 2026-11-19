@@ -1,0 +1,11 @@
+{
+ "urs_berserker": {
+  "Abilities": {
+   "list": {
+    "+": [
+     "minta_harci_kialtas"
+    ]
+   }
+  }
+ }
+}

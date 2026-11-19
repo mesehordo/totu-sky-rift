@@ -1,0 +1,13 @@
+# Mintamod szövegei
+msgid ""
+msgstr ""
+"Language: hu
+"
+
+msgctxt "ability.minta_harci_kialtas.name"
+msgid "Harci kiáltás"
+msgstr ""
+
+msgctxt "ability.minta_harci_kialtas.desc"
+msgid "6 mp-ig +2 páncél és 10% gyorsabb mozgás."
+msgstr ""

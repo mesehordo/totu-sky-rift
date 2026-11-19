@@ -1,0 +1,13 @@
+# Sample mod texts
+msgid ""
+msgstr ""
+"Language: en
+"
+
+msgctxt "ability.minta_harci_kialtas.name"
+msgid "Harci kiáltás"
+msgstr "War Cry"
+
+msgctxt "ability.minta_harci_kialtas.desc"
+msgid "6 mp-ig +2 páncél és 10% gyorsabb mozgás."
+msgstr "+2 armour and 10% faster movement for 6 s."

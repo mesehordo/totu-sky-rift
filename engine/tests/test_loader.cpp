@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // A valódi, konvertált tartalom betöltése (M2, 3. lépés): a 22 faj minden eleme átmegy a sémán, és a számok
 // determinisztikusan olvashatók. A tartalmat a tools/konverter_motor.py állítja elő a Python-játék adataiból.
+#include <algorithm>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -92,7 +93,9 @@ TEST_CASE("M13 modok: felderites (alap, beepitett, felhasznaloi), sorrend, hiany
   }
   std::vector<std::string> warns;
   const auto avail = discover_mods(root, {user}, &warns);
-  CHECK(avail.size() == 3 && avail[0].id == "totu" && avail[1].id == "micelia" && avail[1].version == "0.1.0" && avail[2].id == "sajat");
+  auto has = [&](const char* id) { return std::any_of(avail.begin(), avail.end(), [&](const ModInfo& m) { return m.id == id; }); };
+  const auto mic = std::find_if(avail.begin(), avail.end(), [](const ModInfo& m) { return m.id == "micelia"; });
+  CHECK(avail[0].id == "totu" && mic != avail.end() && mic->version == "0.1.0" && has("sajat") && avail.back().id == "sajat");
   CHECK(warns.size() == 2);   // a dupla azonosító (a beépített nyer) és a hibás mod.json
   // a függőség előbb, az alap mindig az első
   auto r = select_mods(avail, {"sajat"});

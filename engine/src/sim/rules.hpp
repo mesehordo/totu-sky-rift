@@ -183,6 +183,7 @@ struct EntityDef {
   std::vector<std::string> tags;
   int32_t hp = 1, armor = 0;
   int32_t sight = 0;                          // csempe
+  std::string sprite;                         // a kép azonosítója (`Identity.sprite`; üres: az `id`) – modok, változatok
   std::array<int32_t, kResources> cost{};    // nyersanyag-költség
   int32_t supply = 0;                         // a felhasznált létszám (egység)
   int32_t time_ticks = 0;                     // termelési / építési idő

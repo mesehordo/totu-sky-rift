@@ -1,0 +1,186 @@
+{
+ "id": "minta",
+ "name": "mission.minta.name",
+ "description": "mission.minta.desc",
+ "map": "kraterfold.json",
+ "players": [
+  {
+   "slot": 1,
+   "faction": "ursan",
+   "human": true,
+   "resources": {
+    "wood": 200,
+    "gold": 200
+   }
+  },
+  {
+   "slot": 2,
+   "faction": "wullof"
+  }
+ ],
+ "regions": [
+  {
+   "id": "kapu",
+   "x": 30,
+   "y": 26,
+   "w": 8,
+   "h": 8
+  }
+ ],
+ "units": [
+  {
+   "name": "csapat",
+   "def": "urs_pajzshordozo",
+   "owner": 1,
+   "x": 22,
+   "y": 20
+  },
+  {
+   "name": "csapat",
+   "def": "urs_pajzshordozo",
+   "owner": 1,
+   "x": 23,
+   "y": 21
+  },
+  {
+   "name": "csapat",
+   "def": "urs_berserker",
+   "owner": 1,
+   "x": 21,
+   "y": 21
+  },
+  {
+   "name": "orseg",
+   "def": "wul_landzsas",
+   "owner": 2,
+   "x": 34,
+   "y": 30
+  },
+  {
+   "name": "orseg",
+   "def": "wul_landzsas",
+   "owner": 2,
+   "x": 35,
+   "y": 30
+  }
+ ],
+ "objectives": [
+  {
+   "id": "o_kapu",
+   "kind": "primary",
+   "text": "mission.minta.o_kapu",
+   "at": "kapu"
+  },
+  {
+   "id": "o_orseg",
+   "kind": "primary",
+   "text": "mission.minta.o_orseg"
+  }
+ ],
+ "triggers": [
+  {
+   "id": "t_start",
+   "event": {
+    "type": "start"
+   },
+   "actions": [
+    {
+     "type": "message",
+     "text": "mission.minta.m_start"
+    }
+   ]
+  },
+  {
+   "id": "t_kapu",
+   "event": {
+    "type": "enter_region",
+    "region": "kapu",
+    "owner": 1
+   },
+   "actions": [
+    {
+     "type": "objective",
+     "id": "o_kapu",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "t_orseg",
+   "repeat": true,
+   "event": {
+    "type": "unit_dies",
+    "owner": 2
+   },
+   "conditions": [
+    {
+     "type": "dead",
+     "unit": "orseg"
+    }
+   ],
+   "actions": [
+    {
+     "type": "objective",
+     "id": "o_orseg",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "t_gyoz1",
+   "event": {
+    "type": "objective_done",
+    "id": "o_orseg"
+   },
+   "conditions": [
+    {
+     "type": "objective",
+     "id": "o_kapu",
+     "state": "done"
+    }
+   ],
+   "actions": [
+    {
+     "type": "win"
+    }
+   ]
+  },
+  {
+   "id": "t_gyoz2",
+   "event": {
+    "type": "objective_done",
+    "id": "o_kapu"
+   },
+   "conditions": [
+    {
+     "type": "objective",
+     "id": "o_orseg",
+     "state": "done"
+    }
+   ],
+   "actions": [
+    {
+     "type": "win"
+    }
+   ]
+  },
+  {
+   "id": "t_bukas",
+   "event": {
+    "type": "unit_dies",
+    "owner": 1
+   },
+   "conditions": [
+    {
+     "type": "dead",
+     "unit": "csapat"
+    }
+   ],
+   "actions": [
+    {
+     "type": "lose"
+    }
+   ]
+  }
+ ]
+}

@@ -185,7 +185,8 @@ class World {
     size_t i;     // index a pillanatképben (és a vis_-ben)
   };
   int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
-  int sheet_by_id(render::Atlas* atlas, const std::string& id);   // -1, ha nincs ilyen lap
+  int sheet_by_id(render::Atlas* atlas, const std::string& id);
+  static const std::string& art_id(const sim::Rules& r, uint16_t def);   // -1, ha nincs ilyen lap
   int sheet_of(render::Atlas* atlas, const SnapUnit& u);          // a sablon vagy a nyersanyag lapja
   std::map<std::string, int> sheet_ids_;
   void collect(const Camera& cam, int sw, int sh, float alpha);

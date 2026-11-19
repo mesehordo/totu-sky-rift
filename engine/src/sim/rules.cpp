@@ -512,6 +512,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     const content::Value* kind = path(*v, "Identity", "kind");
     d.building = kind && kind->is_string() && kind->text() == "building";
     if (const content::Value* f = path(*v, "Identity", "faction"); f && f->is_string()) d.faction = f->text();
+    if (const content::Value* sp = path(*v, "Identity", "sprite"); sp && sp->is_string()) d.sprite = sp->text();
     if (const content::Value* tg = path(*v, "Identity", "tags"); tg && tg->is_array()) {
       for (const auto& t : tg->items()) {
         if (t.is_string()) d.tags.push_back(t.text());

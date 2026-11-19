@@ -1,0 +1,13 @@
+# Sample mod texts
+msgid ""
+msgstr ""
+"Language: en
+"
+
+msgctxt "unit.urs_minta_vertes.name"
+msgid "Vértes pajzshordozó"
+msgstr "Armoured Shieldbearer"
+
+msgctxt "unit.urs_minta_vertes.desc"
+msgid "Mintaegység: erősebb páncél, drágább és lassabban képezhető."
+msgstr "Sample unit: heavier armour, costlier and slower to train."

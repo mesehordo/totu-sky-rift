@@ -1,0 +1,25 @@
+# Sample mod texts
+msgid ""
+msgstr ""
+"Language: en
+"
+
+msgctxt "mission.minta.name"
+msgid "Minta: a kapu"
+msgstr "Sample: the Gate"
+
+msgctxt "mission.minta.desc"
+msgid "A mintaküldetés: érd el a kaput, és győzd le az őrséget."
+msgstr "The sample mission: reach the gate and defeat the guards."
+
+msgctxt "mission.minta.o_kapu"
+msgid "Érd el a kaput"
+msgstr "Reach the gate"
+
+msgctxt "mission.minta.o_orseg"
+msgid "Győzd le a kapu őrségét"
+msgstr "Defeat the gate guards"
+
+msgctxt "mission.minta.m_start"
+msgid "A kapunál két őr vár."
+msgstr "Two guards wait at the gate."

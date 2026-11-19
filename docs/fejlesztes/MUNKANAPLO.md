@@ -1021,3 +1021,7 @@ A terepcsempe-rajzoló a régi `Scenery._organic_soil` szerint: a föld elmosott
 ## 2026-11-19 – M13 2.: a modkezelő (D50, a 0 A.D. szerint)
 
 A főmenü „Modok” pontja megnyitja a modkezelőt az oldalsáv mellett: balra az elérhető, jobbra az engedélyezett modok (a betöltési sorrendben), köztük Engedélyez / Letilt / Fel / Le; alul a kijelölt mod adatai (név, azonosító, verzió, leírás, függőségek, ütközések) és a hibák a mentés előtt – a függőségnek engedélyezve kell lennie és előbb kell betölteni (nem húzzuk be magától), ütközés, ismeretlen mod. Hibás készletnél a „Mentés és újraindítás” tiltva; mentéskor a beállításokba kerül, és a játék ugyanazokkal a kapcsolókkal újraindul. A `mod.json` új mezői: `name`, `description` (hiányában az azonosító és a `_leiras`). `--menu-screen mods` a képpróbához. Próba: „modkezelo”. Kép: `docs/quality/kepek/utan_modkezelo.jpg`.
+
+## 2026-11-19 – M13 3.: mintamodok és modkészítői leírás (SDK)
+
+Három mintamod (`content/mods/minta_egyseg`, `minta_kepesseg`, `minta_kuldetes`): új egység örökléssel és meglévő képpel, folttal a termelő épületre és a nép listájára; új képesség folttal egy meglévő egységre; küldetés a modban. Közben bevezetve: `Identity.sprite` – a sablon képe lehet egy meglévő képlap (az alapadatok már használták, eddig figyelmen kívül maradt, így néhány változat-egység kör volt). A `mod.json` `name` mezője a Micéliáknak is. Leírás: `docs/modolas/MOD_SDK.md` (CC BY 4.0, D8); a régi `docs/MODDING.md` a Python-játéké (megjelölve). Próbák: „mintamodok” (3), a felderítési próba azonosító szerint ellenőriz.

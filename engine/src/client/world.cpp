@@ -733,7 +733,7 @@ void World::draw_planned(render::SpriteBatch& batch, const render::Texture& whit
       }
     }
     if (atlas) {
-      const int s = sheet_by_id(atlas, r->defs[p.def].id);
+      const int s = sheet_by_id(atlas, art_id(*r, p.def));
       if (s >= 0) {
         const auto& gs = atlas->data().sheets[static_cast<size_t>(s)];
         const uint8_t tint[4] = {255, 255, 255, 170};
@@ -1015,6 +1015,12 @@ bool World::prepare_atlas(render::Atlas& atlas, std::string* error) {
   return atlas.prepare(need, error);
 }
 
+// a sablon képe: az `Identity.sprite`, ha meg van adva (változat, mod), különben az azonosító
+const std::string& World::art_id(const sim::Rules& r, uint16_t def) {
+  const sim::EntityDef& d = r.defs[def];
+  return d.sprite.empty() ? d.id : d.sprite;
+}
+
 int World::sheet_by_id(render::Atlas* atlas, const std::string& id) {
   if (!atlas) return -1;
   if (sheet_ids_.empty()) {
@@ -1037,7 +1043,7 @@ int World::sheet_of(render::Atlas* atlas, const SnapUnit& u) {
   }
   const sim::Rules* r = session_.rules();
   if (u.def == sim::kNoDef || !r || u.def >= r->defs.size()) return -1;
-  return sheet_by_id(atlas, r->defs[u.def].id);
+  return sheet_by_id(atlas, art_id(*r, u.def));
 }
 
 int World::sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner) {
@@ -1142,7 +1148,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     const sim::Rules* rr = session_.rules();
     for (const auto& c : cur_->corpses) {
       if (!rr || c.def >= rr->defs.size()) continue;
-      const int si = sheet_by_id(atlas, rr->defs[c.def].id);
+      const int si = sheet_by_id(atlas, art_id(*rr, c.def));
       if (si < 0) continue;
       const auto& s = atlas->data().sheets[static_cast<size_t>(si)];
       const auto d = s.anims.find("death");
@@ -1243,7 +1249,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
   // az építés kísértetképe (áttetsző; az érvényességet a szimuláció dönti el)
   const sim::Rules* r = session_.rules();
   if (!shadow_pass && atlas && r && ghost_def_ < r->defs.size()) {
-    const int s = sheet_by_id(atlas, r->defs[ghost_def_].id);
+    const int s = sheet_by_id(atlas, art_id(*r, ghost_def_));
     if (s >= 0) {
       const auto& gs = atlas->data().sheets[static_cast<size_t>(s)];
       const uint8_t ok_tint[4] = {190, 255, 190, 150}, no_tint[4] = {255, 110, 100, 160};

@@ -1,0 +1,11 @@
+{
+ "faction_ursan": {
+  "Roster": {
+   "units": {
+    "+": [
+     "urs_minta_vertes"
+    ]
+   }
+  }
+ }
+}

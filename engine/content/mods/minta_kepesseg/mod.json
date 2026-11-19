@@ -1,0 +1,9 @@
+{
+ "id": "minta_kepesseg",
+ "name": "Minta: új képesség",
+ "version": "1.0",
+ "depends": [
+  "totu"
+ ],
+ "description": "Mintamod: új önerősítő képesség (Harci kiáltás) a Berserkernek. Az SDK leírásának 2. példája."
+}

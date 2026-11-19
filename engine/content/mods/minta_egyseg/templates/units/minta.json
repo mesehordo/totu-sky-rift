@@ -1,0 +1,22 @@
+{
+ "_leiras": "Új egység: az `inherits` egy meglévő sablont vesz alapul, és csak az eltérést kell megadni.",
+ "urs_minta_vertes": {
+  "inherits": "urs_pajzshordozo",
+  "Identity": {
+   "name": "unit.urs_minta_vertes.name",
+   "desc": "unit.urs_minta_vertes.desc",
+   "sprite": "urs_pajzshordozo"
+  },
+  "Cost": {
+   "resources": {
+    "wood": 60,
+    "gold": 40
+   },
+   "time": 18
+  },
+  "Health": {
+   "max": 220,
+   "armor": 3
+  }
+ }
+}

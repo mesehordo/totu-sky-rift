@@ -1,0 +1,13 @@
+# Mintamod szövegei
+msgid ""
+msgstr ""
+"Language: hu
+"
+
+msgctxt "unit.urs_minta_vertes.name"
+msgid "Vértes pajzshordozó"
+msgstr ""
+
+msgctxt "unit.urs_minta_vertes.desc"
+msgid "Mintaegység: erősebb páncél, drágább és lassabban képezhető."
+msgstr ""

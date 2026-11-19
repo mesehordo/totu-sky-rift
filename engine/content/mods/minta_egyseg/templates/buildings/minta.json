@@ -1,0 +1,12 @@
+{
+ "_leiras": "Folt: ugyanaz az azonosító egy későbbi rétegben mélyen összefésülődik; a lista `+` elemei a végére kerülnek.",
+ "urs_harcosok_haza": {
+  "Producer": {
+   "units": {
+    "+": [
+     "urs_minta_vertes"
+    ]
+   }
+  }
+ }
+}

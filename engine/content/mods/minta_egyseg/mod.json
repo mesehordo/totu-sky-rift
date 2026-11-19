@@ -1,0 +1,9 @@
+{
+ "id": "minta_egyseg",
+ "name": "Minta: új egység",
+ "version": "1.0",
+ "depends": [
+  "totu"
+ ],
+ "description": "Mintamod: új Ursan egység (Vértes pajzshordozó) egy meglévőből örökölve, a meglévő képével; a Harcosok házában képezhető. Az SDK leírásának 1. példája."
+}

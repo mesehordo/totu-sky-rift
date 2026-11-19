@@ -1,0 +1,20 @@
+{
+ "minta_harci_kialtas": {
+  "Identity": {
+   "kind": "ability",
+   "name": "ability.minta_harci_kialtas.name",
+   "desc": "ability.minta_harci_kialtas.desc"
+  },
+  "Spec": {
+   "type": "self_buff",
+   "hotkey": "C",
+   "cooldown": 30,
+   "duration": 6,
+   "modifiers": {
+    "armor_add": 2,
+    "speed_mult": 1.1
+   },
+   "icon": "roar"
+  }
+ }
+}
