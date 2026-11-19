@@ -18,6 +18,7 @@ struct ModInfo {
   std::string version;
   std::vector<std::string> depends;    // kötelező előtte betöltendő modok
   std::vector<std::string> conflicts;  // ezekkel együtt nem tölthető be
+  std::string name, description;      // a modkezelőnek (mod.json „name”, „description”; hiányában az azonosító / `_leiras`)
   std::filesystem::path root;
 };
 

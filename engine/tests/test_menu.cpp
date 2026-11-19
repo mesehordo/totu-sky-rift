@@ -83,7 +83,7 @@ TEST_CASE("M8 felulet – menü: a főmenü a régi pontjaival – egyéni csata
     }
   }
   CHECK(items == 7);
-  CHECK(soon == 4);   // többjátékos, történetek, modok, készítők
+  CHECK(soon == 3);   // többjátékos, történetek, készítők (a modkezelő M13 óta él)
   CHECK(m.find(MenuAct::Toggle, 0)->label == "Egyjátékos");
   CHECK(m.find(MenuAct::Toggle, 0)->sub);
   // a letiltott pontra kattintás nem tesz semmit
@@ -521,4 +521,48 @@ TEST_CASE("AS-01 kamera-gorgetes: a beallitott sebesseg idoaranyosan, kepernyosz
   e.my = 360;   // középen nem görget
   client::scroll_delta(s, e, 0.1f, 1.0f, &dx, &dy);
   CHECK(dx == 0.0f && dy == 0.0f);
+}
+
+TEST_CASE("M13 modkezelo (D50): ket lista, engedelyezes, sorrend, fuggoseg-hiba mentes elott, mentes es ujrainditas") {
+  client::Settings st;
+  client::Locale loc;
+  loc.load(TOTU_CONTENT_DIR);
+  client::Menu m(st, loc, {}, {});
+  content::ModInfo a, b, c;
+  a.id = "alfa"; a.name = "Alfa"; a.version = "1.0";
+  b.id = "beta"; b.name = "Béta"; b.version = "2.0"; b.depends = {"alfa"};
+  c.id = "gamma"; c.name = "Gamma"; c.conflicts = {"alfa"};
+  m.set_mods({a, b, c});
+  m.go(client::MenuScreen::Mods);
+  m.set_time(10.0);   // a becsúszás lefutott
+  m.layout(1600, 900);
+  auto click = [&](client::MenuAct act, int arg = 0) {
+    const client::MenuWidget* w = m.find(act, arg);
+    CHECK(w != nullptr);
+    if (!w) return client::Menu::Result::None;
+
+    const auto r = m.click(w->r.x + 2, w->r.y + 2);
+    m.layout(1600, 900);
+    return r;
+  };
+  // a Béta kijelölése és engedélyezése: hiányzó függőség – a mentés tiltva
+  click(client::MenuAct::ModPick, 1);
+  click(client::MenuAct::ModEnable);
+  CHECK(m.mods_enabled() == std::vector<std::string>{"beta"} && !m.mods_errors().empty());
+  CHECK(!m.find(client::MenuAct::ModSave)->enabled);
+  CHECK(click(client::MenuAct::ModSave) == client::Menu::Result::None && st.mods.empty());
+  // az Alfa is (a listában most az első): a függőség megvan; az Alfa feljebb kerül
+  click(client::MenuAct::ModPick, 0);
+  click(client::MenuAct::ModEnable);
+  click(client::MenuAct::ModUp);
+  CHECK((m.mods_enabled() == std::vector<std::string>{"alfa", "beta"}) && m.mods_errors().empty());
+  // a Gamma ütközik az Alfával
+  click(client::MenuAct::ModPick, 0);
+  click(client::MenuAct::ModEnable);
+  CHECK(!m.mods_errors().empty());
+  click(client::MenuAct::ModDisable);
+  CHECK(m.mods_errors().empty());
+  // mentés: a beállításokba kerül, és újraindítást kér
+  CHECK(click(client::MenuAct::ModSave) == client::Menu::Result::Restart);
+  CHECK((st.mods == std::vector<std::string>{"alfa", "beta"}));
 }

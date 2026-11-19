@@ -12,6 +12,8 @@
 #include <array>
 #include <cstdint>
 #include <string>
+
+#include "content/vfs.hpp"
 #include <vector>
 
 #include "client/i18n.hpp"
@@ -85,7 +87,7 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
                        uint64_t seed, MatchConfig* out, std::string* error_hu);
 
 // --- az elrendezés elemei -------------------------------------------------------------------------------------------
-enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys };
+enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods };
 
 enum class MenuAct : uint8_t {
   None = 0,
@@ -103,6 +105,10 @@ enum class MenuAct : uint8_t {
   SoundSlider,   // arg: a hangkategória (a `slider` mező az érték)
   KeyCell,       // arg: a parancsrács helye
   KeysDefault,
+  // M13, D50: a modkezelő (a 0 A.D. szerint)
+  OpenMods,
+  ModPick,       // arg: < 1000 az elérhetők listájában, ≥ 1000 az engedélyezettekében
+  ModEnable, ModDisable, ModUp, ModDown, ModSave,
 };
 
 struct MenuWidget {
@@ -146,7 +152,7 @@ class Menu {
  public:
   // változásjelzők (a hívó menti a fájlt, alkalmazza a képernyőt, a nyelvet, a csapatszíneket)
   enum Change : uint32_t { kSave = 1, kDisplay = 2, kLanguage = 4, kColors = 8 };
-  enum class Result : uint8_t { None = 0, Start, Quit };
+  enum class Result : uint8_t { None = 0, Start, Quit, Restart };
 
   Menu(Settings& settings, Locale& locale, std::vector<MapInfo> maps, std::vector<FactionInfo> factions);
 
@@ -190,6 +196,10 @@ class Menu {
   MenuRect logo_rect() const { return logo_; }
 
   SkirmishSetup& skirmish() { return sk_; }
+  // M13: a választható modok (az alap nélkül) – a modkezelő listái; a szerkesztett lista mentéskor a beállításokba
+  void set_mods(std::vector<content::ModInfo> available) { mods_avail_ = std::move(available); }
+  const std::vector<std::string>& mods_enabled() const { return mods_on_; }
+  const std::vector<std::string>& mods_errors() const { return mods_err_; }
   const std::vector<MapInfo>& maps() const { return maps_; }
   const std::vector<FactionInfo>& factions() const { return factions_; }
   // az indításhoz (a `Start` eredmény után)
@@ -204,6 +214,8 @@ class Menu {
   void layout_settings();
   void layout_sound();
   void layout_keys();
+  void layout_mods();
+  void mods_check();   // a szerkesztett készlet hibái (függőség, ütközés) a mentés előtt
   void title(const std::string& text);
   void back_button();
   MenuWidget& add(MenuWidget::Kind kind, MenuRect r, std::string label, MenuAct act, int arg = 0);
@@ -219,6 +231,9 @@ class Menu {
   Settings& st_;
   Locale& loc_;
   std::vector<MapInfo> maps_;
+  std::vector<content::ModInfo> mods_avail_;
+  std::vector<std::string> mods_on_, mods_err_;
+  std::string mod_sel_;
   std::vector<FactionInfo> factions_;
   SkirmishSetup sk_;
   MenuScreen screen_ = MenuScreen::Main;
@@ -240,7 +255,7 @@ class Menu {
   double now_ = 0, anim_t_ = -9;   // az utolsó nyitás ideje (almenü, oldalsó képernyő)
   float anim() const;              // 0..1, lassuló (0,14 mp – a régi `MainMenu` almenüje)
   void layout_sidebar(int highlight);
-  void side_area();
+  void side_area(const char* highlight = "ui.main.settings");
   MenuRect logo_;
   std::vector<MenuWidget> widgets_;
   std::vector<MenuText> texts_;

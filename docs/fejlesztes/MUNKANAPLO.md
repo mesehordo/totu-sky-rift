@@ -1017,3 +1017,7 @@ A pillanatkép viszi a helyi játékos még meg nem kezdett épületeit (a munk�
 ## 2026-11-19 – A fű–föld határ a régi szerint (kanyargós, lekerekített)
 
 A terepcsempe-rajzoló a régi `Scenery._organic_soil` szerint: a föld elmosott térképe (talajmező, R8 textúra, két 3 × 3-as átlag) és kétoktávos világ-zaj 0,5-ös szintjén fut a határ képpontonként; a határ menti (2 csempén belüli) csempékre a másik talajosztály rétege kerül ezzel az alfával, a fű–föld maszkos átmenet és a festett perem ott elmarad. A többi szárazföldi maszkos átmenet széle is enyhén zajos lett. Csak megjelenítés; a szimuláció terepe változatlan (a nagyon keskeny fűsávokat a régi játékhoz hasonlóan részben elnyeli). Kép: `docs/quality/kepek/osszevetes_fu_fold_hatar.jpg` (bal: előtte, jobb: utána).
+
+## 2026-11-19 – M13 2.: a modkezelő (D50, a 0 A.D. szerint)
+
+A főmenü „Modok” pontja megnyitja a modkezelőt az oldalsáv mellett: balra az elérhető, jobbra az engedélyezett modok (a betöltési sorrendben), köztük Engedélyez / Letilt / Fel / Le; alul a kijelölt mod adatai (név, azonosító, verzió, leírás, függőségek, ütközések) és a hibák a mentés előtt – a függőségnek engedélyezve kell lennie és előbb kell betölteni (nem húzzuk be magától), ütközés, ismeretlen mod. Hibás készletnél a „Mentés és újraindítás” tiltva; mentéskor a beállításokba kerül, és a játék ugyanazokkal a kapcsolókkal újraindul. A `mod.json` új mezői: `name`, `description` (hiányában az azonosító és a `_leiras`). `--menu-screen mods` a képpróbához. Próba: „modkezelo”. Kép: `docs/quality/kepek/utan_modkezelo.jpg`.

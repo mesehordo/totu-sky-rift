@@ -9284,3 +9284,59 @@ msgstr ""
 msgctxt "ui.atlas.failed"
 msgid "A grafika előkészítése nem sikerült – a játék tartalékalakokkal fut"
 msgstr ""
+
+msgctxt "ui.mods.title"
+msgid "MODOK"
+msgstr ""
+
+msgctxt "ui.mods.available"
+msgid "Elérhető modok"
+msgstr ""
+
+msgctxt "ui.mods.enabled"
+msgid "Engedélyezett (betöltési sorrend)"
+msgstr ""
+
+msgctxt "ui.mods.none"
+msgid "Nincs több elérhető mod"
+msgstr ""
+
+msgctxt "ui.mods.enable"
+msgid "Engedélyez →"
+msgstr ""
+
+msgctxt "ui.mods.disable"
+msgid "Letilt"
+msgstr ""
+
+msgctxt "ui.mods.up"
+msgid "Fel"
+msgstr ""
+
+msgctxt "ui.mods.down"
+msgid "Le"
+msgstr ""
+
+msgctxt "ui.mods.depends"
+msgid "Függőségek: {x}"
+msgstr ""
+
+msgctxt "ui.mods.conflicts"
+msgid "Ütközik: {x}"
+msgstr ""
+
+msgctxt "ui.mods.pick"
+msgid "Válassz egy modot a listából az adataihoz."
+msgstr ""
+
+msgctxt "ui.mods.save"
+msgid "Mentés és újraindítás"
+msgstr ""
+
+msgctxt "ui.mods.err_missing"
+msgid "{m}: a függősége ({d}) nincs engedélyezve"
+msgstr ""
+
+msgctxt "ui.mods.err_order"
+msgid "{m}: a függőségét ({d}) előbb kell betölteni – vidd feljebb"
+msgstr ""

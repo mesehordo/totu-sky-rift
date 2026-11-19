@@ -9285,3 +9285,59 @@ msgstr "Preparing graphics (first start)… page {n} done"
 msgctxt "ui.atlas.failed"
 msgid "A grafika előkészítése nem sikerült – a játék tartalékalakokkal fut"
 msgstr "Graphics preparation failed – the game uses placeholder shapes"
+
+msgctxt "ui.mods.title"
+msgid "MODOK"
+msgstr "MODS"
+
+msgctxt "ui.mods.available"
+msgid "Elérhető modok"
+msgstr "Available mods"
+
+msgctxt "ui.mods.enabled"
+msgid "Engedélyezett (betöltési sorrend)"
+msgstr "Enabled (load order)"
+
+msgctxt "ui.mods.none"
+msgid "Nincs több elérhető mod"
+msgstr "No more mods available"
+
+msgctxt "ui.mods.enable"
+msgid "Engedélyez →"
+msgstr "Enable →"
+
+msgctxt "ui.mods.disable"
+msgid "Letilt"
+msgstr "Disable"
+
+msgctxt "ui.mods.up"
+msgid "Fel"
+msgstr "Up"
+
+msgctxt "ui.mods.down"
+msgid "Le"
+msgstr "Down"
+
+msgctxt "ui.mods.depends"
+msgid "Függőségek: {x}"
+msgstr "Depends on: {x}"
+
+msgctxt "ui.mods.conflicts"
+msgid "Ütközik: {x}"
+msgstr "Conflicts with: {x}"
+
+msgctxt "ui.mods.pick"
+msgid "Válassz egy modot a listából az adataihoz."
+msgstr "Select a mod to see its details."
+
+msgctxt "ui.mods.save"
+msgid "Mentés és újraindítás"
+msgstr "Save and restart"
+
+msgctxt "ui.mods.err_missing"
+msgid "{m}: a függősége ({d}) nincs engedélyezve"
+msgstr "{m}: its dependency ({d}) is not enabled"
+
+msgctxt "ui.mods.err_order"
+msgid "{m}: a függőségét ({d}) előbb kell betölteni – vidd feljebb"
+msgstr "{m}: its dependency ({d}) must load first – move it up"

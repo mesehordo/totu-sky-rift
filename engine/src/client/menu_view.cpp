@@ -260,7 +260,8 @@ class MenuView {
 
   // --- háttér, oldalsáv, panel ---
   void background(render::SpriteBatch& b, MenuScreen s, double t) {
-    const std::string path = s == MenuScreen::Main || s == MenuScreen::Settings || s == MenuScreen::Sound || s == MenuScreen::Keys
+    const std::string path = s == MenuScreen::Main || s == MenuScreen::Settings || s == MenuScreen::Sound || s == MenuScreen::Keys ||
+                                     s == MenuScreen::Mods
                                  ? main_bg_   // az oldalsáv melletti képernyők: a főmenü háttere
                              : s == MenuScreen::Skirmish ? (std::filesystem::path(assets_) / "ui" / "bg" / "setup.png").string()
                                                          : (std::filesystem::path(assets_) / "ui" / "bg" / "options.png").string();
@@ -494,6 +495,7 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
     terrain_ok = terrain.load(set, errs) && errs.empty();
   }
   Menu menu(st, loc, scan_maps(o.maps_dir, terrain_ok ? &terrain : nullptr), scan_factions(o.content));
+  menu.set_mods(o.available_mods);
   menu.set_logo_aspect(view.logo_aspect());
   if (o.start != MenuScreen::Main) menu.go(o.start);
   view.colorblind_ = st.colorblind;
@@ -534,6 +536,10 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
       if (ch & (Menu::kLanguage | Menu::kColors)) save(o, st);
       view.colorblind_ = st.colorblind;
       if (res == Menu::Result::Quit) return false;
+      if (res == Menu::Result::Restart) {   // M13: a modkészlet megváltozott – a hívó újraindítja a játékot
+        if (rc) *rc = kMenuRestart;
+        return false;
+      }
       if (res == Menu::Result::Start) {
         const uint64_t seed = static_cast<uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());
         if (menu.match_config(seed, out)) return true;

@@ -143,6 +143,10 @@ std::optional<ModInfo> read_mod_info(const fs::path& mod_root, std::string* erro
   };
   strings(v->find("depends"), m.depends);
   strings(v->find("conflicts"), m.conflicts);
+  if (const Value* nm = v->find("name"); nm && nm->is_string()) m.name = nm->text();
+  if (const Value* ds = v->find("description"); ds && ds->is_string()) m.description = ds->text();
+  else if (const Value* ls = v->find("_leiras"); ls && ls->is_string()) m.description = ls->text();
+  if (m.name.empty()) m.name = m.id;
   return m;
 }
 

@@ -51,7 +51,7 @@ const std::vector<MainGroup>& main_items() {
       {"ui.main.settings", MenuAct::Toggle, false,
        {{"ui.main.game_settings", MenuAct::Settings, false},
         {"ui.main.profiles", MenuAct::None, true}}},
-      {"ui.main.mods", MenuAct::None, true, {}},
+      {"ui.main.mods", MenuAct::OpenMods, false, {}},
       {"ui.main.credits", MenuAct::None, true, {}},
       {"ui.main.quit", MenuAct::Quit, false, {}},
   };
@@ -229,6 +229,12 @@ float Menu::anim() const {
 
 void Menu::go(MenuScreen s) {
   if (s != screen_) anim_t_ = now_;
+  if (s == MenuScreen::Mods && screen_ != MenuScreen::Mods) {   // a modkezelő a mentett készlettel indul
+    mods_on_ = st_.mods;
+    mod_sel_.clear();
+    message_.clear();
+    mods_check();
+  }
   screen_ = s;
   open_ = -1;
   open_dd_ = MenuAct::None;
@@ -316,6 +322,7 @@ void Menu::layout(int w, int h) {
     case MenuScreen::Settings: layout_settings(); break;
     case MenuScreen::Sound: layout_sound(); break;
     case MenuScreen::Keys: layout_keys(); break;
+    case MenuScreen::Mods: layout_mods(); break;
   }
 }
 
@@ -323,12 +330,12 @@ void Menu::layout_main() {
   layout_sidebar(open_);
 }
 
-void Menu::side_area() {
+void Menu::side_area(const char* highlight) {
   // az oldalsáv a főmenü „Beállítások” pontjával kiemelve; mellette a képernyő, balról becsúszva
   int sel = -1;
   const auto& items = main_items();
   for (size_t i = 0; i < items.size(); ++i) {
-    if (std::string(items[i].key) == "ui.main.settings") sel = static_cast<int>(i);
+    if (std::string(items[i].key) == highlight) sel = static_cast<int>(i);
   }
   layout_sidebar(sel);
   const float off = (1.0f - anim()) * k(60);
@@ -624,6 +631,111 @@ void Menu::layout_keys() {
   back_button();
 }
 
+void Menu::mods_check() {
+  mods_err_.clear();
+  std::vector<content::ModInfo> avail = mods_avail_;
+  content::ModInfo base;   // az alap mindig megvan
+  base.id = "totu";
+  avail.insert(avail.begin(), base);
+  // a 0 A.D. szerint: a függőségnek engedélyezve kell lennie, és előbb kell betölteni (nem húzzuk be magától)
+  for (size_t i = 0; i < mods_on_.size(); ++i) {
+    for (const auto& m : mods_avail_) {
+      if (m.id != mods_on_[i]) continue;
+      for (const auto& d : m.depends) {
+        if (d == "totu") continue;
+        const auto it = std::find(mods_on_.begin(), mods_on_.end(), d);
+        if (it == mods_on_.end()) mods_err_.push_back(loc_.tr("ui.mods.err_missing", {{"m", m.id}, {"d", d}}));
+        else if (static_cast<size_t>(it - mods_on_.begin()) > i) mods_err_.push_back(loc_.tr("ui.mods.err_order", {{"m", m.id}, {"d", d}}));
+      }
+    }
+  }
+  if (mods_err_.empty()) {
+    for (const auto& e : content::select_mods(avail, mods_on_).errors) mods_err_.push_back(e);   // ütközés, ismeretlen mod
+  }
+}
+
+void Menu::layout_mods() {
+  // a 0 A.D. modkezelője szerint (D50): balra az elérhető, jobbra az engedélyezett modok (a betöltési sorrendben),
+  // alatta a kijelölt mod adatai és a hibák; a mentés újraindítja a játékot
+  const float H = static_cast<float>(h_);
+  side_area("ui.main.mods");
+  title(tr("ui.mods.title"));
+  const float top = k(96);
+  const float gap = k(16);
+  const float lw = std::min(k(340), (area_w_ - k(48) - k(150)) / 2);
+  const float lx = area_x_ + k(24), rx = lx + lw + k(150);
+  const float lh = std::max(k(180), H * 0.42f);
+  panels_.push_back({{lx, top, lw, lh}, 215, false});
+  panels_.push_back({{rx, top, lw, lh}, 215, false});
+  text(lx + k(10), top + k(8), lw - k(20), tr("ui.mods.available"), MenuText::Med, MenuText::Gold);
+  text(rx + k(10), top + k(8), lw - k(20), tr("ui.mods.enabled"), MenuText::Med, MenuText::Gold);
+  const float rh = k(30);
+  float y = top + k(44);
+  int idx = 0;
+  for (const auto& m : mods_avail_) {
+    if (std::find(mods_on_.begin(), mods_on_.end(), m.id) != mods_on_.end()) continue;
+    MenuWidget& w = add(MenuWidget::Kind::MapRow, {lx + k(6), y, lw - k(12), rh}, m.name + "  " + m.version, MenuAct::ModPick, idx++);
+    w.selected = m.id == mod_sel_;
+    y += rh + k(2);
+  }
+  if (idx == 0) text(lx + k(12), y, lw - k(24), tr("ui.mods.none"), MenuText::Small, MenuText::Dim);
+  y = top + k(44);
+  for (size_t i = 0; i < mods_on_.size(); ++i) {
+    std::string label = std::to_string(i + 1) + ". " + mods_on_[i];
+    for (const auto& m : mods_avail_) {
+      if (m.id == mods_on_[i]) label = std::to_string(i + 1) + ". " + m.name + "  " + m.version;
+    }
+    MenuWidget& w = add(MenuWidget::Kind::MapRow, {rx + k(6), y, lw - k(12), rh}, label, MenuAct::ModPick, 1000 + static_cast<int>(i));
+    w.selected = mods_on_[i] == mod_sel_;
+    y += rh + k(2);
+  }
+  // a két lista között a gombok
+  const float bx = lx + lw + k(15), bw = k(120), bh = k(40);
+  float by = top + k(50);
+  for (const auto& [key, act] : {std::pair<const char*, MenuAct>{"ui.mods.enable", MenuAct::ModEnable}, {"ui.mods.disable", MenuAct::ModDisable},
+                                 {"ui.mods.up", MenuAct::ModUp}, {"ui.mods.down", MenuAct::ModDown}}) {
+    MenuWidget& b = add(MenuWidget::Kind::Button, {bx, by, bw, bh}, tr(key), act);
+    b.small = true;
+    by += bh + gap / 2;
+  }
+  // a kijelölt mod adatai
+  const float dy = top + lh + gap;
+  const float dw = rx + lw - lx;
+  panels_.push_back({{lx, dy, dw, H - dy - k(96)}, 200, false});
+  const content::ModInfo* sel = nullptr;
+  for (const auto& m : mods_avail_) {
+    if (m.id == mod_sel_) sel = &m;
+  }
+  float ty = dy + k(10);
+  if (sel) {
+    text(lx + k(12), ty, dw - k(24), sel->name + "  (" + sel->id + ", " + sel->version + ")", MenuText::Med, MenuText::Gold);
+    ty += k(30);
+    if (!sel->description.empty()) {
+      text(lx + k(12), ty, dw - k(24), sel->description, MenuText::Small, MenuText::Text, false, 3);
+      ty += k(60);
+    }
+    auto join = [](const std::vector<std::string>& v) {
+      std::string s;
+      for (const auto& x : v) s += (s.empty() ? "" : ", ") + x;
+      return s.empty() ? std::string("–") : s;
+    };
+    text(lx + k(12), ty, dw - k(24), loc_.tr("ui.mods.depends", {{"x", join(sel->depends)}}), MenuText::Small, MenuText::Dim);
+    ty += k(24);
+    text(lx + k(12), ty, dw - k(24), loc_.tr("ui.mods.conflicts", {{"x", join(sel->conflicts)}}), MenuText::Small, MenuText::Dim);
+    ty += k(28);
+  } else {
+    text(lx + k(12), ty, dw - k(24), tr("ui.mods.pick"), MenuText::Small, MenuText::Dim);
+    ty += k(30);
+  }
+  for (const auto& e : mods_err_) {   // a hibák a mentés előtt (a 0 A.D. szerint)
+    text(lx + k(12), ty, dw - k(24), e, MenuText::Small, MenuText::Warn);
+    ty += k(22);
+  }
+  MenuWidget& save = add(MenuWidget::Kind::Button, {area_x_ + area_w_ - k(36 + 300), H - k(76), k(300), k(50)}, tr("ui.mods.save"), MenuAct::ModSave);
+  save.enabled = mods_err_.empty();
+  back_button();
+}
+
 // --- bevitel --------------------------------------------------------------------------------------------------------
 const MenuWidget* Menu::find(MenuAct act, int arg) const {
   for (const MenuWidget& w : widgets_) {
@@ -711,6 +823,44 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
       break;
     case MenuAct::Cycle: cycle(w.arg, button == 3 ? -1 : 1); break;
     case MenuAct::OpenSound: go(MenuScreen::Sound); break;
+    case MenuAct::OpenMods: go(MenuScreen::Mods); break;
+    case MenuAct::ModPick: {
+      const bool on = w.arg >= 1000;
+      const size_t i = static_cast<size_t>(on ? w.arg - 1000 : w.arg);
+      if (on && i < mods_on_.size()) mod_sel_ = mods_on_[i];
+      if (!on) {
+        size_t k = 0;
+        for (const auto& m : mods_avail_) {
+          if (std::find(mods_on_.begin(), mods_on_.end(), m.id) != mods_on_.end()) continue;
+          if (k++ == i) mod_sel_ = m.id;
+        }
+      }
+      break;
+    }
+    case MenuAct::ModEnable:
+      if (!mod_sel_.empty() && std::find(mods_on_.begin(), mods_on_.end(), mod_sel_) == mods_on_.end()) mods_on_.push_back(mod_sel_);
+      mods_check();
+      break;
+    case MenuAct::ModDisable:
+      mods_on_.erase(std::remove(mods_on_.begin(), mods_on_.end(), mod_sel_), mods_on_.end());
+      mods_check();
+      break;
+    case MenuAct::ModUp:
+    case MenuAct::ModDown: {
+      auto it = std::find(mods_on_.begin(), mods_on_.end(), mod_sel_);
+      if (it == mods_on_.end()) break;
+      const auto pos = static_cast<size_t>(it - mods_on_.begin());
+      if (w.act == MenuAct::ModUp && pos > 0) std::swap(mods_on_[pos], mods_on_[pos - 1]);
+      if (w.act == MenuAct::ModDown && pos + 1 < mods_on_.size()) std::swap(mods_on_[pos], mods_on_[pos + 1]);
+      mods_check();
+      break;
+    }
+    case MenuAct::ModSave:
+      mods_check();
+      if (!mods_err_.empty()) break;
+      st_.mods = mods_on_;
+      changes_ |= kSave;
+      return Result::Restart;
     case MenuAct::OpenKeys: go(MenuScreen::Keys); break;
     case MenuAct::SoundToggle: {
       Settings::Volume& v = st_.volume[static_cast<size_t>(w.arg)];
@@ -857,6 +1007,7 @@ Menu::Result Menu::key(int key) {
       return Result::None;
     }
     switch (screen_) {
+      case MenuScreen::Mods: go(MenuScreen::Main); return Result::None;
       case MenuScreen::Main:
         if (open_ >= 0) {   // nyitott almenünél az Esc csak az almenüt zárja be
           open_ = -1;

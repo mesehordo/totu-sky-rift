@@ -354,7 +354,7 @@ int main(int argc, char** argv) {
       o.menu = true;
       o.menu_screen = v == "skirmish" ? client::MenuScreen::Skirmish : v == "settings" ? client::MenuScreen::Settings
                       : v == "sound"  ? client::MenuScreen::Sound    : v == "keys"     ? client::MenuScreen::Keys
-                                                                                        : client::MenuScreen::Main;
+                      : v == "mods"   ? client::MenuScreen::Mods     : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
@@ -441,6 +441,7 @@ int main(int argc, char** argv) {
     if (!client::load_settings(settings_file, &settings, &serr)) std::fprintf(stderr, "%s\n", serr.c_str());
   }
   client::Locale locale;
+  std::vector<content::ModInfo> mods_available;   // a modkezelő listája
   std::vector<content::ModInfo> mod_order;   // M13: az alap és az engedélyezett modok betöltési sorrendje
   {
     std::vector<std::filesystem::path> extra;
@@ -450,6 +451,9 @@ int main(int argc, char** argv) {
     }
     std::vector<std::string> warns;
     const auto avail = content::discover_mods(o.content, extra, &warns);
+    for (const auto& m : avail) {
+      if (m.id != "totu") mods_available.push_back(m);
+    }
     for (const auto& w : warns) std::fprintf(stderr, "mod: %s\n", w.c_str());
     const auto res = content::select_mods(avail, o.mods_given ? o.mods : settings.mods);
     if (!res.errors.empty()) {   // a hibás modkészlet nem töltődik be: az alapjáték indul, a hiba látszik
@@ -627,6 +631,7 @@ int main(int argc, char** argv) {
                    mo.screenshot = o.screenshot;
                    mo.start = o.menu_screen;
                    mo.mods = mod_order;
+                   mo.available_mods = mods_available;
                    mo.status = [&]() -> std::string {
                      if (atlas_cache.building()) return locale.tr("ui.atlas.building", {{"n", std::to_string(atlas_cache.pages_done())}});
                      if (!atlas_cache.ready() && !atlas_cache.error().empty()) return locale.tr("ui.atlas.failed");
@@ -1818,5 +1823,15 @@ int main(int argc, char** argv) {
   SDL_GL_DestroyContext(ctx);
   SDL_DestroyWindow(win);
   SDL_Quit();
+  if (rc == client::kMenuRestart) {   // M13: a modkészlet változott – a játék újraindul ugyanazokkal a kapcsolókkal
+    std::vector<const char*> args(argv, argv + argc);
+    args.push_back(nullptr);
+    if (SDL_Process* pr = SDL_CreateProcess(args.data(), false)) {
+      SDL_DestroyProcess(pr);
+      return 0;
+    }
+    std::fprintf(stderr, "az újraindítás nem sikerült: indítsd el újra a játékot\n");
+    return 0;
+  }
   return rc;
 }

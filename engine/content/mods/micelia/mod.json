@@ -1,5 +1,6 @@
 {
  "id": "micelia",
+ "name": "Micéliák (főnép)",
  "version": "0.1.0",
  "depends": [
   "totu"

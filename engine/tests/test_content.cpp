@@ -67,9 +67,9 @@ TEST_CASE("JSON: hibák sor- és oszlopszámmal") {
 }
 
 TEST_CASE("modok: betöltési sorrend, függőség, ütközés, kör") {
-  std::vector<ModInfo> av = {{"alap", "1", {}, {}, {}}, {"a", "1", {"alap"}, {}, {}},
-                             {"b", "1", {"a"}, {"c"}, {}}, {"c", "1", {}, {}, {}},
-                             {"x", "1", {"y"}, {}, {}}, {"y", "1", {"x"}, {}, {}}};
+  std::vector<ModInfo> av = {{"alap", "1", {}, {}, {}, {}, {}}, {"a", "1", {"alap"}, {}, {}, {}, {}},
+                             {"b", "1", {"a"}, {"c"}, {}, {}, {}}, {"c", "1", {}, {}, {}, {}, {}},
+                             {"x", "1", {"y"}, {}, {}, {}, {}}, {"y", "1", {"x"}, {}, {}, {}, {}}};
   auto r = resolve_mods(av, {"b"});
   CHECK(r.errors.empty());
   CHECK(r.order.size() == 3 && r.order[0].id == "alap" && r.order[1].id == "a" && r.order[2].id == "b");

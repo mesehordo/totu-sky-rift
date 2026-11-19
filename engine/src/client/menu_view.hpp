@@ -23,8 +23,11 @@ struct MenuRunOptions {
   std::string screenshot;      // az utolsó képkockáról
   MenuScreen start = MenuScreen::Main;
   std::vector<content::ModInfo> mods;   // M13: a betöltött modok (az alappal)
+  std::vector<content::ModInfo> available_mods;   // a modkezelő listája (az alap nélkül)
   std::function<std::string()> status;   // az állapotsor szövege képkockánként (üres: nincs)
 };
+
+constexpr int kMenuRestart = 42;   // a `run_menu` visszatérési kódja: a játék induljon újra (a modkészlet változott)
 
 // A felbontás és a teljes képernyő alkalmazása az ablakra.
 void apply_display(SDL_Window* win, const Settings& st);
