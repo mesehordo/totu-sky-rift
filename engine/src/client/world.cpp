@@ -305,8 +305,8 @@ void World::order_attack_move(float wx, float wy) {
   note_move(wx, wy);
 }
 
-void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha, float hx, float hy) const {
-  if (!cur_) return;
+int World::hovered(float alpha, float hx, float hy, float* out_cx, float* out_y, float* out_w) const {
+  if (!cur_) return -1;
   const sim::Rules* rules = session_.rules();
   // az egér alatti entitás: előbb egység (a figura doboza), aztán épület (a lábnyom, fölfelé a kép magasságáig)
   int best = -1;
@@ -331,7 +331,7 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
       if (hx >= bx && hx < bx + bw && hy >= by - bh * 0.5f && hy < by + bh) best = static_cast<int>(i);
     }
   }
-  if (best < 0) return;
+  if (best < 0) return -1;
   const SnapUnit& u = cur_->units[static_cast<size_t>(best)];
   float cx, y, w;
   if (u.kind == SnapUnit::kBuilding) {
@@ -345,6 +345,17 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
     cx = v.px + (u.x - v.px) * alpha;
     y = v.py + (u.y - v.py) * alpha - std::max(40.0f, rad * 2.8f);
   }
+  if (out_cx) *out_cx = cx;
+  if (out_y) *out_y = y;
+  if (out_w) *out_w = w;
+  return best;
+}
+
+void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha, float hx, float hy) const {
+  float cx = 0, y = 0, w = 0;
+  const int best = hovered(alpha, hx, hy, &cx, &y, &w);
+  if (best < 0) return;
+  const SnapUnit& u = cur_->units[static_cast<size_t>(best)];
   const float x0 = cx - w / 2;
   auto bar = [&](float yy, float hh, float frac, uint8_t r, uint8_t g, uint8_t b) {
     render::SpriteInstance bg;
@@ -364,6 +375,49 @@ void World::draw_bars(render::SpriteBatch& batch, const render::Texture& white, 
   if (u.energy_max > 0 && u.kind == SnapUnit::kUnit && u.owner == session_.local_player()) {
     bar(y + 5, 3, static_cast<float>(u.energy) / static_cast<float>(u.energy_max), 200, 110, 255);
   }
+}
+
+std::vector<World::Label> World::labels(float alpha, double time, float hx, float hy) const {
+  std::vector<Label> out;
+  if (!cur_) return out;
+  float cx = 0, y = 0, w = 0;
+  const int best = hovered(alpha, hx, hy, &cx, &y, &w);
+  if (best >= 0) {   // idézett egység: a hátralévő idő a sávok alatt (a régi: „N mp”)
+    const SnapUnit& u = cur_->units[static_cast<size_t>(best)];
+    if (u.kind == SnapUnit::kUnit && u.life_until > cur_->tick) {
+      const bool energy = u.energy_max > 0 && u.owner == session_.local_player();
+      Label l;
+      l.kind = Label::Countdown;
+      l.wx = cx;
+      l.wy = y + (energy ? 9.0f : 5.0f);
+      l.value = static_cast<int>((u.life_until - cur_->tick + 29) / 30);
+      out.push_back(std::move(l));
+    }
+  }
+  if (cur_->mission.active) {   // a jelzőfény felirata a kristály fölött
+    const float bob = static_cast<float>(std::sin(time * 2.4)) * 3.0f;
+    for (const auto& o : cur_->mission.objectives) {
+      if (!o.placed || o.state != 1 || o.marker.empty()) continue;
+      Label l;
+      l.kind = Label::Beacon;
+      l.wx = o.x;
+      l.wy = o.y - 46.0f + bob - 9.0f - 6.0f;
+      l.key = o.marker;
+      out.push_back(std::move(l));
+    }
+  }
+  for (const auto& g : cur_->items) {   // az egér alatti tárgy neve
+    if (std::hypot(hx - g.x, hy - (g.y - 6.0f)) >= 16.0f) continue;
+    Label l;
+    l.kind = Label::Item;
+    l.wx = g.x;
+    l.wy = g.y - 38.0f + 16.0f;
+    l.value = g.rarity;
+    l.key = g.item;
+    out.push_back(std::move(l));
+    break;
+  }
+  return out;
 }
 
 void World::draw_ground_marks(render::SpriteBatch& batch, float alpha, double time) const {

@@ -56,9 +56,21 @@ class World {
   // a régi szerint csak az egér alatti egység / épület csíkjai: fölül pajzs (kék), életerő (4 képpont; zöld > 60 % >
   // sárga > 30 % > piros), alul energia (lila, saját egységnél); `hover_*`: az egér világ-képpontban
   void draw_bars(render::SpriteBatch& batch, const render::Texture& white, float alpha, float hover_wx, float hover_wy) const;
+  // a világban álló feliratok (a régi szerint; a HUD rajzolja képernyő-méretű betűvel): az egér alatti idézett egység
+  // hátralévő ideje a sávjai alatt, a célok jelzőfényének felirata, az egér alatti tárgy neve. Világ-képpont: a
+  // felirat közepe vízszintesen, a teteje (Countdown) vagy az alja (Beacon, Item) függőlegesen.
+  struct Label {
+    enum Kind : uint8_t { Countdown = 0, Beacon = 1, Item = 2 } kind = Countdown;
+    float wx = 0, wy = 0;
+    int value = 0;      // Countdown: másodperc; Item: a ritkaság
+    std::string key;    // Beacon: a felirat (kulcs vagy szöveg); Item: a tárgy azonosítója
+  };
+  std::vector<Label> labels(float alpha, double time, float hover_wx, float hover_wy) const;
   // helyőrség-jelzés (D39) a saját épületeken: jel, ha bent van valaki; a kurzor alatti épület fölött annyi fej, ahány
   // hely van (a foglaltak a játékos színével, a szabadok szürkén); az építő bentléte nem jelölendő
   void draw_garrison(render::SpriteBatch& batch, const render::Texture& white, float hover_wx, float hover_wy) const;
+  // az egér alatti entitás a sávokhoz (előbb egység, aztán épület; -1: nincs) és a sáv helye (közép, teteje, szélesség)
+  int hovered(float alpha, float hover_wx, float hover_wy, float* cx = nullptr, float* y = nullptr, float* w = nullptr) const;
   // építés (ideiglenes kezelés a HUD-ig): a kísértetkép (sablon, bal felső csempe; kNoDef = nincs), és a parancs az
   // első kijelölt munkással
   void set_ghost(uint16_t def, int tx, int ty, bool ok = true) { ghost_def_ = def; ghost_tx_ = tx; ghost_ty_ = ty; ghost_ok_ = ok; }

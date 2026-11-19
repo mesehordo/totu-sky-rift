@@ -1671,6 +1671,8 @@ int main(int argc, char** argv) {
           hf.cam_h = static_cast<float>(h) / cam.zoom;
           hf.fps = settings.show_fps ? fps_shown : -1;
           batch.begin(render::ortho(0, static_cast<float>(w), static_cast<float>(h), 0));
+          hud.draw_world_labels(batch, white, world.labels(alpha, t, cam.x + hf.mx / cam.zoom, cam.y + hf.my / cam.zoom), cam.x, cam.y,
+                                cam.zoom);   // a világ feliratai (a HUD alatt)
           hud.draw(batch, white, hf);
           if (chain_def && chain_pick) {   // M12: küldetésválasztó – vonalak a feltételekhez, csomópontok, cím
             auto box = [&](float x, float y, float bw, float bh, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {

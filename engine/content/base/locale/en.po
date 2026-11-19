@@ -9341,3 +9341,7 @@ msgstr "{m}: its dependency ({d}) is not enabled"
 msgctxt "ui.mods.err_order"
 msgid "{m}: a függőségét ({d}) előbb kell betölteni – vidd feljebb"
 msgstr "{m}: its dependency ({d}) must load first – move it up"
+
+msgctxt "hud.summon.left"
+msgid "{} mp"
+msgstr "{} s"

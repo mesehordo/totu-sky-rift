@@ -9340,3 +9340,7 @@ msgstr ""
 msgctxt "ui.mods.err_order"
 msgid "{m}: a függőségét ({d}) előbb kell betölteni – vidd feljebb"
 msgstr ""
+
+msgctxt "hud.summon.left"
+msgid "{} mp"
+msgstr ""

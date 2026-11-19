@@ -51,6 +51,9 @@ class Hud {
   float ui_text_w(int size, const std::string& s) { return tw(size, s); }
   float ui_line_h(int size) { return line_h(size); }
   void ui_text(int size, float x, float y, const std::string& s, uint8_t r, uint8_t g, uint8_t b) { stext(size, x, y, s, {r, g, b}); }
+  // a világ feliratai (World::labels) képernyő-méretű betűvel, a régi kinézettel (a HUD előtt; képernyő-vetítésben)
+  void draw_world_labels(render::SpriteBatch& batch, const render::Texture& white, const std::vector<World::Label>& labels,
+                         float cam_x, float cam_y, float zoom);
 
  private:
   struct Font {

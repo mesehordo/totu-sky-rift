@@ -1118,6 +1118,38 @@ void Hud::draw_quests() {
   stext(F, x + box + 8, y, model_.tr("quest.defeat_all"), col);
 }
 
+void Hud::draw_world_labels(render::SpriteBatch& batch, const render::Texture& white, const std::vector<World::Label>& labels,
+                            float cam_x, float cam_y, float zoom) {
+  begin_ui(batch, white);
+  const HudLayout& L = model_.layout();
+  static const Col kRar[3] = {{230, 220, 190}, {110, 170, 255}, {255, 190, 70}};
+  for (const auto& l : labels) {
+    const float sx = (l.wx - cam_x) * zoom, sy = (l.wy - cam_y) * zoom;
+    if (l.kind == World::Label::Countdown) {   // a régi: apró betű sötét alapon, 5 mp alatt narancs
+      const std::string s = model_.tr("summon.left", {std::to_string(l.value)});
+      const int F = L.font.tiny;
+      const float w = tw(F, s), h = line_h(F);
+      rect(sx - w / 2 - 2, sy, w + 4, h, {14, 12, 10});
+      stext(F, sx - w / 2, sy, s, l.value <= 5 ? Col{255, 150, 100} : Col{255, 220, 130});
+    } else if (l.kind == World::Label::Beacon) {   // a régi: sötét, arany szegélyű tábla
+      const std::string s = model_.name(l.key);
+      const int F = L.font.small;
+      const float pw = tw(F, s) + 14, ph = line_h(F) + 6, rx = sx - pw / 2, ry = sy - ph;
+      rect(rx + 2, ry + 2, pw, ph, {20, 16, 12});
+      rect(rx, ry, pw, ph, {36, 28, 20});
+      outline({static_cast<int>(rx), static_cast<int>(ry), static_cast<int>(pw), static_cast<int>(ph)}, {236, 190, 80});
+      line(rx + 3, ry + ph - 3, rx + pw - 3, ry + ph - 3, {120, 90, 40});
+      stext(F, rx + 7, ry + 3, s, {255, 240, 190});
+    } else {   // tárgy: a neve a ritkaság színében, áttetsző fekete alapon
+      const std::string s = model_.name("item." + l.key + ".name");
+      const int F = L.font.small;
+      const float w = tw(F, s), h = line_h(F);
+      rect(sx - w / 2 - 4, sy - h - 2, w + 8, h + 2, {0, 0, 0}, 170);
+      stext(F, sx - w / 2, sy - h - 1, s, kRar[std::min(l.value, 2)]);
+    }
+  }
+}
+
 void Hud::draw_clock(const HudFrame& f) {
   // jobb felül, visszafogottan: a játékidő
   const HudLayout& L = model_.layout();
