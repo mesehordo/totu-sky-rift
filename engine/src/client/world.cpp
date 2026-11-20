@@ -1435,6 +1435,41 @@ void World::draw_rot_bubbles(render::SpriteBatch& batch, const render::Texture& 
   }
 }
 
+void World::draw_status_marks(render::SpriteBatch& batch, const render::Texture& white, float alpha) const {
+  const sim::Rules* rules = session_.rules();
+  if (!cur_ || !rules) return;
+  static const uint8_t kCol[13][3] = {{255, 140, 60}, {140, 230, 90}, {170, 205, 255}, {180, 160, 255}, {130, 190, 255},
+                                      {205, 170, 110}, {190, 195, 225}, {255, 230, 110}, {215, 180, 255}, {170, 170, 175},
+                                      {200, 160, 240}, {255, 110, 100}, {215, 130, 90}};
+  const render::Texture& dot = amb_dot_ ? *amb_dot_ : white;
+  for (size_t i = 0; i < cur_->units.size(); ++i) {
+    const SnapUnit& u = cur_->units[i];
+    if (u.kind != SnapUnit::kUnit || u.hp <= 0 || u.def >= rules->defs.size()) continue;
+    int act[13], n = 0;
+    for (int k = 0; k < 13 && n < 5; ++k) {
+      if (u.afflict[static_cast<size_t>(k)] <= cur_->tick) continue;
+      if (k == 3 && u.afflict[2] > cur_->tick) continue;   // a fagyás már jelzi
+      act[n++] = k;
+    }
+    if (n == 0) continue;
+    const Visual& v = vis_[i];
+    const float sx = v.px + (u.x - v.px) * alpha, sy = v.py + (u.y - v.py) * alpha;
+    const float rad = static_cast<float>(rules->defs[u.def].radius.to_double()) * kTilePx;
+    const float top = sy - rad * 2.3f - 14.0f;
+    for (int k = 0; k < n; ++k) {
+      const float cx = sx - static_cast<float>(n - 1) * 4.5f + static_cast<float>(k) * 9.0f;
+      render::SpriteInstance o;   // sötét szegély, benne az állapot színe
+      o.x = cx - 4; o.y = top - 4; o.w = o.h = 8;
+      o.tint[0] = 20; o.tint[1] = 18; o.tint[2] = 16;
+      batch.draw(dot, nullptr, o);
+      render::SpriteInstance in;
+      in.x = cx - 3; in.y = top - 3; in.w = in.h = 6;
+      in.tint[0] = kCol[act[k]][0]; in.tint[1] = kCol[act[k]][1]; in.tint[2] = kCol[act[k]][2];
+      batch.draw(dot, nullptr, in);
+    }
+  }
+}
+
 void World::draw_status_fx(render::SpriteBatch& batch, const render::Texture& white, float alpha, double time) const {
   const sim::Rules* rules = session_.rules();
   if (!cur_ || !rules) return;

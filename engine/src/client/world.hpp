@@ -156,6 +156,9 @@ class World {
   void draw_rot_bubbles(render::SpriteBatch& batch, const render::Texture& white, double time) const;
   // micélia: az osztódásig szükséges ölések pöttyei a figura fölött, a megevettek zölden (a régi `draw_unit_marks`)
   void draw_meal_pips(render::SpriteBatch& batch, const render::Texture& white, float alpha) const;
+  // kikapcsolt állapot-animációnál is (a tanulmány: a játékfontos jel nem tűnhet el): álló, színes jel a figura fölött
+  // minden aktív állapotról (ég, mérgezett, fagyott, lassított, kábult …), az adatlap ikonjainak színével
+  void draw_status_marks(render::SpriteBatch& batch, const render::Texture& white, float alpha) const;
   // állapotok a figurán (a régi `draw_status_fx`): jégszilánk, láng, buborék, csepp, inda, felkiáltójel, Z, csillag,
   // sötét fátyol, némaság, célkereszt, páncéltörés – sötét kontúrral, hogy minden talajon olvasható legyen
   void draw_status_fx(render::SpriteBatch& batch, const render::Texture& white, float alpha, double time) const;

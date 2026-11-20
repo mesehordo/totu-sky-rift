@@ -1988,6 +1988,7 @@ int main(int argc, char** argv) {
         if (settings.status_fx) world.draw_rot_bubbles(batch, white, t);   // a rothadó fák buborékai
         world.draw_meal_pips(batch, white, alpha);    // micélia: ölések az osztódásig
         if (settings.status_fx) world.draw_status_fx(batch, white, alpha, t); // állapotok a figurán (a régi `draw_status_fx`)
+        else world.draw_status_marks(batch, white, alpha);   // kikapcsolva is: álló, színes jel (a tanulmány, WC3)
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
         world.draw_objective_beacons(batch, t);    // a célok jelzőfénye

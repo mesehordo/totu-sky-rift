@@ -514,6 +514,7 @@ void Hud::draw(render::SpriteBatch& batch, const render::Texture& white, const H
   my_ = f.my;
   if (!ready_ || !model_.snap() || !model_.rules()) return;
   model_.mission_choices.clear();
+  effect_tips_.clear();
   if (model_.snap()->mission.letterbox) {   // átvezető: csak a sáv és a felirat (a WC3 szerint a felület eltűnik)
     draw_mission(f);
     return;
@@ -809,38 +810,37 @@ void Hud::draw_char_sheet() {
 }
 
 void Hud::draw_effects_row(const SnapUnit& e, float x, float& y, float w, float bottom) {
+  // a WC3 állapotsora: erősítés- és gyengítésikonok (zöld / piros keret), a sarokban a hátralévő másodperc;
+  // rámutatva súgó (név, hatás, hátralévő idő)
   const auto eff = model_.active_effects(e);
   if (eff.empty()) return;
   const int ft = model_.layout().font.tiny;
-  const float lh = line_h(ft);
-  if (y + lh > bottom) return;
-  const std::string head = model_.tr("effects");
-  text(*batch_, ft, x, y, head, 160, 160, 150);
-  float cx = x + tw(ft, head) + 6;
+  const float isz = std::clamp(std::floor(line_h(ft) + 8), 16.0f, 30.0f);
+  if (y + isz > bottom) return;
+  float cx = x;
   for (size_t i = 0; i < eff.size(); ++i) {
-    std::string lab = eff[i].left < 600 ? model_.tr("effect_left", {eff[i].name, fmt("%.0f", eff[i].left)}) : eff[i].name;
-    lab = ellipsize(lab, ft, std::max(1.0f, w - 8));
-    const float ew = std::min(w, tw(ft, lab) + 8);
-    if (cx + ew > x + w) {
-      if (y + 2 * lh + 2 > bottom) {   // nincs több sor: „+N” címke
-        const std::string more = "+" + std::to_string(eff.size() - i);
-        const float mw = tw(ft, more) + 8, mx = std::min(cx, x + w - mw);
-        const Rect r{static_cast<int>(mx), static_cast<int>(y), static_cast<int>(mw), static_cast<int>(lh)};
-        rect(r, {24, 20, 16});
-        outline(r, {220, 210, 180});
-        text(*batch_, ft, mx + 4, y, more, 230, 220, 190);
-        break;
-      }
+    if (cx + isz > x + w) {
+      if (y + 2 * isz + 2 > bottom) break;
       cx = x;
-      y += lh + 2;
+      y += isz + 2;
     }
-    const Rect r{static_cast<int>(cx), static_cast<int>(y), static_cast<int>(ew), static_cast<int>(lh)};
-    rect(r, {24, 20, 16});
-    outline(r, eff[i].col);
-    text(*batch_, ft, cx + 4, y, lab, eff[i].col[0], eff[i].col[1], eff[i].col[2]);
-    cx += ew + 4;
+    const Rect r{static_cast<int>(cx), static_cast<int>(y), static_cast<int>(isz), static_cast<int>(isz)};
+    rect(r, {16, 14, 12});
+    const Img* im = image(eff[i].icon);
+    if (!im && !eff[i].buff) im = image("ui/icons/bolt");
+    if (!im) im = image("ui/icons/aura");
+    if (im) blit(*im, cx + 2, y + 2, isz - 4, isz - 4, eff[i].buff ? Col{255, 255, 255} : Col{eff[i].col[0], eff[i].col[1], eff[i].col[2]});
+    outline(r, eff[i].buff ? Col{110, 220, 110} : Col{230, 80, 70}, 2);
+    if (eff[i].left < 100) {   // a hátralévő másodperc a jobb alsó sarokban
+      const std::string sec = fmt("%.0f", std::ceil(eff[i].left));
+      text(*batch_, ft, cx + isz - tw(ft, sec) - 2, y + isz - line_h(ft) + 1, sec, 240, 236, 210);
+    }
+    std::string tip = eff[i].desc;
+    if (eff[i].left < 600) tip += (tip.empty() ? "" : "  ") + model_.tr("effect_left_tip", {fmt("%.0f", std::ceil(eff[i].left))});
+    effect_tips_.push_back({r, {eff[i].name, tip}});
+    cx += isz + 3;
   }
-  y += lh + 3;
+  y += isz + 3;
 }
 
 float Hud::draw_counter_row(const SnapUnit& e, const std::string& key, float x, float bottom, float w) {
@@ -1360,6 +1360,14 @@ void Hud::draw_tooltip(const HudFrame& f) {
     title = slots[i]->tip_title.empty() ? slots[i]->label : slots[i]->tip_title;
     body = slots[i]->tip_text;
     key = std::string(1, kSlotKeys[i]);
+  }
+  if (title.empty()) {   // az állapotikonok (WC3)
+    for (const auto& [r, tb] : effect_tips_) {
+      if (r.contains(f.mx, f.my)) {
+        title = tb.first;
+        body = tb.second;
+      }
+    }
   }
   if (title.empty()) {
     for (const HudRegion& r : model_.middle_regions()) {

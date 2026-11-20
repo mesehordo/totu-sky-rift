@@ -89,6 +89,8 @@ struct HudEffect {
   float left = 0;
   std::array<uint8_t, 3> col{};
   std::string desc;
+  std::string icon;    // a WC3-szerű ikonsorhoz: assets-beli útvonal (abilities/… vagy ui/icons/…)
+  bool buff = false;   // erősítés (zöld keret) vagy gyengítés (piros keret)
 };
 
 class HudModel {

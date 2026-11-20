@@ -70,6 +70,7 @@ class Hud {
   };
   using Col = std::array<uint8_t, 3>;
   Font& font(int size);
+  std::vector<std::pair<Rect, std::pair<std::string, std::string>>> effect_tips_;   // az állapotikonok súgója (képkockánként)
   const Img* image(const std::string& rel);                         // assets/<rel>.png (nincs: nullptr)
   const Img* portrait(const std::string& id);                      // portré (csapatszín-maszk nélkül, M9)
   void team_badge(const Rect& r, Col team);                         // csapatszínű sarokjel a portrén

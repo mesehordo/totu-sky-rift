@@ -10080,3 +10080,7 @@ msgstr ""
 msgctxt "hud.node_full"
 msgid "A lelőhely tele van: a munkás sorban áll, amíg hely nem szabadul."
 msgstr ""
+
+msgctxt "hud.effect_left_tip"
+msgid "Még {} mp."
+msgstr ""

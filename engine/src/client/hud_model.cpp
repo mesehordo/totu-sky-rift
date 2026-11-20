@@ -1663,13 +1663,14 @@ std::vector<HudEffect> HudModel::active_effects(const SnapUnit& u) const {
   struct Info {
     const char* key;
     std::array<uint8_t, 3> col;
+    const char* icon;   // a meglévő felületi ikonok közül, az állapot színére színezve
   };
   static const Info kInfo[13] = {
-      {"burn", {255, 140, 60}},     {"poison", {140, 230, 90}},  {"frozen", {170, 205, 255}},
-      {"slow", {180, 160, 255}},    {"wet", {130, 190, 255}},    {"rooted", {205, 170, 110}},
-      {"asleep", {190, 195, 225}},  {"stun", {255, 230, 110}},   {"feared", {215, 180, 255}},
-      {"blind", {170, 170, 175}},   {"silenced", {200, 160, 240}}, {"marked", {255, 110, 100}},
-      {"sunder", {215, 130, 90}},
+      {"burn", {255, 140, 60}, "burst"},    {"poison", {140, 230, 90}, "acid"},  {"frozen", {170, 205, 255}, "spines"},
+      {"slow", {180, 160, 255}, "speed"},   {"wet", {130, 190, 255}, "rain"},    {"rooted", {205, 170, 110}, "forest"},
+      {"asleep", {190, 195, 225}, "ghost"}, {"stun", {255, 230, 110}, "lightning"}, {"feared", {215, 180, 255}, "roar"},
+      {"blind", {170, 170, 175}, "eye"},    {"silenced", {200, 160, 240}, "song"}, {"marked", {255, 110, 100}, "aim"},
+      {"sunder", {215, 130, 90}, "shield"},
   };
   std::vector<HudEffect> out;
   if (!snap_) return out;
@@ -1680,13 +1681,13 @@ std::vector<HudEffect> HudModel::active_effects(const SnapUnit& u) const {
     if (i == 3 && u.afflict[2] > now) continue;   // a fagyás már szerepel
     if (i == 7 && until - now > 30LL * 1000000) continue;
     const std::string k = std::string("fx.") + kInfo[i].key;
-    out.push_back({tr(k + ".name"), static_cast<float>(until - now) / 30.0f, kInfo[i].col, tr(k + ".desc")});
+    out.push_back({tr(k + ".name"), static_cast<float>(until - now) / 30.0f, kInfo[i].col, tr(k + ".desc"), std::string("ui/icons/") + kInfo[i].icon, false});
   }
   for (const auto& [ab, until] : u.buffs) {
     if (until <= now || !rules_ || ab >= rules_->abilities.size()) continue;
     const std::string& bid = rules_->abilities[rules_->abilities[ab].base].id;
     out.push_back({name("ability." + bid + ".name"), static_cast<float>(until - now) / 30.0f, {255, 214, 110},
-                   tr("fx.buff", {name("ability." + bid + ".desc")})});
+                   tr("fx.buff", {name("ability." + bid + ".desc")}), "abilities/" + bid, true});
   }
   return out;
 }
