@@ -288,6 +288,30 @@ TEST_CASE("halozat: lobbi - nepvalasztas, kesz-jelzes, cseveges, a kilepo helye 
   CHECK(n.relay.sim().player(2).faction == "croftian");   // a választott nép a meccsben
 }
 
+TEST_CASE("halozat: lobbi - csapat, gepi hely, nezo, verzio es modlista") {
+  sim::Replay d = desc();
+  d.factions = {"ursan", "wullof", "croftian"};
+  d.teams = {1, 1, 2};
+  sim::AiSlot ai;
+  ai.player = 3;
+  ai.difficulty = "nehez";
+  d.ai = {ai};
+  Net n(20, d, 2);
+  n.relay.set_info("0.9.1", {"probamod 1.2"});
+  auto& a = n.join(1);
+  n.join(2);
+  n.join(9, kContent, true);   // néző
+  n.tick(200);
+  const net::LobbyInfo& li = a.lobby_info();
+  CHECK((li.teams == std::vector<uint8_t>{1, 1, 2}));
+  CHECK(li.ai.size() == 1 && li.ai[0].player == 3 && li.ai[0].faction == "croftian" && li.ai[0].difficulty == "nehez");
+  CHECK(li.observers == 1);
+  CHECK(li.version == "0.9.1" && li.mods == std::vector<std::string>{"probamod 1.2"});
+  n.leave(9);   // a néző kilép: a szám frissül
+  n.tick(200);
+  CHECK(a.lobby_info().observers == 0);
+}
+
 TEST_CASE("halozat: a rele bevarja a lemarado klienst") {
   Net n(30);
   auto& a = n.join(1);

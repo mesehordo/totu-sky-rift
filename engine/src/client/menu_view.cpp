@@ -111,20 +111,28 @@ class MenuView {
   }
 
   void draw_lobby(render::SpriteBatch& batch, int w, int h, float u, const Locale& loc, const std::vector<LobbyLine>& seats,
-                  const std::vector<std::string>& chat, const std::string& status, double t, const std::string* typing) {
+                  const std::vector<std::string>& chat, const std::string& status, double t, const std::string* typing,
+                  const std::vector<std::string>* info) {
     draw_loading(batch, w, h, u, status, loc.tr("ui.lobby.hint"), t);   // a háttér, a forgó rúnakör és az állapot
     batch.begin(render::ortho(0, W_, H_, 0));
     const float pw = std::min(k(720), W_ - k(80)), px = (W_ - pw) / 2, py = k(80);
     const float rh = k(34);
+    const size_t ni = info ? info->size() : 0;
     const float ph = k(70) + static_cast<float>(seats.size()) * rh + (chat.empty() ? 0 : k(30) + static_cast<float>(chat.size()) * k(24)) +
-                     (typing ? k(40) : 0);
+                     (typing ? k(40) : 0) + (ni ? k(14) + static_cast<float>(ni) * k(22) : 0);
     panel(batch, {px, py, pw, ph}, 225, true);
     shadowed(batch, MenuText::Big, px + k(20), py + k(14), loc.tr("ui.lobby.title"), kGold);
     float y = py + k(64);
     for (size_t i = 0; i < seats.size(); ++i) {
       const LobbyLine& s = seats[i];
-      const std::string who = s.taken ? s.name + (s.you ? "  " + loc.tr("ui.lobby.you") : std::string()) : loc.tr("ui.lobby.free");
-      shadowed(batch, MenuText::Med, px + k(20), y, std::to_string(i + 1) + ".  " + who, s.taken ? kText : kDim);
+      const std::string who = s.ai      ? loc.tr("ui.lobby.ai", {{"d", s.name}})
+                              : s.taken ? s.name + (s.you ? "  " + loc.tr("ui.lobby.you") : std::string())
+                                        : loc.tr("ui.lobby.free");
+      shadowed(batch, MenuText::Med, px + k(20), y, std::to_string(i + 1) + ".  " + who, s.taken || s.ai ? kText : kDim);
+      if (s.team > 0) {   // a csapat a név és a nép között
+        shadowed(batch, MenuText::Small, px + pw * 0.40f, y + k(3), loc.tr("ui.lobby.team", {{"n", std::to_string(s.team)}}), kGold);
+      }
+      if (s.ai) shadowed(batch, MenuText::Small, px + pw * 0.55f, y + k(3), s.faction, kText);
       if (s.taken) {   // a saját helyen a nép nyilakkal váltható (← →)
         shadowed(batch, MenuText::Small, px + pw * 0.55f, y + k(3), s.you ? "< " + s.faction + " >" : s.faction, s.you ? kGold : kText);
         const std::string rd = loc.tr(s.ready ? "ui.lobby.ready" : "ui.lobby.waiting");
@@ -143,6 +151,14 @@ class MenuView {
       y += k(8);
       const std::string line = loc.tr("ui.lobby.say") + " " + *typing + (static_cast<int>(t * 2) % 2 == 0 ? "_" : "");
       shadowed(batch, MenuText::Small, px + k(20), y, line, kGold);
+      y += k(32);
+    }
+    if (ni) {   // nézők, verzió, modok (a tanulmány)
+      y += k(14);
+      for (const auto& l : *info) {
+        shadowed(batch, MenuText::Small, px + k(20), y, l, kDim);
+        y += k(22);
+      }
     }
     batch.end();
   }
@@ -668,7 +684,7 @@ void loading_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& ba
 
 void lobby_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, const Locale& loc, const std::string& assets,
                  float ui_scale, const std::vector<LobbyLine>& seats, const std::vector<std::string>& chat, const std::string& status,
-                 double t, const std::string* typing) {
+                 double t, const std::string* typing, const std::vector<std::string>* info, const std::string& shot) {
   static std::unique_ptr<MenuView> view;
   if (!view) {
     view = std::make_unique<MenuView>(dev);
@@ -682,7 +698,8 @@ void lobby_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& batc
   SDL_GetWindowSizeInPixels(win, &w, &h);
   dev.bind_target(nullptr, w, h);
   dev.clear(0.05f, 0.04f, 0.06f, 1.0f);
-  view->draw_lobby(batch, w, h, ui_scale, loc, seats, chat, status, t, typing);
+  view->draw_lobby(batch, w, h, ui_scale, loc, seats, chat, status, t, typing, info);
+  if (!shot.empty() && !render::save_png(shot, dev.read_pixels(w, h))) std::fprintf(stderr, "nem írható: %s\n", shot.c_str());
   SDL_GL_SwapWindow(win);
 }
 

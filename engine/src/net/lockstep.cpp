@@ -76,7 +76,29 @@ void Relay::send_lobby() {
     w.str(l.faction);
     w.u8(l.ready ? 1 : 0);
   }
+  // kiegészítés (a tanulmány): csapatok, gépi helyek, nézők, verzió, modok – a régebbi kliens a végét figyelmen kívül hagyja
+  w.u8(static_cast<uint8_t>(desc_.factions.size()));
+  for (size_t i = 0; i < desc_.factions.size(); ++i) w.u8(i < desc_.teams.size() ? desc_.teams[i] : 0);
+  w.u8(static_cast<uint8_t>(std::min<size_t>(desc_.ai.size(), 8)));
+  for (size_t i = 0; i < desc_.ai.size() && i < 8; ++i) {
+    const sim::AiSlot& a = desc_.ai[i];
+    w.u8(a.player);
+    w.str(a.player >= 1 && a.player <= desc_.factions.size() ? desc_.factions[a.player - 1u] : std::string());
+    w.str(a.difficulty);
+  }
+  int obs = 0;
+  for (const auto& [id, p] : peers_) obs += p.joined && p.slot == 0 ? 1 : 0;
+  w.u8(static_cast<uint8_t>(std::min(obs, 255)));
+  w.str(version_);
+  w.u8(static_cast<uint8_t>(std::min<size_t>(mods_.size(), 32)));
+  for (size_t i = 0; i < mods_.size() && i < 32; ++i) w.str(mods_[i]);
   broadcast(bytes_of(w));
+}
+
+void Relay::set_info(std::string version, std::vector<std::string> mods) {
+  version_ = std::move(version);
+  mods_ = std::move(mods);
+  if (!started_) send_lobby();
 }
 
 void Relay::send_welcome(PeerId p, uint8_t slot, bool state_follows) {
@@ -126,8 +148,8 @@ void Relay::on_disconnect(PeerId peer) {
   peers_.erase(it);
   if (slot > 0 && !started_) {   // a lobbiban a hely felszabadul
     lobby_[slot - 1u] = LobbySeat{false, {}, lobby_[slot - 1u].faction, false};
-    send_lobby();
   }
+  if (!started_) send_lobby();   // a nézők száma is
   if (slot > 0) last_hash_.erase(slot);
 }
 
@@ -348,7 +370,27 @@ void Client::on_message(const Bytes& data) {
         l.faction = r.str();
         l.ready = r.u8() != 0;
       }
-      if (r.ok()) lobby_ = std::move(ls);
+      if (!r.ok()) break;
+      lobby_ = std::move(ls);
+      LobbyInfo info;   // a kiegészítés (ha a relé küldi)
+      const uint8_t np = r.u8();
+      if (r.ok()) {
+        info.teams.resize(np);
+        for (auto& t : info.teams) t = r.u8();
+        const uint8_t na = r.u8();
+        for (uint8_t i = 0; i < na && r.ok(); ++i) {
+          LobbyAi a;
+          a.player = r.u8();
+          a.faction = r.str();
+          a.difficulty = r.str();
+          info.ai.push_back(std::move(a));
+        }
+        info.observers = r.u8();
+        info.version = r.str();
+        const uint8_t nm = r.u8();
+        for (uint8_t i = 0; i < nm && r.ok(); ++i) info.mods.push_back(r.str());
+        if (r.ok()) info_ = std::move(info);
+      }
       break;
     }
     case Msg::ChatOut: {

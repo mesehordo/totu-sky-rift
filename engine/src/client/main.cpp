@@ -737,6 +737,13 @@ int main(int argc, char** argv) {
               return false;
             }
             host_relay.announce(o.name);   // a helyi hálózati keresés válasza
+            {   // a lobbiban kiírt verzió és modlista (a modlock maga a tartalomhash)
+              std::vector<std::string> mods;
+              for (const auto& m : mod_order) {
+                if (m.id != "totu") mods.push_back(m.version.empty() ? m.id : m.id + " " + m.version);
+              }
+              host_relay.set_lobby_info(core::version(), std::move(mods));
+            }
             host_relay.spawn();
             std::printf("gazda: a relé a %d. porton, %d hely\n", o.host_port, o.seats);
           } else {
@@ -788,7 +795,25 @@ int main(int argc, char** argv) {
                 for (const auto& fi : lobby_factions) {
                   if (fi.id == ls.faction) fname = locale.name(fi.name_key);
                 }
-                lines.push_back({ls.name, fname, ls.taken, ls.ready, nc.slot() == i + 1});
+                const auto& li = nc.lobby_info();
+                lines.push_back({ls.name, fname, ls.taken, ls.ready, nc.slot() == i + 1, false, i < li.teams.size() ? li.teams[i] : uint8_t{0}});
+              }
+              const net::LobbyInfo& li = nc.lobby_info();
+              for (const auto& a : li.ai) {   // a gépi helyek (a tanulmány)
+                std::string fname = a.faction;
+                for (const auto& fi : lobby_factions) {
+                  if (fi.id == a.faction) fname = locale.name(fi.name_key);
+                }
+                const uint8_t team = a.player >= 1 && a.player <= li.teams.size() ? li.teams[a.player - 1u] : uint8_t{0};
+                lines.push_back({locale.tr("ui.ai.diff." + a.difficulty), fname, false, true, false, true, team});
+              }
+              std::vector<std::string> info;   // nézők, verzió, modok
+              if (li.observers > 0) info.push_back(locale.tr("ui.lobby.observers", {{"n", std::to_string(li.observers)}}));
+              if (!li.version.empty()) {
+                std::string mods;
+                for (const auto& m : li.mods) mods += (mods.empty() ? "" : ", ") + m;
+                info.push_back(locale.tr("ui.lobby.version", {{"v", li.version}}) + "  ·  " +
+                               (mods.empty() ? locale.tr("ui.lobby.no_mods") : locale.tr("ui.lobby.mods", {{"m", mods}})));
               }
               std::vector<std::string> chat;
               for (size_t i = nc.chats().size() > 5 ? nc.chats().size() - 5 : 0; i < nc.chats().size(); ++i) {
@@ -798,7 +823,9 @@ int main(int argc, char** argv) {
               }
               const double lt = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
               client::lobby_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 75, 200)) / 100.0f, lines, chat,
-                                  locale.tr(nc.joined() ? "ui.lobby.waiting_players" : "ui.lobby.connecting"), lt, chatting ? &typing : nullptr);
+                                  locale.tr(nc.joined() ? "ui.lobby.waiting_players" : "ui.lobby.connecting"), lt, chatting ? &typing : nullptr,
+                                  &info, !o.screenshot.empty() && lt > 2.0 ? o.screenshot : std::string());
+              if (!o.screenshot.empty() && lt > 2.0) { err = "képpróba: a lobbi elkészült"; return false; }
             }
             SDL_Event e;
             while (SDL_PollEvent(&e)) {

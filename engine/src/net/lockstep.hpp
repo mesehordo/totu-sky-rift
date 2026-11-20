@@ -56,6 +56,20 @@ struct LobbySeat {
   bool ready = false;
   friend bool operator==(const LobbySeat&, const LobbySeat&) = default;
 };
+// a lobbi kiegészítő adatai (a tanulmány: csapat, gépi hely, néző, verzió, modlista – indulás előtt látható)
+struct LobbyAi {
+  uint8_t player = 0;
+  std::string faction, difficulty;
+  friend bool operator==(const LobbyAi&, const LobbyAi&) = default;
+};
+struct LobbyInfo {
+  std::vector<uint8_t> teams;        // játékosonként (0: mindenki ellen); az emberi helyek az elején
+  std::vector<LobbyAi> ai;           // a gépi helyek
+  uint8_t observers = 0;             // a csatlakozott nézők
+  std::string version;               // a gazda (relé) játékverziója
+  std::vector<std::string> mods;     // a betöltött modok (azonosító és verzió); üres: csak az alapjáték
+  friend bool operator==(const LobbyInfo&, const LobbyInfo&) = default;
+};
 struct ChatLine {
   uint8_t from = 0;   // 0 = megfigyelő
   std::string text;
@@ -88,6 +102,8 @@ class Relay {
   int64_t turns() const { return closed_; }   // lezárt fordulók száma
   sim::Sim& sim() { return *match_->sim; }
   const std::vector<LobbySeat>& lobby() const { return lobby_; }
+  // a gazda verziója és modlistája a lobbihoz (a modlock a tartalomhash; ez csak a kiírás)
+  void set_info(std::string version, std::vector<std::string> mods);
   bool stalled() const { return stalled_; }
   // a meccs eddigi visszajátszása (a leírás és minden lezárt forduló parancsa) – szinkronhiba esetén a hibakereséshez
   sim::Replay replay() const;
@@ -122,6 +138,8 @@ class Relay {
   std::map<int64_t, uint64_t> hashes_;                     // a relé saját hash-e fordulónként (az utolsó 256)
   std::vector<DesyncInfo> desyncs_;
   std::vector<LobbySeat> lobby_;
+  std::string version_;
+  std::vector<std::string> mods_;
   std::map<uint8_t, int64_t> last_hash_;   // hely → az utolsó beküldött hash fordulója
   std::vector<sim::Command> history_;      // minden lezárt forduló parancsa (visszajátszáshoz)
   bool stalled_ = false;
@@ -143,6 +161,7 @@ class Client {
   void set_ready(bool ready);
   void chat(const std::string& text);
   const std::vector<LobbySeat>& lobby() const { return lobby_; }
+  const LobbyInfo& lobby_info() const { return info_; }
   const std::vector<ChatLine>& chats() const { return chats_; }
   bool joined() const { return joined_; }
   // a megérkezett fordulók lefuttatása (legfeljebb `max_turns`), a parancsok és a hash-ek elküldése
@@ -189,6 +208,7 @@ class Client {
   std::vector<Bytes> out_;
   std::vector<DesyncInfo> desyncs_;
   std::string reject_, error_;
+  LobbyInfo info_;
   std::vector<LobbySeat> lobby_;
   std::vector<ChatLine> chats_;
   bool joined_ = false;

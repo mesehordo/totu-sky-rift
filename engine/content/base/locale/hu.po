@@ -10084,3 +10084,27 @@ msgstr ""
 msgctxt "hud.effect_left_tip"
 msgid "Még {} mp."
 msgstr ""
+
+msgctxt "ui.lobby.ai"
+msgid "Gép ({d})"
+msgstr ""
+
+msgctxt "ui.lobby.team"
+msgid "{n}. csapat"
+msgstr ""
+
+msgctxt "ui.lobby.observers"
+msgid "Nézők: {n}"
+msgstr ""
+
+msgctxt "ui.lobby.version"
+msgid "Verzió: {v}"
+msgstr ""
+
+msgctxt "ui.lobby.mods"
+msgid "Modok: {m}"
+msgstr ""
+
+msgctxt "ui.lobby.no_mods"
+msgid "csak az alapjáték"
+msgstr ""

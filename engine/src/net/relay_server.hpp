@@ -33,6 +33,10 @@ class RelayServer {
   void hold(bool on) { hold_.store(on); }
   // a helyi hálózati keresés válasza (a régi `net.discover`): a gazda neve; a pálya és a helyek a meccsből
   void announce(const std::string& host_name) { lan_name_ = host_name; }
+  // a lobbiban kiírt verzió és modlista (a `start` után, a `spawn` előtt)
+  void set_lobby_info(std::string version, std::vector<std::string> mods) {
+    if (relay_) relay_->set_info(std::move(version), std::move(mods));
+  }
   // szinkronhibánál ide kerül a relé mentése és visszajátszása (üres: nem ment)
   void set_dump_dir(std::string dir) { dump_dir_ = std::move(dir); }   // a fordulózárás szünetel (mérés, hibakeresés); az átvitel fut tovább
   bool started() const { return started_.load(); }

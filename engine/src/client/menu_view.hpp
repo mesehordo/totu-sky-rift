@@ -48,12 +48,16 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
 struct LobbyLine {
   std::string name, faction;
   bool taken = false, ready = false, you = false;
+  bool ai = false;     // gépi hely (a név a nehézség)
+  uint8_t team = 0;    // 0: mindenki ellen
 };
 // a betöltőképernyő egy képkockája (a régi `Loader`): pl. amíg a sprite-atlasz készül
 void loading_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, const Locale& loc, const std::string& assets,
                    float ui_scale, const std::string& status, double t);
 void lobby_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, const Locale& loc, const std::string& assets,
                  float ui_scale, const std::vector<LobbyLine>& seats, const std::vector<std::string>& chat, const std::string& status,
-                 double t, const std::string* typing = nullptr);   // typing: a most írt üzenet (nullptr: nem ír)
+                 double t, const std::string* typing = nullptr,   // typing: a most írt üzenet (nullptr: nem ír)
+                 const std::vector<std::string>* info = nullptr,   // info: a panel alján (nézők, verzió, modok)
+                 const std::string& shot = {});   // shot: képpróba – a képkocka ide is kerül (PNG)
 
 }  // namespace totu::client

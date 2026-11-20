@@ -75,7 +75,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 | Rejtett egységet se minitérkép, se hang ne áruljon el | **megfelel** (a hangok csak a látható egységekről) |
 | Szerverautoritatív, látótérszűrt állapotküldés | **döntéssel feloldva**: lockstep relével (D4); a teljes állapot a kliensen van, ez vállalt kockázat |
 | LAN-keresés, modlock, újracsatlakozás | **megfelel** |
-| A lobbiban látsszon a verzió, a modlista, a csapat, a gép, a néző | **hiányzik (10)** – a lobbi a helyeket, a népet és a kész állapotot mutatja; a csapat és a gépi hely a Csatában van, a lobbiban nincs |
+| A lobbiban látsszon a verzió, a modlista, a csapat, a gép, a néző | **kész (2026-11-20)**: a relé a lobbiüzenetben küldi a csapatokat, a gépi helyeket (nép, nehézség), a nézők számát, a gazda verzióját és modlistáját; a lobbipanel kiírja. Nyitott: a hálózati meccs gazdája még nem tud gépi helyet és csapatot beállítani (a közös beállítóképernyővel jön) |
 | A gyenge grafikai beállítás sem rejthet el játékfontosságú jelzést | **kész (2026-11-20)**: kikapcsolt állapot-animációnál álló, színes jel; az adatlapon WC3-szerű állapotikonok |
 
 ## 7. Felület és hozzáférhetőség
@@ -119,7 +119,7 @@ Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha 
 7. ~~**A gép kisnép-választása**~~ – **kész (2026-11-20)**: a javaslat szerint (a tulajdonos továbblépett).
 8. ~~**„Állapotok a figurán” kapcsoló**~~ – **kész (2026-11-20)**: a javaslat és a WC3 szerint (a tulajdonos döntése).
 9. ~~**Felületméret**~~ – **kész (2026-11-20)**: 75% és 90% is választható.
-10. **Lobbi-adatok** – csapat, gépi hely, néző, verzió és modlista a lobbiban (hiány).
+10. ~~**Lobbi-adatok**~~ – **kész (2026-11-20)**: a megjelenítés és az átvitel; a gépi hely és a csapat beállítása a hálózati gazdánál a közös beállítóképernyővel jön.
 11. **Minitérkép-jelzés** (ping) – Alt + kattintás a minitérképen (hiány).
 12. **A mentés tartalom-ujjlenyomata** – betöltéskor figyelmeztetés más modkészletnél (hiány).
 13. **Visszajátszás-lejátszó** a kliensben (szünet, gyorsítás, léptetés) (hiány).
