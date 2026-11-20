@@ -54,7 +54,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 | Minimális lőtávolság | **kész (2026-11-20)**: `Attack.min_range`; a 7 lövő ostromgépé 2 csempe |
 | Baráti tűz alapértelmezése képességenként | **kész (2026-11-20)**: `friendly_fire` a fegyveren és a képességen, alapból ki |
 | Állapothatások halmozódása szabályból | **megfelel** (lejárati idő szerinti frissítés) |
-| Idézések: populáció vagy külön keret, nem lehet korlátlan | **megbeszélendő (5)** – az idézett lény beszámít a létszámba, de túllépheti a korlátot (időkorláttal; a Croftian hősönként legfeljebb 4) |
+| Idézések: populáció vagy külön keret, nem lehet korlátlan | **kész (2026-11-20)**: az idézés nem foglal létszámot (WC3); a lejárat és a hősönkénti korlát marad |
 | Hős: 6 tárgyhely, tapasztalat, szint; semleges szörnyekből tárgy | **megfelel** (D25) |
 
 ## 5. Gazdaság, népek, szövetséges kisnép
@@ -114,7 +114,7 @@ Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha 
 2. ~~**Követés / kísérés**~~ – **kész (2026-11-20)**: a tulajdonos döntése szerint (követés jobb kattintással, kísérés gombbal).
 3. ~~**Minimális lőtávolság**~~ – **kész (2026-11-20)**: a tulajdonos döntése szerint 2 csempe az ostromgépeknek.
 4. ~~**Baráti tűz**~~ – **kész (2026-11-20)**: csak a lehetőség, alapból kikapcsolva (a tulajdonos döntése).
-5. **Idézések és a létszámkorlát** – javaslat: az idézés ne léphesse túl a korlátot (WC3), vagy külön idézési keret.
+5. ~~**Idézések és a létszámkorlát**~~ – **kész (2026-11-20)**: nem foglalnak létszámot (a tulajdonos döntése, WC3).
 6. **Munkáshely-korlát a lelőhelyen** – javaslat: aranybányánként legfeljebb néhány munkás egyszerre, a többi
    vár vagy másikat keres (WC3: 5; AoE2: nincs korlát, de torlódik).
 7. **A gép kisnép-választása** – javaslat: a hiányzó szerep szerint (pl. nincs gyógyítója → gyógyító kisnép), a

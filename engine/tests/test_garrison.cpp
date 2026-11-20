@@ -482,3 +482,17 @@ TEST_CASE("barati tuz (lehetoseg, alapbol ki): a csobbanas es a teruleti celpont
   CHECK(s.area_units_in(1, fx(100, 10), fx(185, 10), fx(1, 1), false, src).empty());
   CHECK(s.area_units_in(1, fx(100, 10), fx(185, 10), fx(1, 1), true, src).size() == 1);
 }
+
+TEST_CASE("idezes es letszam (WC3): az idezett leny (Lifetime) nem foglal letszamot") {
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  m.run(1);
+  const int32_t used0 = s.player(1).supply_used;
+  const auto u = put(s, "urs_pajzshordozo", 1, 100, 185, true);
+  m.run(1);
+  const int32_t used1 = s.player(1).supply_used;
+  CHECK(used1 > used0);   // a rendes egység foglal
+  s.world().add(u, sim::Lifetime{s.tick() + 300});
+  m.run(1);
+  CHECK(s.player(1).supply_used == used0);   // idézettként már nem
+}

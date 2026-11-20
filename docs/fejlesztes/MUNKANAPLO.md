@@ -1123,3 +1123,7 @@ A tulajdonos döntése: 2 csempe (AoE2 Mangonel/Trebuchet, WC3 Catapult mintáj�
 **Baráti tűz:** a tulajdonos döntése: csak a lehetőség, alapból kikapcsolva (a régi játékban és most is a területi sebzés csak ellenséget talál). Új, választható adatmezők: `Attack.friendly_fire` (a fegyver csobbanása) és a képesség `friendly_fire` kulcsa (nova, területi mező, varázslövedék csobbanása); bekapcsolva a saját és a szövetséges egységet is eléri, a forrást nem. Egyik sablonon sincs bekapcsolva, a játék nem változik. Teszt.
 
 **Javítva:** ha a sprite-atlasz a háttérben épült (pl. egy grafikaváltozás után az első indításkor), a meccs sprite-ok nélkül indult, és az elkészült atlaszt sem vette át (a tulajdonos jelezte). Most a meccs indításakor a betöltőkép kivárja az építést (haladással és magyarázattal); kilépni közben is lehet. Élőben ellenőrizve: elavult ujjlenyomattal az atlasz újraépült, és a meccs sprite-okkal indult.
+
+## 2026-11-20 – Az idézések nem foglalnak létszámot (a tanulmány-összevetés 5. tétele)
+
+A tulajdonos döntése a WC3 szerint: az idézett lény (a `Lifetime` összetevőt viselő egység, a Croftian állandó idézése is) nem számít bele a létszámba. Eddig beleszámított, de túlléphette a korlátot; a korlátlan idézést továbbra is a lejárat és a hősönkénti korlát (Croftian: 4) akadályozza meg. A gyilkosságból feltámadó egység (élettartam nélkül) és a fertőzésből kikelő Karmos rendes egység marad. Egyensúlyi változás a tulajdonos döntése alapján. Teszt.

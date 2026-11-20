@@ -709,6 +709,7 @@ void Sim::supply_system() {
     const Health* h = hp.get(e);
     if (!h || h->hp <= 0 || h->owner > kMaxPlayers) return;
     const EntityDef& ud = rules_->defs[u.def];
+    if (world_.get<Lifetime>(e)) return;   // idézett lény (az állandó is): nem foglal létszámot (WC3; a tulajdonos döntése)
     if (ud.count > 1 && ud.spawn_unit == kNoDef) part[h->owner] += int64_t{ud.supply} * 1000 / ud.count;   // H-04: a pár tagja a fele (a régi supply/count)
     else used[h->owner] += ud.supply;
     cap[h->owner] += rules_->defs[u.def].supply_provides;   // létszámot adó egység (Wullof emu)
