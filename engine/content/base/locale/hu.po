@@ -10108,3 +10108,19 @@ msgstr ""
 msgctxt "ui.lobby.no_mods"
 msgid "csak az alapjáték"
 msgstr ""
+
+msgctxt "hud.load_content_differs"
+msgid "Figyelem: a mentés más tartalommal készült ({}). Eltérhet a játékmenet."
+msgstr ""
+
+msgctxt "hud.load_content_files"
+msgid "módosult fájlok"
+msgstr ""
+
+msgctxt "ui.load.content_differs"
+msgid "Eltérő modok: {m}"
+msgstr ""
+
+msgctxt "ui.load.content_files"
+msgid "módosult fájlok"
+msgstr ""

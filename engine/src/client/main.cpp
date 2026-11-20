@@ -473,8 +473,20 @@ int main(int argc, char** argv) {
     if (!client::load_settings(settings_file, &settings, &serr)) std::fprintf(stderr, "%s\n", serr.c_str());
   }
   client::Locale locale;
+  std::vector<std::string> mod_names;   // a betöltött modok („azonosító verzió”; a lobbi és a mentés)
+  std::optional<uint64_t> content_fp_;
   std::vector<content::ModInfo> mods_available;   // a modkezelő listája
   std::vector<content::ModInfo> mod_order;   // M13: az alap és az engedélyezett modok betöltési sorrendje
+  // a tartalom ujjlenyomata (a modlock: a séma, az alap és az engedélyezett modok a sorrendjükben); egyszer számolva
+  auto content_fp = [&]() -> uint64_t {
+    if (!content_fp_) {
+      std::vector<std::string> hd = {(std::filesystem::path(o.content) / "schema").string()};
+      if (mod_order.empty()) hd.push_back((std::filesystem::path(o.content) / "base").string());
+      for (const auto& m : mod_order) hd.push_back(m.root.string());
+      content_fp_ = net::content_hash(hd);
+    }
+    return *content_fp_;
+  };
   {
     std::vector<std::filesystem::path> extra;
     std::filesystem::path zip_cache;
@@ -495,6 +507,9 @@ int main(int argc, char** argv) {
       client::Diagnostics::get().count("LOAD_FAILED");
     } else {
       mod_order = res.order;
+    }
+    for (const auto& m : mod_order) {
+      if (m.id != "totu") mod_names.push_back(m.version.empty() ? m.id : m.id + " " + m.version);
     }
     if (mod_order.size() > 1) {
       std::printf("modok:");
@@ -680,12 +695,7 @@ int main(int argc, char** argv) {
                    mo.start = o.menu_screen;
                    mo.mods = mod_order;
                    mo.available_mods = mods_available;
-                   {   // a modlock (a LAN-keresés így jelöli a más tartalmú játékot)
-                     std::vector<std::string> hd = {(std::filesystem::path(o.content) / "schema").string()};
-                     if (mod_order.empty()) hd.push_back((std::filesystem::path(o.content) / "base").string());
-                     for (const auto& m : mod_order) hd.push_back(m.root.string());
-                     mo.content_hash = net::content_hash(hd);
-                   }
+                   mo.content_hash = content_fp();   // a modlock (a LAN-keresés így jelöli a más tartalmú játékot)
                    mo.status = [&]() -> std::string {
                      if (atlas_cache.building()) return locale.tr("ui.atlas.building", {{"n", std::to_string(atlas_cache.pages_done())}});
                      if (!atlas_cache.ready() && !atlas_cache.error().empty()) return locale.tr("ui.atlas.failed");
@@ -719,11 +729,7 @@ int main(int argc, char** argv) {
         // M10: a hálózati meccs a lobbin át (konzolon; a menübeli lobbi később), utána a munkamenet átveszi
         auto start_net = [&]() -> bool {
           if (!session.load_content(o.content, &err)) return false;
-          // modlock: a séma, az alap és az engedélyezett modok (a sorrendjükben) – az eltérő modkészlet nem csatlakozhat
-          std::vector<std::string> hash_dirs = {(std::filesystem::path(o.content) / "schema").string()};
-          if (mod_order.empty()) hash_dirs.push_back((std::filesystem::path(o.content) / "base").string());
-          for (const auto& m : mod_order) hash_dirs.push_back(m.root.string());
-          const uint64_t ch = net::content_hash(hash_dirs);
+          const uint64_t ch = content_fp();   // modlock: az eltérő modkészlet nem csatlakozhat
           std::string host = "127.0.0.1";
           int port = o.host_port;
           if (o.host_port > 0) {
@@ -737,13 +743,7 @@ int main(int argc, char** argv) {
               return false;
             }
             host_relay.announce(o.name);   // a helyi hálózati keresés válasza
-            {   // a lobbiban kiírt verzió és modlista (a modlock maga a tartalomhash)
-              std::vector<std::string> mods;
-              for (const auto& m : mod_order) {
-                if (m.id != "totu") mods.push_back(m.version.empty() ? m.id : m.id + " " + m.version);
-              }
-              host_relay.set_lobby_info(core::version(), std::move(mods));
-            }
+            host_relay.set_lobby_info(core::version(), mod_names);   // a lobbiban kiírt verzió és modlista
             host_relay.spawn();
             std::printf("gazda: a relé a %d. porton, %d hely\n", o.host_port, o.seats);
           } else {
@@ -915,6 +915,9 @@ int main(int argc, char** argv) {
           session.adopt(*mission_match);
           session.set_match_desc(f->desc);
           if (f->desc.fog == 2) session.set_reveal_all(true);
+          if (std::string md; client::content_differs(f->meta, content_fp(), mod_names, &md)) {   // eltérő modkészlet: figyelmeztetés
+            hud.model().post_notice(hud.model().tr("load_content_differs", {md.empty() ? hud.model().tr("load_content_files") : md}), {255, 170, 90});
+          }
           if (const auto mv = content::parse(f->meta)) {   // a mentett színek
             if (const auto* cv = mv->find("colors"); cv && cv->is_array() && cv->items().size() == 8) {
               std::array<uint8_t, 9> slots{0, 0, 1, 2, 3, 4, 5, 6, 7};
@@ -1416,6 +1419,10 @@ int main(int argc, char** argv) {
                 content::Value cols = content::Value::array();   // a választott színek (a betöltéshez)
                 for (int pi = 1; pi <= 8; ++pi) cols.push(content::Value::number(std::to_string(world.color_slot(static_cast<uint8_t>(pi)))));
                 meta.set("colors", std::move(cols));
+                meta.set("content", content::Value::string(client::content_tag(content_fp())));   // a tartalom ujjlenyomata
+                content::Value mlist = content::Value::array();
+                for (const auto& mn : mod_names) mlist.push(content::Value::string(mn));
+                meta.set("mods", std::move(mlist));
                 bool ok = false;
                 std::string serr;
                 runner.with_sim([&] { ok = session.save_game(path.string(), content::dump(meta), &serr); });

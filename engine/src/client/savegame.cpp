@@ -2,9 +2,11 @@
 #include "client/savegame.hpp"
 
 #include <algorithm>
+#include <cstdio>
 #include <fstream>
 #include <iterator>
 
+#include "content/json.hpp"
 #include "core/bytes.hpp"
 
 namespace totu::client {
@@ -13,6 +15,38 @@ namespace {
 constexpr const char* kMagic = "totu-mentes";
 constexpr uint32_t kVersion = 1;
 }  // namespace
+
+std::string content_tag(uint64_t hash) {
+  char b[24] = {};
+  std::snprintf(b, sizeof b, "%016llx", static_cast<unsigned long long>(hash));
+  return b;
+}
+
+std::string mod_diff(const std::vector<std::string>& saved, const std::vector<std::string>& now) {
+  std::string out;
+  auto add = [&](const std::string& s) { out += (out.empty() ? "" : ", ") + s; };
+  for (const auto& m : now) {
+    if (std::find(saved.begin(), saved.end(), m) == saved.end()) add("+" + m);
+  }
+  for (const auto& m : saved) {
+    if (std::find(now.begin(), now.end(), m) == now.end()) add("\u2212" + m);
+  }
+  return out;
+}
+
+bool content_differs(const std::string& meta, uint64_t now_hash, const std::vector<std::string>& now_mods, std::string* diff) {
+  const auto v = content::parse(meta);
+  const content::Value* c = v ? v->find("content") : nullptr;
+  if (!c || !c->is_string()) return false;   // régebbi mentés: nincs mihez mérni
+  std::vector<std::string> saved;
+  if (const auto* ms = v->find("mods"); ms && ms->is_array()) {
+    for (const auto& m : ms->items()) {
+      if (m.is_string()) saved.push_back(m.text());
+    }
+  }
+  if (diff) *diff = mod_diff(saved, now_mods);
+  return c->text() != content_tag(now_hash);
+}
 
 std::vector<uint8_t> encode_save(const SaveFile& f) {
   core::ByteWriter w;

@@ -792,6 +792,13 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
         if (const auto* t = v->find("title"); t && t->is_string()) r.title = t->text();
         if (const auto* d = v->find("date"); d && d->is_string()) r.detail = d->text();
       }
+      std::vector<std::string> now_mods;   // eltérő modkészlettel készült: a sorban jelezve (betölthető marad)
+      for (const auto& m : o.mods) {
+        if (m.id != "totu") now_mods.push_back(m.version.empty() ? m.id : m.id + " " + m.version);
+      }
+      if (std::string md; content_differs(e.meta, o.content_hash, now_mods, &md)) {
+        r.detail += (r.detail.empty() ? "" : "  ") + loc.tr("ui.load.content_differs", {{"m", md.empty() ? loc.tr("ui.load.content_files") : md}});
+      }
       if (auto th = std::filesystem::path(e.path).replace_extension(".png"); std::filesystem::exists(th)) r.thumb = th.string();
       rows.push_back(std::move(r));
     }

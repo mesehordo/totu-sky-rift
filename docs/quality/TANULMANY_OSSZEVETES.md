@@ -102,7 +102,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 | Tiled-alapú szerkesztés | **döntéssel feloldva**: saját szerkesztő (D45) |
 | Deklaratív trigger, nincs tetszőleges kód | **megfelel** (Lua-sandbox, D19) |
 | Szimmetrikus, ellenőrzött csatapályák; a díszlet és a semleges szereplő ne zárja el tartósan az utat | **megfelel** (a generátor ellenőrzi az elérhetőséget; a háttérszereplő nem akadály) |
-| Mentés: teljes állapot + metaadat (verzió, pálya- és modhash, kép) | részben: a kép és a cím megvan; a modlista / tartalom-ujjlenyomat nincs a mentésben **(12)** |
+| Mentés: teljes állapot + metaadat (verzió, pálya- és modhash, kép) | **kész (2026-11-20)**: a meta a tartalom ujjlenyomatát (a modlock hash-e) és a modlistát is tárolja; eltérésnél a betöltőlista és a meccs figyelmeztet, a betöltés nem tiltott |
 | Visszajátszás lejátszása: szünet, gyorsítás, léptetés | **hiányzik (13)** – a visszajátszás a tesztekben és a mérésben fut, a kliensben nincs lejátszó |
 | Modok: jegyzék, függőségek, ujjlenyomat, sandbox | **megfelel** (D9, D50) |
 
@@ -121,5 +121,5 @@ Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha 
 9. ~~**Felületméret**~~ – **kész (2026-11-20)**: 75% és 90% is választható.
 10. ~~**Lobbi-adatok**~~ – **kész (2026-11-20)**: a megjelenítés és az átvitel; a gépi hely és a csapat beállítása a hálózati gazdánál a közös beállítóképernyővel jön.
 11. ~~**Minitérkép-jelzés**~~ – **kész (2026-11-20)**: a WC3 szerint.
-12. **A mentés tartalom-ujjlenyomata** – betöltéskor figyelmeztetés más modkészletnél (hiány).
+12. ~~**A mentés tartalom-ujjlenyomata**~~ – **kész (2026-11-20)**: figyelmeztetés, nem tiltás (0 A.D.).
 13. **Visszajátszás-lejátszó** a kliensben (szünet, gyorsítás, léptetés) (hiány).

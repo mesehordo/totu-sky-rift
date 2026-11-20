@@ -10109,3 +10109,19 @@ msgstr "Mods: {m}"
 msgctxt "ui.lobby.no_mods"
 msgid "csak az alapjáték"
 msgstr "base game only"
+
+msgctxt "hud.load_content_differs"
+msgid "Figyelem: a mentés más tartalommal készült ({}). Eltérhet a játékmenet."
+msgstr "Warning: this save was made with different content ({}). Gameplay may differ."
+
+msgctxt "hud.load_content_files"
+msgid "módosult fájlok"
+msgstr "changed files"
+
+msgctxt "ui.load.content_differs"
+msgid "Eltérő modok: {m}"
+msgstr "Different mods: {m}"
+
+msgctxt "ui.load.content_files"
+msgid "módosult fájlok"
+msgstr "changed files"

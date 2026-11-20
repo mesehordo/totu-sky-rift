@@ -155,3 +155,15 @@ TEST_CASE("mentes es betoltes (a regi SaveMenu/LoadMenu): a betoltott meccs ugya
   CHECK(m->sim->hash() == s.sim().hash());
   std::filesystem::remove(path);
 }
+
+TEST_CASE("mentes: a tartalom ujjlenyomata es a modlista; elterest jelez, a regebbi mentes nem") {
+  using client::content_differs;
+  const std::string meta = "{\"title\": \"x\", \"content\": \"" + client::content_tag(0x1234abcdULL) + "\", \"mods\": [\"elso 1.0\", \"regi 2.0\"]}";
+  std::string d;
+  CHECK(!content_differs(meta, 0x1234abcdULL, {"elso 1.0", "regi 2.0"}, &d));
+  CHECK(d.empty());
+  CHECK(content_differs(meta, 0x99ULL, {"elso 1.0", "uj 1.1"}, &d));
+  CHECK(d.find("+uj 1.1") != std::string::npos && d.find("regi 2.0") != std::string::npos && d.find("elso") == std::string::npos);
+  CHECK(!content_differs("{\"title\": \"regi mentes\"}", 0x99ULL, {"uj 1.1"}, &d));   // ujjlenyomat nélkül nincs mihez mérni
+  CHECK(client::content_tag(1) == "0000000000000001");
+}
