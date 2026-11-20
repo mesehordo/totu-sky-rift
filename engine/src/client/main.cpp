@@ -48,6 +48,9 @@
 #include "net/relay_server.hpp"
 #include "sim/chain.hpp"
 #include "sim/mission.hpp"
+#include "map/mapgen.hpp"
+#include "client/audio.hpp"
+#include "client/profiles.hpp"
 #include "client/hud.hpp"
 #include "client/atlas_cache.hpp"
 #include "client/diagnostics.hpp"
@@ -89,6 +92,7 @@ void print_version() {
 void* gl_loader(const char* name) { return reinterpret_cast<void*>(SDL_GL_GetProcAddress(name)); }
 
 struct Options {
+  uint64_t map_seed = 0;   // --map-seed: a pálya a leírásából ezzel a maggal újragenerálva
   bool build_atlas = false;
   std::vector<std::string> mods;   // --mods
   bool mods_given = false;
@@ -316,6 +320,26 @@ bool hud_event(client::HudModel& m, const SDL_Event& ev, const client::Camera& c
 
 }  // namespace
 
+// a régi „minden indításkor új pálya”: a pályafájl leírásából új maggal (map/mapgen) a felhasználói mappába;
+// hibánál a rögzített pálya marad
+static std::string regenerate_map(const std::string& path, uint64_t seed) {
+  std::ifstream in(path, std::ios::binary);
+  const std::string text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+  std::string gerr;
+  const auto doc = totu::content::parse(text);
+  const auto gen = doc ? totu::map::generate_map(*doc, seed, &gerr) : std::nullopt;
+  if (!gen) {
+    std::fprintf(stderr, "a pálya nem generálható (%s): a rögzített változat indul\n", gerr.c_str());
+    return path;
+  }
+  const auto out_path = totu::client::saves_dir().parent_path() / "veletlen_palya.json";
+  std::error_code ec;
+  std::filesystem::create_directories(out_path.parent_path(), ec);
+  std::ofstream of(out_path, std::ios::binary);
+  of << totu::content::dump(*gen);
+  return of ? out_path.string() : path;
+}
+
 int main(int argc, char** argv) {
   Options o;
   for (int i = 1; i < argc; ++i) {
@@ -332,6 +356,7 @@ int main(int argc, char** argv) {
     else if (a == "--atlas") o.atlas = next();
     else if (a == "--build-atlas") o.build_atlas = true;   // a játék atlaszának elkészítése a felhasználói mappába, majd kilépés
     else if (a == "--world") o.world = next();
+    else if (a == "--map-seed") o.map_seed = std::strtoull(next(), nullptr, 10);   // a pálya újragenerálva ezzel a maggal
     else if (a == "--mods") {   // M13: az engedélyezett modok (vesszővel; felülírja a beállítást), üres: csak az alap
       o.mods_given = true;
       std::string list = next();
@@ -358,7 +383,7 @@ int main(int argc, char** argv) {
       o.menu = true;
       o.menu_screen = v == "skirmish" ? client::MenuScreen::Skirmish : v == "settings" ? client::MenuScreen::Settings
                       : v == "sound"  ? client::MenuScreen::Sound    : v == "keys"     ? client::MenuScreen::Keys
-                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : v == "credits" ? client::MenuScreen::Credits : client::MenuScreen::Main;
+                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : v == "credits" ? client::MenuScreen::Credits : v == "lan" ? client::MenuScreen::Lan : v == "stories" ? client::MenuScreen::Stories : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
@@ -433,6 +458,7 @@ int main(int argc, char** argv) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 #endif
   // M8: a felhasználói beállítások (platformfüggetlen helyen) és a nyelvek (a locale mappák .po fájljai)
+  if (o.map_seed != 0 && !o.world.empty()) o.world = regenerate_map(o.world, o.map_seed);
   if (!o.mission.empty() && o.world.empty()) o.world = o.mission;
   if (!o.editor.empty() && o.world.empty()) o.world = o.editor;
   if (!o.chain.empty() && o.world.empty()) o.world = o.chain;   // a világnézet ága (a pályát a küldetés adja)
@@ -508,6 +534,12 @@ int main(int argc, char** argv) {
   SDL_GL_SetSwapInterval(o.bench ? 0 : 1);
 
   int rc = 0;
+  bool game_recorded = false;   // a profil statisztikája egyszer rögzítve
+  client::Audio audio;          // zene és hangok (a régi rts/audio.py)
+  render::Image save_thumb;     // a mentés kis képe: a szünet első, még tiszta képkockájáról (320 × 180)
+  bool want_thumb = false;
+  std::vector<sim::EntityId> snd_sel;   // a legutóbbi kijelölés (a kijelölés hangjához)
+  std::string restart_load;   // a szünetmenü „Betöltés” pontja: a játék újraindul ezzel a mentéssel
   {
     render::Device dev;
     std::string err;
@@ -526,7 +558,7 @@ int main(int argc, char** argv) {
     if (o.atlas.empty()) {
       if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
         const bool interactive = o.screenshot.empty() && !o.bench && o.frames < 0 && !o.hidden;
-        atlas_cache.start(o.assets, pref, interactive);
+        atlas_cache.start(o.assets, pref, interactive, settings.calm);
         SDL_free(pref);
       }
     } else if (o.atlas == "-") {
@@ -590,7 +622,7 @@ int main(int argc, char** argv) {
     render::TerrainView terrain;
     render::Atlas world_atlas;
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
-        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf, fire_flame, fire_puff;
+        mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf, fire_flame, fire_puff, found_tex;
     std::vector<render::Texture> unit_shapes;   // a kép nélküli egységek alakzatai (alakzatonként irány × réteg)
     std::map<std::string, render::Texture> item_tex;
     render::Texture ground_tex, module_tex;   // a terep fedőrétege; a népmechanikák fedőképe (fertőzött talaj, tavak)
@@ -626,6 +658,9 @@ int main(int argc, char** argv) {
     bool line_drag = false;                                  // D46: jobb gombos húzás: vonalra mozgatás
     float line_x0 = 0, line_y0 = 0;
     std::vector<double> sim_times, draw_times;   // a mérésben külön: szimulációs tick és rajzolás
+    if (rc == 0 && o.screenshot.empty() && !o.bench && !o.hidden && o.frames < 0) {   // a képpróbák némák
+      if (!audio.init(o.assets)) std::printf("hang: nincs hangeszköz (néma)\n");
+    }
     if (rc == 0) {
       std::printf("grafika: %s (legnagyobb textúra %d)\n", dev.info().c_str(), dev.max_texture_size());
       if (!batch.init(dev, &err)) {
@@ -643,14 +678,34 @@ int main(int argc, char** argv) {
                    mo.start = o.menu_screen;
                    mo.mods = mod_order;
                    mo.available_mods = mods_available;
+                   {   // a modlock (a LAN-keresés így jelöli a más tartalmú játékot)
+                     std::vector<std::string> hd = {(std::filesystem::path(o.content) / "schema").string()};
+                     if (mod_order.empty()) hd.push_back((std::filesystem::path(o.content) / "base").string());
+                     for (const auto& m : mod_order) hd.push_back(m.root.string());
+                     mo.content_hash = net::content_hash(hd);
+                   }
                    mo.status = [&]() -> std::string {
                      if (atlas_cache.building()) return locale.tr("ui.atlas.building", {{"n", std::to_string(atlas_cache.pages_done())}});
                      if (!atlas_cache.ready() && !atlas_cache.error().empty()) return locale.tr("ui.atlas.failed");
                      return {};
                    };
+                   if (audio.ok()) audio.menu_music();   // a régi: a menükben a menüzene
+                   mo.tick = [&] { audio.update(settings, static_cast<double>(SDL_GetTicks()) / 1000.0); };
                    if (!client::run_menu(win, dev, batch, settings, locale, mo, &match_cfg, &rc)) return false;
                    o.world = match_cfg.map_path;
+                   if (match_cfg.map_seed != 0) o.world = regenerate_map(o.world, match_cfg.map_seed);
                    if (!match_cfg.load_path.empty()) o.world = o.load = match_cfg.load_path;   // mentett játék
+                   if (match_cfg.net_host || !match_cfg.join_address.empty()) {   // többjátékos (a régi `LanMenu`)
+                     o.name = match_cfg.net_name;
+                     o.faction = match_cfg.net_faction;
+                     if (match_cfg.net_host) {
+                       o.host_port = 47800;
+                       o.seats = match_cfg.net_seats;
+                     } else {
+                       o.join = match_cfg.join_address;
+                       o.world = match_cfg.join_address;   // a hálózati ág feltétele (a pályát a relé küldi)
+                     }
+                   }
                    return true;
                  }())) {
         menu_quit = true;
@@ -679,6 +734,7 @@ int main(int argc, char** argv) {
                                   static_cast<uint16_t>(o.host_port), &err)) {
               return false;
             }
+            host_relay.announce(o.name);   // a helyi hálózati keresés válasza
             host_relay.spawn();
             std::printf("gazda: a relé a %d. porton, %d hely\n", o.host_port, o.seats);
           } else {
@@ -699,6 +755,9 @@ int main(int argc, char** argv) {
           bool asked = false;
           std::vector<net::LobbySeat> shown;
           const auto t0 = std::chrono::steady_clock::now();
+          const auto lobby_factions = client::scan_factions(o.content);   // a népnevek a lobbihoz
+          std::string my_faction = o.faction, typing;
+          bool chatting = false, my_ready = true;
           while (!netplay.client().ready()) {
             netplay.pump();
             net::Client& nc = netplay.client();
@@ -719,9 +778,73 @@ int main(int argc, char** argv) {
               }
               std::printf("\n");
             }
+            {   // a lobbi a képernyőn (a régi `SetupScreen` lobbija)
+              std::vector<client::LobbyLine> lines;
+              for (size_t i = 0; i < nc.lobby().size(); ++i) {
+                const auto& ls = nc.lobby()[i];
+                std::string fname = ls.faction;
+                for (const auto& fi : lobby_factions) {
+                  if (fi.id == ls.faction) fname = locale.name(fi.name_key);
+                }
+                lines.push_back({ls.name, fname, ls.taken, ls.ready, nc.slot() == i + 1});
+              }
+              std::vector<std::string> chat;
+              for (size_t i = nc.chats().size() > 5 ? nc.chats().size() - 5 : 0; i < nc.chats().size(); ++i) {
+                const auto& c = nc.chats()[i];
+                const std::string who = c.from >= 1 && c.from <= nc.lobby().size() ? nc.lobby()[c.from - 1u].name : std::string("?");
+                chat.push_back(who + ": " + c.text);
+              }
+              const double lt = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+              client::lobby_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 100, 200)) / 100.0f, lines, chat,
+                                  locale.tr(nc.joined() ? "ui.lobby.waiting_players" : "ui.lobby.connecting"), lt, chatting ? &typing : nullptr);
+            }
             SDL_Event e;
             while (SDL_PollEvent(&e)) {
               if (e.type == SDL_EVENT_QUIT) { err = "kilépés a lobbiból"; return false; }
+              if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_ESCAPE) {
+                if (chatting) {   // az üzenetírás megszakítása
+                  chatting = false;
+                  typing.clear();
+                  SDL_StopTextInput(win);
+                  continue;
+                }
+                err = "kilépés a lobbiból";
+                return false;
+              }
+              // a régi lobbi: ← → a nép, Szóköz kész / nem kész, Enter üzenet (írás, küldés)
+              if (e.type == SDL_EVENT_TEXT_INPUT && chatting && typing.size() < 120) typing += e.text.text;
+              if (e.type != SDL_EVENT_KEY_DOWN || e.key.repeat || !nc.joined() || nc.slot() == 0) continue;
+              if (chatting) {
+                if (e.key.key == SDLK_BACKSPACE && !typing.empty()) {
+                  while (!typing.empty() && (static_cast<unsigned char>(typing.back()) & 0xC0) == 0x80) typing.pop_back();
+                  if (!typing.empty()) typing.pop_back();
+                } else if (e.key.key == SDLK_RETURN || e.key.key == SDLK_KP_ENTER) {
+                  if (!typing.empty()) netplay.chat(typing);
+                  typing.clear();
+                  chatting = false;
+                  SDL_StopTextInput(win);
+                }
+                continue;
+              }
+              if ((e.key.key == SDLK_LEFT || e.key.key == SDLK_RIGHT) && !lobby_factions.empty()) {
+                size_t fi = 0;
+                for (size_t k2 = 0; k2 < lobby_factions.size(); ++k2) {
+                  if (lobby_factions[k2].id == my_faction) fi = k2;
+                }
+                fi = (fi + (e.key.key == SDLK_RIGHT ? 1 : lobby_factions.size() - 1)) % lobby_factions.size();
+                my_faction = lobby_factions[fi].id;
+                netplay.pick(my_faction);
+                if (my_ready) {
+                  my_ready = false;
+                  netplay.set_ready(false);
+                }
+              } else if (e.key.key == SDLK_SPACE) {
+                my_ready = !my_ready;
+                netplay.set_ready(my_ready);
+              } else if (e.key.key == SDLK_RETURN || e.key.key == SDLK_KP_ENTER) {
+                chatting = true;
+                SDL_StartTextInput(win);
+              }
             }
             if (std::chrono::steady_clock::now() - t0 > std::chrono::minutes(10)) { err = "a meccs nem indult el"; return false; }
             SDL_Delay(10);
@@ -836,6 +959,10 @@ int main(int argc, char** argv) {
           std::fprintf(stderr, "%s\n", err.c_str());
           rc = 1;
         } else {
+          {   // a régi „Táj”: a téli / erdei csempekészlet (a Csata beállításából vagy a mentett meccsből)
+            const std::string th = have_cfg ? match_cfg.setup.climate : session.match_desc() ? session.match_desc()->climate : std::string();
+            terrain.set_theme(th == "winter" ? "winter" : th == "forest" ? "forest" : std::string());
+          }
           terrain.set_map(world.map(), world.terrain());
           if (!lighting.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
           if (!effects.init(dev, &err)) std::fprintf(stderr, "%s\n", err.c_str());
@@ -966,6 +1093,10 @@ int main(int argc, char** argv) {
                 std::printf("terep-fedőréteg: %d × %d, %.0f ms\n", gi.width, gi.height,
                             std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - g0).count());
               }
+              if (auto fp = render::load_png((std::filesystem::path(o.assets) / "ui" / "foundation.png").string())) {   // a lapkő
+                found_tex = one(*fp);
+                world.set_foundation_art(&found_tex);
+              }
               {   // a földön heverő tárgyak ikonjai (assets/items, 32 × 32-re kicsinyítve) és a kör alakú fényudvar
                 std::map<std::string, const render::Texture*> icons;
                 std::error_code iec;
@@ -1000,6 +1131,7 @@ int main(int argc, char** argv) {
           hud.model().player = session.local_player();
           const float mw = static_cast<float>(world.map().width()) * client::World::kTilePx;
           const float mh = static_cast<float>(world.map().height()) * client::World::kTilePx;
+          cam.zoom = std::clamp(static_cast<float>(settings.view_zoom) / 100.0f, 1.0f, 2.0f);   // a régi „Kamera-távolság”
           if (o.zoom > 0) cam.zoom = std::clamp(o.zoom, 1.0f, 2.0f);
           cam.x = std::max(0.0f, mw / 2 - static_cast<float>(o.width) / 2 / cam.zoom);
           cam.y = std::max(0.0f, mh / 2 - static_cast<float>(o.height) / 2 / cam.zoom);
@@ -1010,6 +1142,9 @@ int main(int argc, char** argv) {
           }
           if ((o.bench || !o.screenshot.empty()) && !session.has_starts()) session.order_demo_attack();
           have_world = true;
+          if (audio.ok() && !editor_on) {   // a csata zenéje (küldetésnél a saját zenéi előbb)
+            audio.game_music(o.mission.empty() ? std::string() : std::filesystem::path(o.mission).stem().string());
+          }
           if (o.build_demo && session.has_starts() && session.rules()) {
             world.update();
             const auto [sx, sy] = session.map().objects().starts.front();
@@ -1032,7 +1167,7 @@ int main(int argc, char** argv) {
             demo_hover_y = static_cast<float>(sy + 1) * client::World::kTilePx;
           }
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
-          if (!net_game) runner.set_speed_pct(settings.game_speed);   // a régi „Játéksebesség” beállítás
+          if (!net_game) runner.set_speed_pct(have_cfg && match_cfg.speed_pct > 0 ? match_cfg.speed_pct : settings.game_speed);   // a régi „Sebesség”
           if (!o.sync && o.screenshot.empty() && !editor_on) runner.start();   // a szerkesztő előnézete áll
         }
       } else if (!o.atlas.empty() && o.demo > 0 && !adem.load(dev, o.atlas, o.demo, o.width, o.height, &err)) {
@@ -1143,10 +1278,35 @@ int main(int argc, char** argv) {
             for (size_t i = 0; i < pause_items.size(); ++i) {
               if (pause_items[i].contains(ev.button.x, ev.button.y)) hit = static_cast<int>(i);
             }
-            if (hit == 3) running = false;
-            else if (hit == 2) {
+            if (hit == 6) running = false;
+            else if (hit == 5) {
               save_diag(hud.model());
               game_paused = false;
+            } else if (hit == 2 || hit == 3 || hit == 4) {   // betöltés, beállítások, zene (a régi szünetmenü): a menü képernyője a játék fölött
+              client::MenuRunOptions pm;
+              pm.assets = o.assets;
+              pm.content = o.content;
+              pm.maps_dir = o.maps;
+              pm.settings_file = settings_file;
+              pm.start = hit == 2 ? client::MenuScreen::Load : hit == 3 ? client::MenuScreen::Settings : client::MenuScreen::Music;
+              pm.tick = [&] { audio.update(settings, static_cast<double>(SDL_GetTicks()) / 1000.0); };
+              pm.tracks = audio.tracks();
+              pm.current_track = audio.current();
+              pm.play_track = [&](const std::string& rel) { audio.choose(rel); };
+              pm.single = true;
+              pm.mods = mod_order;
+              pm.available_mods = mods_available;
+              client::MatchConfig pick;
+              int prc = 0;
+              runner.set_paused(true);
+              if (client::run_menu(win, dev, batch, settings, locale, pm, &pick, &prc) && !pick.load_path.empty()) {
+                restart_load = pick.load_path;   // a mentés új folyamatban töltődik be (tiszta állapotból)
+                running = false;
+              }
+              if (prc == client::kMenuRestart) {   // a modkészlet változott
+                rc = prc;
+                running = false;
+              }
             } else if (hit == 1) {   // mentés (a régi `SaveMenu`): a felhasználói adatmappa `mentesek` alá, időbélyeggel
               client::HudModel& hm = hud.model();
               if (!session.match_desc()) {
@@ -1159,13 +1319,17 @@ int main(int argc, char** argv) {
                 const auto path = client::saves_dir() / (std::string(stamp) + ".totumentes");
                 std::string mapname = "?";
                 if (const auto mv = content::parse(session.match_desc()->map)) {
-                  if (const auto* nm = mv->find("name"); nm && nm->is_string()) mapname = nm->text();
+                  if (const auto* nm = mv->find("name")) {   // szöveg vagy nyelvenként ({"hu": …, "en": …})
+                    if (nm->is_string()) mapname = locale.name(nm->text());
+                    else if (const auto* ln = nm->is_object() ? nm->find(settings.language) : nullptr; ln && ln->is_string()) mapname = ln->text();
+                    else if (const auto* hu = nm->is_object() ? nm->find("hu") : nullptr; hu && hu->is_string()) mapname = hu->text();
+                  }
                 }
                 const int64_t secs = hm.snap() ? hm.snap()->tick / 30 : 0;
                 char clock[16] = {};
                 std::snprintf(clock, sizeof clock, "%02lld:%02lld", static_cast<long long>(secs / 60), static_cast<long long>(secs % 60));
                 content::Value meta = content::Value::object();
-                meta.set("title", content::Value::string(locale.name(mapname) + "  " + clock));
+                meta.set("title", content::Value::string(mapname + "  " + clock));
                 meta.set("date", content::Value::string(date));
                 content::Value cols = content::Value::array();   // a választott színek (a betöltéshez)
                 for (int pi = 1; pi <= 8; ++pi) cols.push(content::Value::number(std::to_string(world.color_slot(static_cast<uint8_t>(pi)))));
@@ -1173,6 +1337,7 @@ int main(int argc, char** argv) {
                 bool ok = false;
                 std::string serr;
                 runner.with_sim([&] { ok = session.save_game(path.string(), content::dump(meta), &serr); });
+                if (ok && save_thumb.width > 0) render::save_png(std::filesystem::path(path).replace_extension(".png").string(), save_thumb);
                 if (ok) hm.post_notice(hm.tr("saved", {path.filename().string()}), {150, 220, 150});
                 else hm.post_notice(hm.tr("save_failed", {serr}));
               }
@@ -1579,11 +1744,78 @@ int main(int argc, char** argv) {
       if (hud_on) {
         hud.model().menu_requested = false;
         hud.model().paused = game_paused;   // szünetben nincs parancs (a régi őr)
+        std::vector<sim::SimEvent> notes;   // a szimuláció felületi eseményei (újratestesülés, osztódás, …)
+        runner.take_notes(notes);
+        if (!notes.empty()) hud.model().sim_events(notes);
+        // a profil statisztikája (a régi `record_game`): a csata vége egyszer, küldetésen és visszajátszáson kívül
+        if (!game_recorded && hud.model().match_over() && have_cfg && !settings.profile.empty()) {
+          game_recorded = true;
+          if (const client::Snapshot* sn = hud.model().snap(); sn && !sn->mission.active) {
+            const uint8_t me = hud.model().player;
+            const auto& mp = sn->players[std::min<size_t>(me, sim::Sim::kMaxPlayers)];
+            client::ProfileStore(client::saves_dir().parent_path() / "profilok")
+                .record_game(settings.profile, mp.faction, sn->won(me), sn->tick / 30, mp.stats.units_killed);
+          }
+        }
       }
       runner.set_paused(game_paused);
+      if (audio.ok()) {   // zene és hangok (a régi `play_sounds`): ami a játékosnak látható vagy fontos
+        audio.update(settings, static_cast<double>(SDL_GetTicks()) / 1000.0);
+        const sim::Rules* sr = session.rules();
+        const client::Snapshot* sn = hud_on ? hud.model().snap() : nullptr;
+        auto who = [&](uint16_t def, uint8_t owner, std::string& id, std::string& fac, std::string& ut) {
+          if (sr && def < sr->defs.size()) {
+            id = sr->defs[def].id;
+            ut = sr->defs[def].utype;
+            fac = sr->defs[def].faction;
+          }
+          if (sn && owner >= 1 && owner <= sim::Sim::kMaxPlayers && !sn->players[owner].faction.empty()) fac = sn->players[owner].faction;
+        };
+        if (have_world) {
+          const auto& sel = world.selection();   // új kijelölés: a kijelölt saját egység megszólal
+          if (sel != snd_sel) {
+            for (const sim::EntityId e : sel) {
+              if (std::find(snd_sel.begin(), snd_sel.end(), e) != snd_sel.end() || !sn) continue;
+              const client::SnapUnit* u = sn->find(e);
+              if (!u || u->owner != session.local_player()) break;
+              std::string id, fac, ut;
+              who(u->def, u->owner, id, fac, ut);
+              audio.play("select", id, fac, ut, 1.0f, 300, "select");
+              break;
+            }
+            snd_sel = sel;
+          }
+          std::vector<client::World::SoundEv> evs;
+          world.take_sounds(evs);
+          int sww = 0, swh = 0;
+          SDL_GetWindowSizeInPixels(win, &sww, &swh);
+          const float vw = static_cast<float>(sww) / cam.zoom, vh = static_cast<float>(swh) / cam.zoom;
+          for (const auto& e : evs) {
+            std::string id, fac, ut;
+            who(e.def, e.owner, id, fac, ut);
+            const bool on = e.x >= cam.x - 80 && e.x <= cam.x + vw + 80 && e.y >= cam.y - 80 && e.y <= cam.y + vh + 80;
+            if (e.ev == "move" || e.ev == "attack_order") audio.play(e.ev, id, fac, ut, 1.0f, 900, "ack");
+            else if (e.ev == "trained" || e.ev == "building_done") audio.play(e.ev, id, fac, ut, 1.0f, 400, e.ev + id, e.building);
+            else if (!on) continue;
+            else if (e.ev == "attack") audio.play("attack", id, fac, ut, 0.55f, 120, "atk" + id);
+            else if (e.ev == "death") audio.play("death", id, fac, ut, 0.8f, 150, "death" + id, e.building);
+            else if (e.ev.rfind("ability_", 0) == 0) audio.play(e.ev, id, fac, ut, 0.85f, 180, e.ev);
+            else if (e.ev.rfind("impact_", 0) == 0) audio.play(e.ev, "", "", "", 0.45f, 95, e.ev);
+          }
+          if (!game_paused) audio.play("environment", "", "", "", 0.6f, 25000, "env");   // környezeti hang (ha van fájl)
+          if (hud_on && hud.model().alarm) {   // a régi riasztás („Támadás ér!”, 12 mp-enként legfeljebb egy)
+            hud.model().alarm = false;
+            std::string fac = sn && session.local_player() <= sim::Sim::kMaxPlayers ? sn->players[session.local_player()].faction : std::string();
+            audio.play("under_attack", "", fac, "", 1.0f, 12000, "alarm");
+          }
+        }
+      }
       {   // a szünetpanel becsúszása (0,22 mp; képpróbában azonnal)
         const double now_s = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
-        if (game_paused && !pause_was) pause_t = now_s;
+        if (game_paused && !pause_was) {
+          pause_t = now_s;
+          want_thumb = true;   // ezen a képkockán a panel még kint van, az elmosás 0
+        }
         pause_was = game_paused;
         pause_slide = !game_paused ? 0.0f
                       : !o.screenshot.empty() ? 1.0f
@@ -1672,7 +1904,7 @@ int main(int argc, char** argv) {
         }
         lighting.resize(w, h);
         lighting.begin_scene(0.0f, 0.0f, 0.0f);
-        terrain.draw(proj, cam.x, cam.y, vx1, vy1, t);
+        terrain.draw(proj, cam.x, cam.y, vx1, vy1, settings.water_anim ? t : 0.0);   // a régi „Mozgó víz”
         render::Atlas* atl = world_atlas_ok ? &world_atlas : nullptr;
         lighting.begin_shadow_mask();   // az árnyékok külön maszkba (maximum-keveréssel), majd egyszer a terepre
         batch.begin_shadows(proj, day.shadow_x, day.shadow_y, day.shadow_alpha);   // a napszakkal forgó árnyék
@@ -1689,6 +1921,7 @@ int main(int argc, char** argv) {
         world.draw_move_indicator(batch, alpha, t);   // a mozgáscél (a talajon)
         world.draw_ground_marks(batch, alpha, t);     // talajjelek: hős, ének, rejtőzés
         world.draw_objective_rings(batch, t);         // a küldetés célgyűrűi
+        world.draw_foundations(batch, cam, w, h);     // az Aurethi alapozás lapkövei
         world.draw_planned(batch, white, atl);       // a tervezett épületek (rács és halvány kép)
         world.draw_placement_grid(batch, white);     // a régi lerakási rács és keret
         world.draw_ground_items(batch, white, t);     // a földön heverő tárgyak
@@ -1697,6 +1930,8 @@ int main(int argc, char** argv) {
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_vfx(batch, atl, alpha);            // varázslás, robbanó varázslat, becsapódás, szintlépés
         world.draw_larva(batch, white);               // a Kaptárak lárvái
+        if (settings.status_fx) world.draw_rot_bubbles(batch, white, t);   // a rothadó fák buborékai
+        world.draw_meal_pips(batch, white, alpha);    // micélia: ölések az osztódásig
         if (settings.status_fx) world.draw_status_fx(batch, white, alpha, t); // állapotok a figurán (a régi `draw_status_fx`)
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
@@ -1784,6 +2019,9 @@ int main(int argc, char** argv) {
           hf.fps = settings.show_fps ? fps_shown : -1;
           hf.show_clock = settings.show_clock;
           hf.help_hint = settings.help_hint;
+          hf.speed_buttons = settings.speed_buttons;
+          world.set_hero_mark(settings.hero_mark);
+          world.set_status_pulse(settings.status_pulse);
           {   // a kurzor a helyzet szerint (a régi `cursor_kind`)
             client::HudModel& chm = hud.model();
             const auto* cs = world.snapshot();
@@ -1894,7 +2132,9 @@ int main(int argc, char** argv) {
             dim.tint[3] = static_cast<uint8_t>(110 * pause_slide);
             batch.draw(white, nullptr, dim);
             pause_items = hud.draw_pause(batch, white, hf, pause_slide, locale.tr("ui.pause.title"),
-                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.save"), locale.tr("ui.pause.diag"), locale.tr("ui.pause.quit")});
+                                         {locale.tr("ui.pause.resume"), locale.tr("ui.pause.save"), locale.tr("ui.pause.load"),
+                                          locale.tr("ui.pause.settings"), locale.tr("ui.pause.music"), locale.tr("ui.pause.diag"),
+                                          locale.tr("ui.pause.quit")});
           } else {
             pause_items.clear();
           }
@@ -1909,6 +2149,21 @@ int main(int argc, char** argv) {
         if (demo.units > 0) demo.draw(batch, t, w, h);
         else adem.draw(batch, t);
         batch.end();
+      }
+      if (want_thumb && have_world) {   // a mentés kis képe (a régi `SaveMenu`)
+        want_thumb = false;
+        const render::Image full = dev.read_pixels(w, h);
+        if (full.width > 0 && full.height > 0) {
+          save_thumb.width = 320;
+          save_thumb.height = 180;
+          save_thumb.rgba.assign(320 * 180 * 4, 255);
+          for (int y = 0; y < 180; ++y) {
+            for (int x = 0; x < 320; ++x) {
+              const uint8_t* p = full.at(std::min(full.width - 1, x * full.width / 320), std::min(full.height - 1, y * full.height / 180));
+              std::copy(p, p + 3, save_thumb.at(x, y));
+            }
+          }
+        }
       }
       const bool last = o.frames >= 0 && frame + 1 >= o.frames;
       if (last && !o.screenshot.empty()) {
@@ -1996,7 +2251,7 @@ int main(int argc, char** argv) {
     dev.destroy(sigil_own);
     dev.destroy(sigil_ally);
     dev.destroy(sigil_other);
-    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &ground_tex, &module_tex}) dev.destroy(*t);
+    for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &found_tex, &ground_tex, &module_tex}) dev.destroy(*t);
     for (render::Texture& t : unit_shapes) dev.destroy(t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
@@ -2007,9 +2262,34 @@ int main(int argc, char** argv) {
     }
     batch.shutdown();
   }
+  audio.shutdown();   // a hangfolyamok az SDL leállítása előtt
   SDL_GL_DestroyContext(ctx);
   SDL_DestroyWindow(win);
   SDL_Quit();
+  if (!restart_load.empty()) {   // a szünetmenüből választott mentés: új folyamat a mentéssel (a pálya- és menükapcsolók nélkül)
+    std::vector<std::string> keep;
+    static const char* kDrop1[] = {"--world", "--load", "--mission", "--chain", "--editor", "--menu-screen", "--host", "--join"};
+    for (int i = 1; i < argc; ++i) {
+      const std::string a = argv[i];
+      if (a == "--menu") continue;
+      if (std::find(std::begin(kDrop1), std::end(kDrop1), a) != std::end(kDrop1)) {
+        ++i;
+        continue;
+      }
+      keep.push_back(a);
+    }
+    keep.push_back("--load");
+    keep.push_back(restart_load);
+    std::vector<const char*> args = {argv[0]};
+    for (const auto& k : keep) args.push_back(k.c_str());
+    args.push_back(nullptr);
+    if (SDL_Process* pr = SDL_CreateProcess(args.data(), false)) {
+      SDL_DestroyProcess(pr);
+      return 0;
+    }
+    std::fprintf(stderr, "a betöltés újraindítása nem sikerült\n");
+    return 0;
+  }
   if (rc == client::kMenuRestart) {   // M13: a modkészlet változott – a játék újraindul ugyanazokkal a kapcsolókkal
     std::vector<const char*> args(argv, argv + argc);
     args.push_back(nullptr);

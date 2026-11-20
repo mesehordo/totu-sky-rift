@@ -120,7 +120,7 @@
   "2": "shrissh_matah",
   "3": "shrissh_matah"
  },
- "_decor": [
+ "decor": [
   {
    "id": "shr_tollvar",
    "tx": 62,
@@ -176,6 +176,118 @@
    "ruin": true
   }
  ],
+ "ambient": [
+  {
+   "id": "shr_sziklafuto",
+   "n": 2,
+   "at": [
+    59,
+    19
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    61,
+    16
+   ]
+  },
+  {
+   "id": "shr_sziklafuto",
+   "n": 2,
+   "at": [
+    66,
+    71
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    63,
+    73
+   ]
+  },
+  {
+   "id": "shr_sziklafuto",
+   "n": 2,
+   "at": [
+    17,
+    51
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    13,
+    48
+   ]
+  }
+ ],
+ "generator": {
+  "size": 96,
+  "layout": "ring",
+  "features": {
+   "river": {
+    "terrain": "rock",
+    "fords": 1,
+    "width": 2.0,
+    "inner": 10
+   },
+   "ridges": [
+    3,
+    6,
+    10
+   ],
+   "crater": {
+    "radius": 0.07,
+    "meteors": 3
+   },
+   "forests": 12
+  },
+  "decor": [
+   {
+    "id": "shr_tollvar",
+    "at": "pair",
+    "d": 14,
+    "s": 7
+   },
+   {
+    "id": "shr_runaszellozo",
+    "at": "base",
+    "d": 4,
+    "s": 12,
+    "ruin": true
+   }
+  ],
+  "ambient": [
+   {
+    "id": "shr_sziklafuto",
+    "at": "pair",
+    "d": 12,
+    "s": 4,
+    "n": 2,
+    "shelter": {
+     "at": "pair",
+     "d": 14,
+     "s": 7
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": "'gW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "shr_tollvar": [
+    3,
+    3
+   ],
+   "shr_runaszellozo": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

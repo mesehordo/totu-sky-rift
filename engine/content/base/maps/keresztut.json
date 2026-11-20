@@ -128,7 +128,7 @@
   "2": "mhonyo",
   "3": "mhonyo"
  },
- "_decor": [
+ "decor": [
   {
    "id": "mho_harompenge_kovacsda",
    "tx": 23,
@@ -202,6 +202,192 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "mho_kardkovacs",
+   "n": 2,
+   "at": [
+    24,
+    9
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    22,
+    9
+   ]
+  },
+  {
+   "id": "mho_kardkovacs",
+   "n": 2,
+   "at": [
+    94,
+    24
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    95,
+    21
+   ]
+  },
+  {
+   "id": "mho_kardkovacs",
+   "n": 2,
+   "at": [
+    77,
+    94
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    77,
+    94
+   ]
+  },
+  {
+   "id": "mho_kardkovacs",
+   "n": 2,
+   "at": [
+    8,
+    77
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    6,
+    77
+   ]
+  },
+  {
+   "id": "mho_hajnalpenge",
+   "n": 1,
+   "at": [
+    6,
+    25
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    5,
+    21
+   ]
+  },
+  {
+   "id": "mho_hajnalpenge",
+   "n": 1,
+   "at": [
+    77,
+    7
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    77,
+    7
+   ]
+  },
+  {
+   "id": "mho_hajnalpenge",
+   "n": 1,
+   "at": [
+    95,
+    78
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    95,
+    78
+   ]
+  },
+  {
+   "id": "mho_hajnalpenge",
+   "n": 1,
+   "at": [
+    24,
+    95
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    22,
+    95
+   ]
+  }
+ ],
+ "generator": {
+  "size": 104,
+  "layout": "corners",
+  "features": {
+   "lakes": [
+    2,
+    4,
+    6
+   ],
+   "forests": 12,
+   "dirt": 24,
+   "rich": true
+  },
+  "decor": [
+   {
+    "id": "mho_harompenge_kovacsda",
+    "at": "base",
+    "d": 5,
+    "s": -12
+   },
+   {
+    "id": "mho_parazsszentely",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "mho_kardkovacs",
+    "at": "base",
+    "d": 7,
+    "s": -12,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 5,
+     "s": -12
+    },
+    "mode": "idle"
+   },
+   {
+    "id": "mho_hajnalpenge",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 1,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "mho_harompenge_kovacsda": [
+    3,
+    3
+   ],
+   "mho_parazsszentely": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

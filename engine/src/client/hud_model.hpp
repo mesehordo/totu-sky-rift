@@ -152,6 +152,7 @@ class HudModel {
   std::vector<uint16_t> seen_fallen_;
   std::string seen_ally_, seen_path_;
   bool seen_ascended_ = false;
+  bool seen_moon_ = false;
   std::vector<std::string> seen_goals_;
   int64_t seen_tick_ = -1;
   double hero_click_t_ = -9;
@@ -176,8 +177,10 @@ class HudModel {
   // a régi riasztás („Támadás ér!”, 12 mp-enként legfeljebb egy) és a Szóköz: az utolsó riasztás (10 mp-en belül)
   // vagy a bázis; a pillanatképből (a saját egységek és épületek életerejének csökkenése)
   void watch_alerts();
+  void sim_events(const std::vector<sim::SimEvent>& evs);   // a szimuláció felületi eseményei (a régi `notify`)
   void jump_home_or_alert();
   int64_t alert_tick = -1000000;
+  bool alarm = false;                         // most szólt a riasztás (a hangot a hívó játssza le és törli)
   float alert_x = 0, alert_y = 0;
   bool jump = false;                          // kameraugrás kérése (világ-képpont)
   float jump_x = 0, jump_y = 0;

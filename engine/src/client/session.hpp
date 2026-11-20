@@ -92,6 +92,7 @@ struct SnapPlayer {
   int32_t supply_cap = 0, supply_used = 0;
   bool defeated = false, ascended = false;
   uint8_t team = 0;                          // csapat (0: mindenki ellen)
+  bool moon = false;                         // Holdtölte (Wullof): most erősebb a falka
   std::string ally;
   std::string path;
   std::vector<uint16_t> fallen;              // az elesett (újraéleszthető) hősök sablonjai
@@ -105,6 +106,8 @@ struct FxEvent {
   float x = 0, y = 0;   // világ-képpont (a talpvonal)
   bool death = false;
   bool big = false;     // halál: nagy egység (`large`) – a régi: robbanás, különben vér
+  uint16_t def = 0xFFFF;   // az érintett egység sablonja és gazdája (a hangokhoz)
+  uint8_t owner = 0;
 };
 
 // M11: a küldetés a felületnek (célok, párbeszéd, átvezető, üzenetek, eredmény); a szövegek fordítási kulcsok
@@ -249,6 +252,11 @@ class Session {
   // egy tick: a parancsok, a szimuláció lépése, majd az új pillanatkép és a tick látványeseményei
   std::shared_ptr<const Snapshot> step(const std::vector<sim::Command>& commands, std::vector<FxEvent>& fx);
   std::shared_ptr<const Snapshot> snapshot();   // a jelenlegi állapot pillanatképe (lépés nélkül)
+  // a helyi játékos felületi eseményei (sim::SimEvent) a legutóbbi átvétel óta – a lépések gyűjtik
+  void take_notes(std::vector<sim::SimEvent>& out) {
+    out.insert(out.end(), notes_.begin(), notes_.end());
+    notes_.clear();
+  }
 
   // a betöltés után nem változik (a rajzolás szálából is olvasható)
   const map::Map& map() const { return *map_; }
@@ -263,6 +271,7 @@ class Session {
  private:
   void update_fog();
   void hud_fields(sim::EntityId e, SnapUnit& u);   // a HUD adatai (M8): energia, pajzs, páncél, parancs, állapotok
+  std::vector<sim::SimEvent> notes_;
   map::TerrainTable terrain_;
   std::optional<sim::Rules> rules_;   // a szimuláció előtt jön létre, utána szűnik meg
   std::optional<map::Map> own_map_;
@@ -360,6 +369,7 @@ class SimRunner {
   void latest(std::shared_ptr<const Snapshot>* prev, std::shared_ptr<const Snapshot>* cur);
   void take_fx(std::vector<FxEvent>& out);       // a legutóbbi lekérés óta keletkezett látványesemények
   void take_tick_ms(std::vector<double>& out);   // a tickek ideje (méréshez)
+  void take_notes(std::vector<sim::SimEvent>& out);   // a helyi játékos felületi eseményei
   double now() const;                            // a futtató órája (másodperc; ehhez mért a `published`)
   static constexpr double kTickSeconds = 1.0 / 30.0;
 
@@ -379,6 +389,7 @@ class SimRunner {
   std::vector<FxEvent> fx_;
   std::vector<double> tick_ms_;
   std::vector<FxEvent> fx_scratch_;
+  std::vector<sim::SimEvent> notes_, notes_scratch_;
 };
 
 }  // namespace totu::client

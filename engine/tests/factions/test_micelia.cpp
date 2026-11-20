@@ -2,6 +2,7 @@
 // Micéliák (M7, ADR-008; MECH-NET-1–2, D28): fonalgráf (kapcsolt / leszakadt), hálózati létszám, lerakás a fonal
 // mentén, gyógyulás a mezőn, spórák, osztódás, összeolvadás, a leszakadt épület leállása; determinizmus és mentés.
 // A játszható főnép a `micelia` modban van, ezért a próba az alap + mod réteget maga tölti be.
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -282,6 +283,12 @@ TEST_CASE("Micéliák osztódás: split_kills ölés után kettéválik (fél-f�
     const auto sp = sim::micelia_spores(s, p);
     std::printf("  %d. ölés: spóra %d, étkezés %d, pöfeteg %d\n", i + 1, sp.first, sp.second, count(s, "myc_pofeteg", 1));
     CHECK(sp == std::make_pair(s0 + i + 1, i + 1));
+    if (i == 1) {   // a megjelenítés: két pötty megtelt a háromból
+      sim::ModuleView v;
+      s.module_view(v);
+      const auto it = std::find_if(v.meals.begin(), v.meals.end(), [&](const sim::ModuleView::Meals& x) { return x.e == p; });
+      CHECK(it != v.meals.end() && it->meals == 2 && it->need == 3);
+    }
   }
   m.run(2);
   CHECK(count(s, "myc_pofeteg", 1) == 2);

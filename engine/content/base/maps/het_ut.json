@@ -159,7 +159,7 @@
   "1": "zhan_zhama",
   "2": "tenduur"
  },
- "_decor": [
+ "decor": [
   {
    "id": "wul_szellemtotem",
    "tx": 36,
@@ -287,6 +287,243 @@
    "ruin": true
   }
  ],
+ "ambient": [
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    35,
+    40
+   ],
+   "idle": false,
+   "path": [
+    [
+     35,
+     40
+    ],
+    [
+     59,
+     56
+    ]
+   ],
+   "shelter": [
+    36,
+    40
+   ]
+  },
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    67,
+    25
+   ],
+   "idle": false,
+   "path": [
+    [
+     67,
+     25
+    ],
+    [
+     71,
+     53
+    ]
+   ],
+   "shelter": [
+    67,
+    26
+   ]
+  },
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    100,
+    41
+   ],
+   "idle": false,
+   "path": [
+    [
+     100,
+     41
+    ],
+    [
+     80,
+     61
+    ]
+   ],
+   "shelter": [
+    98,
+    42
+   ]
+  },
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    107,
+    77
+   ],
+   "idle": false,
+   "path": [
+    [
+     107,
+     77
+    ],
+    [
+     80,
+     74
+    ]
+   ],
+   "shelter": [
+    104,
+    77
+   ]
+  },
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    85,
+    105
+   ],
+   "idle": false,
+   "path": [
+    [
+     85,
+     105
+    ],
+    [
+     70,
+     81
+    ]
+   ],
+   "shelter": [
+    82,
+    102
+   ]
+  },
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    48,
+    104
+   ],
+   "idle": false,
+   "path": [
+    [
+     48,
+     104
+    ],
+    [
+     58,
+     78
+    ]
+   ],
+   "shelter": [
+    47,
+    101
+   ]
+  },
+  {
+   "id": "wul_gyujtogeto",
+   "n": 1,
+   "at": [
+    26,
+    75
+   ],
+   "idle": false,
+   "path": [
+    [
+     26,
+     75
+    ],
+    [
+     53,
+     67
+    ]
+   ],
+   "shelter": [
+    27,
+    73
+   ]
+  }
+ ],
+ "generator": {
+  "size": 136,
+  "layout": "ring",
+  "features": {
+   "crater": {
+    "radius": 0.08,
+    "meteors": 7
+   },
+   "ridges": [
+    2,
+    6,
+    10
+   ],
+   "forests": 12,
+   "dirt": 20
+  },
+  "decor": [
+   {
+    "id": "wul_szellemtotem",
+    "at": "base",
+    "d": 12,
+    "s": 3
+   },
+   {
+    "id": "wul_osok_kore",
+    "at": "pair",
+    "d": 12,
+    "s": 0,
+    "ruin": true
+   }
+  ],
+  "ambient": [
+   {
+    "id": "wul_gyujtogeto",
+    "at": "base",
+    "d": 10,
+    "s": 4,
+    "n": 1,
+    "path": [
+     {
+      "at": "base",
+      "d": 10,
+      "s": 4
+     },
+     {
+      "at": "centre",
+      "d": 14,
+      "s": 2
+     }
+    ],
+    "shelter": {
+     "at": "base",
+     "d": 12,
+     "s": 3
+    }
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "wul_szellemtotem": [
+    2,
+    2
+   ],
+   "wul_osok_kore": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

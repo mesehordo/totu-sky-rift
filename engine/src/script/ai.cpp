@@ -97,7 +97,7 @@ std::unique_ptr<ScriptHost> make_ai(const AiPackage& pkg, const sim::AiSlot& slo
     if (it == files->end()) return std::nullopt;
     return it->second;
   });
-  host->enable_ai(slot.player, slot.difficulty, slot.personality);
+  host->enable_ai(slot.player, slot.difficulty, slot.personality, slot.path, slot.ally);
   std::string entry = "main.lua";
   if (const content::Value* e = info_v->find("entry"); e && e->is_string()) entry = e->text();
   const std::string* src = pkg.file(entry);

@@ -121,7 +121,7 @@
   "3": "tenduur",
   "4": "tenduur"
  },
- "_decor": [
+ "decor": [
   {
    "id": "ten_lampasfa",
    "tx": 38,
@@ -159,6 +159,98 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "ten_lampasor",
+   "n": 2,
+   "at": [
+    43,
+    48
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    44,
+    50
+   ]
+  },
+  {
+   "id": "ten_lampasor",
+   "n": 2,
+   "at": [
+    51,
+    45
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    50,
+    44
+   ]
+  }
+ ],
+ "generator": {
+  "size": 96,
+  "layout": "ring",
+  "features": {
+   "forests": 34,
+   "lakes": [
+    1,
+    2,
+    3
+   ],
+   "ridges": [
+    2,
+    4,
+    6
+   ]
+  },
+  "decor": [
+   {
+    "id": "ten_lampasfa",
+    "at": "pair",
+    "d": 12,
+    "s": 0
+   },
+   {
+    "id": "ten_tovisudvar",
+    "at": "base",
+    "d": 4,
+    "s": -12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "ten_lampasor",
+    "at": "pair",
+    "d": 10,
+    "s": 2,
+    "n": 2,
+    "shelter": {
+     "at": "pair",
+     "d": 12,
+     "s": 0
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "ten_lampasfa": [
+    3,
+    3
+   ],
+   "ten_tovisudvar": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

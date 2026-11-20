@@ -132,6 +132,15 @@ bool has_tag_raw(const EntityDef& d, const content::Value* tags) {
 class Module final : public FactionModule {
  public:
   const char* name() const override { return "imperium"; }
+  void view(Sim& s, ModuleView& v) override {   // a lerakott alapozás csempéi (a régi `draw_foundations`)
+    if (v.w <= 0 || v.h <= 0) return;
+    s.world().pool<ImpFoundation>().each([&](EntityId, const ImpFoundation& f) {
+      if (v.found.empty()) v.found.assign(static_cast<size_t>(v.w * v.h), 0);
+      for (int y = std::max(0, static_cast<int>(f.ty)); y < std::min(v.h, f.ty + f.h); ++y) {
+        for (int x = std::max(0, static_cast<int>(f.tx)); x < std::min(v.w, f.tx + f.w); ++x) v.found[static_cast<size_t>(y * v.w + x)] = f.owner;
+      }
+    });
+  }
 
   void register_components(World& w) override {
     w.register_component<ImpFoundation>("ImpFoundation");
@@ -294,7 +303,10 @@ class Module final : public FactionModule {
       s.world().pool<ImpAnchor>().remove(e);
       s.kill(e);
       const EntityId u = s.spawn_unit(origin, owner, p.x, p.y);
-      if (u != kNoEntity) s.place_at_free(u, p.x, p.y);
+      if (u != kNoEntity) {
+        s.place_at_free(u, p.x, p.y);
+        s.emit(SimEvent::Reborn, owner, origin);   // a régi „Újratestesült: …”
+      }
     }
     // horgonymentés
     std::vector<EntityId> carriers;

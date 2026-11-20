@@ -75,6 +75,11 @@ TEST_CASE("helyőrség: beszállás a szabad helyekig, bent rejtve és sebezhete
   CHECK(inside == 4);
   const auto out = us[4];   // az ötödiknek nem jutott hely
   CHECK(!s.sheltered(out));
+  // tele: a régi „… tele van.” – felületi esemény (a szimuláció állapotába nem kerül)
+  const uint64_t h0 = s.hash();
+  CHECK(!s.order_garrison({out}, house));
+  CHECK(s.hash() == h0);
+  CHECK(std::any_of(s.events().begin(), s.events().end(), [](const sim::SimEvent& e) { return e.kind == sim::SimEvent::Full && e.owner == 1; }));
   // bent: nem látszik az ellenségnek, nem célozható
   const auto foe = put(s, "urs_szigonyvezo", 2, 60, 195, false);
   m.run(6);

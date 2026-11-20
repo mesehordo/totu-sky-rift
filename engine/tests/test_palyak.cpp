@@ -10,6 +10,7 @@
 
 #include "check.hpp"
 #include "match_util.hpp"
+#include "map/mapgen.hpp"
 
 using namespace totu;
 
@@ -144,5 +145,72 @@ TEST_CASE("palyak meccs: rövid meccs indul minden régi pályán (setup_match, 
       if (h && h->owner >= 1 && h->owner <= p.players) ++hq;
     });
     CHECK(hq >= p.players);   // minden játékosnak áll a főépülete
+    // díszletépületek (a régi `Decor`): a pálya listája beolvasva, a helyükre nem lehet építeni
+    CHECK(!m.objects().decor.empty());
+    const uint16_t house = c.rules->def("urs_hosszuhaz");
+    for (const auto& d : m.objects().decor) {
+      std::string why;
+      CHECK(!s.can_place(1, house, d.tx, d.ty, &why));
+    }
   }
+}
+
+TEST_CASE("palyak veletlen: a regi generator (map/mapgen) minden palyabol uj maggal betoltheto, elerheto palyat ad") {
+  testing::Content& c = testing::content_once();
+  CHECK(c.rules.has_value());
+  if (!c.rules) return;
+  int done = 0;
+  for (const auto& e : std::filesystem::directory_iterator(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps")) {
+    if (e.path().extension() != ".json") continue;
+    const auto doc = content::parse(testing::read_file(e.path()));
+    if (!doc || !doc->find("generator")) continue;
+    std::string gerr;
+    const auto a = map::generate_map(*doc, 1001, &gerr), b = map::generate_map(*doc, 2002, &gerr);
+    CHECK(a && b);
+    if (!a || !b) {
+      std::printf("  %s: %s\n", e.path().stem().string().c_str(), gerr.c_str());
+      continue;
+    }
+    CHECK(content::dump(*a) != content::dump(*b));   // más mag, más pálya
+    std::vector<std::string> errs;
+    const auto ma = map::Map::from_json(*a, c.terrain, errs);
+    CHECK(ma.has_value() && errs.empty());
+    if (!ma) {
+      for (const auto& er : errs) std::printf("  %s: %s\n", e.path().stem().string().c_str(), er.c_str());
+      continue;
+    }
+    std::vector<std::string> e2;
+    const auto orig = map::Map::from_json(*doc, c.terrain, e2);
+    CHECK(orig && orig->objects().starts == ma->objects().starts);   // a kezdőhelyek az elrendezésből: változatlanok
+    // a kezdőhelyek egymásból elérhetők (fákkal és lelőhelyekkel), és a meccs elindul
+    {
+      map::NavGrid nav(*ma, c.terrain);
+      for (const map::MapResource& r : ma->objects().resources) nav.add_obstacle({r.x, r.y, r.size, r.size});
+      for (const auto& [x, y] : ma->objects().trees) nav.add_obstacle({x, y, 1, 1});
+      for (const auto& d : ma->objects().decor) nav.add_obstacle({d.tx, d.ty, d.w, d.h});
+      map::Pathfinder pf(nav);
+      const int g = nav.grid_of(*c.terrain.movement_class("land"));
+      const auto& st = ma->objects().starts;
+      auto cl = [](int x, int y) { return map::Pathfinder::cell_of(core::Fixed::from_int(x), core::Fixed::from_int(y)); };
+      for (size_t i = 1; i < st.size(); ++i) {
+        const bool ok = pf.reachable(g, 0, cl(st[0].first, st[0].second), cl(st[i].first, st[i].second));
+        CHECK(ok);
+        if (!ok) std::printf("  véletlen pálya: %s, 1. és %zu. kezdőhely\n", e.path().stem().string().c_str(), i + 1);
+      }
+    }
+    {
+      map::Map mm = *ma;
+      map::NavGrid nav(mm, c.terrain);
+      map::Pathfinder pf(nav);
+      sim::Sim s(7);
+      s.attach_navigation(&pf);
+      s.attach_rules(&*c.rules);
+      sim::MatchSetup setup;
+      setup.factions.assign(mm.objects().starts.size(), "ursan");
+      std::string err;
+      CHECK(s.setup_match(mm, setup, &err));
+    }
+    ++done;
+  }
+  CHECK(done == 20);
 }

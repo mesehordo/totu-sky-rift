@@ -149,7 +149,13 @@ void Sim::weather_pick_next() {
     weather_.change_at = tick_ + 1000000000;   // nincs adat: ne próbálja minden tickben újra
     return;
   }
-  const std::string climate = map_->climate().empty() ? "temperate" : map_->climate();
+  // a régi „Táj” (forest, winter, wasteland, swamp, autumn, rift) éghajlata; különben a pályáé
+  static const std::pair<const char*, const char*> kTheme[] = {{"forest", "temperate"}, {"winter", "snowy"}, {"wasteland", "desert"},
+                                                               {"swamp", "swampy"}, {"autumn", "temperate"}, {"rift", "volcanic"}};
+  std::string climate = map_->climate().empty() ? "temperate" : map_->climate();
+  for (const auto& [th, cl] : kTheme) {
+    if (climate_ == th) climate = cl;
+  }
   const auto it = rules_->env.climates.find(climate);
   const std::vector<std::string>& kinds = it != rules_->env.climates.end() ? it->second : rules_->env.climates.begin()->second;
   std::string next;

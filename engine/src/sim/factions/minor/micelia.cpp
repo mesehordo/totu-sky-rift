@@ -161,6 +161,12 @@ class Module final : public FactionModule {
   }
 
   void view(Sim& s, ModuleView& v) override {   // a spórafonalak: a bejárás élei (a régi `links`, `draw_network`)
+    s.world_.pool<Unit>().each([&](EntityId e, const Unit&) {   // az osztódó egységek étkei
+      const int need = split_kills(s, e);
+      if (need <= 0) return;
+      const Spores* sp = s.world_.get<Spores>(e);
+      v.meals.push_back({e, static_cast<uint8_t>(std::min<int>(sp ? sp->meals : 0, 255)), static_cast<uint8_t>(std::min(need, 12))});
+    });
     for (int owner = 1; owner <= Sim::kMaxPlayers; ++owner) {
       if (!network(s, static_cast<uint8_t>(owner))) continue;
       const Net& n = net(s, static_cast<uint8_t>(owner));
@@ -310,6 +316,7 @@ class Module final : public FactionModule {
     const EntityId twin = s.spawn_unit(def, h.owner, tx, ty);   // (a spawn után a régi mutatók érvénytelenek)
     if (twin == kNoEntity) return;
     s.place_at_free(twin, tx, ty);
+    s.emit(SimEvent::Split, h.owner, def);   // a régi „Osztódott: …”
     Health& th = *s.world_.get<Health>(twin);
     th.hp = std::max(1, th.max / 2);
     if (Spores* ts = s.world_.get<Spores>(twin)) ts->spores = half_spores;

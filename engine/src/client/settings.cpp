@@ -121,6 +121,16 @@ std::string settings_to_json(const Settings& s) {
   o.set("ambient", Value::boolean(s.ambient));
   o.set("status_fx", Value::boolean(s.status_fx));
   o.set("game_speed", num(s.game_speed));
+  o.set("view_zoom", num(s.view_zoom));
+  o.set("speed_buttons", Value::boolean(s.speed_buttons));
+  o.set("calm", Value::boolean(s.calm));
+  o.set("status_pulse", Value::boolean(s.status_pulse));
+  o.set("water_anim", Value::boolean(s.water_anim));
+  o.set("hero_mark", num(s.hero_mark));
+  o.set("ai_difficulty", Value::string(s.ai_difficulty));
+  o.set("player_name", Value::string(s.player_name));
+  o.set("last_address", Value::string(s.last_address));
+  o.set("profile", Value::string(s.profile));
   Value mods = Value::array();
   for (const auto& m : s.mods) mods.push(Value::string(m));
   o.set("mods", std::move(mods));
@@ -201,6 +211,16 @@ bool settings_from_json(std::string_view text, Settings* out, std::vector<std::s
   get_bool(o, "ambient", &s.ambient);
   get_bool(o, "status_fx", &s.status_fx);
   get_int(o, "game_speed", 50, 300, &s.game_speed);
+  get_int(o, "view_zoom", 100, 200, &s.view_zoom);
+  get_bool(o, "speed_buttons", &s.speed_buttons);
+  get_bool(o, "calm", &s.calm);
+  get_bool(o, "status_pulse", &s.status_pulse);
+  get_bool(o, "water_anim", &s.water_anim);
+  get_int(o, "hero_mark", 0, 2, &s.hero_mark);
+  if (const Value* v = o.find("ai_difficulty"); v && v->is_string() && !v->text().empty()) s.ai_difficulty = v->text().substr(0, 16);
+  if (const Value* v = o.find("player_name"); v && v->is_string() && !v->text().empty()) s.player_name = v->text().substr(0, 24);
+  if (const Value* v = o.find("last_address"); v && v->is_string()) s.last_address = v->text().substr(0, 64);
+  if (const Value* v = o.find("profile"); v && v->is_string()) s.profile = v->text().substr(0, 64);
   if (const Value* v = o.find("mods")) {
     bool ok = v->is_array();
     std::vector<std::string> ids;

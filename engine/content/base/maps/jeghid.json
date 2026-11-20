@@ -119,7 +119,7 @@
   "1": "pinguu",
   "2": "tokla"
  },
- "_decor": [
+ "decor": [
   {
    "id": "pin_jegcsarnok",
    "tx": 15,
@@ -157,6 +157,178 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "pin_kajakos",
+   "n": 2,
+   "at": [
+    16,
+    37
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    15,
+    33
+   ]
+  },
+  {
+   "id": "pin_kajakos",
+   "n": 2,
+   "at": [
+    77,
+    58
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    77,
+    59
+   ]
+  },
+  {
+   "id": "tok_harangjaro",
+   "n": 1,
+   "at": [
+    35,
+    19
+   ],
+   "idle": false,
+   "path": [
+    [
+     35,
+     19
+    ],
+    [
+     41,
+     53
+    ]
+   ],
+   "shelter": [
+    33,
+    15
+   ]
+  },
+  {
+   "id": "tok_harangjaro",
+   "n": 1,
+   "at": [
+    58,
+    76
+   ],
+   "idle": false,
+   "path": [
+    [
+     58,
+     76
+    ],
+    [
+     53,
+     41
+    ]
+   ],
+   "shelter": [
+    58,
+    76
+   ]
+  }
+ ],
+ "generator": {
+  "size": 96,
+  "layout": "ring",
+  "features": {
+   "lakes": [
+    4,
+    3,
+    5.5
+   ],
+   "ridges": [
+    2,
+    4,
+    7
+   ],
+   "forests": 14
+  },
+  "decor": [
+   {
+    "id": "pin_jegcsarnok",
+    "at": "base",
+    "d": 5,
+    "s": 13
+   },
+   {
+    "id": "tok_maszkcsur",
+    "at": "base",
+    "d": 6,
+    "s": -13
+   },
+   {
+    "id": "pin_orlangszentely",
+    "at": "pair",
+    "d": 12,
+    "s": 7
+   }
+  ],
+  "ambient": [
+   {
+    "id": "pin_kajakos",
+    "at": "base",
+    "d": 7,
+    "s": 13,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 5,
+     "s": 13
+    },
+    "mode": "idle"
+   },
+   {
+    "id": "tok_harangjaro",
+    "at": "base",
+    "d": 8,
+    "s": -13,
+    "n": 1,
+    "path": [
+     {
+      "at": "base",
+      "d": 8,
+      "s": -13
+     },
+     {
+      "at": "pair",
+      "d": 9,
+      "s": 0
+     }
+    ],
+    "shelter": {
+     "at": "base",
+     "d": 6,
+     "s": -13
+    }
+   }
+  ],
+  "chars": "ngW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "pin_jegcsarnok": [
+    3,
+    3
+   ],
+   "tok_maszkcsur": [
+    3,
+    3
+   ],
+   "pin_orlangszentely": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

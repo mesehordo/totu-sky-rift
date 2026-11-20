@@ -95,7 +95,7 @@
   "1": "zhan_zhama",
   "2": "zhan_zhama"
  },
- "_decor": [
+ "decor": [
   {
    "id": "zha_feszekhaz",
    "tx": 9,
@@ -133,6 +133,102 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "zha_csirkepasztor",
+   "n": 2,
+   "at": [
+    10,
+    29
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    8,
+    25
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 2,
+   "at": [
+    59,
+    42
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    59,
+    42
+   ]
+  }
+ ],
+ "generator": {
+  "size": 72,
+  "layout": "ring",
+  "features": {
+   "river": {
+    "fords": 3,
+    "width": 1.8
+   },
+   "lakes": [
+    1,
+    2,
+    3
+   ],
+   "ridges": [
+    2,
+    4,
+    7
+   ],
+   "forests": 10
+  },
+  "decor": [
+   {
+    "id": "zha_feszekhaz",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   {
+    "id": "zha_kakasudvar",
+    "at": "pair",
+    "d": 9,
+    "s": 7
+   }
+  ],
+  "ambient": [
+   {
+    "id": "zha_csirkepasztor",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "zha_feszekhaz": [
+    3,
+    3
+   ],
+   "zha_kakasudvar": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

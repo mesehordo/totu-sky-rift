@@ -127,7 +127,7 @@
   "1": "galoca",
   "2": "galoca"
  },
- "_decor": [
+ "decor": [
   {
    "id": "gal_tuskekert",
    "tx": 17,
@@ -156,6 +156,111 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "gal_fogaskalap",
+   "n": 2,
+   "at": [
+    18,
+    37
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    16,
+    33
+   ]
+  },
+  {
+   "id": "gal_fogaskalap",
+   "n": 2,
+   "at": [
+    81,
+    31
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    81,
+    29
+   ]
+  },
+  {
+   "id": "gal_fogaskalap",
+   "n": 2,
+   "at": [
+    54,
+    87
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    52,
+    88
+   ]
+  }
+ ],
+ "generator": {
+  "size": 104,
+  "layout": "ring",
+  "features": {
+   "river": {
+    "fords": 2
+   },
+   "lakes": [
+    1,
+    2,
+    3
+   ],
+   "forests": 14,
+   "rich": true
+  },
+  "decor": [
+   {
+    "id": "gal_harapofeszek",
+    "at": "pair",
+    "d": 6,
+    "s": 6
+   },
+   {
+    "id": "gal_tuskekert",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "gal_fogaskalap",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "gal_harapofeszek": [
+    3,
+    3
+   ],
+   "gal_tuskekert": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

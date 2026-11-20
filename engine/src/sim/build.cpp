@@ -96,6 +96,7 @@ bool Sim::can_place(uint8_t owner, uint16_t def, int tx, int ty, std::string* er
     if (d.on_resource && (d.on_resource & (1u << n.kind)) && n.tx == tx && n.ty == ty && w <= n.size && h <= n.size) on_node = true;
     else busy = true;
   });
+  for (const auto& dc : map_->objects().decor) busy = busy || overlap(tx, ty, w, h, dc.tx, dc.ty, dc.w, dc.h);   // díszletépület
   if (busy) return fail("foglalt hely");
   if (d.on_resource && !on_node) return fail("aranybányára vagy meteoritra kell építeni");
   if (owner) {

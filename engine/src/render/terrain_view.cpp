@@ -188,7 +188,18 @@ void TerrainView::shutdown() {
   vbo_ = vao_ = 0;
 }
 
-int TerrainView::kind_of(const std::string& set, const std::string& row, const uint8_t tint[3], int prio) {
+int TerrainView::kind_of(const std::string& set_in, const std::string& row, const uint8_t tint[3], int prio) {
+  // a régi „Táj”: az alap készlet helyett a választott (ha abban megvan a sor)
+  std::string set = set_in;
+  if (!theme_.empty() && set_in == "tileset") {
+    set = theme_;
+    bool has = false;
+    for (size_t i = 0; i < sets_.size(); ++i) {
+      if (sets_[i] != set) continue;
+      for (const auto& rw : rows_[i]) has = has || rw.first == row;
+    }
+    if (!has) set = set_in;
+  }
   int layer = 0;
   for (size_t i = 0; i < sets_.size(); ++i) {
     if (sets_[i] == set) layer = static_cast<int>(i);

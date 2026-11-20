@@ -212,6 +212,7 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   desc.teams = setup.teams;
   desc.starts = setup.starts;
   desc.resources = setup.resources;
+  desc.climate = setup.climate;
   if (setup.victory == sim::MatchSetup::Victory::Script) {   // M13: a modbeli győzelmi szkript (a gépek előtt csatolva)
     content::Vfs vfs;
     content::add_mod_layers(vfs, content_dir_, mods_);
@@ -593,6 +594,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       o.defeated = p.defeated;
       o.team = p.team;
       o.ascended = p.ascended;
+      o.moon = i >= 1 && sim_->moon_mult(static_cast<uint8_t>(i)) > sim::Fixed::from_int(1);
       o.ally = p.ally;
       for (const auto& fh : p.fallen) o.fallen.push_back(fh.first);
       o.path = p.path;
@@ -696,7 +698,7 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
       if (!view_ || s->tick % 10 == 0) {   // a népmechanikák nézete (csak ha változott, új példány – a rajzoló így tudja)
         auto v = std::make_shared<sim::ModuleView>();
         sim_->module_view(*v);
-        const bool same = view_ && view_->creep == v->creep && view_->pond == v->pond && view_->larva == v->larva &&
+        const bool same = view_ && view_->creep == v->creep && view_->pond == v->pond && view_->found == v->found && view_->larva == v->larva && view_->rot == v->rot && view_->meals == v->meals &&
                           view_->links.size() == v->links.size() &&
                           std::equal(v->links.begin(), v->links.end(), view_->links.begin(),
                                      [](const auto& x, const auto& y) { return x.a == y.a && x.b == y.b && x.owner == y.owner; });
@@ -788,6 +790,9 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
     sim_->queue(c);   // a parancssoron át (mint a hálózati játékban és a visszajátszásban)
   }
   sim_->step();
+  for (const sim::SimEvent& ev : sim_->events()) {
+    if (ev.owner == local_ && notes_.size() < 256) notes_.push_back(ev);
+  }
   if (!sim_->rules() && sim_->tick() % 5 == 0) update_fog();
   const auto after = snapshot();
   // látványesemények azonosító szerinti sorrendben: eltűnt egység → halál (az előző helyén), csökkent életerő → találat
@@ -799,12 +804,12 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
       if (!sim_->world().alive(a.id)) {   // a ködbe lépő nem hal meg (D41)
         const sim::Rules* rr = sim_->rules();
         const bool big = rr && a.def < rr->defs.size() && rr->defs[a.def].has_tag("large");
-        fx.push_back({a.x, a.y, true, big});
+        fx.push_back({a.x, a.y, true, big, a.def, a.owner});
       }
       continue;
     }
     const SnapUnit& b = after->units[j];
-    if (b.hp < a.hp) fx.push_back({b.x, b.y - 6.0f, false});
+    if (b.hp < a.hp) fx.push_back({b.x, b.y - 6.0f, false, false, b.def, b.owner});
   }
   return after;
 }
@@ -827,6 +832,7 @@ bool SimRunner::run_one() {
   fx_scratch_.clear();
   const auto t0 = std::chrono::steady_clock::now();
   auto snap = s_.step(cmds, fx_scratch_);
+  s_.take_notes(notes_scratch_);
   const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
   if (source_) source_->end(s_.sim().hash());
   auto pub = std::make_shared<Snapshot>(*snap);   // a közzététel ideje a futtató órája szerint
@@ -835,7 +841,8 @@ bool SimRunner::run_one() {
   prev_ = cur_;
   cur_ = std::move(pub);
   if (fx_.size() < 16384) fx_.insert(fx_.end(), fx_scratch_.begin(), fx_scratch_.end());
-  if (tick_ms_.size() < 1000000) tick_ms_.push_back(ms);
+  if (notes_.size() < 256) notes_.insert(notes_.end(), notes_scratch_.begin(), notes_scratch_.end());
+  notes_scratch_.clear();  if (tick_ms_.size() < 1000000) tick_ms_.push_back(ms);
   Diagnostics::get().tick_ms(ms);
   return true;
 }
@@ -905,6 +912,12 @@ void SimRunner::take_fx(std::vector<FxEvent>& out) {
   std::lock_guard<std::mutex> lock(mu_);
   out.insert(out.end(), fx_.begin(), fx_.end());
   fx_.clear();
+}
+
+void SimRunner::take_notes(std::vector<sim::SimEvent>& out) {
+  std::lock_guard<std::mutex> lock(mu_);
+  out.insert(out.end(), notes_.begin(), notes_.end());
+  notes_.clear();
 }
 
 void SimRunner::take_tick_ms(std::vector<double>& out) {

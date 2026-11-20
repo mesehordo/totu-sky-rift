@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 
+#include <atomic>
 #include "check.hpp"
+#include "net/lan_discovery.hpp"
 #include "match_util.hpp"
 #include "net/content_hash.hpp"
 #include "net/enet_transport.hpp"
@@ -368,4 +370,40 @@ TEST_CASE("halozat: nyolc kliens a nyolcfos palyan, eltero kesesekkel, mindenki 
   CHECK(same);
   CHECK(n.relay.desyncs().empty());
   CHECK(n.relay.turns() >= 190);
+}
+
+TEST_CASE("LAN-kereses (a regi net.discover): a gazda valaszol, a kereso megtalalja; a valasz kodolasa") {
+  net::LanGame g;
+  g.port = 47800;
+  g.name = "Gazda";
+  g.map = "Kráterföld";
+  g.seats = 4;
+  g.taken = 2;
+  g.content = 123456789012345ULL;
+  net::LanGame back;
+  CHECK(net::lan_decode(net::lan_encode(g), &back));
+  CHECK(back.port == 47800 && back.name == "Gazda" && back.map == "Kráterföld" && back.seats == 4 && back.taken == 2 &&
+        back.content == g.content);
+  CHECK(!net::lan_decode("valami mas", &back));
+  net::LanBeacon beacon;
+  std::string err;
+  const uint16_t port = 47891;
+  if (!beacon.open(port, &err)) {
+    std::printf("  (kihagyva: %s)\n", err.c_str());
+    return;
+  }
+  beacon.set_info(g);
+  std::atomic<bool> stop{false};
+  std::thread t([&] {
+    while (!stop.load()) {
+      beacon.poll();
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+  });
+  const auto found = net::lan_scan(600, port, "127.0.0.1");
+  stop.store(true);
+  t.join();
+  CHECK(found.size() == 1);
+  if (found.empty()) return;
+  CHECK(found[0].address == "127.0.0.1" && found[0].port == 47800 && found[0].name == "Gazda" && found[0].taken == 2);
 }

@@ -1202,6 +1202,25 @@ void HudModel::select_hero(size_t i) {
   learn_mode = false;
 }
 
+void HudModel::sim_events(const std::vector<sim::SimEvent>& evs) {
+  auto def_name = [&](uint16_t d) {
+    return rules_ && d < rules_->defs.size() ? name("unit." + rules_->defs[d].id + ".name") : std::string();
+  };
+  auto bld_name = [&](uint16_t d) {
+    return rules_ && d < rules_->defs.size() ? name("building." + rules_->defs[d].id + ".name") : std::string();
+  };
+  for (const sim::SimEvent& ev : evs) {
+    switch (ev.kind) {
+      case sim::SimEvent::Reborn: post_notice(tr("reborn", {def_name(ev.def)}), {120, 255, 190}); break;
+      case sim::SimEvent::Split: post_notice(tr("split", {def_name(ev.def)}), {170, 230, 120}); break;
+      case sim::SimEvent::Unreachable: post_notice(tr("unreachable", {def_name(ev.def)}), {255, 200, 160}); break;
+      case sim::SimEvent::Full: post_notice(tr("full", {bld_name(ev.def)}), {255, 160, 90}); break;
+      case sim::SimEvent::NoTarget: post_notice(tr("no_target"), {255, 160, 90}); break;
+      default: break;
+    }
+  }
+}
+
 void HudModel::watch_alerts() {
   if (!snap_ || snap_->tick == seen_tick_) return;
   const bool first = seen_tick_ < 0;
@@ -1249,11 +1268,13 @@ void HudModel::watch_alerts() {
         post_notice(tr("path.chosen", {name("path." + me.faction + "." + me.path + ".name")}), {150, 220, 150});
       }
       if (me.ascended && !seen_ascended_ && me.path.empty()) post_notice(tr("ascension"), {255, 220, 130});
+      if (me.moon && !seen_moon_) post_notice(tr("moon"), {220, 220, 255});   // a régi „Telihold: …”
     }
     seen_fallen_ = me.fallen;
     seen_ally_ = me.ally;
     seen_path_ = me.path;
     seen_ascended_ = me.ascended;
+    seen_moon_ = me.moon;
     std::vector<std::string> goals;   // „Új cél: …” (küldetésben; az induló célok csendben)
     for (const auto& o : snap_->mission.objectives) goals.push_back(o.text);
     if (!first && snap_->mission.active) {
@@ -1268,6 +1289,7 @@ void HudModel::watch_alerts() {
     alert_x = hx;
     alert_y = hy;
     post_notice(tr("alert.attack"), {255, 90, 70});
+    alarm = true;
   }
 }
 

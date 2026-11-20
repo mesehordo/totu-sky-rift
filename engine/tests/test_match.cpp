@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Játszható szelet (M6, 9. lépés; ADR-007): győzelem és vereség, a szkriptelt ursan ellenfél, meccs-visszajátszás.
+#include <array>
 #include <algorithm>
 #include <cstdio>
 #include <memory>
@@ -239,4 +240,56 @@ TEST_CASE("Csata beallitas (a regi): a valasztott kezdohely es a kezdo nyersanya
         h->sim->player(1).resource(sim::kMeteor) == a->sim->player(1).resource(sim::kMeteor) * 2 + 150);
   const auto dec = sim::decode(sim::encode(sim::record_match([&] { sim::Replay r; r.seed = 3; r.ticks = 30; r.map = map; r.factions = {"ursan", "ursan"}; r.starts = {4, 2}; r.resources = 0; return r; }(), c.terrain, *c.rules)));
   CHECK(dec && dec->starts == std::vector<int8_t>({4, 2}) && dec->resources == 0);
+}
+
+TEST_CASE("Csata beallitas (a regi): a taj es a gep kotelezo valasztasa a visszajatszasban es a mentesben") {
+  Content& c = content_once();
+  sim::Replay r;
+  r.seed = 4;
+  r.ticks = 60;
+  r.map = read_file(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps" / "kraterfold.json");
+  r.factions = {"ursan", "ursan"};
+  r.climate = "winter";
+  sim::AiSlot a;
+  a.player = 2;
+  a.path = "runa";
+  a.ally = "daresh";
+  r.ai = {a};
+  for (const auto& f : std::filesystem::directory_iterator(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "ai" / "alap")) {
+    if (f.path().extension() == ".lua" || f.path().extension() == ".json") r.ai_files.push_back({"alap", f.path().filename().string(), read_file(f.path())});
+  }
+  const auto rec = sim::record_match(r, c.terrain, *c.rules);
+  const auto dec = sim::decode(sim::encode(rec));
+  CHECK(dec && dec->climate == "winter" && dec->ai.size() == 1 && dec->ai[0].path == "runa" && dec->ai[0].ally == "daresh");
+  CHECK(sim::verify(rec, &c.terrain, &*c.rules).ok);
+  std::string err;
+  auto m = sim::start_match(r, &c.terrain, &*c.rules, err);
+  CHECK(m && m->sim->climate_override() == "winter");
+  if (!m) return;
+  const auto saved = m->sim->save();
+  auto back = sim::start_match(r, &c.terrain, &*c.rules, err, true);
+  CHECK(back && back->sim->load(saved) && back->sim->climate_override() == "winter" && back->sim->hash() == m->sim->hash());
+}
+
+TEST_CASE("Csapatok: kezdohely a csapat szerint (a regi teams_hint) – a Fent es lent palyan a csapattarsak egy oldalon") {
+  Content& c = content_once();
+  sim::Replay base;
+  base.seed = 5;
+  base.ticks = 1;
+  base.map = read_file(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps" / "fent_es_lent.json");
+  base.factions = {"ursan", "ursan", "ursan", "ursan"};
+  base.teams = {1, 2, 1, 2};
+  std::string err;
+  auto m = sim::start_match(base, &c.terrain, &*c.rules, err);
+  CHECK(m != nullptr);
+  if (!m) return;
+  sim::Sim& s = *m->sim;
+  std::array<int, 5> hq_y{};
+  s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building& b) {
+    const sim::Health* h = s.world().get<sim::Health>(e);
+    if (h && h->owner >= 1 && h->owner <= 4) hq_y[h->owner] = b.ty;
+  });
+  const int mid = 112 / 2;
+  CHECK(hq_y[1] < mid && hq_y[3] < mid);   // 1. csapat: fent
+  CHECK(hq_y[2] > mid && hq_y[4] > mid);   // 2. csapat: lent
 }

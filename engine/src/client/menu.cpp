@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -46,8 +47,8 @@ const std::vector<MainGroup>& main_items() {
         {"ui.main.novellas", MenuAct::None, true},
         {"ui.main.skirmish", MenuAct::Skirmish, false},
         {"ui.main.load", MenuAct::OpenLoad, false}}},
-      {"ui.main.multiplayer", MenuAct::None, true, {}},
-      {"ui.main.stories", MenuAct::None, true, {}},
+      {"ui.main.multiplayer", MenuAct::OpenLan, false, {}},
+      {"ui.main.stories", MenuAct::OpenStories, false, {}},
       {"ui.main.settings", MenuAct::Toggle, false,
        {{"ui.main.game_settings", MenuAct::Settings, false},
         {"ui.main.profiles", MenuAct::None, true}}},
@@ -63,9 +64,13 @@ const char* const kSettingLabels[Menu::kSettingRows] = {
     "ui.settings.colorblind",   "ui.settings.scroll_speed", "ui.settings.edge_scroll", "ui.settings.show_fps",
     "ui.settings.fps_limit",    "ui.settings.sound",        "ui.settings.keys",
     "ui.settings.show_clock",   "ui.settings.help_hint",    "ui.settings.shadows",    "ui.settings.ambient",
-    "ui.settings.status_fx",    "ui.settings.game_speed"};
-// a sorok megjelenítési sorrendje (a sorszám a gomb azonosítója – a régi sorszámok maradnak)
-const int kSettingOrder[Menu::kSettingRows] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 16, 13, 14, 15, 9, 10};
+    "ui.settings.status_fx",    "ui.settings.game_speed",
+    "ui.settings.view_zoom",    "ui.settings.speed_buttons", "ui.settings.hero_mark",  "ui.settings.calm",
+    "ui.settings.status_pulse", "ui.settings.water_anim",    "ui.settings.ai_difficulty"};
+// a sorok megjelenítési sorrendje (a sorszám a gomb azonosítója – a régi sorszámok maradnak); két oszlopban
+const int kSettingOrder[Menu::kSettingRows] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 9, 10,
+                                               11, 18, 12, 16, 23, 13, 19, 20, 21, 14, 15, 22};
+const int kZooms[] = {100, 125, 150, 175, 200};
 const int kSpeeds[] = {50, 75, 100, 150, 200};
 
 const int kScroll[] = {500, 700, 900, 1200, 1600};
@@ -113,6 +118,9 @@ std::vector<MapInfo> scan_maps(const std::string& dir, const map::TerrainTable* 
     if (const content::Value* v = doc->find("height")) m.height = static_cast<int>(v->as_int().value_or(0));
     if (const content::Value* v = doc->find("_leiras"); v && v->is_string()) m.desc = v->text();
     if (const content::Value* v = doc->find("order")) m.order = static_cast<int>(v->as_int().value_or(m.order));
+    for (const auto& p : st->items()) {
+      if (p.is_array() && p.items().size() >= 2) m.starts.emplace_back(static_cast<int>(p.items()[0].as_int().value_or(0)), static_cast<int>(p.items()[1].as_int().value_or(0)));
+    }
     out.push_back(std::move(m));
   }
   std::sort(out.begin(), out.end(), [](const MapInfo& a, const MapInfo& b) {   // a régi sorrend, azon belül név
@@ -142,7 +150,37 @@ std::vector<FactionInfo> scan_factions(const std::string& content_dir) {
           if (const content::Value* n = cv.find("name"); n && n->is_string()) name_key = n->text();
         }
       }
-      if (!minor) out.push_back({key.substr(8), name_key});
+      if (!minor) {
+        FactionInfo fi{key.substr(8), name_key, {}};
+        if (const content::Value* ps = val.find("Paths"); ps && ps->is_object()) {
+          for (const auto& [pid, pv] : ps->members()) {
+            if (!pid.empty() && pid[0] != '_') fi.paths.push_back(pid);
+          }
+        }
+        out.push_back(std::move(fi));
+      }
+    }
+  }
+  std::sort(out.begin(), out.end(), [](const FactionInfo& a, const FactionInfo& b) { return a.id < b.id; });
+  return out;
+}
+
+std::vector<FactionInfo> scan_allies(const std::string& content_dir) {
+  std::vector<FactionInfo> out;
+  std::error_code ec;
+  const auto dir = std::filesystem::path(content_dir) / "base" / "templates" / "factions";
+  for (const auto& e : std::filesystem::directory_iterator(dir, ec)) {
+    if (e.path().extension() != ".json") continue;
+    const auto doc = content::parse(read_file(e.path()));
+    if (!doc || !doc->is_object()) continue;
+    for (const auto& [key, val] : doc->members()) {
+      if (key.rfind("faction_", 0) != 0 || !val.is_object()) continue;
+      const content::Value* fc = val.find("Faction");
+      const content::Value* al = fc ? fc->find("ally") : nullptr;
+      if (!al || !al->is_bool() || !al->as_bool()) continue;
+      std::string name_key = "faction." + key.substr(8) + ".name";
+      if (const content::Value* id = val.find("Identity"); id && id->find("name") && id->find("name")->is_string()) name_key = id->find("name")->text();
+      out.push_back({key.substr(8), name_key, {}});
     }
   }
   std::sort(out.begin(), out.end(), [](const FactionInfo& a, const FactionInfo& b) { return a.id < b.id; });
@@ -204,6 +242,8 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
       a.player = static_cast<uint8_t>(i + 1);
       a.difficulty = sl.difficulty;
       a.personality = sl.personality;
+      a.path = sl.path;   // a régi kötelező irány (csak a választott néphez tartozó)
+      a.ally = sl.ally;
       c.setup.ai.push_back(std::move(a));
     }
   }
@@ -248,6 +288,25 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
     }
   }
   c.setup.resources = s.resources;
+  {   // a régi „Táj” és „Sebesség”
+    static const char* kTheme[] = {"", "forest", "winter", "wasteland", "swamp", "autumn", "rift"};
+    c.setup.climate = kTheme[std::min<int>(s.theme, 6)];
+    static const int kSp[] = {75, 100, 150};
+    c.speed_pct = kSp[std::min<int>(s.speed, 2)];
+    if (s.mapgen == 1) c.map_seed = seed | 1u;
+  }
+  if (s.gametype == 1) {   // a régi „Fent kontra lent”: a pálya felső felének kezdőhelyein az 1., az alsón a 2. csapat
+    const MapInfo& mi = maps[s.map];
+    int mid = 0;
+    for (const auto& st : mi.starts) mid += st.second;
+    mid = mi.starts.empty() ? 0 : mid / static_cast<int>(mi.starts.size());
+    c.setup.teams.assign(c.setup.factions.size(), 0);
+    for (size_t k = 0; k < c.setup.factions.size(); ++k) {
+      if (c.setup.factions[k].empty() || k >= c.setup.starts.size() || c.setup.starts[k] < 0) continue;
+      const size_t si = static_cast<size_t>(c.setup.starts[k]);
+      c.setup.teams[k] = si < mi.starts.size() && mi.starts[si].second < mid ? 1 : 2;
+    }
+  }
   c.setup.fog = s.fog;
   c.setup.daytime = s.daytime;
   c.setup.weather = s.weather;
@@ -265,6 +324,7 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
 Menu::Menu(Settings& settings, Locale& locale, std::vector<MapInfo> maps, std::vector<FactionInfo> factions)
     : st_(settings), loc_(locale), maps_(std::move(maps)), factions_(std::move(factions)) {
   loc_.set_lang(st_.language);
+  for (auto& sl : sk_.slots) sl.difficulty = st_.ai_difficulty;   // a régi „Nehézség (csata)”
   apply_map();
 }
 
@@ -364,6 +424,7 @@ void Menu::layout(int w, int h) {
   u_ = std::clamp(base * static_cast<float>(st_.ui_scale) / 100.0f, 0.8f, fit);
   widgets_.clear();
   texts_.clear();
+  images_.clear();
   panels_.clear();
   sidebar_w_ = 0;
   area_x_ = area_w_ = 0;
@@ -377,11 +438,88 @@ void Menu::layout(int w, int h) {
     case MenuScreen::Mods: layout_mods(); break;
     case MenuScreen::Load: layout_load(); break;
     case MenuScreen::Credits: layout_credits(); break;
+    case MenuScreen::Stories: layout_stories(); break;
+    case MenuScreen::Profiles: layout_profiles(); break;
+    case MenuScreen::Music: layout_music(); break;
+    case MenuScreen::Lan: layout_lan(); break;
+  }
+}
+
+void Menu::pick_hints() {
+  // a régi `tips.pick(7)`: legfeljebb 7 különböző, véletlen tipp (a megjelenítés része, nem a szimulációé)
+  int n = 0;
+  while (n < 200 && loc_.tr("ui.tip." + std::to_string(n + 1)) != "ui.tip." + std::to_string(n + 1)) ++n;
+  hints_.clear();
+  if (hint_rng_ == 0) hint_rng_ = static_cast<uint32_t>(std::max(1.0, now_ * 1000.0)) * 2654435761u | 1u;
+  for (int tries = 0; tries < 64 && static_cast<int>(hints_.size()) < std::min(7, n); ++tries) {
+    hint_rng_ ^= hint_rng_ << 13; hint_rng_ ^= hint_rng_ >> 17; hint_rng_ ^= hint_rng_ << 5;
+    const int t = 1 + static_cast<int>(hint_rng_ % static_cast<uint32_t>(n));
+    if (std::find(hints_.begin(), hints_.end(), t) == hints_.end()) hints_.push_back(t);
   }
 }
 
 void Menu::layout_main() {
   layout_sidebar(open_);
+  const float W = static_cast<float>(w_), H = static_cast<float>(h_);
+  if (open_ >= 0) return;   // nyitott almenünél nincs (a kattintás azt zárja)
+  float card_top = k(16);   // a régi `draw_profile`: jobb felül a profil (címer, név, statisztika); kattintásra a Profilok
+  if (const Profile* p = current_profile(); p && W - sidebar_w_ >= k(440)) {
+    const MenuRect r{W - k(396), k(16), k(380), k(96)};
+    panels_.push_back({r, 210, false});
+    images_.push_back({{r.x + k(8), r.y + k(10), k(76), k(76)}, "emblems/" + p->emblem + ".png"});
+    text(r.x + k(96), r.y + k(10), r.w - k(106), p->name, MenuText::Big, MenuText::Gold);
+    text(r.x + k(96), r.y + k(52), r.w - k(106), loc_.tr("ui.profiles.card", {{"g", std::to_string(p->games)}, {"w", std::to_string(p->wins)}}),
+         MenuText::Small, MenuText::Text);
+    add(MenuWidget::Kind::MapRow, r, "", MenuAct::OpenProfiles);
+    card_top = r.y + r.h + k(12);
+  }
+  // a régi `draw_hints`: tippek a jobb alsó sarokban (legfeljebb 7, ami kifér; kattintásra újak)
+  float tips_top = H;
+  if (const float tw = std::min(k(460), W - sidebar_w_ - k(32)); tw >= k(220)) {
+    if (hints_.empty()) pick_hints();
+    const float lh = k(20), maxh = H * 0.42f, cw = k(7.5f);
+    std::vector<std::pair<std::string, int>> rows;
+    float body = 0;
+    for (const int t : hints_) {
+      const std::string s = loc_.tr("ui.tip." + std::to_string(t));
+      size_t chars = 0;
+      for (const char c : s) chars += (static_cast<unsigned char>(c) & 0xC0) != 0x80;
+      const int lines = std::clamp(static_cast<int>(std::ceil(static_cast<float>(chars + 2) * cw / (tw - k(28)))), 1, 4);
+      const float add_h = static_cast<float>(lines) * lh + (rows.empty() ? 0 : k(4));
+      if (k(54) + body + add_h > maxh) break;
+      body += add_h;
+      rows.emplace_back("• " + s, lines);
+    }
+    if (!rows.empty()) {
+      const float th = k(54) + body;
+      const MenuRect r{W - tw - k(16), H - th - k(16), tw, th};
+      tips_top = r.y;
+      panels_.push_back({r, 200, false});
+      text(r.x + k(14), r.y + k(10), tw - k(28), tr("ui.main.tips"), MenuText::Med, MenuText::Gold);
+      float y = r.y + k(44);
+      for (const auto& [s, lines] : rows) {
+        text(r.x + k(14), y, tw - k(28), s, MenuText::Tiny, MenuText::Text, false, lines);
+        y += static_cast<float>(lines) * lh + k(4);
+      }
+      add(MenuWidget::Kind::MapRow, r, "", MenuAct::HintsNext);
+    }
+  }
+  // a régi `draw_tip`: „A Hasadék népei” – váltakozó népkártya (11 mp-enként; kattintásra a következő) a tippek fölött
+  if (factions_.empty() || W - sidebar_w_ < k(520)) return;
+  const size_t i = (static_cast<size_t>(std::max(0.0, now_) / 11.0) + static_cast<size_t>(card_skip_)) % factions_.size();
+  const FactionInfo& f = factions_[i];
+  const float w = std::min(k(500), W - sidebar_w_ - k(60)), h = k(178);
+  const MenuRect r{W - w - k(16), tips_top - h - k(12), w, h};
+  if (r.y < card_top) return;   // nem fér ki a tippek fölé (a profilkártya alatt)
+  panels_.push_back({r, 215, false});
+  text(r.x + k(14), r.y + k(10), w - k(28), tr("ui.main.card_title"), MenuText::Med, MenuText::Gold);
+  const float es = k(96), y0 = r.y + k(40);
+  images_.push_back({{r.x + k(12), y0, es, es}, "emblems/" + f.id + ".png"});
+  const float tx = r.x + k(22) + es, tw = r.x + r.w - tx - k(14);
+  text(tx, y0, tw, loc_.name(f.name_key), MenuText::Big, MenuText::Text);
+  text(tx, y0 + k(34), tw, loc_.name("faction." + f.id + ".tagline"), MenuText::Small, MenuText::Gold);
+  text(tx, y0 + k(58), tw, loc_.name("faction." + f.id + ".desc"), MenuText::Tiny, MenuText::Text, false, 3);
+  add(MenuWidget::Kind::MapRow, r, "", MenuAct::CardNext);
 }
 
 void Menu::side_area(const char* highlight) {
@@ -483,9 +621,10 @@ void Menu::layout_skirmish() {
     const int lines = std::max(1, static_cast<int>((lp.y + lp.h - ty - k(6)) / k(18)));
     text(lp.x + k(10), ty, lw - k(20), map_text(loc_, md, "desc", md.desc), MenuText::Tiny, MenuText::Text, false, lines);
   }
-  // ---- játékoshelyek: #, résztvevő, nép, gépi nehézség és személyiség (M9), csapat, kezdőhely, szín
-  const float weights[] = {24, 120, 120, 100, 124, 52, 72, 80};
-  constexpr int kCols = 8;
+  // ---- játékoshelyek: #, résztvevő, nép, gépi nehézség és személyiség (M9), irány, szövetséges (a régi kötelező
+  //      választás gépi helyen), csapat, kezdőhely, szín
+  const float weights[] = {20, 104, 104, 84, 104, 92, 92, 44, 64, 72};
+  constexpr int kCols = 10;
   const float gap = k(4);
   float sum = 0;
   for (float wt : weights) sum += wt;
@@ -501,8 +640,9 @@ void Menu::layout_skirmish() {
   const MenuRect slots{x0 - k(10), top, W - x0 - k(14), row_y0 + 8 * row_h + k(8) - top};
   panels_.push_back({slots, 200, false});
   const char* heads[] = {"ui.skirmish.col.num",        "ui.skirmish.col.participant", "ui.skirmish.col.faction",
-                         "ui.skirmish.col.difficulty", "ui.skirmish.col.personality", "ui.skirmish.col.team",
-                         "ui.skirmish.col.start",      "ui.skirmish.col.color"};
+                         "ui.skirmish.col.difficulty", "ui.skirmish.col.personality", "ui.skirmish.col.path",
+                         "ui.skirmish.col.ally",       "ui.skirmish.col.team",        "ui.skirmish.col.start",
+                         "ui.skirmish.col.color"};
   for (int i = 0; i < kCols; ++i) text(cx[i], slots.y + k(10), cw[i], tr(heads[i]), MenuText::Small, MenuText::Gold);
   std::vector<std::string> diffs, perss;
   for (const auto& d : ai_difficulty_ids()) diffs.push_back(tr(("ui.ai.diff." + d).c_str()));
@@ -548,18 +688,42 @@ void Menu::layout_skirmish() {
       if (ai_personality_ids()[j] == sl.personality) per.current = static_cast<int>(j);
     }
     per.enabled = ai;
-    MenuWidget& team = add(MenuWidget::Kind::Dropdown, {cx[5], y, cw[5], dh}, "", MenuAct::SlotTeam, i);
+    {   // gépi helyen: a kötelező irány (a választott nép irányai) és a kötelező szövetséges kisnép
+      const FactionInfo* fi = nullptr;
+      for (const auto& f : factions_) {
+        if (f.id == sl.faction) fi = &f;
+      }
+      MenuWidget& pw = add(MenuWidget::Kind::Dropdown, {cx[5], y, cw[5], dh}, "", MenuAct::SlotPath, i);
+      pw.options = {tr("ui.skirmish.auto")};
+      pw.current = 0;
+      if (ai && fi) {
+        for (size_t k2 = 0; k2 < fi->paths.size(); ++k2) {
+          pw.options.push_back(loc_.name("path." + fi->id + "." + fi->paths[k2] + ".name"));
+          if (fi->paths[k2] == sl.path) pw.current = static_cast<int>(k2) + 1;
+        }
+      }
+      pw.enabled = ai && fi && !fi->paths.empty();
+      MenuWidget& aw = add(MenuWidget::Kind::Dropdown, {cx[6], y, cw[6], dh}, "", MenuAct::SlotAlly, i);
+      aw.options = {tr("ui.skirmish.auto")};
+      aw.current = 0;
+      for (size_t k2 = 0; ai && k2 < allies_.size(); ++k2) {
+        aw.options.push_back(loc_.name(allies_[k2].name_key));
+        if (allies_[k2].id == sl.ally) aw.current = static_cast<int>(k2) + 1;
+      }
+      aw.enabled = ai && !allies_.empty();
+    }
+    MenuWidget& team = add(MenuWidget::Kind::Dropdown, {cx[7], y, cw[7], dh}, "", MenuAct::SlotTeam, i);
     team.options = {"–", "1", "2", "3", "4"};
     team.current = std::min<int>(sl.team, 4);
     team.enabled = active && (i == 0 || sl.kind != SlotSetup::Kind::Closed);
     if (!team.enabled) team.current = 0;
-    MenuWidget& stw = add(MenuWidget::Kind::Dropdown, {cx[6], y, cw[6], dh}, "", MenuAct::SlotStart, i);
+    MenuWidget& stw = add(MenuWidget::Kind::Dropdown, {cx[8], y, cw[8], dh}, "", MenuAct::SlotStart, i);
     stw.options = {tr("ui.skirmish.random")};
     for (int k = 0; k < n; ++k) stw.options.push_back(std::to_string(k + 1));
     stw.current = sl.start >= 0 && sl.start < n ? sl.start + 1 : 0;
     stw.enabled = team.enabled;
     const int ci = sl.color >= 0 ? sl.color : i;
-    MenuWidget& col = add(MenuWidget::Kind::Dropdown, {cx[7], y, cw[7], dh}, "", MenuAct::SlotColor, i);
+    MenuWidget& col = add(MenuWidget::Kind::Dropdown, {cx[9], y, cw[9], dh}, "", MenuAct::SlotColor, i);
     for (int k = 0; k < 8; ++k) col.options.push_back(loc_.tr((st_.colorblind ? "ui.color_safe." : "ui.color.") + std::to_string(k)));
     col.current = ci;
     col.enabled = team.enabled;
@@ -567,7 +731,9 @@ void Menu::layout_skirmish() {
   }
   // ---- játékbeállítások (saját panelen)
   const float oy = slots.y + slots.h + k(16);
-  const float ow = std::min(k(300), std::floor((W - x0 - k(24)) / 4));   // 4 oszlop (M12: 7 beállítás, 2 sor)
+  // 4 oszlop; ha alul nem férne el (nagy felület), 6 oszlop – kevesebb sorban
+  const int ocols = oy + static_cast<float>((11 + 3) / 4) * k(62) + k(14) > static_cast<float>(h_) - k(90) ? 6 : 4;
+  const float ow = std::min(k(300), std::floor((W - x0 - k(24)) / static_cast<float>(ocols)));
   struct Opt {
     const char* label;
     std::vector<const char*> options;
@@ -584,12 +750,17 @@ void Menu::layout_skirmish() {
       {"ui.opt.tempo", {"ui.opt.tempo.classic", "ui.opt.tempo.calm", "ui.opt.tempo.rush", "ui.opt.tempo.survival"},
        static_cast<int>(sk_.tempo)},
       {"ui.opt.resources", {"ui.opt.resources.low", "ui.opt.resources.medium", "ui.opt.resources.high"}, static_cast<int>(sk_.resources)},
+      {"ui.opt.gametype", {"ui.opt.gametype.teams", "ui.opt.gametype.topbottom"}, static_cast<int>(sk_.gametype)},
+      {"ui.opt.theme", {"ui.opt.theme.map", "ui.opt.theme.forest", "ui.opt.theme.winter", "ui.opt.theme.wasteland", "ui.opt.theme.swamp",
+                        "ui.opt.theme.autumn", "ui.opt.theme.rift"}, static_cast<int>(sk_.theme)},
+      {"ui.opt.speed", {"ui.opt.speed.slow", "ui.opt.speed.normal", "ui.opt.speed.fast"}, static_cast<int>(sk_.speed)},
+      {"ui.opt.mapgen", {"ui.opt.mapgen.fixed", "ui.opt.mapgen.random"}, static_cast<int>(sk_.mapgen)},
   };
-  constexpr int kOpts = 8;
-  panels_.push_back({{x0 - k(10), oy, 4 * ow + k(4), static_cast<float>((kOpts + 3) / 4) * k(62) + k(14)}, 200, false});
+  constexpr int kOpts = 12;
+  panels_.push_back({{x0 - k(10), oy, static_cast<float>(ocols) * ow + k(4), static_cast<float>((kOpts + ocols - 1) / ocols) * k(62) + k(14)}, 200, false});
   for (int i = 0; i < kOpts; ++i) {
-    const float ox = x0 + static_cast<float>(i % 4) * ow;
-    const float oy2 = oy + k(10) + static_cast<float>(i / 4) * k(62);
+    const float ox = x0 + static_cast<float>(i % ocols) * ow;
+    const float oy2 = oy + k(10) + static_cast<float>(i / ocols) * k(62);
     text(ox, oy2, ow - k(20), tr(opts[i].label), MenuText::Small, MenuText::Gold);
     MenuWidget& d = add(MenuWidget::Kind::Dropdown, {ox, oy2 + k(24), ow - k(20), dh}, "", MenuAct::Option, i);
     for (const char* o : opts[i].options) d.options.push_back(tr(o));
@@ -613,13 +784,16 @@ void Menu::layout_settings() {
   side_area();
   title(tr("ui.settings.title"));
   const float top = k(96);
-  const float pw = std::min(k(720), area_w_ - k(24));
+  // két oszlop (a régi 24 beállítás egy oszlopban nem fér el)
+  constexpr int kPerCol = (kSettingRows + 1) / 2;
+  const float pw = std::min(k(1180), area_w_ - k(24));
   const float W = 2 * area_x_ + area_w_;   // a panel a terület közepén
-  const float step = std::max(k(20), std::min(k(54), std::floor((H - top - k(150)) / kSettingRows)));
+  const float step = std::max(k(20), std::min(k(54), std::floor((H - top - k(150)) / kPerCol)));
   const float bh = std::max(1.0f, step - k(2));
-  const MenuRect pr{W / 2 - pw / 2, top, pw, kSettingRows * step + k(60)};
+  const MenuRect pr{W / 2 - pw / 2, top, pw, kPerCol * step + k(60)};
+  const float colw = (pr.w - k(24)) / 2;
   panels_.push_back({pr, 215, false});
-  const float bw = k(270);
+  const float bw = std::min(k(220), colw * 0.42f);
   auto onoff = [&](bool v) { return tr(v ? "ui.on" : "ui.off"); };
   for (int row = 0; row < kSettingRows; ++row) {
     const int i = kSettingOrder[row];
@@ -647,12 +821,21 @@ void Menu::layout_settings() {
         val = b;
         break;
       }
+      case 17: val = std::to_string(st_.view_zoom) + "%"; break;
+      case 18: val = onoff(st_.speed_buttons); break;
+      case 19: val = tr(st_.hero_mark == 1 ? "ui.settings.hero_mark.ground" : st_.hero_mark == 2 ? "ui.settings.hero_mark.crown" : "ui.settings.hero_mark.both"); break;
+      case 20: val = onoff(st_.calm); break;
+      case 21: val = onoff(st_.status_pulse); break;
+      case 22: val = onoff(st_.water_anim); break;
+      case 23: val = loc_.tr("ui.ai.diff." + st_.ai_difficulty); break;
       default: val = tr("ui.settings.keys_button"); act = MenuAct::OpenKeys; break;
     }
-    const float y = pr.y + k(16) + static_cast<float>(row) * step;
-    MenuWidget& b = add(MenuWidget::Kind::Button, {pr.x + pr.w - k(24) - bw, y, bw, bh}, val, act, i);
+    const int ci = row / kPerCol, ri = row % kPerCol;
+    const float cx0 = pr.x + k(12) + static_cast<float>(ci) * colw;
+    const float y = pr.y + k(16) + static_cast<float>(ri) * step;
+    MenuWidget& b = add(MenuWidget::Kind::Button, {cx0 + colw - k(12) - bw, y, bw, bh}, val, act, i);
     b.small = true;
-    text(pr.x + k(24), y + (bh - k(22)) / 2, pr.w - k(24 + 270 + 44), tr(kSettingLabels[i]), MenuText::Med, MenuText::Text);
+    text(cx0 + k(12), y + (bh - k(22)) / 2, colw - bw - k(36), tr(kSettingLabels[i]), MenuText::Med, MenuText::Text);
   }
   text(pr.x + k(24), pr.y + pr.h - k(34), pr.w - k(48), tr("ui.settings.footer"),
        MenuText::Tiny, MenuText::Dim);
@@ -741,6 +924,89 @@ void Menu::mods_check() {
   }
 }
 
+void Menu::layout_lan() {
+  // a régi `LanMenu`: balra a létrehozás (a Csata beállításának pályájával és népével), jobbra a csatlakozás címmel
+  // és a helyi hálózaton talált játékok listája; fölül a játékos neve
+  side_area("ui.main.multiplayer");
+  title(tr("ui.lan.title"));
+  const float top = k(96), fh = k(36);
+  const float lx = area_x_ + k(24), aw = area_w_ - k(48);
+  text(lx, top + k(6), k(160), tr("ui.lan.name"), MenuText::Med, MenuText::Text);
+  MenuWidget& nm = add(MenuWidget::Kind::TextField, {lx + k(170), top, k(300), fh}, st_.player_name, MenuAct::TextField, 0);
+  nm.selected = text_focus_ == 0;
+  const float py = top + fh + k(20), ph = std::max(k(220), static_cast<float>(h_) - py - k(110));
+  const float cw = (aw - k(20)) / 2;
+  // létrehozás
+  panels_.push_back({{lx, py, cw, ph}, 215, false});
+  text(lx + k(14), py + k(10), cw - k(28), tr("ui.lan.host_title"), MenuText::Med, MenuText::Gold);
+  const std::string mapname = maps_.empty() ? "-" : map_text(loc_, maps_[std::min(sk_.map, maps_.size() - 1)], "name", maps_[std::min(sk_.map, maps_.size() - 1)].name);
+  std::string fac = tr("ui.skirmish.random");
+  for (const auto& f : factions_) {
+    if (f.id == sk_.slots[0].faction) fac = loc_.name(f.name_key);
+  }
+  text(lx + k(14), py + k(48), cw - k(28), loc_.tr("ui.lan.host_map", {{"map", mapname}}), MenuText::Small, MenuText::Text);
+  text(lx + k(14), py + k(76), cw - k(28), loc_.tr("ui.lan.host_faction", {{"faction", fac}}), MenuText::Small, MenuText::Text);
+  text(lx + k(14), py + k(104), cw - k(28), tr("ui.lan.host_hint"), MenuText::Tiny, MenuText::Dim, false, 3);
+  add(MenuWidget::Kind::Button, {lx + k(14), py + ph - k(62), cw - k(28), k(48)}, tr("ui.lan.host"), MenuAct::LanHost).enabled = !maps_.empty();
+  // csatlakozás
+  const float rx = lx + cw + k(20);
+  panels_.push_back({{rx, py, cw, ph}, 215, false});
+  text(rx + k(14), py + k(10), cw - k(28), tr("ui.lan.join_title"), MenuText::Med, MenuText::Gold);
+  MenuWidget& ad = add(MenuWidget::Kind::TextField, {rx + k(14), py + k(46), cw - k(28) - k(150), fh}, st_.last_address, MenuAct::TextField, 1);
+  ad.selected = text_focus_ == 1;
+  add(MenuWidget::Kind::Button, {rx + cw - k(14) - k(140), py + k(46), k(140), fh}, tr("ui.lan.join"), MenuAct::LanJoin).small = true;
+  add(MenuWidget::Kind::Button, {rx + k(14), py + k(94), cw - k(28), fh}, tr("ui.lan.scan"), MenuAct::LanScan).small = true;
+  float y = py + k(140);
+  for (size_t i = 0; i < lan_.size() && y + k(34) < py + ph; ++i) {
+    MenuWidget& r = add(MenuWidget::Kind::MapRow, {rx + k(14), y, cw - k(28), k(32)}, lan_[i].title, MenuAct::LanPick, static_cast<int>(i));
+    r.enabled = lan_[i].joinable;
+    y += k(36);
+  }
+  if (lan_scanned_ && lan_.empty()) text(rx + k(16), y, cw - k(32), tr("ui.lan.none"), MenuText::Small, MenuText::Dim);
+  back_button();
+  if (!message_.empty()) text(static_cast<float>(w_) / 2, static_cast<float>(h_) - k(124), static_cast<float>(w_) - k(80), message_, MenuText::Med, MenuText::Warn, true);
+}
+
+std::string* Menu::field(int i) {
+  return i == 0 ? &st_.player_name : i == 1 ? &st_.last_address : i == 2 ? &new_name_ : nullptr;
+}
+
+void Menu::text_input(const std::string& utf8) {
+  std::string* s = field(text_focus_);
+  if (!s) return;
+  for (const char c : utf8) {
+    if (static_cast<unsigned char>(c) < 32) continue;
+    if (s->size() >= (text_focus_ == 1 ? 64u : 24u)) break;
+    s->push_back(c);
+  }
+  if (text_focus_ != 2) changes_ |= kSave;
+}
+
+bool Menu::net_config(uint64_t seed, MatchConfig* out) {
+  // gazda: a Csata beállításának pályája és népe (a véletlen nép a magból), a helyek a pálya kezdőhelyei szerint
+  MatchConfig c;
+  c.net_name = st_.player_name.empty() ? std::string("Játékos") : st_.player_name;
+  std::string f = sk_.slots[0].faction;
+  const bool known = std::any_of(factions_.begin(), factions_.end(), [&](const FactionInfo& fi) { return fi.id == f; });
+  if (!known && !factions_.empty()) {
+    uint64_t rng = seed;
+    f = factions_[static_cast<size_t>(splitmix(rng) % factions_.size())].id;
+  }
+  c.net_faction = f;
+  if (!net_join_.empty()) {
+    c.join_address = net_join_;
+    net_join_.clear();
+  } else {
+    if (maps_.empty()) return false;
+    const MapInfo& m = maps_[std::min(sk_.map, maps_.size() - 1)];
+    c.net_host = true;
+    c.map_path = m.path;
+    c.net_seats = std::clamp(m.players, 2, 8);
+  }
+  if (out) *out = std::move(c);
+  return true;
+}
+
 void Menu::layout_credits() {
   // a régi `CreditsMenu`: a cím arannyal, alatta a készítők és a felhasznált eszközök egy panelen, középre igazítva
   side_area("ui.main.credits");
@@ -763,6 +1029,211 @@ void Menu::layout_credits() {
   back_button();
 }
 
+void Menu::reload_profiles() {
+  plist_ = profiles_ ? profiles_->list() : std::vector<Profile>{};
+}
+
+void Menu::set_profiles(ProfileStore* store) {
+  profiles_ = store;
+  reload_profiles();
+  if (profiles_ && plist_.empty()) {   // az első indítás: egy profil a beállítás nevével (a régi `ensure_profile`)
+    profiles_->create(st_.player_name.empty() ? std::string("Játékos") : st_.player_name, "ursan", static_cast<int64_t>(std::time(nullptr)), nullptr);
+    reload_profiles();
+  }
+  if (!plist_.empty() && !current_profile()) {
+    st_.profile = plist_.front().name;
+    changes_ |= kSave;
+  }
+}
+
+const Profile* Menu::current_profile() const {
+  for (const auto& p : plist_) {
+    if (p.name == st_.profile) return &p;
+  }
+  return nullptr;
+}
+
+void Menu::layout_profiles() {
+  // a régi `ProfileMenu`: bal oldalt a profilok, jobbra a kiválasztott adatlapja (címer, statisztika, népenként);
+  // alul új profil és törlés (második kattintásra); létrehozáskor név és címer (kedvenc nép)
+  const float W = static_cast<float>(w_), H = static_cast<float>(h_);
+  side_area("");
+  title(tr("ui.profiles.title"));
+  const float top = k(96), lx = area_x_ + k(24), lw = std::min(k(360), area_w_ * 0.36f);
+  for (size_t i = 0; i < plist_.size() && top + static_cast<float>(i + 1) * k(52) < H - k(160); ++i) {
+    const MenuRect r{lx, top + static_cast<float>(i) * k(52), lw, k(46)};
+    MenuWidget& w = add(MenuWidget::Kind::MapRow, r, "", MenuAct::ProfilePick, static_cast<int>(i));
+    w.selected = plist_[i].name == st_.profile;
+    panels_.push_back({r, 180, false});
+    text(r.x + k(14), r.y + k(10), r.w - k(28), plist_[i].name, MenuText::Med, w.selected ? MenuText::Gold : MenuText::Text);
+  }
+  const float px = lx + lw + k(30), pw = std::max(k(300), W - px - k(36));
+  if (creating_) {
+    const float ph = k(150) + static_cast<float>((factions_.size() + 3) / 4) * k(46) + k(80);
+    panels_.push_back({{px, top, pw, ph}, 230, false});
+    text(px + k(20), top + k(18), pw - k(160), tr("ui.profiles.name"), MenuText::Med, MenuText::Text);
+    add(MenuWidget::Kind::TextField, {px + k(20), top + k(52), std::min(k(360), pw - k(170)), k(40)}, new_name_, MenuAct::TextField, 2);
+    text(px + k(20), top + k(112), pw - k(40), tr("ui.profiles.emblem"), MenuText::Med, MenuText::Text);
+    const float bw = std::min(k(134), (pw - k(40)) / 4.0f - k(6));
+    for (size_t i = 0; i < factions_.size(); ++i) {
+      MenuWidget& b = add(MenuWidget::Kind::Button, {px + k(20) + static_cast<float>(i % 4) * (bw + k(6)), top + k(150) + static_cast<float>(i / 4) * k(46), bw, k(40)},
+                          loc_.name(factions_[i].name_key), MenuAct::ProfileEmblem, static_cast<int>(i));
+      b.small = true;
+      b.selected = static_cast<int>(i) == new_emblem_;
+    }
+    if (new_emblem_ >= 0 && new_emblem_ < static_cast<int>(factions_.size())) {
+      images_.push_back({{px + pw - k(130), top + k(14), k(110), k(110)}, "emblems/" + factions_[static_cast<size_t>(new_emblem_)].id + ".png"});
+    }
+    const float by = top + ph - k(62);
+    add(MenuWidget::Kind::Button, {px + k(20), by, k(200), k(46)}, tr("ui.profiles.create"), MenuAct::ProfileCreate);
+    add(MenuWidget::Kind::Button, {px + k(240), by, k(170), k(46)}, tr("ui.profiles.cancel"), MenuAct::ProfileCancel);
+    if (!message_.empty()) text(px + k(430), by + k(12), pw - k(450), message_, MenuText::Small, MenuText::Warn);
+  } else if (const Profile* p = current_profile()) {
+    const float ph = std::min(k(420), H - top - k(170));
+    panels_.push_back({{px, top, pw, ph}, 220, false});
+    const float es = k(130);
+    images_.push_back({{px + pw - es - k(14), top + k(12), es, es}, "emblems/" + p->emblem + ".png"});
+    const float tw = pw - es - k(50);
+    text(px + k(20), top + k(14), tw, p->name, MenuText::Big, MenuText::Gold);
+    char date[32] = {};
+    const std::time_t ct = static_cast<std::time_t>(p->created);
+    if (const std::tm* tmv = std::localtime(&ct)) std::strftime(date, sizeof date, "%Y-%m-%d", tmv);
+    std::vector<std::string> lines = {
+        loc_.tr("ui.profiles.created", {{"d", date}}),
+        loc_.tr("ui.profiles.games", {{"g", std::to_string(p->games)}, {"w", std::to_string(p->wins)}, {"l", std::to_string(p->losses)}}),
+        loc_.tr("ui.profiles.kills", {{"k", std::to_string(p->kills)}}),
+        loc_.tr("ui.profiles.time", {{"h", std::to_string(p->play_seconds / 3600)}, {"m", std::to_string(p->play_seconds % 3600 / 60)}}),
+        std::string()};
+    for (const auto& f : p->by_faction) {
+      std::string fname = f.faction;
+      for (const auto& fi : factions_) {
+        if (fi.id == f.faction) fname = loc_.name(fi.name_key);
+      }
+      lines.push_back(loc_.tr("ui.profiles.faction", {{"f", fname}, {"g", std::to_string(f.games)}, {"w", std::to_string(f.wins)}}));
+    }
+    float y = top + k(62);
+    for (const auto& ln : lines) {
+      if (y + k(28) > top + ph) break;
+      if (!ln.empty()) text(px + k(20), y, y < top + es + k(14) ? tw : pw - k(40), ln, MenuText::Small, MenuText::Text);
+      y += k(28);
+    }
+  }
+  if (!creating_) {
+    add(MenuWidget::Kind::Button, {area_x_ + k(36), H - k(140), k(260), k(46)}, tr("ui.profiles.new"), MenuAct::ProfileNew);
+    add(MenuWidget::Kind::Button, {area_x_ + k(316), H - k(140), k(260), k(46)}, tr(del_confirm_ ? "ui.profiles.confirm" : "ui.profiles.delete"),
+        MenuAct::ProfileDelete).enabled = plist_.size() > 1;
+  }
+  back_button();
+}
+
+void Menu::layout_music() {
+  // a régi `MusicMenu`: a számok listája; a szóló arannyal; kattintásra az szól (utána ismét véletlen a sorrend)
+  const float H = static_cast<float>(h_);
+  side_area("");
+  title(tr("ui.music.title"));
+  const float top = k(96), lx = area_x_ + k(24), lw = std::min(k(620), area_w_ - k(48));
+  if (tracks_.empty()) text(lx, top + k(10), lw, tr("ui.music.empty"), MenuText::Small, MenuText::Dim);
+  for (size_t i = 0; i < tracks_.size() && top + static_cast<float>(i + 1) * k(50) < H - k(100); ++i) {
+    const MenuRect r{lx, top + static_cast<float>(i) * k(50), lw, k(44)};
+    MenuWidget& w = add(MenuWidget::Kind::MapRow, r, "", MenuAct::MusicPick, static_cast<int>(i));
+    w.selected = tracks_[i].second == track_current_;
+    panels_.push_back({r, 180, false});
+    text(r.x + k(14), r.y + k(9), r.w - k(28), (w.selected ? "> " : "") + tracks_[i].first, MenuText::Med, w.selected ? MenuText::Gold : MenuText::Text);
+  }
+  back_button();
+}
+
+void Menu::wheel(int dy) {
+  if (screen_ != MenuScreen::Stories) return;
+  story_scroll_ = std::max(0, story_scroll_ - dy * 2);   // a felső korlát a rajzoláskor (az utolsó blokk)
+}
+
+void Menu::layout_stories() {
+  // a régi `StoriesMenu`: bal oldalt a kötetek és a fejezetek, jobbra az olvasó lap görgethető szöveggel; a képek
+  // helyén (amíg nincs meg az `assets/stories/<id>.png`) keretezett hely a képaláírással
+  const float H = static_cast<float>(h_);
+  side_area("ui.main.stories");
+  title(tr("ui.stories.title"));
+  const float top = k(96), bottom = H - k(100);
+  if (books_.empty()) {
+    text(area_x_ + k(24), top + k(20), area_w_ - k(48), tr("ui.stories.empty"), MenuText::Small, MenuText::Dim);
+    back_button();
+    return;
+  }
+  const float tw = std::min(k(320), area_w_ * 0.32f), tx = area_x_ + k(16);
+  panels_.push_back({{tx - k(6), top, tw, bottom - top}, 215, false});
+  float y = top + k(10);
+  const float rh = k(26);
+  int flat = 0;
+  const StoryChapter* cur = nullptr;
+  for (size_t bi = 0; bi < books_.size(); ++bi) {
+    const StoryBook& b = books_[bi];
+    if (y + rh <= bottom) {
+      MenuWidget& bw = add(MenuWidget::Kind::MapRow, {tx, y, tw - k(18), rh}, "", MenuAct::StoryBook, static_cast<int>(bi));
+      bw.selected = story_book_ == static_cast<int>(bi);
+      text(tx + k(6), y + k(3), tw - k(30), b.title, MenuText::Small, MenuText::Gold);
+    }
+    y += rh;
+    for (size_t ci = 0; ci < b.chapters.size(); ++ci, ++flat) {
+      if (flat == story_cur_) cur = &b.chapters[ci];
+      if (story_book_ != static_cast<int>(bi) || y + rh > bottom) continue;
+      MenuWidget& cw = add(MenuWidget::Kind::MapRow, {tx + k(14), y, tw - k(32), rh}, "", MenuAct::StoryPick, flat);
+      cw.selected = flat == story_cur_;
+      text(tx + k(20), y + k(4), tw - k(44), b.chapters[ci].title, MenuText::Tiny, flat == story_cur_ ? MenuText::Gold : MenuText::Text);
+      y += rh;
+    }
+  }
+  // az olvasó
+  const float rx = tx + tw + k(14), rw = area_x_ + area_w_ - rx - k(16);
+  panels_.push_back({{rx - k(6), top, rw, bottom - top}, 200, false});
+  if (!cur) {
+    back_button();
+    return;
+  }
+  float ry = top + k(14);
+  text(rx + k(12), ry, rw - k(36), cur->title, MenuText::Big, MenuText::Gold);
+  ry += k(42);
+  if (!cur->sub.empty()) {
+    text(rx + k(12), ry, rw - k(36), cur->sub, MenuText::Small, MenuText::Dim);
+    ry += k(30);
+  }
+  const float cw = k(6.2f), lh = k(15.5f), inner = rw - k(36);
+  story_scroll_ = std::min(story_scroll_, std::max(0, static_cast<int>(cur->blocks.size()) - 1));
+  for (size_t i = static_cast<size_t>(story_scroll_); i < cur->blocks.size(); ++i) {
+    const StoryBlock& bl = cur->blocks[i];
+    if (bl.type == "hr") {
+      ry += k(14);
+      continue;
+    }
+    MenuText::Font f = MenuText::Tiny;
+    MenuText::Color c = MenuText::Text;
+    float gap = k(8), fh = lh;
+    std::string s = bl.text;
+    if (bl.type == "h1") { f = MenuText::Big; c = MenuText::Gold; fh = k(38); gap = k(12); }
+    else if (bl.type == "h2") { f = MenuText::Med; c = MenuText::Gold; fh = k(30); gap = k(10); }
+    else if (bl.type == "h3") { f = MenuText::Small; c = MenuText::Gold; fh = k(26); }
+    else if (bl.type == "li") s = "• " + s;
+    else if (bl.type == "img") { c = MenuText::Dim; }
+    size_t chars = 0;
+    for (const char ch : s) chars += (static_cast<unsigned char>(ch) & 0xC0) != 0x80;
+    const float unit = f == MenuText::Tiny ? cw : f == MenuText::Small ? cw * 1.25f : cw * 1.6f;
+    const int lines = std::clamp(static_cast<int>(std::ceil(static_cast<float>(chars) * unit / inner)), 1, 40);
+    const float bh = bl.type == "img" ? k(56) : static_cast<float>(lines) * fh;
+    if (ry + bh > bottom - k(10)) break;
+    if (bl.type == "img") {   // a kép helye: keret, benne az aláírás
+      panels_.push_back({{rx + k(12), ry, inner, k(48)}, 120, false});
+      text(rx + inner / 2 + k(12), ry + k(14), inner - k(24), s, MenuText::Tiny, MenuText::Dim, true);
+    } else {
+      text(rx + k(12), ry, inner, s, f, c, false, lines);
+    }
+    ry += bh + gap;
+  }
+  const float by = H - k(76);
+  add(MenuWidget::Kind::Button, {rx, by, k(200), k(46)}, tr("ui.stories.prev"), MenuAct::StoryPrev).enabled = story_cur_ > 0;
+  add(MenuWidget::Kind::Button, {rx + k(214), by, k(200), k(46)}, tr("ui.stories.next"), MenuAct::StoryNext);
+  back_button();
+}
+
 void Menu::layout_load() {
   // a régi `LoadMenu`: a mentések listája (legújabb elöl), alatta a betöltés és a törlés
   const float H = static_cast<float>(h_);
@@ -782,6 +1253,14 @@ void Menu::layout_load() {
     y += rh + k(4);
   }
   if (saves_.empty()) text(lx + k(16), top + k(16), lw - k(32), tr("ui.load.none"), MenuText::Med, MenuText::Dim);
+  // a kijelölt mentés kis képe (a régi `SaveMenu`), a lista mellett
+  if (save_sel_ >= 0 && save_sel_ < static_cast<int>(saves_.size()) && !saves_[static_cast<size_t>(save_sel_)].thumb.empty()) {
+    const float tw = std::min(k(360), static_cast<float>(w_) - (lx + lw + k(40)));
+    if (tw > k(120)) {
+      panels_.push_back({{lx + lw + k(16), top, tw + k(16), tw * 9.0f / 16.0f + k(16)}, 215, false});
+      images_.push_back({{lx + lw + k(24), top + k(8), tw, tw * 9.0f / 16.0f}, saves_[static_cast<size_t>(save_sel_)].thumb});
+    }
+  }
   const float by = top + lh + k(16), bw = k(200), bh = k(48);
   add(MenuWidget::Kind::Button, {lx, by, bw, bh}, tr("ui.load.load"), MenuAct::SaveLoad).enabled = save_sel_ >= 0;
   add(MenuWidget::Kind::Button, {lx + bw + k(16), by, bw, bh}, tr("ui.load.delete"), MenuAct::SaveDelete).enabled = save_sel_ >= 0;
@@ -954,6 +1433,8 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
     case MenuAct::SlotTeam:
     case MenuAct::SlotStart:
     case MenuAct::SlotColor:
+    case MenuAct::SlotPath:
+    case MenuAct::SlotAlly:
     case MenuAct::Option:
       open_dd_ = w.act;
       open_dd_arg_ = w.arg;
@@ -963,6 +1444,110 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
     case MenuAct::OpenMods: go(MenuScreen::Mods); break;
     case MenuAct::OpenLoad: go(MenuScreen::Load); break;
     case MenuAct::OpenCredits: go(MenuScreen::Credits); break;
+    case MenuAct::OpenStories: go(MenuScreen::Stories); break;
+    case MenuAct::OpenProfiles:
+      creating_ = false;
+      del_confirm_ = false;
+      reload_profiles();
+      go(MenuScreen::Profiles);
+      break;
+    case MenuAct::ProfilePick:
+      if (w.arg >= 0 && w.arg < static_cast<int>(plist_.size())) {
+        st_.profile = plist_[static_cast<size_t>(w.arg)].name;
+        st_.player_name = st_.profile.substr(0, 24);   // a régi: a profil neve a játékos neve
+        changes_ |= kSave;
+      }
+      del_confirm_ = false;
+      break;
+    case MenuAct::ProfileNew:
+      creating_ = true;
+      new_name_.clear();
+      text_focus_ = 2;
+      message_.clear();
+      break;
+    case MenuAct::ProfileCancel:
+      creating_ = false;
+      text_focus_ = -1;
+      message_.clear();
+      break;
+    case MenuAct::ProfileEmblem: new_emblem_ = w.arg; break;
+    case MenuAct::MusicPick:
+      if (w.arg >= 0 && w.arg < static_cast<int>(tracks_.size())) {
+        track_choice_ = tracks_[static_cast<size_t>(w.arg)].second;
+        track_current_ = track_choice_;
+        return Result::Track;
+      }
+      break;
+    case MenuAct::ProfileCreate: {
+      std::string err;
+      const std::string emblem = new_emblem_ >= 0 && new_emblem_ < static_cast<int>(factions_.size()) ? factions_[static_cast<size_t>(new_emblem_)].id : "ursan";
+      if (!profiles_ || !profiles_->create(new_name_, emblem, static_cast<int64_t>(std::time(nullptr)), &err)) {
+        message_ = tr(err.empty() ? "ui.profiles.err_write" : err.c_str());
+        break;
+      }
+      reload_profiles();
+      {   // az új profil a kiválasztott (a név a két szélén levágva, mint a létrehozáskor)
+        const size_t b = new_name_.find_first_not_of(' '), e = new_name_.find_last_not_of(' ');
+        if (b != std::string::npos) st_.profile = new_name_.substr(b, e - b + 1);
+      }
+      st_.player_name = st_.profile.substr(0, 24);
+      changes_ |= kSave;
+      creating_ = false;
+      text_focus_ = -1;
+      message_.clear();
+      break;
+    }
+    case MenuAct::ProfileDelete:
+      if (!del_confirm_) {
+        del_confirm_ = true;
+        break;
+      }
+      if (profiles_ && plist_.size() > 1) {
+        profiles_->remove(st_.profile);
+        reload_profiles();
+        st_.profile = plist_.empty() ? std::string() : plist_.front().name;
+        st_.player_name = st_.profile.substr(0, 24);
+        changes_ |= kSave;
+      }
+      del_confirm_ = false;
+      break;
+    case MenuAct::StoryBook: story_book_ = story_book_ == w.arg ? -1 : w.arg; break;
+    case MenuAct::StoryPick:
+      story_cur_ = w.arg;
+      story_scroll_ = 0;
+      break;
+    case MenuAct::StoryPrev:
+    case MenuAct::StoryNext: {
+      int total = 0;
+      for (const auto& b : books_) total += static_cast<int>(b.chapters.size());
+      story_cur_ = std::clamp(story_cur_ + (w.act == MenuAct::StoryNext ? 1 : -1), 0, std::max(0, total - 1));
+      story_scroll_ = 0;
+      int acc = 0;   // a fejezet kötete nyitva
+      for (size_t bi = 0; bi < books_.size(); ++bi) {
+        if (story_cur_ < acc + static_cast<int>(books_[bi].chapters.size())) {
+          story_book_ = static_cast<int>(bi);
+          break;
+        }
+        acc += static_cast<int>(books_[bi].chapters.size());
+      }
+      break;
+    }
+    case MenuAct::OpenLan: go(MenuScreen::Lan); break;
+    case MenuAct::CardNext: ++card_skip_; break;
+    case MenuAct::HintsNext: pick_hints(); break;
+    case MenuAct::TextField: text_focus_ = w.arg; break;
+    case MenuAct::LanHost: text_focus_ = -1; return Result::Host;
+    case MenuAct::LanJoin:
+      text_focus_ = -1;
+      net_join_ = st_.last_address;
+      return Result::Join;
+    case MenuAct::LanScan: text_focus_ = -1; return Result::Scan;
+    case MenuAct::LanPick:
+      if (w.arg >= 0 && static_cast<size_t>(w.arg) < lan_.size() && lan_[static_cast<size_t>(w.arg)].joinable) {
+        net_join_ = lan_[static_cast<size_t>(w.arg)].address + ":" + std::to_string(lan_[static_cast<size_t>(w.arg)].port);
+        return Result::Join;
+      }
+      break;
     case MenuAct::SavePick:
       save_sel_ = w.arg;
       if (button == 1 && w.arg >= 0 && static_cast<size_t>(w.arg) < saves_.size() && last_pick_ == w.arg && now_ - last_pick_t_ < 0.4) {
@@ -1051,6 +1636,19 @@ void Menu::choose(MenuAct act, int arg, int index) {
     if (arg >= 0 && arg < 8) {
       sk_.slots[static_cast<size_t>(arg)].faction =
           index <= 0 || static_cast<size_t>(index) > factions_.size() ? "random" : factions_[static_cast<size_t>(index - 1)].id;
+      sk_.slots[static_cast<size_t>(arg)].path.clear();
+    }
+  } else if (act == MenuAct::SlotPath) {
+    if (arg >= 0 && arg < 8) {
+      SlotSetup& sl = sk_.slots[static_cast<size_t>(arg)];
+      sl.path.clear();
+      for (const auto& f : factions_) {
+        if (f.id == sl.faction && index >= 1 && static_cast<size_t>(index) <= f.paths.size()) sl.path = f.paths[static_cast<size_t>(index - 1)];
+      }
+    }
+  } else if (act == MenuAct::SlotAlly) {
+    if (arg >= 0 && arg < 8) {
+      sk_.slots[static_cast<size_t>(arg)].ally = index >= 1 && static_cast<size_t>(index) <= allies_.size() ? allies_[static_cast<size_t>(index - 1)].id : std::string();
     }
   } else if (act == MenuAct::SlotStart) {
     if (arg >= 0 && arg < 8) sk_.slots[static_cast<size_t>(arg)].start = static_cast<int8_t>(std::clamp(index - 1, -1, 7));
@@ -1082,6 +1680,10 @@ void Menu::choose(MenuAct act, int arg, int index) {
         break;
       case 6: sk_.tempo = static_cast<sim::MatchSetup::Tempo>(std::clamp(index, 0, 3)); break;
       case 7: sk_.resources = static_cast<uint8_t>(std::clamp(index, 0, 2)); break;
+      case 8: sk_.gametype = static_cast<uint8_t>(std::clamp(index, 0, 1)); break;
+      case 9: sk_.theme = static_cast<uint8_t>(std::clamp(index, 0, 6)); break;
+      case 10: sk_.speed = static_cast<uint8_t>(std::clamp(index, 0, 2)); break;
+      case 11: sk_.mapgen = static_cast<uint8_t>(std::clamp(index, 0, 1)); break;
       default: break;
     }
   }
@@ -1133,6 +1735,22 @@ void Menu::cycle(int row, int dir) {
     case 14: st_.ambient = !st_.ambient; break;
     case 15: st_.status_fx = !st_.status_fx; break;
     case 16: st_.game_speed = kSpeeds[wrap_index(index_of(kSpeeds, st_.game_speed), dir, 5)]; break;
+    case 17: st_.view_zoom = kZooms[wrap_index(index_of(kZooms, st_.view_zoom), dir, 5)]; break;
+    case 18: st_.speed_buttons = !st_.speed_buttons; break;
+    case 19: st_.hero_mark = wrap_index(st_.hero_mark, dir, 3); break;
+    case 20: st_.calm = !st_.calm; break;
+    case 21: st_.status_pulse = !st_.status_pulse; break;
+    case 22: st_.water_anim = !st_.water_anim; break;
+    case 23: {
+      const auto& ids = ai_difficulty_ids();
+      int i = -1;
+      for (size_t j = 0; j < ids.size(); ++j) {
+        if (ids[j] == st_.ai_difficulty) i = static_cast<int>(j);
+      }
+      st_.ai_difficulty = ids[static_cast<size_t>(wrap_index(i, dir, static_cast<int>(ids.size())))];
+      for (auto& sl : sk_.slots) sl.difficulty = st_.ai_difficulty;   // a Csata gépi helyei is
+      break;
+    }
     default: return;
   }
   changes_ |= kSave;
@@ -1157,6 +1775,21 @@ void Menu::release() {
 }
 
 Menu::Result Menu::key(int key) {
+  if (text_focus_ >= 0 && (screen_ == MenuScreen::Lan || screen_ == MenuScreen::Profiles) && field(text_focus_)) {
+    // szövegmező: Backspace töröl (UTF-8 karakterenként), Enter / Esc elenged
+    std::string& s = *field(text_focus_);
+    if (key == 8) {
+      while (!s.empty() && (static_cast<unsigned char>(s.back()) & 0xC0) == 0x80) s.pop_back();
+      if (!s.empty()) s.pop_back();
+      if (text_focus_ != 2) changes_ |= kSave;
+      return Result::None;
+    }
+    if (key == 27 || key == 13) {
+      text_focus_ = -1;
+      return Result::None;
+    }
+    return Result::None;   // a betűk a text_input-on jönnek
+  }
   if (capture_ >= 0) {
     if (key == 27) {
       capture_ = -1;

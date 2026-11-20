@@ -361,7 +361,7 @@ bool Sim::cast_nova(EntityId e, uint16_t ab) {
     world_.pool<Unit>().each([&](EntityId o, const Unit& u) {
       Health* oh = world_.get<Health>(o);
       const Position* op = world_.get<Position>(o);
-      if (!oh || oh->owner != h->owner || oh->hp <= 0 || !rules_->defs[u.def].has_tag("organic")) return;
+      if (!oh || (oh->owner != h->owner && !allied(h->owner, oh->owner)) || oh->hp <= 0 || !rules_->defs[u.def].has_tag("organic")) return;
       if (core::length(op->x - p->x, op->y - p->y) <= a.radius) oh->hp = std::min(oh->max, oh->hp + a.heal.floor_int());
     });
   }
@@ -672,7 +672,10 @@ void Sim::cast_step(EntityId e, Caster& c) {
           break;
         }
       }
-      if (c.ctarget == kNoEntity) return cancel();
+      if (c.ctarget == kNoEntity) {   // a régi „Nincs célpont.”
+        emit(SimEvent::NoTarget, h.owner, c.cast);
+        return cancel();
+      }
     }
     const Position& tp = *world_.get<Position>(c.ctarget);
     c.cx = tp.x;
@@ -841,7 +844,7 @@ void Sim::aura_system() {
     const Fixed cx = Fixed::from_int(b.tx) + Fixed::from_ratio(b.w, 2), cy = Fixed::from_int(b.ty) + Fixed::from_ratio(b.h, 2);
     world_.pool<Unit>().each([&](EntityId o, const Unit& u) {
       const Health* oh = world_.get<Health>(o);
-      if (!oh || oh->owner != owner || oh->hp <= 0) return;
+      if (!oh || (oh->owner != owner && !allied(owner, oh->owner)) || oh->hp <= 0) return;   // a csapattársra is (a régi `allied`)
       const Position& op = *world_.get<Position>(o);
       if (core::length(op.x - cx, op.y - cy) > bd.aura_radius) return;
       bool tag_ok = bd.aura_tags.empty();
@@ -855,7 +858,7 @@ void Sim::aura_system() {
     const uint8_t owner = world_.get<Health>(src)->owner;
     world_.pool<Unit>().each([&](EntityId o, const Unit&) {
       const Health* oh = world_.get<Health>(o);
-      if (!oh || oh->owner != owner || oh->hp <= 0) return;
+      if (!oh || (oh->owner != owner && !allied(owner, oh->owner)) || oh->hp <= 0) return;   // a csapattársra is (a régi `allied`)
       const Position& op = *world_.get<Position>(o);
       if (core::length(op.x - sp.x, op.y - sp.y) > a.radius) return;
       aura_merge(aura_[o], a.mods);
@@ -882,7 +885,7 @@ void Sim::field_system() {
       world_.pool<Unit>().each([&](EntityId o, const Unit&) {
         Health* oh = world_.get<Health>(o);
         const Position& op = *world_.get<Position>(o);
-        if (!oh || oh->owner != fd.owner || oh->hp <= 0 || core::length(op.x - p.x, op.y - p.y) > a.radius) return;
+        if (!oh || (oh->owner != fd.owner && !allied(fd.owner, oh->owner)) || oh->hp <= 0 || core::length(op.x - p.x, op.y - p.y) > a.radius) return;
         Vital* vt = world_.get<Vital>(o);
         const int64_t eff = std::min<int64_t>(int64_t{oh->max} * 1000, int64_t{oh->hp} * 1000 - (vt ? vt->deficit : 0) + heal);
         oh->hp = static_cast<int32_t>((eff + 999) / 1000);
@@ -1030,7 +1033,7 @@ void Sim::ability_system() {
         int64_t best_v = 980;   // ezrelék: csak 98% alatt
         world_.pool<Unit>().each([&](EntityId o, const Unit& ou) {
           const Health* oh = world_.get<Health>(o);
-          if (!oh || oh->owner != h->owner || oh->hp <= 0) return;
+          if (!oh || (oh->owner != h->owner && !allied(h->owner, oh->owner)) || oh->hp <= 0) return;
           bool tag_ok = a.heal_tags.empty() && rules_->defs[ou.def].has_tag("organic");   // a célcímkék (`heal_tags`; alapból organic)
           for (const auto& tg : a.heal_tags) tag_ok = tag_ok || rules_->defs[ou.def].has_tag(tg);
           if (!tag_ok) return;

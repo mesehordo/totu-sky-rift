@@ -1175,7 +1175,7 @@ void Hud::draw_clock(const HudFrame& f) {
   const float bs = th - 6;
   char sp[16];
   std::snprintf(sp, sizeof sp, "×%g", static_cast<double>(model_.speed_pct) / 100.0);
-  for (int i = 1; i >= 0; --i) {   // [+], a felirat, [−]
+  for (int i = f.speed_buttons ? 1 : -1; i >= 0; --i) {   // [+], a felirat, [−] (a régi beállítással elrejthető)
     if (i == 0) {
       x -= tw(F, sp);
       stext(F, x, ty + (th - line_h(F)) / 2, sp, model_.speed_locked ? Col{150, 150, 150} : Col{200, 220, 255});
@@ -1191,6 +1191,7 @@ void Hud::draw_clock(const HudFrame& f) {
           model_.speed_locked ? Col{120, 120, 120} : Col{255, 230, 160});
     x = static_cast<float>(r.x) - 6;
   }
+  if (!f.speed_buttons) model_.speed_btn = {};
   if (f.show_clock) {
     x -= tw(F, t) + 4;
     stext(F, x, ty + (th - line_h(F)) / 2, t, {240, 235, 200});

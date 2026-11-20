@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "net/relay_server.hpp"
 
+#include "content/json.hpp"
+
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -21,13 +23,32 @@ bool RelayServer::start(sim::Replay match, const map::TerrainTable* terrain, con
     if (error) *error = relay_->error();
     return false;
   }
-  return ep_.listen(port, 16, error);
+  if (!ep_.listen(port, 16, error)) return false;
+  lan_ = LanGame{};   // a LAN-keresés válasza (ha a keresési port foglalt, csak a közvetlen csatlakozás megy)
+  lan_.port = port;
+  lan_.seats = seats;
+  lan_.content = content_hash;
+  if (const auto mv = content::parse(relay_->replay().map)) {
+    if (const auto* nm = mv->find("name")) {   // szöveg vagy nyelvenként ({"hu": …, "en": …})
+      if (nm->is_string()) lan_.map = nm->text();
+      else if (const auto* hu = nm->is_object() ? nm->find("hu") : nullptr; hu && hu->is_string()) lan_.map = hu->text();
+    }
+  }
+  beacon_.open();
+  return true;
 }
 
 void RelayServer::loop_once() {
   for (auto& e : ep_.poll(5)) {
     if (e.kind == NetEvent::Kind::Message) relay_->on_message(e.peer, e.data);
     else if (e.kind == NetEvent::Kind::Disconnect) relay_->on_disconnect(e.peer);
+  }
+  if (beacon_.is_open() && !relay_->started()) {   // a helyi hálózati keresés: a foglalt helyek száma frissen
+    lan_.name = lan_name_;
+    lan_.taken = 0;
+    for (const auto& s : relay_->lobby()) lan_.taken += s.taken ? 1 : 0;
+    beacon_.set_info(lan_);
+    beacon_.poll();
   }
   if (relay_->can_start() && relay_->start(now_ms())) started_.store(true);
   if (!hold_.load()) relay_->advance(now_ms());

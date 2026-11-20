@@ -737,6 +737,8 @@ struct AiSlot {
   std::string ai = "alap";                   // az `ai/<azonosító>/` csomag
   std::string difficulty = "normal";         // kezdo | konnyu | normal | nehez | mester | orult
   std::string personality = "kiegyenlitett"; // a csomag `personalities.json` kulcsa
+  // a régi `forced_path` / `forced_ally`: a fejlődési irány és a szövetséges kisnép előre megadva (üres: a gép dönt)
+  std::string path, ally;
   friend bool operator==(const AiSlot&, const AiSlot&) = default;
 };
 
@@ -757,6 +759,9 @@ struct MatchSetup {
   // nyersanyag (0 kevés: × 0,6; 1 közepes; 2 sok: × 2 és +150 meteorit)
   std::vector<int8_t> starts;
   uint8_t resources = 1;
+  // a régi „Táj”: forest, winter, wasteland, swamp, autumn, rift (üres: a pályáé) – az időjárás ennek az éghajlatából
+  // választ; a megjelenítés a téli / erdei csempekészletet használja
+  std::string climate;
   // M11: küldetés – a kezdőbázis (főépület, kezdő egységek) nélkül, és a „nincs épülete = kiesett” szabály ki
   // (a győzelmet és a bukást a küldetés dönti el)
   bool bases = true;
@@ -879,6 +884,14 @@ class SimHooks {
   virtual void on_command(Sim&, const Command&) {}                   // M11: a csatlakozónak szóló parancs (Mission)
 };
 
+// A felületnek szóló, átmeneti esemény (a régi `notify` egy része): csak a tick végéig él, nem része a hashnek és a
+// mentésnek – a szimuláció menetét nem befolyásolja
+struct SimEvent {
+  enum Kind : uint8_t { Reborn = 1, Split = 2, Unreachable = 3, Full = 4, NoTarget = 5 };
+  uint8_t kind = 0, owner = 0;
+  uint16_t def = 0xFFFF;   // az érintett egység / épület sablonja
+};
+
 // M12: a meccs módja (győzelmi feltétel, tempó) – a Sim állapota
 struct MatchMode {
   uint8_t victory = 0, tempo = 0;
@@ -910,6 +923,7 @@ class Sim {
   bool declare_winner(uint8_t p);
   void set_conquest(bool on) { auto_defeat_ = on; }
   bool conquest() const { return auto_defeat_; }
+  const std::string& climate_override() const { return climate_; }
   // a népmechanikák megjelenítési nézete (fertőzött talaj, tavak, spórafonalak, lárvák) – a kliensnek, nem állapot
   void module_view(ModuleView& out);
   // csapat (a régi `allied`): önmaga vagy azonos, nem nulla csapat; a Vadon (0) senkinek sem szövetségese
@@ -1081,6 +1095,7 @@ class Sim {
   std::vector<AiSlot> ai_slots_;   // a gépi játékosok beállítása (a mentés része; a hash-é nem – a gépek állapota igen)
   bool match_started_ = false;   // a setup_match egyszer fut (H-26)
   bool auto_defeat_ = true;      // M11: a „nincs épülete = kiesett” szabály (küldetésben ki; mentés 17)
+  std::string climate_;          // a régi „Táj” (az éghajlat felülírása; mentés 22)
   // M12: a meccs módja (alapértelmezésben hatástalan; csak akkor hash-elt, ha nem az; mentés 19)
   MatchMode mode_;
   void mode_system();
@@ -1114,6 +1129,13 @@ class Sim {
 
  // belső felület – a népmodulok (src/sim/factions) is használják (ADR-008)
  public:
+  // a legutóbbi tick felületi eseményei (lásd SimEvent)
+  const std::vector<SimEvent>& events() const { return events_; }
+  void emit(uint8_t kind, uint8_t owner, uint16_t def) {
+    if (events_.size() < 256) events_.push_back({kind, owner, def});
+  }
+  std::vector<SimEvent> events_;
+  std::vector<std::pair<EntityId, int64_t>> cmd_moves_;   // parancsra mozgó egységek (az elérhetetlen cél jelzéséhez; átmeneti)
   void apply(const Command& c);
   void apply_now(const Command& c);   // a sorba állítás nélkül (a parancssor rendszere)
   bool owned_by(EntityId e, uint8_t owner);   // él, és ez a tulajdonosa (H-01)

@@ -177,7 +177,7 @@
   "1": "tuz_elf",
   "2": "daresh"
  },
- "_decor": [
+ "decor": [
   {
    "id": "elf_obeliszk",
    "tx": 28,
@@ -323,6 +323,56 @@
    "ruin": true
   }
  ],
+ "generator": {
+  "size": 144,
+  "layout": "rows",
+  "features": {
+   "forests": 16,
+   "ridges": [
+    4,
+    4,
+    8
+   ],
+   "lakes": [
+    1,
+    2,
+    3
+   ]
+  },
+  "decor": [
+   {
+    "id": "elf_obeliszk",
+    "at": "base",
+    "d": 10,
+    "s": 6,
+    "ruin": true
+   },
+   {
+    "id": "imp_aquila_torony",
+    "at": "base",
+    "d": 11,
+    "s": -9,
+    "ruin": true
+   }
+  ],
+  "ambient": [],
+  "chars": "'gW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "elf_obeliszk": [
+    2,
+    2
+   ],
+   "imp_aquila_torony": [
+    2,
+    2
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

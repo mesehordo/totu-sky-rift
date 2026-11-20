@@ -2,6 +2,7 @@
 // Croftianok (M7, ADR-008): a népmodul viselkedési próbái (src/sim/factions/croftian.cpp) – a mélység terjedése és
 // növekedése, építés csak mélységre, mozgás és gyógyulás a mélységen, a fák rothadása, fertőzés, mérgező tüske,
 // átváltozás, determinizmus és mentés.
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -200,6 +201,10 @@ TEST_CASE("Croftianok rothadás: a mélységen álló fa a Kaptár 9 csempés k�
   CHECK(std::llabs(got - expect) < 1000);   // egészként jóváírva, a tört megmarad
   CHECK(used <= expect);
   CHECK(used >= expect - 15 * 1000);
+  sim::ModuleView v;   // a megjelenítés: a rothadó fák listája (buborék, fakulás), mind a mélységen
+  s.module_view(v);
+  CHECK(!v.rot.empty());
+  CHECK(std::all_of(v.rot.begin(), v.rot.end(), [](const sim::ModuleView::Rot& r) { return r.live && r.level >= 1 && r.level <= 3; }));
 }
 
 TEST_CASE("Croftianok fertőzés: a croftian ölte szerves ellenség a mélységen 30%-kal 6 s múlva Karmosként kel ki") {

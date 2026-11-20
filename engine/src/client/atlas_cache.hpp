@@ -23,7 +23,7 @@ class AtlasCache {
 
   // `cache_root`: a felhasználói mappa; ha a kész atlasz érvényes, rögtön kész, különben (ha `build` igaz) háttérben
   // épül. A visszatérés: kész-e már.
-  bool start(const std::string& assets_dir, const std::string& cache_root, bool build);
+  bool start(const std::string& assets_dir, const std::string& cache_root, bool build, bool calm = true);   // calm: a régi „nyugodt figurák”
   bool ready() const { return ready_.load(); }
   bool building() const { return building_.load(); }
   int pages_done() const { return pages_.load(); }
@@ -34,6 +34,7 @@ class AtlasCache {
  private:
   void run(std::string assets, std::string fingerprint);
   std::string dir_, tmp_;
+  bool calm_ = true;
   std::thread thread_;
   std::atomic<bool> ready_{false}, building_{false}, cancel_{false};
   std::atomic<int> pages_{0};

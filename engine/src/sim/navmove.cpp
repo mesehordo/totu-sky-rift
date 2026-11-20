@@ -154,6 +154,10 @@ void Sim::nav_paths() {
     p.idx = 0;
     p.best = Fixed::max();
     p.stuck = 0;
+    const auto cmd = cmd_moves_.empty() ? cmd_moves_.end()
+                                        : std::find_if(cmd_moves_.begin(), cmd_moves_.end(), [&](const auto& mv) { return mv.first == e; });
+    const bool by_command = cmd != cmd_moves_.end();
+    if (by_command) cmd_moves_.erase(cmd);
     if (direct) {   // látóvonal: keresés nélkül, egyenesen
       p.wps.emplace_back(p.gx, p.gy);
       ++nav_stats_.direct_total;
@@ -165,6 +169,13 @@ void Sim::nav_paths() {
     auto r = nav_->find_path(b.grid, b.size, pos.x, pos.y, p.gx, p.gy, team);
     nav_stats_.expanded_total += static_cast<int64_t>(r.expanded);
     nav_stats_.expanded_this_tick += static_cast<int64_t>(r.expanded);
+    // a régi „a mozgás célpontja nem érhető el”: parancsra indult, és a cél (vagy egy csempényi környéke) elérhetetlen
+    const bool far = !r.found || r.waypoints.empty() ||
+                     core::length_sq_raw(r.waypoints.back().first - p.gx, r.waypoints.back().second - p.gy) > int64_t{1} << 32;
+    if (by_command && far && hh) {
+      const Unit* uu = world_.get<Unit>(e);
+      emit(SimEvent::Unreachable, hh->owner, uu ? uu->def : kNoDef);
+    }
     if (!r.found || r.waypoints.empty()) {
       nav_arrive(e, m, p, pos);
       continue;

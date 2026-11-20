@@ -22,6 +22,8 @@ function A.run()
     if not S.ally_pick then
       local i = (math.random(100) <= 80) and math.random(math.min(2, #pref)) or math.random(#pref)
       S.ally_pick = pref[i]
+      local forced = AI.forced().ally   -- a beállításban előre megadott kisnép (a régi `forced_ally`)
+      if forced ~= "" then S.ally_pick = forced end
     end
     AI.choose_ally(S.ally_pick)
     return

@@ -192,6 +192,59 @@ std::optional<Map> Map::from_json(const content::Value& doc, const TerrainTable&
     }
   }
 
+  // a kezdőhelyek oldala (a régi `teams_hint`, a „Fent és lent”-féle pályákon): [0, 0, 1, 1]
+  if (const content::Value* ts = doc.find("teams"); ts && ts->is_array()) {
+    for (const auto& t : ts->items()) m.objects_.start_sides.push_back(static_cast<int>(std::clamp<long long>(t.as_int().value_or(0), 0, 1)));
+  }
+  // háttérszereplők (a régi `ambient`): [{"id", "n", "at": [x, y], "idle", "path": [[x, y] …], "shelter": [x, y]}]
+  if (const content::Value* am = doc.find("ambient"); am && am->is_array()) {
+    auto xy = [&](const content::Value* v, int& x, int& y) {
+      if (!v || !v->is_array() || v->items().size() != 2) return false;
+      x = static_cast<int>(std::clamp<long long>(v->items()[0].as_int().value_or(-1), -1, 100000));
+      y = static_cast<int>(std::clamp<long long>(v->items()[1].as_int().value_or(-1), -1, 100000));
+      return x >= 0 && y >= 0 && x < m.w_ && y < m.h_;
+    };
+    for (const auto& a : am->items()) {
+      const content::Value* id = a.find("id");
+      MapAmbient ma;
+      if (!id || !id->is_string() || !xy(a.find("at"), ma.tx, ma.ty)) continue;
+      ma.id = id->text();
+      if (const content::Value* cnt = a.find("n")) ma.n = static_cast<int>(std::clamp<long long>(cnt->as_int().value_or(1), 1, 12));
+      if (const content::Value* i = a.find("idle"); i && i->is_bool()) ma.idle = i->as_bool();
+      if (const content::Value* p = a.find("path"); p && p->is_array()) {
+        for (const auto& q : p->items()) {
+          int x = 0, y = 0;
+          if (xy(&q, x, y)) ma.path.emplace_back(x, y);
+        }
+      }
+      ma.has_shelter = xy(a.find("shelter"), ma.sx, ma.sy);
+      m.objects_.ambient.push_back(std::move(ma));
+    }
+  }
+  // díszletépületek (a régi `decor`): [{"id", "tx", "ty", "w", "h", "frame", "ruin"}] – a pályán belül
+  if (const content::Value* dc = doc.find("decor"); dc && dc->is_array()) {
+    for (const auto& d : dc->items()) {
+      const content::Value* id = d.find("id");
+      if (!id || !id->is_string()) continue;
+      MapDecor md;
+      md.id = id->text();
+      auto iv = [&](const char* k, int def) {
+        const content::Value* v = d.find(k);
+        return v ? static_cast<int>(std::clamp<long long>(v->as_int().value_or(def), -100000, 100000)) : def;
+      };
+      md.tx = iv("tx", 0);
+      md.ty = iv("ty", 0);
+      md.w = std::clamp(iv("w", 1), 1, 16);
+      md.h = std::clamp(iv("h", 1), 1, 16);
+      md.frame = std::max(0, iv("frame", 0));
+      if (const content::Value* r = d.find("ruin"); r && r->is_bool()) md.ruin = r->as_bool();
+      if (md.tx < 0 || md.ty < 0 || md.tx + md.w > m.w_ || md.ty + md.h > m.h_) {
+        errors.push_back("a díszlet a pályán kívül: " + md.id);
+        continue;
+      }
+      m.objects_.decor.push_back(std::move(md));
+    }
+  }
   // pályaobjektumok (M6): "objects": {"starts": [[x, y], …], "trees": {"rows": [...]} (`T` = fa),
   // "resources": [{"kind": "gold", "x": …, "y": …, "size": 2, "amount": …}, …]}
   if (const content::Value* ob = doc.find("objects"); ob && ob->is_object()) {

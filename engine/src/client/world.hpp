@@ -5,6 +5,7 @@
 // A szimulációt közvetlenül nem olvassa – így az külön szálon futhat.
 #pragma once
 
+#include <unordered_map>
 #include <array>
 #include <map>
 #include <memory>
@@ -84,6 +85,18 @@ class World {
   bool order_build(uint16_t def, int tx, int ty);
   std::vector<uint16_t> buildable_defs(const std::string& faction) const;
   size_t selected() const { return selected_.size(); }
+  // hangesemények (a régi `sound_events`): a pillanatképek különbségéből és a kiadott parancsokból; a hívó üríti
+  struct SoundEv {
+    std::string ev;          // select, move, attack_order, attack, death, trained, building_done, ability_<id>, impact_<anyag>
+    uint16_t def = 0xFFFF;
+    uint8_t owner = 0;
+    float x = 0, y = 0;
+    bool building = false;
+  };
+  void take_sounds(std::vector<SoundEv>& out) {
+    out.insert(out.end(), sounds_.begin(), sounds_.end());
+    sounds_.clear();
+  }
   // a HUD-nak (M6 9. lépés): a kijelölés, a kijelölt saját épület, a pillanatkép, parancs a futtató sorába
   const std::vector<sim::EntityId>& selection() const { return selected_; }
   // a kijelölés pecsétjei (a régi `sel_sigil`): saját (zöld), idegen (piros); a képek `sigil_base` gyűrűszélességgel
@@ -125,9 +138,17 @@ class World {
   // nézete változott, visszaadja (a hívó elkészíti a textúrát és átadja); különben üres
   std::shared_ptr<const sim::ModuleView> take_view_change();
   void set_module_overlay(const render::Texture* t) { module_ = t; }
+  // az Aurethi alapozás lapköve (assets/ui/foundation.png): a lerakott alapozás és a félkész lapkő
+  void set_foundation_art(const render::Texture* t) { found_tex_ = t; }
+  // a lerakott alapozás csempéi (a régi `draw_foundations`), a figurák alatt
+  void draw_foundations(render::SpriteBatch& batch, const Camera& cam, int sw, int sh) const;
   // a spórafonalak (a régi `draw_network`) a talajon, és a Kaptárak lárvái (a régi `draw_building_marks`) a képük fölött
   void draw_links(render::SpriteBatch& batch, const render::Texture& white, double time) const;
   void draw_larva(render::SpriteBatch& batch, const render::Texture& white) const;
+  // a rothadó fák tövénél lágyan felszálló, zöldes-lilás buborékok (a régi `draw_rot_bubbles`)
+  void draw_rot_bubbles(render::SpriteBatch& batch, const render::Texture& white, double time) const;
+  // micélia: az osztódásig szükséges ölések pöttyei a figura fölött, a megevettek zölden (a régi `draw_unit_marks`)
+  void draw_meal_pips(render::SpriteBatch& batch, const render::Texture& white, float alpha) const;
   // állapotok a figurán (a régi `draw_status_fx`): jégszilánk, láng, buborék, csepp, inda, felkiáltójel, Z, csillag,
   // sötét fátyol, némaság, célkereszt, páncéltörés – sötét kontúrral, hogy minden talajon olvasható legyen
   void draw_status_fx(render::SpriteBatch& batch, const render::Texture& white, float alpha, double time) const;
@@ -155,6 +176,9 @@ class World {
   void set_fire_art(FireArt a) { fire_ = a; }
   // a kép nélküli egységek alakzatai (client/unit_shapes; a régi `draw_shape`): alakzat × irány × réteg
   void set_shape_art(const std::vector<render::Texture>* t) { shapes_ = t; }   // alakzatonként egy tömb (irány × réteg)
+  // a régi beállítások: hősjelölés (0 talaj + korona, 1 talaj, 2 korona) és az állapotok pulzáló színe a figurán
+  void set_hero_mark(int m) { hero_mark_ = m; }
+  void set_status_pulse(bool on) { status_pulse_ = on; }
   void draw_building_fx(render::SpriteBatch& batch, render::Atlas* atlas, double time);
   void draw_building_flames(render::SpriteBatch& batch, double time) const;
   // varázslathatások (a régi `draw_fx` és `draw_area`, a `vfx_<elem>_*` képlapokkal): a területi mezők a talajon (az
@@ -226,8 +250,42 @@ class World {
   struct Item {
     float x, y;   // a rajzolás helye (egységnél a talp, épületnél és lelőhelynél a lábnyom bal felső sarka)
     float key;    // Y-rendezés kulcsa (a talpvonal)
-    size_t i;     // index a pillanatképben (és a vis_-ben)
+    size_t i;     // index a pillanatképben (és a vis_-ben); kDecorItem fölött: díszletépület (a pálya `decor` listája)
   };
+  static constexpr size_t kDecorItem = size_t(1) << 40;
+  static constexpr size_t kActorItem = size_t(1) << 41;
+  // ártalmatlan háttérszereplők (a régi `Actor`): csak a megjelenítés része; valós időben mozognak (járőr / ácsorgás,
+  // veszélyben a menedékhez futnak)
+  struct Actor {
+    std::string id;
+    int sheet = -2;
+    float x = 0, y = 0, angle = 0, anim = 0, wait = 0, speed = 40;
+    std::vector<std::pair<float, float>> path;
+    bool idle = true, moving = false, has_shelter = false;
+    float sx = 0, sy = 0;
+    size_t leg = 0;
+    uint32_t rng = 1;
+  };
+  std::vector<Actor> actors_;
+  std::vector<SoundEv> sounds_;
+  void note_ack(const char* ev);   // a parancs nyugtázása (a régi `ack`): az első kijelölt hangja
+  std::unordered_map<int64_t, uint8_t> walls_;   // a falszakaszok helye (tx << 20 | ty) → gazda (a régi `_walls_now`)
+  const render::Texture* found_tex_ = nullptr;
+  // félkész munkahely (a régi `draw_worksites`): a lapkő lerakása és a tavacska ásása 4 fázisban; true: kirajzolva
+  bool draw_worksite(render::SpriteBatch& batch, const render::Texture& white, const SnapUnit& u, float x, float y) const;
+  bool actors_ready_ = false;
+  double actors_time_ = -1;
+  void update_actors(double time);
+  // a legutóbb kirajzolt képkockák levágott (nem átlátszó) kerete világkoordinátában, rajzolási sorrendben – az egér
+  // alatti entitás ebből választ (a régi képpontpontos kijelölés közelítése)
+  struct Hit {
+    size_t i;
+    float x0, y0, x1, y1;
+  };
+  std::vector<Hit> hits_;
+  int64_t hits_tick_ = -1;
+  void note_hit(render::Atlas* atlas, const render::AtlasSheet& s, int dir, int col, float ax, float ay, size_t i);
+  std::vector<int> decor_sheets_;   // díszletenként a lap (-2: még nem kerestük, -1: nincs)
   int sheet_for(render::Atlas* atlas, sim::EntityId e, uint8_t owner);
   int sheet_by_id(render::Atlas* atlas, const std::string& id);
   static const std::string& art_id(const sim::Rules& r, uint16_t def);   // -1, ha nincs ilyen lap
@@ -247,6 +305,8 @@ class World {
   RallyArt rally_;
   BannerArt banner_;
   FireArt fire_;
+  int hero_mark_ = 0;
+  bool status_pulse_ = true;
   std::array<uint8_t, 9> color_slot_{0, 0, 1, 2, 3, 4, 5, 6, 7};
   const std::vector<render::Texture>* shapes_ = nullptr;
   std::array<uint8_t, 3> faction_base(const std::string& fid) const;   // a nép alapszíne (`Faction.color`)

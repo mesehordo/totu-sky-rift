@@ -82,6 +82,7 @@ add_library(totu_core
   src/script/victory.cpp
   src/map/terrain.cpp
   src/map/map.cpp
+  src/map/mapgen.cpp
   src/map/navgrid.cpp
   src/map/pathfinder.cpp)
 target_include_directories(totu_core PUBLIC src)
@@ -95,6 +96,15 @@ if(MSVC)
   target_compile_options(totu_stb PRIVATE /W0 /utf-8)
 else()
   target_compile_options(totu_stb PRIVATE -w)
+endif()
+# --- hangdekódolók (stb_vorbis – MIT / közkincs; dr_mp3 – közkincs / MIT-0; változatlanok) -----------------------
+add_library(totu_audio_codecs STATIC src/client/audio_decode.cpp)
+target_include_directories(totu_audio_codecs SYSTEM PRIVATE third_party/stb third_party/dr_libs)
+target_include_directories(totu_audio_codecs PRIVATE src)
+if(MSVC)
+  target_compile_options(totu_audio_codecs PRIVATE /W0 /utf-8)
+else()
+  target_compile_options(totu_audio_codecs PRIVATE -w)
 endif()
 add_library(totu_image STATIC src/render/image.cpp src/render/font.cpp)
 target_include_directories(totu_image PUBLIC src)
@@ -114,19 +124,19 @@ add_executable(totu_tests tests/main.cpp tests/test_core.cpp tests/test_math.cpp
   tests/test_script.cpp tests/test_map.cpp tests/test_path.cpp tests/test_nav.cpp
   tests/test_form.cpp tests/test_image.cpp tests/test_atlas.cpp tests/test_daylight.cpp
   tests/test_weather.cpp tests/test_session.cpp tests/test_economy.cpp tests/test_build.cpp tests/test_production.cpp tests/test_combat.cpp tests/test_vision.cpp tests/test_environment.cpp tests/test_abilities.cpp tests/test_garrison.cpp tests/test_ursan.cpp tests/test_match.cpp tests/test_elements.cpp tests/test_heroes.cpp tests/test_wullof.cpp tests/test_allies.cpp tests/test_capture.cpp tests/test_roster.cpp tests/test_kozos_kepessegek.cpp tests/test_leltar_maradek.cpp tests/test_hibajegyzek.cpp tests/test_ellenorzes.cpp tests/test_net.cpp tests/test_mission.cpp tests/test_editor.cpp tests/test_lefedettseg.cpp tests/factions/test_imperium.cpp tests/factions/test_ooni.cpp tests/factions/test_croftian.cpp tests/factions/test_hukucha.cpp tests/factions/test_elves.cpp tests/factions/test_micelia.cpp tests/test_menu.cpp tests/test_hud.cpp tests/test_ai.cpp tests/test_palyak.cpp tests/test_mintamodok.cpp src/client/session.cpp
-  src/client/session.cpp src/client/i18n.cpp src/client/settings.cpp src/client/menu.cpp src/client/hud_layout.cpp src/client/hud_model.cpp src/client/diagnostics.cpp src/client/atlas_cache.cpp src/client/sigil.cpp src/client/ground_overlay.cpp src/client/savegame.cpp src/client/unit_shapes.cpp
+  src/client/session.cpp src/client/i18n.cpp src/client/settings.cpp src/client/menu.cpp src/client/hud_layout.cpp src/client/hud_model.cpp src/client/diagnostics.cpp src/client/atlas_cache.cpp src/client/sigil.cpp src/client/ground_overlay.cpp src/client/savegame.cpp src/client/unit_shapes.cpp src/client/profiles.cpp src/client/sound_bank.cpp
   src/client/editor_doc.cpp src/client/editor_ui.cpp src/client/trigger_editor.cpp src/client/data_editor.cpp)
 target_include_directories(totu_tests PRIVATE tests)   # a népmodulok próbái (tests/factions) a közös segédekhez
 target_compile_definitions(totu_tests PRIVATE TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                               TOTU_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
                                               TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets")
 find_package(Threads REQUIRED)   # a szimulációs szál (M6) – a kliens és a tesztek
-target_link_libraries(totu_tests PRIVATE totu_core totu_net totu_image totu_assets totu_options Threads::Threads)
+target_link_libraries(totu_tests PRIVATE totu_core totu_net totu_image totu_assets totu_options totu_audio_codecs Threads::Threads)
 add_test(NAME core COMMAND totu_tests)
 
 # --- ablak nélküli szimulációs futtató és az M2 kapu: a golden visszajátszás minden rendszeren egyezik -----------
 # --- hálózat (M10): az ENet-átvitel és a modlock-ujjlenyomat; a lockstep-logika a magban (socket nélkül próbálható) ---
-add_library(totu_net STATIC src/net/enet_transport.cpp src/net/content_hash.cpp src/net/relay_server.cpp)
+add_library(totu_net STATIC src/net/enet_transport.cpp src/net/content_hash.cpp src/net/relay_server.cpp src/net/lan_discovery.cpp)
 target_link_libraries(totu_net PUBLIC totu_core totu_enet PRIVATE totu_options)
 add_executable(totu_relay src/tools/totu_relay.cpp src/tools/nav_tools.cpp)
 target_link_libraries(totu_relay PRIVATE totu_net totu_options)
@@ -180,9 +190,9 @@ if(TOTU_CLIENT)
   add_library(totu_render STATIC src/render/gl.cpp src/render/rhi.cpp src/render/sprite_batch.cpp src/render/sprite_sheet.cpp
               src/render/atlas.cpp src/render/terrain_view.cpp src/render/lighting.cpp src/render/effects.cpp)
   target_link_libraries(totu_render PUBLIC totu_core totu_image totu_assets PRIVATE totu_options)
-  add_executable(totu src/client/main.cpp src/client/world.cpp src/client/session.cpp src/client/savegame.cpp src/client/cursors.cpp src/client/unit_shapes.cpp src/client/hud.cpp
+  add_executable(totu src/client/main.cpp src/client/world.cpp src/client/session.cpp src/client/savegame.cpp src/client/cursors.cpp src/client/unit_shapes.cpp src/client/profiles.cpp src/client/sound_bank.cpp src/client/audio.cpp src/client/hud.cpp
                       src/client/i18n.cpp src/client/settings.cpp src/client/menu.cpp src/client/menu_view.cpp src/client/hud_layout.cpp src/client/hud_model.cpp src/client/diagnostics.cpp src/client/atlas_cache.cpp src/client/sigil.cpp src/client/ground_overlay.cpp src/client/net_play.cpp src/client/editor_doc.cpp src/client/editor_ui.cpp src/client/editor_view.cpp src/client/trigger_editor.cpp src/client/data_editor.cpp)
-  target_link_libraries(totu PRIVATE totu_core totu_net totu_render totu_options SDL3::SDL3 Threads::Threads)
+  target_link_libraries(totu PRIVATE totu_core totu_net totu_render totu_options totu_audio_codecs SDL3::SDL3 Threads::Threads)
   target_compile_definitions(totu PRIVATE TOTU_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../assets"
                                           TOTU_CONTENT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content"
                                           TOTU_MAPS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/content/base/maps")

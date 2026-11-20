@@ -113,7 +113,7 @@
   "3": "daresh",
   "4": "daresh"
  },
- "_decor": [
+ "decor": [
   {
    "id": "dar_agyagkaptar",
    "tx": 28,
@@ -151,6 +151,132 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "dar_fullanclandzsas",
+   "n": 3,
+   "at": [
+    16,
+    32
+   ],
+   "idle": false,
+   "path": [
+    [
+     16,
+     32
+    ],
+    [
+     32,
+     54
+    ]
+   ],
+   "shelter": [
+    13,
+    31
+   ]
+  },
+  {
+   "id": "dar_fullanclandzsas",
+   "n": 3,
+   "at": [
+    71,
+    53
+   ],
+   "idle": false,
+   "path": [
+    [
+     71,
+     53
+    ],
+    [
+     54,
+     32
+    ]
+   ],
+   "shelter": [
+    71,
+    53
+   ]
+  }
+ ],
+ "generator": {
+  "size": 88,
+  "layout": "ring",
+  "features": {
+   "crater": {
+    "radius": 0.12,
+    "meteors": 4
+   },
+   "lakes": [
+    1,
+    2,
+    3
+   ],
+   "ridges": [
+    3,
+    4,
+    8
+   ],
+   "forests": 12,
+   "rich": "meteor"
+  },
+  "decor": [
+   {
+    "id": "dar_agyagkaptar",
+    "at": "pair",
+    "d": 20,
+    "s": 0
+   },
+   {
+    "id": "dar_szarnyudvar",
+    "at": "base",
+    "d": 5,
+    "s": 13
+   }
+  ],
+  "ambient": [
+   {
+    "id": "dar_fullanclandzsas",
+    "at": "base",
+    "d": 6,
+    "s": 13,
+    "n": 3,
+    "path": [
+     {
+      "at": "base",
+      "d": 6,
+      "s": 13
+     },
+     {
+      "at": "pair",
+      "d": 16,
+      "s": 0
+     }
+    ],
+    "shelter": {
+     "at": "base",
+     "d": 5,
+     "s": 13
+    }
+   }
+  ],
+  "chars": "'gW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "dar_agyagkaptar": [
+    3,
+    3
+   ],
+   "dar_szarnyudvar": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

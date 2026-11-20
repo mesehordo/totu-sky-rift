@@ -160,6 +160,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       setup.teams = r.teams;
       setup.starts = r.starts;
       setup.resources = std::min<uint8_t>(r.resources, 2);
+      setup.climate = r.climate;
       if (!s.setup_match(*m->map, setup, &error)) return nullptr;
     }
   }
@@ -192,6 +193,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
 namespace {
 
 int format_of(const Replay& r) {
+  if (!r.climate.empty() || std::any_of(r.ai.begin(), r.ai.end(), [](const AiSlot& a) { return !a.path.empty() || !a.ally.empty(); })) return 11;
   if (!r.starts.empty() || r.resources != 1) return 10;
   if (std::any_of(r.teams.begin(), r.teams.end(), [](uint8_t t) { return t != 0; })) return 9;
   if (r.victory != 0 || r.tempo != 0 || r.minutes != 0) return 8;
@@ -287,7 +289,10 @@ std::vector<uint8_t> encode(const Replay& r) {
   }
   if (format >= 5) {
     w.u32(static_cast<uint32_t>(r.ai.size()));
-    for (const auto& a : r.ai) { w.u8(a.player); w.str(a.ai); w.str(a.difficulty); w.str(a.personality); }
+    for (const auto& a : r.ai) {
+      w.u8(a.player); w.str(a.ai); w.str(a.difficulty); w.str(a.personality);
+      if (format >= 11) { w.str(a.path); w.str(a.ally); }
+    }
     w.u32(static_cast<uint32_t>(r.ai_files.size()));
     for (const auto& f : r.ai_files) { w.str(f.mod); w.str(f.name); w.str(f.source); }
   }
@@ -312,6 +317,7 @@ std::vector<uint8_t> encode(const Replay& r) {
     for (const int8_t s : r.starts) w.u8(static_cast<uint8_t>(s));
     w.u8(r.resources);
   }
+  if (format >= 11) w.str(r.climate);
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -326,7 +332,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 10) return std::nullopt;
+  if (version < 1 || version > 11) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -364,6 +370,10 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
       a.ai = rd.str();
       a.difficulty = rd.str();
       a.personality = rd.str();
+      if (version >= 11) {
+        a.path = rd.str();
+        a.ally = rd.str();
+      }
       r.ai.push_back(std::move(a));
     }
     const uint32_t nf = rd.u32();
@@ -397,6 +407,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
     for (uint32_t i = 0; i < ns && i < Sim::kMaxPlayers && rd.ok(); ++i) r.starts.push_back(static_cast<int8_t>(rd.u8()));
     r.resources = std::min<uint8_t>(rd.u8(), 2);
   }
+  if (version >= 11) r.climate = rd.str().substr(0, 32);
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {
     Checkpoint c;

@@ -131,7 +131,10 @@ bool Sim::order_garrison(const std::vector<EntityId>& units, EntityId target) {
         best_d = d;
       }
     }
-    if (best == kNoEntity) break;   // nincs szabad hely
+    if (best == kNoEntity) {   // nincs szabad hely (a régi „… tele van.”)
+      if (!issued && !cands.empty()) emit(SimEvent::Full, owner, world_.get<Building>(cands.front())->def);
+      break;
+    }
     interrupt(e);
     world_.add(e, Enter{best, 0});
     issued = true;

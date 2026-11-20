@@ -31,11 +31,33 @@ struct MapResource {
   int size = 2;               // négyzetes, csempében
   int amount = -1;            // -1: a nyersanyag `node_amount` értéke
 };
+// díszletépület (a régi `Decor`): egy épület képe tereptárgyként – csak rajzolódik és utat zár (csapatszín, életerő
+// nélkül); `ruin`: romos (sötétebb)
+struct MapDecor {
+  std::string id;
+  int tx = 0, ty = 0, w = 1, h = 1, frame = 0;
+  bool ruin = false;
+};
+
+// ártalmatlan háttérszereplő-csoport (a régi `Actor`): egy egység képe saját kis viselkedéssel (járőr az útvonalon
+// vagy ácsorgás; veszélyben a menedékhez fut) – csak a megjelenítés része, a szimulációban nincs
+struct MapAmbient {
+  std::string id;
+  int n = 1, tx = 0, ty = 0;
+  bool idle = false;
+  std::vector<std::pair<int, int>> path;
+  bool has_shelter = false;
+  int sx = 0, sy = 0;
+};
+
 struct MapObjects {
   std::vector<std::pair<int, int>> starts;   // játékosonként a főépület közepe (csempe)
   std::vector<std::pair<int, int>> trees;    // fák csempénként (a sorrend a pálya sorrendje: fentről le, balról jobbra)
   std::vector<MapResource> resources;
   std::vector<std::pair<int, std::string>> camp_peoples;   // szint → a kisnép, akinek a tábora ott áll (TABOR-1)
+  std::vector<MapAmbient> ambient;   // a pálya `ambient` listája
+  std::vector<int> start_sides;      // a régi `teams_hint`: kezdőhelyenként az oldal (0/1; üres: nincs)
+  std::vector<MapDecor> decor;   // a pálya gyökerének `decor` listája (a régi `layout_decor`)
 };
 
 class Map {

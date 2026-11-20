@@ -135,7 +135,7 @@
   "1": "nila_uchana",
   "2": "niil_elf"
  },
- "_decor": [
+ "decor": [
   {
    "id": "nil_lotuszudvar",
    "tx": 91,
@@ -173,6 +173,192 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "nii_nadhajos_ijasz",
+   "n": 2,
+   "at": [
+    57,
+    15
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    55,
+    13
+   ]
+  },
+  {
+   "id": "nii_nadhajos_ijasz",
+   "n": 2,
+   "at": [
+    96,
+    57
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    98,
+    55
+   ]
+  },
+  {
+   "id": "nii_nadhajos_ijasz",
+   "n": 2,
+   "at": [
+    53,
+    96
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    55,
+    98
+   ]
+  },
+  {
+   "id": "nii_nadhajos_ijasz",
+   "n": 2,
+   "at": [
+    15,
+    53
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    13,
+    55
+   ]
+  },
+  {
+   "id": "nil_naga",
+   "n": 1,
+   "at": [
+    90,
+    73
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    90,
+    73
+   ]
+  },
+  {
+   "id": "nil_naga",
+   "n": 1,
+   "at": [
+    37,
+    90
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    35,
+    90
+   ]
+  },
+  {
+   "id": "nil_naga",
+   "n": 1,
+   "at": [
+    19,
+    38
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    18,
+    34
+   ]
+  },
+  {
+   "id": "nil_naga",
+   "n": 1,
+   "at": [
+    73,
+    20
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    73,
+    20
+   ]
+  }
+ ],
+ "generator": {
+  "size": 112,
+  "layout": "ring",
+  "features": {
+   "lakes": [
+    6,
+    2,
+    4
+   ],
+   "forests": 12,
+   "start_angle": 45,
+   "rich": true
+  },
+  "decor": [
+   {
+    "id": "nil_lotuszudvar",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   {
+    "id": "nii_lotuszkikoto",
+    "at": "pair",
+    "d": 12,
+    "s": 0
+   }
+  ],
+  "ambient": [
+   {
+    "id": "nii_nadhajos_ijasz",
+    "at": "pair",
+    "d": 10,
+    "s": 2,
+    "n": 2,
+    "shelter": {
+     "at": "pair",
+     "d": 12,
+     "s": 0
+    },
+    "mode": "idle"
+   },
+   {
+    "id": "nil_naga",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 1,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ",:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "nil_lotuszudvar": [
+    3,
+    3
+   ],
+   "nii_lotuszkikoto": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

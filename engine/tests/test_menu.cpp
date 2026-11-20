@@ -83,13 +83,28 @@ TEST_CASE("M8 felulet – menü: a főmenü a régi pontjaival – egyéni csata
     }
   }
   CHECK(items == 7);
-  CHECK(soon == 2);   // többjátékos, történetek (a modkezelő M13 óta, a készítők a hiánylista óta él)
+  CHECK(soon == 0);   // minden pont él (a Történetek, a készítők és a többjátékos a hiánylista óta)
   CHECK(m.find(MenuAct::Toggle, 0)->label == "Egyjátékos");
   CHECK(m.find(MenuAct::Toggle, 0)->sub);
-  // a letiltott pontra kattintás nem tesz semmit
-  const auto* lan = m.find(MenuAct::None, 1);
-  CHECK(lan && lan->soon);
-  CHECK(m.click(lan->r.cx(), lan->r.cy()) == Menu::Result::None);
+  // a Történetek (a régi StoriesMenu): kötetek, fejezetek, léptetés, görgetés
+  {
+    Menu sm(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+    Menu::StoryBook b1{"I. Első", {{"Egy", "", {{"p", "a"}, {"p", "b"}, {"img", "kép"}}}, {"Kettő", "al", {{"h2", "c"}}}}};
+    Menu::StoryBook b2{"II. Második", {{"Három", "", {{"p", "d"}}}}};
+    sm.set_stories({b1, b2});
+    sm.layout(1280, 720);
+    CHECK(press(sm, MenuAct::OpenStories, 2) == Menu::Result::None);
+    CHECK(sm.screen() == MenuScreen::Stories);
+    sm.layout(1280, 720);
+    CHECK(sm.find(MenuAct::StoryPick, 1) != nullptr && sm.find(MenuAct::StoryPick, 2) == nullptr);   // csak a nyitott kötet
+    press(sm, MenuAct::StoryNext);
+    press(sm, MenuAct::StoryNext);
+    CHECK(sm.story_chapter() == 2);
+    sm.layout(1280, 720);
+    CHECK(sm.find(MenuAct::StoryPick, 2) != nullptr);   // a léptetés a fejezet kötetét nyitja
+    sm.wheel(-1);
+    CHECK(sm.key(27) == Menu::Result::None && sm.screen() == MenuScreen::Main);
+  }
   // almenü: kampány, novellák, betöltés hamarosan; egyéni csata él
   press(m, MenuAct::Toggle, 0);
   CHECK(m.open_submenu() == 0);
@@ -618,7 +633,7 @@ TEST_CASE("Mentes – menü: a Betoltes kepernyo listaja, betoltes es torles (a 
   m.go(MenuScreen::Load);
   m.layout(1280, 720);
   CHECK(m.find(MenuAct::SavePick, 0) == nullptr && !m.find(MenuAct::SaveLoad)->enabled);   // üres lista
-  m.set_saves({{"a.totumentes", "Kráterföld 03:10", "2026-11-20 10:00"}, {"b.totumentes", "Hasadék 12:00", "2026-11-19 09:00"}});
+  m.set_saves({{"a.totumentes", "Kráterföld 03:10", "2026-11-20 10:00", ""}, {"b.totumentes", "Hasadék 12:00", "2026-11-19 09:00", ""}});
   m.layout(1280, 720);
   CHECK(m.find(MenuAct::SavePick, 1) != nullptr && m.find(MenuAct::SaveLoad)->enabled);
   press(m, MenuAct::SavePick, 1);
@@ -660,4 +675,102 @@ TEST_CASE("Beallitasok (a regi): jatekido, F1 felirat, arnyekok, reszecskek, all
   CHECK(client::settings_from_json(client::settings_to_json(st), &back) && back == st);
   press(m, MenuAct::Cycle, 2);   // a régi sorszámok változatlanok (2: teljes képernyő)
   CHECK(st.fullscreen);
+}
+
+TEST_CASE("Tobbjatekos – menü (a regi LanMenu): nev, letrehozas, csatlakozas cimmel, a talalt jatek") {
+  client::Settings st;
+  Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+  m.layout(1280, 720);
+  CHECK(m.find(MenuAct::OpenLan, 1) && m.find(MenuAct::OpenLan, 1)->enabled);
+  m.go(MenuScreen::Lan);
+  m.layout(1280, 720);
+  press(m, MenuAct::TextField, 0);   // a név
+  CHECK(m.text_focus() == 0);
+  m.key(8); m.key(8); m.key(8); m.key(8); m.key(8); m.key(8); m.key(8);   // „Játékos” törlése (UTF-8 karakterenként)
+  m.text_input("Medve");
+  CHECK(st.player_name == "Medve");
+  m.key(13);
+  CHECK(m.text_focus() == -1);
+  CHECK(press(m, MenuAct::LanHost) == Menu::Result::Host);
+  client::MatchConfig c;
+  CHECK(m.net_config(5, &c) && c.net_host && !c.map_path.empty() && c.net_seats >= 2 && c.net_name == "Medve" && !c.net_faction.empty() &&
+        c.net_faction != "random");
+  m.set_lan_games({{"192.168.1.20", "Gazda – Kráterföld (1/2)", 47800, true}, {"192.168.1.21", "Tele (2/2)", 47800, false}});
+  m.layout(1280, 720);
+  CHECK(m.find(MenuAct::LanPick, 1) && !m.find(MenuAct::LanPick, 1)->enabled);
+  CHECK(press(m, MenuAct::LanPick, 0) == Menu::Result::Join);
+  CHECK(m.net_config(5, &c) && !c.net_host && c.join_address == "192.168.1.20:47800");
+  press(m, MenuAct::TextField, 1);
+  m.text_input("10.0.0.5");
+  CHECK(st.last_address == "127.0.0.110.0.0.5");   // hozzáfűz (a mezőt előbb törölni kell)
+  CHECK(press(m, MenuAct::LanJoin) == Menu::Result::Join && m.net_config(5, &c) && c.join_address == st.last_address);
+}
+
+TEST_CASE("Csata beallitas (a regi): gepi irany es kisnep, fent kontra lent, taj, sebesseg") {
+  client::Settings st;
+  Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+  m.set_allies(client::scan_allies(TOTU_CONTENT_DIR));
+  m.go(MenuScreen::Skirmish);
+  m.layout(1280, 720);
+  int urs = 0;
+  const auto& fs = client::scan_factions(TOTU_CONTENT_DIR);
+  for (size_t i = 0; i < fs.size(); ++i) if (fs[i].id == "ursan") urs = static_cast<int>(i) + 1;
+  pick(m, MenuAct::SlotFaction, 1, urs);   // a gép ursan: az irányai választhatók
+  CHECK(m.find(MenuAct::SlotPath, 1)->enabled && m.find(MenuAct::SlotPath, 1)->options.size() == 4);
+  CHECK(!m.find(MenuAct::SlotPath, 0)->enabled);   // emberi helyen nincs kötelező irány
+  pick(m, MenuAct::SlotPath, 1, 1);
+  pick(m, MenuAct::SlotAlly, 1, 1);
+  CHECK(!m.skirmish().slots[1].path.empty() && !m.skirmish().slots[1].ally.empty());
+  pick(m, MenuAct::Option, 8, 1);    // fent kontra lent
+  pick(m, MenuAct::Option, 9, 2);    // tél
+  pick(m, MenuAct::Option, 10, 2);   // gyors
+  client::MatchConfig c;
+  CHECK(m.match_config(9, &c));
+  CHECK(c.setup.ai.size() == 1 && c.setup.ai[0].path == m.skirmish().slots[1].path && c.setup.ai[0].ally == m.skirmish().slots[1].ally);
+  CHECK(c.setup.climate == "winter" && c.speed_pct == 150);
+  CHECK(c.setup.teams.size() >= 2 && c.setup.teams[0] != 0 && c.setup.teams[1] != 0 && c.setup.teams[0] != c.setup.teams[1]);
+}
+
+TEST_CASE("Profilok (a regi ProfileMenu): tarolo, letrehozas cimerrel, valasztas, torles megerositessel, statisztika") {
+  const auto dir = std::filesystem::temp_directory_path() / "totu_profil_proba";
+  std::error_code ec;
+  std::filesystem::remove_all(dir, ec);
+  client::ProfileStore store(dir);
+  client::Settings st;
+  st.player_name = "Bodri";
+  Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+  m.set_profiles(&store);   // üresen: egy profil a beállítás nevével
+  CHECK(store.list().size() == 1 && st.profile == "Bodri" && m.current_profile() != nullptr);
+  m.layout(1280, 720);
+  CHECK(m.find(MenuAct::OpenProfiles) != nullptr);   // a főmenü profilkártyája
+  press(m, MenuAct::OpenProfiles);
+  CHECK(m.screen() == MenuScreen::Profiles);
+  m.layout(1280, 720);
+  CHECK(!m.find(MenuAct::ProfileDelete)->enabled);   // az utolsó profil nem törölhető
+  press(m, MenuAct::ProfileNew);
+  m.layout(1280, 720);
+  m.text_input("Ági");
+  press(m, MenuAct::ProfileEmblem, 1);
+  press(m, MenuAct::ProfileCreate);
+  CHECK(store.list().size() == 2 && st.profile == "Ági" && st.player_name == "Ági");
+  CHECK(m.current_profile() && m.current_profile()->emblem != "ursan");
+  m.layout(1280, 720);
+  press(m, MenuAct::ProfileNew);   // foglalt név: hiba, nem jön létre
+  m.layout(1280, 720);
+  m.text_input("Ági");
+  press(m, MenuAct::ProfileCreate);
+  CHECK(store.list().size() == 2 && !m.message().empty());
+  press(m, MenuAct::ProfileCancel);
+  m.layout(1280, 720);
+  store.record_game("Ági", "ursan", true, 125, 7);
+  store.record_game("Ági", "ursan", false, 60, 1);
+  const auto p = store.load("Ági");
+  CHECK(p && p->games == 2 && p->wins == 1 && p->losses == 1 && p->kills == 8 && p->play_seconds == 185);
+  CHECK(p && p->by_faction.size() == 1 && p->by_faction[0].games == 2 && p->by_faction[0].wins == 1);
+  press(m, MenuAct::ProfileDelete);   // első kattintás: megerősítés
+  CHECK(store.list().size() == 2);
+  m.layout(1280, 720);
+  press(m, MenuAct::ProfileDelete);
+  CHECK(store.list().size() == 1 && st.profile == "Bodri");
+  std::filesystem::remove_all(dir, ec);
 }

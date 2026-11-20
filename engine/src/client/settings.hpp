@@ -71,6 +71,16 @@ struct Settings {
   // a játéksebesség induláskor (százalék)
   bool show_clock = true, help_hint = true, shadows = true, ambient = true, status_fx = true;
   int game_speed = 100;
+  // a régi beállítások (2.): kamera-távolság (a nagyítás százalékban: 100 távol … 200 közel), sebességgombok jobb fent,
+  // hősjelölés (0 talaj + korona, 1 talaj, 2 korona), nyugodt figurák (az atlasz szűrője – a következő indításkor),
+  // az állapotok pulzáló színe a figurán, mozgó víz, a gépi ellenfél alapnehézsége a Csatában
+  int view_zoom = 150;
+  bool speed_buttons = true, calm = true, status_pulse = true, water_anim = true;
+  int hero_mark = 0;
+  std::string ai_difficulty = "normal";
+  std::string player_name = "Játékos";   // a többjátékos mód neve (a régi profil neve)
+  std::string last_address = "127.0.0.1";   // a legutóbbi csatlakozás címe
+  std::string profile;                       // a kiválasztott profil neve (a régi `last_profile`)
   std::vector<std::string> mods;    // M13: az engedélyezett modok azonosítói (a kért sorrendben; az alap nélkül)
 
   static const std::vector<std::pair<int, int>>& resolutions();   // a régi menü listája

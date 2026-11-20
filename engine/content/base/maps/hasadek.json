@@ -103,7 +103,7 @@
   "1": "tuz_elf",
   "2": "tuz_elf"
  },
- "_decor": [
+ "decor": [
   {
    "id": "tuz_delibabtorony",
    "tx": 25,
@@ -141,6 +141,106 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "tuz_homokszablyas",
+   "n": 2,
+   "at": [
+    29,
+    14
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    27,
+    10
+   ]
+  },
+  {
+   "id": "tuz_homokszablyas",
+   "n": 2,
+   "at": [
+    48,
+    65
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    48,
+    65
+   ]
+  }
+ ],
+ "generator": {
+  "size": 80,
+  "layout": "ring",
+  "features": {
+   "river": {
+    "terrain": "rock",
+    "fords": 2,
+    "width": 2.2,
+    "inner": 0
+   },
+   "ridges": [
+    3,
+    5,
+    9
+   ],
+   "lakes": [
+    0,
+    0,
+    0
+   ],
+   "forests": 9,
+   "dirt": 22
+  },
+  "decor": [
+   {
+    "id": "tuz_delibabtorony",
+    "at": "pair",
+    "d": 11,
+    "s": 8,
+    "ruin": true
+   },
+   {
+    "id": "tuz_dunepavilon",
+    "at": "base",
+    "d": 3,
+    "s": -12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "tuz_homokszablyas",
+    "at": "base",
+    "d": 5,
+    "s": -12,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 3,
+     "s": -12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": "'gW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "tuz_delibabtorony": [
+    3,
+    3
+   ],
+   "tuz_dunepavilon": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

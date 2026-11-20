@@ -5,6 +5,7 @@
 // egységeket/épületeket látja; a szabályok és az adatok (sablonok, költségek, a népek `ai` terve) nyilvánosak. A
 // parancsai ugyanazok a szimulációs műveletek, mint a játékoséi, és csak a saját egységeire hatnak. Minden kiadott
 // parancs a parancsnaplóba kerül (kivonat; a próbák két meccs gépi döntéseit hasonlítják össze vele).
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -260,7 +261,16 @@ int a_map(lua_State* L) {
   set_int(L, "h", s.map_->height());
   lua_newtable(L);
   lua_Integer n = 0;
+  const uint8_t self = me(L);
   for (const auto& [x, y] : s.map_->objects().starts) {
+    // a csapattárs kezdőhelye nem cél (a régi: a szövetséges bázisa nem „ellenséges kezdőhely”)
+    bool ally_here = false;
+    s.world().pool<sim::Building>().each([&](EntityId e, const sim::Building& b) {
+      const sim::Health* h = s.world().get<sim::Health>(e);
+      if (ally_here || !h || h->hp <= 0 || h->owner == self || h->owner == 0 || !s.allied(self, h->owner)) return;
+      if (std::abs(b.tx + b.w / 2 - x) <= 4 && std::abs(b.ty + b.h / 2 - y) <= 4) ally_here = true;
+    });
+    if (ally_here) continue;
     lua_createtable(L, 2, 0);
     lua_pushinteger(L, x); lua_rawseti(L, -2, 1);
     lua_pushinteger(L, y); lua_rawseti(L, -2, 2);
@@ -606,6 +616,17 @@ int a_stop(lua_State* L) {
   return 0;
 }
 
+// AI.forced() → {path, ally}: a beállításban előre megadott irány és kisnép (üres: a gép dönt; a régi `forced_*`)
+int a_forced(lua_State* L) {
+  const detail::AiState& st = ai_state(L);
+  lua_createtable(L, 0, 2);
+  lua_pushstring(L, st.forced_path.c_str());
+  lua_setfield(L, -2, "path");
+  lua_pushstring(L, st.forced_ally.c_str());
+  lua_setfield(L, -2, "ally");
+  return 1;
+}
+
 int a_choose_path(lua_State* L) {
   Sim& s = sim_of(L);
   const std::string path = luaL_checkstring(L, 1);
@@ -676,7 +697,7 @@ void open_ai_api(lua_State* L) {
   static const luaL_Reg funcs[] = {
       {"me", a_me}, {"difficulty", a_difficulty}, {"personality", a_personality}, {"tick", a_tick},
       {"night", a_night}, {"weather", a_weather}, {"player", a_player}, {"players", a_players}, {"my", a_my},
-      {"enemies", a_enemies}, {"info", a_info}, {"explored", a_explored}, {"visible", a_visible},
+      {"forced", a_forced}, {"enemies", a_enemies}, {"info", a_info}, {"explored", a_explored}, {"visible", a_visible},
       {"explored_count", a_explored_count}, {"map", a_map}, {"resources", a_resources}, {"template", a_template},
       {"plan", a_plan}, {"train", a_train}, {"research", a_research}, {"build", a_build}, {"attack", a_attack},
       {"move", a_move}, {"gather", a_gather}, {"stop", a_stop}, {"choose_path", a_choose_path},

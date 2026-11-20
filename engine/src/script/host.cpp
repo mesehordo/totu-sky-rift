@@ -1594,12 +1594,15 @@ bool ScriptHost::load(core::ByteReader& r) {
   return true;
 }
 
-void ScriptHost::enable_ai(uint8_t player, const std::string& difficulty, const std::string& personality) {
+void ScriptHost::enable_ai(uint8_t player, const std::string& difficulty, const std::string& personality, const std::string& path,
+                           const std::string& ally) {
   Impl& I = *impl_;
   if (!I.L) return;
   I.ai.owner = player;
   I.ai.difficulty = difficulty;
   I.ai.personality = personality;
+  I.ai.forced_path = path;
+  I.ai.forced_ally = ally;
   I.protect("AI tábla", [](lua_State* st) {
     detail::open_ai_api(st);
     lua_pushnil(st);

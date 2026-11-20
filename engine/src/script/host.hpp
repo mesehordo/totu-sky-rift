@@ -75,7 +75,8 @@ class ScriptHost final : public sim::SimHooks {
   // Gépi játékos (M9): az `AI` tábla ennek a játékosnak (csak a saját és a látott információ, a saját parancsai),
   // a `Game` tábla eltűnik (AI-FOG = 0: a köd mögötti állapot nem olvasható, ellenség nem törölhető). A szkriptek
   // futtatása előtt kell hívni.
-  void enable_ai(uint8_t player, const std::string& difficulty, const std::string& personality);
+  void enable_ai(uint8_t player, const std::string& difficulty, const std::string& personality, const std::string& path = {},
+                 const std::string& ally = {});
   // a gép kiadott parancsainak kivonata és száma (nem játékállapot; a próbák hasonlítják össze)
   uint64_t command_digest() const;
   uint64_t command_count() const;

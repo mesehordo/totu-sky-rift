@@ -299,6 +299,19 @@ class Module final : public FactionModule {
       const Building* b = s.world().get<Building>(e);
       if (b && b->complete && cc.larva > 0) v.larva.emplace_back(e, cc.larva);
     });
+    // a rothadó fák (a régi `rotting` / `_rot_sheet`): a fogyás harmadai a fokozat; a mélységen állók most is rothadnak
+    const int32_t full = std::max<int32_t>(1, s.rules()->resources[kWood].node_amount);
+    s.world().pool<CroRot>().each([&](EntityId e, const CroRot&) {
+      const ResourceNode* n = s.world().get<ResourceNode>(e);
+      if (!n || n->amount <= 0) return;
+      const int32_t used = 1000 - std::clamp<int32_t>(n->amount * 1000 / full, 0, 1000);
+      bool live = false;
+      for (const auto& [owner, f] : fields_) {
+        const size_t i = static_cast<size_t>(n->ty) * static_cast<size_t>(v.w) + static_cast<size_t>(n->tx);
+        if (i < f.size() && f[i]) live = true;
+      }
+      v.rot.push_back({e, static_cast<uint8_t>(used < 330 ? 1 : used < 660 ? 2 : 3), live});
+    });
   }
 
   // --- horgok -------------------------------------------------------------------------------------------------------

@@ -25,12 +25,26 @@ using core::Fixed;
 struct ModuleView {
   int w = 0, h = 0;
   std::vector<uint8_t> creep, pond;   // w × h (üres: nincs ilyen népmechanika a meccsben)
+  std::vector<uint8_t> found;         // w × h: az Aurethi alapozás (lapkő) gazdája (a régi `found`)
   struct Link {
     EntityId a = 0, b = 0;
     uint8_t owner = 0;
   };
   std::vector<Link> links;
   std::vector<std::pair<EntityId, int32_t>> larva;
+  struct Rot {   // rothadó / rothadt fa (Croftian): fokozat 1–3 a fogyás szerint; `live`: most is rothad (a mélységen áll)
+    EntityId e = 0;
+    uint8_t level = 1;
+    bool live = false;
+    bool operator==(const Rot&) const = default;
+  };
+  std::vector<Rot> rot;   // az azonosító szerint rendezve
+  struct Meals {   // micélia: az osztódásig hátralévő ölések (a régi `draw_unit_marks` pöttyei)
+    EntityId e = 0;
+    uint8_t meals = 0, need = 0;
+    bool operator==(const Meals&) const = default;
+  };
+  std::vector<Meals> meals;   // az azonosító szerint rendezve
 };
 
 class FactionModule {

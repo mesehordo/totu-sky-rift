@@ -69,6 +69,8 @@ struct Replay {
   // 10-es változat (ha nem az alapérték): a kezdőhelyek és a kezdő nyersanyag
   std::vector<int8_t> starts;
   uint8_t resources = 1;
+  // 11-es változat (ha van): a táj (éghajlat) és a gépek kötelező iránya / kisnépe (az `ai` helyein)
+  std::string climate;
   std::vector<Checkpoint> checkpoints;
 };
 

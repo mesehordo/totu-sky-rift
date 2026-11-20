@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "net/enet_transport.hpp"
+#include "net/lan_discovery.hpp"
 #include "net/lockstep.hpp"
 
 namespace totu::net {
@@ -30,6 +31,8 @@ class RelayServer {
   void spawn();          // saját szálon (a játék gazdája)
   void stop();
   void hold(bool on) { hold_.store(on); }
+  // a helyi hálózati keresés válasza (a régi `net.discover`): a gazda neve; a pálya és a helyek a meccsből
+  void announce(const std::string& host_name) { lan_name_ = host_name; }
   // szinkronhibánál ide kerül a relé mentése és visszajátszása (üres: nem ment)
   void set_dump_dir(std::string dir) { dump_dir_ = std::move(dir); }   // a fordulózárás szünetel (mérés, hibakeresés); az átvitel fut tovább
   bool started() const { return started_.load(); }
@@ -47,6 +50,9 @@ class RelayServer {
   std::mutex mu_;
   std::vector<DesyncInfo> desyncs_;
   std::string dump_dir_;
+  LanBeacon beacon_;
+  std::string lan_name_;
+  LanGame lan_;
   size_t dumped_ = 0;
 };
 

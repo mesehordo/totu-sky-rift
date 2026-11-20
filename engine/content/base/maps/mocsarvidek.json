@@ -160,7 +160,7 @@
   "2": "niil_elf",
   "3": "nila_uchana"
  },
- "_decor": [
+ "decor": [
   {
    "id": "nil_makara_medence",
    "tx": 25,
@@ -270,6 +270,149 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "nil_szornykoto",
+   "n": 1,
+   "at": [
+    24,
+    23
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    23,
+    21
+   ]
+  },
+  {
+   "id": "nil_szornykoto",
+   "n": 1,
+   "at": [
+    48,
+    20
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    50,
+    14
+   ]
+  },
+  {
+   "id": "nil_szornykoto",
+   "n": 1,
+   "at": [
+    81,
+    11
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    83,
+    8
+   ]
+  },
+  {
+   "id": "nil_szornykoto",
+   "n": 1,
+   "at": [
+    101,
+    102
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    103,
+    105
+   ]
+  },
+  {
+   "id": "nil_szornykoto",
+   "n": 1,
+   "at": [
+    72,
+    112
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    76,
+    113
+   ]
+  },
+  {
+   "id": "nil_szornykoto",
+   "n": 1,
+   "at": [
+    42,
+    114
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    43,
+    118
+   ]
+  }
+ ],
+ "generator": {
+  "size": 128,
+  "layout": "rows",
+  "features": {
+   "lakes": [
+    5,
+    2,
+    3.5
+   ],
+   "forests": 16
+  },
+  "decor": [
+   {
+    "id": "nil_makara_medence",
+    "at": "base",
+    "d": 6,
+    "s": 11
+   },
+   {
+    "id": "nii_nadpalota",
+    "at": "base",
+    "d": 4,
+    "s": -12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "nil_szornykoto",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 1,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ",:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "nil_makara_medence": [
+    3,
+    3
+   ],
+   "nii_nadpalota": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

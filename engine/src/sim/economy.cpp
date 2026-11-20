@@ -195,6 +195,44 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
       used.push_back(setup.starts[i]);
     }
   }
+  // a kezdőhelyek kiosztása (a régi `_starts`): a választott marad; a többi – ha a pálya jelöli a két oldalt, és
+  // legfeljebb két csapat van – a csapata oldalán az első szabad, különben a sorszáma szerinti (ha szabad)
+  std::vector<int> start_of(static_cast<size_t>(kMaxPlayers) + 1, -1);
+  {
+    std::vector<bool> taken(starts.size(), false);
+    std::vector<uint8_t> teams_used;
+    for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
+      if (setup.factions[i].empty()) continue;
+      if (i < setup.starts.size() && setup.starts[i] >= 0 && static_cast<size_t>(setup.starts[i]) < starts.size()) {
+        start_of[i + 1] = setup.starts[i];
+        taken[static_cast<size_t>(setup.starts[i])] = true;
+      }
+      const uint8_t t = i < setup.teams.size() ? setup.teams[i] : 0;
+      if (t != 0 && std::find(teams_used.begin(), teams_used.end(), t) == teams_used.end()) teams_used.push_back(t);
+    }
+    std::sort(teams_used.begin(), teams_used.end());
+    const auto& sides = m.objects().start_sides;
+    const bool by_side = sides.size() == starts.size() && !teams_used.empty() && teams_used.size() <= 2;
+    for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
+      if (setup.factions[i].empty() || start_of[i + 1] >= 0) continue;
+      const uint8_t t = i < setup.teams.size() ? setup.teams[i] : 0;
+      int pick = -1;
+      if (by_side && t != 0) {
+        const int side = static_cast<int>(std::find(teams_used.begin(), teams_used.end(), t) - teams_used.begin());
+        for (size_t k = 0; k < starts.size() && pick < 0; ++k) {
+          if (!taken[k] && sides[k] == side) pick = static_cast<int>(k);
+        }
+      }
+      if (pick < 0 && i < starts.size() && !taken[i]) pick = static_cast<int>(i);
+      for (size_t k = 0; k < starts.size() && pick < 0; ++k) {
+        if (!taken[k]) pick = static_cast<int>(k);
+      }
+      if (pick >= 0) {
+        start_of[i + 1] = pick;
+        taken[static_cast<size_t>(pick)] = true;
+      }
+    }
+  }
   std::vector<uint8_t> playing;
   for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
     if (setup.factions[i].empty()) continue;
@@ -232,10 +270,12 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     add_node(kind, r.x, r.y, r.size, amount);
   }
   for (const auto& [x, y] : m.objects().trees) add_node(kWood, x, y, 1, rules_->resources[kWood].node_amount);
+  for (const auto& d : m.objects().decor) obstacles.push_back({d.tx, d.ty, d.w, d.h});   // díszletépület: utat zár
   if (nav_) nav_->add_obstacles(obstacles);   // egyszerre: a nagy erdős pályákon is gyors indulás
   // játékosonként a főépület és a kezdő egységek (a régi játék szerint: a pálya közepe felé, ívben)
   const Fixed cx = half(m.width()), cy = half(m.height());
   auto_defeat_ = setup.bases;
+  climate_ = setup.climate;
   // M12: a meccs módja
   mode_ = MatchMode{};
   mode_.victory = static_cast<uint8_t>(setup.victory);
@@ -255,10 +295,8 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     if (f.hq == kNoDef) return fail("a népnek nincs főépülete: " + f.id);
     const EntityDef& hq = rules_->defs[f.hq];
     const int w = std::max(1, hq.fw), h = std::max(1, hq.fh);
-    size_t si = owner - 1u;   // a választott kezdőhely (a régi `start`), különben a sorszám szerinti
-    if (owner - 1u < setup.starts.size() && setup.starts[owner - 1u] >= 0 && static_cast<size_t>(setup.starts[owner - 1u]) < starts.size()) {
-      si = static_cast<size_t>(setup.starts[owner - 1u]);
-    }
+    size_t si = owner - 1u;   // a kiosztott kezdőhely (lásd fent)
+    if (start_of[owner] >= 0) si = static_cast<size_t>(start_of[owner]);
     const auto [sx, sy] = starts[si];
     const int tx = std::clamp(sx - w / 2, 0, m.width() - w), ty = std::clamp(sy - h / 2, 0, m.height() - h);
     const EntityId b = place_building(f.hq, owner, tx, ty, true);
@@ -307,6 +345,7 @@ void Sim::restore_obstacles(map::Map& m) {
   std::vector<map::TileRect> obstacles;
   world_.pool<ResourceNode>().each([&](EntityId, const ResourceNode& n) { obstacles.push_back({n.tx, n.ty, n.size, n.size}); });
   world_.pool<Building>().each([&](EntityId, const Building& b) { obstacles.push_back({b.tx, b.ty, b.w, b.h}); });
+  for (const auto& d : m.objects().decor) obstacles.push_back({d.tx, d.ty, d.w, d.h});
   nav_->add_obstacles(obstacles);
   for (const auto& op : nav_ops_) {   // a mentett Block/Gate parancsok, a kiadás sorrendjében (H-29)
     const map::TileRect rc{op[1], op[2], op[3], op[4]};

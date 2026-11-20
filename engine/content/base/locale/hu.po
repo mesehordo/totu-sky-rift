@@ -9692,3 +9692,351 @@ msgstr ""
 msgctxt "ui.settings.game_speed"
 msgid "Játéksebesség"
 msgstr ""
+
+msgctxt "ui.lan.title"
+msgid "TÖBBJÁTÉKOS"
+msgstr ""
+
+msgctxt "ui.lan.name"
+msgid "Neved:"
+msgstr ""
+
+msgctxt "ui.lan.host_title"
+msgid "Létrehozás"
+msgstr ""
+
+msgctxt "ui.lan.host_map"
+msgid "Pálya: {map}"
+msgstr ""
+
+msgctxt "ui.lan.host_faction"
+msgid "Néped: {faction}"
+msgstr ""
+
+msgctxt "ui.lan.host_hint"
+msgid "A pályát és a népet a Csata képernyőn választhatod ki. A többiek a helyi hálózaton megtalálják a játékot, vagy a géped címével csatlakoznak."
+msgstr ""
+
+msgctxt "ui.lan.host"
+msgid "Játék létrehozása"
+msgstr ""
+
+msgctxt "ui.lan.join_title"
+msgid "Csatlakozás"
+msgstr ""
+
+msgctxt "ui.lan.join"
+msgid "Csatlakozás"
+msgstr ""
+
+msgctxt "ui.lan.scan"
+msgid "Keresés a helyi hálózaton"
+msgstr ""
+
+msgctxt "ui.lan.none"
+msgid "Nem található játék a helyi hálózaton."
+msgstr ""
+
+msgctxt "ui.lan.other_mods"
+msgid "(más modok)"
+msgstr ""
+
+msgctxt "ui.lobby.title"
+msgid "Lobbi"
+msgstr ""
+
+msgctxt "ui.lobby.you"
+msgid "(te)"
+msgstr ""
+
+msgctxt "ui.lobby.free"
+msgid "szabad hely"
+msgstr ""
+
+msgctxt "ui.lobby.ready"
+msgid "kész"
+msgstr ""
+
+msgctxt "ui.lobby.waiting"
+msgid "vár"
+msgstr ""
+
+msgctxt "ui.lobby.connecting"
+msgid "Kapcsolódás…"
+msgstr ""
+
+msgctxt "ui.lobby.waiting_players"
+msgid "Várakozás a többi játékosra…"
+msgstr ""
+
+msgctxt "ui.lobby.hint"
+msgid "A meccs akkor indul, amikor minden hely betelt és mindenki kész. Nyilak: nép, Szóköz: kész, Enter: üzenet, Esc: kilépés."
+msgstr ""
+
+msgctxt "ui.main.card_title"
+msgid "A Hasadék népei"
+msgstr ""
+
+msgctxt "ui.intro.press"
+msgid "Nyomj meg egy gombot"
+msgstr ""
+
+msgctxt "ui.lobby.say"
+msgid "Üzenet:"
+msgstr ""
+
+msgctxt "ui.skirmish.col.path"
+msgid "Irány"
+msgstr ""
+
+msgctxt "ui.skirmish.col.ally"
+msgid "Szövetséges"
+msgstr ""
+
+msgctxt "ui.skirmish.auto"
+msgid "Saját döntés"
+msgstr ""
+
+msgctxt "ui.opt.gametype"
+msgid "Játéktípus"
+msgstr ""
+
+msgctxt "ui.opt.gametype.teams"
+msgid "A Csapat oszlop szerint"
+msgstr ""
+
+msgctxt "ui.opt.gametype.topbottom"
+msgid "Fent kontra lent"
+msgstr ""
+
+msgctxt "ui.opt.theme"
+msgid "Táj"
+msgstr ""
+
+msgctxt "ui.opt.theme.map"
+msgid "Pálya szerint"
+msgstr ""
+
+msgctxt "ui.opt.theme.forest"
+msgid "Erdő"
+msgstr ""
+
+msgctxt "ui.opt.theme.winter"
+msgid "Tél"
+msgstr ""
+
+msgctxt "ui.opt.theme.wasteland"
+msgid "Pusztaság"
+msgstr ""
+
+msgctxt "ui.opt.theme.swamp"
+msgid "Mocsár"
+msgstr ""
+
+msgctxt "ui.opt.theme.autumn"
+msgid "Ősz"
+msgstr ""
+
+msgctxt "ui.opt.theme.rift"
+msgid "Hasadékvidék"
+msgstr ""
+
+msgctxt "ui.opt.speed"
+msgid "Sebesség"
+msgstr ""
+
+msgctxt "ui.opt.speed.slow"
+msgid "Lassú"
+msgstr ""
+
+msgctxt "ui.opt.speed.normal"
+msgid "Normál"
+msgstr ""
+
+msgctxt "ui.opt.speed.fast"
+msgid "Gyors"
+msgstr ""
+
+msgctxt "ui.settings.view_zoom"
+msgid "Kamera-távolság (nagyítás)"
+msgstr ""
+
+msgctxt "ui.settings.speed_buttons"
+msgid "Sebesség-gombok (jobb fent)"
+msgstr ""
+
+msgctxt "ui.settings.hero_mark"
+msgid "Hős-jelölés"
+msgstr ""
+
+msgctxt "ui.settings.hero_mark.both"
+msgid "Talaj + korona"
+msgstr ""
+
+msgctxt "ui.settings.hero_mark.ground"
+msgid "Talaj"
+msgstr ""
+
+msgctxt "ui.settings.hero_mark.crown"
+msgid "Korona"
+msgstr ""
+
+msgctxt "ui.settings.calm"
+msgid "Nyugodt figurák (újraindítás után)"
+msgstr ""
+
+msgctxt "ui.settings.status_pulse"
+msgid "Állapotok színe a figurán (pulzál)"
+msgstr ""
+
+msgctxt "ui.settings.water_anim"
+msgid "Mozgó víz"
+msgstr ""
+
+msgctxt "ui.settings.ai_difficulty"
+msgid "Nehézség (csata)"
+msgstr ""
+
+msgctxt "ui.main.tips"
+msgid "Tippek"
+msgstr ""
+
+msgctxt "ui.pause.load"
+msgid "Betöltés"
+msgstr ""
+
+msgctxt "ui.pause.settings"
+msgid "Beállítások"
+msgstr ""
+
+msgctxt "hud.reborn"
+msgid "Újratestesült: {}"
+msgstr ""
+
+msgctxt "hud.split"
+msgid "Osztódott: {}"
+msgstr ""
+
+msgctxt "hud.unreachable"
+msgid "{}: a mozgás célpontja nem érhető el."
+msgstr ""
+
+msgctxt "hud.full"
+msgid "{}: tele van."
+msgstr ""
+
+msgctxt "hud.no_target"
+msgid "Nincs célpont."
+msgstr ""
+
+msgctxt "hud.moon"
+msgid "Telihold: a falka erősebb!"
+msgstr ""
+
+msgctxt "ui.opt.mapgen"
+msgid "Pálya"
+msgstr ""
+
+msgctxt "ui.opt.mapgen.fixed"
+msgid "Rögzített"
+msgstr ""
+
+msgctxt "ui.opt.mapgen.random"
+msgid "Új minden indításkor"
+msgstr ""
+
+msgctxt "ui.stories.title"
+msgid "Történetek"
+msgstr ""
+
+msgctxt "ui.stories.empty"
+msgid "A történetek könyvtára nem található (stories/konyvtar.json)."
+msgstr ""
+
+msgctxt "ui.stories.prev"
+msgid "Előző fejezet"
+msgstr ""
+
+msgctxt "ui.stories.next"
+msgid "Következő fejezet"
+msgstr ""
+
+msgctxt "ui.profiles.title"
+msgid "Profilok"
+msgstr ""
+
+msgctxt "ui.profiles.new"
+msgid "Új profil"
+msgstr ""
+
+msgctxt "ui.profiles.delete"
+msgid "Profil törlése"
+msgstr ""
+
+msgctxt "ui.profiles.confirm"
+msgid "Biztosan törlöd?"
+msgstr ""
+
+msgctxt "ui.profiles.name"
+msgid "Profil neve:"
+msgstr ""
+
+msgctxt "ui.profiles.emblem"
+msgid "Címer (kedvenc nép):"
+msgstr ""
+
+msgctxt "ui.profiles.create"
+msgid "Létrehozás"
+msgstr ""
+
+msgctxt "ui.profiles.cancel"
+msgid "Mégse"
+msgstr ""
+
+msgctxt "ui.profiles.created"
+msgid "Létrehozva: {d}"
+msgstr ""
+
+msgctxt "ui.profiles.games"
+msgid "Csaták: {g}   Győzelmek: {w}   Vereségek: {l}"
+msgstr ""
+
+msgctxt "ui.profiles.kills"
+msgid "Megölt ellenség: {k}"
+msgstr ""
+
+msgctxt "ui.profiles.time"
+msgid "Játékidő: {h} ó {m} p"
+msgstr ""
+
+msgctxt "ui.profiles.faction"
+msgid "{f}: {g} csata, {w} győzelem"
+msgstr ""
+
+msgctxt "ui.profiles.card"
+msgid "Csaták: {g}   Győzelmek: {w}"
+msgstr ""
+
+msgctxt "ui.profiles.err_empty"
+msgid "Adj nevet a profilnak."
+msgstr ""
+
+msgctxt "ui.profiles.err_taken"
+msgid "Ilyen nevű profil már van."
+msgstr ""
+
+msgctxt "ui.profiles.err_write"
+msgid "A profil nem menthető."
+msgstr ""
+
+msgctxt "ui.pause.music"
+msgid "Zene"
+msgstr ""
+
+msgctxt "ui.music.title"
+msgid "Zene"
+msgstr ""
+
+msgctxt "ui.music.empty"
+msgid "Nincs zene az assets/music mappában."
+msgstr ""

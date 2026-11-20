@@ -152,7 +152,7 @@
   "2": "ghoblin",
   "3": "mhonyo"
  },
- "_decor": [
+ "decor": [
   {
    "id": "gho_ragoko_banya",
    "tx": 22,
@@ -244,6 +244,145 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "gho_koharapo",
+   "n": 2,
+   "at": [
+    22,
+    43
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    21,
+    42
+   ]
+  },
+  {
+   "id": "gho_koharapo",
+   "n": 2,
+   "at": [
+    70,
+    17
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    71,
+    16
+   ]
+  },
+  {
+   "id": "gho_koharapo",
+   "n": 2,
+   "at": [
+    105,
+    56
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    107,
+    56
+   ]
+  },
+  {
+   "id": "gho_koharapo",
+   "n": 2,
+   "at": [
+    79,
+    102
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    80,
+    108
+   ]
+  },
+  {
+   "id": "gho_koharapo",
+   "n": 2,
+   "at": [
+    28,
+    91
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    27,
+    92
+   ]
+  }
+ ],
+ "generator": {
+  "size": 128,
+  "layout": "ring",
+  "features": {
+   "river": {
+    "terrain": "rock",
+    "fords": 2,
+    "width": 1.8,
+    "inner": 9
+   },
+   "ridges": [
+    2,
+    6,
+    10
+   ],
+   "crater": {
+    "radius": 0.07,
+    "meteors": 5
+   },
+   "forests": 12
+  },
+  "decor": [
+   {
+    "id": "gho_ragoko_banya",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   {
+    "id": "gho_kocipo_malom",
+    "at": "pair",
+    "d": 14,
+    "s": 7
+   }
+  ],
+  "ambient": [
+   {
+    "id": "gho_koharapo",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": "'gW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "gho_ragoko_banya": [
+    3,
+    3
+   ],
+   "gho_kocipo_malom": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

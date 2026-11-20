@@ -151,7 +151,7 @@
   "1": "tenduur",
   "2": "galoca"
  },
- "_decor": [
+ "decor": [
   {
    "id": "ten_lampasfa",
    "tx": 22,
@@ -207,6 +207,143 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "ten_lampasor",
+   "n": 1,
+   "at": [
+    23,
+    42
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    21,
+    42
+   ]
+  },
+  {
+   "id": "ten_lampasor",
+   "n": 1,
+   "at": [
+    61,
+    18
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    62,
+    16
+   ]
+  },
+  {
+   "id": "ten_lampasor",
+   "n": 1,
+   "at": [
+    101,
+    40
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    101,
+    38
+   ]
+  },
+  {
+   "id": "ten_lampasor",
+   "n": 1,
+   "at": [
+    102,
+    85
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    102,
+    85
+   ]
+  },
+  {
+   "id": "ten_lampasor",
+   "n": 1,
+   "at": [
+    64,
+    107
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    62,
+    108
+   ]
+  },
+  {
+   "id": "ten_lampasor",
+   "n": 1,
+   "at": [
+    24,
+    85
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    22,
+    85
+   ]
+  }
+ ],
+ "generator": {
+  "size": 128,
+  "layout": "ring",
+  "features": {
+   "river": {
+    "fords": 2,
+    "width": 1.3
+   },
+   "forests": 12,
+   "crater": {
+    "radius": 0.06,
+    "meteors": 6
+   },
+   "rich": true
+  },
+  "decor": [
+   {
+    "id": "ten_lampasfa",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "ten_lampasor",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 1,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "ten_lampasfa": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

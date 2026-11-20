@@ -72,11 +72,12 @@ void AtlasCache::wait() {
   if (thread_.joinable()) thread_.join();
 }
 
-bool AtlasCache::start(const std::string& assets_dir, const std::string& cache_root, bool build) {
+bool AtlasCache::start(const std::string& assets_dir, const std::string& cache_root, bool build, bool calm) {
   if (cache_root.empty() || building_.load()) return ready_.load();
   dir_ = (fs::path(cache_root) / "atlasz").string();
   tmp_ = (fs::path(cache_root) / "atlasz.uj").string();
-  const std::string fp = atlas_fingerprint(assets_dir);
+  calm_ = calm;
+  const std::string fp = atlas_fingerprint(assets_dir) + (calm ? "" : "|nyugodt=0");   // a szűrő nélküli atlasz külön ujjlenyomat
   std::error_code ec;
   if (fs::is_regular_file(fs::path(dir_) / "atlas.json", ec) && read_all(fs::path(dir_) / "ujjlenyomat.txt") == fp) {
     ready_.store(true);
@@ -101,6 +102,7 @@ void AtlasCache::run(std::string assets, std::string fingerprint) {
   std::string err;
   try {
     render::AtlasOptions opt;
+    opt.calm = calm_;
     std::vector<std::string> warnings;
     const auto atlas = render::build_atlas(
         render::list_sprite_sheets(assets), opt,

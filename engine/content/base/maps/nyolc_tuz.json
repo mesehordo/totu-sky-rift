@@ -167,7 +167,7 @@
   "1": "ghoblin",
   "2": "zhan_zhama"
  },
- "_decor": [
+ "decor": [
   {
    "id": "wul_harcosok_tuze",
    "tx": 27,
@@ -241,6 +241,172 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    28,
+    47
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    26,
+    43
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    59,
+    24
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    57,
+    20
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    96,
+    29
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    96,
+    27
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    118,
+    59
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    119,
+    58
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    113,
+    96
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    113,
+    96
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    83,
+    118
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    82,
+    119
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    46,
+    113
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    44,
+    113
+   ]
+  },
+  {
+   "id": "zha_csirkepasztor",
+   "n": 1,
+   "at": [
+    24,
+    83
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    21,
+    82
+   ]
+  }
+ ],
+ "generator": {
+  "size": 144,
+  "layout": "ring",
+  "features": {
+   "crater": {
+    "radius": 0.08,
+    "meteors": 8
+   },
+   "forests": 10,
+   "lakes": [
+    1,
+    2,
+    3
+   ],
+   "rich": true
+  },
+  "decor": [
+   {
+    "id": "wul_harcosok_tuze",
+    "at": "base",
+    "d": 5,
+    "s": 12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "zha_csirkepasztor",
+    "at": "base",
+    "d": 7,
+    "s": 12,
+    "n": 1,
+    "shelter": {
+     "at": "base",
+     "d": 5,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "wul_harcosok_tuze": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

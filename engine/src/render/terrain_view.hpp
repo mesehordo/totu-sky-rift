@@ -22,6 +22,8 @@ class TerrainView {
   void shutdown();
   // Pályaváltáskor (vagy terepváltozáskor) a csempék rajzolási adatainak újraszámolása.
   void set_map(const map::Map& m, const map::TerrainTable& table);
+  // a régi „Táj” megjelenítése: az alap csempekészlet helyett a téli / erdei (a set_map előtt; üres: a pályáé)
+  void set_theme(std::string set) { theme_ = std::move(set); }
   // A látható rész rajzolása világ-képpontban (1 csempe = 32 képpont); `time` másodpercben (víz animáció).
   void draw(const Mat4& projection, float view_x0, float view_y0, float view_x1, float view_y1, double time);
   int last_quads() const { return last_quads_; }
@@ -73,6 +75,7 @@ class TerrainView {
   std::vector<uint8_t> cliff_;
   std::vector<Quad> quads_;
   int last_quads_ = 0;
+  std::string theme_;
 };
 
 }  // namespace totu::render

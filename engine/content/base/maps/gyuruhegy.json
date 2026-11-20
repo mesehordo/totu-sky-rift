@@ -144,7 +144,7 @@
   "2": "tokla",
   "3": "tokla"
  },
- "_decor": [
+ "decor": [
   {
    "id": "tok_harangkapu",
    "tx": 59,
@@ -218,6 +218,172 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "tok_harangjaro",
+   "n": 2,
+   "at": [
+    82,
+    94
+   ],
+   "idle": false,
+   "path": [
+    [
+     82,
+     94
+    ],
+    [
+     61,
+     20
+    ]
+   ],
+   "shelter": [
+    82,
+    95
+   ]
+  },
+  {
+   "id": "tok_harangjaro",
+   "n": 2,
+   "at": [
+    23,
+    82
+   ],
+   "idle": false,
+   "path": [
+    [
+     23,
+     82
+    ],
+    [
+     98,
+     61
+    ]
+   ],
+   "shelter": [
+    23,
+    82
+   ]
+  },
+  {
+   "id": "tok_harangjaro",
+   "n": 2,
+   "at": [
+    37,
+    24
+   ],
+   "idle": false,
+   "path": [
+    [
+     37,
+     24
+    ],
+    [
+     58,
+     96
+    ]
+   ],
+   "shelter": [
+    36,
+    19
+   ]
+  },
+  {
+   "id": "tok_harangjaro",
+   "n": 2,
+   "at": [
+    94,
+    37
+   ],
+   "idle": false,
+   "path": [
+    [
+     94,
+     37
+    ],
+    [
+     19,
+     58
+    ]
+   ],
+   "shelter": [
+    96,
+    37
+   ]
+  }
+ ],
+ "generator": {
+  "size": 120,
+  "layout": "ring",
+  "features": {
+   "ring_wall": {
+    "radius": 0.17,
+    "gates": 4
+   },
+   "crater": {
+    "radius": 0.08,
+    "meteors": 4
+   },
+   "forests": 14,
+   "start_angle": 45
+  },
+  "decor": [
+   {
+    "id": "tok_harangkapu",
+    "at": "pair",
+    "d": 4,
+    "s": 0
+   },
+   {
+    "id": "tok_zuzmaramuhely",
+    "at": "base",
+    "d": 4,
+    "s": -12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "tok_harangjaro",
+    "at": "base",
+    "d": 6,
+    "s": -12,
+    "n": 2,
+    "path": [
+     {
+      "at": "base",
+      "d": 6,
+      "s": -12
+     },
+     {
+      "at": "pair",
+      "d": 6,
+      "s": 3
+     }
+    ],
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": -12
+    }
+   }
+  ],
+  "chars": "ngW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "tok_harangkapu": [
+    3,
+    3
+   ],
+   "tok_zuzmaramuhely": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

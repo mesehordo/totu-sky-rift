@@ -3,6 +3,7 @@
 // portré, billentyű = kattintás (ugyanaz a parancs), ismétlés-védelem, modális tiltás, kijelölés-rács, hős/nem hős
 // középső panel, a felső erőforrássáv sorrendje. A HUD-modell grafikus kártya nélkül fut; a parancsok a közös
 // parancs-API-n (sim::Command → a munkamenet lépése) hajtódnak végre, és a szimuláció állapotán ellenőrizzük őket.
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
@@ -15,6 +16,8 @@
 
 #include "check.hpp"
 #include "client/atlas_cache.hpp"
+#include "client/audio_decode.hpp"
+#include "client/sound_bank.hpp"
 #include "client/diagnostics.hpp"
 #include "client/hud_model.hpp"
 #include "client/session.hpp"
@@ -881,4 +884,34 @@ TEST_CASE("kep nelkuli egysegek (a regi draw_shape): minden alakzat minden irany
   // az irány számít: a harcos fegyvere kelet és nyugat felé máshol van
   auto e = client::unit_shape_layer(0, 0, 3), w = client::unit_shape_layer(0, 4, 3);
   CHECK(e.rgba != w.rgba);
+}
+
+TEST_CASE("Hang (a regi rts/audio.py): ogg es mp3 dekodolas, a keresesi sorrend, valtozatok, kategoriak, hangero") {
+  const std::filesystem::path snd = std::filesystem::path(TOTU_ASSETS_DIR) / "sounds";
+  const auto ogg = client::decode_audio((snd / "factions" / "ursan" / "death_1.ogg").string());
+  CHECK(ogg && ogg->channels >= 1 && ogg->rate >= 8000 && ogg->seconds() > 0.05 && ogg->seconds() < 30);
+  const auto mp3 = client::decode_audio((std::filesystem::path(TOTU_ASSETS_DIR) / "music" / "menuzene.mp3").string());
+  CHECK(mp3 && mp3->channels >= 1 && mp3->rate >= 22050 && mp3->seconds() > 10);
+  CHECK(!client::decode_audio((snd / "nincs_ilyen.ogg").string()));
+  client::SoundBank bank(snd);
+  CHECK(bank.find("factions/ursan/death").size() >= 2);   // death_1, death_2
+  CHECK(bank.find("factions/ursan/nincs").empty());
+  uint32_t rng = 12345;
+  // egyedi (units/<id>) > nép > egységosztály > közös
+  CHECK(bank.pick("attack", "cro_agyfalo", "croftian", "kozelharcos", rng).find("cro_agyfalo") != std::string::npos);
+  CHECK(bank.pick("death", "nincs_egyseg", "ursan", "kozelharcos", rng).find("ursan") != std::string::npos);
+  CHECK(bank.pick("attack", "nincs_egyseg", "nincs_nep", "kozelharcos", rng).find("kozelharcos") != std::string::npos);
+  CHECK(bank.pick("under_attack", "", "", "", rng).find("under_attack") != std::string::npos);
+  CHECK(bank.pick("nincs_ilyen_esemeny", "", "", "", rng).empty());
+  CHECK(client::sound_category("under_attack", false) == client::Sound::Interface);
+  CHECK(client::sound_category("building_done", false) == client::Sound::Buildings);
+  CHECK(client::sound_category("death", true) == client::Sound::Buildings);
+  CHECK(client::sound_category("select", false) == client::Sound::Units);
+  CHECK(client::sound_category("attack", false) == client::Sound::Combat);
+  client::Settings st;
+  st.volume[static_cast<size_t>(client::Sound::Master)].value = 50;
+  st.volume[static_cast<size_t>(client::Sound::Combat)].value = 80;
+  CHECK(std::fabs(client::sound_volume(st, client::Sound::Combat) - 0.4f) < 1e-4f);
+  st.volume[static_cast<size_t>(client::Sound::Combat)].enabled = false;
+  CHECK(client::sound_volume(st, client::Sound::Combat) == 0.0f);
 }

@@ -17,6 +17,7 @@ namespace totu::script::detail {
 struct AiState {
   uint8_t owner = 0;            // 0: nem gépi játékos (nincs AI tábla)
   std::string difficulty, personality;
+  std::string forced_path, forced_ally;   // a régi `forced_path` / `forced_ally` (üres: a gép dönt)
   uint64_t digest = 1469598103934665603ULL;
   uint64_t count = 0;
   void record(std::string_view what) {

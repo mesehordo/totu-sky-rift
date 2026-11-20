@@ -374,7 +374,7 @@ TEST_CASE("M9 gep – egyeni csata: a gépi hely nehézsége és személyisége 
   mi.players = 2;
   client::MatchConfig c;
   std::string err;
-  CHECK(client::make_match_config(s, {mi}, {{"ursan", "faction.ursan.name"}}, 1, &c, &err));
+  CHECK(client::make_match_config(s, {mi}, {{"ursan", "faction.ursan.name", {}}}, 1, &c, &err));
   CHECK(c.setup.ai.size() == 1);
   if (c.setup.ai.size() == 1) {
     CHECK(c.setup.ai[0].player == 2);

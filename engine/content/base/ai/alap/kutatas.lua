@@ -25,6 +25,8 @@ function R.run()
     -- a technológus és az ostromló az utolsó (rendszerint a nehézgépes) irányt, a többiek az elsőt kedvelik
     local pick = plan.path_pref[1]
     if (S.pers == "technologus" or S.pers == "ostromlo") and #plan.path_pref > 1 then pick = plan.path_pref[#plan.path_pref] end
+    local forced = AI.forced().path   -- a beállításban előre megadott irány (a régi `forced_path`)
+    if forced ~= "" then pick = forced end
     if AI.choose_path(pick) then
       local pp = plan.paths and plan.paths[pick]
       if pp then

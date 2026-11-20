@@ -141,7 +141,7 @@
   "1": "niil_elf",
   "2": "niil_elf"
  },
- "_decor": [
+ "decor": [
   {
    "id": "nii_arvizszentely",
    "tx": 27,
@@ -179,6 +179,115 @@
    "ruin": false
   }
  ],
+ "ambient": [
+  {
+   "id": "nii_papiruszlandzsas",
+   "n": 2,
+   "at": [
+    28,
+    22
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    26,
+    19
+   ]
+  },
+  {
+   "id": "nii_papiruszlandzsas",
+   "n": 2,
+   "at": [
+    59,
+    13
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    63,
+    8
+   ]
+  },
+  {
+   "id": "nii_papiruszlandzsas",
+   "n": 2,
+   "at": [
+    82,
+    88
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    82,
+    89
+   ]
+  },
+  {
+   "id": "nii_papiruszlandzsas",
+   "n": 2,
+   "at": [
+    50,
+    98
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    48,
+    99
+   ]
+  }
+ ],
+ "generator": {
+  "size": 112,
+  "layout": "rows",
+  "features": {
+   "river": {
+    "fords": 3,
+    "width": 2.0
+   },
+   "forests": 16,
+   "lakes": [
+    1,
+    2,
+    3
+   ]
+  },
+  "decor": [
+   {
+    "id": "nii_arvizszentely",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   }
+  ],
+  "ambient": [
+   {
+    "id": "nii_papiruszlandzsas",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 2,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": ".:W#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "nii_arvizszentely": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [

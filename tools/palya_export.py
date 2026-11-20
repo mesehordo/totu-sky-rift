@@ -89,8 +89,29 @@ def export(data, md, jelek, mapgen, en_szotar):
         doc["teams"] = list(m.teams_hint)
     if md.get("camps"):
         doc["camps"] = {k: md["camps"][k] for k in sorted(md["camps"])}
-    if getattr(m, "layout_decor", None):   # a díszletépületek (a motor még nem helyezi el őket; adatként megmarad)
-        doc["_decor"] = m.layout_decor
+    if getattr(m, "layout_decor", None):   # a díszletépületek (a motor kirajzolja, és utat zárnak)
+        doc["decor"] = m.layout_decor
+    if getattr(m, "layout_ambient", None):   # ártalmatlan háttérszereplők (csempe-koordinátában; a kliens mozgatja)
+        from rts.world import TILE   # noqa: E402  (a régi csempeméret)
+
+        def cs(p):
+            return [int(p[0] // TILE), int(p[1] // TILE)]
+        doc["ambient"] = [{"id": a["id"], "n": a.get("n", 1), "at": cs(a["xy"]), "idle": a.get("mode") == "idle",
+                           "path": [cs(q) for q in a.get("path", [])],
+                           **({"shelter": cs(a["shelter"])} if a.get("shelter") else {})} for a in m.layout_ambient]
+    # a régi generátor leírása (a „véletlen pálya” beállításhoz: a kliens új maggal újragenerálja – map/mapgen)
+    from rts.mission import decor_size   # noqa: E402  (a régi kód)
+    gen = {k: md[k] for k in ("size", "layout", "features", "decor", "ambient") if k in md}
+    gen["chars"] = "".join(jelek[f] for f in fajtak)
+    gen["amounts"] = {NYERSANYAG.get(k, k): data.game["resources"][k]["node_amount"] for k in ("wood", "stone", "meteor")}
+    meretek = {}
+    for d in md.get("decor", []):
+        sz = decor_size(data, d["id"])
+        if sz is not None:
+            meretek[d["id"]] = list(sz)
+    if meretek:
+        gen["decor_sizes"] = meretek
+    doc["generator"] = gen
     doc["objects"] = {
         "starts": [[int(x), int(y)] for x, y in m.starts],
         "trees": {"rows": ["".join(s) for s in fak]},

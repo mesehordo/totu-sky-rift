@@ -144,7 +144,7 @@
   "2": "tokla",
   "3": "pinguu"
  },
- "_decor": [
+ "decor": [
   {
    "id": "pin_orlangszentely",
    "tx": 97,
@@ -218,6 +218,142 @@
    "ruin": true
   }
  ],
+ "ambient": [
+  {
+   "id": "pin_hopajzsos",
+   "n": 1,
+   "at": [
+    98,
+    77
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    98,
+    79
+   ]
+  },
+  {
+   "id": "pin_hopajzsos",
+   "n": 1,
+   "at": [
+    40,
+    98
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    36,
+    95
+   ]
+  },
+  {
+   "id": "pin_hopajzsos",
+   "n": 1,
+   "at": [
+    21,
+    40
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    19,
+    36
+   ]
+  },
+  {
+   "id": "pin_hopajzsos",
+   "n": 1,
+   "at": [
+    78,
+    21
+   ],
+   "idle": true,
+   "path": [],
+   "shelter": [
+    79,
+    20
+   ]
+  }
+ ],
+ "generator": {
+  "size": 120,
+  "layout": "ring",
+  "features": {
+   "river": [
+    {
+     "terrain": "rock",
+     "fords": 3,
+     "width": 1.6,
+     "inner": 0
+    },
+    {
+     "terrain": "rock",
+     "fords": 2,
+     "width": 1.4,
+     "inner": 12,
+     "turn": 0.785
+    }
+   ],
+   "ring_wall": {
+    "radius": 0.24,
+    "gates": 4
+   },
+   "ridges": [
+    6,
+    6,
+    11
+   ],
+   "forests": 10,
+   "start_angle": 45
+  },
+  "decor": [
+   {
+    "id": "pin_orlangszentely",
+    "at": "base",
+    "d": 4,
+    "s": 12
+   },
+   {
+    "id": "tok_harangkapu",
+    "at": "pair",
+    "d": 10,
+    "s": 7,
+    "ruin": true
+   }
+  ],
+  "ambient": [
+   {
+    "id": "pin_hopajzsos",
+    "at": "base",
+    "d": 6,
+    "s": 12,
+    "n": 1,
+    "shelter": {
+     "at": "base",
+     "d": 4,
+     "s": 12
+    },
+    "mode": "idle"
+   }
+  ],
+  "chars": "ngW#",
+  "amounts": {
+   "wood": 120,
+   "gold": 1500,
+   "meteor": 1500
+  },
+  "decor_sizes": {
+   "pin_orlangszentely": [
+    3,
+    3
+   ],
+   "tok_harangkapu": [
+    3,
+    3
+   ]
+  }
+ },
  "objects": {
   "starts": [
    [
