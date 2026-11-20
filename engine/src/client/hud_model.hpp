@@ -185,6 +185,17 @@ class HudModel {
   void jump_home_or_alert();
   int64_t alert_tick = -1000000;
   bool alarm = false;                         // most szólt a riasztás (a hangot a hívó játssza le és törli)
+  // minitérkép-jelzés (WC3: Alt + kattintás a minitérképen vagy a terepen): a szövetségesek minitérképén 3 mp-ig
+  struct Ping {
+    float x = 0, y = 0;   // világ-képpont
+    int64_t tick = 0;
+    bool mine = false;
+  };
+  std::vector<Ping> pings;
+  bool alt = false;                           // Alt lenyomva (a kattintás jel)
+  bool ping_sound = false;                    // most jött jel (a hangot a hívó játssza le és törli)
+  int64_t last_ping_ = -1000;
+  void ping(float wx, float wy);              // jel küldése (legfeljebb fél mp-enként egy)
   float alert_x = 0, alert_y = 0;
   bool jump = false;                          // kameraugrás kérése (világ-képpont)
   float jump_x = 0, jump_y = 0;

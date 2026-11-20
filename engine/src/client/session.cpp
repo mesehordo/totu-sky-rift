@@ -792,7 +792,8 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
   }
   sim_->step();
   for (const sim::SimEvent& ev : sim_->events()) {
-    if (ev.owner == local_ && notes_.size() < 256) notes_.push_back(ev);
+    const bool mine = ev.owner == local_ || (ev.kind == sim::SimEvent::Ping && sim_->allied(ev.owner, local_));   // a jelet a szövetséges is látja
+    if (mine && notes_.size() < 256) notes_.push_back(ev);
   }
   if (!sim_->rules() && sim_->tick() % 5 == 0) update_fog();
   const auto after = snapshot();

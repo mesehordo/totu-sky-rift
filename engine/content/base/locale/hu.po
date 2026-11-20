@@ -9081,7 +9081,7 @@ msgid "Ctrl+1..9: csoport mentése, 1..9: csoport kijelölése (dupla: odaugrás
 msgstr ""
 
 msgctxt "hud.help.8"
-msgid "P + bal klikk: járőr   Jobb gomb húzása: vonalra mozgatás   Alt+1..6: alakzat"
+msgid "P + bal klikk: járőr   Jobb gomb húzása: vonalra mozgatás   Alt+1..6: alakzat   Alt + bal klikk: jel"
 msgstr ""
 
 msgctxt "hud.help.9"

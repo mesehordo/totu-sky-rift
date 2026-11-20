@@ -9082,8 +9082,8 @@ msgid "Ctrl+1..9: csoport mentése, 1..9: csoport kijelölése (dupla: odaugrás
 msgstr "Ctrl+1..9: save group, 1..9: select group (double: jump)"
 
 msgctxt "hud.help.8"
-msgid "P + bal klikk: járőr   Jobb gomb húzása: vonalra mozgatás   Alt+1..6: alakzat"
-msgstr "P + left click: patrol   Right drag: line move   Alt+1..6: formation"
+msgid "P + bal klikk: járőr   Jobb gomb húzása: vonalra mozgatás   Alt+1..6: alakzat   Alt + bal klikk: jel"
+msgstr "P + left click: patrol   Right drag: line move   Alt+1..6: formation   Alt + left click: ping"
 
 msgctxt "hud.help.9"
 msgid "F8: következő tétlen munkás"

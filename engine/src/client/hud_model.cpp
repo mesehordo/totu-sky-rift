@@ -1239,6 +1239,16 @@ void HudModel::sim_events(const std::vector<sim::SimEvent>& evs) {
       case sim::SimEvent::Full: post_notice(tr("full", {bld_name(ev.def)}), {255, 160, 90}); break;
       case sim::SimEvent::NoTarget: post_notice(tr("no_target"), {255, 160, 90}); break;
       case sim::SimEvent::NodeFull: post_notice(tr("node_full"), {255, 160, 90}); break;
+      case sim::SimEvent::Ping: {   // a jel; a Szóköz is ide ugrik (mint a riasztásnál)
+        const int64_t now = snap_ ? snap_->tick : 0;
+        const float px = static_cast<float>(ev.x.to_double()) * kTile, py = static_cast<float>(ev.y.to_double()) * kTile;
+        if (pings.size() < 32) pings.push_back({px, py, now, ev.owner == player});
+        alert_tick = now;
+        alert_x = px;
+        alert_y = py;
+        ping_sound = true;
+        break;
+      }
       default: break;
     }
   }
@@ -1360,11 +1370,23 @@ bool HudModel::over_hud(float x, float y) const {
   return false;
 }
 
+void HudModel::ping(float wx, float wy) {
+  const int64_t now = snap_ ? snap_->tick : 0;
+  if (now - last_ping_ < 15 || player == 0) return;   // fél mp-enként legfeljebb egy (a záporozás ellen); néző nem jelez
+  last_ping_ = now;
+  sim::Command c = base_cmd(sim::Command::Kind::Ping);
+  c.x = to_fixed(wx);
+  c.y = to_fixed(wy);
+  cmd(c);
+}
+
 void HudModel::minimap_click(float x, float y, int button) {
   const Rect& r = L_.minimap;
   const float wx = (x - static_cast<float>(r.x)) / static_cast<float>(std::max(1, r.w)) * static_cast<float>(map_w_ * kTile);
   const float wy = (y - static_cast<float>(r.y)) / static_cast<float>(std::max(1, r.h)) * static_cast<float>(map_h_ * kTile);
-  if (button == 1) {
+  if (button == 1 && alt) {   // Alt + kattintás: jel a szövetségeseknek (WC3)
+    ping(wx, wy);
+  } else if (button == 1) {
     jump = true;
     jump_x = wx;
     jump_y = wy;

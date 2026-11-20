@@ -663,6 +663,20 @@ void Hud::draw_minimap(const HudFrame& f) {
     const Rect cr = model_.minimap_view(f.cam_x, f.cam_y, f.cam_w, f.cam_h);
     if (cr.w > 0) outline(cr, {255, 255, 255});
   }
+  auto& pings = model_.pings;   // a jelek: 3 mp-ig lüktető keret (a saját arany, a szövetségesé világoskék)
+  pings.erase(std::remove_if(pings.begin(), pings.end(), [&](const HudModel::Ping& p) { return s->tick - p.tick > 90 || s->tick < p.tick; }),
+              pings.end());
+  for (const HudModel::Ping& p : pings) {
+    const float mx = x0 + p.x / (static_cast<float>(std::max(1, map_w_)) * 32.0f) * static_cast<float>(r.w);
+    const float my = y0 + p.y / (static_cast<float>(std::max(1, map_h_)) * 32.0f) * static_cast<float>(r.h);
+    const float ph = static_cast<float>((s->tick - p.tick) % 30) / 30.0f;
+    const Col c = p.mine ? Col{255, 220, 80} : Col{120, 220, 255};
+    for (int k = 0; k < 2; ++k) {
+      const float sz = 4.0f + std::fmod(ph + static_cast<float>(k) * 0.5f, 1.0f) * 16.0f;
+      outline(Rect{static_cast<int>(mx - sz / 2), static_cast<int>(my - sz / 2), static_cast<int>(sz), static_cast<int>(sz)}, c, 2);
+    }
+    rect(mx - 2, my - 2, 4, 4, c);
+  }
 }
 
 void Hud::draw_char_sheet() {

@@ -329,6 +329,9 @@ void Sim::apply_now(const Command& raw) {
         if (interrupt(e)) order_escort(e, c.target, c.kind == Command::Kind::Guard);
       }
       break;
+    case Command::Kind::Ping:   // csak felületi esemény: a szövetségesek minitérképén (a hash nem változik)
+      if (c.owner >= 1 && c.owner <= kMaxPlayers) emit(SimEvent::Ping, c.owner, 0xFFFF, c.x, c.y);
+      break;
     case Command::Kind::Stance:
       for (const EntityId e : c.units) set_stance(e, static_cast<uint8_t>(std::clamp(c.rx, 0, 3)));
       break;
@@ -597,7 +600,7 @@ bool Command::needs_v4() const {
          kind == Kind::Ability || kind == Kind::Garrison || kind == Kind::Unload || kind == Kind::ChoosePath ||
          kind == Kind::Power || kind == Kind::Learn || kind == Kind::Pickup || kind == Kind::UseItem ||
          kind == Kind::DropItem || kind == Kind::Repair || kind == Kind::Pack || kind == Kind::Unpack ||
-         kind == Kind::ChooseAlly || kind == Kind::Module || kind == Kind::Stance || kind == Kind::Follow || kind == Kind::Guard || target != 0 ||
+         kind == Kind::ChooseAlly || kind == Kind::Module || kind == Kind::Stance || kind == Kind::Follow || kind == Kind::Guard || kind == Kind::Ping || target != 0 ||
          !def.empty();
 }
 
@@ -625,7 +628,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 36 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 37 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();

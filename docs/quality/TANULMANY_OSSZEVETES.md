@@ -42,7 +42,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 | Stance (agresszív / védekező / helytartás) | **kész (2026-11-20)**: 4 fokozat az AoE2 szerint (védekező alap, agresszív, helytartás, passzív) |
 | Guard / follow (kísérés, követés) | **kész (2026-11-20)**: jobb kattintás saját egységre = követés; „Kísérés” gomb = követ és véd (egységet vagy épületet) |
 | Tétlen munkás, hősválasztás (F2–F4), billentyű-újrakiosztás ütközésjelzéssel | **megfelel** |
-| Minitérkép-jelzés (ping) | **hiányzik (11)** |
+| Minitérkép-jelzés (ping) | **kész (2026-11-20)**: Alt + kattintás a minitérképen vagy a terepen; a szövetségesek minitérképén 3 mp-ig lüktet, hanggal, a Szóköz odaugrik |
 | A játékos parancsa felülírja az automatikát | **megfelel** |
 
 ## 4. Harc, képességek, hősök
@@ -120,6 +120,6 @@ Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha 
 8. ~~**„Állapotok a figurán” kapcsoló**~~ – **kész (2026-11-20)**: a javaslat és a WC3 szerint (a tulajdonos döntése).
 9. ~~**Felületméret**~~ – **kész (2026-11-20)**: 75% és 90% is választható.
 10. ~~**Lobbi-adatok**~~ – **kész (2026-11-20)**: a megjelenítés és az átvitel; a gépi hely és a csapat beállítása a hálózati gazdánál a közös beállítóképernyővel jön.
-11. **Minitérkép-jelzés** (ping) – Alt + kattintás a minitérképen (hiány).
+11. ~~**Minitérkép-jelzés**~~ – **kész (2026-11-20)**: a WC3 szerint.
 12. **A mentés tartalom-ujjlenyomata** – betöltéskor figyelmeztetés más modkészletnél (hiány).
 13. **Visszajátszás-lejátszó** a kliensben (szünet, gyorsítás, léptetés) (hiány).

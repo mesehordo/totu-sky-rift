@@ -1647,12 +1647,17 @@ int main(int argc, char** argv) {
             }
           }
         }
+        if (hud_on) hud.model().alt = (SDL_GetModState() & SDL_KMOD_ALT) != 0;
         if (hud_on && hud_event(hud.model(), ev, cam, world)) continue;   // a HUD elfogyasztotta
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE && !ev.key.repeat) {
           if (hud_on) game_paused = true;   // a régi szerint: Esc (ha a HUD nem fogyasztotta el) a szünetmenü
           else running = false;
         }
         if (!have_world) continue;
+        if (hud_on && ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT && (SDL_GetModState() & SDL_KMOD_ALT)) {
+          hud.model().ping(cam.x + ev.button.x / cam.zoom, cam.y + ev.button.y / cam.zoom);   // Alt + kattintás a terepen: jel (WC3)
+          continue;
+        }
         // a régi játék: a középső gomb húzása mozgatja a kamerát
         if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_MIDDLE) {
           mid_drag = true;
@@ -1886,6 +1891,10 @@ int main(int argc, char** argv) {
             else if (e.ev.rfind("impact_", 0) == 0) audio.play(e.ev, "", "", "", 0.45f, 95, e.ev);
           }
           if (!game_paused) audio.play("environment", "", "", "", 0.6f, 25000, "env");   // környezeti hang (ha van fájl)
+          if (hud_on && hud.model().ping_sound) {   // jel a minitérképen
+            hud.model().ping_sound = false;
+            audio.play("select", "", "", "", 0.8f, 400, "ping");
+          }
           if (hud_on && hud.model().alarm) {   // a régi riasztás („Támadás ér!”, 12 mp-enként legfeljebb egy)
             hud.model().alarm = false;
             std::string fac = sn && session.local_player() <= sim::Sim::kMaxPlayers ? sn->players[session.local_player()].faction : std::string();

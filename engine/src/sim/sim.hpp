@@ -841,7 +841,8 @@ struct Command {
                               // követés (`units` → `target` saját vagy szövetséges egység; WC3: jobb kattintás) és
                               // kísérés (`units` → `target` egység vagy épület: követi / mellette marad, és rátámad a
                               // támadóira; AoE2 „Guard”)
-                              Follow = 35, Guard = 36 };
+                              Follow = 35, Guard = 36,
+                              Ping = 37 };   // jel a térképen a szövetségeseknek (x, y); az állapotot nem változtatja
   // a `flag` bitje egységparancsnál (Move, Attack, Gather …): a meglévő parancs után sorba áll (Shift)
   static constexpr uint8_t kQueue = 0x80;
   Kind kind = Kind::Spawn;
@@ -893,9 +894,10 @@ class SimHooks {
 // A felületnek szóló, átmeneti esemény (a régi `notify` egy része): csak a tick végéig él, nem része a hashnek és a
 // mentésnek – a szimuláció menetét nem befolyásolja
 struct SimEvent {
-  enum Kind : uint8_t { Reborn = 1, Split = 2, Unreachable = 3, Full = 4, NoTarget = 5, NodeFull = 6 };
+  enum Kind : uint8_t { Reborn = 1, Split = 2, Unreachable = 3, Full = 4, NoTarget = 5, NodeFull = 6, Ping = 7 };
   uint8_t kind = 0, owner = 0;
   uint16_t def = 0xFFFF;   // az érintett egység / épület sablonja
+  Fixed x, y;              // Ping: a jel helye (csempében)
 };
 
 // M12: a meccs módja (győzelmi feltétel, tempó) – a Sim állapota
@@ -1155,8 +1157,8 @@ class Sim {
  public:
   // a legutóbbi tick felületi eseményei (lásd SimEvent)
   const std::vector<SimEvent>& events() const { return events_; }
-  void emit(uint8_t kind, uint8_t owner, uint16_t def) {
-    if (events_.size() < 256) events_.push_back({kind, owner, def});
+  void emit(uint8_t kind, uint8_t owner, uint16_t def, Fixed x = {}, Fixed y = {}) {
+    if (events_.size() < 256) events_.push_back({kind, owner, def, x, y});
   }
   std::vector<SimEvent> events_;
   std::vector<Escort> escorts_;   // a követők és kísérők (az egység azonosítója szerint; mentés 24)

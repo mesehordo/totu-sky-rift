@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "check.hpp"
+#include "core/bytes.hpp"
 #include "match_util.hpp"
 
 using namespace totu;
@@ -495,4 +496,28 @@ TEST_CASE("idezes es letszam (WC3): az idezett leny (Lifetime) nem foglal letsza
   s.world().add(u, sim::Lifetime{s.tick() + 300});
   m.run(1);
   CHECK(s.player(1).supply_used == used0);   // idézettként már nem
+}
+
+TEST_CASE("minimap-jel (WC3, Alt + kattintas): esemeny a hellyel, az allapot es a hash nem valtozik, a parancs mentheto") {
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  m.run(5);
+  const uint64_t h0 = s.hash();
+  sim::Command c;
+  c.kind = sim::Command::Kind::Ping;
+  c.owner = 2;
+  c.x = core::Fixed::from_int(12);
+  c.y = core::Fixed::from_int(7);
+  s.apply_now(c);
+  bool seen = false;
+  for (const auto& ev : s.events()) {
+    seen = seen || (ev.kind == sim::SimEvent::Ping && ev.owner == 2 && ev.x == c.x && ev.y == c.y);
+  }
+  CHECK(seen);
+  CHECK(s.hash() == h0);
+  core::ByteWriter w;
+  sim::save_command(w, c, 4);
+  core::ByteReader r(w.data());
+  const auto back = sim::load_command(r, 4);
+  CHECK(back && back->kind == sim::Command::Kind::Ping && back->x == c.x && back->y == c.y && back->owner == 2);
 }
