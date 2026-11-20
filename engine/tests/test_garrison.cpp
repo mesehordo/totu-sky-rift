@@ -447,3 +447,23 @@ TEST_CASE("kovetes es kiseres: a koveto a cel mellett marad; a kisero ratamad a 
   // ellenséges célpontot nem lehet követni
   CHECK(!s.order_escort(lead, foe, false));
 }
+
+TEST_CASE("minimalis lotav (ostromgep, 2 csempe): kozelrol nem lo, hatral; tartva a tul kozelire nem lo") {
+  CHECK(R().defs[def_of("imp_onager")].attack.min_range == fx(2, 1));
+  CHECK(R().defs[def_of("oon_kapudongeto")].attack.min_range.raw() == 0);   // a faltörő kos közelharcos
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  const auto o = put(s, "imp_onager", 1, 80, 185, false);
+  const auto foe = put(s, "urs_pajzshordozo", 2, 95, 185, true);
+  CHECK(s.order_attack(o, foe));
+  m.run(150);
+  CHECK(s.gap(o, foe) >= fx(19, 10));   // hátrált
+  CHECK(taken(s, foe) > 0);             // és lőtt
+  // tartva: a túl közeli célpontra nem lő
+  Match m2("BUILD-ALAP");
+  sim::Sim& s2 = *m2.sim;
+  put(s2, "imp_onager", 1, 80, 185, true);
+  const auto f2 = put(s2, "urs_pajzshordozo", 2, 95, 185, true);
+  m2.run(120);
+  CHECK(taken(s2, f2) == 0);
+}

@@ -64,6 +64,7 @@ struct AttackDef {
   bool has = false;
   Fixed damage;                               // alap sebzés
   Fixed range;                                // csempe (a test szélétől)
+  Fixed min_range;                            // minimális lőtáv (csempe; 0: nincs) – az ostromgépeké (AoE2, WC3)
   int32_t cooldown = 30;                      // tick
   bool ground = true, air = false;            // `targets`
   uint8_t projectile = 0;                     // 0: közelharc; különben a lövedékfajta sorszáma + 1 (Rules::projectiles)

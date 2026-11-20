@@ -76,6 +76,7 @@
    "properties": {
     "damage": {"type": "number", "minimum": 0},
     "range": {"type": "number", "minimum": 0},
+    "min_range": {"type": "number", "minimum": 0},
     "cooldown": {"type": "number", "minimum": 0},
     "targets": {"type": "array", "items": {"enum": ["ground", "air"]}},
     "projectile": {"type": "string"},

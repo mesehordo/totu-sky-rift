@@ -774,7 +774,21 @@ void Sim::match_combat_system() {
     const Fixed sight = stat(e, "Vision.sight", Fixed::from_int(std::max(1, d.sight))) *
                         env_sight_mult(h->owner, d);
     const Movement* mv = world_.get<Movement>(e);
+    auto too_close = [&](EntityId t) { return d.attack.min_range.raw() > 0 && gap(e, t) < d.attack.min_range; };
     auto engage = [&](EntityId t) {
+      if (too_close(t)) {   // minimális lőtáv: hátrál a célponttól, aztán lő
+        const Position& tp = *world_.get<Position>(t);
+        Fixed dx = p->x - tp.x, dy = p->y - tp.y;
+        const Fixed len = core::length(dx, dy);
+        if (len.raw() <= 0) { dx = Fixed::from_int(1); dy = Fixed{}; } else { dx = dx / len; dy = dy / len; }
+        const Unit* tu2 = world_.get<Unit>(t);
+        const Fixed back = d.attack.min_range + d.radius + (tu2 ? rules_->defs[tu2->def].radius : Fixed{}) + Fixed::from_int(1);   // a testek széle között
+        if (--c.repath <= 0 || !(mv && mv->moving)) {
+          order_move(e, tp.x + dx * back, tp.y + dy * back);
+          c.repath = kRepathTicks;
+        }
+        return;
+      }
       if (gap(e, t) <= attack_range(e, t) + kRangeSlack) {
         halt(e);
         if (c.cooldown <= 0) attack_now(e, c, t);
@@ -861,14 +875,14 @@ void Sim::match_combat_system() {
         halt(e);
         const Health* hth = c.target ? world_.get<Health>(c.target) : nullptr;   // H-48
         if (c.target && (!hth || !hostile(h->owner, hth->owner) || !can_hit(e, c.target) || !is_visible(h->owner, c.target) ||
-                         gap(e, c.target) > attack_range(e, c.target) + kRangeSlack)) {
+                         gap(e, c.target) > attack_range(e, c.target) + kRangeSlack || too_close(c.target))) {
           c.target = 0;
         }
         if (!c.target && --c.scan <= 0 && (stances_.empty() || stance_of(e) != Passive)) {
           c.scan = kScanTicks;
           const Fixed r = d.attack.range + d.radius + Fixed::from_int(2);
           const EntityId t = find_enemy(e, r);
-          if (t != kNoEntity && gap(e, t) <= attack_range(e, t) + kRangeSlack) c.target = t;
+          if (t != kNoEntity && gap(e, t) <= attack_range(e, t) + kRangeSlack && !too_close(t)) c.target = t;   // tartva: a túl közelire nem
         }
         if (c.target && c.cooldown <= 0) attack_now(e, c, c.target);
         break;

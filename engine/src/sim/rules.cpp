@@ -569,6 +569,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       at.has = true;
       at.damage = fixed_of(a->find("damage"), Fixed{});
       at.range = fixed_of(a->find("range"), Fixed::from_ratio(3, 10));
+      at.min_range = fixed_of(a->find("min_range"), Fixed{});
       at.cooldown = std::max(1, seconds_to_ticks(fixed_of(a->find("cooldown"), Fixed::from_int(1))));
       if (const content::Value* tg = a->find("targets"); tg && tg->is_array()) {
         at.ground = at.air = false;

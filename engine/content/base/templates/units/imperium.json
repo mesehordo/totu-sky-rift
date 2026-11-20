@@ -751,6 +751,7 @@
   "Attack": {
    "damage": 36,
    "range": 8.5,
+   "min_range": 2,
    "cooldown": 3.0,
    "targets": [
     "ground"
