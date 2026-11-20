@@ -62,7 +62,7 @@ struct HudRegion {
 
 // célzási mód (a régi `mode`)
 struct HudMode {
-  enum Kind : uint8_t { None, Move, Attack, Cast, AbilityPlace, Place, Unpack, GCast } kind = None;
+  enum Kind : uint8_t { None, Move, Attack, Cast, AbilityPlace, Place, Unpack, GCast, Guard } kind = None;
   std::string ability;
   uint16_t def = sim::kNoDef;
   sim::EntityId ent = 0;

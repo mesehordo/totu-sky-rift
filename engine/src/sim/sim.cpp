@@ -186,6 +186,20 @@ void Sim::apply_now(const Command& raw) {
     }
   }
   const Command& c = *cp;
+  if (!escorts_.empty() && !c.units.empty()) {   // új egységparancs: a követés / kísérés véget ér
+    switch (c.kind) {
+      case Command::Kind::Move: case Command::Kind::GroupMove: case Command::Kind::Gather: case Command::Kind::Stop:
+      case Command::Kind::Build: case Command::Kind::Attack: case Command::Kind::AttackMove: case Command::Kind::Hold:
+      case Command::Kind::Garrison: case Command::Kind::Repair: case Command::Kind::Patrol: case Command::Kind::Pickup:
+      case Command::Kind::Follow: case Command::Kind::Guard:
+        escorts_.erase(std::remove_if(escorts_.begin(), escorts_.end(),
+                                      [&](const Escort& es) { return std::find(c.units.begin(), c.units.end(), es.unit) != c.units.end(); }),
+                       escorts_.end());
+        break;
+      default:
+        break;
+    }
+  }
   switch (c.kind) {
     case Command::Kind::Spawn: {
       const EntityId e = spawn(c);
@@ -308,6 +322,12 @@ void Sim::apply_now(const Command& raw) {
       break;
     case Command::Kind::Mission:
       for (SimHooks* k : hooks_) k->on_command(*this, c);
+      break;
+    case Command::Kind::Follow:
+    case Command::Kind::Guard:
+      for (const EntityId e : c.units) {
+        if (interrupt(e)) order_escort(e, c.target, c.kind == Command::Kind::Guard);
+      }
       break;
     case Command::Kind::Stance:
       for (const EntityId e : c.units) set_stance(e, static_cast<uint8_t>(std::clamp(c.rx, 0, 3)));
@@ -475,6 +495,10 @@ uint64_t Sim::hash() const {
   if (mode_.active()) {   // M12: a meccs módja (alapértelmezésben a hash a korábbi)
     h.add_u64(mode_.victory); h.add_u64(mode_.tempo); h.add_i64(mode_.minutes); h.add_i64(mode_.peace_until);
     if (!climate_.empty()) h.add_bytes(climate_);   // a régi „Táj” (csak ha van: a korábbi hash-ek maradnak)
+    if (!escorts_.empty()) {   // a követők és kísérők (csak ha van)
+      h.add_u64(escorts_.size());
+      for (const Escort& es : escorts_) { h.add_u64(es.unit); h.add_u64(es.target); h.add_u64(es.guard); h.add_i64(es.repath); h.add_i64(es.scan); }
+    }
     if (!stances_.empty()) {   // a harci magatartások (csak ha van nem alapértelmezett)
       h.add_u64(stances_.size());
       for (const auto& [e, st] : stances_) { h.add_u64(e); h.add_u64(st); }
@@ -573,7 +597,7 @@ bool Command::needs_v4() const {
          kind == Kind::Ability || kind == Kind::Garrison || kind == Kind::Unload || kind == Kind::ChoosePath ||
          kind == Kind::Power || kind == Kind::Learn || kind == Kind::Pickup || kind == Kind::UseItem ||
          kind == Kind::DropItem || kind == Kind::Repair || kind == Kind::Pack || kind == Kind::Unpack ||
-         kind == Kind::ChooseAlly || kind == Kind::Module || kind == Kind::Stance || target != 0 ||
+         kind == Kind::ChooseAlly || kind == Kind::Module || kind == Kind::Stance || kind == Kind::Follow || kind == Kind::Guard || target != 0 ||
          !def.empty();
 }
 
@@ -601,7 +625,7 @@ void save_command(core::ByteWriter& w, const Command& c, int format) {
 std::optional<Command> load_command(core::ByteReader& r, int format) {
   Command c;
   const uint8_t k = r.u8();
-  if (k < 1 || k > (format >= 4 ? 34 : format >= 3 ? 5 : 2)) return std::nullopt;
+  if (k < 1 || k > (format >= 4 ? 36 : format >= 3 ? 5 : 2)) return std::nullopt;
   c.kind = static_cast<Command::Kind>(k);
   c.tick = r.i64();
   c.owner = r.u8();
@@ -630,7 +654,7 @@ std::optional<Command> load_command(core::ByteReader& r, int format) {
 std::vector<uint8_t> Sim::save() const {
   core::ByteWriter w;
   w.str("totu-sim");
-  w.u32(23);   // séma (23: a harci magatartások; 22: a gép kötelező iránya és kisnépe, a táj; 21: csapatok; 20: az összesítő számlálói; 19: a meccs módja; 18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
+  w.u32(24);   // séma (24: követés és kísérés; 23: a harci magatartások; 22: a gép kötelező iránya és kisnépe, a táj; 21: csapatok; 20: az összesítő számlálói; 19: a meccs módja; 18: a parancssor és a járőr; 17: a vereség-szabály kapcsolója; 16: a tickek között törlésre jelölt entitások és halál-események; 15: a pálya-blokkolások a végén; 14: a gépi játékosok beállítása a fejléc után; 13: az „Őrült” gép csalásjelzője; 12: ideiglenes felfedés; 11: holttestek; 2: a csatlakozók állapotával; 3: M4-es parancsformátum; 4: M6 – parancs, játékosok; 5: napszak/időjárás; 6: képességek; 7: helyőrség; 8: vereség; 9: elesett hősök; 10: szövetség)
   w.u32(static_cast<uint32_t>(ai_slots_.size()));   // a gépek beállítása elöl: betöltés előtt is kiolvasható
   for (const AiSlot& a : ai_slots_) {
     w.u8(a.player);
@@ -724,6 +748,8 @@ std::vector<uint8_t> Sim::save() const {
   w.str(climate_);   // 22: a táj
   w.u32(static_cast<uint32_t>(stances_.size()));   // 23: a harci magatartások
   for (const auto& [e, st] : stances_) { w.u32(e); w.u8(st); }
+  w.u32(static_cast<uint32_t>(escorts_.size()));   // 24: követés és kísérés
+  for (const Escort& es : escorts_) { w.u32(es.unit); w.u32(es.target); w.u8(es.guard); w.i32(es.repath); w.i32(es.scan); }
   return w.data();
 }
 
@@ -770,7 +796,7 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
   core::ByteReader r(data);
   if (r.str() != "totu-sim") return false;
   const uint32_t schema = r.u32();
-  if (schema < 3 || schema > 23) return false;
+  if (schema < 3 || schema > 24) return false;
   if (schema >= 14) {
     ai_slots_ = read_ai_slots(r, schema);
     if (!r.ok()) return false;
@@ -978,6 +1004,19 @@ bool Sim::load_impl(const std::vector<uint8_t>& data) {
       const EntityId e = r.u32();
       const uint8_t sv = r.u8();
       if (sv >= 1 && sv <= 3 && (stances_.empty() || e > stances_.back().first)) stances_.emplace_back(e, sv);
+    }
+  }
+  escorts_.clear();
+  if (schema >= 24) {
+    const uint32_t ne = r.u32();
+    for (uint32_t i = 0; i < ne && i < 100000 && r.ok(); ++i) {
+      Escort es;
+      es.unit = r.u32();
+      es.target = r.u32();
+      es.guard = r.u8() ? 1 : 0;
+      es.repath = r.i32();
+      es.scan = r.i32();
+      if (escorts_.empty() || es.unit > escorts_.back().unit) escorts_.push_back(es);
     }
   }
   if (!r.ok() || !r.at_end()) return false;

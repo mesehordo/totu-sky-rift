@@ -10060,3 +10060,15 @@ msgstr ""
 msgctxt "hud.stance.tip"
 msgid "Harci magatartás – kattintás: a következő, jobb kattintás: az előző. Védekező: rövid ideig üldöz, aztán visszatér. Agresszív: üldöz, amíg látja. Helytartás: nem mozdul, a lőtávba érőt támadja. Passzív: magától nem támad."
 msgstr ""
+
+msgctxt "hud.guard"
+msgid "Kísérés"
+msgstr ""
+
+msgctxt "hud.guard.tip"
+msgid "Kísérés: kattints egy saját egységre vagy épületre – a kijelöltek mellette maradnak, és megtámadják, aki bántja. (Jobb kattintás egy saját egységre: csak követés.)"
+msgstr ""
+
+msgctxt "hud.err.guard"
+msgid "Saját egységet vagy épületet válassz."
+msgstr ""

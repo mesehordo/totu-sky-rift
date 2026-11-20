@@ -1634,6 +1634,7 @@ int main(int argc, char** argv) {
           if (world.order_rally(wx, wy)) {   // csak épület kijelölve: a gyülekezőpont (a régi szerint)
           } else if (const sim::EntityId enemy = world.enemy_at(wx, wy)) world.order_attack(enemy);   // ellenségre: támadás
           else if (const sim::EntityId gb = world.garrison_at(wx, wy)) world.order_garrison(gb);   // saját helyőrségbe
+          else if (const sim::EntityId fu = world.friendly_unit_at(wx, wy)) world.order_follow(fu);   // saját egységre: követés (WC3)
           else {   // mozgás: a felengedéskor (húzva vonalra, különben alakzatban)
             line_drag = true;
             line_x0 = wx;

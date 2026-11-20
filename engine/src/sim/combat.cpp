@@ -211,6 +211,75 @@ bool Sim::set_stance(EntityId e, uint8_t stance) {
   return true;
 }
 
+bool Sim::order_escort(EntityId e, EntityId t, bool guard) {
+  if (!rules_ || !world_.alive(e) || !world_.alive(t) || e == t) return false;
+  const Health* h = world_.get<Health>(e);
+  const Health* th = world_.get<Health>(t);
+  if (!h || !th || th->hp <= 0 || !allied(h->owner, th->owner) || !world_.get<Unit>(e) || !world_.get<Movement>(e)) return false;
+  if (!guard && !world_.get<Unit>(t)) return false;   // követni csak egységet lehet; kísérni épületet is
+  Escort es;
+  es.unit = e;
+  es.target = t;
+  es.guard = guard ? 1 : 0;
+  const auto it = std::lower_bound(escorts_.begin(), escorts_.end(), e, [](const Escort& a, EntityId x) { return a.unit < x; });
+  if (it != escorts_.end() && it->unit == e) *it = es;
+  else escorts_.insert(it, es);
+  return true;
+}
+
+void Sim::escort_system() {
+  // a régi `follow` helyett (WC3: követés; AoE2: kísérés): a követő a cél közelében marad; a kísérő a cél közelében
+  // lévő ellenségre rátámad (a póráz közepe a cél helye), utána visszatér mellé
+  std::vector<EntityId> done;
+  for (Escort& es : escorts_) {
+    const Health* h = world_.alive(es.unit) ? world_.get<Health>(es.unit) : nullptr;
+    const Health* th = world_.alive(es.target) ? world_.get<Health>(es.target) : nullptr;
+    if (!h || !th || h->hp <= 0 || th->hp <= 0 || sheltered(es.target) || sheltered(es.unit)) {
+      done.push_back(es.unit);
+      continue;
+    }
+    const Position& up = *world_.get<Position>(es.unit);
+    const Position& tp = *world_.get<Position>(es.target);
+    Combat* c = world_.get<Combat>(es.unit);
+    const Building* tb = world_.get<Building>(es.target);
+    const Unit* uu = world_.get<Unit>(es.unit);
+    const Fixed ur = uu ? rules_->defs[uu->def].radius : Fixed::from_ratio(1, 2);
+    Fixed keep = ur + Fixed::from_ratio(3, 2);
+    if (tb) keep = keep + Fixed::from_ratio(std::max<int>(tb->w, tb->h), 2);
+    else if (const Unit* tu = world_.get<Unit>(es.target)) keep = keep + rules_->defs[tu->def].radius;
+    if (es.guard && c && (c->order == Combat::None || c->order == Combat::Leash) && --es.scan <= 0) {
+      es.scan = 12;   // 0,4 s
+      const Fixed reach = Fixed::from_int(tb ? 6 : 5);
+      for (const EntityId o : enemy_units_in(h->owner, tp.x, tp.y, reach)) {
+        if (!is_visible(h->owner, o) || !can_hit(es.unit, o)) continue;
+        c->order = Combat::Attack;
+        c->autonomous = 1;
+        c->target = o;
+        c->hx = tp.x;
+        c->hy = tp.y;
+        c->repath = 0;
+        break;
+      }
+    }
+    if (c && (c->order == Combat::Attack || c->order == Combat::Leash || c->order == Combat::Hold)) continue;   // harcol / tart
+    const Movement* mv = world_.get<Movement>(es.unit);
+    if (core::length(up.x - tp.x, up.y - tp.y) > keep) {
+      if (--es.repath <= 0 || !(mv && mv->moving)) {
+        order_move(es.unit, tp.x, tp.y);
+        es.repath = 10;
+      }
+    } else if (mv && mv->moving) {
+      halt(es.unit);
+      es.repath = 0;
+    }
+  }
+  if (!done.empty()) {
+    escorts_.erase(std::remove_if(escorts_.begin(), escorts_.end(),
+                                  [&](const Escort& es) { return std::find(done.begin(), done.end(), es.unit) != done.end(); }),
+                   escorts_.end());
+  }
+}
+
 bool Sim::order_hold(EntityId e) {
   if (!rules_ || !world_.alive(e)) return false;
   Combat* c = world_.get<Combat>(e);
@@ -672,6 +741,7 @@ void Sim::match_combat_system() {
   if (!stances_.empty() && tick_ % kTickHz == 0) {   // a megszűnt egységek magatartása törlődik (másodpercenként)
     stances_.erase(std::remove_if(stances_.begin(), stances_.end(), [&](const auto& s) { return !world_.alive(s.first); }), stances_.end());
   }
+  if (!escorts_.empty()) escort_system();   // követés és kísérés
   // pajzs-visszatöltés (a régi: a játék alapja szerinti késleltetés után)
   world_.pool<Vital>().each([&](EntityId e, Vital& v) {
     const Unit* u = world_.get<Unit>(e);
@@ -722,7 +792,9 @@ void Sim::match_combat_system() {
         if (!stances_.empty()) {
           const uint8_t st = stance_of(e);
           if (st == Passive) break;   // passzív: magától nem támad
-          if (st == StandGround && !(mv && mv->moving)) {   // helytartás: megérkezve áll és lőtávban támad
+          const auto ei = std::lower_bound(escorts_.begin(), escorts_.end(), e, [](const Escort& a, EntityId x) { return a.unit < x; });
+          const bool escorting = ei != escorts_.end() && ei->unit == e;   // a követő helytartó is követ
+          if (st == StandGround && !escorting && !(mv && mv->moving)) {   // helytartás: megérkezve áll és lőtávban támad
             c.order = Combat::Hold;
             c.scan = 0;
             break;

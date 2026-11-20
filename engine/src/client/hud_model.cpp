@@ -708,6 +708,12 @@ CommandCard HudModel::command_card() {
       slots[3] = std::move(s);
     }
     std::vector<HudSlot> ctx;
+    if (mobile && attack && workers.empty()) {   // kísérés (AoE2 „Guard”; a munkásnál nincs): követi és védi a kiválasztott saját egységet vagy épületet
+      HudSlot s = make_slot("guard", "spearwall", tr("guard"), [this] { mode = {HudMode::Guard, {}, sim::kNoDef, 0}; });
+      s.active = mode.kind == HudMode::Guard;
+      s.tip_text = tr("guard.tip");
+      ctx.push_back(std::move(s));
+    }
     if (!workers.empty()) {
       HudSlot s = make_slot("build_menu", "build", tr("build"), [this] { open_page("build"); });
       s.tip_text = tr("build.tip");
@@ -1588,6 +1594,18 @@ bool HudModel::world_click(float wx, float wy, int button, sim::EntityId under) 
       c.def = m.ability;
       c.x = to_fixed(wx);
       c.y = to_fixed(wy);
+      cmd(c);
+      break;
+    }
+    case HudMode::Guard: {
+      const SnapUnit* gt = under ? unit(under) : nullptr;
+      if (!gt || gt->hp <= 0 || !snap_ || !snap_->allied(player, gt->owner) || std::find(us.begin(), us.end(), under) != us.end()) {
+        post_notice(tr("err.guard"));
+        return true;   // a mód marad
+      }
+      sim::Command c = base_cmd(sim::Command::Kind::Guard);
+      c.units = us;
+      c.target = under;
       cmd(c);
       break;
     }

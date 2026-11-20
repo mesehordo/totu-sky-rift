@@ -51,6 +51,10 @@ class World {
   // harc (M6 5. lépés): az ellenség a pont alatt (0 = nincs), támadás, támadó mozgás
   sim::EntityId enemy_at(float wx, float wy) const;
   void order_attack(sim::EntityId target);
+  // követés (jobb kattintás saját egységre) és kísérés (a „Kísérés” gombbal; egység vagy épület)
+  void order_follow(sim::EntityId target);
+  void order_guard(sim::EntityId target);
+  sim::EntityId friendly_unit_at(float wx, float wy) const;   // saját vagy szövetséges egység (nem a kijelöltek közül)
   void order_attack_move(float wx, float wy);
   // helyőrség (D39): a pont alatti saját, kész helyőrség-épület (0 = nincs); a kijelöltek beszállnak; U: kiszállás
   sim::EntityId garrison_at(float wx, float wy) const;

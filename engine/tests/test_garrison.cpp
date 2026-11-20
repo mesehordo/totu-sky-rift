@@ -401,3 +401,49 @@ TEST_CASE("harci magatartas (D13): vedekezo alap, agressziv poraz nelkul, helyta
   CHECK(s.world().get<sim::Combat>(a)->order != sim::Combat::Hold);
   CHECK(h0 != s.hash());
 }
+
+TEST_CASE("kovetes es kiseres: a koveto a cel mellett marad; a kisero ratamad a cel kozeleben levo ellensegre; uj parancs megszunteti") {
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  const auto lead = put(s, "urs_pajzshordozo", 1, 60, 185, false);
+  const auto fol = put(s, "urs_pajzshordozo", 1, 100, 185, false);
+  sim::Command c;
+  c.kind = sim::Command::Kind::Follow;
+  c.owner = 1;
+  c.units = {fol};
+  c.target = lead;
+  s.apply_now(c);
+  CHECK(s.escorts().size() == 1 && s.escorts()[0].guard == 0);
+  CHECK(s.order_move(lead, fx(160, 10), fx(185, 10)));
+  m.run(240);
+  const auto& lp = *s.world().get<sim::Position>(lead);
+  const auto& fp = *s.world().get<sim::Position>(fol);
+  CHECK(core::length(lp.x - fp.x, lp.y - fp.y) < fx(30, 10));   // a vezető mellett
+  CHECK(lp.x > fx(130, 10));
+  // kísérés: a cél közelébe érkező ellenségre rátámad
+  c.kind = sim::Command::Kind::Guard;
+  s.apply_now(c);
+  CHECK(s.escorts().size() == 1 && s.escorts()[0].guard == 1);
+  const auto foe = put(s, "urs_pajzshordozo", 2, 175, 175, true);
+  m.run(30);
+  CHECK(s.world().get<sim::Combat>(fol)->order == sim::Combat::Attack && s.world().get<sim::Combat>(fol)->target == foe);
+  // mentés és betöltés: a kísérés megmarad
+  const auto data = s.save();
+  Match b("BUILD-ALAP", true, false);
+  CHECK(b.sim->load(data));
+  b.sim->restore_obstacles(*b.map);
+  CHECK(b.sim->escorts().size() == 1 && b.sim->hash() == s.hash());
+  // új parancs: vége
+  sim::Command st;
+  st.kind = sim::Command::Kind::Stop;
+  st.owner = 1;
+  st.units = {fol};
+  s.apply_now(st);
+  CHECK(s.escorts().empty());
+  // épületet csak kísérni lehet, követni nem
+  const auto house = s.place_building(def_of("urs_hosszuhaz"), 1, 2, 17, true);
+  CHECK(!s.order_escort(fol, house, false));
+  CHECK(s.order_escort(fol, house, true));
+  // ellenséges célpontot nem lehet követni
+  CHECK(!s.order_escort(lead, foe, false));
+}

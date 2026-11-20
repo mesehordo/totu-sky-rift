@@ -837,7 +837,11 @@ struct Command {
                               // irányítási csomag (D46): járőr (`units` a mostani helye és (x, y) között, támadó mozgással)
                               Patrol = 33,
                               // harci magatartás (`units`, `rx`: 0 védekező, 1 agresszív, 2 helytartás, 3 passzív)
-                              Stance = 34 };
+                              Stance = 34,
+                              // követés (`units` → `target` saját vagy szövetséges egység; WC3: jobb kattintás) és
+                              // kísérés (`units` → `target` egység vagy épület: követi / mellette marad, és rátámad a
+                              // támadóira; AoE2 „Guard”)
+                              Follow = 35, Guard = 36 };
   // a `flag` bitje egységparancsnál (Move, Attack, Gather …): a meglévő parancs után sorba áll (Shift)
   static constexpr uint8_t kQueue = 0x80;
   Kind kind = Kind::Spawn;
@@ -990,6 +994,15 @@ class Sim {
     return it != stances_.end() && it->first == e ? it->second : static_cast<uint8_t>(Defensive);
   }
   bool set_stance(EntityId e, uint8_t stance);
+  // követés / kísérés (lásd Command::Follow, Guard); új parancs megszünteti
+  bool order_escort(EntityId unit, EntityId target, bool guard);
+  struct Escort {
+    EntityId unit = 0, target = 0;
+    uint8_t guard = 0;
+    int32_t repath = 0, scan = 0;
+  };
+  const std::vector<Escort>& escorts() const { return escorts_; }
+  void escort_system();
   // Sebzés a régi `apply_damage` szerint: típusszorzó, címkebónusz, pajzs, páncél (legalább 0,5); ezred egységben.
   // `magic`: varázssebzés (típusszorzó és páncél nélkül); `el`: a találat eleme (jég, félelem).
   void deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId target, int64_t milli, bool ranged,
@@ -1146,6 +1159,7 @@ class Sim {
     if (events_.size() < 256) events_.push_back({kind, owner, def});
   }
   std::vector<SimEvent> events_;
+  std::vector<Escort> escorts_;   // a követők és kísérők (az egység azonosítója szerint; mentés 24)
   std::vector<std::pair<EntityId, uint8_t>> stances_;   // a nem alapértelmezett magatartások (azonosító szerint; mentés 23)
   std::vector<std::pair<EntityId, int64_t>> cmd_moves_;   // parancsra mozgó egységek (az elérhetetlen cél jelzéséhez; átmeneti)
   void apply(const Command& c);

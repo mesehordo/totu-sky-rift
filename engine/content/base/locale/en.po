@@ -10061,3 +10061,15 @@ msgstr "Passive"
 msgctxt "hud.stance.tip"
 msgid "Harci magatartás – kattintás: a következő, jobb kattintás: az előző. Védekező: rövid ideig üldöz, aztán visszatér. Agresszív: üldöz, amíg látja. Helytartás: nem mozdul, a lőtávba érőt támadja. Passzív: magától nem támad."
 msgstr "Combat stance – click: next, right-click: previous. Defensive: chases briefly, then returns. Aggressive: chases while in sight. Stand ground: does not move, attacks what comes in range. Passive: never attacks on its own."
+
+msgctxt "hud.guard"
+msgid "Kísérés"
+msgstr "Guard"
+
+msgctxt "hud.guard.tip"
+msgid "Kísérés: kattints egy saját egységre vagy épületre – a kijelöltek mellette maradnak, és megtámadják, aki bántja. (Jobb kattintás egy saját egységre: csak követés.)"
+msgstr "Guard: click one of your units or buildings – the selected units stay beside it and attack whoever harms it. (Right-click on one of your units: follow only.)"
+
+msgctxt "hud.err.guard"
+msgid "Saját egységet vagy épületet válassz."
+msgstr "Pick one of your own units or buildings."

@@ -299,6 +299,43 @@ void World::order_unload(float wx, float wy) {
   post(c);
 }
 
+void World::order_follow(sim::EntityId target) {
+  if (selected_.empty() || !target) return;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Follow;
+  c.units = selected_;
+  c.target = target;
+  post(c);
+  note_ack("move");
+}
+
+void World::order_guard(sim::EntityId target) {
+  if (selected_.empty() || !target) return;
+  sim::Command c;
+  c.kind = sim::Command::Kind::Guard;
+  c.units = selected_;
+  c.target = target;
+  post(c);
+  note_ack("move");
+}
+
+sim::EntityId World::friendly_unit_at(float wx, float wy) const {
+  if (!cur_) return 0;
+  const uint8_t me = session_.local_player();
+  sim::EntityId best = 0;
+  float best_d = 1e9f;
+  for (const SnapUnit& u : cur_->units) {
+    if (u.kind != SnapUnit::kUnit || u.hp <= 0 || u.owner == 0 || !cur_->allied(me, u.owner)) continue;
+    if (std::find(selected_.begin(), selected_.end(), u.id) != selected_.end()) continue;
+    const float d = std::hypot(u.x - wx, (u.y - 12.0f) - wy);   // a figura törzse a talp fölött
+    if (d <= 18.0f && d < best_d) {
+      best_d = d;
+      best = u.id;
+    }
+  }
+  return best;
+}
+
 void World::order_attack(sim::EntityId target) {
   if (selected_.empty() || !target) return;
   sim::Command c;

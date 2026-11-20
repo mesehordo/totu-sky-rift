@@ -755,6 +755,11 @@ void Hud::draw_char_sheet() {
   const Col acc = model_.faction_color(ofid, true);
   text(*batch_, ftiny, x, y, typ, acc[0], acc[1], acc[2]);
   y += line_h(ftiny) + 3;
+  if (own && e->kind == SnapUnit::kUnit && d->attack.has && d->speed > core::Fixed{}) {   // a harci magatartás neve
+    static const char* kStance[] = {"stance.defensive", "stance.aggressive", "stance.ground", "stance.passive"};
+    text(*batch_, ftiny, x, y, model_.tr(kStance[std::min<int>(e->stance, 3)]), 214, 206, 186);
+    y += line_h(ftiny) + 2;
+  }
   // a portré alatt: életerő, alatta energia (vagy pajzs) – csak ha az egység használja
   const Rect& hb = L.hpbar;
   const Rect& mb = L.mpbar;

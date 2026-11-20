@@ -40,7 +40,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 | Kijelölés, mozgás, támadás, attack-move, stop, hold, patrol, javítás, munkásfeladat, építés, kutatás, képesség, vezérlőcsoport, gyülekezőpont, Shift-sor, jobb gombos kontextus | **megfelel** |
 | Autocast kapcsoló | **megfelel** (kapcsolós képességek) |
 | Stance (agresszív / védekező / helytartás) | **kész (2026-11-20)**: 4 fokozat az AoE2 szerint (védekező alap, agresszív, helytartás, passzív) |
-| Guard / follow (kísérés, követés) | **megbeszélendő (2)** – a 02 kötelező alapparancsként sorolja, nincs meg |
+| Guard / follow (kísérés, követés) | **kész (2026-11-20)**: jobb kattintás saját egységre = követés; „Kísérés” gomb = követ és véd (egységet vagy épületet) |
 | Tétlen munkás, hősválasztás (F2–F4), billentyű-újrakiosztás ütközésjelzéssel | **megfelel** |
 | Minitérkép-jelzés (ping) | **hiányzik (11)** |
 | A játékos parancsa felülírja az automatikát | **megfelel** |
@@ -111,8 +111,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha nem ütközik a tanulmánnyal.
 
 1. ~~**Stance**~~ – **kész (2026-11-20)**: 4 fokozat (a tulajdonos döntése), a „Tart” (T) helyén léptethető gomb.
-2. **Követés / kísérés** (guard/follow) – javaslat: jobb gomb saját egységen = követés (WC3), a kísérő megtámadja,
-   aki a kísértet bántja.
+2. ~~**Követés / kísérés**~~ – **kész (2026-11-20)**: a tulajdonos döntése szerint (követés jobb kattintással, kísérés gombbal).
 3. **Minimális lőtávolság** – javaslat: csak az ostromgépeknek (AoE2 mangonel/trebuchet), adatmezővel.
 4. **Baráti tűz** – javaslat: képességenkénti adatmező, alapból ki (a mostani viselkedés); csak ha kell.
 5. **Idézések és a létszámkorlát** – javaslat: az idézés ne léphesse túl a korlátot (WC3), vagy külön idézési keret.
