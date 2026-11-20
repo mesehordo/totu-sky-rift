@@ -83,7 +83,7 @@ TEST_CASE("M8 felulet – menü: a főmenü a régi pontjaival – egyéni csata
     }
   }
   CHECK(items == 7);
-  CHECK(soon == 3);   // többjátékos, történetek, készítők (a modkezelő M13 óta él)
+  CHECK(soon == 2);   // többjátékos, történetek (a modkezelő M13 óta, a készítők a hiánylista óta él)
   CHECK(m.find(MenuAct::Toggle, 0)->label == "Egyjátékos");
   CHECK(m.find(MenuAct::Toggle, 0)->sub);
   // a letiltott pontra kattintás nem tesz semmit
@@ -645,4 +645,19 @@ TEST_CASE("Csata beallitas (a regi): kezdohely, szin, nyersanyag – a MatchSetu
   pick(m, MenuAct::SlotStart, 1, 2);   // ütközés: a 2. hely is a 2. kezdőhelyet kérné
   CHECK(!m.match_config(7, &c));
   CHECK(press(m, MenuAct::Start) == Menu::Result::None && m.message() == "Két résztvevőnek ugyanaz a kezdőhelye.");
+}
+
+TEST_CASE("Beallitasok (a regi): jatekido, F1 felirat, arnyekok, reszecskek, allapotok, jatekebesseg – mentes es betoltes") {
+  client::Settings st;
+  Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+  m.go(MenuScreen::Settings);
+  m.layout(1280, 720);
+  for (int row = 11; row <= 15; ++row) press(m, MenuAct::Cycle, row);
+  press(m, MenuAct::Cycle, 16);
+  CHECK(!st.show_clock && !st.help_hint && !st.shadows && !st.ambient && !st.status_fx && st.game_speed == 150);
+  CHECK(m.find(MenuAct::Cycle, 16)->label == "×1.5");
+  client::Settings back;
+  CHECK(client::settings_from_json(client::settings_to_json(st), &back) && back == st);
+  press(m, MenuAct::Cycle, 2);   // a régi sorszámok változatlanok (2: teljes képernyő)
+  CHECK(st.fullscreen);
 }

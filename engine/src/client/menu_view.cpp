@@ -39,6 +39,13 @@ Rgba alpha(Rgba c, int a) {
   return c;
 }
 
+// a tippek száma (`ui.tip.1` …, a régi `tips.py`): az első hiányzóig
+int tip_count(const Locale& loc) {
+  int n = 0;
+  while (n < 200 && loc.tr("ui.tip." + std::to_string(n + 1)) != "ui.tip." + std::to_string(n + 1)) ++n;
+  return n;
+}
+
 std::vector<uint8_t> read_bytes(const std::filesystem::path& p) {
   std::ifstream in(p, std::ios::binary);
   return {std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
@@ -83,7 +90,61 @@ class MenuView {
     return true;
   }
 
+  std::string loading_bg_;
   float logo_aspect() const { return logo_.height > 0 ? static_cast<float>(logo_.width) / static_cast<float>(logo_.height) : 0; }
+
+  // a régi `Loader`: a csata előtt véletlenszerűen az egyik tusrajzos térkép (assets/ui/bg/loading), alul sötét sáv a
+  // felirattal, forgó rúnakörrel és egy tippel
+  void draw_loading(render::SpriteBatch& batch, int w, int h, float u, const std::string& title, const std::string& tip, double t) {
+    bake(u);
+    W_ = static_cast<float>(w);
+    H_ = static_cast<float>(h);
+    u_ = u;
+    if (loading_bg_.empty()) {
+      std::vector<std::filesystem::path> pics;
+      std::error_code ec;
+      for (const auto& e : std::filesystem::directory_iterator(std::filesystem::path(assets_) / "ui" / "bg" / "loading", ec)) {
+        if (e.path().extension() == ".png") pics.push_back(e.path());
+      }
+      std::sort(pics.begin(), pics.end());
+      loading_bg_ = pics.empty() ? std::string("-") : pics[std::random_device{}() % pics.size()].string();
+    }
+    batch.begin(render::ortho(0, W_, H_, 0));
+    auto it = bg_.find(loading_bg_);
+    if (it == bg_.end()) {
+      render::Texture tex;
+      if (auto img = loading_bg_ == "-" ? std::nullopt : render::load_png(loading_bg_)) {
+        if (img->width <= dev_.max_texture_size() && img->height <= dev_.max_texture_size()) tex = dev_.create_array_from(*img, false);
+      }
+      it = bg_.emplace(loading_bg_, tex).first;
+    }
+    rect(batch, 0, 0, W_, H_, Rgba{12, 10, 14, 255});
+    if (it->second.id) {   // kitöltve, középre
+      const auto& tex = it->second;
+      const float sc = std::max(W_ / static_cast<float>(tex.width), H_ / static_cast<float>(tex.height));
+      render::SpriteInstance in;
+      in.w = static_cast<float>(tex.width) * sc;
+      in.h = static_cast<float>(tex.height) * sc;
+      in.x = (W_ - in.w) / 2;
+      in.y = (H_ - in.h) / 2;
+      batch.draw(tex, nullptr, in);
+    }
+    const float bh = k(120);
+    rect(batch, 0, H_ - bh, W_, bh, Rgba{8, 6, 10, 215});
+    rect(batch, 0, H_ - bh, W_, k(2), kGold);
+    // forgó rúnakör (12 kis rombusz körbe)
+    const float rx = W_ - k(80), ry = H_ - bh / 2, rr = k(30);
+    for (int i = 0; i < 12; ++i) {
+      const float a = static_cast<float>(t) * 1.6f + static_cast<float>(i) * 0.5236f;
+      const uint8_t al = static_cast<uint8_t>(90 + 165 * ((i + static_cast<int>(t * 8)) % 12) / 11);
+      diamond(batch, rx + std::cos(a) * rr, ry + std::sin(a) * rr, k(4), Rgba{kGold[0], kGold[1], kGold[2], al});
+    }
+    const auto [tf, ts] = fit(MenuText::Big, MenuText::Med, title, W_ - k(200));
+    shadowed(batch, tf, k(40), H_ - bh + k(18), ts, kGold);
+    const auto [pf, ps] = fit(MenuText::Med, MenuText::Small, tip, W_ - k(200));
+    shadowed(batch, pf, k(40), H_ - bh + k(66), ps, color(MenuText::Text));
+    batch.end();
+  }
 
   void draw(render::SpriteBatch& batch, const Menu& m, int w, int h, float mx, float my, double t) {
     bake(m.scale());
@@ -262,7 +323,7 @@ class MenuView {
   // --- háttér, oldalsáv, panel ---
   void background(render::SpriteBatch& b, MenuScreen s, double t) {
     const std::string path = s == MenuScreen::Main || s == MenuScreen::Settings || s == MenuScreen::Sound || s == MenuScreen::Keys ||
-                                     s == MenuScreen::Mods
+                                     s == MenuScreen::Mods || s == MenuScreen::Load || s == MenuScreen::Credits
                                  ? main_bg_   // az oldalsáv melletti képernyők: a főmenü háttere
                              : s == MenuScreen::Skirmish ? (std::filesystem::path(assets_) / "ui" / "bg" / "setup.png").string()
                                                          : (std::filesystem::path(assets_) / "ui" / "bg" / "options.png").string();
@@ -584,14 +645,26 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
         std::filesystem::remove(del, ec);
         refresh_saves();
       }
+      auto loading_screen = [&] {   // a régi `Loader`: a meccs betöltése alatt látszik
+        const int n = tip_count(loc);
+        const std::string tip = n > 0 ? loc.tr("ui.tip." + std::to_string(1 + static_cast<int>(std::random_device{}() % static_cast<unsigned>(n)))) : std::string();
+        dev.bind_target(nullptr, w, h);
+        dev.clear(0.05f, 0.04f, 0.06f, 1.0f);
+        view.draw_loading(batch, w, h, menu.scale(), loc.tr("ui.loading"), tip, 0.0);
+        SDL_GL_SwapWindow(win);
+      };
       if (res == Menu::Result::Load && out) {   // mentett játék betöltése
         *out = MatchConfig{};
         out->load_path = menu.load_choice();
+        loading_screen();
         return true;
       }
       if (res == Menu::Result::Start) {
         const uint64_t seed = static_cast<uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());
-        if (menu.match_config(seed, out)) return true;
+        if (menu.match_config(seed, out)) {
+          loading_screen();
+          return true;
+        }
       }
       menu.layout(w, h);
     }

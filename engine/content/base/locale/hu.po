@@ -9440,3 +9440,255 @@ msgstr ""
 msgctxt "ui.skirmish.start_taken"
 msgid "Két résztvevőnek ugyanaz a kezdőhelye."
 msgstr ""
+
+msgctxt "ui.loading"
+msgid "Betöltés…"
+msgstr ""
+
+msgctxt "ui.tip.1"
+msgid "F8: a következő tétlen munkás kijelölése."
+msgstr ""
+
+msgctxt "ui.tip.2"
+msgid "Szóköz: ugrás a bázisra vagy az utolsó riasztáshoz."
+msgstr ""
+
+msgctxt "ui.tip.3"
+msgid "Shifttel több parancsot is sorba tehetsz."
+msgstr ""
+
+msgctxt "ui.tip.4"
+msgid "Ctrl+1…9: csoport mentése, 1…9: kijelölése."
+msgstr ""
+
+msgctxt "ui.tip.5"
+msgid "Dupla klikk egy egységen: az összes azonos típus."
+msgstr ""
+
+msgctxt "ui.tip.6"
+msgid "Jobb klikk egy erőforrásra: a munkás gyűjteni kezd."
+msgstr ""
+
+msgctxt "ui.tip.7"
+msgid "F1: súgó és az összes gyorsbillentyű."
+msgstr ""
+
+msgctxt "ui.tip.8"
+msgid "F2–F4: a hőseid kijelölése."
+msgstr ""
+
+msgctxt "ui.tip.9"
+msgid "A parancsrács betűi (W E R T…) gyorsbillentyűk."
+msgstr ""
+
+msgctxt "ui.tip.10"
+msgid "Középső egérgomb: a kamera húzása."
+msgstr ""
+
+msgctxt "ui.tip.11"
+msgid "+ és −: a játéksebesség állítása."
+msgstr ""
+
+msgctxt "ui.tip.12"
+msgid "A sok egység kevesebb aranyat hoz (Hadtáp)."
+msgstr ""
+
+msgctxt "ui.tip.13"
+msgid "A tétlen munkás pénzt veszít: figyeld a jelzőt!"
+msgstr ""
+
+msgctxt "ui.tip.14"
+msgid "A meteorit a különleges egységek és kutatások ára."
+msgstr ""
+
+msgctxt "ui.tip.15"
+msgid "Az Égkő-fényben a varázslók erősebbek."
+msgstr ""
+
+msgctxt "ui.tip.16"
+msgid "Az Égkő közelében a pajzsok gyorsabban töltődnek."
+msgstr ""
+
+msgctxt "ui.tip.17"
+msgid "A létszámkorlátnál nem képezhetsz új egységet."
+msgstr ""
+
+msgctxt "ui.tip.18"
+msgid "Minden egységtípusnak van erőssége és gyengéje."
+msgstr ""
+
+msgctxt "ui.tip.19"
+msgid "A lovasság a lövészek ellen erős, a lándzsa ellen gyenge."
+msgstr ""
+
+msgctxt "ui.tip.20"
+msgid "Az ostromgépek az épületek ellen a legjobbak."
+msgstr ""
+
+msgctxt "ui.tip.21"
+msgid "A hős szintet lép, képességet tanul, tárgyat visel."
+msgstr ""
+
+msgctxt "ui.tip.22"
+msgid "Az elesett hős a főépületben újraéleszthető."
+msgstr ""
+
+msgctxt "ui.tip.23"
+msgid "A főépület gombjáról indul az Égi kegy csapása."
+msgstr ""
+
+msgctxt "ui.tip.24"
+msgid "Az Égi kegy csak látható pontra csaphat le."
+msgstr ""
+
+msgctxt "ui.tip.25"
+msgid "A Felemelkedéskor választott irány végleges."
+msgstr ""
+
+msgctxt "ui.tip.26"
+msgid "A Diplomácia csarnokában szövetséges népet választhatsz."
+msgstr ""
+
+msgctxt "ui.tip.27"
+msgid "Szürke elfek: épületeik maguktól épülnek fel."
+msgstr ""
+
+msgctxt "ui.tip.28"
+msgid "Szürke elfek: a Napszentélynél fohászkodó munkás Áhítatot ad."
+msgstr ""
+
+msgctxt "ui.tip.29"
+msgid "Szürke elfek: a Napfúró magától is termel."
+msgstr ""
+
+msgctxt "ui.tip.30"
+msgid "Ursanok: a telepesek riadóra fegyvert ragadnak."
+msgstr ""
+
+msgctxt "ui.tip.31"
+msgid "Ursanok: a helyőrségbe húzódott munkás biztonságban van."
+msgstr ""
+
+msgctxt "ui.tip.32"
+msgid "Formitarák: a mélységen álló fák lassan elrothadnak."
+msgstr ""
+
+msgctxt "ui.tip.33"
+msgid "Formitarák: a szolga a Fertőzött tárnába olvadhat."
+msgstr ""
+
+msgctxt "ui.tip.34"
+msgid "Wullof: a csapolt fa hordás nélkül ad fát."
+msgstr ""
+
+msgctxt "ui.tip.35"
+msgid "Wullof: a tábor felszedhető és továbbvándorolhat."
+msgstr ""
+
+msgctxt "ui.tip.36"
+msgid "Vasbirodalom: alapozáson az épület teljes életerővel áll."
+msgstr ""
+
+msgctxt "ui.tip.37"
+msgid "Vasbirodalom: alapozás nélkül az épület lassan kopik."
+msgstr ""
+
+msgctxt "ui.tip.38"
+msgid "Vasbirodalom: a szobrok bónuszt adnak, amíg állnak."
+msgstr ""
+
+msgctxt "ui.tip.39"
+msgid "Huk’ucha: a saját tavacskán a békák gyorsabbak."
+msgstr ""
+
+msgctxt "ui.tip.40"
+msgid "Huk’ucha: az Ikrarakó csomóiból ebihalak kelnek ki."
+msgstr ""
+
+msgctxt "ui.tip.41"
+msgid "Huk’ucha: a Tóteremtő szentélynél énekelnek a Tóásók."
+msgstr ""
+
+msgctxt "ui.tip.42"
+msgid "Ooni: a lámpásfényben gyógyulnak az egységeid."
+msgstr ""
+
+msgctxt "ui.tip.43"
+msgid "Ooni: a Torii-kapupár között átkelhet a sereg."
+msgstr ""
+
+msgctxt "ui.tip.44"
+msgid "Ooni: a harci kedv elfogyhat – a dobos visszaadja."
+msgstr ""
+
+msgctxt "ui.tip.45"
+msgid "A szünetmenüben mentheted a játékot; a Főmenü → Betöltés folytatja."
+msgstr ""
+
+msgctxt "ui.credits.title"
+msgid "KÉSZÍTŐK"
+msgstr ""
+
+msgctxt "ui.credits.1"
+msgid "TOTU: Sky Rift – A kölcsönkapott öröklét"
+msgstr ""
+
+msgctxt "ui.credits.2"
+msgid "-"
+msgstr ""
+
+msgctxt "ui.credits.3"
+msgid "Kreátor: Mesehordo"
+msgstr ""
+
+msgctxt "ui.credits.4"
+msgid "(c) 2026 Mesehordo – a világ és a történet minden joga fenntartva"
+msgstr ""
+
+msgctxt "ui.credits.5"
+msgid "-"
+msgstr ""
+
+msgctxt "ui.credits.6"
+msgid "Motor: C++20, SDL3, OpenGL 3.3, Lua 5.4, ENet, stb"
+msgstr ""
+
+msgctxt "ui.credits.7"
+msgid "A motor GPL-3.0-or-later; a szabályadatok és a modkészítői leírás CC BY 4.0"
+msgstr ""
+
+msgctxt "ui.credits.8"
+msgid "Ihlet: Warcraft II, StarCraft, Armies of Exigo, Command & Conquer"
+msgstr ""
+
+msgctxt "ui.credits.9"
+msgid "-"
+msgstr ""
+
+msgctxt "ui.credits.10"
+msgid "Minden tartalom moddolható – lásd docs/modolas/MOD_SDK.md"
+msgstr ""
+
+msgctxt "ui.settings.show_clock"
+msgid "Játékidő (jobb fent)"
+msgstr ""
+
+msgctxt "ui.settings.help_hint"
+msgid "F1: súgó felirat"
+msgstr ""
+
+msgctxt "ui.settings.shadows"
+msgid "Árnyékok"
+msgstr ""
+
+msgctxt "ui.settings.ambient"
+msgid "Környezeti részecskék"
+msgstr ""
+
+msgctxt "ui.settings.status_fx"
+msgid "Állapotok animációja a figurán"
+msgstr ""
+
+msgctxt "ui.settings.game_speed"
+msgid "Játéksebesség"
+msgstr ""

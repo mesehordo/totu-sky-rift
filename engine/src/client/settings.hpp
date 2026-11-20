@@ -67,6 +67,10 @@ struct Settings {
   bool edge_scroll = true;
   bool show_fps = true;
   int fps_limit = 60;               // 30 / 60 / 120 / 0 = nincs korlát
+  // a régi beállítások: játékidő és „F1: súgó” felirat jobb fent, árnyékok, környezeti részecskék, állapotok a figurán,
+  // a játéksebesség induláskor (százalék)
+  bool show_clock = true, help_hint = true, shadows = true, ambient = true, status_fx = true;
+  int game_speed = 100;
   std::vector<std::string> mods;    // M13: az engedélyezett modok azonosítói (a kért sorrendben; az alap nélkül)
 
   static const std::vector<std::pair<int, int>>& resolutions();   // a régi menü listája

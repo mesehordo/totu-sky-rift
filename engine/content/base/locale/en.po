@@ -9441,3 +9441,255 @@ msgstr "High"
 msgctxt "ui.skirmish.start_taken"
 msgid "Két résztvevőnek ugyanaz a kezdőhelye."
 msgstr "Two participants share a start position."
+
+msgctxt "ui.loading"
+msgid "Betöltés…"
+msgstr "Loading…"
+
+msgctxt "ui.tip.1"
+msgid "F8: a következő tétlen munkás kijelölése."
+msgstr "F8: select the next idle worker."
+
+msgctxt "ui.tip.2"
+msgid "Szóköz: ugrás a bázisra vagy az utolsó riasztáshoz."
+msgstr "Space: jump to your base or the last alert."
+
+msgctxt "ui.tip.3"
+msgid "Shifttel több parancsot is sorba tehetsz."
+msgstr "Hold Shift to queue several orders."
+
+msgctxt "ui.tip.4"
+msgid "Ctrl+1…9: csoport mentése, 1…9: kijelölése."
+msgstr "Ctrl+1…9: save a group, 1…9: select it."
+
+msgctxt "ui.tip.5"
+msgid "Dupla klikk egy egységen: az összes azonos típus."
+msgstr "Double-click a unit: select all of the same type."
+
+msgctxt "ui.tip.6"
+msgid "Jobb klikk egy erőforrásra: a munkás gyűjteni kezd."
+msgstr "Right-click a resource: the worker starts gathering."
+
+msgctxt "ui.tip.7"
+msgid "F1: súgó és az összes gyorsbillentyű."
+msgstr "F1: help and all hotkeys."
+
+msgctxt "ui.tip.8"
+msgid "F2–F4: a hőseid kijelölése."
+msgstr "F2–F4: select your heroes."
+
+msgctxt "ui.tip.9"
+msgid "A parancsrács betűi (W E R T…) gyorsbillentyűk."
+msgstr "The letters on the command grid (W E R T…) are hotkeys."
+
+msgctxt "ui.tip.10"
+msgid "Középső egérgomb: a kamera húzása."
+msgstr "Middle mouse button: drag the camera."
+
+msgctxt "ui.tip.11"
+msgid "+ és −: a játéksebesség állítása."
+msgstr "+ and −: change the game speed."
+
+msgctxt "ui.tip.12"
+msgid "A sok egység kevesebb aranyat hoz (Hadtáp)."
+msgstr "A large army brings in less gold (Upkeep)."
+
+msgctxt "ui.tip.13"
+msgid "A tétlen munkás pénzt veszít: figyeld a jelzőt!"
+msgstr "Idle workers cost you money: watch the indicator!"
+
+msgctxt "ui.tip.14"
+msgid "A meteorit a különleges egységek és kutatások ára."
+msgstr "Meteorite pays for special units and research."
+
+msgctxt "ui.tip.15"
+msgid "Az Égkő-fényben a varázslók erősebbek."
+msgstr "Mages are stronger in Skystone light."
+
+msgctxt "ui.tip.16"
+msgid "Az Égkő közelében a pajzsok gyorsabban töltődnek."
+msgstr "Shields recharge faster near Skystone."
+
+msgctxt "ui.tip.17"
+msgid "A létszámkorlátnál nem képezhetsz új egységet."
+msgstr "At the supply limit you cannot train new units."
+
+msgctxt "ui.tip.18"
+msgid "Minden egységtípusnak van erőssége és gyengéje."
+msgstr "Every unit type has strengths and weaknesses."
+
+msgctxt "ui.tip.19"
+msgid "A lovasság a lövészek ellen erős, a lándzsa ellen gyenge."
+msgstr "Cavalry beats archers but loses to spears."
+
+msgctxt "ui.tip.20"
+msgid "Az ostromgépek az épületek ellen a legjobbak."
+msgstr "Siege engines are best against buildings."
+
+msgctxt "ui.tip.21"
+msgid "A hős szintet lép, képességet tanul, tárgyat visel."
+msgstr "Heroes level up, learn abilities and wear items."
+
+msgctxt "ui.tip.22"
+msgid "Az elesett hős a főépületben újraéleszthető."
+msgstr "A fallen hero can be revived at the main building."
+
+msgctxt "ui.tip.23"
+msgid "A főépület gombjáról indul az Égi kegy csapása."
+msgstr "The Sky Favour strike starts from the main building's button."
+
+msgctxt "ui.tip.24"
+msgid "Az Égi kegy csak látható pontra csaphat le."
+msgstr "Sky Favour can only strike a visible point."
+
+msgctxt "ui.tip.25"
+msgid "A Felemelkedéskor választott irány végleges."
+msgstr "The path chosen at Ascension is final."
+
+msgctxt "ui.tip.26"
+msgid "A Diplomácia csarnokában szövetséges népet választhatsz."
+msgstr "In the Hall of Diplomacy you can choose an allied people."
+
+msgctxt "ui.tip.27"
+msgid "Szürke elfek: épületeik maguktól épülnek fel."
+msgstr "Grey elves: their buildings construct themselves."
+
+msgctxt "ui.tip.28"
+msgid "Szürke elfek: a Napszentélynél fohászkodó munkás Áhítatot ad."
+msgstr "Grey elves: a worker praying at the Sun Shrine gives Devotion."
+
+msgctxt "ui.tip.29"
+msgid "Szürke elfek: a Napfúró magától is termel."
+msgstr "Grey elves: the Sun Drill produces on its own."
+
+msgctxt "ui.tip.30"
+msgid "Ursanok: a telepesek riadóra fegyvert ragadnak."
+msgstr "Ursans: settlers take up arms when the alarm sounds."
+
+msgctxt "ui.tip.31"
+msgid "Ursanok: a helyőrségbe húzódott munkás biztonságban van."
+msgstr "Ursans: a worker in the garrison is safe."
+
+msgctxt "ui.tip.32"
+msgid "Formitarák: a mélységen álló fák lassan elrothadnak."
+msgstr "Formitaraks: trees on the depth slowly rot."
+
+msgctxt "ui.tip.33"
+msgid "Formitarák: a szolga a Fertőzött tárnába olvadhat."
+msgstr "Formitaraks: a servant can merge into the Infested Mine."
+
+msgctxt "ui.tip.34"
+msgid "Wullof: a csapolt fa hordás nélkül ad fát."
+msgstr "Wullof: a tapped tree gives wood without carrying."
+
+msgctxt "ui.tip.35"
+msgid "Wullof: a tábor felszedhető és továbbvándorolhat."
+msgstr "Wullof: the camp can be packed up and moved on."
+
+msgctxt "ui.tip.36"
+msgid "Vasbirodalom: alapozáson az épület teljes életerővel áll."
+msgstr "Iron Empire: on a foundation a building stands at full health."
+
+msgctxt "ui.tip.37"
+msgid "Vasbirodalom: alapozás nélkül az épület lassan kopik."
+msgstr "Iron Empire: without a foundation a building slowly wears away."
+
+msgctxt "ui.tip.38"
+msgid "Vasbirodalom: a szobrok bónuszt adnak, amíg állnak."
+msgstr "Iron Empire: statues give a bonus while they stand."
+
+msgctxt "ui.tip.39"
+msgid "Huk’ucha: a saját tavacskán a békák gyorsabbak."
+msgstr "Huk’ucha: frogs are faster on their own pond."
+
+msgctxt "ui.tip.40"
+msgid "Huk’ucha: az Ikrarakó csomóiból ebihalak kelnek ki."
+msgstr "Huk’ucha: tadpoles hatch from the Spawner's clutches."
+
+msgctxt "ui.tip.41"
+msgid "Huk’ucha: a Tóteremtő szentélynél énekelnek a Tóásók."
+msgstr "Huk’ucha: Pond Diggers sing at the Pond Maker shrine."
+
+msgctxt "ui.tip.42"
+msgid "Ooni: a lámpásfényben gyógyulnak az egységeid."
+msgstr "Ooni: your units heal in lantern light."
+
+msgctxt "ui.tip.43"
+msgid "Ooni: a Torii-kapupár között átkelhet a sereg."
+msgstr "Ooni: the army can cross between a pair of Torii gates."
+
+msgctxt "ui.tip.44"
+msgid "Ooni: a harci kedv elfogyhat – a dobos visszaadja."
+msgstr "Ooni: morale can run out – the drummer restores it."
+
+msgctxt "ui.tip.45"
+msgid "A szünetmenüben mentheted a játékot; a Főmenü → Betöltés folytatja."
+msgstr "You can save the game from the pause menu; Main menu → Load continues it."
+
+msgctxt "ui.credits.title"
+msgid "KÉSZÍTŐK"
+msgstr "CREDITS"
+
+msgctxt "ui.credits.1"
+msgid "TOTU: Sky Rift – A kölcsönkapott öröklét"
+msgstr "TOTU: Sky Rift – The Borrowed Eternity"
+
+msgctxt "ui.credits.2"
+msgid "-"
+msgstr "-"
+
+msgctxt "ui.credits.3"
+msgid "Kreátor: Mesehordo"
+msgstr "Creator: Mesehordo"
+
+msgctxt "ui.credits.4"
+msgid "(c) 2026 Mesehordo – a világ és a történet minden joga fenntartva"
+msgstr "(c) 2026 Mesehordo – all rights to the world and the story reserved"
+
+msgctxt "ui.credits.5"
+msgid "-"
+msgstr "-"
+
+msgctxt "ui.credits.6"
+msgid "Motor: C++20, SDL3, OpenGL 3.3, Lua 5.4, ENet, stb"
+msgstr "Engine: C++20, SDL3, OpenGL 3.3, Lua 5.4, ENet, stb"
+
+msgctxt "ui.credits.7"
+msgid "A motor GPL-3.0-or-later; a szabályadatok és a modkészítői leírás CC BY 4.0"
+msgstr "Engine GPL-3.0-or-later; rules data and the modding guide CC BY 4.0"
+
+msgctxt "ui.credits.8"
+msgid "Ihlet: Warcraft II, StarCraft, Armies of Exigo, Command & Conquer"
+msgstr "Inspired by: Warcraft II, StarCraft, Armies of Exigo, Command & Conquer"
+
+msgctxt "ui.credits.9"
+msgid "-"
+msgstr "-"
+
+msgctxt "ui.credits.10"
+msgid "Minden tartalom moddolható – lásd docs/modolas/MOD_SDK.md"
+msgstr "All content can be modded – see docs/modolas/MOD_SDK.md"
+
+msgctxt "ui.settings.show_clock"
+msgid "Játékidő (jobb fent)"
+msgstr "Game time (top right)"
+
+msgctxt "ui.settings.help_hint"
+msgid "F1: súgó felirat"
+msgstr "F1: help label"
+
+msgctxt "ui.settings.shadows"
+msgid "Árnyékok"
+msgstr "Shadows"
+
+msgctxt "ui.settings.ambient"
+msgid "Környezeti részecskék"
+msgstr "Ambient particles"
+
+msgctxt "ui.settings.status_fx"
+msgid "Állapotok animációja a figurán"
+msgstr "Status effects on units"
+
+msgctxt "ui.settings.game_speed"
+msgid "Játéksebesség"
+msgstr "Game speed"

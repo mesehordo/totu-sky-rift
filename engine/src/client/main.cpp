@@ -358,7 +358,7 @@ int main(int argc, char** argv) {
       o.menu = true;
       o.menu_screen = v == "skirmish" ? client::MenuScreen::Skirmish : v == "settings" ? client::MenuScreen::Settings
                       : v == "sound"  ? client::MenuScreen::Sound    : v == "keys"     ? client::MenuScreen::Keys
-                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : client::MenuScreen::Main;
+                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : v == "credits" ? client::MenuScreen::Credits : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
@@ -1032,6 +1032,7 @@ int main(int argc, char** argv) {
             demo_hover_y = static_cast<float>(sy + 1) * client::World::kTilePx;
           }
           // képernyőképnél a szimuláció szinkron (a kép képkockára megismételhető); különben külön szálon
+          if (!net_game) runner.set_speed_pct(settings.game_speed);   // a régi „Játéksebesség” beállítás
           if (!o.sync && o.screenshot.empty() && !editor_on) runner.start();   // a szerkesztő előnézete áll
         }
       } else if (!o.atlas.empty() && o.demo > 0 && !adem.load(dev, o.atlas, o.demo, o.width, o.height, &err)) {
@@ -1675,9 +1676,11 @@ int main(int argc, char** argv) {
         render::Atlas* atl = world_atlas_ok ? &world_atlas : nullptr;
         lighting.begin_shadow_mask();   // az árnyékok külön maszkba (maximum-keveréssel), majd egyszer a terepre
         batch.begin_shadows(proj, day.shadow_x, day.shadow_y, day.shadow_alpha);   // a napszakkal forgó árnyék
-        world.draw(batch, atl, fallback, cam, w, h, alpha, t, true);
-        world.draw_banners(batch, t);       // D52: a zászlók is árnyékot vetnek, a nappal együtt
-        world.draw_rally_flags(batch, t);
+        if (settings.shadows) {   // a régi „Árnyékok” beállítás
+          world.draw(batch, atl, fallback, cam, w, h, alpha, t, true);
+          world.draw_banners(batch, t);       // D52: a zászlók is árnyékot vetnek, a nappal együtt
+          world.draw_rally_flags(batch, t);
+        }
         batch.end();
         lighting.apply_shadows();
         batch.begin(proj);
@@ -1694,7 +1697,7 @@ int main(int argc, char** argv) {
         world.draw(batch, atl, fallback, cam, w, h, alpha, t);
         world.draw_vfx(batch, atl, alpha);            // varázslás, robbanó varázslat, becsapódás, szintlépés
         world.draw_larva(batch, white);               // a Kaptárak lárvái
-        world.draw_status_fx(batch, white, alpha, t); // állapotok a figurán (a régi `draw_status_fx`)
+        if (settings.status_fx) world.draw_status_fx(batch, white, alpha, t); // állapotok a figurán (a régi `draw_status_fx`)
         world.draw_carry(batch, alpha);      // a munkások cipelt nyersanyaga
         world.draw_hero_badges(batch, alpha, t);   // a hős jelvénye a feje fölött
         world.draw_objective_beacons(batch, t);    // a célok jelzőfénye
@@ -1745,7 +1748,7 @@ int main(int argc, char** argv) {
         lighting.composite(w, h, cam.x, cam.y, cam.zoom, client::World::kTilePx, wl, t, flash, o.post);
         batch.begin(proj);   // a légköri részecskék a fényezés után (a szentjánosbogár éjjel is világít – a régi szerint)
         world.draw_building_flames(batch, t);   // D49: a lángok (éjjel is világítanak)
-        world.draw_ambient(batch, cam, w, h, t);
+        if (settings.ambient) world.draw_ambient(batch, cam, w, h, t);   // a régi „Környezeti részecskék”
         batch.end();
         if (editor_on && !editor_test) {   // M11: a szerkesztő rétegei és palettája
           int ww = 0, wh = 0;
@@ -1779,6 +1782,8 @@ int main(int argc, char** argv) {
           hf.cam_w = static_cast<float>(w) / cam.zoom;
           hf.cam_h = static_cast<float>(h) / cam.zoom;
           hf.fps = settings.show_fps ? fps_shown : -1;
+          hf.show_clock = settings.show_clock;
+          hf.help_hint = settings.help_hint;
           {   // a kurzor a helyzet szerint (a régi `cursor_kind`)
             client::HudModel& chm = hud.model();
             const auto* cs = world.snapshot();

@@ -115,6 +115,12 @@ std::string settings_to_json(const Settings& s) {
   o.set("edge_scroll", Value::boolean(s.edge_scroll));
   o.set("show_fps", Value::boolean(s.show_fps));
   o.set("fps_limit", num(s.fps_limit));
+  o.set("show_clock", Value::boolean(s.show_clock));
+  o.set("help_hint", Value::boolean(s.help_hint));
+  o.set("shadows", Value::boolean(s.shadows));
+  o.set("ambient", Value::boolean(s.ambient));
+  o.set("status_fx", Value::boolean(s.status_fx));
+  o.set("game_speed", num(s.game_speed));
   Value mods = Value::array();
   for (const auto& m : s.mods) mods.push(Value::string(m));
   o.set("mods", std::move(mods));
@@ -189,6 +195,12 @@ bool settings_from_json(std::string_view text, Settings* out, std::vector<std::s
   get_bool(o, "edge_scroll", &s.edge_scroll);
   get_bool(o, "show_fps", &s.show_fps);
   get_int(o, "fps_limit", 0, 1000, &s.fps_limit);
+  get_bool(o, "show_clock", &s.show_clock);
+  get_bool(o, "help_hint", &s.help_hint);
+  get_bool(o, "shadows", &s.shadows);
+  get_bool(o, "ambient", &s.ambient);
+  get_bool(o, "status_fx", &s.status_fx);
+  get_int(o, "game_speed", 50, 300, &s.game_speed);
   if (const Value* v = o.find("mods")) {
     bool ok = v->is_array();
     std::vector<std::string> ids;

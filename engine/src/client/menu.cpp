@@ -52,7 +52,7 @@ const std::vector<MainGroup>& main_items() {
        {{"ui.main.game_settings", MenuAct::Settings, false},
         {"ui.main.profiles", MenuAct::None, true}}},
       {"ui.main.mods", MenuAct::OpenMods, false, {}},
-      {"ui.main.credits", MenuAct::None, true, {}},
+      {"ui.main.credits", MenuAct::OpenCredits, false, {}},
       {"ui.main.quit", MenuAct::Quit, false, {}},
   };
   return m;
@@ -61,7 +61,12 @@ const std::vector<MainGroup>& main_items() {
 const char* const kSettingLabels[Menu::kSettingRows] = {
     "ui.settings.language",     "ui.settings.resolution",  "ui.settings.fullscreen", "ui.settings.ui_scale",
     "ui.settings.colorblind",   "ui.settings.scroll_speed", "ui.settings.edge_scroll", "ui.settings.show_fps",
-    "ui.settings.fps_limit",    "ui.settings.sound",        "ui.settings.keys"};
+    "ui.settings.fps_limit",    "ui.settings.sound",        "ui.settings.keys",
+    "ui.settings.show_clock",   "ui.settings.help_hint",    "ui.settings.shadows",    "ui.settings.ambient",
+    "ui.settings.status_fx",    "ui.settings.game_speed"};
+// a sorok megjelenítési sorrendje (a sorszám a gomb azonosítója – a régi sorszámok maradnak)
+const int kSettingOrder[Menu::kSettingRows] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 16, 13, 14, 15, 9, 10};
+const int kSpeeds[] = {50, 75, 100, 150, 200};
 
 const int kScroll[] = {500, 700, 900, 1200, 1600};
 const int kFps[] = {30, 60, 120, 0};
@@ -371,6 +376,7 @@ void Menu::layout(int w, int h) {
     case MenuScreen::Keys: layout_keys(); break;
     case MenuScreen::Mods: layout_mods(); break;
     case MenuScreen::Load: layout_load(); break;
+    case MenuScreen::Credits: layout_credits(); break;
   }
 }
 
@@ -615,7 +621,8 @@ void Menu::layout_settings() {
   panels_.push_back({pr, 215, false});
   const float bw = k(270);
   auto onoff = [&](bool v) { return tr(v ? "ui.on" : "ui.off"); };
-  for (int i = 0; i < kSettingRows; ++i) {
+  for (int row = 0; row < kSettingRows; ++row) {
+    const int i = kSettingOrder[row];
     std::string val;
     MenuAct act = MenuAct::Cycle;
     switch (i) {
@@ -629,9 +636,20 @@ void Menu::layout_settings() {
       case 7: val = onoff(st_.show_fps); break;
       case 8: val = st_.fps_limit == 0 ? tr("ui.settings.none") : std::to_string(st_.fps_limit); break;
       case 9: val = tr("ui.settings.sound_button"); act = MenuAct::OpenSound; break;
+      case 11: val = onoff(st_.show_clock); break;
+      case 12: val = onoff(st_.help_hint); break;
+      case 13: val = onoff(st_.shadows); break;
+      case 14: val = onoff(st_.ambient); break;
+      case 15: val = onoff(st_.status_fx); break;
+      case 16: {
+        char b[16];
+        std::snprintf(b, sizeof b, "×%g", static_cast<double>(st_.game_speed) / 100.0);
+        val = b;
+        break;
+      }
       default: val = tr("ui.settings.keys_button"); act = MenuAct::OpenKeys; break;
     }
-    const float y = pr.y + k(16) + static_cast<float>(i) * step;
+    const float y = pr.y + k(16) + static_cast<float>(row) * step;
     MenuWidget& b = add(MenuWidget::Kind::Button, {pr.x + pr.w - k(24) - bw, y, bw, bh}, val, act, i);
     b.small = true;
     text(pr.x + k(24), y + (bh - k(22)) / 2, pr.w - k(24 + 270 + 44), tr(kSettingLabels[i]), MenuText::Med, MenuText::Text);
@@ -721,6 +739,28 @@ void Menu::mods_check() {
   if (mods_err_.empty()) {
     for (const auto& e : content::select_mods(avail, mods_on_).errors) mods_err_.push_back(e);   // ütközés, ismeretlen mod
   }
+}
+
+void Menu::layout_credits() {
+  // a régi `CreditsMenu`: a cím arannyal, alatta a készítők és a felhasznált eszközök egy panelen, középre igazítva
+  side_area("ui.main.credits");
+  title(tr("ui.credits.title"));
+  const float top = k(96), lh = k(34);
+  const float pw = std::min(k(1000), area_w_ - k(48)), cx = area_x_ + area_w_ / 2;
+  std::vector<std::string> lines;
+  for (int i = 1; i <= 12; ++i) {
+    const std::string key = "ui.credits." + std::to_string(i);
+    const std::string s = loc_.tr(key);
+    if (s == key) break;
+    lines.push_back(s == "-" ? std::string() : s);
+  }
+  panels_.push_back({{cx - pw / 2, top + k(10), pw, static_cast<float>(lines.size()) * lh + k(40)}, 200, false});
+  float y = top + k(30);
+  for (size_t i = 0; i < lines.size(); ++i) {
+    if (!lines[i].empty()) text(cx, y, pw - k(40), lines[i], i == 0 ? MenuText::Med : MenuText::Small, i == 0 ? MenuText::Gold : MenuText::Text, true);
+    y += lh;
+  }
+  back_button();
 }
 
 void Menu::layout_load() {
@@ -922,6 +962,7 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
     case MenuAct::OpenSound: go(MenuScreen::Sound); break;
     case MenuAct::OpenMods: go(MenuScreen::Mods); break;
     case MenuAct::OpenLoad: go(MenuScreen::Load); break;
+    case MenuAct::OpenCredits: go(MenuScreen::Credits); break;
     case MenuAct::SavePick:
       save_sel_ = w.arg;
       if (button == 1 && w.arg >= 0 && static_cast<size_t>(w.arg) < saves_.size() && last_pick_ == w.arg && now_ - last_pick_t_ < 0.4) {
@@ -1086,6 +1127,12 @@ void Menu::cycle(int row, int dir) {
     case 6: st_.edge_scroll = !st_.edge_scroll; break;
     case 7: st_.show_fps = !st_.show_fps; break;
     case 8: st_.fps_limit = kFps[wrap_index(index_of(kFps, st_.fps_limit), dir, 4)]; break;
+    case 11: st_.show_clock = !st_.show_clock; break;
+    case 12: st_.help_hint = !st_.help_hint; break;
+    case 13: st_.shadows = !st_.shadows; break;
+    case 14: st_.ambient = !st_.ambient; break;
+    case 15: st_.status_fx = !st_.status_fx; break;
+    case 16: st_.game_speed = kSpeeds[wrap_index(index_of(kSpeeds, st_.game_speed), dir, 5)]; break;
     default: return;
   }
   changes_ |= kSave;

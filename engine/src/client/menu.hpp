@@ -95,7 +95,7 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
                        uint64_t seed, MatchConfig* out, std::string* error_hu);
 
 // --- az elrendezés elemei -------------------------------------------------------------------------------------------
-enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods, Load };
+enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods, Load, Credits };
 
 enum class MenuAct : uint8_t {
   None = 0,
@@ -121,6 +121,7 @@ enum class MenuAct : uint8_t {
   ModPick,       // arg: < 1000 az elérhetők listájában, ≥ 1000 az engedélyezettekében
   ModEnable, ModDisable, ModUp, ModDown, ModSave,
   OpenLoad,      // a régi `LoadMenu`: a mentések listája
+  OpenCredits,   // a régi `CreditsMenu`
   SavePick,      // arg: a mentés sorszáma
   SaveLoad, SaveDelete,
 };
@@ -231,7 +232,7 @@ class Menu {
   bool match_config(uint64_t seed, MatchConfig* out);
 
   // a beállítás-sorok száma és felirata (a próbáknak)
-  static constexpr int kSettingRows = 11;
+  static constexpr int kSettingRows = 17;
 
  private:
   void layout_main();
@@ -264,6 +265,7 @@ class Menu {
   int last_pick_ = -1;
   double last_pick_t_ = -9;
   void layout_load();
+  void layout_credits();
   std::vector<std::string> mods_on_, mods_err_;
   std::string mod_sel_;
   std::vector<FactionInfo> factions_;

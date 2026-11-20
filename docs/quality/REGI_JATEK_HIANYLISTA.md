@@ -64,11 +64,11 @@ Az új motor csak a hiányzó nyersanyagot, létszámot vagy feltételt jelzi, a
 | Többjátékos menü | `LanMenu`: létrehozás, csatlakozás IP-vel, a LAN-on futó játékok keresése; lobbi | csak parancssorból (`--host`, `--join`), konzolos lobbi; LAN-keresés nincs | **Nagy** |
 | Profilok | `ProfileMenu`: név, címer (kedvenc nép), statisztika, haladás; több profil | nincs | Közepes |
 | Történetek | `StoriesMenu`: a világ és a népek olvasmányai képekkel (`stories/konyvtar.json`) | nincs | Közepes |
-| Készítők | `CreditsMenu` | nincs | Kicsi |
-| Betöltőképernyő | `Loader`: tusrajzos térkép, forgó rúnakör, töltősáv, népenkénti tipp | nincs | Közepes |
-| Tippek | főmenüben és betöltéskor (`tips.py`) | nincs | Kicsi |
+| Készítők | `CreditsMenu` | **kész (2026-11-20)** | – |
+| Betöltőképernyő | `Loader`: tusrajzos térkép, forgó rúnakör, töltősáv, népenkénti tipp | **kész (2026-11-20)**, töltősáv nélkül | – |
+| Tippek | főmenüben és betöltéskor (`tips.py`) | betöltéskor **kész (2026-11-20)**; a főmenüben még nincs | Kicsi |
 | Nyitókép | `intro`: elhalványuló nyitókép | nincs | Kicsi |
-| Élő menü-háttér | lassan úszó festett kép hulló meteorokkal | álló kép | Kicsi |
+| Élő menü-háttér | lassan úszó festett kép hulló meteorokkal | a kép úszik; meteorok nincsenek | Kicsi |
 | Szünetmenü | mentés, betöltés, beállítások is | folytatás, diagnosztika, kilépés | Közepes |
 
 ## 5. Csata beállítása
@@ -85,22 +85,11 @@ Az új motor csak a hiányzó nyersanyagot, létszámot vagy feltételt jelzi, a
 | Táj felülírása | erdő, tél, pusztaság, mocsár, ősz, hasadékvidék | a pálya saját tája | Kicsi |
 | Véletlen pálya minden indításkor | a pályaleírásból maggal generálva (`mapgen.py`) | a pályák rögzített JSON-ok | Közepes |
 
-## 6. Beállítások
+## 6. Beállítások – **nagyrészt kész (2026-11-20)**
 
-A régi beállítások közül ezek hiányoznak:
-- kamera-távolság;
-- alapértelmezett játéksebesség;
-- óra és sebességgombok ki-be;
-- „F1: súgó” felirat ki-be;
-- árnyékok ki-be;
-- hősjelölés módja;
-- „nyugodt figurák” (körvonal, simított felület);
-- állapotok színe és animációja a figurán;
-- környezeti részecskék ki-be;
-- mozgó víz ki-be;
-- csatanehézség.
-
-(Az új viszont tud színvak módot, felület-méretarányt és billentyű-átállítást.)
+Kész: játékidő jobb fent, „F1: súgó” felirat, árnyékok, környezeti részecskék, állapotok a figurán, játéksebesség.
+Még nincs: kamera-távolság, sebességgombok ki-be, hősjelölés módja, „nyugodt figurák”, az állapotok pulzáló színe,
+mozgó víz ki-be, csatanehézség.
 
 ## 7. Egér és kurzor (Közepes) – **kész (2026-11-20)**, népenkénti kurzor nélkül
 

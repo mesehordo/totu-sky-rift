@@ -1191,10 +1191,12 @@ void Hud::draw_clock(const HudFrame& f) {
           model_.speed_locked ? Col{120, 120, 120} : Col{255, 230, 160});
     x = static_cast<float>(r.x) - 6;
   }
-  x -= tw(F, t) + 4;
-  stext(F, x, ty + (th - line_h(F)) / 2, t, {240, 235, 200});
+  if (f.show_clock) {
+    x -= tw(F, t) + 4;
+    stext(F, x, ty + (th - line_h(F)) / 2, t, {240, 235, 200});
+  }
   std::string sub = f.fps >= 0 ? std::to_string(f.fps) + " fps" : std::string();
-  sub += (sub.empty() ? "" : "  •  ") + model_.tr("help.hint");
+  if (f.help_hint) sub += (sub.empty() ? "" : "  •  ") + model_.tr("help.hint");
   const int FT = L.font.tiny;
   stext(FT, static_cast<float>(f.w - L.pad * 2) - tw(FT, sub), ty + th + 2, sub, {170, 170, 160});
 }
