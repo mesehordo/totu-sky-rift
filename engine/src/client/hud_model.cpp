@@ -1351,13 +1351,18 @@ void HudModel::jump_home_or_alert() {
   }
 }
 
-int HudModel::next_speed(int pct, int dir) {
-  static constexpr int kSteps[] = {50, 75, 100, 125, 150, 200, 300};
+int HudModel::next_speed(int pct, int dir, int max_pct) {
+  // a 400 és 800 csak a visszajátszásban (`max_pct`)
+  static constexpr int kSteps[] = {50, 75, 100, 125, 150, 200, 300, 400, 800};
   int best = 0;
-  for (int i = 0; i < 7; ++i) {
+  for (int i = 0; i < 9; ++i) {
     if (std::abs(kSteps[i] - pct) < std::abs(kSteps[best] - pct)) best = i;
   }
-  return kSteps[std::clamp(best + dir, 0, 6)];
+  int top = 0;   // a legnagyobb megengedett fokozat
+  for (int i = 0; i < 9; ++i) {
+    if (kSteps[i] <= max_pct) top = i;
+  }
+  return kSteps[std::clamp(best + dir, 0, top)];
 }
 
 bool HudModel::over_hud(float x, float y) const {

@@ -125,6 +125,7 @@ struct Options {
   int host_port = 0, seats = 2;
   std::string join, faction = "ursan", name = "jatekos";
   bool observe = false;
+  std::string replay_out;   // --replay-out: a meccs visszajátszása ide is (próbákhoz; különben a felhasználói mappába)
   int rejoin = 0;
   std::string mission;   // M11: küldetés indítása (a küldetés mappája)
   std::string editor;    // M11: a szerkesztő (a küldetés mappája)
@@ -384,7 +385,7 @@ int main(int argc, char** argv) {
       o.menu = true;
       o.menu_screen = v == "skirmish" ? client::MenuScreen::Skirmish : v == "settings" ? client::MenuScreen::Settings
                       : v == "sound"  ? client::MenuScreen::Sound    : v == "keys"     ? client::MenuScreen::Keys
-                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : v == "credits" ? client::MenuScreen::Credits : v == "lan" ? client::MenuScreen::Lan : v == "stories" ? client::MenuScreen::Stories : client::MenuScreen::Main;
+                      : v == "mods"   ? client::MenuScreen::Mods     : v == "load" ? client::MenuScreen::Load : v == "replays" ? client::MenuScreen::Replays : v == "credits" ? client::MenuScreen::Credits : v == "lan" ? client::MenuScreen::Lan : v == "stories" ? client::MenuScreen::Stories : client::MenuScreen::Main;
     }
     else if (a == "--maps") o.maps = next();
     else if (a == "--mission") o.mission = next();
@@ -400,7 +401,8 @@ int main(int argc, char** argv) {
     else if (a == "--observe") o.observe = true;
     else if (a == "--rejoin") o.rejoin = static_cast<int>(std::strtol(next(), nullptr, 10));
     else if (a == "--battle-demo") o.battle_demo = static_cast<int>(std::strtol(next(), nullptr, 10));
-    else if (a == "--load") o.world = o.load = next();   // mentett játék betöltése
+    else if (a == "--load") o.world = o.load = next();   // mentett játék betöltése (vagy visszajátszás: .totuvissza, .trep)
+    else if (a == "--replay-out") o.replay_out = next();
     else if (a == "--look") {
       char* end = nullptr;
       const char* v = next();
@@ -630,6 +632,22 @@ int main(int argc, char** argv) {
     float pan_x0 = 0, pan_y0 = 0, pan_x1 = 0, pan_y1 = 0, pan_t = 1, pan_len = 0;
     client::SimRunner runner(session);
     client::World world(session, runner);
+    // visszajátszás (a tanulmány; WC3, AoE2): lejátszáskor a forrás, a nézőpont (0: mindenki, köd nélkül) és a szünet
+    std::unique_ptr<client::ReplaySource> replay_src;
+    int replay_view = 0;
+    bool replay_paused = false, replay_end_seen = false;
+    std::string replay_hash;   // a rögzítéskori végső hash (a lejátszás végén összevetve)
+    auto map_title = [&](const std::string& map_json) {
+      std::string mapname = "?";
+      if (const auto mv = content::parse(map_json)) {
+        if (const auto* nm = mv->find("name")) {   // szöveg vagy nyelvenként ({"hu": …, "en": …})
+          if (nm->is_string()) mapname = locale.name(nm->text());
+          else if (const auto* ln = nm->is_object() ? nm->find(settings.language) : nullptr; ln && ln->is_string()) mapname = ln->text();
+          else if (const auto* hu = nm->is_object() ? nm->find("hu") : nullptr; hu && hu->is_string()) mapname = hu->text();
+        }
+      }
+      return mapname;
+    };
     {
       const auto& tc = client::team_colors(settings.colorblind);   // M8: színvak-barát csapatszínek
       std::array<std::array<uint8_t, 4>, 8> teams{};
@@ -898,7 +916,30 @@ int main(int argc, char** argv) {
           session.set_match_desc(*desc);   // a küldetés is menthető
           return true;
         };
+        auto start_replay = [&]() -> bool {   // visszajátszás: a leírásból indul, a parancsokat a forrás adagolja
+          if (!session.load_content(o.content, &err)) return false;
+          auto f = client::read_replay(o.load);
+          if (!f) {
+            err = "a visszajátszás nem olvasható: " + o.load;
+            return false;
+          }
+          mission_match = sim::start_match(f->rep, session.terrain_ptr(), session.content_rules(), err);
+          if (!mission_match) return false;
+          session.adopt(*mission_match);
+          session.set_local_player(1);
+          session.set_reveal_all(true);
+          if (const auto mv = content::parse(f->meta)) {
+            if (const auto* hv = mv->find("hash"); hv && hv->is_string()) replay_hash = hv->text();
+          }
+          if (std::string md; client::content_differs(f->meta, content_fp(), mod_names, &md)) {
+            hud.model().post_notice(hud.model().tr("load_content_differs", {md.empty() ? hud.model().tr("load_content_files") : md}), {255, 170, 90});
+          }
+          replay_src = std::make_unique<client::ReplaySource>(session, std::move(f->rep));
+          runner.set_source(replay_src.get());
+          return true;
+        };
         auto start_load = [&]() -> bool {   // mentett játék: a leírásból a kezdés nélkül, majd az állapot
+          if (const auto ext = std::filesystem::path(o.load).extension(); ext == client::kReplayExt || ext == ".trep") return start_replay();
           if (!session.load_content(o.content, &err)) return false;
           auto f = client::read_save(o.load);
           if (!f) {
@@ -1654,6 +1695,26 @@ int main(int argc, char** argv) {
             }
           }
         }
+        if (replay_src && ev.type == SDL_EVENT_KEY_DOWN && !ev.key.repeat && (ev.key.key == SDLK_TAB || ev.key.key == SDLK_P)) {
+          if (ev.key.key == SDLK_P) {   // szünet / tovább
+            replay_paused = !replay_paused;
+            continue;
+          }
+          // Tab: a nézőpont (mindenki → 1. játékos → … ): a játékos szemével a saját ködével és erőforrásaival
+          const client::Snapshot* sn = hud.model().snap();
+          int next = replay_view;
+          for (int step = 0; step < 9; ++step) {
+            next = (next + 1) % 9;
+            if (next == 0 || (sn && !sn->players[static_cast<size_t>(next)].faction.empty())) break;
+          }
+          replay_view = next;
+          runner.with_sim([&] {
+            session.set_local_player(static_cast<uint8_t>(next == 0 ? 1 : next));
+            session.set_reveal_all(next == 0);
+          });
+          hud.model().player = static_cast<uint8_t>(next == 0 ? 1 : next);
+          continue;
+        }
         if (hud_on) hud.model().alt = (SDL_GetModState() & SDL_KMOD_ALT) != 0;
         if (hud_on && hud_event(hud.model(), ev, cam, world)) continue;   // a HUD elfogyasztotta
         if (ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE && !ev.key.repeat) {
@@ -1813,7 +1874,7 @@ int main(int argc, char** argv) {
         hm.speed_locked = o.host_port > 0 || !o.join.empty();
         if (hm.speed_change != 0 && !hm.speed_locked) {   // a régi: „Játéksebesség: x1.5”
           const int before = runner.speed_pct();
-          runner.set_speed_pct(client::HudModel::next_speed(runner.speed_pct(), hm.speed_change));
+          runner.set_speed_pct(client::HudModel::next_speed(runner.speed_pct(), hm.speed_change, replay_src ? 800 : 300));
           if (runner.speed_pct() != before) {
             char sp[16];
             std::snprintf(sp, sizeof sp, "%g", static_cast<double>(runner.speed_pct()) / 100.0);
@@ -1843,7 +1904,7 @@ int main(int argc, char** argv) {
         runner.take_notes(notes);
         if (!notes.empty()) hud.model().sim_events(notes);
         // a profil statisztikája (a régi `record_game`): a csata vége egyszer, küldetésen és visszajátszáson kívül
-        if (!game_recorded && hud.model().match_over() && have_cfg && !settings.profile.empty()) {
+        if (!game_recorded && !replay_src && hud.model().match_over() && have_cfg && !settings.profile.empty()) {
           game_recorded = true;
           if (const client::Snapshot* sn = hud.model().snap(); sn && !sn->mission.active) {
             const uint8_t me = hud.model().player;
@@ -1853,7 +1914,27 @@ int main(int argc, char** argv) {
           }
         }
       }
-      runner.set_paused(game_paused);
+      if (replay_src && hud_on) {   // a visszajátszás sávja: idő, nézőpont, billentyűk; a végén az eltérés-ellenőrzés
+        client::HudModel& hm = hud.model();
+        const int64_t now_t = hm.snap() ? hm.snap()->tick : 0;
+        auto clock = [](int64_t t) {
+          char b[16] = {};
+          std::snprintf(b, sizeof b, "%02lld:%02lld", static_cast<long long>(t / 30 / 60), static_cast<long long>(t / 30 % 60));
+          return std::string(b);
+        };
+        const std::string view = replay_view == 0 ? hm.tr("replay.all") : hm.tr("replay.player", {std::to_string(replay_view)});
+        hm.replay_banner = hm.tr("replay.banner", {clock(now_t) + " / " + clock(replay_src->length()), view}) +
+                           (replay_paused ? "  ·  " + hm.tr("replay.paused") : std::string());
+        if (replay_src->done() && !replay_end_seen) {
+          replay_end_seen = true;
+          char hb[24] = {};
+          runner.with_sim([&] { std::snprintf(hb, sizeof hb, "%016llx", static_cast<unsigned long long>(session.sim().hash())); });
+          const bool same = replay_hash.empty() || replay_hash == hb;
+          hm.post_notice(hm.tr(same ? "replay.end" : "replay.desync"), same ? std::array<uint8_t, 3>{150, 220, 150} : std::array<uint8_t, 3>{255, 120, 90});
+          std::printf("visszajátszás vége: tick %lld, hash %s (%s)\n", static_cast<long long>(now_t), hb, same ? "egyezik" : "ELTÉR");
+        }
+      }
+      runner.set_paused(game_paused || replay_paused);
       if (audio.ok()) {   // zene és hangok (a régi `play_sounds`): ami a játékosnak látható vagy fontos
         audio.update(settings, static_cast<double>(SDL_GetTicks()) / 1000.0);
         const sim::Rules* sr = session.rules();
@@ -2315,6 +2396,48 @@ int main(int argc, char** argv) {
       ++frame;
     }
     runner.stop();
+    // a meccs visszajátszása (a tanulmány; WC3: „LastReplay”): a felhasználói mappába (a legújabb 30 marad), próbában
+    // csak a --replay-out helyére; a visszajátszás lejátszása és a 10 mp-nél rövidebb meccs nem
+    if (have_world && !replay_src && !o.bench && (o.frames < 0 || !o.replay_out.empty())) {
+      const bool netm = o.host_port > 0 || !o.join.empty();
+      std::optional<sim::Replay> r = netm ? std::optional<sim::Replay>(netplay.client().replay()) : session.recorded_replay();
+      if (r && r->ticks >= 300 && (!r->map.empty() || !r->mission.empty())) {
+        const auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        char stamp[32] = {}, date[32] = {}, clock[16] = {}, hb[24] = {};
+        std::strftime(stamp, sizeof stamp, "%Y%m%d_%H%M%S", std::localtime(&now));
+        std::strftime(date, sizeof date, "%Y-%m-%d %H:%M", std::localtime(&now));
+        std::snprintf(clock, sizeof clock, "%02lld:%02lld", static_cast<long long>(r->ticks / 30 / 60), static_cast<long long>(r->ticks / 30 % 60));
+        std::snprintf(hb, sizeof hb, "%016llx", static_cast<unsigned long long>(session.sim().hash()));
+        std::string players;
+        const auto facs = client::scan_factions(o.content);
+        for (const auto& fid : r->factions) {
+          std::string fname = fid;
+          for (const auto& fi : facs) {
+            if (fi.id == fid) fname = locale.name(fi.name_key);
+          }
+          players += (players.empty() ? "" : ", ") + fname;
+        }
+        content::Value meta = content::Value::object();
+        meta.set("title", content::Value::string(map_title(r->map) + "  " + clock));
+        meta.set("date", content::Value::string(date));
+        meta.set("players", content::Value::string(players));
+        meta.set("ticks", content::Value::number(std::to_string(r->ticks)));
+        meta.set("hash", content::Value::string(hb));
+        meta.set("content", content::Value::string(client::content_tag(content_fp())));
+        content::Value mlist = content::Value::array();
+        for (const auto& mn : mod_names) mlist.push(content::Value::string(mn));
+        meta.set("mods", std::move(mlist));
+        const std::filesystem::path out = !o.replay_out.empty() ? std::filesystem::path(o.replay_out)
+                                                                : client::replays_dir() / (std::string(stamp) + client::kReplayExt);
+        std::string rerr;
+        if (client::write_replay(out, {content::dump(meta), std::move(*r)}, &rerr)) {
+          std::printf("visszajátszás: %s\n", out.string().c_str());
+          if (o.replay_out.empty()) client::prune_replays(client::replays_dir(), 30);
+        } else {
+          std::fprintf(stderr, "%s\n", rerr.c_str());
+        }
+      }
+    }
     if ((o.host_port > 0 || !o.join.empty()) && have_world) {   // M10: a hálózati meccs összegzése (a próbákhoz és a hibakereséshez)
       std::printf("hálózat: %lld forduló, tick %lld, hash 0x%016llx, szinkronhiba: %zu\n",
                   static_cast<long long>(netplay.client().turns()),

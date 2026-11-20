@@ -394,7 +394,7 @@ class MenuView {
   // --- háttér, oldalsáv, panel ---
   void background(render::SpriteBatch& b, MenuScreen s, double t) {
     const std::string path = s == MenuScreen::Main || s == MenuScreen::Settings || s == MenuScreen::Sound || s == MenuScreen::Keys ||
-                                     s == MenuScreen::Mods || s == MenuScreen::Load || s == MenuScreen::Credits || s == MenuScreen::Lan
+                                     s == MenuScreen::Mods || s == MenuScreen::Load || s == MenuScreen::Replays || s == MenuScreen::Credits || s == MenuScreen::Lan
                                  ? main_bg_   // az oldalsáv melletti képernyők: a főmenü háttere
                              : s == MenuScreen::Skirmish ? (std::filesystem::path(assets_) / "ui" / "bg" / "setup.png").string()
                                                          : (std::filesystem::path(assets_) / "ui" / "bg" / "options.png").string();
@@ -654,6 +654,15 @@ void apply_display(SDL_Window* win, const Settings& st) {
   if (!st.fullscreen) SDL_SetWindowSize(win, st.width, st.height);
 }
 
+std::filesystem::path replays_dir() {
+  std::filesystem::path dir;
+  if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
+    dir = std::filesystem::path(pref) / "visszajatszasok";
+    SDL_free(pref);
+  }
+  return dir;
+}
+
 std::filesystem::path saves_dir() {
   std::filesystem::path dir;
   if (char* pref = SDL_GetPrefPath("TOTU", "SkyRift")) {
@@ -803,6 +812,26 @@ bool run_menu(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, 
       rows.push_back(std::move(r));
     }
     menu.set_saves(std::move(rows));
+    std::vector<Menu::SaveRow> reps;   // a visszajátszások (a meccsek végén maguktól mentődnek)
+    for (const auto& e : list_replays(replays_dir())) {
+      Menu::SaveRow r;
+      r.path = e.path.string();
+      r.title = e.path.stem().string();
+      if (const auto v = content::parse(e.meta)) {
+        if (const auto* t = v->find("title"); t && t->is_string()) r.title = t->text();
+        if (const auto* d = v->find("date"); d && d->is_string()) r.detail = d->text();
+        if (const auto* p = v->find("players"); p && p->is_string()) r.detail += (r.detail.empty() ? "" : "  ") + p->text();
+      }
+      std::vector<std::string> now_mods;
+      for (const auto& m : o.mods) {
+        if (m.id != "totu") now_mods.push_back(m.version.empty() ? m.id : m.id + " " + m.version);
+      }
+      if (std::string md; content_differs(e.meta, o.content_hash, now_mods, &md)) {   // más tartalommal elcsúszhat
+        r.detail += "  " + loc.tr("ui.load.content_differs", {{"m", md.empty() ? loc.tr("ui.load.content_files") : md}});
+      }
+      reps.push_back(std::move(r));
+    }
+    menu.set_replays(std::move(reps));
   };
   refresh_saves();
   {   // M13: a modok (és az alap) győzelmi szkriptjei

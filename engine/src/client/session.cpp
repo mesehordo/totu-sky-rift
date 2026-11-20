@@ -65,6 +65,8 @@ void Session::adopt(sim::MatchInstance& match) {
   victory_view_ = nullptr;
   view_.reset();
   desc_.reset();   // a hívó adja át (set_match_desc), ha menthető
+  rec_.clear();
+  rec_on_ = false;
   for (const auto& h : match.hosts) {
     if (h->name() == "victory") victory_view_ = h.get();
   }
@@ -260,6 +262,33 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   remembered_.clear();
   if (ai_) desc_.reset();   // a régi, egyfájlos gépi szkript: nem menthető
   else desc_ = std::move(desc);
+  rec_.clear();
+  rec_on_ = desc_.has_value();
+  return true;
+}
+
+std::optional<sim::Replay> Session::recorded_replay() const {
+  if (!rec_on_ || !desc_ || !sim_) return std::nullopt;
+  sim::Replay r = *desc_;
+  r.commands = rec_;
+  r.ticks = sim_->tick();
+  r.checkpoint_every = std::max<int64_t>(1, std::min<int64_t>(30, r.ticks));
+  r.checkpoints.clear();
+  return r;
+}
+
+ReplaySource::ReplaySource(Session& s, sim::Replay r) : s_(s), r_(std::move(r)) {
+  std::stable_sort(r_.commands.begin(), r_.commands.end(), [](const sim::Command& a, const sim::Command& b) { return a.tick < b.tick; });
+}
+
+bool ReplaySource::begin(std::vector<sim::Command>& cmds) {
+  const int64_t t = s_.sim().tick();
+  if (t >= r_.ticks) {   // vége: a szimuláció megáll (a kép tovább rajzolódik)
+    done_.store(true);
+    return false;
+  }
+  while (next_ < r_.commands.size() && r_.commands[next_].tick < t) ++next_;
+  while (next_ < r_.commands.size() && r_.commands[next_].tick == t) cmds.push_back(r_.commands[next_++]);
   return true;
 }
 
@@ -788,6 +817,7 @@ std::shared_ptr<const Snapshot> Session::step(const std::vector<sim::Command>& c
   const auto before = snapshot();
   for (sim::Command c : commands) {
     c.tick = sim_->tick();
+    if (rec_on_ && desc_ && rec_.size() < 4000000) rec_.push_back(c);   // a visszajátszáshoz
     sim_->queue(c);   // a parancssoron át (mint a hálózati játékban és a visszajátszásban)
   }
   sim_->step();

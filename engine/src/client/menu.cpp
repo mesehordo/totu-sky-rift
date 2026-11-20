@@ -46,7 +46,8 @@ const std::vector<MainGroup>& main_items() {
        {{"ui.main.campaign", MenuAct::None, true},
         {"ui.main.novellas", MenuAct::None, true},
         {"ui.main.skirmish", MenuAct::Skirmish, false},
-        {"ui.main.load", MenuAct::OpenLoad, false}}},
+        {"ui.main.load", MenuAct::OpenLoad, false},
+        {"ui.main.replays", MenuAct::OpenReplays, false}}},
       {"ui.main.multiplayer", MenuAct::OpenLan, false, {}},
       {"ui.main.stories", MenuAct::OpenStories, false, {}},
       {"ui.main.settings", MenuAct::Toggle, false,
@@ -347,6 +348,10 @@ void Menu::go(MenuScreen s) {
     message_.clear();
     mods_check();
   }
+  if ((s == MenuScreen::Load || s == MenuScreen::Replays) && s != screen_) {   // a két lista közös kijelölése
+    screen_ = s;
+    save_sel_ = rows().empty() ? -1 : 0;
+  }
   screen_ = s;
   open_ = -1;
   open_dd_ = MenuAct::None;
@@ -436,7 +441,7 @@ void Menu::layout(int w, int h) {
     case MenuScreen::Sound: layout_sound(); break;
     case MenuScreen::Keys: layout_keys(); break;
     case MenuScreen::Mods: layout_mods(); break;
-    case MenuScreen::Load: layout_load(); break;
+    case MenuScreen::Load: case MenuScreen::Replays: layout_load(); break;
     case MenuScreen::Credits: layout_credits(); break;
     case MenuScreen::Stories: layout_stories(); break;
     case MenuScreen::Profiles: layout_profiles(); break;
@@ -1235,10 +1240,12 @@ void Menu::layout_stories() {
 }
 
 void Menu::layout_load() {
-  // a régi `LoadMenu`: a mentések listája (legújabb elöl), alatta a betöltés és a törlés
+  // a régi `LoadMenu`: a mentések listája (legújabb elöl), alatta a betöltés és a törlés; ugyanígy a visszajátszások
   const float H = static_cast<float>(h_);
+  const bool rp = screen_ == MenuScreen::Replays;
+  const std::vector<SaveRow>& saves = rows();
   side_area("ui.main.single");
-  title(tr("ui.load.title"));
+  title(tr(rp ? "ui.replays.title" : "ui.load.title"));
   const float top = k(96);
   const float lw = std::min(k(720), area_w_ - k(48)), lx = area_x_ + k(24);
   const float lh = std::max(k(200), H - top - k(180));
@@ -1246,23 +1253,23 @@ void Menu::layout_load() {
   const float rh = k(44);
   float y = top + k(10);
   const int fit = std::max(1, static_cast<int>((lh - k(20)) / (rh + k(4))));
-  for (int i = 0; i < static_cast<int>(saves_.size()) && i < fit; ++i) {
-    const SaveRow& s = saves_[static_cast<size_t>(i)];
+  for (int i = 0; i < static_cast<int>(saves.size()) && i < fit; ++i) {
+    const SaveRow& s = saves[static_cast<size_t>(i)];
     MenuWidget& w = add(MenuWidget::Kind::MapRow, {lx + k(8), y, lw - k(16), rh}, s.title + "   " + s.detail, MenuAct::SavePick, i);
     w.selected = i == save_sel_;
     y += rh + k(4);
   }
-  if (saves_.empty()) text(lx + k(16), top + k(16), lw - k(32), tr("ui.load.none"), MenuText::Med, MenuText::Dim);
+  if (saves.empty()) text(lx + k(16), top + k(16), lw - k(32), tr(rp ? "ui.replays.none" : "ui.load.none"), MenuText::Med, MenuText::Dim);
   // a kijelölt mentés kis képe (a régi `SaveMenu`), a lista mellett
-  if (save_sel_ >= 0 && save_sel_ < static_cast<int>(saves_.size()) && !saves_[static_cast<size_t>(save_sel_)].thumb.empty()) {
+  if (save_sel_ >= 0 && save_sel_ < static_cast<int>(saves.size()) && !saves[static_cast<size_t>(save_sel_)].thumb.empty()) {
     const float tw = std::min(k(360), static_cast<float>(w_) - (lx + lw + k(40)));
     if (tw > k(120)) {
       panels_.push_back({{lx + lw + k(16), top, tw + k(16), tw * 9.0f / 16.0f + k(16)}, 215, false});
-      images_.push_back({{lx + lw + k(24), top + k(8), tw, tw * 9.0f / 16.0f}, saves_[static_cast<size_t>(save_sel_)].thumb});
+      images_.push_back({{lx + lw + k(24), top + k(8), tw, tw * 9.0f / 16.0f}, saves[static_cast<size_t>(save_sel_)].thumb});
     }
   }
   const float by = top + lh + k(16), bw = k(200), bh = k(48);
-  add(MenuWidget::Kind::Button, {lx, by, bw, bh}, tr("ui.load.load"), MenuAct::SaveLoad).enabled = save_sel_ >= 0;
+  add(MenuWidget::Kind::Button, {lx, by, bw, bh}, tr(rp ? "ui.replays.play" : "ui.load.load"), MenuAct::SaveLoad).enabled = save_sel_ >= 0;
   add(MenuWidget::Kind::Button, {lx + bw + k(16), by, bw, bh}, tr("ui.load.delete"), MenuAct::SaveDelete).enabled = save_sel_ >= 0;
   back_button();
 }
@@ -1443,6 +1450,7 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
     case MenuAct::OpenSound: go(MenuScreen::Sound); break;
     case MenuAct::OpenMods: go(MenuScreen::Mods); break;
     case MenuAct::OpenLoad: go(MenuScreen::Load); break;
+    case MenuAct::OpenReplays: go(MenuScreen::Replays); break;
     case MenuAct::OpenCredits: go(MenuScreen::Credits); break;
     case MenuAct::OpenStories: go(MenuScreen::Stories); break;
     case MenuAct::OpenProfiles:
@@ -1550,21 +1558,21 @@ Menu::Result Menu::activate(const MenuWidget& w, int button, float x) {
       break;
     case MenuAct::SavePick:
       save_sel_ = w.arg;
-      if (button == 1 && w.arg >= 0 && static_cast<size_t>(w.arg) < saves_.size() && last_pick_ == w.arg && now_ - last_pick_t_ < 0.4) {
-        load_choice_ = saves_[static_cast<size_t>(w.arg)].path;   // dupla kattintás: betöltés
+      if (button == 1 && w.arg >= 0 && static_cast<size_t>(w.arg) < rows().size() && last_pick_ == w.arg && now_ - last_pick_t_ < 0.4) {
+        load_choice_ = rows()[static_cast<size_t>(w.arg)].path;   // dupla kattintás: betöltés
         return Result::Load;
       }
       last_pick_ = w.arg;
       last_pick_t_ = now_;
       break;
     case MenuAct::SaveLoad:
-      if (save_sel_ >= 0 && static_cast<size_t>(save_sel_) < saves_.size()) {
-        load_choice_ = saves_[static_cast<size_t>(save_sel_)].path;
+      if (save_sel_ >= 0 && static_cast<size_t>(save_sel_) < rows().size()) {
+        load_choice_ = rows()[static_cast<size_t>(save_sel_)].path;
         return Result::Load;
       }
       break;
     case MenuAct::SaveDelete:
-      if (save_sel_ >= 0 && static_cast<size_t>(save_sel_) < saves_.size()) delete_req_ = saves_[static_cast<size_t>(save_sel_)].path;
+      if (save_sel_ >= 0 && static_cast<size_t>(save_sel_) < rows().size()) delete_req_ = rows()[static_cast<size_t>(save_sel_)].path;
       break;
     case MenuAct::ModPick: {
       const bool on = w.arg >= 1000;

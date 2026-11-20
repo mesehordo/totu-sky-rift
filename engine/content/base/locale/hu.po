@@ -10124,3 +10124,47 @@ msgstr ""
 msgctxt "ui.load.content_files"
 msgid "módosult fájlok"
 msgstr ""
+
+msgctxt "ui.main.replays"
+msgid "Visszajátszások"
+msgstr ""
+
+msgctxt "ui.replays.title"
+msgid "Visszajátszások"
+msgstr ""
+
+msgctxt "ui.replays.none"
+msgid "Még nincs visszajátszás. A meccsek a végükön maguktól mentődnek (a legújabb 30 marad)."
+msgstr ""
+
+msgctxt "ui.replays.play"
+msgid "Lejátszás"
+msgstr ""
+
+msgctxt "hud.replay.banner"
+msgid "Visszajátszás  {}  ·  Nézőpont: {}  ·  Tab: nézőpont  ·  P: szünet  ·  +/−: sebesség"
+msgstr ""
+
+msgctxt "hud.replay.all"
+msgid "mindenki"
+msgstr ""
+
+msgctxt "hud.replay.player"
+msgid "{}. játékos"
+msgstr ""
+
+msgctxt "hud.replay.paused"
+msgid "szünet"
+msgstr ""
+
+msgctxt "hud.replay.end"
+msgid "A visszajátszás véget ért."
+msgstr ""
+
+msgctxt "hud.replay.desync"
+msgid "A visszajátszás eltért a felvételtől (más tartalom vagy verzió)."
+msgstr ""
+
+msgctxt "ui.main.replays.hint"
+msgid "A korábbi meccsek visszanézése: gyorsítás, szünet, bármelyik játékos szemével."
+msgstr ""

@@ -112,7 +112,7 @@ bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps,
                        uint64_t seed, MatchConfig* out, std::string* error_hu);
 
 // --- az elrendezés elemei -------------------------------------------------------------------------------------------
-enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods, Load, Credits, Lan, Stories, Profiles, Music };
+enum class MenuScreen : uint8_t { Main = 0, Skirmish, Settings, Sound, Keys, Mods, Load, Credits, Lan, Stories, Profiles, Music, Replays };
 
 enum class MenuAct : uint8_t {
   None = 0,
@@ -158,6 +158,7 @@ enum class MenuAct : uint8_t {
   ProfileEmblem, // arg: a nép sorszáma (a címer)
   MusicPick,     // arg: a szám sorszáma (a régi `MusicMenu`)
   SaveLoad, SaveDelete,
+  OpenReplays,   // a visszajátszások listája (a betöltő képernyője, a visszajátszás-fájlokkal)
 };
 
 struct MenuWidget {
@@ -297,7 +298,8 @@ class Menu {
     std::string path, title, detail;
     std::string thumb;   // a kis kép (a régi `SaveMenu`) teljes útvonala; üres: nincs
   };
-  void set_saves(std::vector<SaveRow> s) { saves_ = std::move(s); save_sel_ = saves_.empty() ? -1 : 0; }
+  void set_saves(std::vector<SaveRow> s) { saves_ = std::move(s); save_sel_ = rows().empty() ? -1 : 0; }
+  void set_replays(std::vector<SaveRow> s) { replays_ = std::move(s); save_sel_ = rows().empty() ? -1 : 0; }
   const std::vector<SaveRow>& saves() const { return saves_; }
   const std::string& load_choice() const { return load_choice_; }   // Result::Load után: a választott mentés
   std::string take_delete() { std::string s; s.swap(delete_req_); return s; }   // törlési kérés (a hívó törli, majd set_saves)
@@ -343,7 +345,8 @@ class Menu {
   bool lan_scanned_ = false;
   std::string net_join_;
   void layout_lan();
-  std::vector<SaveRow> saves_;
+  std::vector<SaveRow> saves_, replays_;
+  std::vector<SaveRow>& rows() { return screen_ == MenuScreen::Replays ? replays_ : saves_; }   // a betöltő listája
   int save_sel_ = -1;
   std::string load_choice_, delete_req_;
   int last_pick_ = -1;

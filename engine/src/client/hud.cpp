@@ -1030,6 +1030,13 @@ void Hud::draw_topbar(const HudFrame& f) {
     }
   }
   const Rect& rb = L.resbar;
+  if (!model_.replay_banner.empty()) {   // a visszajátszás sávja az erőforrássáv alatt, középen
+    const int fb = L.font.res;
+    const float bw = tw(fb, model_.replay_banner) + 24, bh = line_h(fb) + 10;
+    const float bx = static_cast<float>(rb.centerx()) - bw / 2, by = static_cast<float>(rb.bottom()) + 6;
+    rect(Rect{static_cast<int>(bx), static_cast<int>(by), static_cast<int>(bw), static_cast<int>(bh)}, {14, 12, 10}, 220);
+    text(*batch_, fb, bx + 12, by + 5, model_.replay_banner, 255, 226, 150);
+  }
   bevel(rb, {20, 20, 22});
   rect(rb.inflate(-6, -6), {6, 6, 6});   // sötét, süllyesztett sáv: a számok jól olvashatók
   const int fr = L.font.res;

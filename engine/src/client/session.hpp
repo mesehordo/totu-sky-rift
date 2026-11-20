@@ -229,7 +229,13 @@ class Session {
   bool start_match(const sim::MatchSetup& setup, const std::vector<int>& ai, const std::string& ai_script, std::string* error);
   // mentés (a régi `SaveMenu`): a meccs leírása (visszajátszás-leírás: pálya, beállítás, a gépek és a szkriptek forrása)
   // – a Csatánál a start_match tölti, a küldetésnél a hívó adja át; üres: ez a meccs nem menthető
-  void set_match_desc(sim::Replay r) { desc_ = std::move(r); }
+  void set_match_desc(sim::Replay r) {
+    desc_ = std::move(r);
+    rec_.clear();
+    rec_on_ = sim_ && sim_->tick() == 0;   // a mentésből folytatott meccs nem rögzíthető (nincs eleje)
+  }
+  // visszajátszás (a tanulmány): a meccs leírása és minden lefutott parancs; csak a 0. tickről indult, menthető meccsnél
+  std::optional<sim::Replay> recorded_replay() const;
   const sim::Replay* match_desc() const { return desc_ ? &*desc_ : nullptr; }
   // a mentés a szimulációs szálon (SimRunner::with_sim); `meta`: rövid JSON a betöltő listájának
   bool save_game(const std::string& path, const std::string& meta, std::string* error);
@@ -307,6 +313,8 @@ class Session {
   std::unordered_map<sim::EntityId, AnimTrack> anim_;
   std::shared_ptr<const sim::ModuleView> view_;   // a népmechanikák utolsó nézete
   std::optional<sim::Replay> desc_;               // a meccs leírása a mentéshez
+  std::vector<sim::Command> rec_;                 // a visszajátszáshoz: a lefutott parancsok (tickkel)
+  bool rec_on_ = false;
   std::string map_text_;                          // a betöltött pálya szövege (a leíráshoz)
   bool reveal_all_ = false;
   uint8_t local_ = 1;
@@ -334,6 +342,26 @@ class TickSource {
   virtual void end(uint64_t hash) = 0;
   virtual void submit(sim::Command c) = 0;                    // a helyi játékos parancsa
   virtual int backlog() const = 0;                            // a megérkezett, még le nem futott fordulók
+  virtual bool paced() const { return true; }                 // kötött ütem (hálózat); a visszajátszás gyorsítható
+};
+
+// visszajátszás lejátszása (a tanulmány; WC3, AoE2): a rögzített parancsok tickenként; a helyi parancsok elvesznek
+class ReplaySource : public TickSource {
+ public:
+  ReplaySource(Session& s, sim::Replay r);
+  bool begin(std::vector<sim::Command>& cmds) override;
+  void end(uint64_t) override {}
+  void submit(sim::Command) override {}
+  int backlog() const override { return 0; }
+  bool paced() const override { return false; }
+  bool done() const { return done_.load(); }
+  int64_t length() const { return r_.ticks; }
+
+ private:
+  Session& s_;
+  sim::Replay r_;
+  size_t next_ = 0;
+  std::atomic<bool> done_{false};
 };
 
 class SimRunner {
@@ -361,7 +389,7 @@ class SimRunner {
   }
   void set_paused(bool p) { paused_.store(p); }   // szünet: a szimuláció nem lép (a kép tovább rajzolódik)
   // játéksebesség százalékban (a régi `SPEEDS`: 50 … 300); hálózati játékban mindig 100 (a lockstep üteme)
-  void set_speed_pct(int p) { speed_pct_.store(source_ ? 100 : std::clamp(p, 50, 300)); }
+  void set_speed_pct(int p) { speed_pct_.store(source_ && source_->paced() ? 100 : std::clamp(p, 50, source_ ? 800 : 300)); }
   int speed_pct() const { return speed_pct_.load(); }
   double tick_seconds() const { return kTickSeconds * 100.0 / static_cast<double>(speed_pct_.load()); }
   bool paused() const { return paused_.load(); }

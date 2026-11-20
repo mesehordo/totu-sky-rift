@@ -161,7 +161,7 @@ class HudModel {
   double hero_click_t_ = -9;
   sim::EntityId hero_click_id_ = 0;
  public:
-  static int next_speed(int pct, int dir);   // a régi lépcsők: 50, 75, 100, 125, 150, 200, 300
+  static int next_speed(int pct, int dir, int max_pct = 300);   // a régi lépcsők: 50 … 300 (visszajátszásban 400, 800 is)
   // a kijelzett sor: bal oldalt, az alsó sáv fölött (a régi játék `draw_hud` üzenetsora); a legutóbbi 6, időbélyeggel
   struct Notice {
     std::string text;
@@ -193,6 +193,7 @@ class HudModel {
   };
   std::vector<Ping> pings;
   bool alt = false;                           // Alt lenyomva (a kattintás jel)
+  std::string replay_banner;                  // visszajátszáskor a felső sáv alatt (idő, nézőpont, billentyűk)
   bool ping_sound = false;                    // most jött jel (a hangot a hívó játssza le és törli)
   int64_t last_ping_ = -1000;
   void ping(float wx, float wy);              // jel küldése (legfeljebb fél mp-enként egy)

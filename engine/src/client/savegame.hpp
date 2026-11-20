@@ -34,6 +34,15 @@ std::optional<SaveFile> decode_save(const std::vector<uint8_t>& data);
 std::optional<SaveFile> read_save(const std::filesystem::path& p, bool meta_only = false);
 bool write_save(const std::filesystem::path& p, const SaveFile& f, std::string* error);
 
+// visszajátszás-fájl (a menü listájához elöl a meta, mint a mentésnél); a nyers .trep (sim::encode) is olvasható
+struct ReplayFile {
+  std::string meta;   // JSON: {"title", "date", "players", "ticks", "content", "mods"}
+  sim::Replay rep;
+};
+constexpr const char* kReplayExt = ".totuvissza";
+bool write_replay(const std::filesystem::path& p, const ReplayFile& f, std::string* error);
+std::optional<ReplayFile> read_replay(const std::filesystem::path& p, bool meta_only = false);
+
 struct SaveEntry {
   std::filesystem::path path;
   std::string meta;
@@ -41,6 +50,10 @@ struct SaveEntry {
 };
 // a mentések mappája (a felhasználói adatmappa `mentesek` alatt; client/menu_view.cpp – SDL) és a mentések, legújabb elöl
 std::filesystem::path saves_dir();
+std::filesystem::path replays_dir();   // a felhasználói adatmappa `visszajatszasok` alatt
 std::vector<SaveEntry> list_saves(const std::filesystem::path& dir);
+// a visszajátszások (legújabb elöl) és a régiek törlése (a legújabb `keep` marad)
+std::vector<SaveEntry> list_replays(const std::filesystem::path& dir);
+void prune_replays(const std::filesystem::path& dir, size_t keep);
 
 }  // namespace totu::client

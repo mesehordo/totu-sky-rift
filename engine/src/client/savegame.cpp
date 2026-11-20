@@ -108,6 +108,77 @@ bool write_save(const std::filesystem::path& p, const SaveFile& f, std::string* 
   return true;
 }
 
+namespace {
+constexpr const char* kReplayMagic = "totu-visszajatszas";
+}
+
+bool write_replay(const std::filesystem::path& p, const ReplayFile& f, std::string* error) {
+  core::ByteWriter w;
+  w.str(kReplayMagic);
+  w.u32(kVersion);
+  w.str(f.meta);
+  const auto d = sim::encode(f.rep);
+  w.str(std::string_view(reinterpret_cast<const char*>(d.data()), d.size()));
+  std::error_code ec;
+  std::filesystem::create_directories(p.parent_path(), ec);
+  const auto tmp = p.string() + ".tmp";
+  {
+    std::ofstream o(tmp, std::ios::binary | std::ios::trunc);
+    o.write(reinterpret_cast<const char*>(w.data().data()), static_cast<std::streamsize>(w.data().size()));
+    if (!o) {
+      if (error) *error = "nem írható: " + tmp;
+      return false;
+    }
+  }
+  std::filesystem::rename(tmp, p, ec);
+  if (ec && error) *error = "nem nevezhető át: " + p.string();
+  return !ec;
+}
+
+std::optional<ReplayFile> read_replay(const std::filesystem::path& p, bool meta_only) {
+  std::ifstream in(p, std::ios::binary);
+  if (!in) return std::nullopt;
+  const std::vector<uint8_t> data{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
+  ReplayFile f;
+  if (p.extension() == ".trep") {   // nyers visszajátszás (a tesztek és a totu_sim formátuma)
+    if (meta_only) return f;
+    auto r = sim::decode(data);
+    if (!r) return std::nullopt;
+    f.rep = std::move(*r);
+    return f;
+  }
+  core::ByteReader r(data);
+  if (r.str() != kReplayMagic || r.u32() != kVersion || !r.ok()) return std::nullopt;
+  f.meta = r.str();
+  if (!r.ok()) return std::nullopt;
+  if (meta_only) return f;
+  const std::string d = r.str();
+  if (!r.ok()) return std::nullopt;
+  auto rp = sim::decode(std::vector<uint8_t>(d.begin(), d.end()));
+  if (!rp) return std::nullopt;
+  f.rep = std::move(*rp);
+  return f;
+}
+
+std::vector<SaveEntry> list_replays(const std::filesystem::path& dir) {
+  std::vector<SaveEntry> out;
+  std::error_code ec;
+  for (const auto& e : std::filesystem::directory_iterator(dir, ec)) {
+    if (!e.is_regular_file(ec) || e.path().extension() != kReplayExt) continue;
+    auto f = read_replay(e.path(), true);
+    if (!f) continue;
+    out.push_back({e.path(), f->meta, static_cast<int64_t>(e.last_write_time(ec).time_since_epoch().count())});
+  }
+  std::sort(out.begin(), out.end(), [](const SaveEntry& a, const SaveEntry& b) { return a.mtime > b.mtime; });
+  return out;
+}
+
+void prune_replays(const std::filesystem::path& dir, size_t keep) {
+  const auto all = list_replays(dir);
+  std::error_code ec;
+  for (size_t i = keep; i < all.size(); ++i) std::filesystem::remove(all[i].path, ec);
+}
+
 std::vector<SaveEntry> list_saves(const std::filesystem::path& dir) {
   std::vector<SaveEntry> out;
   std::error_code ec;

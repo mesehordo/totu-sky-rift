@@ -167,3 +167,62 @@ TEST_CASE("mentes: a tartalom ujjlenyomata es a modlista; elterest jelez, a rege
   CHECK(!content_differs("{\"title\": \"regi mentes\"}", 0x99ULL, {"uj 1.1"}, &d));   // ujjlenyomat nélkül nincs mihez mérni
   CHECK(client::content_tag(1) == "0000000000000001");
 }
+
+TEST_CASE("visszajatszas (WC3, AoE2): a meccs parancsai rogzulnek, a fajlbol lejatszva ugyanoda jut; a lejatszas nem fogad parancsot") {
+  client::Session s;
+  std::string err;
+  CHECK(s.load(TOTU_CONTENT_DIR, std::string(TOTU_CONTENT_DIR) + "/base/maps/kraterfold.json", 20261112, &err));
+  sim::MatchSetup setup;
+  setup.factions = {"ursan", "wullof"};
+  sim::AiSlot a;
+  a.player = 2;
+  setup.ai.push_back(a);
+  CHECK(s.start_match(setup, {}, "", &err));
+  client::SimRunner r(s);
+  for (int i = 0; i < 400; ++i) {
+    if (i == 40 || i == 200) {   // a játékos parancsai: képzés és jel
+      sim::Command c;
+      c.kind = sim::Command::Kind::Train;
+      c.owner = 1;
+      c.def = "urs_telepes";
+      r.post(c);
+      sim::Command p;
+      p.kind = sim::Command::Kind::Ping;
+      p.owner = 1;
+      p.x = core::Fixed::from_int(10);
+      r.post(p);
+    }
+    r.step_sync();
+  }
+  const auto rec = s.recorded_replay();
+  CHECK(rec && rec->ticks == 400 && rec->commands.size() == 4);
+  if (!rec) return;
+  const auto path = std::filesystem::temp_directory_path() / "totu_proba.totuvissza";
+  CHECK(client::write_replay(path, {"{\"title\": \"proba\"}", *rec}, &err));
+  const auto f = client::read_replay(path);
+  CHECK(f && f->meta == "{\"title\": \"proba\"}" && f->rep.commands.size() == 4);
+  std::filesystem::remove(path);
+  if (!f) return;
+  client::Session s2;
+  CHECK(s2.load_content(TOTU_CONTENT_DIR, &err));
+  auto m = sim::start_match(f->rep, s2.terrain_ptr(), s2.content_rules(), err);
+  CHECK(m != nullptr);
+  if (!m) return;
+  s2.adopt(*m);
+  CHECK(!s2.recorded_replay());   // a lejátszás maga nem rögzül
+  client::ReplaySource src(s2, f->rep);
+  client::SimRunner r2(s2);
+  r2.set_source(&src);
+  sim::Command stray;   // a lejátszás alatt kiadott parancs elvész
+  stray.kind = sim::Command::Kind::Train;
+  stray.owner = 1;
+  stray.def = "urs_telepes";
+  r2.post(stray);
+  for (int i = 0; i < 500 && !src.done(); ++i) r2.step_sync();
+  CHECK(src.done() && m->sim->tick() == 400);
+  CHECK(m->sim->hash() == s.sim().hash());
+  r2.set_speed_pct(800);
+  CHECK(r2.speed_pct() == 800);   // a visszajátszás gyorsítható (a meccs 300%-ig)
+  r.set_speed_pct(800);
+  CHECK(r.speed_pct() == 300);
+}

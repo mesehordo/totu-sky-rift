@@ -10125,3 +10125,47 @@ msgstr "Different mods: {m}"
 msgctxt "ui.load.content_files"
 msgid "módosult fájlok"
 msgstr "changed files"
+
+msgctxt "ui.main.replays"
+msgid "Visszajátszások"
+msgstr "Replays"
+
+msgctxt "ui.replays.title"
+msgid "Visszajátszások"
+msgstr "Replays"
+
+msgctxt "ui.replays.none"
+msgid "Még nincs visszajátszás. A meccsek a végükön maguktól mentődnek (a legújabb 30 marad)."
+msgstr "No replays yet. Matches are saved automatically when they end (the latest 30 are kept)."
+
+msgctxt "ui.replays.play"
+msgid "Lejátszás"
+msgstr "Play"
+
+msgctxt "hud.replay.banner"
+msgid "Visszajátszás  {}  ·  Nézőpont: {}  ·  Tab: nézőpont  ·  P: szünet  ·  +/−: sebesség"
+msgstr "Replay  {}  ·  View: {}  ·  Tab: view  ·  P: pause  ·  +/−: speed"
+
+msgctxt "hud.replay.all"
+msgid "mindenki"
+msgstr "everyone"
+
+msgctxt "hud.replay.player"
+msgid "{}. játékos"
+msgstr "player {}"
+
+msgctxt "hud.replay.paused"
+msgid "szünet"
+msgstr "paused"
+
+msgctxt "hud.replay.end"
+msgid "A visszajátszás véget ért."
+msgstr "The replay has ended."
+
+msgctxt "hud.replay.desync"
+msgid "A visszajátszás eltért a felvételtől (más tartalom vagy verzió)."
+msgstr "The replay diverged from the recording (different content or version)."
+
+msgctxt "ui.main.replays.hint"
+msgid "A korábbi meccsek visszanézése: gyorsítás, szünet, bármelyik játékos szemével."
+msgstr "Watch past matches: speed up, pause, see through any player's eyes."
