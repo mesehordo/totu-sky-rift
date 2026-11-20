@@ -690,6 +690,12 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     d.energy_max = int_of(path(*v, "Energy", "max"), 0);
     d.regen = fixed_of(path(*v, "Health", "regen"), Fixed{});
     d.garrison = int_of(path(*v, "Garrison", "slots"), 0);
+    if (const content::Value* mn = path(*v, "Mechanics", "mine"); mn && mn->is_object()) {
+      d.mine_slots = std::max(1, int_of(mn->find("slots"), 3));
+      d.mine_passive = fixed_of(mn->find("passive"), Fixed{});
+      const content::Value* co = mn->find("consume");
+      d.mine_consume = co && co->is_bool() && co->as_bool();
+    }
     if (const content::Value* sh = path(*v, "Identity", "shape"); sh && sh->is_string()) d.shape = sh->text();
     if (const content::Value* gr = path(*v, "Hero", "growth"); gr && gr->is_object()) {
       d.grow_hp = fixed_of(gr->find("hp"), Fixed{});

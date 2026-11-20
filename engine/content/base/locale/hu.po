@@ -10168,3 +10168,11 @@ msgstr ""
 msgctxt "ui.main.replays.hint"
 msgid "A korábbi meccsek visszanézése: gyorsítás, szünet, bármelyik játékos szemével."
 msgstr ""
+
+msgctxt "hud.st.mine"
+msgid "Bent dolgozik: {}/{} (jobb kattintás a munkásokkal)"
+msgstr ""
+
+msgctxt "hud.st.mine_consume"
+msgid "Beleolvadt szolga: {}/{} (jobb kattintás a szolgákkal)"
+msgstr ""

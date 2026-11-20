@@ -1273,3 +1273,79 @@ TEST_CASE("DIAG fajok: minden fonep vegigjatszva a feluleten at (epites, kepzes,
     for (const auto& b : A.bad) std::printf("     - %s\n", b.c_str());
   }
 }
+
+// ---- fajonkénti gyűjtés (DIAG): minden munkás a gyűjthető nyersanyagra, 2 perc; bevétel és tétlenek -------------
+TEST_CASE("DIAG gyujtes: minden fonep munkasai a gyujtheto nyersanyagra, 2 perc") {
+  if (!std::getenv("TOTU_FAJOK") && !std::getenv("TOTU_FAJ")) return;
+  static const char* kRes[] = {"fa", "arany", "meteorit", "áhítat"};
+  for (const char* fac : {"ursan", "elves", "croftian", "wullof", "hukucha", "imperium", "ooni"}) {
+    if (const char* only = std::getenv("TOTU_FAJ"); only && std::string(only) != fac) continue;
+    HudMatch m(fac);
+    if (!m.ok) continue;
+    auto& sm = m.s.sim();
+    const sim::Rules& R = *m.s.rules();
+    const auto start = sm.player(1).gathered;
+    // a munkások: a gyűjthető fajták között körben
+    std::vector<sim::EntityId> ws;
+    for (const auto& u : m.snap->units) {
+      if (u.owner == 1 && u.kind == client::SnapUnit::kUnit && u.def < R.defs.size() && R.defs[u.def].worker) ws.push_back(u.id);
+    }
+    int k = 0;
+    std::string plan;
+    for (const sim::EntityId w : ws) {
+      const sim::EntityDef& d = R.defs[sm.world().get<sim::Unit>(w)->def];
+      std::vector<int> kinds;
+      for (int r = 0; r < 3; ++r) {
+        if (d.gathers == 0 || (d.gathers >> r) & 1) kinds.push_back(r);
+      }
+      if (kinds.empty()) {
+        plan += d.id + ":nem gyűjt ";
+        continue;
+      }
+      const int want = kinds[static_cast<size_t>(k++) % kinds.size()];
+      const sim::Position& wp = *sm.world().get<sim::Position>(w);
+      sim::EntityId best = 0;
+      int64_t bd = 0;
+      sm.world().pool<sim::ResourceNode>().each([&](sim::EntityId ne, const sim::ResourceNode& n) {
+        if (n.kind != want || n.amount <= 0) return;
+        const sim::Position& np = *sm.world().get<sim::Position>(ne);
+        const int64_t dd = core::length_sq_raw(np.x - wp.x, np.y - wp.y);
+        if (!best || dd < bd) { best = ne; bd = dd; }
+      });
+      if (!best) {
+        plan += d.id + ":nincs " + kRes[want] + " ";
+        continue;
+      }
+      sim::Command c;
+      c.kind = sim::Command::Kind::Gather;
+      c.owner = 1;
+      c.units = {w};
+      c.target = best;
+      m.pending.push_back(c);
+      plan += d.id + "→" + kRes[want] + " ";
+    }
+    m.step(3600);
+    const auto end = sm.player(1).gathered;
+    int idle = 0, work = 0;
+    for (const sim::EntityId w : ws) {
+      const sim::Worker* wk = sm.world().get<sim::Worker>(w);
+      if (!wk) {
+        if (std::getenv("TOTU_DIAG_W")) {
+          const sim::Health* hh = sm.world().get<sim::Health>(w);
+          std::printf("     munkás %u: él=%d hp=%d\n", w, sm.world().alive(w) ? 1 : 0, hh ? hh->hp : -1);
+        }
+        continue;
+      }
+      if (wk->state == sim::Worker::Idle) ++idle;
+      else ++work;
+      if (std::getenv("TOTU_DIAG_W")) {
+        const sim::Position& wp = *sm.world().get<sim::Position>(w);
+        std::printf("     munkás %u: állapot %d, rakomány %d (%d), cél %u, fails %d, hely (%.1f, %.1f)\n", w, wk->state, wk->carry, wk->carry_kind, wk->res, wk->fails,
+                    wp.x.to_double(), wp.y.to_double());
+      }
+    }
+    std::printf("  == %s: %s\n     2 perc: fa %+lld, arany %+lld, meteorit %+lld, áhítat %+lld | dolgozik %d, tétlen %d\n", fac, plan.c_str(),
+                static_cast<long long>((end[0] - start[0]) / 1000), static_cast<long long>((end[1] - start[1]) / 1000),
+                static_cast<long long>((end[2] - start[2]) / 1000), static_cast<long long>((end[3] - start[3]) / 1000), work, idle);
+  }
+}

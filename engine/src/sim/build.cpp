@@ -483,7 +483,8 @@ bool Sim::build_near(uint8_t owner, uint16_t def, int x, int y) {
         if (std::max(std::abs(dx), std::abs(dy)) != r) continue;
         const int tx = x + dx, ty = y + dy;
         if (!can_place(owner, def, tx, ty)) continue;
-        if (!can_place(0, def, tx - 1, ty - 1) && !can_place(0, def, tx + 1, ty + 1)) continue;   // ne zárjon körbe
+        // ne zárjon körbe (a lelőhelyre épülőnél nincs értelme: az csak a lelőhely sarkára kerülhet)
+        if (!rules_->defs[def].on_resource && !can_place(0, def, tx - 1, ty - 1) && !can_place(0, def, tx + 1, ty + 1)) continue;
         return order_build(worker, def, tx, ty);
       }
     }

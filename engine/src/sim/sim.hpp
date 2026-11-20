@@ -629,6 +629,20 @@ struct Sheltered {   // helyőrségben lévő egység: nem látszik, nem célpon
   static Sheltered load(core::ByteReader& r) { Sheltered s; s.building = r.u32(); return s; }
 };
 
+struct Mine {   // bányaépület (a régi `mine_acc`, `mine_n`): a tört bevétel (ezred), a gyorsítás, a beleolvadtak
+  int32_t acc = 0;
+  int64_t boost_until = 0;
+  int32_t boost = 1000;     // ezrelék (Napáldás)
+  int32_t consumed = 0;     // `consume`: a beleolvadt munkások
+  void hash(core::StateHash& h) const { h.add_i64(acc); h.add_i64(boost_until); h.add_i64(boost); h.add_i64(consumed); }
+  void save(core::ByteWriter& w) const { w.i32(acc); w.i64(boost_until); w.i32(boost); w.i32(consumed); }
+  static Mine load(core::ByteReader& r) {
+    Mine m;
+    m.acc = r.i32(); m.boost_until = r.i64(); m.boost = r.i32(); m.consumed = r.i32();
+    return m;
+  }
+};
+
 struct Enter {   // beszállás-parancs: odamegy, és ha van hely, bemegy
   EntityId building = 0;
   int32_t repath = 0;
@@ -1052,6 +1066,8 @@ class Sim {
   bool unload(EntityId building);                 // mindenki ki, az épület köré
   bool sheltered(EntityId e);                     // épületben van (helyőrség vagy bentről építő)
   int garrison_count(EntityId building);          // a bent lévők száma (a jelzéshez; D39)
+  int mine_used(EntityId building);               // bánya: a bent dolgozók vagy a beleolvadtak száma
+  EntityId mine_node(EntityId building);          // bánya: a lábnyom alatti arany- vagy meteoritlelőhely
   // Felemelkedés és fejlődési irány (MECH-ASC): a választás csak felemelkedve, egyszer.
   bool choose_path(uint8_t owner, const std::string& path);
   // Szövetség egy kisnéppel (MECH-ALLY, D26): kész Diplomácia csarnoka kell; egyszer, véglegesen, `ally_cost` áron.
@@ -1260,6 +1276,9 @@ class Sim {
   std::map<EntityId, std::pair<EntityId, uint8_t>> killer_;   // a tick haldoklóinak gyilkosa (nem állapot)
   int64_t spell_milli(EntityId e, Fixed dmg);
   void garrison_system();
+  void mine_system();                                          // a bányaépületek hozama (tickenként)
+  bool order_mine(const std::vector<EntityId>& units, EntityId building);
+  void release_mine(EntityId building, bool half);
   // elfoglalás, megszállás, előléptetés (D30)
   int occupy_capacity(const Building& b) const;
   bool seize_valid(EntityId e, const Seize& s);

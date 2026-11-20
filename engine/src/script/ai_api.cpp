@@ -80,6 +80,13 @@ void push_info(lua_State* L, Sim& s, uint8_t p, EntityId e) {
     set_bool(L, "dropoff", d->dropoff != 0);
     set_int(L, "supply", d->supply);
     set_str(L, "class", d->utype);
+    if (d->mine_slots > 0 && s.world().get<sim::Building>(e)) {   // bánya: a helyek, a bent lévők és az odatartók
+      set_int(L, "mine_slots", d->mine_slots);
+      set_int(L, "mined", s.mine_used(e));
+      lua_Integer coming = 0;
+      s.world().pool<sim::Enter>().each([&](EntityId, const sim::Enter& en) { coming += en.building == e ? 1 : 0; });
+      set_int(L, "mine_coming", coming);
+    }
   }
   const sim::Movement* m = s.world().get<sim::Movement>(e);
   set_bool(L, "moving", m && m->moving);
@@ -354,8 +361,10 @@ int a_resources(lua_State* L) {
       continue;
     }
     if (k != kind) continue;
-    lua_createtable(L, 0, 4);
+    lua_createtable(L, 0, 6);
     set_int(L, "id", id);
+    set_int(L, "tx", tx);   // a bal felső csempe (a lelőhelyre épülő épület helye)
+    set_int(L, "ty", ty);
     push_fixed_value(L, core::Fixed::from_raw(static_cast<int32_t>(xr))); lua_setfield(L, -2, "x");
     push_fixed_value(L, core::Fixed::from_raw(static_cast<int32_t>(yr))); lua_setfield(L, -2, "y");
     if (a >= 0 && tile_flag(s, p, static_cast<int>(tx), static_cast<int>(ty), false)) set_int(L, "amount", a);
@@ -382,6 +391,10 @@ int a_template(lua_State* L) {
   set_bool(L, "wall", d.shape == "wall");
   set_bool(L, "dropoff", d.dropoff != 0);
   set_int(L, "dropoff_mask", d.dropoff);
+  set_int(L, "gathers", d.gathers);           // a munkás gyűjtési maszkja (0: mindent)
+  set_int(L, "on_resource", d.on_resource);   // lelőhelyre épül (maszk)
+  set_int(L, "mine_slots", d.mine_slots);     // bányaépület (Napfúró, Fertőzött tárna)
+  set_bool(L, "mine_consume", d.mine_consume);
   set_int(L, "fw", d.fw);
   set_int(L, "fh", d.fh);
   set_bool(L, "altar", d.altar);

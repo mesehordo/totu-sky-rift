@@ -42,6 +42,7 @@ void Sim::attach_rules(const Rules* rules) {
   world_.register_component<Garrison>("Garrison");   // helyőrség (D39)
   world_.register_component<Sheltered>("Sheltered");
   world_.register_component<Enter>("Enter");
+  world_.register_component<Mine>("Mine");   // bányaépület (Napfúró, Fertőzött tárna)
   world_.register_component<HeroState>("HeroState");   // hősök, tárgyak, táborok (M7)
   world_.register_component<GroundItem>("GroundItem");
   world_.register_component<Fetch>("Fetch");
@@ -140,6 +141,10 @@ EntityId Sim::place_building(uint16_t def, uint8_t owner, int tx, int ty, bool c
   world_.add(e, vt);
   if (d.attack.has || d.garrison > 0) world_.add(e, Combat{});   // a helyőrség fegyvert ad
   if (d.garrison > 0) world_.add(e, Garrison{});
+  if (d.mine_slots > 0) {   // bányaépület: a Napfúróban a bent dolgozók helyőrségként (nem lőnek), a tárnában a számláló
+    world_.add(e, Mine{});
+    if (!d.mine_consume && d.garrison <= 0) world_.add(e, Garrison{});
+  }
   world_.add(e, Afflict{});   // páncéltörés (épületen is)
   if (!d.powers.empty()) world_.add(e, Caster{});                  // főépület-képességek újratöltése
   if (nav_) nav_->add_obstacle({tx, ty, w, h});

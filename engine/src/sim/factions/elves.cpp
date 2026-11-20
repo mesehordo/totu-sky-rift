@@ -25,26 +25,12 @@ namespace totu::sim {
 namespace {
 
 const Fixed kPrayReach = Fixed::from_ratio(3, 2);   // a szentély lábnyomától (csempe)
-const Fixed kMineReach = Fixed::from_ratio(7, 10);  // a bánya lábnyomától (csempe)
 
 struct ElfPower {   // az épület ellátottsága (1: a mezőben, vagy `no_power`)
   uint8_t powered = 1;
   void hash(core::StateHash& h) const { h.add_u64(powered); }
   void save(core::ByteWriter& w) const { w.u8(powered); }
   static ElfPower load(core::ByteReader& r) { ElfPower p; p.powered = r.u8(); return p; }
-};
-
-struct ElfMine {   // Napfúró: a tört bevétel (ezred) és a gyorsítás
-  int32_t acc = 0;
-  int64_t boost_until = 0;
-  int32_t boost = 1000;   // ezrelék
-  void hash(core::StateHash& h) const { h.add_i64(acc); h.add_i64(boost_until); h.add_i64(boost); }
-  void save(core::ByteWriter& w) const { w.i32(acc); w.i64(boost_until); w.i32(boost); }
-  static ElfMine load(core::ByteReader& r) {
-    ElfMine m;
-    m.acc = r.i32(); m.boost_until = r.i64(); m.boost = r.i32();
-    return m;
-  }
 };
 
 const content::Value* sub(const std::shared_ptr<const content::Value>& v, const char* a, const char* b = nullptr) {
@@ -69,7 +55,6 @@ class Module final : public FactionModule {
 
   void register_components(World& w) override {
     w.register_component<ElfPower>("ElfPower");
-    w.register_component<ElfMine>("ElfMine");
   }
 
   // --- adatok a nyers JSON-ból ------------------------------------------------------------------------------------
@@ -145,7 +130,6 @@ class Module final : public FactionModule {
     if (!b || !h || !power_faction(s, h->owner)) return;
     const EntityDef& d = s.rules_->defs[b->def];
     if (!no_power(d)) s.world_.add(e, ElfPower{static_cast<uint8_t>(in_field(s, h->owner, s.world_.get<Position>(e)->x, s.world_.get<Position>(e)->y) ? 1 : 0)});
-    if (sub(d.raw, "Mechanics", "mine")) s.world_.add(e, ElfMine{});
     refresh_power(s);   // kész mezőadó lerakva (place_building)
   }
 
@@ -182,7 +166,7 @@ class Module final : public FactionModule {
   bool use_power(Sim& s, uint8_t, EntityId b, uint16_t ability, Fixed, Fixed) override {
     const AbilityDef& a = s.rules_->abilities[ability];
     if (a.effect != "mine_boost") return false;
-    ElfMine* m = s.world_.get<ElfMine>(b);
+    Mine* m = s.world_.get<Mine>(b);   // a közös bányaépület (Sim::mine_system)
     if (!m) return false;
     m->boost_until = s.tick_ + a.duration;
     m->boost = static_cast<int32_t>(int64_t{num(a.spec ? a.spec->find("mult") : nullptr, Fixed::from_ratio(3, 2)).raw()} * 1000 >> 16);
@@ -257,7 +241,6 @@ class Module final : public FactionModule {
       if (Combat* c = s.world_.get<Combat>(e)) c->cooldown = std::max(c->cooldown, 2);
     });
     if (s.tick_ % 15 == 0) faith(s);
-    mines(s);
     rift(s);
     energy_ids(s);
   }
@@ -332,51 +315,6 @@ class Module final : public FactionModule {
       const int64_t milli = (int64_t{active} * rate.raw() * 1000 >> 16) / 2;
       s.players_[owner].res[kFaith] += milli;
       s.players_[owner].gathered[kFaith] += milli;
-    }
-  }
-
-  // Napfúró (MECH-MINE): tickenként
-  void mines(Sim& s) {
-    std::vector<EntityId> ids;
-    s.world_.pool<ElfMine>().each([&](EntityId e, const ElfMine&) { ids.push_back(e); });
-    for (const EntityId e : ids) {
-      const Building* b = s.world_.get<Building>(e);
-      const Health* h = s.world_.get<Health>(e);
-      if (!b || !h || !b->complete || h->hp <= 0) continue;
-      const EntityDef& d = s.rules_->defs[b->def];
-      const content::Value* mine = sub(d.raw, "Mechanics", "mine");
-      const Fixed passive = num(mine ? mine->find("passive") : nullptr, Fixed{});
-      const int slots = num(mine ? mine->find("slots") : nullptr, Fixed::from_int(3)).floor_int();
-      EntityId node = kNoEntity;   // a lábnyom alatti lelőhely
-      s.world_.pool<ResourceNode>().each([&](EntityId ne, const ResourceNode& n) {
-        if (node || n.amount <= 0 || (n.kind != kGold && n.kind != kMeteor)) return;
-        if (n.tx < b->tx + b->w && n.tx + n.size > b->tx && n.ty < b->ty + b->h && n.ty + n.size > b->ty) node = ne;
-      });
-      if (!node) continue;
-      int miners = 0;
-      s.world_.pool<Worker>().each([&](EntityId we, const Worker& w) {
-        if (miners >= slots) return;
-        const Health* wh = s.world_.get<Health>(we);
-        const Movement* mv = s.world_.get<Movement>(we);
-        if (!wh || wh->owner != h->owner || wh->hp <= 0 || w.state != Worker::Idle || w.inside || (mv && mv->moving)) return;
-        const Position& p = *s.world_.get<Position>(we);
-        if (rect_gap(p.x, p.y, *b) <= kMineReach) ++miners;
-      });
-      ResourceNode& n = *s.world_.get<ResourceNode>(node);
-      const ResourceDef& rd = s.rules_->resources[n.kind];
-      // fejenként carry / (gather_time + 7,4) egység / s
-      const Fixed per_s = Fixed::from_int(rd.carry) / (rd.gather_time + Fixed::from_ratio(74, 10));
-      ElfMine& m = *s.world_.get<ElfMine>(e);
-      int64_t add = int64_t{((passive + Fixed::from_int(miners)) * per_s).raw()} * 1000 / kTickHz >> 16;
-      if (m.boost_until > s.tick_) add = add * m.boost / 1000;
-      m.acc += static_cast<int32_t>(add);
-      const int32_t whole = std::min(m.acc / 1000, n.amount);
-      if (whole <= 0) continue;
-      m.acc -= whole * 1000;
-      n.amount -= whole;
-      const int kind = n.kind;
-      s.income(h->owner, kind, whole);
-      if (s.world_.get<ResourceNode>(node)->amount <= 0) s.remove_resource(node);
     }
   }
 

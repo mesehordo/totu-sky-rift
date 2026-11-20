@@ -88,8 +88,101 @@ void Sim::grant_modifiers(uint8_t owner, const std::vector<Modifier>& mods) {
 }
 
 // --- helyőrség -------------------------------------------------------------------------------------------------------
+// --- bányaépület (a régi Ötletdoboz Ö4/Ö5: `enter_mine`, `update_mine`, `release_miners`) -----------------------------
+int Sim::mine_used(EntityId b) {
+  const Mine* m = world_.get<Mine>(b);
+  const Building* bd = world_.get<Building>(b);
+  if (!m || !bd || !rules_) return 0;
+  return rules_->defs[bd->def].mine_consume ? m->consumed : garrison_count(b);
+}
+
+EntityId Sim::mine_node(EntityId b) {
+  const Building* bd = world_.get<Building>(b);
+  if (!bd) return kNoEntity;
+  EntityId node = kNoEntity;
+  world_.pool<ResourceNode>().each([&](EntityId ne, const ResourceNode& n) {
+    if (node || n.amount <= 0 || (n.kind != kGold && n.kind != kMeteor)) return;
+    if (n.tx < bd->tx + bd->w && n.tx + n.size > bd->tx && n.ty < bd->ty + bd->h && n.ty + n.size > bd->ty) node = ne;
+  });
+  return node;
+}
+
+// a kijelölt munkások a bányához mennek (a tárnába bármely munkás, a Napfúróba az, aki a lelőhely fajtáját gyűjti)
+bool Sim::order_mine(const std::vector<EntityId>& units, EntityId b) {
+  const Building* bd = world_.get<Building>(b);
+  const Health* bh = world_.get<Health>(b);
+  if (!rules_ || !bd || !bh || bh->hp <= 0 || !bd->complete) return false;
+  const EntityDef& d = rules_->defs[bd->def];
+  const EntityId node = mine_node(b);
+  if (!node) return false;
+  const uint8_t kind = world_.get<ResourceNode>(node)->kind;
+  int pending = 0;
+  world_.pool<Enter>().each([&](EntityId, const Enter& en) { pending += en.building == b ? 1 : 0; });
+  int room = d.mine_slots - mine_used(b) - pending;
+  bool issued = false, full = false;
+  for (const EntityId e : units) {
+    const Worker* w = world_.get<Worker>(e);
+    const Health* h = world_.get<Health>(e);
+    const Unit* u = world_.get<Unit>(e);
+    if (!w || !h || !u || h->owner != bh->owner || h->hp <= 0 || w->inside || sheltered(e)) continue;
+    const EntityDef& ud = rules_->defs[u->def];
+    if (!d.mine_consume && ud.gathers != 0 && !((ud.gathers >> kind) & 1)) continue;   // ezt nem gyűjti
+    if (room <= 0) {
+      full = true;
+      continue;
+    }
+    interrupt(e);
+    world_.add(e, Enter{b, 0});
+    --room;
+    issued = true;
+  }
+  if (full) emit(SimEvent::Full, bh->owner, bd->def);   // a régi „… már 3 munkás dolgozik benne.”
+  return issued;
+}
+
+void Sim::release_mine(EntityId b, bool half) {
+  Garrison* g = world_.get<Garrison>(b);
+  const Building* bd = world_.get<Building>(b);
+  if (!g || !bd || g->units.empty()) return;
+  const std::vector<EntityId> out = g->units;
+  g->units.clear();
+  release_units(*bd, out, half);
+}
+
+void Sim::mine_system() {
+  std::vector<EntityId> ids;
+  world_.pool<Mine>().each([&](EntityId e, const Mine&) { ids.push_back(e); });
+  for (const EntityId e : ids) {
+    const Building* b = world_.get<Building>(e);
+    const Health* h = world_.get<Health>(e);
+    if (!b || !h || !b->complete || h->hp <= 0) continue;
+    const EntityDef& d = rules_->defs[b->def];
+    const EntityId node = mine_node(e);
+    if (!node) {   // kimerült: a bányászok kijönnek, az épület összeomlik (a régi `mine_exhausted`)
+      release_mine(e, false);
+      kill(e);
+      continue;
+    }
+    ResourceNode& n = *world_.get<ResourceNode>(node);
+    const ResourceDef& rd = rules_->resources[n.kind];
+    // egy munkás átlagos hozama: carry / (gather_time + 7,4) egység / s (a régi `mine_rate`)
+    const Fixed per_s = Fixed::from_int(rd.carry) / (rd.gather_time + Fixed::from_ratio(74, 10));
+    Mine& m = *world_.get<Mine>(e);
+    int64_t add = int64_t{((d.mine_passive + Fixed::from_int(mine_used(e))) * per_s).raw()} * 1000 / kTickHz >> 16;
+    if (m.boost_until > tick_) add = add * m.boost / 1000;
+    m.acc += static_cast<int32_t>(add);
+    const int32_t whole = std::min(m.acc / 1000, n.amount);
+    if (whole <= 0) continue;
+    m.acc -= whole * 1000;
+    n.amount -= whole;
+    income(h->owner, n.kind, whole);
+    if (world_.get<ResourceNode>(node)->amount <= 0) remove_resource(node);
+  }
+}
+
 bool Sim::order_garrison(const std::vector<EntityId>& units, EntityId target) {
   if (!rules_) return false;
+  if (target && world_.get<Mine>(target)) return order_mine(units, target);   // bánya: a munkások bemennek / beleolvadnak
   const int beszallas = rules_->ability_index("beszallas");
   std::vector<EntityId> us;
   for (const EntityId e : units) {
@@ -181,8 +274,9 @@ void Sim::garrison_system() {
     const EntityId b = en->building;
     const Building* bd = world_.get<Building>(b);
     const Health* bh = world_.get<Health>(b);
-    if (!bd || !bh || bh->hp <= 0 || !bd->complete || bh->owner != h->owner ||
-        garrison_count(b) >= rules_->defs[bd->def].garrison) {
+    const bool mine = world_.get<Mine>(b) != nullptr;
+    const int cap = mine && bd ? rules_->defs[bd->def].mine_slots : bd ? rules_->defs[bd->def].garrison : 0;
+    if (!bd || !bh || bh->hp <= 0 || !bd->complete || bh->owner != h->owner || (mine ? mine_used(b) : garrison_count(b)) >= cap) {
       world_.pool<Enter>().remove(e);
       halt(e);
       continue;
@@ -190,7 +284,13 @@ void Sim::garrison_system() {
     const Position& p = *world_.get<Position>(e);
     const Fixed r = rules_->defs[world_.get<Unit>(e)->def].radius;
     if (rect_gap(p.x, p.y, *bd) <= r + kReach) {
-      enter_garrison(e, b);
+      if (mine && rules_->defs[bd->def].mine_consume) {   // Fertőzött tárna: a szolga végleg beleolvad
+        world_.pool<Enter>().remove(e);
+        ++world_.get<Mine>(b)->consumed;
+        kill(e);
+      } else {
+        enter_garrison(e, b);
+      }
       continue;
     }
     if (incapacitated(e)) continue;

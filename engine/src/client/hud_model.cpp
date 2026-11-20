@@ -900,7 +900,8 @@ CommandCard HudModel::command_card() {
     std::vector<sim::EntityId> gb;
     int inside = 0;
     for (const SnapUnit* b : bs) {
-      if (b->garrison > 0) {
+      const sim::EntityDef* bdd = def_of(*b);
+      if (b->garrison > 0 && !(bdd && bdd->mine_consume)) {   // a tárnába beleolvadtak nem szállnak ki
         gb.push_back(b->id);
         inside += b->garrison;
       }
@@ -1754,6 +1755,9 @@ std::string HudModel::status_text(const SnapUnit& u) const {
     }
     if (d->supply_provides) notes.push_back(tr("st.supply", {std::to_string(d->supply_provides)}));
     if (d->garrison) notes.push_back(tr("st.garrison", {std::to_string(u.garrison), std::to_string(d->garrison)}));
+    if (d->mine_slots > 0) {   // bánya: jobb kattintás a munkásokkal a kész bányára
+      notes.push_back(tr(d->mine_consume ? "st.mine_consume" : "st.mine", {std::to_string(u.garrison), std::to_string(d->mine_slots)}));
+    }
     if (!d->produces.empty() && u.queue_n == 0) notes.push_back(tr("st.rally"));
     return join(notes);
   }

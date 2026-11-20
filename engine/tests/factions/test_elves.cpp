@@ -194,7 +194,7 @@ TEST_CASE("Szürke elfek Áhítat: a szentély 4 helye – 5 tétlen munkásból
   CHECK(s.player(1).gathered[sim::kFaith] >= gain);
 }
 
-TEST_CASE("Szürke elfek Napfúró: 0,4 passzív + mellette álló munkások, carry / (gather_time + 7,4); Napáldás ×1,5") {
+TEST_CASE("Szürke elfek Napfúró (MECH-MINE): 0,4 passzív + bent dolgozó munkások, carry / (gather_time + 7,4); Napáldás ×1,5") {
   Match m = elves();
   sim::Sim& s = *m.sim;
   const auto node = gold_node(s);
@@ -210,10 +210,20 @@ TEST_CASE("Szürke elfek Napfúró: 0,4 passzív + mellette álló munkások, ca
   const double want1 = 0.4 * per_s * 10;
   std::printf("  Napfúró passzív (10 s): %d egység, várt %.2f\n", a0 - amount(), want1);
   CHECK(a0 - amount() >= static_cast<int>(want1) - 1 && a0 - amount() <= static_cast<int>(want1) + 1);
-  // két munkás a bánya mellett: (0,4 + 2) × 0,6 × 10 = 14,4
+  // két munkás bent (MECH-MINE 3.: belép, eltűnik): (0,4 + 2) × 0,6 × 10 = 14,4
   const sim::Building bb = *s.world().get<sim::Building>(mine);
-  put(s, "elf_kofarago", 1, bb.tx * 10 - 4, bb.ty * 10 + 5);
-  put(s, "elf_kofarago", 1, bb.tx * 10 - 4, bb.ty * 10 + 15);
+  const auto w1 = put(s, "elf_kofarago", 1, bb.tx * 10 - 4, bb.ty * 10 + 5);
+  const auto w2 = put(s, "elf_kofarago", 1, bb.tx * 10 - 4, bb.ty * 10 + 15);
+  m.run(5);   // a mellette állás már nem számít
+  CHECK(s.mine_used(mine) == 0);
+  sim::Command c;
+  c.kind = sim::Command::Kind::Garrison;
+  c.owner = 1;
+  c.units = {w1, w2};
+  c.target = mine;
+  s.apply_now(c);
+  for (int t = 0; t < 300 && s.mine_used(mine) < 2; ++t) m.run(1);
+  CHECK(s.mine_used(mine) == 2 && s.sheltered(w1) && s.sheltered(w2));
   a0 = amount();
   m.run(300);
   const double want2 = 2.4 * per_s * 10;

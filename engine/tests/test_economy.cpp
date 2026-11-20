@@ -2,6 +2,7 @@
 // Gazdaság (M6, 2. lépés; ADR-007): szabályadatok, meccsindítás a pályából, gyűjtés–hordás–leadás, kimerülés,
 // Hadtáp, létszám, parancsok, determinizmus és mentés.
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -202,4 +203,105 @@ TEST_CASE("gazdasag: munkahelyek a lelohelyen (nepenkent; Ursan arany 5) – a t
   CHECK(most >= 3);   // de dolgoznak rajta
   CHECK(s.player(1).gathered[sim::kGold] > 0);
   std::printf("  egyszerre kitermelő: legfeljebb %d, sorban állás jelezve: %d\n", most, full_seen ? 1 : 0);
+}
+
+namespace {
+// a játékos főépületéhez legközelebbi aranylelőhely
+sim::EntityId gold_near(Match& m, uint8_t owner) {
+  sim::Fixed hx, hy;
+  m.sim->world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building&) {
+    if (m.sim->world().get<sim::Health>(e)->owner == owner) {
+      hx = m.sim->world().get<sim::Position>(e)->x;
+      hy = m.sim->world().get<sim::Position>(e)->y;
+    }
+  });
+  sim::EntityId best = 0;
+  int64_t bd = 0;
+  m.sim->world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode& n) {
+    if (n.kind != sim::kGold) return;
+    const sim::Position& p = *m.sim->world().get<sim::Position>(e);
+    const int64_t d = core::length_sq_raw(p.x - hx, p.y - hy);
+    if (!best || d < bd) { best = e; bd = d; }
+  });
+  return best;
+}
+}  // namespace
+
+TEST_CASE("banya (a regi O4/O5): a Napfuroba 3 munkas bemegy (rejtve), a 4. tele uzenetet kap; a hozam no; kiszallas, pusztulaskor fel eletero") {
+  Match m("ECO-ALAP", true, true, {"elves", "croftian"});
+  CHECK(m.ok);
+  if (!m.ok) return;
+  sim::Sim& s = *m.sim;
+  const sim::Rules& R = *s.rules();
+  const sim::EntityId node = gold_near(m, 1);
+  const sim::ResourceNode n0 = *s.world().get<sim::ResourceNode>(node);
+  const sim::EntityId mine = s.place_building(R.def("elf_napfuro"), 1, n0.tx, n0.ty, true);
+  CHECK(mine != 0 && s.world().get<sim::Mine>(mine) && s.mine_node(mine) == node);
+  std::vector<sim::EntityId> ws;
+  for (int i = 0; i < 4; ++i) {
+    ws.push_back(s.spawn_unit(R.def("elf_kofarago"), 1, sim::Fixed::from_int(n0.tx + 3 + i % 2), sim::Fixed::from_int(n0.ty + 3 + i / 2)));
+  }
+  sim::Command c;
+  c.kind = sim::Command::Kind::Garrison;
+  c.owner = 1;
+  c.units = ws;
+  c.target = mine;
+  s.apply_now(c);
+  bool full = false;
+  for (const auto& ev : s.events()) full = full || ev.kind == sim::SimEvent::Full;
+  CHECK(full);   // a negyediknek nincs hely
+  m.run(300);
+  CHECK(s.garrison_count(mine) == 3 && s.mine_used(mine) == 3);
+  int hidden = 0;
+  for (const auto w : ws) hidden += s.sheltered(w) ? 1 : 0;
+  CHECK(hidden == 3);
+  const int64_t g0 = s.player(1).gathered[sim::kGold];
+  m.run(30 * 60);
+  const int64_t gained = (s.player(1).gathered[sim::kGold] - g0) / 1000;
+  // a régi `mine_rate`: (0,4 + 3) × carry / (gather_time + 7,4) arany / s
+  const sim::ResourceDef& gd = R.resources[sim::kGold];
+  const double expect = 3.4 * gd.carry / (gd.gather_time.to_double() + 7.4) * 60;
+  CHECK(std::abs(static_cast<double>(gained) - expect) <= 3.0);
+  std::printf("  Napfúró: 3 bányász, 1 perc: %lld arany\n", static_cast<long long>(gained));
+  CHECK(s.unload(mine) && s.garrison_count(mine) == 0);   // kiszállás
+  c.units = {ws[0], ws[1]};
+  s.apply_now(c);
+  m.run(300);
+  CHECK(s.garrison_count(mine) == 2);
+  const int32_t full_hp = s.world().get<sim::Health>(ws[0])->max;
+  s.kill(mine);   // pusztuláskor fél életerővel kijönnek
+  CHECK(s.world().alive(ws[0]) && !s.sheltered(ws[0]) && s.world().get<sim::Health>(ws[0])->hp <= full_hp / 2 + 1);
+}
+
+TEST_CASE("banya (a regi O5): a Fertozott tarnaba 5 szolga beleolvad, a hatodik nem; a croftian ebbol kap aranyat") {
+  Match m("ECO-ALAP", true, true, {"ursan", "croftian"});
+  CHECK(m.ok);
+  if (!m.ok) return;
+  sim::Sim& s = *m.sim;
+  const sim::Rules& R = *s.rules();
+  const sim::EntityId node = gold_near(m, 2);
+  const sim::ResourceNode n0 = *s.world().get<sim::ResourceNode>(node);
+  const sim::EntityId mine = s.place_building(R.def("cro_tarna"), 2, n0.tx, n0.ty, true);
+  CHECK(mine != 0 && !s.world().get<sim::Garrison>(mine));
+  std::vector<sim::EntityId> ws;
+  for (int i = 0; i < 6; ++i) {
+    ws.push_back(s.spawn_unit(R.def("cro_csapszolga"), 2, sim::Fixed::from_int(n0.tx + 3 + i % 3), sim::Fixed::from_int(n0.ty + 3 + i / 3)));
+  }
+  sim::Command c;
+  c.kind = sim::Command::Kind::Garrison;
+  c.owner = 2;
+  c.units = ws;
+  c.target = mine;
+  s.apply_now(c);
+  m.run(400);
+  int alive = 0;
+  for (const auto w : ws) alive += s.world().alive(w) ? 1 : 0;
+  CHECK(s.mine_used(mine) == 5 && alive == 1);
+  const int64_t g0 = s.player(2).gathered[sim::kGold];
+  m.run(30 * 60);
+  const int64_t gained = (s.player(2).gathered[sim::kGold] - g0) / 1000;
+  const sim::ResourceDef& gd = R.resources[sim::kGold];
+  const double expect = 5.0 * gd.carry / (gd.gather_time.to_double() + 7.4) * 60;   // 5 × a régi `mine_rate`
+  CHECK(std::abs(static_cast<double>(gained) - expect) <= 3.0);
+  std::printf("  Fertőzött tárna: 5 beleolvadt, 1 perc: %lld arany\n", static_cast<long long>(gained));
 }

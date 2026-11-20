@@ -18,6 +18,61 @@ function E.init()
   end
   S.expansions = 0
   S.walls_built = 0
+  S.mine_k = nil   -- bányaépület (elf Napfúró, croftian Fertőzött tárna)
+  for _, b in ipairs(AI.roster().buildings) do
+    if (K.tmpl(b).mine_slots or 0) > 0 then S.mine_k = b end
+  end
+end
+
+-- bányaépületek (a régi `manage_mines`): építés a bázis körüli lelőhelyekre, és munkások beküldése; a croftian ebből él
+-- (a szolgája nem gyűjt), az elf előbb hord, 150 mp után épít Napfúrót
+function E.mines(v)
+  local mid = S.mine_k
+  if not mid or not v.hq then return end
+  local t = K.tmpl(mid)
+  local consume = t.mine_consume
+  local mines, building = {}, (v.incomplete[mid] or 0) > 0
+  for _, b in ipairs(v.buildings) do
+    if b.kind == mid then mines[#mines + 1] = b end
+  end
+  local early = consume or v.tick > 150 * 30
+  if early and not building and #mines < (consume and 4 or 3) then
+    local hx, hy = S.home[1], S.home[2]
+    local best, bd
+    for _, kind in ipairs({"gold", "meteor"}) do
+      for _, n in ipairs(AI.resources(kind)) do
+        local d = K.d2(n.x, n.y, hx, hy)
+        local taken = false
+        for _, b in ipairs(mines) do
+          if K.d2(b.x, b.y, n.x, n.y) < 4 then taken = true end
+        end
+        -- az arany előbb (a régi: kind != "stone"), a közelebbi előbb
+        local key = d + (kind == "gold" and 0 or 10000)
+        if not taken and d < 22 * 22 and (not bd or key < bd) then best, bd = n, key end
+      end
+    end
+    if best and best.tx then AI.build(mid, best.tx, best.ty) end
+  end
+  for _, b in ipairs(mines) do
+    if b.complete and b.mine_slots then
+      local need = b.mine_slots - (b.mined or 0) - (b.mine_coming or 0)
+      if need > 0 then
+        local free = {}
+        for _, w in ipairs(v.idle_workers) do free[#free + 1] = w end
+        if consume then   -- croftian: maradjon 3 szabad szolga az építéshez
+          for _ = 1, math.min(3, #free) do table.remove(free, 1) end
+        elseif #free == 0 then   -- elf: az aranyat hordók közül is
+          for _, w in ipairs(v.workers) do
+            if w.gathering == "gold" and not w.sheltered then free[#free + 1] = w end
+          end
+        end
+        table.sort(free, function(a, c) return K.d2(a.x, a.y, b.x, b.y) < K.d2(c.x, c.y, b.x, b.y) end)
+        local ids = {}
+        for i = 1, math.min(need, #free) do ids[#ids + 1] = free[i].id end
+        if #ids > 0 then AI.garrison(ids, b.id) end
+      end
+    end
+  end
 end
 
 local function count_where(v, pred)
@@ -64,6 +119,7 @@ end
 function E.run()
   local v = K.view()
   if not v.hq then return end
+  E.mines(v)
   local P, D, plan = K.pers(), K.diff(), K.plan()
   S.saving = false
   if v.constructing >= D.builds then return end

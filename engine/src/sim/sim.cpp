@@ -59,6 +59,7 @@ bool Sim::kill(EntityId e) {
   if (!h || h->hp <= 0) return false;
   h->hp = 0;
   if (rules_ && world_.get<Occupants>(e)) evict(e, true);   // a megszállók fél életerővel (D30)
+  if (rules_ && world_.get<Mine>(e)) release_mine(e, true);   // a bányászok fél életerővel (a régi szerint)
   if (rules_ && world_.get<Garrison>(e)) unload(e);
   world_.destroy(e);
   died_.emplace_back(e, h->owner);

@@ -537,6 +537,10 @@ std::shared_ptr<const Snapshot> Session::snapshot() {
         u.progress = static_cast<uint16_t>(std::min<int64_t>(1000, int64_t{b->progress} * 1000 / total));
         u.slots = static_cast<uint8_t>(std::clamp(sim_->rules()->defs[b->def].garrison, 0, 255));
         if (const auto* g = w.get<sim::Garrison>(e)) u.garrison = static_cast<uint8_t>(std::min<size_t>(g->units.size(), 255));
+        if (const auto& bdf = sim_->rules()->defs[b->def]; bdf.mine_slots > 0) {   // bánya: a bent dolgozók / beleolvadtak és a helyek
+          u.slots = static_cast<uint8_t>(std::clamp(bdf.mine_slots, 0, 255));
+          u.garrison = static_cast<uint8_t>(std::clamp(sim_->mine_used(e), 0, 255));
+        }
         if (const auto* pr = w.get<sim::Producer>(e)) {
           for (const auto& q : pr->queue) {
             if (u.queue_n >= 5) break;

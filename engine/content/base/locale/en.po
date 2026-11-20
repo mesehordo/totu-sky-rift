@@ -10169,3 +10169,11 @@ msgstr "The replay diverged from the recording (different content or version)."
 msgctxt "ui.main.replays.hint"
 msgid "A korábbi meccsek visszanézése: gyorsítás, szünet, bármelyik játékos szemével."
 msgstr "Watch past matches: speed up, pause, see through any player's eyes."
+
+msgctxt "hud.st.mine"
+msgid "Bent dolgozik: {}/{} (jobb kattintás a munkásokkal)"
+msgstr "Miners inside: {}/{} (right-click with workers)"
+
+msgctxt "hud.st.mine_consume"
+msgid "Beleolvadt szolga: {}/{} (jobb kattintás a szolgákkal)"
+msgstr "Merged drones: {}/{} (right-click with drones)"

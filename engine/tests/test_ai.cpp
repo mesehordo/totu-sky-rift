@@ -313,7 +313,7 @@ TEST_CASE("M9 gep – platformhash: ket gep 90 s meccse rogzitett hash-sel") {
   if (!a.ok) return;
   a.run(90 * 30);
   std::printf("  gépi meccs hash (90 s): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0x40970bfca67e9a49ULL);   // 2026-11-20: munkahelyek a lelőhelyen
+  CHECK(a.sim->hash() == 0x4c33ce8f92181372ULL);   // 2026-11-20: munkahelyek a lelőhelyen
   CHECK(a.errors() == 0);
 }
 
@@ -384,4 +384,25 @@ TEST_CASE("M9 gep – egyeni csata: a gépi hely nehézsége és személyisége 
   }
   CHECK(client::ai_personality_ids() == script::ai_personalities(package()));
   CHECK(client::ai_difficulty_ids() == script::ai_difficulties());
+}
+
+TEST_CASE("gep – banya (a regi manage_mines): a croftian gep Fertozott tarnat epit es beleolvasztja a szolgait; az elf 150 s utan Napfurot") {
+  for (const char* fac : {"croftian", "elves"}) {
+    AiMatch a("kraterfold", {"ursan", fac}, {slot(2, "normal", "kiegyenlitett")}, 11);
+    CHECK(a.ok);
+    if (!a.ok) continue;
+    a.run(6 * 60 * 30);
+    a.dump_errors();
+    CHECK(a.errors() == 0);
+    int mines = 0, used = 0;
+    a.sim->world().pool<sim::Mine>().each([&](sim::EntityId e, const sim::Mine&) {
+      if (a.sim->world().get<sim::Health>(e)->owner != 2) return;
+      ++mines;
+      used += a.sim->mine_used(e);
+    });
+    const int64_t gold = a.sim->player(2).gathered[sim::kGold] / 1000;
+    std::printf("  %s gép, 6 perc: %d bánya, %d bányász, %lld arany\n", fac, mines, used, static_cast<long long>(gold));
+    CHECK(mines >= 1 && used >= 1);
+    CHECK(gold > 200);
+  }
 }

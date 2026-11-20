@@ -235,6 +235,11 @@ struct EntityDef {
   int32_t energy_max = 0;                     // `Energy.max`
   Fixed regen;                                // életerő / s (`Health.regen`)
   int32_t garrison = 0;                       // helyőrség-helyek (`Garrison.slots`)
+  // bányára épülő épület (`Mechanics.mine`, a régi Ötletdoboz Ö4/Ö5): a Napfúróba a munkás bemegy (bent dolgozik,
+  // `slots`), a Fertőzött tárnába beleolvad (`consume`); a hozam (passive + bent lévők) × egy munkás átlagos hozama
+  int32_t mine_slots = 0;
+  Fixed mine_passive;
+  bool mine_consume = false;
   std::string shape;                          // `Identity.shape` (a felemelkedés nem számolja: wall, node, dropoff)
   // hős (D25): szintenkénti növekedés (`Hero.growth`); tapasztalat-érték (`Hero.xp`; -1: a képlet szerint)
   Fixed grow_hp, grow_damage, grow_armor, grow_energy, grow_shield;

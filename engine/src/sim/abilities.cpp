@@ -983,6 +983,7 @@ void Sim::ability_system() {
     if (b.complete) regen(e, b.def);
   });
   garrison_system();
+  mine_system();   // a bányaépületek (Napfúró, Fertőzött tárna) hozama
   seize_system();
   occupation_system();
   item_system();
