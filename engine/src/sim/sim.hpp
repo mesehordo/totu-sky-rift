@@ -1279,7 +1279,9 @@ class Sim {
                    Fixed range);
   void shot_system();
   void attack_now(EntityId e, Combat& c, EntityId target);
-  void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude);
+  void splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude, bool friendly = false);
+  // területi hatás célpontjai: az ellenségek, baráti tűznél a többi egység is (`self` kivételével)
+  std::vector<EntityId> area_units_in(uint8_t owner, Fixed x, Fixed y, Fixed r, bool friendly, EntityId self);
   EntityId find_enemy(EntityId e, Fixed radius);
   bool can_hit(EntityId e, EntityId target);
   // a 0. játékos a Vadon (semleges): mindenkinek ellensége (D25)

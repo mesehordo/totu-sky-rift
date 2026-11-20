@@ -467,3 +467,18 @@ TEST_CASE("minimalis lotav (ostromgep, 2 csempe): kozelrol nem lo, hatral; tartv
   m2.run(120);
   CHECK(taken(s2, f2) == 0);
 }
+
+TEST_CASE("barati tuz (lehetoseg, alapbol ki): a csobbanas es a teruleti celpontok csak bekapcsolva erintik a sajatot") {
+  CHECK(!R().defs[def_of("imp_onager")].attack.friendly_fire);   // alapból egyik sablonon sincs
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  const auto src = put(s, "urs_pajzshordozo", 1, 60, 185, true);
+  const auto own = put(s, "urs_pajzshordozo", 1, 100, 185, true);
+  s.splash_at(src, 1, def_of("urs_pajzshordozo"), fx(100, 10), fx(185, 10), fx(1, 1), 20000, 0, false);
+  CHECK(taken(s, own) == 0);
+  s.splash_at(src, 1, def_of("urs_pajzshordozo"), fx(100, 10), fx(185, 10), fx(1, 1), 20000, 0, true);
+  CHECK(taken(s, own) > 0);
+  CHECK(taken(s, src) == 0);   // a forrás magát nem
+  CHECK(s.area_units_in(1, fx(100, 10), fx(185, 10), fx(1, 1), false, src).empty());
+  CHECK(s.area_units_in(1, fx(100, 10), fx(185, 10), fx(1, 1), true, src).size() == 1);
+}

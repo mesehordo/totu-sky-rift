@@ -411,10 +411,11 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   }
 }
 
-void Sim::splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude) {
+void Sim::splash_at(EntityId src, uint8_t owner, uint16_t src_def, Fixed x, Fixed y, Fixed radius, int64_t milli, EntityId exclude,
+                    bool friendly) {
   std::vector<EntityId> hit;
   world_.pool<Health>().each([&](EntityId o, const Health& oh) {
-    if (o == exclude || oh.hp <= 0 || !hostile(owner, oh.owner)) return;
+    if (o == exclude || o == src || oh.hp <= 0 || (!friendly && !hostile(owner, oh.owner))) return;   // baráti tűz: a sablon szerint
     const Position* p = world_.get<Position>(o);
     if (!p) return;
     Fixed d;
@@ -461,7 +462,7 @@ void Sim::attack_now(EntityId e, Combat& c, EntityId t) {
   const Position& tp = *world_.get<Position>(t);
   if (!a.ranged()) {   // közelharc: azonnal
     deal_damage(e, owner, def, t, dmg, false);
-    if (a.splash.raw() > 0) splash_at(e, owner, def, tp.x, tp.y, a.splash, dmg, t);
+    if (a.splash.raw() > 0) splash_at(e, owner, def, tp.x, tp.y, a.splash, dmg, t, a.friendly_fire);
     return;
   }
   launch_shot(e, owner, def, t, dmg, a.projectile, a.splash, attack_range(e, t));
@@ -577,7 +578,7 @@ void Sim::shot_system() {
       });
       if (hit != kNoEntity && !s.missed) {
         shot_hit(hit);
-        if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, pos.x, pos.y, s.splash, s.damage, hit);
+        if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, pos.x, pos.y, s.splash, s.damage, hit, s.src_def < rules_->defs.size() && rules_->defs[s.src_def].attack.friendly_fire);
         done = true;
       } else if (s.travelled >= s.max_travel) {
         done = true;   // a pálya végén leesik
@@ -613,12 +614,12 @@ void Sim::shot_system() {
             if (g <= pk.impact) primary = s.target;
           }
           if (primary != kNoEntity) shot_hit(primary);
-          if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, s.ax, s.ay, s.splash, s.damage, primary);
+          if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, s.ax, s.ay, s.splash, s.damage, primary, s.src_def < rules_->defs.size() && rules_->defs[s.src_def].attack.friendly_fire);
           done = true;
         } else {   // követő
           const bool hit = !s.missed && target_ok(s.target);
           if (hit) shot_hit(s.target);
-          if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, s.ax, s.ay, s.splash, s.damage, hit ? s.target : kNoEntity);
+          if (s.splash.raw() > 0) splash_at(s.src, s.owner, s.src_def, s.ax, s.ay, s.splash, s.damage, hit ? s.target : kNoEntity, s.src_def < rules_->defs.size() && rules_->defs[s.src_def].attack.friendly_fire);
           done = true;
           if (hit && s.bounces > 0) {   // továbbpattan a legközelebbi másik ellenséges egységre
             EntityId next = kNoEntity;

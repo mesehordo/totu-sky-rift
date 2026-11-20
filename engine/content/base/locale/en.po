@@ -10073,3 +10073,7 @@ msgstr "Guard: click one of your units or buildings – the selected units stay 
 msgctxt "hud.err.guard"
 msgid "Saját egységet vagy épületet válassz."
 msgstr "Pick one of your own units or buildings."
+
+msgctxt "ui.atlas.wait"
+msgid "A grafika előkészítése csak a változás utáni első indításkor tart ennyi ideig."
+msgstr "Preparing the graphics takes this long only on the first start after a change."

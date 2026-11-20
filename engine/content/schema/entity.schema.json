@@ -81,6 +81,7 @@
     "targets": {"type": "array", "items": {"enum": ["ground", "air"]}},
     "projectile": {"type": "string"},
     "splash": {"type": "number", "minimum": 0},
+    "friendly_fire": {"type": "boolean"},
     "type_bonus": {"type": "object"},
     "type_nostrength": {"type": "boolean"},
     "death_burst": {"type": "object"}

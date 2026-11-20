@@ -453,6 +453,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
       a.hp_cost = int_of(key("hp_cost"), 0);
       a.bounces = int_of(key("bounces"), 0);
       a.splash = fixed_of(key("splash"), Fixed{});
+      if (const content::Value* ff = key("friendly_fire"); ff && ff->is_bool()) a.friendly_fire = ff->as_bool();
       if (const content::Value* pz = key("poison"); pz && pz->is_array() && pz->items().size() == 2) {
         a.poison_dps = fixed_of(&pz->items()[0], Fixed{});
         a.poison_ticks = seconds_to_ticks(fixed_of(&pz->items()[1], Fixed{}));
@@ -593,6 +594,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
         at.proj_speed = Fixed::from_raw(static_cast<int32_t>((static_cast<int64_t>(f.raw()) + kTickHz / 2) / kTickHz));
       }
       at.splash = fixed_of(a->find("splash"), Fixed{});
+      if (const content::Value* ff = a->find("friendly_fire"); ff && ff->is_bool()) at.friendly_fire = ff->as_bool();
       if (const auto it = unit_element.find(id); it != unit_element.end()) at.element = it->second;
       at.slow = fixed_of(a->find("slow"), Fixed{});
       at.slow_ticks = seconds_to_ticks(fixed_of(a->find("slow_dur"), Fixed::from_ratio(3, 2)));

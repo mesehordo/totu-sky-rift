@@ -70,6 +70,7 @@ struct AttackDef {
   uint8_t projectile = 0;                     // 0: közelharc; különben a lövedékfajta sorszáma + 1 (Rules::projectiles)
   Fixed proj_speed;                           // csempe / tick (0: a fajtáé)
   Fixed splash;                               // csempe (0: nincs)
+  bool friendly_fire = false;                 // a csobbanás a saját és a szövetséges egységet is sebzi (alap: nem)
   std::vector<std::pair<std::string, Fixed>> bonus;        // címke → +sebzés
   std::vector<std::pair<std::string, Fixed>> type_bonus;   // célosztály → szorzó (a mátrixnál erősebb)
   bool ranged() const { return projectile != 0; }
@@ -133,6 +134,7 @@ struct AbilityDef {
   int32_t hp_cost = 0;
   // célzott lövés (`bolt`): saját pattanás, területi sebzés, méreg [dps, idő]
   int32_t bounces = 0;
+  bool friendly_fire = false;   // a területi sebzés (nova, mező, csobbanás) a saját és a szövetségest is (alap: nem)
   Fixed splash, poison_dps;
   int32_t poison_ticks = 0;
   // nova: épületsebzés (`building_damage`), önrobbanás (`self_destruct`); önerősítés: utána lassulás

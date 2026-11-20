@@ -152,6 +152,18 @@ std::vector<EntityId> Sim::enemy_units_in(uint8_t owner, Fixed x, Fixed y, Fixed
   return out;
 }
 
+std::vector<EntityId> Sim::area_units_in(uint8_t owner, Fixed x, Fixed y, Fixed r, bool friendly, EntityId self) {
+  if (!friendly) return enemy_units_in(owner, x, y, r);
+  std::vector<EntityId> out;
+  world_.pool<Unit>().each([&](EntityId o, const Unit& u) {
+    const Health* h = world_.get<Health>(o);
+    if (o == self || !h || h->hp <= 0 || sheltered(o)) return;
+    const Position* p = world_.get<Position>(o);
+    if (core::length(p->x - x, p->y - y) - rules_->defs[u.def].radius <= r) out.push_back(o);
+  });
+  return out;
+}
+
 bool Sim::ability_ready(EntityId e, const Caster& c, const AbilityDef& a) {
   if (c.energy < a.energy * 1000 || ready_at(c, static_cast<uint16_t>(&a - rules_->abilities.data())) > tick_) return false;
   // a régi `ab_ok`: életerő-ár (hp > ár + 5), az egységképesség áhítat-ára, a népi költség (spóra)
@@ -366,7 +378,7 @@ bool Sim::cast_nova(EntityId e, uint16_t ab) {
     });
   }
   if (a.damage.raw() > 0) {
-    for (const EntityId t : enemy_units_in(h->owner, p->x, p->y, a.radius)) {
+    for (const EntityId t : area_units_in(h->owner, p->x, p->y, a.radius, a.friendly_fire, e)) {
       deal_damage(e, h->owner, kNoDef, t, spell_milli(e, a.damage), false, true, a.element);
       Afflict* af = world_.get<Afflict>(t);
       if (!af) continue;
@@ -433,7 +445,7 @@ void Sim::fire_bolt(EntityId e, uint16_t ab, EntityId t) {
   if (!a.projectile) {   // azonnal (roham, zuhanó csapás)
     deal_damage(e, h->owner, kNoDef, t, dmg, false, true, a.element);
     apply_spell(e, h->owner, a, t);
-    if (a.splash.raw() > 0) splash_at(e, h->owner, kNoDef, tp.x, tp.y, a.splash, dmg, t);
+    if (a.splash.raw() > 0) splash_at(e, h->owner, kNoDef, tp.x, tp.y, a.splash, dmg, t, a.friendly_fire);
     return;
   }
   const ProjectileKind& pk = rules_->projectiles[a.projectile - 1u];
@@ -892,7 +904,7 @@ void Sim::field_system() {
         if (vt) vt->deficit = static_cast<int32_t>(int64_t{oh->hp} * 1000 - eff);
       });
     }
-    for (const EntityId t : enemy_units_in(fd.owner, p.x, p.y, a.radius)) {
+    for (const EntityId t : area_units_in(fd.owner, p.x, p.y, a.radius, a.friendly_fire, fd.src)) {
       if (a.dps.raw() > 0) deal_damage(world_.alive(fd.src) ? fd.src : kNoEntity, fd.owner, kNoDef, t, spell_milli(fd.src, a.dps) / 2,
                                        false, true, a.element);
       if (a.has_slow && a.slow.raw() > 0) {

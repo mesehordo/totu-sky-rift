@@ -647,6 +647,25 @@ std::filesystem::path saves_dir() {
   return dir;
 }
 
+void loading_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, const Locale& loc, const std::string& assets,
+                   float ui_scale, const std::string& status, double t) {
+  static std::unique_ptr<MenuView> view;
+  if (!view) {
+    view = std::make_unique<MenuView>(dev);
+    std::string err;
+    if (!view->init(assets, &err)) {
+      view.reset();
+      return;
+    }
+  }
+  int w = 0, h = 0;
+  SDL_GetWindowSizeInPixels(win, &w, &h);
+  dev.bind_target(nullptr, w, h);
+  dev.clear(0.05f, 0.04f, 0.06f, 1.0f);
+  view->draw_loading(batch, w, h, ui_scale, status, loc.tr("ui.atlas.wait"), t);
+  SDL_GL_SwapWindow(win);
+}
+
 void lobby_frame(SDL_Window* win, render::Device& dev, render::SpriteBatch& batch, const Locale& loc, const std::string& assets,
                  float ui_scale, const std::vector<LobbyLine>& seats, const std::vector<std::string>& chat, const std::string& status,
                  double t, const std::string* typing) {

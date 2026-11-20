@@ -1117,3 +1117,9 @@ A tulajdonos döntése: **jobb kattintás egy saját (vagy szövetséges) egysé
 ## 2026-11-20 – Minimális lőtávolság az ostromgépeknek (a tanulmány-összevetés 3. tétele)
 
 A tulajdonos döntése: 2 csempe (AoE2 Mangonel/Trebuchet, WC3 Catapult mintájára; a régi játékban nem volt). Új, választható adatmező: `Attack.min_range` (alapból 0, a többi egység nem változik). Értéket a 7 lövő ostromosztályú egység kapott (`cro_savkopo`, `cro_ostromtaraj`, `elf_obszidian_veto`, `gho_sziklagorgeto`, `huk_teknos_mozsar`, `imp_onager`, `urs_ostromszan`); a faltörő kos (`oon_kapudongeto`, közelharcos) nem. Ha a célpont ennél közelebb van (a testek széle között), az ostromgép hátrál, aztán lő; tartva vagy helytartó magatartással nem mozdul, és a túl közelire nem lő. Ez egyensúlyi változás a tulajdonos döntése alapján. Teszt: hátrálás és lövés, tartva nincs lövés.
+
+## 2026-11-20 – Baráti tűz mint lehetőség (a tanulmány-összevetés 4. tétele); a meccs kivárja a készülő atlaszt
+
+**Baráti tűz:** a tulajdonos döntése: csak a lehetőség, alapból kikapcsolva (a régi játékban és most is a területi sebzés csak ellenséget talál). Új, választható adatmezők: `Attack.friendly_fire` (a fegyver csobbanása) és a képesség `friendly_fire` kulcsa (nova, területi mező, varázslövedék csobbanása); bekapcsolva a saját és a szövetséges egységet is eléri, a forrást nem. Egyik sablonon sincs bekapcsolva, a játék nem változik. Teszt.
+
+**Javítva:** ha a sprite-atlasz a háttérben épült (pl. egy grafikaváltozás után az első indításkor), a meccs sprite-ok nélkül indult, és az elkészült atlaszt sem vette át (a tulajdonos jelezte). Most a meccs indításakor a betöltőkép kivárja az építést (haladással és magyarázattal); kilépni közben is lehet. Élőben ellenőrizve: elavult ujjlenyomattal az atlasz újraépült, és a meccs sprite-okkal indult.

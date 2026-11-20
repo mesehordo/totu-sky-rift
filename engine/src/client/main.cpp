@@ -992,6 +992,24 @@ int main(int argc, char** argv) {
           }
           if (!editor_on && (!net_game || netplay.client().slot() > 0)) session.set_reveal_all(!o.fog);
           if (o.battle_demo > 0 && session.has_starts()) session.battle_demo(o.battle_demo);
+          if (o.atlas.empty() && atlas_cache.building()) {   // a meccs ne induljon sprite-ok nélkül: a betöltőkép kivárja
+            const auto w0 = std::chrono::steady_clock::now();
+            bool quit_wait = false;
+            while (atlas_cache.building() && !quit_wait) {
+              SDL_Event qe;
+              while (SDL_PollEvent(&qe)) {
+                if (qe.type == SDL_EVENT_QUIT) {
+                  quit_wait = true;
+                  SDL_PushEvent(&qe);   // a főciklus kilép
+                  break;
+                }
+              }
+              const double wt = std::chrono::duration<double>(std::chrono::steady_clock::now() - w0).count();
+              client::loading_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 100, 200)) / 100.0f,
+                                    locale.tr("ui.atlas.building", {{"n", std::to_string(atlas_cache.pages_done())}}), wt);
+              SDL_Delay(16);
+            }
+          }
           if (o.atlas.empty() && atlas_cache.ready()) o.atlas = atlas_cache.dir();   // a játék saját atlasza
           if (o.atlas.empty() && atlas_cache.building()) std::printf("az atlasz még készül: ez a meccs sprite-ok nélkül indul\n");
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);

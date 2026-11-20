@@ -10072,3 +10072,7 @@ msgstr ""
 msgctxt "hud.err.guard"
 msgid "Saját egységet vagy épületet válassz."
 msgstr ""
+
+msgctxt "ui.atlas.wait"
+msgid "A grafika előkészítése csak a változás utáni első indításkor tart ennyi ideig."
+msgstr ""
