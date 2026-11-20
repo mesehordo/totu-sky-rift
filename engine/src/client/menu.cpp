@@ -421,7 +421,7 @@ void Menu::layout(int w, int h) {
   // hogy kisebb képernyőn is elférjen (a játék közbeni felület ettől függetlenül nőhet).
   const float base = base_scale(w_, h_);
   const float fit = std::max(base, std::min(static_cast<float>(w_) / 1024.0f, static_cast<float>(h_) / 576.0f));
-  u_ = std::clamp(base * static_cast<float>(st_.ui_scale) / 100.0f, 0.8f, fit);
+  u_ = std::clamp(base * static_cast<float>(st_.ui_scale) / 100.0f, 0.6f, fit);   // 75%-on is (a tanulmány)
   widgets_.clear();
   texts_.clear();
   images_.clear();

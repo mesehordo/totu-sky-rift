@@ -103,6 +103,7 @@ class HudModel {
   void bind(const Snapshot* snap, const sim::Rules* rules, NameFn names, PostFn post);
   void set_map_size(int w, int h) { map_w_ = w; map_h_ = h; }
   void set_screen(int sw, int sh);
+  void set_ui_scale(int percent) { ui_user_ = percent / 100.0; }   // a következő set_screen újrarendez, ha változott
   const HudLayout& layout() const { return L_; }
   const Snapshot* snap() const { return snap_; }
   const sim::Rules* rules() const { return rules_; }
@@ -179,6 +180,7 @@ class HudModel {
   // a régi riasztás („Támadás ér!”, 12 mp-enként legfeljebb egy) és a Szóköz: az utolsó riasztás (10 mp-en belül)
   // vagy a bázis; a pillanatképből (a saját egységek és épületek életerejének csökkenése)
   void watch_alerts();
+  double ui_user_ = 1.0, ui_user_used_ = 1.0;   // a felületméret (a beállításból; 1 = 100%)
   void sim_events(const std::vector<sim::SimEvent>& evs);   // a szimuláció felületi eseményei (a régi `notify`)
   void jump_home_or_alert();
   int64_t alert_tick = -1000000;

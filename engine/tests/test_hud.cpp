@@ -136,6 +136,14 @@ TEST_CASE("HUD elrendezés: panelsorrend, rácsok, 1:1 portré, felső sáv 3 fe
   // erőforrás-sorrend: meteorit, fa, arany (+ létszám)
   CHECK(client::kResOrder[0] == sim::kMeteor && client::kResOrder[1] == sim::kWood && client::kResOrder[2] == sim::kGold);
   CHECK(client::hud_layout(1920, 1080).res.size() == 4);
+  {   // felületméret: 100% alatt arányosan kisebb, középre igazított sáv; fölötte nincs hová nőnie
+    const client::HudLayout full = client::hud_layout(1920, 1080), small = client::hud_layout(1920, 1080, 0.75);
+    CHECK(small.hud.w < full.hud.w && small.hud.h < full.hud.h);
+    CHECK(std::abs((small.hud.x + small.hud.w / 2) - 960) <= 2);
+    CHECK(small.hud.y + small.hud.h == full.hud.y + full.hud.h);
+    CHECK(client::hud_layout(1920, 1080, 1.5).hud.w == full.hud.w);
+    CHECK(client::hud_layout(1280, 720, 0.75).hud.w == client::hud_layout(1280, 720, 0.9).hud.w);   // 720p-n 90% a legkisebb
+  }
 }
 
 TEST_CASE("HUD parancsrács: billentyű = kattintás, munkás Építés oldal, főépület W kiképez (test_hud.py)") {

@@ -95,10 +95,12 @@ HudLayout layout_at(int sw, int sh, double s) {
 
 }  // namespace
 
-HudLayout hud_layout(int sw, int sh) {
-  // a sáv kitölti a képernyő szélességét (referencia: TOTU HUD-kép), de legfeljebb a magasság harmada
+HudLayout hud_layout(int sw, int sh, double user) {
+  // a sáv kitölti a képernyő szélességét (referencia: TOTU HUD-kép), de legfeljebb a magasság harmada; a felületméret
+  // 100% alatt arányosan kisebbre veszi (a tanulmány: 75–150%), fölötte nincs hová nőnie
   const HudLayout base = layout_at(sw, sh, 1.0);
   double s = std::min((sw - 8) / static_cast<double>(base.hud.w), sh * kHudMaxH / static_cast<double>(base.hud.h));
+  s *= std::clamp(sh < 900 ? std::max(user, 0.9) : user, 0.5, 1.0);   // 720p-n 75% már olvashatatlan: ott 90% a legkisebb
   HudLayout L = layout_at(sw, sh, s);
   while (L.hud.w > sw - 8 && s > 0.3) {
     s *= 0.98;

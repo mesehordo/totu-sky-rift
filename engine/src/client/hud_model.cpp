@@ -64,10 +64,11 @@ void HudModel::bind(const Snapshot* snap, const sim::Rules* rules, NameFn names,
 }
 
 void HudModel::set_screen(int sw, int sh) {
-  if (sw == sw_ && sh == sh_ && L_.hud.w > 0) return;
+  if (sw == sw_ && sh == sh_ && ui_user_ == ui_user_used_ && L_.hud.w > 0) return;
   sw_ = sw;
   sh_ = sh;
-  L_ = hud_layout(sw, sh);
+  ui_user_used_ = ui_user_;
+  L_ = hud_layout(sw, sh, ui_user_);
 }
 
 // ---------------------------------------------------------------- segédek

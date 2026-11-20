@@ -797,7 +797,7 @@ int main(int argc, char** argv) {
                 chat.push_back(who + ": " + c.text);
               }
               const double lt = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
-              client::lobby_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 100, 200)) / 100.0f, lines, chat,
+              client::lobby_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 75, 200)) / 100.0f, lines, chat,
                                   locale.tr(nc.joined() ? "ui.lobby.waiting_players" : "ui.lobby.connecting"), lt, chatting ? &typing : nullptr);
             }
             SDL_Event e;
@@ -1007,7 +1007,7 @@ int main(int argc, char** argv) {
                 }
               }
               const double wt = std::chrono::duration<double>(std::chrono::steady_clock::now() - w0).count();
-              client::loading_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 100, 200)) / 100.0f,
+              client::loading_frame(win, dev, batch, locale, o.assets, static_cast<float>(std::clamp(settings.ui_scale, 75, 200)) / 100.0f,
                                     locale.tr("ui.atlas.building", {{"n", std::to_string(atlas_cache.pages_done())}}), wt);
               SDL_Delay(16);
             }
@@ -1305,6 +1305,7 @@ int main(int argc, char** argv) {
       if (hud_on) {   // a HUD (M8): a pillanatkép és a kijelölés átvétele a bemenet előtt
         int hw = 0, hh = 0;
         SDL_GetWindowSizeInPixels(win, &hw, &hh);
+        hud.model().set_ui_scale(std::clamp(settings.ui_scale, 75, 200));   // a felületméret (100% alatt kisebb HUD)
         hud.sync(world, session, hw, hh);
         hud.model().formation = static_cast<uint8_t>(formation);
         hud.model().shift = (SDL_GetModState() & SDL_KMOD_SHIFT) != 0;

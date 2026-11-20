@@ -83,7 +83,7 @@ const std::vector<std::pair<int, int>>& Settings::resolutions() {
 }
 
 const std::vector<int>& Settings::ui_scales() {
-  static const std::vector<int> r = {100, 125, 150, 175, 200};
+  static const std::vector<int> r = {75, 90, 100, 125, 150, 175, 200};   // a tanulmány: 75–150% (a kisebb: több játéktér)
   return r;
 }
 

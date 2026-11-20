@@ -47,7 +47,8 @@ struct HudLayout {
 };
 
 // A HUD összes téglalapja az adott képernyőméretre (16:9 a referencia; keskenyebb ablakon kicsinyít).
-HudLayout hud_layout(int sw, int sh);
+// `user`: a felületméret (1 = 100%); 1 alatt a sáv arányosan kisebb (középre igazítva), fölötte a képernyő a határ
+HudLayout hud_layout(int sw, int sh, double user = 1.0);
 
 // a parancsrács billentyűi (4 oszlop × 3 sor), és a betű → hely (-1: nem parancsbillentyű)
 inline constexpr char kSlotKeys[] = "WERTSDFGXCVB";

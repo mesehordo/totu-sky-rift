@@ -84,7 +84,7 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 |---|---|
 | HUD-sorrend, 1:1 portré, 2×3 tárgy, 4×3 kijelölés, 4×3 WERT/SDFG/XCVB, betű a jobb alsó sarokban, felső erőforrássáv a három alakkal és a fogaskerékkel, küldetések háttér nélkül bal fent | **megfelel** (D42; a régi HUD szerint) |
 | Nem hősnél a tárgyhelyek helyén a népjelvény | **megfelel** |
-| Felületméret 75/80–150% | **megbeszélendő (9)** – most 100–200%, 100% alatt nincs |
+| Felületméret 75/80–150% | **kész (2026-11-20)**: 75–200%; 100% alatt a HUD-sáv és a menük kisebbek, 900 px magasság alatt 90% a legkisebb |
 | Színvak-mód, villogás csökkentése, feliratok a hangjelzésekhez | **megfelel** (színvak-beállítás, nyugodt mód, értesítések) |
 
 ## 8. Hang
@@ -118,7 +118,7 @@ Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha 
 6. ~~**Munkáshely-korlát**~~ – **kész (2026-11-20)**: népenként eltérő számok (a tulajdonos rám bízta).
 7. ~~**A gép kisnép-választása**~~ – **kész (2026-11-20)**: a javaslat szerint (a tulajdonos továbblépett).
 8. ~~**„Állapotok a figurán” kapcsoló**~~ – **kész (2026-11-20)**: a javaslat és a WC3 szerint (a tulajdonos döntése).
-9. **Felületméret** – javaslat: 75% és 90% is választható legyen.
+9. ~~**Felületméret**~~ – **kész (2026-11-20)**: 75% és 90% is választható.
 10. **Lobbi-adatok** – csapat, gépi hely, néző, verzió és modlista a lobbiban (hiány).
 11. **Minitérkép-jelzés** (ping) – Alt + kattintás a minitérképen (hiány).
 12. **A mentés tartalom-ujjlenyomata** – betöltéskor figyelmeztetés más modkészletnél (hiány).
