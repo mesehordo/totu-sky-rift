@@ -57,6 +57,8 @@ struct SlotSetup {
   std::string difficulty = "normal";
   std::string personality = "kiegyenlitett";
   uint8_t team = 0;   // csapat (1–4; 0: mindenki ellen) – a régi „Csapat” oszlop
+  int8_t start = -1;  // kezdőhely (-1: véletlen) – a régi „Kezdőhely”
+  int8_t color = -1;  // szín (-1: a hely sorszáma szerinti)
 };
 
 // az alap gépi ellenfél (`content/base/ai/alap`) nehézségei és személyiségei a lenyílókhoz (a csomag sorrendjében)
@@ -75,6 +77,7 @@ struct SkirmishSetup {
   sim::MatchSetup::Victory victory = sim::MatchSetup::Victory::Conquest;
   sim::MatchSetup::Tempo tempo = sim::MatchSetup::Tempo::Classic;
   std::string victory_script;   // M13: Szkript módban a modbeli győzelmi szkript azonosítója
+  uint8_t resources = 1;        // a régi „Nyersanyag”: 0 kevés, 1 közepes, 2 sok
   SkirmishSetup();
 };
 
@@ -85,6 +88,7 @@ struct MatchConfig {
   sim::MatchSetup setup;
   std::vector<int> ai;
   std::string load_path;   // nem üres: mentett játék betöltése (a többi mező üres)
+  std::vector<uint8_t> colors;   // helyenként a szín sorszáma (a csapatszín-paletta szerint)
 };
 // false és a hibaüzenet kulcsa (a .po-ban), ha a beállítás nem indítható (pl. kevesebb mint két résztvevő)
 bool make_match_config(const SkirmishSetup& s, const std::vector<MapInfo>& maps, const std::vector<FactionInfo>& factions,
@@ -103,6 +107,8 @@ enum class MenuAct : uint8_t {
   SlotDifficulty,    // lenyíló; arg: a hely (M9)
   SlotPersonality,   // lenyíló; arg: a hely (M9)
   SlotTeam,          // lenyíló; arg: a hely (csapat: –, 1–4)
+  SlotStart,         // lenyíló; arg: a hely (kezdőhely: véletlen, 1–n)
+  SlotColor,         // lenyíló; arg: a hely (szín)
   Option,        // lenyíló; arg: 0 köd, 1 napszak, 2 időjárás, 3 táborok, 4 hadtáp
   Cycle,         // beállítás léptetése; arg: a sor
   OpenSound, OpenKeys,

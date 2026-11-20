@@ -210,6 +210,8 @@ bool Session::start_match(const sim::MatchSetup& setup, const std::vector<int>& 
   desc.tempo = static_cast<uint8_t>(setup.tempo);
   desc.minutes = setup.minutes;
   desc.teams = setup.teams;
+  desc.starts = setup.starts;
+  desc.resources = setup.resources;
   if (setup.victory == sim::MatchSetup::Victory::Script) {   // M13: a modbeli győzelmi szkript (a gépek előtt csatolva)
     content::Vfs vfs;
     content::add_mod_layers(vfs, content_dir_, mods_);

@@ -31,6 +31,9 @@ class World {
   bool prepare_atlas(render::Atlas& atlas, std::string* error);
   // a csapatszínek (M8: a beállítások színvak-barát palettája; játékosonként, az 1. játékos az első)
   void set_team_colors(const std::array<std::array<uint8_t, 4>, 8>& c) { teams_ = c; }
+  // a játékosok választott színe (a Csata „Szín” oszlopa): játékos → a paletta helye (alapból a sorszáma)
+  void set_color_slots(const std::array<uint8_t, 9>& s) { color_slot_ = s; }
+  uint8_t color_slot(uint8_t owner) const { return owner >= 1 && owner <= 8 ? color_slot_[owner] : 0; }
 
   // Képkockánként egyszer: a két legutóbbi pillanatkép átvétele (új tick esetén az irányok és az animációk frissülnek).
   void update();
@@ -150,6 +153,8 @@ class World {
     const render::Texture *flame = nullptr, *puff = nullptr, *glow = nullptr;
   };
   void set_fire_art(FireArt a) { fire_ = a; }
+  // a kép nélküli egységek alakzatai (client/unit_shapes; a régi `draw_shape`): alakzat × irány × réteg
+  void set_shape_art(const std::vector<render::Texture>* t) { shapes_ = t; }   // alakzatonként egy tömb (irány × réteg)
   void draw_building_fx(render::SpriteBatch& batch, render::Atlas* atlas, double time);
   void draw_building_flames(render::SpriteBatch& batch, double time) const;
   // varázslathatások (a régi `draw_fx` és `draw_area`, a `vfx_<elem>_*` képlapokkal): a területi mezők a talajon (az
@@ -242,6 +247,9 @@ class World {
   RallyArt rally_;
   BannerArt banner_;
   FireArt fire_;
+  std::array<uint8_t, 9> color_slot_{0, 0, 1, 2, 3, 4, 5, 6, 7};
+  const std::vector<render::Texture>* shapes_ = nullptr;
+  std::array<uint8_t, 3> faction_base(const std::string& fid) const;   // a nép alapszíne (`Faction.color`)
   struct Vfx {   // egy lejátszandó látványhatás (egyszer): a lap neve, a horgony helye, a kezdet (tick), a szélesség
     std::string sheet;
     float x = 0, y = 0;

@@ -158,6 +158,8 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
       setup.tempo = static_cast<MatchSetup::Tempo>(std::min<uint8_t>(r.tempo, 3));
       setup.minutes = std::clamp(r.minutes, 0, 240);
       setup.teams = r.teams;
+      setup.starts = r.starts;
+      setup.resources = std::min<uint8_t>(r.resources, 2);
       if (!s.setup_match(*m->map, setup, &error)) return nullptr;
     }
   }
@@ -190,6 +192,7 @@ std::unique_ptr<MatchInstance> start_match(const Replay& r, const map::TerrainTa
 namespace {
 
 int format_of(const Replay& r) {
+  if (!r.starts.empty() || r.resources != 1) return 10;
   if (std::any_of(r.teams.begin(), r.teams.end(), [](uint8_t t) { return t != 0; })) return 9;
   if (r.victory != 0 || r.tempo != 0 || r.minutes != 0) return 8;
   if (!r.mission.empty()) return 7;
@@ -304,6 +307,11 @@ std::vector<uint8_t> encode(const Replay& r) {
     w.u32(static_cast<uint32_t>(r.teams.size()));
     for (const uint8_t t : r.teams) w.u8(t);
   }
+  if (format >= 10) {   // kezdőhelyek, kezdő nyersanyag
+    w.u32(static_cast<uint32_t>(r.starts.size()));
+    for (const int8_t s : r.starts) w.u8(static_cast<uint8_t>(s));
+    w.u8(r.resources);
+  }
   w.u32(static_cast<uint32_t>(r.checkpoints.size()));
   for (const auto& c : r.checkpoints) {
     w.i64(c.tick);
@@ -318,7 +326,7 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   core::ByteReader rd(data);
   if (rd.str() != "totu-replay") return std::nullopt;
   const uint32_t version = rd.u32();
-  if (version < 1 || version > 9) return std::nullopt;
+  if (version < 1 || version > 10) return std::nullopt;
   Replay r;
   r.seed = rd.u64();
   r.ticks = rd.i64();
@@ -383,6 +391,11 @@ std::optional<Replay> decode(const std::vector<uint8_t>& data) {
   if (version >= 9) {
     const uint32_t nt = rd.u32();
     for (uint32_t i = 0; i < nt && i < Sim::kMaxPlayers && rd.ok(); ++i) r.teams.push_back(std::min<uint8_t>(rd.u8(), 4));
+  }
+  if (version >= 10) {
+    const uint32_t ns = rd.u32();
+    for (uint32_t i = 0; i < ns && i < Sim::kMaxPlayers && rd.ok(); ++i) r.starts.push_back(static_cast<int8_t>(rd.u8()));
+    r.resources = std::min<uint8_t>(rd.u8(), 2);
   }
   const uint32_t m = rd.u32();
   for (uint32_t i = 0; i < m && rd.ok(); ++i) {

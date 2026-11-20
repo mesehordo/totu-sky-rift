@@ -66,6 +66,9 @@ struct Replay {
   int32_t minutes = 0;
   // 9-es változat (ha van csapat): játékosonként a csapat (0: mindenki ellen)
   std::vector<uint8_t> teams;
+  // 10-es változat (ha nem az alapérték): a kezdőhelyek és a kezdő nyersanyag
+  std::vector<int8_t> starts;
+  uint8_t resources = 1;
   std::vector<Checkpoint> checkpoints;
 };
 

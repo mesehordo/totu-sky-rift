@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "client/world.hpp"
+#include "client/unit_shapes.hpp"
 
 #include "client/sigil.hpp"
 
@@ -840,8 +841,8 @@ void World::draw_carry(render::SpriteBatch& batch, float alpha) const {
 std::array<uint8_t, 3> World::team_color(uint8_t owner) const {
   const sim::Rules* r = session_.rules();
   const content::Value* pc = r && r->game_raw ? r->game_raw->find("player_colors") : nullptr;
-  if (owner == 0 || !pc || !pc->is_array() || pc->items().size() < owner) return {200, 200, 200};
-  const content::Value& c = pc->items()[owner - 1u];
+  if (owner == 0 || owner > 8 || !pc || !pc->is_array() || pc->items().size() <= color_slot(owner)) return {200, 200, 200};
+  const content::Value& c = pc->items()[color_slot(owner)];
   std::array<uint8_t, 3> out{200, 200, 200};
   if (c.is_array() && c.items().size() >= 3) {
     for (size_t i = 0; i < 3; ++i) out[i] = static_cast<uint8_t>(std::clamp<long long>(c.items()[i].as_int().value_or(200), 0, 255));
@@ -923,6 +924,18 @@ void World::draw_move_indicator(render::SpriteBatch& batch, float alpha, double 
   s.x = last_move_x_ - s.w / 2;
   s.y = last_move_y_ - s.h / 2;
   batch.draw(*rally_.move_sigil, nullptr, s);
+}
+
+std::array<uint8_t, 3> World::faction_base(const std::string& fid) const {
+  const sim::Rules* r = session_.rules();
+  const sim::FactionDef* f = r ? r->faction(fid) : nullptr;
+  const content::Value* fv = f && f->raw ? f->raw->find("Faction") : nullptr;
+  const content::Value* v = fv ? fv->find("color") : nullptr;
+  std::array<uint8_t, 3> out{150, 140, 120};
+  if (v && v->is_array() && v->items().size() >= 3) {
+    for (size_t i = 0; i < 3; ++i) out[i] = static_cast<uint8_t>(std::clamp<long long>(v->items()[i].as_int().value_or(150), 0, 255));
+  }
+  return out;
 }
 
 std::array<uint8_t, 3> World::faction_accent(const std::string& fid) const {
@@ -1681,7 +1694,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       const auto d = s.anims.find("death");
       if (d == s.anims.end()) continue;
       const int frame = std::min(d->second.frames - 1, static_cast<int>(c.age * static_cast<float>(d->second.fps)));
-      const uint8_t* team = teams_[(c.owner + 7u) % 8u].data();
+      const uint8_t* team = teams_[c.owner >= 1 && c.owner <= 8 ? color_slot(c.owner) : (c.owner + 7u) % 8u].data();
       atlas->draw(batch, s, 0, d->second.start + std::max(0, frame), c.x, c.y, 1.0f / s.scale, team, nullptr, -1.0f,
                   shadow_pass ? 0 : render::kFxInnerShadow);
     }
@@ -1692,7 +1705,7 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
     const uint8_t owner = u.owner;
     const bool match = u.def != sim::kNoDef || u.kind != SnapUnit::kUnit;
     if (v.sheet == -2) v.sheet = !atlas ? -1 : match ? sheet_of(atlas, u) : sheet_for(atlas, u.id, owner);
-    const uint8_t* team = teams_[(owner + 7u) % 8u].data();
+    const uint8_t* team = teams_[owner >= 1 && owner <= 8 ? color_slot(owner) : (owner + 7u) % 8u].data();
     if (u.kind == SnapUnit::kShot) {   // lövedék: az ív magasságában, az árnyéka a talajon
       if (atlas && v.sheet >= 0) {
         const auto& s = atlas->data().sheets[static_cast<size_t>(v.sheet)];
@@ -1783,6 +1796,23 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
                                   : static_cast<int>(time * a.fps + static_cast<double>(u.id)) % std::max(1, a.frames);
       atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team, nullptr,
                   -1.0f, shadow_pass ? 0 : render::kFxInnerShadow);
+    } else if (!shadow_pass && shapes_ && shapes_->size() == static_cast<size_t>(client::kShapeKinds) && rules && u.def < rules->defs.size()) {
+      // kép nélkül: a régi `draw_shape` alakzata (csapatszín, a nép alap- és kiemelőszíne, saját színű részletek)
+      const sim::EntityDef& d = rules->defs[u.def];
+      const float rad = std::max(6.0f, static_cast<float>(d.radius.raw()) / 65536.0f * kTilePx);
+      const float k = rad / client::kShapeRadius, sz = static_cast<float>(client::kShapeSize) * k;
+      const auto base = faction_base(d.faction), acc = faction_accent(d.faction);
+      const int shape = client::shape_index(d.shape);
+      for (int layer = 0; layer < client::kShapeLayers; ++layer) {
+        render::SpriteInstance in;
+        in.x = it.x - sz / 2;
+        in.y = it.y - rad * 0.7f - sz / 2;
+        in.w = in.h = sz;
+        in.layer[0] = static_cast<uint8_t>((v.dir & 7) * client::kShapeLayers + layer);
+        const uint8_t* col = layer == 0 ? team : layer == 1 ? base.data() : layer == 2 ? acc.data() : nullptr;
+        if (col) { in.tint[0] = col[0]; in.tint[1] = col[1]; in.tint[2] = col[2]; }
+        batch.draw((*shapes_)[static_cast<size_t>(shape)], nullptr, in);
+      }
     } else if (!shadow_pass) {   // tartalék: csapatszínű kör
       render::SpriteInstance in;
       in.x = it.x - 8;

@@ -19,6 +19,7 @@
 #include "client/hud_model.hpp"
 #include "client/session.hpp"
 #include "client/sigil.hpp"
+#include "client/unit_shapes.hpp"
 #include "content/json.hpp"
 #include "render/font.hpp"
 
@@ -856,4 +857,28 @@ TEST_CASE("D49 epuletanimacio: egetesi fokozatok az eleteroig, langnyelv es fust
   CHECK(f0.rgba != f3.rgba);
   auto p = client::smoke_puff_image();
   CHECK(p.at(12, 12)[3] > 200 && p.at(0, 0)[3] == 0);
+}
+
+TEST_CASE("kep nelkuli egysegek (a regi draw_shape): minden alakzat minden iranyban rajzol, a retegek nem fedik egymast") {
+  for (int sh = 0; sh < client::kShapeKinds; ++sh) {
+    for (int d = 0; d < client::kShapeDirs; d += 3) {
+      std::array<render::Image, client::kShapeLayers> l;
+      for (int k = 0; k < client::kShapeLayers; ++k) l[static_cast<size_t>(k)] = client::unit_shape_layer(sh, d, k);
+      int team = 0, sum_over = 0;
+      for (int y = 0; y < client::kShapeSize; ++y) {
+        for (int x = 0; x < client::kShapeSize; ++x) {
+          int a = 0;
+          for (auto& im : l) a += im.at(x, y)[3];
+          sum_over += a > 260 ? 1 : 0;   // részképpontonként egy réteg: az összeg nem lép túl (kerekítési ráhagyással)
+          team += l[0].at(x, y)[3] > 0 ? 1 : 0;
+        }
+      }
+      CHECK(sum_over == 0);
+      CHECK(team > 0 || sh == 4 || sh == 6 || sh == 10);   // a lovasnál, a vadállatnál és az ostromgépnél kicsi a csapatszín
+    }
+  }
+  CHECK(client::shape_index("archer") == 3 && client::shape_index("ismeretlen") == 0);
+  // az irány számít: a harcos fegyvere kelet és nyugat felé máshol van
+  auto e = client::unit_shape_layer(0, 0, 3), w = client::unit_shape_layer(0, 4, 3);
+  CHECK(e.rgba != w.rgba);
 }

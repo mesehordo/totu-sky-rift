@@ -9416,3 +9416,27 @@ msgstr ""
 msgctxt "hud.speed"
 msgid "Játéksebesség: ×{}"
 msgstr ""
+
+msgctxt "ui.skirmish.col.start"
+msgid "Kezdőhely"
+msgstr ""
+
+msgctxt "ui.opt.resources"
+msgid "Nyersanyag"
+msgstr ""
+
+msgctxt "ui.opt.resources.low"
+msgid "Kevés"
+msgstr ""
+
+msgctxt "ui.opt.resources.medium"
+msgid "Közepes"
+msgstr ""
+
+msgctxt "ui.opt.resources.high"
+msgid "Sok"
+msgstr ""
+
+msgctxt "ui.skirmish.start_taken"
+msgid "Két résztvevőnek ugyanaz a kezdőhelye."
+msgstr ""

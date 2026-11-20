@@ -53,6 +53,7 @@
 #include "client/diagnostics.hpp"
 #include "client/savegame.hpp"
 #include "client/cursors.hpp"
+#include "client/unit_shapes.hpp"
 #include "client/ground_overlay.hpp"
 #include "client/sigil.hpp"
 #include "client/i18n.hpp"
@@ -590,6 +591,7 @@ int main(int argc, char** argv) {
     render::Atlas world_atlas;
     render::Texture banner_pole, banner_knob, banner_cloth, banner_trim, carry_sack, mark_hero_tint, mark_hero_fixed, mark_badge_frame,
         mark_badge_symbol, mark_chant, mark_hidden, obj_ring, obj_beacon, amb_glow, amb_leaf, fire_flame, fire_puff;
+    std::vector<render::Texture> unit_shapes;   // a kép nélküli egységek alakzatai (alakzatonként irány × réteg)
     std::map<std::string, render::Texture> item_tex;
     render::Texture ground_tex, module_tex;   // a terep fedőrétege; a népmechanikák fedőképe (fertőzött talaj, tavak)
     render::Texture fallback, white, sigil_own, sigil_other, sigil_ally, move_sigil, rally_arrows, rally_sigil, rally_pole, rally_cloth, rally_shadow;
@@ -761,6 +763,14 @@ int main(int argc, char** argv) {
           session.adopt(*mission_match);
           session.set_match_desc(f->desc);
           if (f->desc.fog == 2) session.set_reveal_all(true);
+          if (const auto mv = content::parse(f->meta)) {   // a mentett színek
+            if (const auto* cv = mv->find("colors"); cv && cv->is_array() && cv->items().size() == 8) {
+              std::array<uint8_t, 9> slots{0, 0, 1, 2, 3, 4, 5, 6, 7};
+              for (size_t i = 0; i < 8; ++i) slots[i + 1] = static_cast<uint8_t>(cv->items()[i].as_int().value_or(static_cast<long long>(i)) & 7);
+              world.set_color_slots(slots);
+              hud.model().color_slot = slots;
+            }
+          }
           return true;
         };
         auto start_editor = [&]() -> bool {   // M11: a szerkesztő (WC3 World Editor mintájára)
@@ -840,6 +850,12 @@ int main(int argc, char** argv) {
             const bool started = have_cfg ? session.start_match(match_cfg.setup, match_cfg.ai, "ai_nep.lua", &err)
                                           : session.start_match({o.faction.empty() ? std::string("ursan") : o.faction, "ursan"},
                                                                 true, &err);
+            if (started && have_cfg && !match_cfg.colors.empty()) {   // a választott színek (a Csata „Szín” oszlopa)
+              std::array<uint8_t, 9> slots{0, 0, 1, 2, 3, 4, 5, 6, 7};
+              for (size_t i = 0; i < match_cfg.colors.size() && i < 8; ++i) slots[i + 1] = static_cast<uint8_t>(match_cfg.colors[i] & 7);
+              world.set_color_slots(slots);
+              hud.model().color_slot = slots;
+            }
             if (!started) {   // N-04: a sikertelen indítás nem fut tovább részben felépített meccsként
               std::fprintf(stderr, "meccs: %s\n", err.c_str());
               rc = 1;
@@ -932,6 +948,13 @@ int main(int argc, char** argv) {
               amb_leaf = layers(8, 8, 8, [](int i) { return client::ambient_leaf_image(i); });
               world.set_ambient_art(&amb_glow, &amb_leaf, &fallback);
               world.set_fire_art({&fire_flame, &fire_puff, &amb_glow});
+              // a kép nélküli egységek alakzatai (a régi `draw_shape`): alakzat × irány × réteg
+              for (int sh = 0; sh < client::kShapeKinds; ++sh) {
+                unit_shapes.push_back(layers(client::kShapeDirs * client::kShapeLayers, client::kShapeSize, client::kShapeSize, [sh](int i) {
+                  return client::unit_shape_layer(sh, i / client::kShapeLayers, i % client::kShapeLayers);
+                }));
+              }
+              world.set_shape_art(&unit_shapes);
               if (session.has_sim() && session.rules()) {   // a terep fedőrétege (a régi földutak és talajfoltok)
                 const auto g0 = std::chrono::steady_clock::now();
                 render::Image gi = client::ground_overlay(world.map(), session.terrain(), session.seed());
@@ -1143,6 +1166,9 @@ int main(int argc, char** argv) {
                 content::Value meta = content::Value::object();
                 meta.set("title", content::Value::string(locale.name(mapname) + "  " + clock));
                 meta.set("date", content::Value::string(date));
+                content::Value cols = content::Value::array();   // a választott színek (a betöltéshez)
+                for (int pi = 1; pi <= 8; ++pi) cols.push(content::Value::number(std::to_string(world.color_slot(static_cast<uint8_t>(pi)))));
+                meta.set("colors", std::move(cols));
                 bool ok = false;
                 std::string serr;
                 runner.with_sim([&] { ok = session.save_game(path.string(), content::dump(meta), &serr); });
@@ -1966,6 +1992,7 @@ int main(int argc, char** argv) {
     dev.destroy(sigil_ally);
     dev.destroy(sigil_other);
     for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &ground_tex, &module_tex}) dev.destroy(*t);
+    for (render::Texture& t : unit_shapes) dev.destroy(t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();

@@ -186,6 +186,15 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
   weather_ = WeatherState{};
   weather_.change_at = tick_;   // az első időjárás az első environment_system()-ben eldől
   const auto& starts = m.objects().starts;
+  {   // a választott kezdőhelyek: érvényesek és különbözők
+    std::vector<int8_t> used;
+    for (size_t i = 0; i < setup.starts.size() && i < setup.factions.size(); ++i) {
+      if (setup.factions[i].empty() || setup.starts[i] < 0) continue;
+      if (static_cast<size_t>(setup.starts[i]) >= starts.size()) return fail("érvénytelen kezdőhely");
+      if (std::find(used.begin(), used.end(), setup.starts[i]) != used.end()) return fail("két játékosnak ugyanaz a kezdőhelye");
+      used.push_back(setup.starts[i]);
+    }
+  }
   std::vector<uint8_t> playing;
   for (size_t i = 0; i < setup.factions.size() && i < static_cast<size_t>(kMaxPlayers); ++i) {
     if (setup.factions[i].empty()) continue;
@@ -200,7 +209,11 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     for (int r = 0; r < kResources; ++r) {   // küldetésben a nyersanyagot a küldetés adja; Gyors: kétszeres
       p.res[static_cast<size_t>(r)] = setup.bases ? int64_t{f.start_resources[static_cast<size_t>(r)]} * 1000 *
                                                         (setup.tempo == MatchSetup::Tempo::Rush ? 2 : 1) : 0;
+      // a régi „Nyersanyag” beállítás: kevés × 0,6, sok × 2 (+150 meteorit alább)
+      if (setup.bases && setup.resources == 0) p.res[static_cast<size_t>(r)] = p.res[static_cast<size_t>(r)] * 6 / 10;
+      if (setup.bases && setup.resources == 2) p.res[static_cast<size_t>(r)] *= 2;
     }
+    if (setup.bases && setup.resources == 2) p.res[kMeteor] += 150 * 1000;
     playing.push_back(static_cast<uint8_t>(i + 1));
   }
   // nyersanyagok: előbb a lelőhelyek, majd a fák (a pálya sorrendjében)
@@ -242,7 +255,11 @@ bool Sim::setup_match(map::Map& m, const MatchSetup& setup, std::string* error) 
     if (f.hq == kNoDef) return fail("a népnek nincs főépülete: " + f.id);
     const EntityDef& hq = rules_->defs[f.hq];
     const int w = std::max(1, hq.fw), h = std::max(1, hq.fh);
-    const auto [sx, sy] = starts[owner - 1u];
+    size_t si = owner - 1u;   // a választott kezdőhely (a régi `start`), különben a sorszám szerinti
+    if (owner - 1u < setup.starts.size() && setup.starts[owner - 1u] >= 0 && static_cast<size_t>(setup.starts[owner - 1u]) < starts.size()) {
+      si = static_cast<size_t>(setup.starts[owner - 1u]);
+    }
+    const auto [sx, sy] = starts[si];
     const int tx = std::clamp(sx - w / 2, 0, m.width() - w), ty = std::clamp(sy - h / 2, 0, m.height() - h);
     const EntityId b = place_building(f.hq, owner, tx, ty, true);
     if (b == kNoEntity) return fail("a főépület nem helyezhető el");   // H-03 (az előzetes ellenőrzés után nem fordul elő)

@@ -190,8 +190,8 @@ std::array<uint8_t, 3> HudModel::res_color(int k) const {
 
 std::array<uint8_t, 3> HudModel::player_color(uint8_t owner) const {
   const content::Value* pc = rules_ ? path_of(rules_->game_raw.get(), {"player_colors"}) : nullptr;
-  if (owner == 0 || !pc || !pc->is_array() || pc->items().size() < owner) return {200, 200, 200};
-  return color_of(&pc->items()[owner - 1u], {200, 200, 200});
+  if (owner == 0 || owner > 8 || !pc || !pc->is_array() || pc->items().size() <= color_slot[owner]) return {200, 200, 200};
+  return color_of(&pc->items()[color_slot[owner]], {200, 200, 200});
 }
 
 std::array<uint8_t, 3> HudModel::faction_color(const std::string& fid, bool accent) const {

@@ -626,3 +626,23 @@ TEST_CASE("Mentes – menü: a Betoltes kepernyo listaja, betoltes es torles (a 
   press(m, MenuAct::SaveDelete);
   CHECK(m.take_delete() == "b.totumentes" && m.take_delete().empty());
 }
+
+TEST_CASE("Csata beallitas (a regi): kezdohely, szin, nyersanyag – a MatchSetup viszi, a veletlen kezdohely feloldva") {
+  client::Settings st;
+  Menu m(st, real_locale(), test_maps(), client::scan_factions(TOTU_CONTENT_DIR));
+  m.go(MenuScreen::Skirmish);
+  m.layout(1280, 720);
+  const auto* s0 = m.find(MenuAct::SlotStart, 0);
+  CHECK(s0 && s0->enabled && s0->options.size() >= 3 && s0->current == 0);   // véletlen + a pálya kezdőhelyei
+  pick(m, MenuAct::SlotStart, 0, 2);   // a 2. kezdőhely
+  pick(m, MenuAct::SlotColor, 0, 5);
+  pick(m, MenuAct::Option, 7, 2);      // nyersanyag: sok
+  CHECK(m.skirmish().slots[0].start == 1 && m.skirmish().slots[0].color == 5 && m.skirmish().resources == 2);
+  client::MatchConfig c;
+  CHECK(m.match_config(7, &c));
+  CHECK(c.setup.starts.size() >= 2 && c.setup.starts[0] == 1 && c.setup.starts[1] >= 0 && c.setup.starts[1] != 1);
+  CHECK(c.colors.size() >= 2 && c.colors[0] == 5 && c.colors[1] == 1 && c.setup.resources == 2);
+  pick(m, MenuAct::SlotStart, 1, 2);   // ütközés: a 2. hely is a 2. kezdőhelyet kérné
+  CHECK(!m.match_config(7, &c));
+  CHECK(press(m, MenuAct::Start) == Menu::Result::None && m.message() == "Két résztvevőnek ugyanaz a kezdőhelye.");
+}

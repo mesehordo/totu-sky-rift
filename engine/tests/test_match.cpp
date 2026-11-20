@@ -206,3 +206,37 @@ TEST_CASE("Csapatok (a regi szerint): a csapattars nem ellenseg, a gyozelem a cs
   CHECK(dec.has_value() && dec->teams == base.teams);
   CHECK(sim::verify(rec, &c.terrain, &*c.rules).ok);
 }
+
+TEST_CASE("Csata beallitas (a regi): a valasztott kezdohely es a kezdo nyersanyag") {
+  Content& c = content_once();
+  const auto map = read_file(std::filesystem::path(TOTU_CONTENT_DIR) / "base" / "maps" / "het_ut.json");
+  auto start = [&](std::vector<int8_t> starts, uint8_t res) {
+    sim::Replay r;
+    r.seed = 3;
+    r.map = map;
+    r.factions = {"ursan", "ursan"};
+    r.starts = std::move(starts);
+    r.resources = res;
+    std::string err;
+    auto m = sim::start_match(r, &c.terrain, &*c.rules, err);
+    if (!m) std::printf("  hiba: %s\n", err.c_str());
+    return m;
+  };
+  auto hq_pos = [&](sim::Sim& s, uint8_t owner) {
+    std::pair<int, int> out{-1, -1};
+    s.world().pool<sim::Building>().each([&](sim::EntityId e, const sim::Building& b) {
+      if (s.world().get<sim::Health>(e)->owner == owner) out = {b.tx, b.ty};
+    });
+    return out;
+  };
+  auto a = start({}, 1), b = start({4, 2}, 0), d = start({0, 0}, 1);
+  CHECK(a && b && !d);   // ugyanaz a kezdőhely kétszer: hiba
+  if (!a || !b) return;
+  CHECK(hq_pos(*a->sim, 1) != hq_pos(*b->sim, 1) && hq_pos(*a->sim, 2) != hq_pos(*b->sim, 2));
+  CHECK(b->sim->player(1).resource(sim::kWood) * 10 == a->sim->player(1).resource(sim::kWood) * 6);
+  auto h = start({}, 2);
+  CHECK(h && h->sim->player(1).resource(sim::kWood) == a->sim->player(1).resource(sim::kWood) * 2 &&
+        h->sim->player(1).resource(sim::kMeteor) == a->sim->player(1).resource(sim::kMeteor) * 2 + 150);
+  const auto dec = sim::decode(sim::encode(sim::record_match([&] { sim::Replay r; r.seed = 3; r.ticks = 30; r.map = map; r.factions = {"ursan", "ursan"}; r.starts = {4, 2}; r.resources = 0; return r; }(), c.terrain, *c.rules)));
+  CHECK(dec && dec->starts == std::vector<int8_t>({4, 2}) && dec->resources == 0);
+}

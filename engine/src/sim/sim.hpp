@@ -753,6 +753,10 @@ struct MatchSetup {
   // csapatok (a régi játék szerint): játékosonként 1–4, 0 vagy hiányzó: mindenki ellen. A csapattárs nem ellenség,
   // és a meccs akkor ér véget, ha az életben maradók mind egy csapatban vannak (a győzelem a csapaté).
   std::vector<uint8_t> teams;
+  // a régi beállítás: játékosonként a kezdőhely sorszáma (üres vagy -1: a játékos sorszáma szerinti) és a kezdő
+  // nyersanyag (0 kevés: × 0,6; 1 közepes; 2 sok: × 2 és +150 meteorit)
+  std::vector<int8_t> starts;
+  uint8_t resources = 1;
   // M11: küldetés – a kezdőbázis (főépület, kezdő egységek) nélkül, és a „nincs épülete = kiesett” szabály ki
   // (a győzelmet és a bukást a küldetés dönti el)
   bool bases = true;

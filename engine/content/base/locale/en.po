@@ -9417,3 +9417,27 @@ msgstr "{}: still recharging."
 msgctxt "hud.speed"
 msgid "Játéksebesség: ×{}"
 msgstr "Game speed: ×{}"
+
+msgctxt "ui.skirmish.col.start"
+msgid "Kezdőhely"
+msgstr "Start"
+
+msgctxt "ui.opt.resources"
+msgid "Nyersanyag"
+msgstr "Resources"
+
+msgctxt "ui.opt.resources.low"
+msgid "Kevés"
+msgstr "Low"
+
+msgctxt "ui.opt.resources.medium"
+msgid "Közepes"
+msgstr "Medium"
+
+msgctxt "ui.opt.resources.high"
+msgid "Sok"
+msgstr "High"
+
+msgctxt "ui.skirmish.start_taken"
+msgid "Két résztvevőnek ugyanaz a kezdőhelye."
+msgstr "Two participants share a start position."

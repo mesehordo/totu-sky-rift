@@ -37,7 +37,7 @@ Az új motorban egyáltalán nincs hanglejátszás; csak a hangerő-beállítás
 | Rothadó fa | `draw_rot_bubbles` (Croftian) | nincs | Kicsi |
 | Félkész munkahelyek | `draw_worksites`, `draw_foundations`: ásás, alapozás, lapkő, tüskék haladása | csak az épület építési fázisa | Közepes |
 | Összekötött falak | `_wall_frame`: a falszakaszok a szomszédjuk szerint | minden fal külön képként | Közepes |
-| Kép nélküli egységek | `render.draw_shape`: népenként jellemző alakzat (kör, lándzsás, pajzsos …) a csapatszínnel | egyszerű csapatszínű kör; **103 egységsablonnak nincs képe** (Huk’ucha 21, Ooni 18, a kisnépek egységei) | **Nagy** |
+| Kép nélküli egységek | `render.draw_shape`: népenként jellemző alakzat (kör, lándzsás, pajzsos …) a csapatszínnel | **kész (2026-11-20)**: a régi alakzatok; a 103 kép nélküli sablonnak (Huk’ucha 21, Ooni 18, a kisnépek egységei) ettől még kép kell | Közepes |
 | Képpontpontos kijelölés | `hover_sprite`: a látható képpont dönt | téglalap a figura körül | Kicsi |
 | Díszletépületek, háttérszereplők | `draw_decor`, `draw_actor` | nincs | Kicsi |
 
@@ -76,11 +76,11 @@ Az új motor csak a hiányzó nyersanyagot, létszámot vagy feltételt jelzi, a
 | Tétel | Régi | Új | Súly |
 |---|---|---|---|
 | Játéktípus „Fent kontra lent” | a pálya két oldala két csapat | nincs (a csapat helyenként megadható) | Kicsi |
-| Kezdőhely választása | helyenként (vagy véletlen) | mindig a pálya sorrendje | Közepes |
+| Kezdőhely választása | helyenként (vagy véletlen) | **kész (2026-11-20)** | – |
 | Kezdőhely a csapat szerint | a csapattársak egy oldalra (`teams_hint`) | nincs | Közepes |
-| Szín választása | helyenként | rögzített (a hely sorszáma) | Közepes |
+| Szín választása | helyenként | **kész (2026-11-20)** | – |
 | Kötelező fejlődési irány és szövetséges kisnép | helyenként („Gép dönt” vagy adott) | nincs | Kicsi |
-| Nyersanyag-mennyiség | kevés / közepes / sok | nincs (csak a „Gyors” tempó duplázza) | Közepes |
+| Nyersanyag-mennyiség | kevés / közepes / sok | **kész (2026-11-20)** | – |
 | Játéksebesség | lassú / normál / gyors | csak játék közben állítható | Kicsi |
 | Táj felülírása | erdő, tél, pusztaság, mocsár, ősz, hasadékvidék | a pálya saját tája | Kicsi |
 | Véletlen pálya minden indításkor | a pályaleírásból maggal generálva (`mapgen.py`) | a pályák rögzített JSON-ok | Közepes |

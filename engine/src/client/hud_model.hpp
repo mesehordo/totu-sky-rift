@@ -230,6 +230,7 @@ class HudModel {
   std::string res_name(int k) const;
   std::array<uint8_t, 3> res_color(int k) const;
   std::array<uint8_t, 3> player_color(uint8_t owner) const;
+  std::array<uint8_t, 9> color_slot{0, 0, 1, 2, 3, 4, 5, 6, 7};   // a választott színek (játékos → paletta helye)
   std::array<uint8_t, 3> faction_color(const std::string& fid, bool accent) const;
   bool has_faith() const;
 
