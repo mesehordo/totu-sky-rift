@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <map>
 #include <memory>
 #include <set>
 #include <string>
@@ -922,4 +923,353 @@ TEST_CASE("Hang (a regi rts/audio.py): ogg es mp3 dekodolas, a keresesi sorrend,
   CHECK(std::fabs(client::sound_volume(st, client::Sound::Combat) - 0.4f) < 1e-4f);
   st.volume[static_cast<size_t>(client::Sound::Combat)].enabled = false;
   CHECK(client::sound_volume(st, client::Sound::Combat) == 0.0f);
+}
+
+// ---- fajonkénti végigjátszás a felületen át (DIAG): építés, képzés, kutatás, képességek -------------------------
+namespace {
+struct FacAudit {
+  std::vector<std::string> bad;
+  void add(const std::string& s) { bad.push_back(s); }
+};
+
+std::string last_notice(const HudModel& h, size_t from) {
+  std::string s;
+  for (size_t i = from; i < h.notice_log.size(); ++i) s += (s.empty() ? "" : " | ") + h.notice_log[i].text;
+  return s;
+}
+
+void settle_path(HudMatch& m) {   // a fejlődési irány ablaka (modális): az első irány
+  if (m.hud.path_pending()) {
+    m.key('1');
+    m.step(2);
+  }
+}
+
+void open_build_page(HudMatch& m, sim::EntityId w, int page) {
+  settle_path(m);
+  m.hud.sel = {w};
+  m.hud.mode = {};
+  m.hud.cmd_page.clear();
+  m.hud.page_no = 0;
+  m.key('S');
+  for (int p = 0; p < page; ++p) {
+    const client::CommandCard c2 = m.hud.command_card();
+    for (int i = 0; i < 12; ++i) {
+      if (c2[static_cast<size_t>(i)] && c2[static_cast<size_t>(i)]->id == "page_next") {
+        m.key(client::kSlotKeys[i]);
+        break;
+      }
+    }
+  }
+}
+
+void audit_faction(const std::string& fac, FacAudit& A) {
+  HudMatch m(fac);
+  if (!m.ok) {
+    A.add("a meccs nem indul");
+    return;
+  }
+  auto& sm = m.s.sim();
+  const sim::Rules& R = *m.s.rules();
+  for (int k = 0; k < sim::kResources; ++k) sm.add_resources(1, k, 999999);
+  const client::SnapUnit* hq0 = m.hq();
+  if (!hq0) {
+    A.add("nincs főépület");
+    return;
+  }
+  const float hx = static_cast<float>(hq0->tx + hq0->w / 2), hy = static_cast<float>(hq0->ty + hq0->h / 2);
+  const auto workers = m.own(true);
+  if (workers.empty()) {
+    A.add("nincs munkás");
+    return;
+  }
+  const sim::FactionDef* F = R.faction(fac);
+  // --- A: minden épület a munkás Építés oldaláról (több kör: a feltételek sorban teljesülnek)
+  std::set<uint16_t> built;
+  std::map<uint16_t, std::string> why;
+  for (int pass = 0; pass < 6; ++pass) {
+    bool progress = false;
+    std::vector<std::pair<int, client::HudSlot>> slots;   // (oldal, hely)
+    const auto alive_w = m.own(true);
+    const sim::EntityId lister = alive_w.empty() ? workers[0] : alive_w.front();
+    for (int page = 0; page < 4; ++page) {
+      open_build_page(m, lister, page);
+      const client::CommandCard card = m.hud.command_card();
+      bool next = false;
+      for (const auto& sl : card) {
+        if (sl && sl->kind == client::HudSlot::Building) slots.push_back({page, *sl});
+        if (sl && sl->id == "page_next") next = true;
+      }
+      if (!next) break;
+    }
+    for (const auto& [page, sl] : slots) {
+      if (built.count(sl.def)) continue;
+      // friss munkás minden épülethez (a nép építési módja – bemegy, elfogy – az előzőt elviheti)
+      sim::EntityId wk = 0;   // egy szabad (nem építő) munkás; ha nincs, egy új
+      for (const sim::EntityId w : m.own(true)) {
+        const sim::Worker* ws = sm.world().get<sim::Worker>(w);
+        if (!wk && ws && !ws->inside && ws->state != sim::Worker::Build && ws->state != sim::Worker::Construct) wk = w;
+      }
+      if (!wk && F) wk = sm.spawn_unit(F->worker, 1, core::Fixed::from_int(static_cast<int>(hx) + 3), core::Fixed::from_int(static_cast<int>(hy) + 3));
+      if (!wk) wk = workers[0];
+      m.step(1);
+      if (!sl.enabled) {
+        why[sl.def] = "a gomb tiltva: " + sl.tip_text.substr(0, 100);
+        continue;
+      }
+      const sim::EntityDef& d = R.defs[sl.def];
+      (void)page;
+      int slot_i = -1;
+      for (int pg = 0; pg < 4 && slot_i < 0; ++pg) {
+        open_build_page(m, wk, pg);
+        const client::CommandCard c3 = m.hud.command_card();
+        for (int i = 0; i < 12; ++i) {
+          if (c3[static_cast<size_t>(i)] && c3[static_cast<size_t>(i)]->def == sl.def) slot_i = i;
+        }
+      }
+      if (slot_i < 0) {
+        why[sl.def] = "a gomb eltűnt";
+        continue;
+      }
+      const size_t n0 = m.hud.notice_log.size();
+      m.key(client::kSlotKeys[slot_i]);
+      if (m.hud.mode.kind != client::HudMode::Place) {
+        why[sl.def] = "a gomb nem indít elhelyezést: " + last_notice(m.hud, n0);
+        continue;
+      }
+      int ftx = -1, fty = -1;
+      for (int r = 3; r < 30 && ftx < 0; ++r) {
+        for (int dy = -r; dy <= r && ftx < 0; ++dy) {
+          for (int dx = -r; dx <= r && ftx < 0; ++dx) {
+            if (std::abs(dx) != r && std::abs(dy) != r) continue;
+            const int tx = static_cast<int>(hx) + dx, ty = static_cast<int>(hy) + dy;
+            if (sm.can_place(1, sl.def, tx, ty)) {   // a kliens csak a kurzor alatti helyet tudja (a kísértetkép)
+              ftx = tx;
+              fty = ty;
+            }
+          }
+        }
+      }
+      if (ftx < 0) {
+        std::string w;
+        sm.can_place(1, sl.def, static_cast<int>(hx) + 5, static_cast<int>(hy), &w);
+        why[sl.def] = "nincs szabad hely a bázis körül: " + w;
+        m.hud.mode = {};
+        continue;
+      }
+      const float wx = (static_cast<float>(ftx) + static_cast<float>(d.fw) / 2.0f) * 32.0f;
+      const float wy = (static_cast<float>(fty) + static_cast<float>(d.fh) / 2.0f) * 32.0f;
+      m.calls.clear();
+      m.hud.world_click(wx, wy, 1, 0);
+      bool sent = false;
+      for (const auto& c : m.calls) sent = sent || c.kind == sim::Command::Kind::Build;
+      if (!sent) {
+        why[sl.def] = "nincs építési parancs: " + last_notice(m.hud, n0);
+        m.hud.mode = {};
+        continue;
+      }
+      m.step(2);
+      bool done = false;
+      for (int t = 0; t < 120 && !done; ++t) {
+        m.step(30);
+        for (const auto& u : m.snap->units) {
+          if (u.owner == 1 && u.kind == client::SnapUnit::kBuilding && u.def == sl.def && u.complete) done = true;
+        }
+      }
+      if (!done && std::getenv("TOTU_DIAG_BUILD")) {
+        const sim::Worker* ws = sm.world().get<sim::Worker>(wk);
+        const sim::Position* wp = sm.world().get<sim::Position>(wk);
+        std::printf("    %s: munkás él=%d állapot=%d fails=%d hely=(%.1f,%.1f) cél=(%d,%d) bent=%d\n", d.id.c_str(), sm.world().alive(wk) ? 1 : 0,
+                    ws ? ws->state : -1, ws ? ws->fails : -1, wp ? wp->x.to_double() : 0.0, wp ? wp->y.to_double() : 0.0, ftx, fty, ws ? ws->inside : -1);
+      }
+      if (!done) {
+        bool found = false;
+        for (const auto& u : m.snap->units) found = found || (u.owner == 1 && u.kind == client::SnapUnit::kBuilding && u.def == sl.def);
+        why[sl.def] = found ? "az alap áll, de 120 mp alatt sem épül fel" : "az épület nem jelent meg: " + last_notice(m.hud, n0);
+        continue;
+      }
+      built.insert(sl.def);
+      why.erase(sl.def);
+      progress = true;
+    }
+    if (!progress) break;
+  }
+  for (const auto& [d, w] : why) A.add("épület " + R.defs[d].id + ": " + w);
+  std::vector<uint16_t> fac_units, fac_blds;   // a nép sablonjai (a `faction` mező szerint)
+  for (size_t i = 0; i < R.defs.size(); ++i) {
+    if (R.defs[i].faction != fac) continue;
+    (R.defs[i].building ? fac_blds : fac_units).push_back(static_cast<uint16_t>(i));
+  }
+  if (F) {
+    for (const uint16_t b : fac_blds) {
+      bool on = false;
+      for (const auto& u : m.snap->units) on = on || (u.owner == 1 && u.kind == client::SnapUnit::kBuilding && u.def == b);
+      if (!on && !why.count(b)) A.add("épület " + R.defs[b].id + ": nincs a munkás Építés oldalán (és nem áll)");
+    }
+  }
+  // --- B: minden kész épület minden gombja (képzés, kutatás, épületképesség)
+  std::vector<std::pair<sim::EntityId, uint16_t>> mine;
+  for (const auto& u : m.snap->units) {
+    if (u.owner == 1 && u.kind == client::SnapUnit::kBuilding && u.complete) mine.push_back({u.id, u.def});
+  }
+  settle_path(m);
+  for (const auto& [bid, bdef] : mine) {
+    for (int i = 0; i < 12; ++i) {
+      settle_path(m);
+      m.hud.sel = {bid};
+      m.hud.mode = {};
+      m.hud.cmd_page.clear();
+      m.hud.page_no = 0;
+      const client::CommandCard card = m.hud.command_card();
+      const auto& sl = card[static_cast<size_t>(i)];
+      if (!sl || sl->passive || sl->id == "page_next" || sl->id == "back") continue;
+      const std::string what = R.defs[bdef].id + " / " +
+                               (sl->kind == client::HudSlot::Unit       ? "képzés " + R.defs[sl->def].id
+                                : sl->kind == client::HudSlot::Research ? "kutatás " + sl->id
+                                                                        : "gomb " + sl->id);
+      if (!sl->enabled) {
+        if (sl->kind != client::HudSlot::None) A.add(what + ": tiltva – " + sl->tip_text.substr(0, 100));
+        continue;
+      }
+      const client::SnapUnit* b0 = m.snap->find(bid);
+      const int q0 = b0 ? b0->queue_n : 0;
+      const size_t n0 = m.hud.notice_log.size();
+      m.calls.clear();
+      m.key(client::kSlotKeys[i]);
+      const bool targeted = m.hud.mode.kind == client::HudMode::GCast || m.hud.mode.kind == client::HudMode::Cast ||
+                            m.hud.mode.kind == client::HudMode::AbilityPlace;
+      if (targeted) m.hud.world_click((hx + 4) * 32.0f, hy * 32.0f, 1, 0);
+      m.step(3);
+      const client::SnapUnit* b1 = m.snap->find(bid);
+      if (sl->kind == client::HudSlot::Unit || sl->kind == client::HudSlot::Research) {
+        if (!b1 || b1->queue_n <= q0) {
+          std::string dbg;
+          for (const auto& c : m.calls) dbg += " [kind " + std::to_string(static_cast<int>(c.kind)) + " def " + c.def + " target " + std::to_string(c.target) + "]";
+          A.add(what + ": nem került sorba (sor " + std::to_string(q0) + "→" + std::to_string(b1 ? b1->queue_n : -1) + ", parancs" + dbg + ") – " + last_notice(m.hud, n0));
+        }
+      } else if (m.calls.empty() && m.hud.cmd_page.empty() && m.hud.mode.kind == client::HudMode::None && !targeted) {
+        A.add(what + ": a gomb nem ad parancsot – " + last_notice(m.hud, n0));
+      }
+    }
+  }
+  m.step(60);
+  // --- C: minden egység (a népi listáról, a bázis mellé idézve) minden képessége a gombjával
+  const uint16_t foe_def = R.def("cro_csapszolga");
+  for (const uint16_t ud : fac_units) {
+    const sim::EntityDef& d = R.defs[ud];
+    if (d.hero) continue;   // a hős képességeit tanulja (külön)
+    for (const uint16_t ab : d.abilities) {
+      const sim::AbilityDef& ad = R.abilities[ab];
+      using AT = sim::AbilityDef::Type;
+      if (ad.type == AT::Autoheal || ad.type == AT::Passive || ad.type == AT::Aura || ad.type == AT::Capture || ad.type == AT::Occupy ||
+          ad.type == AT::Garrison) {
+        continue;   // magától működik, vagy épület a célja
+      }
+      const sim::EntityId me = sm.spawn_unit(ud, 1, core::Fixed::from_int(static_cast<int>(hx + 8)), core::Fixed::from_int(static_cast<int>(hy + 8)));
+      if (!me) {
+        A.add("egység " + d.id + ": nem idézhető");
+        break;
+      }
+      if (auto* c = sm.world().get<sim::Caster>(me)) c->energy = 100000000;
+      const sim::EntityId en = sm.spawn_unit(foe_def, 2, core::Fixed::from_int(static_cast<int>(hx + 10)), core::Fixed::from_int(static_cast<int>(hy + 8)));
+      const sim::EntityId fr = sm.spawn_unit(ud, 1, core::Fixed::from_int(static_cast<int>(hx + 7)), core::Fixed::from_int(static_cast<int>(hy + 9)));
+      if (auto* h = sm.world().get<sim::Health>(fr)) h->hp = std::max<int32_t>(1, h->hp / 3);
+      m.step(2);
+      auto cleanup = [&] {
+        for (const auto e : {me, en, fr}) {
+          if (e && sm.world().alive(e)) sm.world().destroy(e);
+        }
+        m.step(1);
+      };
+      m.hud.sel = {me};
+      m.hud.mode = {};
+      m.hud.cmd_page.clear();
+      m.hud.page_no = 0;
+      const client::CommandCard card = m.hud.command_card();
+      int si = -1;
+      for (int i = 0; i < 12; ++i) {
+        if (card[static_cast<size_t>(i)] && card[static_cast<size_t>(i)]->ab_id == ad.id) si = i;
+      }
+      const std::string what = "egység " + d.id + " / " + ad.id;
+      if (si < 0 && !sm.has_ability(me, ab)) {   // kutatáshoz kötött: rejtve, amíg nincs kész
+        cleanup();
+        continue;
+      }
+      if (si < 0) {
+        A.add(what + ": nincs gombja (típus " + std::to_string(static_cast<int>(ad.type)) + ")");
+        cleanup();
+        continue;
+      }
+      const client::HudSlot sl = *card[static_cast<size_t>(si)];
+      if (sl.passive) {
+        cleanup();
+        continue;
+      }
+      if (!sl.enabled) {
+        A.add(what + ": tiltva – " + sl.tip_text.substr(0, 100));
+        cleanup();
+        continue;
+      }
+      const client::SnapUnit* u0 = m.snap->find(me);
+      const int64_t ct0 = u0 ? u0->cast_tick : 0;
+      const auto tg0 = u0 ? u0->toggles : std::vector<uint16_t>{};
+      const size_t n0 = m.hud.notice_log.size();
+      bool fired = false;
+      for (int attempt = 0; attempt < 3 && !fired; ++attempt) {
+        m.hud.sel = {me};
+        m.hud.mode = {};
+        m.key(client::kSlotKeys[si]);
+        if (m.hud.mode.kind == client::HudMode::Cast || m.hud.mode.kind == client::HudMode::AbilityPlace) {
+          const client::SnapUnit* tu = attempt == 0 ? m.snap->find(en) : attempt == 1 ? m.snap->find(fr) : nullptr;
+          if (tu) m.hud.world_click(tu->x, tu->y, 1, tu->id);
+          else m.hud.world_click((hx + 9) * 32.0f, (hy + 7) * 32.0f, 1, 0);
+        }
+        for (int t = 0; t < 8 && !fired; ++t) {
+          m.step(15);
+          const client::SnapUnit* u1 = m.snap->find(me);
+          if (!u1) {
+            fired = true;   // átalakult / elfogyott (pl. átváltozás, beszállás)
+            break;
+          }
+          if (u1->cast_tick != ct0 || u1->toggles != tg0) fired = true;
+          for (const auto& [a, until] : u1->ready) fired = fired || (a == ab && until > m.snap->tick);
+          for (const auto& [a, until] : u1->buffs) fired = fired || (a == ab && until > m.snap->tick);
+        }
+      }
+      if (!fired && std::getenv("TOTU_DIAG_AB")) {
+        m.calls.clear();
+        m.hud.sel = {me};
+        m.hud.mode = {};
+        m.key(client::kSlotKeys[si]);
+        std::printf("    %s: billentyű %c, mód %d, parancsok %zu", what.c_str(), client::kSlotKeys[si], static_cast<int>(m.hud.mode.kind), m.calls.size());
+        for (const auto& c : m.calls) std::printf(" [kind %d def %s units %zu owner %d]", static_cast<int>(c.kind), c.def.c_str(), c.units.size(), c.owner);
+        const bool direct = sm.use_ability({me}, ad.id, core::Fixed{}, core::Fixed{}, 0);
+        std::printf(" közvetlen: %d\n", direct ? 1 : 0);
+      }
+      if (!fired) {
+        std::string st;
+        if (sm.world().alive(me)) {
+          const sim::Caster* cs = sm.world().get<sim::Caster>(me);
+          st = std::string(" [has=") + (sm.has_ability(me, ab) ? "1" : "0") + " ready=" + (cs && sm.ability_ready(me, *cs, ad) ? "1" : "0") +
+               " incap=" + (sm.incapacitated(me) ? "1" : "0") + " shelter=" + (sm.sheltered(me) ? "1" : "0") + "]";
+        }
+        A.add(what + " (típus " + std::to_string(static_cast<int>(ad.type)) + "): nem sült el" + st + " – " + last_notice(m.hud, n0));
+      }
+      cleanup();
+    }
+  }
+}
+}  // namespace
+
+TEST_CASE("DIAG fajok: minden fonep vegigjatszva a feluleten at (epites, kepzes, kutatas, kepessegek)") {
+  // eszköz (percekig fut): csak kérésre – TOTU_FAJOK=1 (mind) vagy TOTU_FAJ=<nép>
+  const char* only = std::getenv("TOTU_FAJ");
+  if (!only && !std::getenv("TOTU_FAJOK")) return;
+  for (const char* fac : {"ursan", "elves", "croftian", "wullof", "hukucha", "imperium", "ooni"}) {
+    if (only && std::string(only) != fac) continue;
+    FacAudit A;
+    audit_faction(fac, A);
+    std::printf("  == %s: %zu gond\n", fac, A.bad.size());
+    for (const auto& b : A.bad) std::printf("     - %s\n", b.c_str());
+  }
 }
