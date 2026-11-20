@@ -35,6 +35,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdio>
+#include <deque>
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
@@ -536,6 +537,7 @@ int main(int argc, char** argv) {
   int rc = 0;
   bool game_recorded = false;   // a profil statisztikája egyszer rögzítve
   client::Audio audio;          // zene és hangok (a régi rts/audio.py)
+  std::deque<render::Texture> token_tex;   // a képlap nélküli egységek kerek arcképei
   render::Image save_thumb;     // a mentés kis képe: a szünet első, még tiszta képkockájáról (320 × 180)
   bool want_thumb = false;
   std::vector<sim::EntityId> snd_sel;   // a legutóbbi kijelölés (a kijelölés hangjához)
@@ -1014,6 +1016,40 @@ int main(int argc, char** argv) {
           if (o.atlas.empty() && atlas_cache.building()) std::printf("az atlasz még készül: ez a meccs sprite-ok nélkül indul\n");
           if (!o.atlas.empty()) world_atlas_ok = world_atlas.load(dev, o.atlas, &err) && world.prepare_atlas(world_atlas, &err);
           if (!o.atlas.empty() && !world_atlas_ok) std::fprintf(stderr, "atlasz nélkül: %s\n", err.c_str());
+          if (session.rules()) {   // a régi `_portrait_token`: a képlap nélküli egység kerek arcképe (assets/portraits)
+            std::unordered_map<uint16_t, const render::Texture*> tk;
+            for (const uint16_t d : world.spriteless_units(world_atlas_ok ? &world_atlas : nullptr)) {
+              const auto png = render::load_png((std::filesystem::path(o.assets) / "portraits" / (session.rules()->defs[d].id + ".png")).string());
+              if (!png || png->width < 16 || png->height < 16) continue;
+              constexpr int N = 64;   // dobozszűrős kicsinyítés, kerek, lágy szélű maszk
+              render::Image img;
+              img.width = img.height = N;
+              img.rgba.assign(N * N * 4, 0);
+              for (int y = 0; y < N; ++y) {
+                for (int x = 0; x < N; ++x) {
+                  int acc[4] = {0, 0, 0, 0}, cnt = 0;
+                  const int x0 = x * png->width / N, x1 = std::max(x0 + 1, (x + 1) * png->width / N);
+                  const int y0 = y * png->height / N, y1 = std::max(y0 + 1, (y + 1) * png->height / N);
+                  for (int sy = y0; sy < y1; ++sy) {
+                    for (int sx = x0; sx < x1; ++sx) {
+                      const uint8_t* p = png->at(sx, sy);
+                      for (int c = 0; c < 4; ++c) acc[c] += p[c];
+                      ++cnt;
+                    }
+                  }
+                  const float dx = static_cast<float>(x) + 0.5f - N / 2.0f, dy = static_cast<float>(y) + 0.5f - N / 2.0f;
+                  const float edge = std::clamp(N / 2.0f - std::sqrt(dx * dx + dy * dy), 0.0f, 1.0f);
+                  uint8_t* o2 = img.at(x, y);
+                  for (int c = 0; c < 3; ++c) o2[c] = static_cast<uint8_t>(acc[c] / cnt);
+                  o2[3] = static_cast<uint8_t>(static_cast<float>(acc[3] / cnt) * edge);
+                }
+              }
+              render::premultiply(img);
+              token_tex.push_back(dev.create_array_from(img, false));
+              tk[d] = &token_tex.back();
+            }
+            world.set_portrait_tokens(std::move(tk));
+          }
           fallback = dev.create_array_from(circle_image(32), false);
           {   // a kijelölés pecsétjei (a régi színekkel: saját zöld, idegen piros)
             auto own = client::sigil_image({90, 255, 110}, 48.0f, false);
@@ -2272,6 +2308,7 @@ int main(int argc, char** argv) {
     dev.destroy(sigil_other);
     for (render::Texture* t : {&rally_arrows, &rally_sigil, &rally_pole, &rally_cloth, &rally_shadow, &move_sigil, &banner_pole, &banner_knob, &banner_cloth, &banner_trim, &carry_sack, &mark_hero_tint, &mark_hero_fixed, &mark_badge_frame, &mark_badge_symbol, &mark_chant, &mark_hidden, &obj_ring, &obj_beacon, &amb_glow, &amb_leaf, &fire_flame, &fire_puff, &found_tex, &ground_tex, &module_tex}) dev.destroy(*t);
     for (render::Texture& t : unit_shapes) dev.destroy(t);
+    for (render::Texture& t : token_tex) dev.destroy(t);
     for (auto& [k, t] : item_tex) dev.destroy(t);
     dev.destroy(white);
     adem.atlas.release();

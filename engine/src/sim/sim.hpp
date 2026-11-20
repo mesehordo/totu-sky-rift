@@ -893,7 +893,7 @@ class SimHooks {
 // A felületnek szóló, átmeneti esemény (a régi `notify` egy része): csak a tick végéig él, nem része a hashnek és a
 // mentésnek – a szimuláció menetét nem befolyásolja
 struct SimEvent {
-  enum Kind : uint8_t { Reborn = 1, Split = 2, Unreachable = 3, Full = 4, NoTarget = 5 };
+  enum Kind : uint8_t { Reborn = 1, Split = 2, Unreachable = 3, Full = 4, NoTarget = 5, NodeFull = 6 };
   uint8_t kind = 0, owner = 0;
   uint16_t def = 0xFFFF;   // az érintett egység / épület sablonja
 };

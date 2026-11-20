@@ -349,6 +349,8 @@ struct FactionDef {
   bool ally = false;                          // szövetséges kisnép (D26)
   bool raises = false;                        // van lélekidéző (`raise`) képességű egysége: a holttestek számítanak
   std::array<int32_t, kResources> ally_cost{};   // a szövetség ára (a főnépé)
+  // lelőhelyenként egyszerre kitermelő munkások (a tanulmány „szabad munkahelyek”; 0: korlátlan) – `gather_slots`
+  std::array<int32_t, kResources> gather_slots{2, 5, 3, 0};
   // Wullof (MECH-WUL-1–4)
   bool pack = false;
   Fixed pack_radius = Fixed::from_int(4), pack_per = Fixed::from_ratio(1, 10), pack_max = Fixed::from_ratio(2, 5),

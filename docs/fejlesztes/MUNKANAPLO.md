@@ -1127,3 +1127,29 @@ A tulajdonos döntése: 2 csempe (AoE2 Mangonel/Trebuchet, WC3 Catapult mintáj�
 ## 2026-11-20 – Az idézések nem foglalnak létszámot (a tanulmány-összevetés 5. tétele)
 
 A tulajdonos döntése a WC3 szerint: az idézett lény (a `Lifetime` összetevőt viselő egység, a Croftian állandó idézése is) nem számít bele a létszámba. Eddig beleszámított, de túlléphette a korlátot; a korlátlan idézést továbbra is a lejárat és a hősönkénti korlát (Croftian: 4) akadályozza meg. A gyilkosságból feltámadó egység (élettartam nélkül) és a fertőzésből kikelő Karmos rendes egység marad. Egyensúlyi változás a tulajdonos döntése alapján. Teszt.
+
+## 2026-11-20 – Munkahelyek a lelőhelyen, népenként (a tanulmány-összevetés 6. tétele)
+
+A tulajdonos döntése: népenként eltérő, a számokat rám bízta. A tanulmány szerint („foglalás: sorok és szabad munkahelyek”): egy lelőhelyen egyszerre legfeljebb ennyi munkás termel ki (a WC3 bányájához hasonlóan csak a kitermelő foglal helyet, a járkáló és a leadó nem). Ha tele van, a munkás a 10 csempén belüli legközelebbi szabad, ugyanilyen lelőhelyre megy; ha ilyen nincs, a lelőhely mellett sorban áll, és amint hely szabadul, kitermel (az első várakozáskor értesítés). A kéregcsapolás (Wullof) a saját, fánként egy szabályát tartja. Adat: a népsablon `gather_slots` kulcsa (alapérték: fa 2, arany 5, meteorit 3).
+
+| Nép | Arany | Meteorit | Fa (fánként) | Indok |
+|---|---|---|---|---|
+| Ursanok | 5 | 3 | 2 | alapérték |
+| Szürke elfek | 4 | 3 | 2 | kevesebb, értékesebb munkás |
+| Croftianok | 6 | 4 | 3 | raj |
+| Wullof | 4 | 3 | 1 | kéregcsapolás (fánként egy) |
+| Huk’ucha | 5 | 3 | 2 | alapérték |
+| Aurethi | 3 | 2 | 2 | csak a nagy Arató gyűjt |
+| Ooni | 5 | 3 | 2 | alapérték |
+
+Egyensúlyi változás a tulajdonos döntése alapján: a gazdasági állapothash-próba új értéket kapott (a gyűjtés eloszlása változott). Teszt: 12 Ursan munkás egy aranyon – egyszerre legfeljebb 5 termel, a sorban állás jelezve.
+
+**Golden és hash (a munkahelyek miatt):** a gyűjtés eloszlása szándékosan változott, ezért a golden M6 és M7 visszajátszás újra rögzítve (`totu_sim m6golden` / `m7golden`, ECO-ALAP; 144 ellenőrzőpont, egyezik), és öt rögzített állapothash-próba új értéket kapott (gazdaság, gép, képességek, harc, építés).
+
+## 2026-11-20 – Portré a kép nélküli egységeken (a régi `_portrait_token`)
+
+A tulajdonos kérése: ahol az egységnek nincs képlapja, a kis körben a portréja látsszon, mint a régi Python-változatban. A régi szerint: kerek arckép (az `assets/portraits/<id>.png` dobozszűrővel 64 × 64-re kicsinyítve, lágy szélű kör alakú maszkkal), csapatszínű keret, árnyék a talpnál, járás közben kis billegés; mérete max(18, sugár × 2,6) képpont; rejtőzve áttetsző. Ahol portré sincs (9 sablon), a régi alakzat marad. A kijelölés a zseton kerete szerint. 102 kép nélküli egységnek van portréja. Kép: `utan_portre_zsetonok.jpg`.
+
+## 2026-11-20 – A gép a hiányzó szerep szerint választ kisnépet (a tanulmány-összevetés 7. tétele)
+
+A tanulmány szerint (a kisnép stratégiai rést töltsön be, ne véletlenül; a régi: sorsolás a preferenciából, 80%-ban az első kettőből). A gép a népe `ally_pref` listájának kisnépeit a szerepeik szerint pontozza (az épületeik által képzett egységek és maguk az épületek: gyógyító, lövő, ostrom, légvédelem, védelem, repülő), aszerint, mi hiányzik: nincs gyógyítója (+3), a lövők aránya 30% alatt (+2), legalább 2 felderített ellenséges torony és nincs ostroma (+3), látott ellenséges repülő és nincs légvédelme (+3); az ostromló személyiség az ostromot, a védekező a védelmet súlyozza. A preferencia sorrendje csak döntetlennél dönt; a Csatában megadott kisnép felülír mindent. A gépi felület bővült: `AI.roster(nép)` más népre is, a sablonban `heals` és `anti_air`. A golden visszajátszások nem változtak.

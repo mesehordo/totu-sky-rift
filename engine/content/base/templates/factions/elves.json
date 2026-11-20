@@ -131,6 +131,7 @@
    }
   },
   "Faction": {
+   "gather_slots": {"wood": 2, "gold": 4, "meteor": 3},
    "order": 1,
    "mechanic": "power",
    "style": "aztec",

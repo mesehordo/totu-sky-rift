@@ -156,6 +156,7 @@
    }
   },
   "Faction": {
+   "gather_slots": {"wood": 2, "gold": 3, "meteor": 2},
    "order": 6,
    "mechanic": "standard",
    "style": "imperial",

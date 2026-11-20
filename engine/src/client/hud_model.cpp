@@ -1237,6 +1237,7 @@ void HudModel::sim_events(const std::vector<sim::SimEvent>& evs) {
       case sim::SimEvent::Unreachable: post_notice(tr("unreachable", {def_name(ev.def)}), {255, 200, 160}); break;
       case sim::SimEvent::Full: post_notice(tr("full", {bld_name(ev.def)}), {255, 160, 90}); break;
       case sim::SimEvent::NoTarget: post_notice(tr("no_target"), {255, 160, 90}); break;
+      case sim::SimEvent::NodeFull: post_notice(tr("node_full"), {255, 160, 90}); break;
       default: break;
     }
   }

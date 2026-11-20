@@ -135,6 +135,7 @@
    }
   },
   "Faction": {
+   "gather_slots": {"wood": 2, "gold": 5, "meteor": 3},
    "order": 7,
    "mechanic": "pond",
    "style": "tribal",

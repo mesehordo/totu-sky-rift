@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Gazdaság (M6, 2. lépés; ADR-007): szabályadatok, meccsindítás a pályából, gyűjtés–hordás–leadás, kimerülés,
 // Hadtáp, létszám, parancsok, determinizmus és mentés.
+#include <algorithm>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -159,7 +160,7 @@ TEST_CASE("gazdaság: determinisztikus, és mentésből folytatva ugyanoda jut")
   CHECK(a.sim->hash() == b.sim->hash());
   // rögzített állapothash: minden rendszeren ugyanennyi (a gazdaság determinizmusa a CI mind az öt rendszerén)
   std::printf("  gazdasági állapothash (900 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0x95464683d3377842ULL);
+  CHECK(a.sim->hash() == 0x3d00fe4cd988f291ULL);   // 2026-11-20: munkahelyek a lelőhelyen (népenként)
   const auto saved = a.sim->save();
   a.run(900);
   Match c("ECO-ALAP", true, false);   // ugyanaz a pálya, meccsindítás nélkül
@@ -167,4 +168,38 @@ TEST_CASE("gazdaság: determinisztikus, és mentésből folytatva ugyanoda jut")
   c.sim->restore_obstacles(*c.map);   // a navrács akadályai a betöltött épületekből és lelőhelyekből
   c.run(900);
   CHECK(c.sim->hash() == a.sim->hash());
+}
+
+TEST_CASE("gazdasag: munkahelyek a lelohelyen (nepenkent; Ursan arany 5) – a tobbi atmegy masikra vagy sorban all") {
+  Match m("ECO-ALAP", true);
+  CHECK(m.ok);
+  if (!m.ok) return;
+  sim::Sim& s = *m.sim;
+  CHECK(content_once().rules->faction("ursan")->gather_slots[sim::kGold] == 5);
+  sim::EntityId gold = sim::kNoEntity;
+  s.world().pool<sim::ResourceNode>().each([&](sim::EntityId e, const sim::ResourceNode& n) {
+    if (n.kind == sim::kGold && gold == sim::kNoEntity) gold = e;
+  });
+  std::vector<sim::EntityId> ws = m.workers(1);
+  const auto p0 = *s.world().get<sim::Position>(ws.front());
+  for (int i = 0; i < 7; ++i) ws.push_back(s.spawn_unit(content_once().rules->def("urs_telepes"), 1, p0.x, p0.y));
+  sim::Command c;
+  c.kind = sim::Command::Kind::Gather;
+  c.owner = 1;
+  c.units = ws;
+  c.target = gold;
+  s.queue(std::move(c));
+  int most = 0;
+  bool full_seen = false;
+  for (int t = 0; t < 30 * 90; ++t) {
+    m.run(1);
+    int here = 0;
+    s.world().pool<sim::Worker>().each([&](sim::EntityId, const sim::Worker& w) { here += w.state == sim::Worker::Work && w.res == gold ? 1 : 0; });
+    most = std::max(most, here);
+    for (const auto& ev : s.events()) full_seen = full_seen || ev.kind == sim::SimEvent::NodeFull;
+  }
+  CHECK(most <= 5);
+  CHECK(most >= 3);   // de dolgoznak rajta
+  CHECK(s.player(1).gathered[sim::kGold] > 0);
+  std::printf("  egyszerre kitermelő: legfeljebb %d, sorban állás jelezve: %d\n", most, full_seen ? 1 : 0);
 }

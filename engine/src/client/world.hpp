@@ -142,6 +142,9 @@ class World {
   // nézete változott, visszaadja (a hívó elkészíti a textúrát és átadja); különben üres
   std::shared_ptr<const sim::ModuleView> take_view_change();
   void set_module_overlay(const render::Texture* t) { module_ = t; }
+  // a régi `_portrait_token`: a képlap nélküli egység kerek arcképe (sablon → textúra); ahol nincs, az alakzat marad
+  void set_portrait_tokens(std::unordered_map<uint16_t, const render::Texture*> t) { tokens_ = std::move(t); }
+  std::vector<uint16_t> spriteless_units(render::Atlas* atlas);   // a képlap nélküli egységsablonok
   // az Aurethi alapozás lapköve (assets/ui/foundation.png): a lerakott alapozás és a félkész lapkő
   void set_foundation_art(const render::Texture* t) { found_tex_ = t; }
   // a lerakott alapozás csempéi (a régi `draw_foundations`), a figurák alatt
@@ -271,6 +274,7 @@ class World {
     uint32_t rng = 1;
   };
   std::vector<Actor> actors_;
+  std::unordered_map<uint16_t, const render::Texture*> tokens_;
   std::vector<SoundEv> sounds_;
   void note_ack(const char* ev);   // a parancs nyugtázása (a régi `ack`): az első kijelölt hangja
   std::unordered_map<int64_t, uint8_t> walls_;   // a falszakaszok helye (tx << 20 | ty) → gazda (a régi `_walls_now`)

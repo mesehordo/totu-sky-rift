@@ -930,6 +930,7 @@ std::optional<Rules> Rules::load(const content::Value& game, content::ContentSet
     const content::Value* al = f->find("ally");
     fd.ally = al && al->is_bool() && al->as_bool();
     read_res_map(f->find("ally_cost"), fd.ally_cost);
+    read_res_map(f->find("gather_slots"), fd.gather_slots);
     if (const content::Value* pb = f->find("pack_bonus"); pb && pb->is_object()) {
       fd.pack = true;
       fd.pack_radius = fixed_of(pb->find("radius"), fd.pack_radius);

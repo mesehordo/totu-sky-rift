@@ -3,6 +3,7 @@
 // a munkások gyűjtése (a régi játék `_o_gather`-je szerint: odamegy, rakodik, a legközelebbi leadóhelyre hord, a
 // kimerült lelőhely után a közelben újat keres), bevétel a Hadtáppal (MECH-UPKEEP), létszám (MECH-SUPPLY).
 #include <algorithm>
+#include <unordered_map>
 
 #include "core/angle.hpp"
 #include "map/map.hpp"
@@ -483,6 +484,15 @@ void Sim::remove_resource(EntityId e) {
 
 void Sim::economy_system() {
   auto& workers = world_.pool<Worker>();
+  // a lelőhelyeken épp kitermelő munkások (a munkahelyek foglaltsága)
+  std::unordered_map<EntityId, int> working;
+  workers.each([&](EntityId, const Worker& w) {
+    if (w.state == Worker::Work && w.res) ++working[w.res];
+  });
+  auto slots_of = [&](uint8_t owner, int kind) {
+    const FactionDef* f = owner >= 1 && owner <= kMaxPlayers ? rules_->faction(players_[owner].faction) : nullptr;
+    return f && kind >= 0 && kind < kResources ? f->gather_slots[static_cast<size_t>(kind)] : 0;
+  };
   workers.each([&](EntityId e, Worker& w) {
     if (w.state == Worker::Idle || !world_.alive(e)) return;
     const Position* pos = world_.get<Position>(e);
@@ -523,6 +533,32 @@ void Sim::economy_system() {
         w.lx = rp.x;
         w.ly = rp.y;
         if (in_reach(e, w.res)) {
+          const bool tapping = n->kind == kWood && d.tap_amount > 0;   // a kéregcsapolás saját (fánként egy) szabálya
+          if (const int slots = tapping ? 0 : slots_of(hp->owner, n->kind); slots > 0 && working[w.res] >= slots) {
+            // tele: a 10 csempén belüli legközelebbi szabad, ugyanilyen lelőhely; ha nincs, sorban áll (a tanulmány 9.2)
+            EntityId alt = kNoEntity;
+            int64_t best = int64_t{Fixed::from_int(10).raw()} * Fixed::from_int(10).raw();
+            world_.pool<ResourceNode>().each([&](EntityId o, const ResourceNode& on) {
+              if (o == w.res || on.kind != n->kind || on.amount <= 0) return;
+              if (const auto it = working.find(o); it != working.end() && it->second >= slots) return;
+              const Position* op = world_.get<Position>(o);
+              const int64_t d2 = op ? core::length_sq_raw(op->x - pos->x, op->y - pos->y) : best + 1;
+              if (d2 < best) {
+                best = d2;
+                alt = o;
+              }
+            });
+            if (alt != kNoEntity) {
+              w.res = alt;
+              w.move_to = 0;
+              return;
+            }
+            if (w.fails == 0) emit(SimEvent::NodeFull, hp->owner, unit->def);
+            w.fails = 1;   // vár (a jelzés egyszer)
+            return;
+          }
+          w.fails = 0;
+          ++working[w.res];
           // nagyobb rakomány: arányosan tovább rakodik; az időjárás (hőség, D35) lassíthatja
           const ResourceDef& rd = rules_->resources[n->kind];
           const int64_t t = int64_t{rd.gather_time.raw()} * carry_cap(d, n->kind, hp->owner) / std::max(1, rd.carry);

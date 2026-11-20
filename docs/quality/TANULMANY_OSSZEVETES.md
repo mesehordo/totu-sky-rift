@@ -63,9 +63,9 @@ Jelölés: **megfelel** · **döntéssel feloldva** (Dxx) · **megbeszélendő**
 |---|---|
 | Meteorit, fa, arany, populáció | **megfelel** |
 | Népenkénti építési logika adatból | **megfelel** (építőstílusok, népmodulok) |
-| Egy lelőhelyen ne dolgozzon lehetetlen számú munkás (foglalás, sor) | **megbeszélendő (6)** – nincs munkáshely-korlát |
+| Egy lelőhelyen ne dolgozzon lehetetlen számú munkás (foglalás, sor) | **kész (2026-11-20)**: népenkénti munkahelyszám, átirányítás, sorban állás |
 | Szövetséges kisnép: 3 épület | **megfelel** (D11: egy nép, három épülete) |
-| A gép a kisnépet stratégiai rés alapján válassza, ne véletlenül | **megbeszélendő (7)** – most a népe preferencialistájából, 80%-ban az első kettőből sorsolva (a régi szerint) |
+| A gép a kisnépet stratégiai rés alapján válassza, ne véletlenül | **kész (2026-11-20)**: a hiányzó szerep (gyógyító, lövő, ostrom, légvédelem) szerint; a preferencia döntetlennél |
 
 ## 6. Köd, információ, hálózat
 
@@ -115,10 +115,8 @@ Tételenként kell megbeszélni; a régi játék szabálya csak akkor marad, ha 
 3. ~~**Minimális lőtávolság**~~ – **kész (2026-11-20)**: a tulajdonos döntése szerint 2 csempe az ostromgépeknek.
 4. ~~**Baráti tűz**~~ – **kész (2026-11-20)**: csak a lehetőség, alapból kikapcsolva (a tulajdonos döntése).
 5. ~~**Idézések és a létszámkorlát**~~ – **kész (2026-11-20)**: nem foglalnak létszámot (a tulajdonos döntése, WC3).
-6. **Munkáshely-korlát a lelőhelyen** – javaslat: aranybányánként legfeljebb néhány munkás egyszerre, a többi
-   vár vagy másikat keres (WC3: 5; AoE2: nincs korlát, de torlódik).
-7. **A gép kisnép-választása** – javaslat: a hiányzó szerep szerint (pl. nincs gyógyítója → gyógyító kisnép), a
-   sorsolás csak döntetlennél.
+6. ~~**Munkáshely-korlát**~~ – **kész (2026-11-20)**: népenként eltérő számok (a tulajdonos rám bízta).
+7. ~~**A gép kisnép-választása**~~ – **kész (2026-11-20)**: a javaslat szerint (a tulajdonos továbblépett).
 8. **„Állapotok a figurán” kapcsoló** – javaslat: kikapcsolva is maradjon egy egyszerű jel a kábult / mérgezett
    egységen, csak az animáció szűnjön meg.
 9. **Felületméret** – javaslat: 75% és 90% is választható legyen.

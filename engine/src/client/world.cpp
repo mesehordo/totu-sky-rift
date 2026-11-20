@@ -1758,6 +1758,19 @@ bool legacy_flag(const sim::EntityDef& d, const char* key) {
 }
 }  // namespace
 
+std::vector<uint16_t> World::spriteless_units(render::Atlas* atlas) {
+  std::vector<uint16_t> out;
+  const sim::Rules* r = session_.rules();
+  if (!r) return out;
+  for (size_t i = 0; i < r->defs.size(); ++i) {
+    const sim::EntityDef& d = r->defs[i];
+    if (d.building || d.id.rfind("template", 0) == 0) continue;
+    if (atlas && sheet_by_id(atlas, art_id(*r, static_cast<uint16_t>(i))) >= 0) continue;
+    out.push_back(static_cast<uint16_t>(i));
+  }
+  return out;
+}
+
 void World::draw_foundations(render::SpriteBatch& batch, const Camera& cam, int sw, int sh) const {
   if (!cur_ || !cur_->view || cur_->view->found.empty() || !found_tex_) return;
   const auto& f = cur_->view->found;
@@ -2254,6 +2267,25 @@ void World::draw(render::SpriteBatch& batch, render::Atlas* atlas, const render:
       atlas->draw(batch, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, 1.0f / s.scale, team, tint_p,
                   -1.0f, shadow_pass ? 0 : render::kFxInnerShadow);
       if (!shadow_pass) note_hit(atlas, s, std::min(v.dir, s.directions - 1), a.start + frame, it.x, it.y, it.i);
+    } else if (const auto tk = tokens_.find(u.def); !shadow_pass && tk != tokens_.end() && rules && u.def < rules->defs.size()) {
+      // kép nélkül, de van portré (a régi `_portrait_token`): kerek arckép csapatszínű kerettel, árnyékkal, lépésre billegve
+      const float rad = static_cast<float>(rules->defs[u.def].radius.raw()) / 65536.0f * kTilePx;
+      const float dd = std::max(18.0f, std::floor(rad * 2.6f));
+      const float bob = v.moving ? std::fabs(std::sin(static_cast<float>(std::fmod(time, 1000.0)) * 9.0f)) * 2.0f : 0.0f;
+      const float cy = it.y - dd * 0.55f - bob;
+      render::SpriteInstance shd;   // árnyék a talpnál
+      shd.x = it.x - dd * 0.42f; shd.y = it.y - dd * 0.14f; shd.w = dd * 0.84f; shd.h = dd * 0.28f;
+      shd.tint[0] = shd.tint[1] = shd.tint[2] = 0; shd.tint[3] = 110;
+      batch.draw(fallback, nullptr, shd);
+      render::SpriteInstance ring;   // a csapatszínű keret
+      ring.x = it.x - dd / 2 - 2; ring.y = cy - dd / 2 - 2; ring.w = ring.h = dd + 4;
+      ring.tint[0] = team[0]; ring.tint[1] = team[1]; ring.tint[2] = team[2];
+      batch.draw(fallback, nullptr, ring);
+      render::SpriteInstance in;
+      in.x = it.x - dd / 2; in.y = cy - dd / 2; in.w = in.h = dd;
+      if (u.hidden) in.tint[3] = 120;   // rejtőzve áttetsző (a régi)
+      batch.draw(*tk->second, nullptr, in);
+      hits_.push_back({it.i, in.x, in.y, in.x + dd, in.y + dd});
     } else if (!shadow_pass && shapes_ && shapes_->size() == static_cast<size_t>(client::kShapeKinds) && rules && u.def < rules->defs.size()) {
       // kép nélkül: a régi `draw_shape` alakzata (csapatszín, a nép alap- és kiemelőszíne, saját színű részletek)
       const sim::EntityDef& d = rules->defs[u.def];

@@ -393,6 +393,17 @@ int a_template(lua_State* L) {
   set_int(L, "garrison", d.garrison);
   set_int(L, "count", d.count);
   set_str(L, "class", d.utype);
+  set_bool(L, "anti_air", d.attack.has && d.attack.air);   // légi célra is lő
+  {
+    bool heals = false;   // önműködő gyógyító vagy gyógyító képessége van
+    for (const uint16_t a : d.abilities) {
+      if (a < s.rules()->abilities.size()) {
+        const sim::AbilityDef& ad = s.rules()->abilities[a];
+        heals = heals || ad.type == sim::AbilityDef::Type::Autoheal || ad.heal.raw() > 0;
+      }
+    }
+    set_bool(L, "heals", heals);
+  }
   lua_createtable(L, 0, 3);
   set_int(L, "wood", d.cost[static_cast<size_t>(sim::kWood)]);
   set_int(L, "gold", d.cost[static_cast<size_t>(sim::kGold)]);
@@ -479,9 +490,10 @@ int a_plan(lua_State* L) {
 }
 
 // AI.roster() → a saját nép egységei, épületei, kutatásai (a sablon `Roster`-e)
-int a_roster(lua_State* L) {
+int a_roster(lua_State* L) {   // AI.roster([nép]): a saját (vagy a megadott, pl. kisnép) népe egységei, épületei, kutatásai
   Sim& s = sim_of(L);
-  const sim::FactionDef* f = s.rules() ? s.rules()->faction(s.player(me(L)).faction) : nullptr;
+  const std::string fid = lua_type(L, 1) == LUA_TSTRING ? std::string(lua_tostring(L, 1)) : s.player(me(L)).faction;
+  const sim::FactionDef* f = s.rules() ? s.rules()->faction(fid) : nullptr;
   const content::Value* r = f && f->raw ? f->raw->find("Roster") : nullptr;
   lua_createtable(L, 0, 3);
   for (const char* key : {"units", "buildings", "researches"}) {

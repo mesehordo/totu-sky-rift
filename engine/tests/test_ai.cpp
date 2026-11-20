@@ -313,7 +313,7 @@ TEST_CASE("M9 gep – platformhash: ket gep 90 s meccse rogzitett hash-sel") {
   if (!a.ok) return;
   a.run(90 * 30);
   std::printf("  gépi meccs hash (90 s): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
-  CHECK(a.sim->hash() == 0x2436175581eca23aULL);
+  CHECK(a.sim->hash() == 0x40970bfca67e9a49ULL);   // 2026-11-20: munkahelyek a lelőhelyen
   CHECK(a.errors() == 0);
 }
 

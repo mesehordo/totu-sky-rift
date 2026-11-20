@@ -10077,3 +10077,7 @@ msgstr "Pick one of your own units or buildings."
 msgctxt "ui.atlas.wait"
 msgid "A grafika előkészítése csak a változás utáni első indításkor tart ennyi ideig."
 msgstr "Preparing the graphics takes this long only on the first start after a change."
+
+msgctxt "hud.node_full"
+msgid "A lelőhely tele van: a munkás sorban áll, amíg hely nem szabadul."
+msgstr "The deposit is full: the worker waits in line until a place frees up."

@@ -127,6 +127,7 @@
    }
   },
   "Faction": {
+   "gather_slots": {"wood": 3, "gold": 6, "meteor": 4},
    "order": 3,
    "mechanic": "creep",
    "style": "organic",

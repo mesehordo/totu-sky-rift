@@ -156,6 +156,7 @@
    }
   },
   "Faction": {
+   "gather_slots": {"wood": 2, "gold": 5, "meteor": 3},
    "demolish": true,
    "order": 8,
    "mechanic": "lantern",

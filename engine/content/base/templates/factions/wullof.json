@@ -160,6 +160,7 @@
    }
   },
   "Faction": {
+   "gather_slots": {"wood": 1, "gold": 4, "meteor": 3},
    "demolish": true,
    "order": 4,
    "mechanic": "standard",
