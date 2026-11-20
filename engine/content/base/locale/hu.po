@@ -10040,3 +10040,23 @@ msgstr ""
 msgctxt "ui.music.empty"
 msgid "Nincs zene az assets/music mappában."
 msgstr ""
+
+msgctxt "hud.stance.defensive"
+msgid "Védekező"
+msgstr ""
+
+msgctxt "hud.stance.aggressive"
+msgid "Agresszív"
+msgstr ""
+
+msgctxt "hud.stance.ground"
+msgid "Helytartás"
+msgstr ""
+
+msgctxt "hud.stance.passive"
+msgid "Passzív"
+msgstr ""
+
+msgctxt "hud.stance.tip"
+msgid "Harci magatartás – kattintás: a következő, jobb kattintás: az előző. Védekező: rövid ideig üldöz, aztán visszatér. Agresszív: üldöz, amíg látja. Helytartás: nem mozdul, a lőtávba érőt támadja. Passzív: magától nem támad."
+msgstr ""

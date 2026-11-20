@@ -66,6 +66,7 @@ struct SnapUnit {
   int32_t xp = 0;                            // hős: tapasztalat
   int64_t life_until = 0;                    // idézett egység: eddig a tickig él (0 = nem jár le)
   uint16_t packed = sim::kNoDef;             // vándorszekér: az összecsomagolt épület sablonja
+  uint8_t stance = 0;                        // harci magatartás (sim::Sim::Stance; 0 védekező)
   std::vector<std::pair<uint16_t, int64_t>> ready, buffs;   // képesség → használható ettől / erősítés eddig (tick)
   std::vector<uint16_t> toggles;             // bekapcsolt kapcsolók és énekek
   // átmeneti állapotok vége (tick), a régi EFFECT_INFO sorrendjében: ég, mérgezett, fagyott, lelassult, átázott, gúzsba

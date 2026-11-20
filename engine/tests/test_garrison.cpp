@@ -346,3 +346,58 @@ TEST_CASE("helyőrség és irány: determinisztikus, és mentésből folytatva u
   std::printf("  helyőrség-állapothash (616 tick): 0x%016llx\n", static_cast<unsigned long long>(a.sim->hash()));
   CHECK(a.sim->hash() == 0x07bfa9bef468646fULL);   // minden rendszeren ugyanez
 }
+
+TEST_CASE("harci magatartas (D13): vedekezo alap, agressziv poraz nelkul, helytartas, passziv; parancs, mentes, hash") {
+  Match m("BUILD-ALAP");
+  sim::Sim& s = *m.sim;
+  const uint64_t h0 = s.hash();
+  const auto a = put(s, "urs_pajzshordozo", 1, 100, 185, false);
+  const auto foe = put(s, "urs_pajzshordozo", 2, 140, 185, true);
+  CHECK(s.stance_of(a) == sim::Sim::Defensive);
+  // passzív: magától nem támad, és nem mozdul
+  sim::Command c;
+  c.kind = sim::Command::Kind::Stance;
+  c.owner = 1;
+  c.units = {a};
+  c.rx = sim::Sim::Passive;
+  s.apply_now(c);
+  CHECK(s.stance_of(a) == sim::Sim::Passive);
+  const auto p0 = *s.world().get<sim::Position>(a);
+  m.run(60);
+  CHECK(s.world().get<sim::Combat>(a)->order == sim::Combat::None);
+  CHECK(s.world().get<sim::Position>(a)->x == p0.x);
+  // védekező: célpontot keres
+  CHECK(s.set_stance(a, sim::Sim::Defensive));
+  m.run(30);
+  CHECK(s.world().get<sim::Combat>(a)->order == sim::Combat::Attack);
+  // póráz: a messzi kiindulópontú, magától kezdett harc védekezőn hazatér, agresszíven folytatódik
+  auto far_home = [&] {
+    auto& cb = *s.world().get<sim::Combat>(a);
+    cb.order = sim::Combat::Attack;
+    cb.autonomous = 1;
+    cb.target = foe;
+    cb.hx = fx(400, 10);
+    cb.hy = fx(185, 10);
+  };
+  far_home();
+  m.run(1);
+  CHECK(s.world().get<sim::Combat>(a)->order == sim::Combat::Leash);
+  CHECK(s.set_stance(a, sim::Sim::Aggressive));
+  far_home();
+  m.run(1);
+  CHECK(s.world().get<sim::Combat>(a)->order == sim::Combat::Attack);
+  // helytartás: áll, csak lőtávban támad
+  CHECK(s.set_stance(a, sim::Sim::StandGround));
+  CHECK(s.world().get<sim::Combat>(a)->order == sim::Combat::Hold);
+  // mentés és betöltés: a magatartás megmarad; a hash a nem alapértelmezettől eltér
+  const auto data = s.save();
+  Match b("BUILD-ALAP", true, false);
+  CHECK(b.sim->load(data));
+  b.sim->restore_obstacles(*b.map);
+  CHECK(b.sim->stance_of(a) == sim::Sim::StandGround);
+  CHECK(b.sim->hash() == s.hash());
+  // vissza védekezőre: a lista kiürül, a tartás feloldódik
+  CHECK(s.set_stance(a, sim::Sim::Defensive));
+  CHECK(s.world().get<sim::Combat>(a)->order != sim::Combat::Hold);
+  CHECK(h0 != s.hash());
+}

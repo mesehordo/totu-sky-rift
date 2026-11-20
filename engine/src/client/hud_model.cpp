@@ -683,7 +683,22 @@ CommandCard HudModel::command_card() {
       s.tip_text = tr("attack.tip");
       slots[2] = std::move(s);
     }
-    if (mobile) {
+    if (mobile && attack) {   // harci magatartás (D13, a tanulmány és az AoE2 szerint): bal kattintás a következő, jobb az előző
+      static const char* kKey[] = {"stance.defensive", "stance.aggressive", "stance.ground", "stance.passive"};
+      static const char* kIcon[] = {"shield", "rage", "hold", "eye"};
+      const uint8_t cur = std::min<uint8_t>(us.front()->stance, 3);
+      auto set = [this, ids](int st) {
+        sim::Command c = base_cmd(sim::Command::Kind::Stance);
+        c.units = ids();
+        c.rx = st;
+        cmd(c);
+      };
+      HudSlot s = make_slot("stance", kIcon[cur], tr(kKey[cur]), [set, cur] { set((cur + 1) % 4); });
+      s.rfn = [set, cur] { set((cur + 3) % 4); };
+      s.active = cur != 0;
+      s.tip_text = tr("stance.tip");
+      slots[3] = std::move(s);
+    } else if (mobile) {
       HudSlot s = make_slot("hold", "hold", tr("hold"), [this, ids] {
         sim::Command c = base_cmd(sim::Command::Kind::Hold);
         c.units = ids();

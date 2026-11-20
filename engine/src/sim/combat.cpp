@@ -182,6 +182,35 @@ bool Sim::order_attack_move(EntityId e, Fixed x, Fixed y) {
   return true;
 }
 
+bool Sim::set_stance(EntityId e, uint8_t stance) {
+  if (!rules_ || !world_.alive(e) || stance > 3) return false;
+  Combat* c = world_.get<Combat>(e);
+  if (!c || !world_.get<Unit>(e)) return false;
+  const auto it = std::lower_bound(stances_.begin(), stances_.end(), e, [](const auto& a, EntityId x) { return a.first < x; });
+  const bool has = it != stances_.end() && it->first == e;
+  const uint8_t old = has ? it->second : static_cast<uint8_t>(Defensive);
+  if (stance == Defensive) {
+    if (has) stances_.erase(it);
+  } else if (has) {
+    it->second = stance;
+  } else {
+    stances_.insert(it, {e, stance});
+  }
+  // a magától kezdett harc a magatartáshoz igazodik; a kifejezett parancs marad
+  if (stance == StandGround && (c->order == Combat::None || c->autonomous || c->order == Combat::Leash)) {
+    order_hold(e);
+  } else if (old == StandGround && stance != StandGround && c->order == Combat::Hold) {
+    c->order = Combat::None;
+    c->target = 0;
+  } else if (stance == Passive && c->autonomous) {
+    c->order = Combat::None;
+    c->target = 0;
+    c->autonomous = 0;
+    halt(e);
+  }
+  return true;
+}
+
 bool Sim::order_hold(EntityId e) {
   if (!rules_ || !world_.alive(e)) return false;
   Combat* c = world_.get<Combat>(e);
@@ -302,7 +331,7 @@ void Sim::deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId t,
   }
   // visszaütés: a tétlen, harcképes, nem munkás egység a támadóra
   if (Combat* c = tu ? world_.get<Combat>(t) : nullptr; c && c->order == Combat::None && src && world_.alive(src) && !world_.get<Worker>(t) &&
-      hostile(h->owner, owner) && can_hit(t, src)) {
+      hostile(h->owner, owner) && can_hit(t, src) && (stances_.empty() || stance_of(t) == Defensive || stance_of(t) == Aggressive)) {
     const Position* p = world_.get<Position>(t);
     c->order = Combat::Attack;
     c->autonomous = 1;
@@ -640,6 +669,9 @@ void Sim::die(EntityId e) {
 }
 
 void Sim::match_combat_system() {
+  if (!stances_.empty() && tick_ % kTickHz == 0) {   // a megszűnt egységek magatartása törlődik (másodpercenként)
+    stances_.erase(std::remove_if(stances_.begin(), stances_.end(), [&](const auto& s) { return !world_.alive(s.first); }), stances_.end());
+  }
   // pajzs-visszatöltés (a régi: a játék alapja szerinti késleltetés után)
   world_.pool<Vital>().each([&](EntityId e, Vital& v) {
     const Unit* u = world_.get<Unit>(e);
@@ -687,6 +719,15 @@ void Sim::match_combat_system() {
     switch (c.order) {
       case Combat::None: {
         if (world_.get<Worker>(e)) break;   // a munkás magától nem támad
+        if (!stances_.empty()) {
+          const uint8_t st = stance_of(e);
+          if (st == Passive) break;   // passzív: magától nem támad
+          if (st == StandGround && !(mv && mv->moving)) {   // helytartás: megérkezve áll és lőtávban támad
+            c.order = Combat::Hold;
+            c.scan = 0;
+            break;
+          }
+        }
         if (mv && mv->moving) break;        // csak a tétlen keres célpontot (a mozgásparancs alatt nem; a régi E 747)
         if (world_.get<CampMember>(e)) break;   // a tábor egysége a camp_system szerint keres
         if (--c.scan > 0) break;
@@ -710,7 +751,8 @@ void Sim::match_combat_system() {
           halt(e);
           break;
         }
-        if (c.autonomous && core::length(p->x - c.hx, p->y - c.hy) > kLeash) {   // póráz: haza
+        if (c.autonomous && core::length(p->x - c.hx, p->y - c.hy) > kLeash &&
+            (stances_.empty() || stance_of(e) != Aggressive)) {   // póráz: haza (az agresszív nem tér vissza)
           c.order = Combat::Leash;
           c.target = 0;
           c.moving = 0;
@@ -726,7 +768,7 @@ void Sim::match_combat_system() {
           c.target = 0;
           c.moving = 0;
         }
-        if (!c.target && --c.scan <= 0) {
+        if (!c.target && --c.scan <= 0 && (stances_.empty() || stance_of(e) != Passive)) {   // passzív: csak megy
           c.scan = kScanTicks;
           c.target = find_enemy(e, sight);
           if (c.target) c.repath = 0;
@@ -750,7 +792,7 @@ void Sim::match_combat_system() {
                          gap(e, c.target) > attack_range(e, c.target) + kRangeSlack)) {
           c.target = 0;
         }
-        if (!c.target && --c.scan <= 0) {
+        if (!c.target && --c.scan <= 0 && (stances_.empty() || stance_of(e) != Passive)) {
           c.scan = kScanTicks;
           const Fixed r = d.attack.range + d.radius + Fixed::from_int(2);
           const EntityId t = find_enemy(e, r);

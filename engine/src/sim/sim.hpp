@@ -835,7 +835,9 @@ struct Command {
                               // `rx` a válasz sorszáma)
                               Mission = 32,
                               // irányítási csomag (D46): járőr (`units` a mostani helye és (x, y) között, támadó mozgással)
-                              Patrol = 33 };
+                              Patrol = 33,
+                              // harci magatartás (`units`, `rx`: 0 védekező, 1 agresszív, 2 helytartás, 3 passzív)
+                              Stance = 34 };
   // a `flag` bitje egységparancsnál (Move, Attack, Gather …): a meglévő parancs után sorba áll (Shift)
   static constexpr uint8_t kQueue = 0x80;
   Kind kind = Kind::Spawn;
@@ -979,6 +981,15 @@ class Sim {
   bool order_attack(EntityId unit, EntityId target);
   bool order_attack_move(EntityId unit, Fixed x, Fixed y);
   bool order_hold(EntityId unit);
+  // harci magatartás (a tanulmány és az AoE2 szerint; D13): védekező (alap: rövid üldözés pórázon, aztán vissza),
+  // agresszív (póráz nélkül, amíg látja), helytartás (nem mozdul, csak lőtávban támad), passzív (magától nem támad,
+  // vissza sem üt; a kifejezett parancsot végrehajtja)
+  enum Stance : uint8_t { Defensive = 0, Aggressive = 1, StandGround = 2, Passive = 3 };
+  uint8_t stance_of(EntityId e) const {
+    const auto it = std::lower_bound(stances_.begin(), stances_.end(), e, [](const auto& a, EntityId x) { return a.first < x; });
+    return it != stances_.end() && it->first == e ? it->second : static_cast<uint8_t>(Defensive);
+  }
+  bool set_stance(EntityId e, uint8_t stance);
   // Sebzés a régi `apply_damage` szerint: típusszorzó, címkebónusz, pajzs, páncél (legalább 0,5); ezred egységben.
   // `magic`: varázssebzés (típusszorzó és páncél nélkül); `el`: a találat eleme (jég, félelem).
   void deal_damage(EntityId src, uint8_t owner, uint16_t src_def, EntityId target, int64_t milli, bool ranged,
@@ -1135,6 +1146,7 @@ class Sim {
     if (events_.size() < 256) events_.push_back({kind, owner, def});
   }
   std::vector<SimEvent> events_;
+  std::vector<std::pair<EntityId, uint8_t>> stances_;   // a nem alapértelmezett magatartások (azonosító szerint; mentés 23)
   std::vector<std::pair<EntityId, int64_t>> cmd_moves_;   // parancsra mozgó egységek (az elérhetetlen cél jelzéséhez; átmeneti)
   void apply(const Command& c);
   void apply_now(const Command& c);   // a sorba állítás nélkül (a parancssor rendszere)

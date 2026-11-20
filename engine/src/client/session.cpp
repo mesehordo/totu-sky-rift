@@ -391,6 +391,7 @@ void Session::hud_fields(sim::EntityId e, SnapUnit& u) {
   if (const auto* hs = w.get<sim::HeroState>(e)) u.xp = hs->xp / 1000;
   if (const auto* l = w.get<sim::Lifetime>(e)) u.life_until = l->until;
   if (const auto* wg = w.get<sim::Wagon>(e)) u.packed = wg->building;
+  u.stance = sim_->stance_of(e);
   if (const auto* af = w.get<sim::Afflict>(e)) {
     u.afflict = {af->burn_until, af->poison_until, af->frozen_until, af->slow_until, af->wet_until, af->root_until,
                  af->sleep_until, af->stun_until, af->fear_until, af->blind_until, af->silence_until, af->mark_until,
